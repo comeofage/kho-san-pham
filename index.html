@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kho sản phẩm</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js" defer></script>
+<script src="app.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <a href="#/" class="logo">📦 Kho sản phẩm</a>
+  <div id="user"></div>
+</header>
+
+<main id="app"><p class="muted center">Đang tải…</p></main>
+
+<dialog id="dlg-login">
+  <form method="dialog" id="form-login">
+    <h2>Đăng nhập</h2>
+    <label>Token GitHub (anh/chị chủ kho đưa)
+      <input type="password" id="in-token" autocomplete="off" required placeholder="github_pat_…">
+    </label>
+    <label>Tên của bạn (ghi lại ai gạt "đã quay")
+      <input type="text" id="in-ten" required maxlength="40" placeholder="VD: Lan">
+    </label>
+    <p class="err" id="login-err"></p>
+    <div class="row end">
+      <button type="button" class="btn ghost" id="btn-login-huy">Huỷ</button>
+      <button type="submit" class="btn">Đăng nhập</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status"></div>
+</body>
+</html>

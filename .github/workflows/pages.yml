@@ -1,0 +1,42 @@
+# Mỗi lần có thay đổi: dựng data/index.json (commit lại) rồi deploy web lên GitHub Pages.
+# Settings → Pages → Source phải chọn "GitHub Actions".
+name: index-va-pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Dựng index
+        run: python tools/kho.py index
+      - name: Commit index nếu đổi
+        run: |
+          git config user.name "kho-bot"
+          git config user.email "kho-bot@users.noreply.github.com"
+          git add data/index.json
+          if ! git diff --cached --quiet; then
+            git commit -m "index" -q
+            for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 3; done
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4
