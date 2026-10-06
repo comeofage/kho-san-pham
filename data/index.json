@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-06T15:55:36+07:00",
+ "cap_nhat_luc": "2026-10-06T15:58:29+07:00",
  "san_pham": [
   {
    "id": "1735565013284389962",
@@ -105,11 +105,11 @@
    "id": "1731818871861445984",
    "uid": "1731818871861445984",
    "link": "https://shop.tiktok.com/vn/pdp/1731818871861445984?_t=ZS-9AKBat762k8",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "10.10 (Độc Quyền) Bánh Tráng Bò Tỏi Chua Cay Duy Best - Vị Tỏi Cay Nồng & Chua Tươi Mới",
+   "gia": "33.972₫",
+   "shop": "DUYBEST FOOD",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -122,9 +122,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:44:12+07:00",
-   "cap_nhat_luc": "2026-10-06T15:44:12+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-06T15:58:16+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1732989957715625144",
@@ -661,9 +661,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-06T15:50:59+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -672,7 +672,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T15:12:51+07:00",
-   "cap_nhat_luc": "2026-10-06T15:50:52+07:00",
+   "cap_nhat_luc": "2026-10-06T15:50:59+07:00",
    "so_caption": 100,
    "co_file01": true
   }
