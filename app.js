@@ -186,9 +186,10 @@ function renderList() {
 
   $("#app").innerHTML = `
     <form class="add" id="form-add">
-      <input id="in-link" placeholder="Dán link sản phẩm TikTok Shop…" inputmode="url" autocomplete="off">
+      <input id="in-link" placeholder="Dán link sản phẩm TikTok Shop…" autocomplete="off">
       <button class="btn">Lưu</button>
     </form>
+    <p id="add-msg" class="add-msg ${state.msg ? esc(state.msg.loai) : ""}">${state.msg ? esc(state.msg.text) : ""}</p>
     <div class="filters">
       ${[["tat_ca", "Tất cả"], ...Object.entries(NHAN)].map(([k, v]) => `<button class="chip ${state.loc === k ? "on" : ""}" data-loc="${k}">${v} (${dem[k]})</button>`).join("")}
     </div>
@@ -239,15 +240,33 @@ function bindSwitches() {
   });
 }
 
+// Lấy link từ đoạn chữ dán vào (app TikTok hay copy kèm tên sản phẩm).
+function tachLink(text) {
+  const t = (text || "").trim();
+  const m = t.match(/https?:\/\/[^\s"'<>]+/i);
+  if (m) return m[0].replace(/[),.;!?]+$/, "");
+  const so = t.match(/\b\d{15,21}\b/);
+  return so ? so[0] : null;
+}
+
+let linkCho = ""; // link dán lúc chưa đăng nhập — lưu tiếp sau khi đăng nhập
+function baoAdd(text, loai = "") {
+  state.msg = { text, loai };
+  const el = $("#add-msg");
+  if (el) { el.textContent = text; el.className = `add-msg ${loai}`; }
+}
+
 async function onAdd(e) {
-  e.preventDefault();
-  const link = $("#in-link").value.trim();
-  if (!link) return;
-  if (!/^https?:\/\//.test(link) && !/^\d{15,21}$/.test(link)) { toast("Link không hợp lệ"); return; }
-  if (!needLogin()) return;
+  e?.preventDefault();
+  const raw = e ? $("#in-link").value : linkCho;
+  if (!raw.trim()) return;
+  const link = tachLink(raw);
+  if (!link) { baoAdd("⚠ Không thấy link trong nội dung vừa dán — copy lại link sản phẩm.", "loi"); return; }
+  if (!auth.on) { linkCho = raw; baoAdd("Đăng nhập xong sẽ tự lưu link này."); openLogin(); return; }
+  linkCho = "";
   const uid = tachUid(link);
   const trung = state.list.find((x) => (uid && x.uid === uid) || x.link === link);
-  if (trung) { toast(`Đã có trong kho — ${NHAN[trung.trang_thai || trangThai(trung)]}`); location.hash = `#/sp/${encodeURIComponent(trung.id)}`; return; }
+  if (trung) { baoAdd(`Đã có trong kho — ${NHAN[trung.trang_thai || trangThai(trung)]}. Không lưu trùng.`, "loi"); location.hash = `#/sp/${encodeURIComponent(trung.id)}`; return; }
   const id = uid || "tam-" + nowIso().replace(/\D/g, "").slice(0, 14) + String(Date.now() % 1000).padStart(3, "0");
   const t = nowIso();
   const info = {
@@ -255,13 +274,19 @@ async function onAdd(e) {
     them_boi: auth.ten, them_luc: t, da_phan_tich: false,
     da_quay: { xong: false, boi: "", luc: "" }, da_lam_video: { xong: false, so_video: 0, luc: "" }, cap_nhat_luc: t,
   };
+  const btn = $("#form-add button");
+  if (btn) { btn.disabled = true; btn.textContent = "Đang lưu…"; }
   try {
     const r = await putFile(`data/${id}/info.json`, JSON.stringify(info, null, 1) + "\n", null, `Thêm ${id} — ${auth.ten}`);
-    if (r.conflict) { toast("Sản phẩm này đã có trong kho"); await loadList(); location.hash = `#/sp/${encodeURIComponent(id)}`; route(); return; }
+    if (r.conflict) { baoAdd("Sản phẩm này đã có trong kho.", "loi"); await loadList(); renderList(); return; }
     state.list.unshift({ ...info, trang_thai: "cho" });
-    toast(uid ? "✓ Đã lưu — chờ máy nhà phân tích" : "✓ Đã lưu link rút gọn — máy nhà sẽ tìm UID");
+    state.loc = "tat_ca"; state.tim = "";
     renderList();
-  } catch (err) { toast("⚠ " + err.message); }
+    baoAdd(uid ? `✓ Đã lưu ${uid} — chờ máy nhà phân tích.` : "✓ Đã lưu link rút gọn — máy nhà sẽ tìm UID.", "ok");
+  } catch (err) {
+    renderList();
+    baoAdd("⚠ Lưu không được: " + err.message, "loi");
+  }
 }
 
 // ---------- trang chi tiết ----------
@@ -383,7 +408,8 @@ window.addEventListener("DOMContentLoaded", () => {
       if (!j.permissions || !j.permissions.push) throw new Error("Token chỉ có quyền đọc — cần quyền ghi (Contents: Read and write)");
       auth.set(token, ten);
       $("#dlg-login").close();
-      renderUser(); route.reload = true; route();
+      renderUser(); route.reload = true; await route();
+      if (linkCho) onAdd();
       toast(`Xin chào ${ten}`);
     } catch (err) { $("#login-err").textContent = err.message; }
   });
