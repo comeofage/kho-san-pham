@@ -116,3 +116,12 @@ def test_tao_index(tmp_path):
     assert idx["san_pham"][0]["so_caption"] == 2
     assert idx["san_pham"][0]["da_quay_oneshot"]["xong"] is False
     assert idx["san_pham"][0]["da_quay_review"]["xong"] is False
+
+
+def test_kiem_captions_chan_ghep_mau():
+    tag = " #a #b #c #d #e"
+    ghep = [f"Câu mở đầu số {i} khác nhau. Lắp xong là treo được ngay.{tag}" for i in range(5)]
+    loi = kho.kiem_captions(ghep)
+    assert any("lặp" in e for e in loi)
+    rieng = [f"Câu mở đầu số {i} khác nhau hẳn. Vế đuôi riêng số {i} nữa.{tag}" for i in range(5)]
+    assert kho.kiem_captions(rieng) == []

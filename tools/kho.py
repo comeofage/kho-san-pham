@@ -75,6 +75,14 @@ def kiem_captions(dong: list[str]) -> list[str]:
             loi.append(f"dòng {i}: có {so_tag} hashtag (cần đúng 5)")
         if re.match(r"^\s*\d+\s*[.)\-:]", c):
             loi.append(f"dòng {i}: có số thứ tự đầu dòng")
+    # Chặn ghép mẫu đầu×đuôi: 1 vế câu (≥4 chữ) xuất hiện ở > 4 dòng.
+    dem: dict[str, int] = {}
+    for c in dong:
+        for ve in {v.strip().lower() for v in re.split(r"[.!?,]", re.sub(r"#\w+", "", c)) if len(v.split()) >= 4}:
+            dem[ve] = dem.get(ve, 0) + 1
+    for ve, n in sorted(dem.items(), key=lambda x: -x[1]):
+        if n > 4:
+            loi.append(f"vế \"{ve}\" lặp ở {n} dòng (tối đa 4) — đang ghép mẫu, viết lại cho khác nhau")
     return loi
 
 
