@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-06T15:46:45+07:00",
+ "cap_nhat_luc": "2026-10-06T15:48:12+07:00",
  "san_pham": [
   {
    "id": "1735565013284389962",
@@ -656,10 +656,10 @@
    "uid": "1737073725391275988",
    "link": "https://shop.tiktok.com/vn/pdp/1737073725391275988",
    "ten": "balabala Áo Khoác Trẻ Em Bé Trai Bé Gái Lông Cừu 2026 Mùa Thu Cuối Tuần Phong Cách Thường Ngày Ngày Hạnh Phúc Gọn Gàng Nhìn Ngọt Ngào Màu Sắc Tươi Sáng Tâm Trạng Vui Tươi Phong Cách Đơn Giản Phong Cách Tươi Mới Dễ Dàng",
-   "gia": "545.948₫",
+   "gia": "491127",
    "shop": "balabala clothes",
    "anh_bia": "bia.jpg",
-   "trang_thai": "cho",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -672,9 +672,9 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T15:12:51+07:00",
-   "cap_nhat_luc": "2026-10-06T15:12:55+07:00",
+   "cap_nhat_luc": "2026-10-06T15:47:57+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": true
   }
  ]
 }
