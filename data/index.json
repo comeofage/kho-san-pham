@@ -1,6 +1,31 @@
 {
- "cap_nhat_luc": "2026-10-06T15:43:30+07:00",
+ "cap_nhat_luc": "2026-10-06T15:44:21+07:00",
  "san_pham": [
+  {
+   "id": "1732989957715625144",
+   "uid": "1732989957715625144",
+   "link": "https://shop.tiktok.com/vn/pdp/1732989957715625144?_t=ZS-9AKBZxweN1x",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-06T15:43:55+07:00",
+   "cap_nhat_luc": "2026-10-06T15:43:55+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
   {
    "id": "1731748783809923005",
    "uid": "1731748783809923005",
@@ -10,7 +35,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -30,7 +60,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -50,7 +85,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -70,7 +110,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -90,7 +135,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -110,7 +160,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -130,7 +185,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -150,7 +210,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -170,7 +235,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -190,7 +260,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -210,7 +285,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -230,7 +310,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -250,7 +335,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -270,7 +360,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -290,7 +385,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -310,7 +410,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -330,7 +435,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -350,7 +460,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -370,7 +485,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -390,7 +510,12 @@
    "shop": "",
    "anh_bia": "",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
@@ -410,7 +535,12 @@
    "shop": "balabala clothes",
    "anh_bia": "bia.jpg",
    "trang_thai": "cho",
-   "da_quay": {
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
     "xong": false,
     "boi": "",
     "luc": ""
