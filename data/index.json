@@ -1,6 +1,86 @@
 {
- "cap_nhat_luc": "2026-10-06T15:34:41+07:00",
+ "cap_nhat_luc": "2026-10-06T15:35:56+07:00",
  "san_pham": [
+  {
+   "id": "1735779013828118180",
+   "uid": "1735779013828118180",
+   "link": "https://shop.tiktok.com/vn/pdp/1735779013828118180?_t=ZS-9AKAwbbkI89",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-06T15:35:34+07:00",
+   "cap_nhat_luc": "2026-10-06T15:35:34+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736944494920238608",
+   "uid": "1736944494920238608",
+   "link": "https://shop.tiktok.com/vn/pdp/1736944494920238608?_t=ZS-9AKAwJLAF2z",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-06T15:35:15+07:00",
+   "cap_nhat_luc": "2026-10-06T15:35:15+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1734776808630420613",
+   "uid": "1734776808630420613",
+   "link": "https://shop.tiktok.com/vn/pdp/1734776808630420613?_t=ZS-9AKAuvdznSX",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-06T15:34:57+07:00",
+   "cap_nhat_luc": "2026-10-06T15:34:57+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732013006626719981",
+   "uid": "1732013006626719981",
+   "link": "https://shop.tiktok.com/vn/pdp/1732013006626719981?_t=ZS-9AKAtnudJ3c",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-06T15:34:37+07:00",
+   "cap_nhat_luc": "2026-10-06T15:34:37+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
   {
    "id": "1729774420086721151",
    "uid": "1729774420086721151",
