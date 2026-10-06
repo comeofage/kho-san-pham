@@ -14,9 +14,9 @@
  "them_luc": "2026-10-06T15:12:51+07:00",
  "da_phan_tich": false,
  "da_quay": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Test",
+  "luc": "2026-10-06T15:20:00+07:00"
  },
  "da_lam_video": {
   "xong": false,
