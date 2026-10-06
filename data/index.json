@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-06T15:48:12+07:00",
+ "cap_nhat_luc": "2026-10-06T15:55:36+07:00",
  "san_pham": [
   {
    "id": "1735565013284389962",
@@ -630,11 +630,11 @@
    "id": "1736363944802289590",
    "uid": "1736363944802289590",
    "link": "https://shop.tiktok.com/vn/pdp/1736363944802289590?_t=ZS-9AKAk7OXlLS",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[BẢN LỚN] Ô Dù Gấp Ngược Deli Phủ Keo Đen Cách Nhiệt Chống Tia UV UPF50+ Che Nắng Mưa Khung 8 Nan 10 Nan Cỡ Lớn Ô Che Mưa Che Nắng Có Nút Đóng/Mở Thông Min Ô Dù Gấp Gọn Chống UV",
+   "gia": "173569",
+   "shop": "Deli Lifestyle",
+   "anh_bia": "https://cdn.echotik.live/d4e5367d993f4153d65378e391bd112f/6abc6da3/tos-alisg-i-aphluv4xwc-sg/efee75d30a5644e38528d75bcd0e997c~tplv-aphluv4xwc-crop-webp:1122:1402.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=607f11de&idc=my&from=2378011839&origin_platform=p16-sg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -647,9 +647,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:32:35+07:00",
-   "cap_nhat_luc": "2026-10-06T15:32:35+07:00",
+   "cap_nhat_luc": "2026-10-06T15:48:01+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1737073725391275988",
@@ -659,20 +659,20 @@
    "gia": "491127",
    "shop": "balabala clothes",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-06T15:50:52+07:00"
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T15:12:51+07:00",
-   "cap_nhat_luc": "2026-10-06T15:47:57+07:00",
+   "cap_nhat_luc": "2026-10-06T15:50:52+07:00",
    "so_caption": 100,
    "co_file01": true
   }
