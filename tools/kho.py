@@ -15,7 +15,8 @@ Lệnh (luôn `export PYTHONIOENCODING=utf-8` trên Windows):
                                                          đẩy file 01 + dữ liệu SP + USP + caption + ảnh bìa lên kho
   python kho.py lay   <id|link> --out <thư mục dự án> [--ghi-de]
                                                          kéo captions → kich-ban/poster_captions.txt + du_lieu_tho/kho_info.json
-  python kho.py quay  <id|link> [--boi TÊN] [--bo]       đánh dấu đã quay (--bo = gỡ)
+  python kho.py quay  <id|link> --loai oneshot|review [--boi TÊN] [--bo]
+                                                         đánh dấu đã quay oneshot / review (--bo = gỡ)
   python kho.py video <id|link> --so N                   đánh dấu đã làm video
   python kho.py index                                    dựng lại data/index.json (GitHub Action dùng)
 
@@ -36,6 +37,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 DATA = REPO / "data"
 TZ = timezone(timedelta(hours=7))
+LOAI_QUAY = ("oneshot", "review")
 TRANG_THAI = ("cho", "da_phan_tich", "da_quay", "da_lam_video")
 NHAN = {"cho": "Chờ xử lý", "da_phan_tich": "Đã phân tích", "da_quay": "Đã quay", "da_lam_video": "Đã làm video"}
 
@@ -76,10 +78,22 @@ def kiem_captions(dong: list[str]) -> list[str]:
     return loi
 
 
+def da_quay(info: dict, loai: str) -> bool:
+    """Đã quay oneshot/review chưa. Dữ liệu cũ chỉ có 1 nút "da_quay" → tính là review."""
+    if (info.get(f"da_quay_{loai}") or {}).get("xong"):
+        return True
+    return loai == "review" and bool((info.get("da_quay") or {}).get("xong"))
+
+
+def danh_dau_quay(info: dict, loai: str, xong: bool, boi: str) -> None:
+    info[f"da_quay_{loai}"] = {"xong": xong, "boi": boi, "luc": bay_gio()}
+    info.pop("da_quay", None)
+
+
 def nhan_trang_thai(info: dict) -> str:
     if (info.get("da_lam_video") or {}).get("xong"):
         return "da_lam_video"
-    if (info.get("da_quay") or {}).get("xong"):
+    if any(da_quay(info, l) for l in LOAI_QUAY):
         return "da_quay"
     if info.get("da_phan_tich"):
         return "da_phan_tich"
@@ -93,7 +107,8 @@ def info_moi(id_: str, uid: str | None, link: str, boi: str = "") -> dict:
         "tom_tat": "", "usp": None, "ghi_chu": "", "thu_muc_may": "",
         "them_boi": boi, "them_luc": bay_gio(),
         "da_phan_tich": False,
-        "da_quay": {"xong": False, "boi": "", "luc": ""},
+        "da_quay_oneshot": {"xong": False, "boi": "", "luc": ""},
+        "da_quay_review": {"xong": False, "boi": "", "luc": ""},
         "da_lam_video": {"xong": False, "so_video": 0, "luc": ""},
         "cap_nhat_luc": bay_gio(),
     }
@@ -217,7 +232,8 @@ def tao_index(data: Path) -> dict:
         ds.append({
             "id": i["id"], "uid": i.get("uid"), "link": i.get("link"), "ten": i.get("ten", ""),
             "gia": i.get("gia", ""), "shop": i.get("shop", ""), "anh_bia": i.get("anh_bia", ""),
-            "trang_thai": nhan_trang_thai(i), "da_quay": i.get("da_quay"),
+            "trang_thai": nhan_trang_thai(i),
+            **{f"da_quay_{l}": i.get(f"da_quay_{l}") or {"xong": da_quay(i, l), "boi": "", "luc": ""} for l in LOAI_QUAY},
             "them_boi": i.get("them_boi", ""), "them_luc": i.get("them_luc", ""),
             "cap_nhat_luc": i.get("cap_nhat_luc", ""), "so_caption": so_cap,
             "co_file01": (data / i["id"] / "bo-canh-quay.md").exists(),
@@ -336,7 +352,8 @@ def lenh_ds(a):
         t = nhan_trang_thai(i)
         if a.trang_thai and t != a.trang_thai:
             continue
-        print(f"{i['id']}\t{NHAN[t]}\t{i.get('ten') or i['link']}")
+        tick = " ".join(f"{l}:{'✓' if da_quay(i, l) else '-'}" for l in LOAI_QUAY)
+        print(f"{i['id']}\t{NHAN[t]}\t{tick}\t{i.get('ten') or i['link']}")
 
 
 def lenh_xem(a):
@@ -406,9 +423,9 @@ def lenh_lay(a):
 def lenh_quay(a):
     keo()
     i = _can(a.khoa)
-    i["da_quay"] = {"xong": not a.bo, "boi": a.boi, "luc": bay_gio()}
+    danh_dau_quay(i, a.loai, not a.bo, a.boi)
     luu(DATA, i)
-    day(f"quay {i['id']} {'bo' if a.bo else 'xong'}")
+    day(f"quay {a.loai} {i['id']} {'bo' if a.bo else 'xong'}")
 
 
 def lenh_video(a):
@@ -435,7 +452,8 @@ def main(argv=None):
     p.add_argument("--bo-kiem-caption", action="store_true"); p.set_defaults(f=lenh_ghi)
     p = sp.add_parser("lay"); p.add_argument("khoa"); p.add_argument("--out", required=True)
     p.add_argument("--ghi-de", action="store_true"); p.set_defaults(f=lenh_lay)
-    p = sp.add_parser("quay"); p.add_argument("khoa"); p.add_argument("--boi", default="máy nhà")
+    p = sp.add_parser("quay"); p.add_argument("khoa"); p.add_argument("--loai", choices=LOAI_QUAY, required=True)
+    p.add_argument("--boi", default="máy nhà")
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_quay)
     p = sp.add_parser("video"); p.add_argument("khoa"); p.add_argument("--so", type=int, required=True); p.set_defaults(f=lenh_video)
     p = sp.add_parser("index"); p.set_defaults(f=lenh_index)

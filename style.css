@@ -75,3 +75,5 @@ dialog h2 { margin: 0 0 6px; }
 #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; opacity: 0; transition: .25s; pointer-events: none; max-width: 90vw; z-index: 20; }
 #toast.on { opacity: .95; }
 @media (max-width: 520px) { .detail .head img { width: 84px; height: 84px; } }
+.card .switches { display: flex; flex-direction: column; gap: 6px; flex: none; }
+.quaybox + .quaybox { margin-top: -4px; }

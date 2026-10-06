@@ -35,8 +35,21 @@ def test_kiem_captions():
 def test_nhan_trang_thai():
     assert kho.nhan_trang_thai({}) == "cho"
     assert kho.nhan_trang_thai({"da_phan_tich": True}) == "da_phan_tich"
-    assert kho.nhan_trang_thai({"da_phan_tich": True, "da_quay": {"xong": True}}) == "da_quay"
-    assert kho.nhan_trang_thai({"da_quay": {"xong": True}, "da_lam_video": {"xong": True}}) == "da_lam_video"
+    assert kho.nhan_trang_thai({"da_phan_tich": True, "da_quay_oneshot": {"xong": True}}) == "da_quay"
+    assert kho.nhan_trang_thai({"da_phan_tich": True, "da_quay_review": {"xong": True}}) == "da_quay"
+    assert kho.nhan_trang_thai({"da_quay_review": {"xong": True}, "da_lam_video": {"xong": True}}) == "da_lam_video"
+    # dữ liệu cũ (1 nút "da_quay") vẫn tính là đã quay review
+    assert kho.nhan_trang_thai({"da_quay": {"xong": True}}) == "da_quay"
+
+
+def test_quay_hai_loai():
+    i = kho.info_moi("1", "1", "x")
+    assert i["da_quay_oneshot"]["xong"] is False and i["da_quay_review"]["xong"] is False
+    kho.danh_dau_quay(i, "oneshot", True, "Lan")
+    assert i["da_quay_oneshot"]["xong"] and i["da_quay_oneshot"]["boi"] == "Lan"
+    assert not i["da_quay_review"]["xong"]
+    assert kho.da_quay(i, "oneshot") and not kho.da_quay(i, "review")
+    assert kho.da_quay({"da_quay": {"xong": True}}, "review")
 
 
 def test_doc_du_lieu_pdp(tmp_path):
@@ -101,3 +114,5 @@ def test_tao_index(tmp_path):
     assert idx["san_pham"][0]["id"] == UID
     assert idx["san_pham"][0]["trang_thai"] == "da_phan_tich"
     assert idx["san_pham"][0]["so_caption"] == 2
+    assert idx["san_pham"][0]["da_quay_oneshot"]["xong"] is False
+    assert idx["san_pham"][0]["da_quay_review"]["xong"] is False

@@ -9,7 +9,7 @@ Mở được từ bất kỳ đâu (điện thoại, máy khác). Ai cũng xem 
    UID đã có trong kho thì web báo trùng.
 2. Trên máy nhà, nói với Claude **"xử lý link mới trong kho"** → Claude chạy `kho.py cho`, rồi với từng link:
    `/phantichcanhquay` → file 01 + dữ liệu SP + USP + 100 caption → `kho.py ghi` → **Đã phân tích**.
-3. Nhân viên mở web, đọc **Bộ cảnh quay** để quay. Quay xong thì **gạt "Đã quay"** (web ghi tên + giờ) → **Đã quay**.
+3. Nhân viên mở web, đọc **Bộ cảnh quay** để quay. Quay xong thì gạt **"Oneshot"** hoặc **"Review"** (web ghi tên + giờ) → **Đã quay**.
 4. Làm video: tab **🎞 Làm video** → bấm **Copy cho Claude** và dán vào Claude trên máy nhà. `/tao-video-tu-canh-quay`
    tự kéo caption từ kho, xong thì chạy `kho.py video` → **Đã làm video**.
 
@@ -42,7 +42,7 @@ python $K cho                                 # link đang chờ phân tích
 python $K ds --trang-thai da_quay             # sản phẩm đã quay, chưa làm video
 python $K ghi <UID> --tu <thư mục dự án>      # đẩy file 01 / caption / USP / ảnh lên kho
 python $K lay <UID> --out <thư mục dự án>     # kéo caption về kich-ban/poster_captions.txt
-python $K quay <UID> --boi Tên                # đánh dấu đã quay
+python $K quay <UID> --loai oneshot --boi Tên  # đánh dấu đã quay oneshot (hoặc --loai review)
 python $K video <UID> --so 18                 # đánh dấu đã làm video
 ```
 

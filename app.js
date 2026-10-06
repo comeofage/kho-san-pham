@@ -105,9 +105,17 @@ function tachUid(link) {
   const m = s.match(/(?:\/pdp\/(?:[^/?#]+\/)?|\/product\/|\/products\/|product_id=)(\d{15,21})/);
   return m ? m[1] : null;
 }
+const LOAI_QUAY = { oneshot: "Oneshot", review: "Review" };
+// Thông tin quay theo loại; dữ liệu cũ chỉ có 1 nút "da_quay" → tính là review.
+function quay(i, loai) {
+  const q = i[`da_quay_${loai}`];
+  if (q) return q;
+  if (loai === "review" && i.da_quay && i.da_quay.xong) return i.da_quay;
+  return { xong: false, boi: "", luc: "" };
+}
 function trangThai(i) {
   if (i.da_lam_video && i.da_lam_video.xong) return "da_lam_video";
-  if (i.da_quay && i.da_quay.xong) return "da_quay";
+  if (Object.keys(LOAI_QUAY).some((l) => quay(i, l).xong)) return "da_quay";
   if (i.da_phan_tich) return "da_phan_tich";
   return "cho";
 }
@@ -171,17 +179,24 @@ function openLogin() {
   $("#dlg-login").showModal();
 }
 
-function switchHtml(i, label = "Đã quay") {
-  const on = i.da_quay && i.da_quay.xong;
-  return `<label class="switch" data-quay="${esc(i.id)}" title="${on ? `Đã quay — ${esc(i.da_quay.boi)} ${gio(i.da_quay.luc)}` : "Gạt khi đã quay xong"}">
-    <input type="checkbox" ${on ? "checked" : ""}><span class="tr"></span><span>${label}</span></label>`;
+function switchHtml(i, loai, label = LOAI_QUAY[loai]) {
+  const q = quay(i, loai);
+  return `<label class="switch" data-quay="${esc(i.id)}" data-loai="${loai}" title="${q.xong ? `Đã quay ${LOAI_QUAY[loai]} — ${esc(q.boi)} ${gio(q.luc)}` : `Gạt khi đã quay ${LOAI_QUAY[loai]} xong`}">
+    <input type="checkbox" ${q.xong ? "checked" : ""}><span class="tr"></span><span>${label}</span></label>`;
+}
+const LOC_THEM = { chua_oneshot: "Chưa quay oneshot", chua_review: "Chưa quay review" };
+function khopLoc(x, loc) {
+  if (loc === "tat_ca") return true;
+  if (loc === "chua_oneshot") return !quay(x, "oneshot").xong;
+  if (loc === "chua_review") return !quay(x, "review").xong;
+  return (x.trang_thai || trangThai(x)) === loc;
 }
 
 function renderList() {
-  const dem = { tat_ca: state.list.length };
-  for (const k of Object.keys(NHAN)) dem[k] = state.list.filter((x) => (x.trang_thai || trangThai(x)) === k).length;
+  const dem = {};
+  for (const k of ["tat_ca", ...Object.keys(NHAN), ...Object.keys(LOC_THEM)]) dem[k] = state.list.filter((x) => khopLoc(x, k)).length;
   const q = state.tim.toLowerCase();
-  const ds = state.list.filter((x) => (state.loc === "tat_ca" || (x.trang_thai || trangThai(x)) === state.loc)
+  const ds = state.list.filter((x) => khopLoc(x, state.loc)
     && (!q || [x.ten, x.uid, x.link, x.shop, x.them_boi].join(" ").toLowerCase().includes(q)));
 
   $("#app").innerHTML = `
@@ -191,7 +206,7 @@ function renderList() {
     </form>
     <p id="add-msg" class="add-msg ${state.msg ? esc(state.msg.loai) : ""}">${state.msg ? esc(state.msg.text) : ""}</p>
     <div class="filters">
-      ${[["tat_ca", "Tất cả"], ...Object.entries(NHAN)].map(([k, v]) => `<button class="chip ${state.loc === k ? "on" : ""}" data-loc="${k}">${v} (${dem[k]})</button>`).join("")}
+      ${[["tat_ca", "Tất cả"], ...Object.entries(LOC_THEM), ...Object.entries(NHAN)].map(([k, v]) => `<button class="chip ${state.loc === k ? "on" : ""}" data-loc="${k}">${v} (${dem[k]})</button>`).join("")}
     </div>
     <input class="search" id="in-tim" placeholder="Tìm theo tên, UID, shop…" value="${esc(state.tim)}">
     <div class="list">
@@ -213,26 +228,41 @@ function cardHtml(x) {
     <a class="body" href="#/sp/${encodeURIComponent(x.id)}">
       <div class="ten">${esc(x.ten || x.link)}</div>
       <div class="small muted"><span class="badge b-${tt}">${NHAN[tt]}</span> ${esc(x.uid || "link rút gọn")}${x.gia ? " · " + esc(x.gia) : ""}</div>
-      <div class="small muted">${x.da_quay && x.da_quay.xong ? `🎬 ${esc(x.da_quay.boi)} quay ${gio(x.da_quay.luc)}` : `Thêm bởi ${esc(x.them_boi || "?")} ${gio(x.them_luc)}`}</div>
+      <div class="small muted">${daQuayText(x) || `Thêm bởi ${esc(x.them_boi || "?")} ${gio(x.them_luc)}`}</div>
     </a>
-    ${switchHtml(x)}
+    <div class="switches">${switchHtml(x, "oneshot")}${switchHtml(x, "review")}</div>
   </div>`;
+}
+
+// "🎬 Oneshot: Lan 06/10 · Review: Minh 07/10" — rỗng nếu chưa quay gì.
+function daQuayText(x) {
+  return Object.keys(LOAI_QUAY).map((l) => { const q = quay(x, l); return q.xong ? `${LOAI_QUAY[l]}: ${esc(q.boi)} ${gio(q.luc).slice(5)}` : ""; })
+    .filter(Boolean).map((s, k) => (k ? "" : "🎬 ") + s).join(" · ");
 }
 
 function bindSwitches() {
   document.querySelectorAll("[data-quay]").forEach((sw) => {
     const cb = $("input", sw);
     cb.addEventListener("change", async (e) => {
-      const id = sw.dataset.quay, val = cb.checked;
+      const id = sw.dataset.quay, loai = sw.dataset.loai, ten = LOAI_QUAY[loai], val = cb.checked;
       if (!needLogin()) { cb.checked = !val; return; }
-      if (!val && !confirm("Gỡ đánh dấu 'đã quay' cho sản phẩm này?")) { cb.checked = true; return; }
+      if (!val && !confirm(`Gỡ đánh dấu 'đã quay ${ten}' cho sản phẩm này?`)) { cb.checked = true; return; }
       sw.classList.add("busy");
       try {
-        const info = await updateInfo(id, (i) => { i.da_quay = { xong: val, boi: auth.ten, luc: nowIso() }; },
-          `${val ? "Đã quay" : "Bỏ đã quay"} ${id} — ${auth.ten}`);
+        const info = await updateInfo(id, (i) => {
+          i[`da_quay_${loai}`] = { xong: val, boi: auth.ten, luc: nowIso() };
+          if (i.da_quay) { // chuyển dữ liệu cũ 1 nút sang review rồi bỏ
+            if (!i.da_quay_review) i.da_quay_review = i.da_quay;
+            delete i.da_quay;
+          }
+        }, `${val ? "Đã quay" : "Bỏ đã quay"} ${ten} ${id} — ${auth.ten}`);
         const k = state.list.findIndex((x) => x.id === id);
-        if (k >= 0) state.list[k] = { ...state.list[k], da_quay: info.da_quay, trang_thai: trangThai(info) };
-        toast(val ? "✓ Đã đánh dấu quay xong" : "Đã gỡ đánh dấu");
+        if (k >= 0) {
+          const x = { ...state.list[k], da_quay_oneshot: info.da_quay_oneshot, da_quay_review: info.da_quay_review };
+          delete x.da_quay;
+          state.list[k] = { ...x, trang_thai: trangThai(info) };
+        }
+        toast(val ? `✓ Đã quay ${ten}` : `Đã gỡ ${ten}`);
         route();
       } catch (err) { cb.checked = !val; toast("⚠ " + err.message); }
       finally { sw.classList.remove("busy"); }
@@ -272,7 +302,7 @@ async function onAdd(e) {
   const info = {
     id, uid, link, ten: "", gia: "", shop: "", anh_bia: "", tom_tat: "", usp: null, ghi_chu: "", thu_muc_may: "",
     them_boi: auth.ten, them_luc: t, da_phan_tich: false,
-    da_quay: { xong: false, boi: "", luc: "" }, da_lam_video: { xong: false, so_video: 0, luc: "" }, cap_nhat_luc: t,
+    da_quay_oneshot: { xong: false, boi: "", luc: "" }, da_quay_review: { xong: false, boi: "", luc: "" }, da_lam_video: { xong: false, so_video: 0, luc: "" }, cap_nhat_luc: t,
   };
   const btn = $("#form-add button");
   if (btn) { btn.disabled = true; btn.textContent = "Đang lưu…"; }
@@ -324,10 +354,10 @@ async function renderDetail(id) {
           </dl>
         </div>
       </div>
-      <div class="quaybox">
-        <div class="small">${i.da_quay && i.da_quay.xong ? `🎬 <b>${esc(i.da_quay.boi)}</b> đã quay lúc ${gio(i.da_quay.luc)}` : "Chưa quay — gạt khi quay xong để lần sau không làm trùng"}</div>
-        ${switchHtml(i, "Đã quay xong")}
-      </div>
+      ${Object.keys(LOAI_QUAY).map((l) => { const q = quay(i, l); return `<div class="quaybox">
+        <div class="small">${q.xong ? `🎬 <b>${esc(q.boi)}</b> đã quay ${LOAI_QUAY[l]} lúc ${gio(q.luc)}` : `Chưa quay ${LOAI_QUAY[l]} — gạt khi quay xong để lần sau không làm trùng`}</div>
+        ${switchHtml(i, l, `Đã quay ${LOAI_QUAY[l]}`)}
+      </div>`; }).join("")}
       <div class="tabs">
         <button class="tab" data-tab="canh">🎥 Bộ cảnh quay</button>
         <button class="tab" data-tab="cap">💬 Caption (${capList.length})</button>
