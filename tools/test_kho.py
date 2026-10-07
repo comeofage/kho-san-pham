@@ -125,3 +125,8 @@ def test_kiem_captions_chan_ghep_mau():
     assert any("lặp" in e for e in loi)
     rieng = [f"Câu mở đầu số {i} khác nhau hẳn. Vế đuôi riêng số {i} nữa.{tag}" for i in range(5)]
     assert kho.kiem_captions(rieng) == []
+
+
+def test_tai_anh_loi_mang_tra_false(tmp_path):
+    assert kho.tai_anh("http://127.0.0.1:9/khong-co.jpg", tmp_path / "bia.jpg") is False
+    assert not (tmp_path / "bia.jpg").exists()

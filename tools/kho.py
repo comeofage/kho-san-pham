@@ -317,6 +317,22 @@ def thu_nho_anh(src: Path, dst: Path, canh=480) -> None:
         shutil.copyfile(src, dst)
 
 
+def tai_anh(url: str, dst: Path, canh=480) -> bool:
+    """Tải ảnh từ URL rồi thu nhỏ về dst. Link CDN (EchoTik/TikTok) có chữ ký hết hạn → luôn lưu file, không lưu URL."""
+    tam = dst.with_suffix(".tai")
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            tam.write_bytes(r.read())
+        thu_nho_anh(tam, dst, canh)
+        return True
+    except Exception as e:
+        print(f"[!] không tải được ảnh bìa {url[:80]}: {e}", file=sys.stderr)
+        return False
+    finally:
+        tam.unlink(missing_ok=True)
+
+
 # ---------- lệnh ----------
 
 def _can(khoa: str) -> dict:
@@ -401,8 +417,11 @@ def lenh_ghi(a):
     if d["bia_file"]:
         thu_nho_anh(d["bia_file"], thu / "bia.jpg")
         i["anh_bia"] = "bia.jpg"
-    elif d["anh_bia_url"] and not i.get("anh_bia"):
-        i["anh_bia"] = d["anh_bia_url"]
+    elif d["anh_bia_url"] and (not i.get("anh_bia") or i["anh_bia"].startswith("http")):
+        if tai_anh(d["anh_bia_url"], thu / "bia.jpg"):
+            i["anh_bia"] = "bia.jpg"
+        elif not i.get("anh_bia"):
+            i["anh_bia"] = d["anh_bia_url"]
     i["thu_muc_may"] = str(P.resolve()).replace("\\", "/")
     luu(DATA, i)
     day(f"ghi {i['id']}")
