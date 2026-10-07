@@ -1,5 +1,7 @@
 # Mỗi lần có thay đổi: dựng data/index.json (commit lại) rồi deploy web lên GitHub Pages.
 # Settings → Pages → Source phải chọn "GitHub Actions".
+# Tách 2 job: job index không gắn environment nên không bị kẹt khi bước deploy Pages treo
+# (06/10/2026 một lần deploy treo "waiting" chặn index gần 1 ngày).
 name: index-va-pages
 on:
   push:
@@ -9,15 +11,13 @@ permissions:
   contents: write
   pages: write
   id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
 jobs:
-  build:
+  index:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+    timeout-minutes: 5
+    concurrency:
+      group: index
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -34,6 +34,21 @@ jobs:
             git commit -m "index" -q
             for i in 1 2 3; do git pull --rebase -q && git push -q && break; sleep 3; done
           fi
+  deploy:
+    needs: index
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # Chỉ giữ 1 deploy chờ, deploy cũ hơn bị thay bằng bản mới nhất.
+    concurrency:
+      group: pages
+      cancel-in-progress: true
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
