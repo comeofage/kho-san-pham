@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-07T22:59:45+07:00",
+ "cap_nhat_luc": "2026-10-07T23:06:07+07:00",
  "san_pham": [
   {
    "id": "1730580955373472694",
@@ -9,7 +9,7 @@
    "gia": "",
    "shop": "",
    "anh_bia": "",
-   "trang_thai": "cho",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,7 +22,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T22:06:44+07:00",
-   "cap_nhat_luc": "2026-10-07T22:06:44+07:00",
+   "cap_nhat_luc": "2026-10-07T23:05:55+07:00",
    "so_caption": 0,
    "co_file01": false
   },
@@ -1056,7 +1056,7 @@
    "uid": "1736363944802289590",
    "link": "https://shop.tiktok.com/vn/pdp/1736363944802289590?_t=ZS-9AKAk7OXlLS",
    "ten": "[BẢN LỚN] Ô Dù Gấp Ngược Deli Phủ Keo Đen Cách Nhiệt Chống Tia UV UPF50+ Che Nắng Mưa Khung 8 Nan 10 Nan Cỡ Lớn Ô Che Mưa Che Nắng Có Nút Đóng/Mở Thông Min Ô Dù Gấp Gọn Chống UV",
-   "gia": "152.421₫",
+   "gia": "162.858₫",
    "shop": "Deli Lifestyle",
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
@@ -1072,8 +1072,8 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:32:35+07:00",
-   "cap_nhat_luc": "2026-10-07T22:59:28+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-07T22:59:33+07:00",
+   "so_caption": 100,
    "co_file01": true
   },
   {
