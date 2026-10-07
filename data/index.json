@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-07T10:54:55+07:00",
+ "cap_nhat_luc": "2026-10-07T10:55:24+07:00",
  "san_pham": [
   {
    "id": "1736619699461522926",
    "uid": "1736619699461522926",
    "link": "https://shop.tiktok.com/vn/pdp/1736619699461522926",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[TẶNG TÚI SILICON+ MẮT 3D] Ly giữ nhiệt Wings Thủy Tinh và Inox 304 dung tích 620ml & 900ml, Fan House ly nước giữ nhiệt",
+   "gia": "336.069₫",
+   "shop": "Fan House",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,9 +22,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:41:21+07:00",
-   "cap_nhat_luc": "2026-10-07T10:41:21+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:55:08+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1730796835380103662",
@@ -130,11 +130,11 @@
    "id": "1736221940865664164",
    "uid": "1736221940865664164",
    "link": "https://shop.tiktok.com/vn/pdp/1736221940865664164",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Gấu Teddy hottrend, quà tặng, gối ôm ngủ",
+   "gia": "68.347₫",
+   "shop": "Tiệm nhà Bi và Tin",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -147,19 +147,19 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:13+07:00",
-   "cap_nhat_luc": "2026-10-07T10:34:13+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:55:00+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736224785824908452",
    "uid": "1736224785824908452",
    "link": "https://shop.tiktok.com/vn/pdp/1736224785824908452",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Size 40cm Gấu bông thỏ Jelly tai dài dễ thương, quà tặng cho bạn gái",
+   "gia": "63.641₫",
+   "shop": "Tiệm nhà Bi và Tin",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -172,9 +172,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:01+07:00",
-   "cap_nhat_luc": "2026-10-07T10:34:01+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:54:51+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736255243766498584",
