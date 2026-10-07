@@ -1,4 +1,4 @@
-"""kho.py — cầu nối máy nhà ↔ web Kho sản phẩm (repo GitHub này).
+"""kho.py — cầu nối máy nhà ↔ web Kho sản phẩm (repo GitHub này; web chạy trên Cloudflare Workers, đọc cùng repo).
 
 Mỗi sản phẩm = 1 thư mục data/<id>/ (id = UID 19 số, hoặc "tam-..." khi link rút gọn chưa phân giải):
   info.json         link, UID, tên, giá, shop, ảnh bìa, tóm tắt, USP, ghi chú, thư mục máy, trạng thái

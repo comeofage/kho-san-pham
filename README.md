@@ -1,7 +1,9 @@
 # Kho sản phẩm
 
 Web lưu link sản phẩm TikTok Shop, dùng chung cho `/phantichcanhquay` và `/tao-video-tu-canh-quay`.
-Mở được từ bất kỳ đâu (điện thoại, máy khác). Ai cũng xem được; muốn thêm link, gạt "đã quay" hay sửa ghi chú thì phải đăng nhập bằng token.
+Chạy trên **Cloudflare Workers** (`cf/`), mở được từ bất kỳ đâu (điện thoại, máy khác).
+Phải **đăng nhập bằng tài khoản riêng** (user/pass) mới xem và sửa được. Worker giữ token GitHub, nhân viên không cầm token.
+Dữ liệu vẫn nằm trong repo này (`data/`), nên `tools/kho.py` trên máy nhà dùng như cũ.
 
 ## Luồng làm việc
 
@@ -13,24 +15,32 @@ Mở được từ bất kỳ đâu (điện thoại, máy khác). Ai cũng xem 
 4. Làm video: tab **🎞 Làm video** → bấm **Copy cho Claude** và dán vào Claude trên máy nhà. `/tao-video-tu-canh-quay`
    tự kéo caption từ kho, xong thì chạy `kho.py video` → **Đã làm video**.
 
-## Cài đặt lần đầu (làm 1 lần)
+## Cài đặt / vận hành web (thư mục `cf/`)
 
-1. **Tạo repo:** github.com → New repository → tên `kho-san-pham`, **Public**, không tick thêm README.
-2. **Đẩy code** (chạy trên máy nhà, thay `<tai-khoan>`):
-   ```bash
-   cd E:/phantichcanhquay/kho-san-pham
-   git remote add origin https://github.com/<tai-khoan>/kho-san-pham.git
-   git push -u origin main
-   ```
-3. **Bật web:** repo → Settings → Pages → Source: **GitHub Actions**.
-   Sau khoảng 1 phút web sẽ có ở `https://<tai-khoan>.github.io/kho-san-pham/`.
-4. **Tạo token dùng chung:** github.com → Settings → Developer settings → Personal access tokens → **Fine-grained tokens** → Generate:
-   - Repository access: **Only select repositories** → `kho-san-pham`
-   - Permissions → Repository → **Contents: Read and write** (không cấp gì thêm)
-   - Expiration: tuỳ ý (hết hạn thì tạo lại và gửi lại cho nhân viên)
-5. Mở web → **Đăng nhập** → dán token và gõ tên. Đưa token này cho nhân viên, mỗi người tự gõ tên mình.
+```
+web/            giao diện (index.html, app.js, style.css) — Worker phục vụ dưới dạng file tĩnh
+cf/src/worker.js  đăng nhập + API /api/* đọc/ghi repo qua GitHub API
+cf/wrangler.toml  cấu hình Worker (tên repo GH_REPO, nhánh GH_BRANCH)
+```
 
-> Token bị lộ: vào lại trang token → **Delete** → tạo cái mới. Token cũ hết tác dụng ngay.
+Secret của Worker (đặt bằng `npx wrangler secret put <TÊN>` trong `cf/`, không ghi vào file):
+
+| Secret | Là gì |
+|---|---|
+| `GITHUB_TOKEN` | Fine-grained token: chỉ repo `kho-san-pham`, **Contents: Read and write** |
+| `SESSION_SECRET` | Chuỗi ngẫu nhiên dài. Đổi giá trị → mọi người bị đăng xuất |
+| `USERS` | Danh sách tài khoản, mật khẩu đã băm (sinh bằng lệnh dưới) |
+
+```bash
+cd E:/phantichcanhquay/kho-san-pham/cf
+npx wrangler login                                   # lần đầu: tự đăng nhập Cloudflare trên trình duyệt
+npx wrangler deploy                                  # đưa web lên (sửa web/ hay cf/src/ xong thì chạy lại)
+# Thêm / đổi / xoá tài khoản: liệt kê ĐỦ mọi tài khoản mỗi lần (lệnh ghi đè cả danh sách)
+node tools/tao-users.mjs "nhan:<mật khẩu>:Nhân" "thu:<mật khẩu>:Thu" "linh:<mật khẩu>:Linh" | npx wrangler secret put USERS
+```
+Xoá một người khỏi `USERS` → phiên đăng nhập của người đó hết hiệu lực ngay.
+
+Test Worker: `node --test cf/test/worker.test.mjs` · chạy thử local: tạo `cf/.dev.vars` (USERS=…, SESSION_SECRET=…) rồi `npx wrangler dev` trong `cf/`.
 
 ## Lệnh máy nhà
 

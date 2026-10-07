@@ -1,0 +1,17 @@
+# Kho sản phẩm trên Cloudflare Workers. Chạy lệnh wrangler trong thư mục cf/.
+# Secret (đặt bằng `npx wrangler secret put <TÊN>`, không ghi vào file này):
+#   GITHUB_TOKEN    fine-grained token, chỉ repo kho-san-pham, Contents: Read and write
+#   SESSION_SECRET  chuỗi ngẫu nhiên dài; đổi giá trị = đăng xuất mọi người
+#   USERS           JSON từ `node tools/tao-users.mjs ...`
+name = "kho-san-pham"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+
+[assets]
+directory = "../web"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+
+[vars]
+GH_REPO = "comeofage/kho-san-pham"
+GH_BRANCH = "main"
