@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-07T10:54:37+07:00",
+ "cap_nhat_luc": "2026-10-07T10:54:55+07:00",
  "san_pham": [
   {
    "id": "1736619699461522926",
@@ -55,11 +55,11 @@
    "id": "1730173499687864814",
    "uid": "1730173499687864814",
    "link": "https://www.tiktok.com/view/product/1730173499687864814",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[CHỌN VÌ SỨC KHỎE] Hộp cơm giữ nhiệt 3 tầng Lunch Box 1100ml hộp đựng cơm giữ nhiệt chuẩn inox 304 Fan House",
+   "gia": "89.453₫",
+   "shop": "Fan House",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -72,9 +72,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:40:35+07:00",
-   "cap_nhat_luc": "2026-10-07T10:40:35+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:54:43+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737548032978028263",
