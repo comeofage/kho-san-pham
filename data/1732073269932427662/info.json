@@ -22,9 +22,9 @@
  "them_luc": "2026-10-07T16:31:44+07:00",
  "da_phan_tich": false,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-07T18:06:05+07:00"
  },
  "da_quay_review": {
   "xong": false,
@@ -36,5 +36,5 @@
   "so_video": 17,
   "luc": "2026-10-07T17:57:20+07:00"
  },
- "cap_nhat_luc": "2026-10-07T17:57:20+07:00"
+ "cap_nhat_luc": "2026-10-07T18:06:05+07:00"
 }
