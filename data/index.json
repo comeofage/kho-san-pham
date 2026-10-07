@@ -1,14 +1,39 @@
 {
- "cap_nhat_luc": "2026-10-07T18:10:41+07:00",
+ "cap_nhat_luc": "2026-10-07T18:22:44+07:00",
  "san_pham": [
   {
-   "id": "1737444773443241333",
-   "uid": "1737444773443241333",
-   "link": "https://shop.tiktok.com/vn/pdp/1737444773443241333",
+   "id": "1731138606159202925",
+   "uid": "1731138606159202925",
+   "link": "https://shop.tiktok.com/vn/pdp/1731138606159202925",
    "ten": "",
    "gia": "",
    "shop": "",
    "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "máy nhà",
+   "them_luc": "2026-10-07T18:22:33+07:00",
+   "cap_nhat_luc": "2026-10-07T18:22:33+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737444773443241333",
+   "uid": "1737444773443241333",
+   "link": "https://shop.tiktok.com/vn/pdp/1737444773443241333",
+   "ten": "Lịch Để Bàn Dê Con 2027 Cute Đáng Yêu | Lịch Bàn Mini Trang Trí Bàn Học, Bàn Làm Việc | In Logo Theo Yêu Cầu",
+   "gia": "52.227₫",
+   "shop": "Chuang Xin Shop",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
@@ -22,8 +47,8 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T17:48:46+07:00",
-   "cap_nhat_luc": "2026-10-07T18:10:27+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-07T18:10:31+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
