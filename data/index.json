@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-07T10:50:45+07:00",
+ "cap_nhat_luc": "2026-10-07T10:54:14+07:00",
  "san_pham": [
   {
    "id": "1736619699461522926",
@@ -30,11 +30,11 @@
    "id": "1730796835380103662",
    "uid": "1730796835380103662",
    "link": "https://www.tiktok.com/view/product/1730796835380103662",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bình giữ nhiệt BIGCUP dung tích 1500ml chất liệu inox 304 Fan House",
+   "gia": "288.311₫",
+   "shop": "Fan House",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,9 +47,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:41:00+07:00",
-   "cap_nhat_luc": "2026-10-07T10:41:00+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:54:00+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1730173499687864814",
