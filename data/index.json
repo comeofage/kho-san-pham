@@ -1,14 +1,39 @@
 {
- "cap_nhat_luc": "2026-10-07T21:54:08+07:00",
+ "cap_nhat_luc": "2026-10-07T22:59:45+07:00",
  "san_pham": [
   {
-   "id": "1735549207633823670",
-   "uid": "1735549207633823670",
-   "link": "https://shop.tiktok.com/vn/pdp/1735549207633823670",
+   "id": "1730580955373472694",
+   "uid": "1730580955373472694",
+   "link": "https://shop.tiktok.com/vn/pdp/1730580955373472694",
    "ten": "",
    "gia": "",
    "shop": "",
    "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "máy nhà",
+   "them_luc": "2026-10-07T22:06:44+07:00",
+   "cap_nhat_luc": "2026-10-07T22:06:44+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735549207633823670",
+   "uid": "1735549207633823670",
+   "link": "https://shop.tiktok.com/vn/pdp/1735549207633823670",
+   "ten": "[BẢN NÂNG CẤP] Ghế công thái học tựa Lưng VUSION Cao Cấp - Thiết Kế Công Thái Học Đệm Đôi Thông Minh, Vải Lưới 3D Thoáng Khí",
+   "gia": "379.826₫",
+   "shop": "Deli Lifestyle",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
@@ -22,8 +47,8 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T21:24:36+07:00",
-   "cap_nhat_luc": "2026-10-07T21:53:52+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-07T21:53:57+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
@@ -1034,7 +1059,7 @@
    "gia": "152.421₫",
    "shop": "Deli Lifestyle",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -1047,7 +1072,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:32:35+07:00",
-   "cap_nhat_luc": "2026-10-07T10:49:00+07:00",
+   "cap_nhat_luc": "2026-10-07T22:59:28+07:00",
    "so_caption": 0,
    "co_file01": true
   },
