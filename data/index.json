@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-07T17:58:38+07:00",
+ "cap_nhat_luc": "2026-10-07T18:06:14+07:00",
  "san_pham": [
   {
    "id": "1737444773443241333",
@@ -36,9 +36,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-07T18:06:05+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -47,7 +47,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T16:31:44+07:00",
-   "cap_nhat_luc": "2026-10-07T17:57:20+07:00",
+   "cap_nhat_luc": "2026-10-07T18:06:05+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -262,8 +262,8 @@
    "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
-    "boi": "",
-    "luc": ""
+    "boi": "Thu",
+    "luc": "2026-10-07T17:58:36+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -272,7 +272,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:32:55+07:00",
-   "cap_nhat_luc": "2026-10-07T17:58:29+07:00",
+   "cap_nhat_luc": "2026-10-07T17:58:36+07:00",
    "so_caption": 100,
    "co_file01": true
   },
