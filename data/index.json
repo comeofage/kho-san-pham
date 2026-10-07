@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-07T10:55:24+07:00",
+ "cap_nhat_luc": "2026-10-07T10:55:50+07:00",
  "san_pham": [
   {
    "id": "1736619699461522926",
@@ -180,11 +180,11 @@
    "id": "1736255243766498584",
    "uid": "1736255243766498584",
    "link": "https://shop.tiktok.com/vn/pdp/1736255243766498584",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Dung Dịch Vệ Sinh Và Khử Mùi Lồng Máy Giặt CleanZ Cho Cửa Ngang & Cửa Đứng Toàn Diện 250ml/Chai",
+   "gia": "63.234₫",
+   "shop": "Aikomi Việt Nam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -197,19 +197,19 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:33:28+07:00",
-   "cap_nhat_luc": "2026-10-07T10:33:28+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:55:38+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1729706628656957720",
    "uid": "1729706628656957720",
    "link": "https://shop.tiktok.com/vn/pdp/1729706628656957720",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Gel Thông Tắc Sinh Học CLEANZ, Thông Tắc Hòa Tan Dầu Mỡ, Làm Sạch Đường Ống, Bồn Rửa Mặt, Chậu Rửa Bát, Khử Mùi Tanh Hôi",
+   "gia": "173.359₫",
+   "shop": "Aikomi Việt Nam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -222,9 +222,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:32:55+07:00",
-   "cap_nhat_luc": "2026-10-07T10:32:55+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-07T10:55:19+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737667760427796253",
