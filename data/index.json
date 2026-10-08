@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-08T11:20:30+07:00",
+ "cap_nhat_luc": "2026-10-08T11:33:45+07:00",
  "san_pham": [
   {
    "id": "1730580955373472694",
@@ -984,20 +984,20 @@
    "gia": "56.437₫",
    "shop": "Deli Vietnam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-08T11:20:24+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:17+07:00",
-   "cap_nhat_luc": "2026-10-06T15:58:47+07:00",
+   "cap_nhat_luc": "2026-10-08T11:20:24+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1009,20 +1009,20 @@
    "gia": "46.227₫",
    "shop": "Nước Mắm Tĩn Chính Hãng",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-08T11:20:25+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:33:59+07:00",
-   "cap_nhat_luc": "2026-10-06T16:08:23+07:00",
+   "cap_nhat_luc": "2026-10-08T11:20:25+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1034,20 +1034,20 @@
    "gia": "66.303₫",
    "shop": "Heart Moon",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-08T11:33:37+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:33:39+07:00",
-   "cap_nhat_luc": "2026-10-06T16:18:46+07:00",
+   "cap_nhat_luc": "2026-10-08T11:33:37+07:00",
    "so_caption": 100,
    "co_file01": true
   },
