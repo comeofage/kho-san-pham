@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-08T12:08:54+07:00",
+ "cap_nhat_luc": "2026-10-08T12:32:41+07:00",
  "san_pham": [
   {
    "id": "1736771458735048243",
@@ -34,7 +34,7 @@
    "gia": "",
    "shop": "",
    "anh_bia": "",
-   "trang_thai": "cho",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,7 +47,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T12:04:08+07:00",
-   "cap_nhat_luc": "2026-10-08T12:04:08+07:00",
+   "cap_nhat_luc": "2026-10-08T12:32:22+07:00",
    "so_caption": 0,
    "co_file01": false
   },
