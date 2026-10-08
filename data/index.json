@@ -1,14 +1,14 @@
 {
- "cap_nhat_luc": "2026-10-08T17:20:45+07:00",
+ "cap_nhat_luc": "2026-10-08T17:21:51+07:00",
  "san_pham": [
   {
    "id": "1736123711208457922",
    "uid": "1736123711208457922",
    "link": "https://shop.tiktok.com/vn/pdp/1736123711208457922?_t=ZS-9ANemO17mQn",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Đồ chơi bóp mềm dạng dưa hấu mùa hè, đàn hồi chậm, giảm căng thẳng hiệu quả",
+   "gia": "24.790₫",
+   "shop": "pp2du3",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
@@ -22,8 +22,8 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T16:46:24+07:00",
-   "cap_nhat_luc": "2026-10-08T17:20:30+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-08T17:21:40+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
