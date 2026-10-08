@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-08T09:17:37+07:00",
+ "cap_nhat_luc": "2026-10-08T09:34:26+07:00",
  "san_pham": [
   {
    "id": "1730580955373472694",
@@ -884,11 +884,11 @@
    "gia": "79.221₫",
    "shop": "Ăn cùng bà Thúy 66",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-08T09:33:41+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -897,7 +897,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:34+07:00",
-   "cap_nhat_luc": "2026-10-06T16:06:57+07:00",
+   "cap_nhat_luc": "2026-10-08T09:33:41+07:00",
    "so_caption": 100,
    "co_file01": true
   },
