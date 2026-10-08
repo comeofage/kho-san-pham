@@ -1,14 +1,39 @@
 {
- "cap_nhat_luc": "2026-10-08T15:17:22+07:00",
+ "cap_nhat_luc": "2026-10-08T16:46:37+07:00",
  "san_pham": [
   {
-   "id": "1732253102624376883",
-   "uid": "1732253102624376883",
-   "link": "https://shop.tiktok.com/vn/pdp/1732253102624376883",
+   "id": "1736123711208457922",
+   "uid": "1736123711208457922",
+   "link": "https://shop.tiktok.com/vn/pdp/1736123711208457922?_t=ZS-9ANemO17mQn",
    "ten": "",
    "gia": "",
    "shop": "",
    "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "máy nhà",
+   "them_luc": "2026-10-08T16:46:24+07:00",
+   "cap_nhat_luc": "2026-10-08T16:46:24+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732253102624376883",
+   "uid": "1732253102624376883",
+   "link": "https://shop.tiktok.com/vn/pdp/1732253102624376883",
+   "ten": "[DIỆN MẠO MỚI 20 THANH] Hũ kẹo sô cô la nhân đậu phộng Snickers jar 240g (20 thanh x 12g)",
+   "gia": "101.688₫",
+   "shop": "MarsSnacking.VN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
@@ -22,8 +47,8 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T14:48:18+07:00",
-   "cap_nhat_luc": "2026-10-08T15:17:10+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-08T15:17:14+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
