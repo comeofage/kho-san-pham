@@ -1,14 +1,14 @@
 {
- "cap_nhat_luc": "2026-10-07T23:06:07+07:00",
+ "cap_nhat_luc": "2026-10-08T07:08:56+07:00",
  "san_pham": [
   {
    "id": "1730580955373472694",
    "uid": "1730580955373472694",
    "link": "https://shop.tiktok.com/vn/pdp/1730580955373472694",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Ô DÙ TỰ ĐỘNG Đóng Mở Spansace by Deli 12 nan che nắng che mưa chắc chắn, ô dù đóng mở tự động dễ dàng gấp gọn cầm tay tiện lợi, chống thấm, chống nước, chống tia UV",
+   "gia": "154.626₫",
+   "shop": "Deli Lifestyle",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
@@ -22,8 +22,8 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T22:06:44+07:00",
-   "cap_nhat_luc": "2026-10-07T23:05:55+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-07T23:05:59+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
@@ -141,13 +141,13 @@
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-08T07:08:46+07:00"
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T17:48:46+07:00",
-   "cap_nhat_luc": "2026-10-07T18:10:31+07:00",
+   "cap_nhat_luc": "2026-10-08T07:08:46+07:00",
    "so_caption": 100,
    "co_file01": false
   },
