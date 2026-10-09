@@ -23,11 +23,11 @@
  "them_luc": "2026-10-06T15:34:37+07:00",
  "da_phan_tich": true,
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 19,
+  "luc": "2026-10-09T11:16:13+07:00"
  },
- "cap_nhat_luc": "2026-10-08T11:20:21+07:00",
+ "cap_nhat_luc": "2026-10-09T11:16:13+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
