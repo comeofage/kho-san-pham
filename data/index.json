@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-09T10:44:22+07:00",
+ "cap_nhat_luc": "2026-10-09T11:16:24+07:00",
  "san_pham": [
   {
    "id": "1736123711208457922",
@@ -766,13 +766,13 @@
     "luc": "2026-10-08T20:17:45+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-09T10:44:19+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:42:57+07:00",
-   "cap_nhat_luc": "2026-10-08T20:17:45+07:00",
+   "cap_nhat_luc": "2026-10-09T10:44:19+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1109,7 +1109,7 @@
    "gia": "222.198₫",
    "shop": "Perfect search Shop",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -1122,7 +1122,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:37+07:00",
-   "cap_nhat_luc": "2026-10-08T11:20:21+07:00",
+   "cap_nhat_luc": "2026-10-09T11:16:13+07:00",
    "so_caption": 100,
    "co_file01": true
   },
