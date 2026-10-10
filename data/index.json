@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-10T14:07:22+07:00",
+ "cap_nhat_luc": "2026-10-10T16:11:20+07:00",
  "san_pham": [
   {
    "id": "1729740251036616992",
@@ -1109,7 +1109,7 @@
    "gia": "71.239₫",
    "shop": "Mắm Huế Thu Đông",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -1122,7 +1122,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:55+07:00",
-   "cap_nhat_luc": "2026-10-06T15:59:36+07:00",
+   "cap_nhat_luc": "2026-10-10T16:11:11+07:00",
    "so_caption": 100,
    "co_file01": true
   },
