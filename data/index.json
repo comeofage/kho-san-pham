@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-10T11:07:12+07:00",
+ "cap_nhat_luc": "2026-10-10T11:07:41+07:00",
  "san_pham": [
   {
    "id": "1729740251036616992",
@@ -59,7 +59,7 @@
    "gia": "84.090₫",
    "shop": "SPRAYKING VIỆT NAM",
    "anh_bia": "bia.jpg",
-   "trang_thai": "cho",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -72,7 +72,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T10:56:21+07:00",
-   "cap_nhat_luc": "2026-10-10T11:07:03+07:00",
+   "cap_nhat_luc": "2026-10-10T11:07:21+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1084,7 +1084,7 @@
    "gia": "34.858₫",
    "shop": "Y.Z SHOP",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -1097,7 +1097,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:36:16+07:00",
-   "cap_nhat_luc": "2026-10-06T16:13:49+07:00",
+   "cap_nhat_luc": "2026-10-10T11:07:11+07:00",
    "so_caption": 100,
    "co_file01": true
   },
