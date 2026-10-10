@@ -33,9 +33,9 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 11,
+  "luc": "2026-10-10T11:07:15+07:00"
  },
- "cap_nhat_luc": "2026-10-10T11:07:03+07:00"
+ "cap_nhat_luc": "2026-10-10T11:07:15+07:00"
 }
