@@ -23,11 +23,11 @@
  "them_luc": "2026-10-06T15:35:34+07:00",
  "da_phan_tich": true,
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 17,
+  "luc": "2026-10-12T19:47:35+07:00"
  },
- "cap_nhat_luc": "2026-10-12T08:41:27+07:00",
+ "cap_nhat_luc": "2026-10-12T19:47:35+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
