@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-12T20:40:35+07:00",
+ "cap_nhat_luc": "2026-10-12T20:43:40+07:00",
  "san_pham": [
   {
    "id": "1733560086332933219",
@@ -30,11 +30,11 @@
    "id": "1737766480344745911",
    "uid": "1737766480344745911",
    "link": "https://shop.tiktok.com/vn/pdp/1737766480344745911?_t=ZS-9AUjKGCC3HA",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Túi Mù Móc Khoá Ly Nước Mini Cao Cấp Trend Mới - Phụ Kiện Treo Túi, Balo, Quà Tặng Bạn Bè & Người Thân",
+   "gia": "34.131₫",
+   "shop": "Kaya House",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,9 +47,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:46+07:00",
-   "cap_nhat_luc": "2026-10-12T20:37:46+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-12T20:43:29+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1732325861462542279",
