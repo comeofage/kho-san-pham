@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-12T09:16:29+07:00",
+ "cap_nhat_luc": "2026-10-12T09:21:02+07:00",
  "san_pham": [
   {
    "id": "1735534292029310161",
@@ -56,10 +56,10 @@
    "uid": "1736503520640665350",
    "link": "https://shop.tiktok.com/vn/pdp/1736503520640665350",
    "ten": "Đồ chơi bouncy phô mai khổng lồ giảm căng thẳng, vui nhộn cho trẻ em và người lớn",
-   "gia": "33.198₫",
+   "gia": "35.242₫",
    "shop": "SEA CHENIC 220",
    "anh_bia": "bia.jpg",
-   "trang_thai": "cho",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -72,9 +72,9 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-11T18:02:02+07:00",
-   "cap_nhat_luc": "2026-10-11T18:27:32+07:00",
+   "cap_nhat_luc": "2026-10-12T09:20:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1729740251036616992",
