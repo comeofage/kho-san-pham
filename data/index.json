@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-12T09:22:23+07:00",
+ "cap_nhat_luc": "2026-10-12T09:22:55+07:00",
  "san_pham": [
   {
    "id": "1735534292029310161",
@@ -80,11 +80,11 @@
    "id": "1729740251036616992",
    "uid": "1729740251036616992",
    "link": "https://shop.tiktok.com/vn/pdp/1729740251036616992?_t=ZS-9AQeRW8rxEj",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Kẹo Jelly beans trái cây, Kẹo Bi hạt Đậu ngũ vị, ăn Vặt Panda Pẻn, Candy thương hiệu Đức kẹo sáp dẻo  Snack",
+   "gia": "115.609₫",
+   "shop": "Ăn Vặt Panda Pẻn",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -97,9 +97,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:02:11+07:00",
-   "cap_nhat_luc": "2026-10-10T11:02:11+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-12T09:22:44+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1735611118574863648",
