@@ -26,14 +26,14 @@
   "luc": ""
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-12T20:39:59+07:00"
  },
  "da_lam_video": {
   "xong": false,
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-12T09:20:52+07:00"
+ "cap_nhat_luc": "2026-10-12T20:39:59+07:00"
 }
