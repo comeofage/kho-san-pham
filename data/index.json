@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-12T20:43:40+07:00",
+ "cap_nhat_luc": "2026-10-12T20:45:00+07:00",
  "san_pham": [
   {
    "id": "1733560086332933219",
@@ -55,11 +55,11 @@
    "id": "1732325861462542279",
    "uid": "1732325861462542279",
    "link": "https://shop.tiktok.com/vn/pdp/1732325861462542279?_t=ZS-9AUjISyr0Qm",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Trang Điểm Halloween Hình Dán Hóa Trang Cho Bé Và Người Lớn, Chống Nước, Dễ Tẩy, Hình Xăm Dán Tạm Thời Dùng Cho Mặt Và Cơ Thể",
+   "gia": "19.185₫",
+   "shop": "HH.Beauty",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -72,9 +72,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:28+07:00",
-   "cap_nhat_luc": "2026-10-12T20:37:28+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-12T20:44:47+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1735534292029310161",
