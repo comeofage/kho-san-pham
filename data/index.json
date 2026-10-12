@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-12T09:21:02+07:00",
+ "cap_nhat_luc": "2026-10-12T09:21:16+07:00",
  "san_pham": [
   {
    "id": "1735534292029310161",
@@ -105,11 +105,11 @@
    "id": "1735611118574863648",
    "uid": "1735611118574863648",
    "link": "https://www.tiktok.com/view/product/1735611118574863648",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Đậu phộng giòn rụm 4 vị Ăn Vặt Panda Pẻn",
+   "gia": "82.718₫",
+   "shop": "Ăn Vặt Panda Pẻn",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -122,9 +122,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:01:00+07:00",
-   "cap_nhat_luc": "2026-10-10T11:01:00+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-12T09:21:06+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731065831523911793",
