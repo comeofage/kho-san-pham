@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-12T20:45:00+07:00",
+ "cap_nhat_luc": "2026-10-12T20:45:38+07:00",
  "san_pham": [
   {
    "id": "1733560086332933219",
    "uid": "1733560086332933219",
    "link": "https://shop.tiktok.com/vn/pdp/1733560086332933219?_t=ZS-9AUjNqiJcFI",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "XẢ KHO GIÁ RẺ – Kèn Melodica 32 Phím Cho Bé Âm Chuẩn Dễ Thổi Tặng Túi + 2 Ống Thổi",
+   "gia": "198.066₫",
+   "shop": "Bảng Vẽ LCD Cho Bé",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,9 +22,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:38:34+07:00",
-   "cap_nhat_luc": "2026-10-12T20:38:34+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-12T20:45:28+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737766480344745911",
