@@ -1,6 +1,31 @@
 {
- "cap_nhat_luc": "2026-10-12T20:37:40+07:00",
+ "cap_nhat_luc": "2026-10-12T20:37:55+07:00",
  "san_pham": [
+  {
+   "id": "1737766480344745911",
+   "uid": "1737766480344745911",
+   "link": "https://shop.tiktok.com/vn/pdp/1737766480344745911?_t=ZS-9AUjKGCC3HA",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "them_boi": "Nhân",
+   "them_luc": "2026-10-12T20:37:46+07:00",
+   "cap_nhat_luc": "2026-10-12T20:37:46+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
   {
    "id": "1732325861462542279",
    "uid": "1732325861462542279",
