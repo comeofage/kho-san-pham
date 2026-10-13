@@ -1,6 +1,6 @@
 # BỘ CẢNH QUAY 1 BUỔI — Ốp lưng vải từ tính MagSafe phối màu (Oke Case)
 
-*Quay 1 lần (~90 phút) → nhân bản ra 5 video 30–45 giây. Công thức: khung cụm A–F + công thức 16 kênh (`cong-thuc-ket-hop-kenh.md`).*
+*Quay 1 lần (~70 phút) → nhân bản ra 5 video 30–45 giây. Không có host trong video. Công thức: khung cụm A–F + công thức 16 kênh (`cong-thuc-ket-hop-kenh.md`).*
 
 ---
 
@@ -18,13 +18,14 @@
 ## NGUYÊN TẮC VÀNG
 
 1. **Solo Indoor:** 1 người tự quay trong phòng. Tripod cố định, POV tự cầm, remote hoặc hẹn giờ. Không cảnh ngoài trời.
-2. **Quay câm**, voice ráp sau.
-3. **Mỗi shot 3 bản:** tay trái / tay phải / không tay.
-4. **Quay dư 4–5 giây** đầu và cuối mỗi shot.
-5. **Dọc 9:16, 1080×1920, 30fps.** Khóa nét, khóa sáng.
-6. **60fps** cho C3 (lắc máy) và C6 (lật ốp chạm bàn).
-7. **Quay cảnh trước trước:** cụm A trước khi bóc hộp.
-8. **Đạo cụ:** 1 iPhone đời mới, 1 iPhone đời cũ hơn (để so sánh vòng từ tính), 5 ốp màu (Đỏ anh đào, Xanh/vàng, Nâu/be, Đen/xám, Hồng), 1 sạc MagSafe (mua nếu chưa có), 1 dây đeo, 1 hộp ốp chưa mở.
+2. **Không có host:** không quay mặt, người, thân người nói. Lời gọi khán giả và CTA làm bằng chữ dựng, voice-over ráp sau.
+3. **Quay câm**, voice ráp sau.
+4. **Mỗi shot 3 bản:** tay trái / tay phải / không tay.
+5. **Quay dư 4–5 giây** đầu và cuối mỗi shot.
+6. **Dọc 9:16, 1080×1920, 30fps.** Khóa nét, khóa sáng.
+7. **60fps** cho C3 (lắc máy) và C6 (lật ốp chạm bàn).
+8. **Quay cảnh trước trước:** cụm A trước khi bóc hộp.
+9. **Đạo cụ:** 1 iPhone đời mới, 1 iPhone đời cũ hơn (để so sánh vòng từ tính), 5 ốp màu (Đỏ anh đào, Xanh/vàng, Nâu/be, Đen/xám, Hồng), 1 sạc MagSafe (mua nếu chưa có), 1 dây đeo, 1 hộp ốp chưa mở, 1 bàn làm việc, 1 bàn trang điểm, 1 giường (không quay người).
 
 ---
 
@@ -51,15 +52,15 @@
 ### Lỗ hổng trong bộ ảnh của shop — FOOTAGE ĐỘC QUYỀN
 
 1. **Ốp gắn thật lên máy thật, không phải ảnh dựng.** Shop chỉ có ảnh ốp đứng riêng. Khách sợ vừa khít không. Lấp bằng C1, C2.
-2. **Cảnh đặt ốp lên bàn, chạm mặt bàn, không trầy.** Shop chỉ nói "chống trầy". Lấp bằng C6 (60fps).
+2. **Cảnh đặt ốp lên bàn, lật ngửa, mặt lưng không trầy.** Shop chỉ nói "chống trầy". Lấp bằng C6 (60fps).
 3. **Sạc MagSafe thật.** Shop chưa có ảnh hút sạc. Lấp bằng C7.
 4. **Dây đeo qua lỗ xỏ.** Shop có nói trong mô tả, chưa có ảnh. Lấp bằng C8.
-5. **Đặt máy cạnh đồ thật trong phòng.** Shop không có ảnh tình huống. Lấp bằng D1–D3.
+5. **Ốp đặt cạnh đồ thật trong phòng.** Shop không có ảnh tình huống. Lấp bằng D1–D4 (không có người).
 
 ### Cảnh báo (ràng buộc quay)
 
 > ⚠️ **Chữ nước ngoài:** không có trong ảnh shop đã đọc. Kiểm tra lại nhãn trên ốp khi nhận hàng.
-> ⚠️ **Người mẫu:** ảnh shop có tay người mẫu đeo đồng hồ và áo ren. Host quay áo khác, không dùng lại tay người mẫu trong ảnh.
+> ⚠️ **Người mẫu:** ảnh shop có tay người mẫu đeo đồng hồ và áo ren. Quay tay người cầm sản phẩm, không lộ mặt, không dùng lại ảnh người mẫu của shop.
 
 ---
 
@@ -67,9 +68,9 @@
 
 | # | Tên shot | Hành động | Góc máy | Dùng cho |
 |---|---|---|---|---|
-| A1 | Máy trần trên bàn | Máy không ốp đặt trên mặt bàn, mặt kính sau lưng phản sáng. Tripod top-down, quay dư 4 giây | Top-down | Hook V1 (NỖI ĐAU: máy trần trơn, dễ rơi) |
-| A2 | Tay cầm máy trần | Tay thật cầm máy trần, lật ngửa, lắc nhẹ. POV | POV | V1, V4 (NỖI ĐAU) |
-| A3 | Hộp chưa mở | Tay xé bọc hộp ốp, đặt hộp lên bàn. **Shot chủ đạo** (không quay lại được) | Nửa thân, tripod | V2 (mở hàng) |
+| A1 | Máy trần trên bàn | Máy không ốp đặt trên mặt bàn, mặt kính sau lưng phản sáng. Quay dư 4 giây | Top-down | V1 (NỖI ĐAU: máy trần trơn, dễ rơi) |
+| A2 | Tay cầm máy trần | Tay thật cầm máy trần, lật ngửa, lắc nhẹ. POV, không lộ người | POV | V1, V4 (NỖI ĐAU) |
+| A3 | Hộp chưa mở | Tay xé bọc hộp ốp, đặt hộp lên bàn. **Shot chủ đạo** (không quay lại được) | Top-down | V2, V5 (mở hàng) |
 
 > ⚠️ A3 quay cuối trong cụm A vì hộp là đồ dùng 1 lần. Chuẩn bị 3 hộp dự phòng.
 
@@ -80,15 +81,15 @@
 | # | Tên shot | Hành động | Góc máy | Dùng cho |
 |---|---|---|---|---|
 | B1 | Lineup 5 màu | Xếp 5 ốp màu trên bàn, thẳng hàng, không tay. Chữ giá chồng sau | Top-down | V2, V5 (NEO GIÁ) |
-| B2 | Vải dệt macro | Ốp Đỏ anh đào úp trên bàn, lướt ngón tay trên mặt lưng vải. **Shot chủ đạo** | Macro | V1 (DEMO vải) |
+| B2 | Vải dệt macro | Ốp Đỏ anh đào úp trên bàn, ngón tay lướt trên mặt lưng vải. **Shot chủ đạo** | Macro | V1 (DEMO vải) |
 | B3 | Vòng từ tính | Đặt sạc MagSafe cạnh ốp. Hút vào mặt lưng, không lắc | Cận, 60fps | V3 |
-| B4 | Hai màu cạnh nhau | Ốp Đỏ anh đào và Xanh/vàng cạnh nhau, tay đặt cả 2 | Nửa thân | V2 |
+| B4 | Hai màu cạnh nhau | Ốp Đỏ anh đào và Xanh/vàng cạnh nhau, tay đặt cả 2 | Nửa thân | V2, V3 |
 | B5 | Viền dẻo | Ngón tay kéo viền dẻo quanh cạnh máy, không xoắn | Cận | V3 |
-| B6 | Bảng mẫu máy | Đặt 4 ốp (17 Air, 17PM, 16PM, 16/17/18) cạnh nhau, chỉ vào vạch mẫu máy trên bảng nền | Top-down | V5 (chữ mẫu máy, nhắc chọn đúng dòng) |
+| B6 | Bảng mẫu máy | Đặt 4 ốp (17 Air, 17PM, 16PM, 16/17/18) cạnh nhau, chỉ vào vạch mẫu máy trên bảng nền | Top-down | V5 (chữ mẫu máy) |
 
 ---
 
-## CỤM C — DEMO BẰNG CHỨNG (cụm đắt nhất, 8 shot, quay dư gấp đôi)
+## CỤM C — DEMO BẰNG CHỨNG (cụm đắt nhất, 10 shot, quay dư gấp đôi)
 
 | # | Tên shot | Hành động | Góc máy | Dùng cho |
 |---|---|---|---|---|
@@ -96,40 +97,36 @@
 | C2 | Hai máy cạnh nhau | Hai iPhone có ốp, hai dòng máy khác nhau, đặt cạnh nhau | Top-down | V2, V5 (đúng mẫu máy) |
 | C3 | Lắc máy | Cầm máy có ốp, lắc nhẹ 2 lần, ốp không rơi. **60fps** | Nửa thân | V3 |
 | C4 | Kính ống kính lật | Lật kính bảo vệ ống kính qua cụm camera | Cận | V1 |
-| C5 | Xoay 360° | Xoay máy có ốp trong tay, chậm, 3 mặt | Nửa thân | V1 |
-| C6 | Lật ngửa chạm bàn | Đặt máy có ốp lên bàn, lật ngửa, mặt sau chạm bàn. **60fps** | Cận | V3 (chống trầy) |
+| C5 | Xoay 360° | Tay xoay máy có ốp, chậm, 3 mặt. Không lộ người | Cận | V1 |
+| C6 | Lật ngửa chạm bàn | Đặt máy có ốp lên bàn, lật ngửa, mặt sau chạm bàn. **60fps** | Cận | V3 |
 | C7 | Hút sạc | Sạc MagSafe chạm vào mặt lưng ốp, máy hút dính | Cận | V3 (MagSafe) |
 | C8 | Dây đeo | Dây xỏ vào lỗ xỏ dây, máy treo lủng lẳng | Nửa thân | V4 |
+| C9 | Ốp đứng trên bàn | Ốp đứng nghiêng trên bàn, chữ dựng chỉ tên màu. Không tay | Toàn cảnh, tripod | V2, V4, V5 |
+| C10 | Máy dựa hộp | Máy có ốp dựa vào hộp ốp, màn hình tắt. Không tay | Nửa thân, tripod | V3 |
 
 > 💡 C1, C2, C6 quay mỗi shot 6 bản (quay dư gấp đôi). Mỗi bản đổi máy khác nhau, vì các dòng máy khác nhau dùng chung 1 ốp.
 
 ---
 
-## CỤM D — TÌNH HUỐNG TRONG PHÒNG (4 shot)
+## CỤM D — TÌNH HUỐNG TRONG PHÒNG (4 shot, không có người trong khung)
 
 | # | Tên shot | Hành động | Góc máy | Dùng cho |
 |---|---|---|---|---|
-| D1 | Bàn làm việc | Máy có ốp đặt cạnh laptop, tay lướt màn hình | Nửa thân | V4 |
-| D2 | Bàn trang điểm | Máy có ốp đặt cạnh gương và son. POV | Toàn cảnh | V4 |
-| D3 | Giường | Nằm nghiêng, máy có ốp đặt cạnh gối. Tripod ngang | Toàn cảnh | V4 |
-| D4 | Bỏ túi | Bỏ máy có ốp vào túi xách, dây treo ló ra. Chỉ trong phòng | Nửa thân | V4 |
+| D1 | Bàn làm việc | Máy có ốp đặt cạnh laptop trên bàn, không có người | Toàn cảnh, tripod | V4 |
+| D2 | Bàn trang điểm | Máy có ốp đặt cạnh gương và son | Toàn cảnh, tripod | V4 |
+| D3 | Giường | Máy có ốp đặt trên giường cạnh gối, không có người | Toàn cảnh, tripod | V4 |
+| D4 | Bỏ túi | Tay (không lộ mặt) bỏ máy có ốp vào túi xách, dây treo ló ra | Cận, tay | V4 |
 
 ---
 
-## CỤM E — HOST QUAY CÂM (8 shot, 2 bộ đồ)
+## CỤM E — CTA VÀ CHỮ DỰNG (2 shot, không có người trong khung)
 
 | # | Tên shot | Hành động | Góc máy | Dùng cho |
 |---|---|---|---|---|
-| E1 | Host gọi khán giả (áo 1) | Host nhìn ống kính, nói câu mở đầu, chưa cầm sản phẩm | Nửa thân, tripod ngang ngực | V1, V2 (GỌI KHÁN GIẢ) |
-| E2 | Host cầm 1 ốp (áo 1) | Host cầm ốp Đỏ anh đào, giơ lên | Nửa thân | V2, V3 |
-| E3 | Host đối màu (áo 1) | Host cầm 2 ốp, giơ đối chiếu | Nửa thân | V3 |
-| E4 | Host đặt ốp lên bàn (áo 1) | Host đặt ốp lên bàn, rời tay | Nửa thân | V4 |
-| E5 | **CTA chỉ góc trái** (áo 1 và áo 2) | Host chỉ tay sang góc trái, giữ 2 giây | Nửa thân | **Cả 5 video** |
-| E6 | Host hỏi dòng máy (áo 2) | Host nhìn ống kính, hỏi "máy mình là dòng nào" | Nửa thân | V5 |
-| E7 | Host cầm máy nhỏ (áo 2) | Host cầm máy có ốp, đưa lên gần ống kính | Nửa thân | V5 |
-| E8 | Host chỉ chữ mẫu máy (áo 2) | Host chỉ vào bảng mẫu máy B6 | Nửa thân | V5 |
+| E1 | **CTA góc trái** | Trên shot B1 (lineup), mũi tên dựng chỉ góc trái, chữ "Bấm góc trái nha", giữ 2 giây | Top-down | **Cả 5 video** |
+| E2 | Chữ gọi khán giả | Trên shot sản phẩm, chữ dựng "Mấy bạn ơi, ốp này...", voice-over ráp sau | Tùy shot | V1, V2, V5 |
 
-> ⚠️ E1–E4 quay cùng 1 lần đứng với tripod ngang ngực. E5 quay ở cả 2 áo để video nào cũng có CTA.
+> ⚠️ Không có host. Lời gọi khán giả là voice-over ráp sau, chữ dựng trên shot sản phẩm.
 
 ---
 
@@ -143,46 +140,42 @@
 
 ## MA TRẬN TÁI DÙNG (shot × video)
 
-| Shot | V1 DEMO (mở) | V2 HÔ GIÁ | V3 DEMO MagSafe | V4 TRẢI NGHIỆM | V5 DEMO mẫu máy |
-|---|---|---|---|---|---|
-| A1 máy trần | ✅ **mở** | — | — | — | — |
-| A2 tay cầm trần | ✅ | — | — | ✅ | — |
-| A3 hộp chưa mở | — | ✅ **mở** | — | — | — |
-| B1 lineup 5 màu | — | ✅ | — | — | ✅ |
-| B2 vải dệt macro | ✅ | — | — | — | — |
-| B3 vòng từ tính | — | — | ✅ | — | — |
-| B4 hai màu | — | ✅ | — | — | — |
-| B5 viền dẻo | — | — | ✅ | — | — |
-| B6 bảng mẫu máy | — | — | — | — | ✅ |
-| C1 gắn ốp | ✅ | — | — | — | — |
-| C2 hai máy cạnh | — | ✅ | — | — | ✅ |
-| C3 lắc máy | — | — | ✅ | — | — |
-| C4 kính ống kính | ✅ | — | — | — | — |
-| C5 xoay 360° | ✅ | — | — | — | — |
-| C6 lật ngửa chạm bàn | — | — | ✅ | — | — |
-| C7 hút sạc | — | — | ✅ | — | — |
-| C8 dây đeo | — | — | — | ✅ | — |
-| D1 bàn làm việc | — | — | — | ✅ | — |
-| D2 bàn trang điểm | — | — | — | ✅ | — |
-| D3 giường | — | — | — | ✅ | — |
-| D4 bỏ túi | — | — | — | ✅ | — |
-| E1 host gọi (áo 1) | ✅ | ✅ | — | — | — |
-| E2 host cầm 1 ốp | — | ✅ | ✅ | — | — |
-| E3 host đối màu | — | — | ✅ | — | — |
-| E4 host đặt ốp | — | — | — | ✅ | — |
-| E5 CTA góc trái | ✅ | ✅ | ✅ | ✅ | ✅ |
-| E6 host hỏi dòng máy | — | — | — | — | ✅ |
-| E7 host cầm máy nhỏ | — | — | — | — | ✅ |
-| E8 host chỉ chữ mẫu máy | — | — | — | — | ✅ |
-| F1 chữ lưu ý mẫu máy | — | ✅ | — | — | ✅ |
+| Shot | Tên | V1 DEMO (mở) | V2 HÔ GIÁ | V3 DEMO MagSafe | V4 TRẢI NGHIỆM | V5 DEMO mẫu máy |
+|---|---|---|---|---|---|---|
+| A1 | máy trần | ✅ **mở** | — | — | — | — |
+| A2 | tay cầm máy trần | ✅ | — | — | ✅ | — |
+| A3 | hộp chưa mở | — | ✅ **mở** | — | — | ✅ |
+| B1 | lineup 5 màu | — | ✅ | — | — | ✅ |
+| B2 | vải dệt macro | ✅ | — | — | — | — |
+| B3 | vòng từ tính | — | — | ✅ | — | — |
+| B4 | hai màu cạnh nhau | — | ✅ | ✅ | — | — |
+| B5 | viền dẻo | — | — | ✅ | — | — |
+| B6 | bảng mẫu máy | — | — | — | — | ✅ |
+| C1 | gắn ốp lên máy | ✅ | — | — | — | — |
+| C2 | hai máy cạnh nhau | — | ✅ | — | — | ✅ |
+| C3 | lắc máy | — | — | ✅ | — | — |
+| C4 | kính ống kính | ✅ | — | — | — | — |
+| C5 | xoay 360° | ✅ | — | — | — | — |
+| C6 | lật ngửa chạm bàn | — | — | ✅ | — | — |
+| C7 | hút sạc | — | — | ✅ | — | — |
+| C8 | dây đeo | — | — | — | ✅ | — |
+| C9 | ốp đứng trên bàn | — | ✅ | — | ✅ | ✅ |
+| C10 | máy dựa hộp | — | — | ✅ | — | — |
+| D1 | bàn làm việc | — | — | — | ✅ | — |
+| D2 | bàn trang điểm | — | — | — | ✅ | — |
+| D3 | giường | — | — | — | ✅ | — |
+| D4 | bỏ túi | — | — | — | ✅ | — |
+| E1 | CTA góc trái | ✅ | ✅ | ✅ | ✅ | ✅ |
+| E2 | chữ gọi khán giả | ✅ | ✅ | — | — | ✅ |
+| F1 | chữ lưu ý mẫu máy | — | ✅ | — | — | ✅ |
 
-**Số shot mỗi video:** V1 = 8, V2 = 8, V3 = 8, V4 = 8, V5 = 8.
+**Số shot mỗi video:** V1–V5 đều 8 shot.
 
-**Tỉ lệ tái dùng:** 30 shot gốc, 40 lần xuất hiện, 10 lần là dùng lại → **25%**. Thấp hơn mục tiêu ≥70% của khung. Lý do: mỗi video tách hẳn 1 phong cách, nên ít shot chung. Muốn đạt 70%, cần quay thêm shot trung lập hoặc cho các video cùng dùng cụm C.
+**Tỉ lệ tái dùng:** 26 shot gốc, 40 lần xuất hiện, 14 lần là dùng lại → **35%**. Thấp hơn mục tiêu ≥70% của khung. Lý do: mỗi video có một phong cách khác nhau nên ít shot được dùng chung. Muốn đạt 70%, cần quay thêm cảnh trung lập hoặc cho các video cùng dùng cụm C.
 
-**Shot có mặt ≥3 video (quay dư):** C2 (V2, V5), E5 (cả 5), E1 (V1, V2 — 2 video, không đủ 3).
+**Shot có mặt ≥3 video:** E1 (cả 5), E2 (V1, V2, V5), C9 (V2, V4, V5).
 
-**Shot quay dư gấp đôi:** E5 (quay 6 bản × 2 áo), C1, C2, C6.
+**Shot quay dư gấp đôi:** E1 (quay 6 bản), C1, C2, C6.
 
 ---
 
@@ -191,15 +184,13 @@
 ```
 1. CỤM A (3 shot) — TRƯỚC khi bóc hộp, A3 xé hộp cuối cùng
 2. CỤM B (6 shot) — ánh sáng bình thường. B3, B6 cần sạc và bảng mẫu máy
-3. CỤM C (8 shot) — C3, C6 quay 60fps. C1, C2 cần máy thật đủ dòng
-4. CỤM D (4 shot) — đổi sang bàn làm việc, bàn trang điểm, giường
-5. CỤM E áo 1 (E1–E5) — tripod ngang ngực, không đổi vị trí
-6. ⏸️ NGHỈ — đổi áo
-7. CỤM E áo 2 (E5, E6, E7, E8) — E5 quay lại để có CTA áo 2
-8. CỤM F (1 shot) — chỉ dựng bằng chữ, không quay
+3. CỤM C (10 shot) — C3, C6 quay 60fps. C1, C2 cần máy thật đủ dòng
+4. CỤM D (4 shot) — đổi sang bàn làm việc, bàn trang điểm, giường (không người)
+5. CỤM E (2 shot) — chữ dựng và CTA, làm trong dựng, quay shot B1 làm nền
+6. CỤM F (1 shot) — chỉ dựng bằng chữ, không quay
 ```
 
-**Tổng thời gian quay:** ước lượng ~90 phút (không tính setup và đổi máy dòng khác).
+**Tổng thời gian quay:** ước lượng ~70 phút (không tính setup và đổi máy dòng khác).
 
 ---
 
@@ -209,11 +200,11 @@
 |---|---|---|---|
 | A | 3 | ~10 phút | A3 xé hộp, chuẩn bị 3 hộp |
 | B | 6 | ~15 phút | Cần sạc MagSafe, bảng mẫu máy |
-| C | 8 | ~30 phút | Quay dư 6 bản cho C1, C2, C6 |
-| D | 4 | ~15 phút | Trong phòng |
-| E | 8 | ~20 phút | 2 áo, E5 quay 2 lần |
+| C | 10 | ~30 phút | Quay dư 6 bản cho C1, C2, C6 |
+| D | 4 | ~15 phút | Trong phòng, không người |
+| E | 2 | 0 | Dựng bằng chữ và mũi tên trên B1 |
 | F | 1 | 0 | Chữ dựng, không quay |
-| **Tổng** | **30** | **~90 phút** | |
+| **Tổng** | **26** | **~70 phút quay** | |
 
 ### Cây thư mục footage
 
@@ -221,17 +212,15 @@
 oke_case_mag_vai/
 ├── A_truoc/       A1, A2, A3
 ├── B_hero/        B1–B6
-├── C_demo/        C1–C8
+├── C_demo/        C1–C10
 ├── D_phong/       D1–D4
-├── E_host_ao1/    E1–E5
-├── E_host_ao2/    E5, E6–E8
-└── F_chu/         F1 (dựng)
+└── E_F_chu/       E1, E2, F1 (dựng)
 ```
 
 ### Quy trình nhân bản
 
 ```
-Quay 1 buổi (~90 phút) → 30 shot × 3 bản = ~90 file
+Quay 1 buổi (~70 phút) → 26 shot × 3 bản = ~80 file
     ↓
 Sắp xếp vào thư mục (~20 phút)
     ↓
@@ -250,7 +239,8 @@ Test, đăng, theo dõi
 
 ## Điều chưa kiểm chứng
 
-- **Số lượng và màu còn trong kho:** chưa có dữ liệu tồn kho từng màu. F1 không ghi số tồn, không dùng "còn X cái".
+- **Số lượng và màu còn trong kho:** chưa có dữ liệu tồn kho từng màu. Chữ dựng không ghi số tồn.
 - **Dòng máy tương thích:** shop liệt kê 17Air → 16. Chưa kiểm tra tận máy, cần quay đúng các dòng đang bán.
 - **Tuổi thọ vải dệt, khả năng chống trầy:** lấy từ mô tả shop, chưa thử.
-- **Tỉ lệ tái dùng 25%:** thấp hơn mục tiêu, đã ghi ở trên.
+- **Lời gọi khán giả là voice-over:** chưa có kịch bản đã kiểm chứng.
+- **Tỉ lệ tái dùng 35%:** thấp hơn mục tiêu, đã ghi ở trên.
