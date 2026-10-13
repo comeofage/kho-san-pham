@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-13T11:54:23+07:00",
+ "cap_nhat_luc": "2026-10-13T11:55:23+07:00",
  "san_pham": [
   {
    "id": "1737658776116299032",
@@ -130,11 +130,11 @@
    "id": "1731955210650682419",
    "uid": "1731955210650682419",
    "link": "https://shop.tiktok.com/vn/pdp/1731955210650682419?_t=ZS-9AVgfVApAMm",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bộ Màu Acrylic Nhũ 72 Màu Mới Nhất Dành Cho Học Sinh Sinh Viên, Thấm Màu Nhanh Không Lem Không Rít",
+   "gia": "65.237₫",
+   "shop": "Văn Phòng Phẩm - Thiên Thành",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -147,9 +147,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:05+07:00",
-   "cap_nhat_luc": "2026-10-13T10:09:05+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-13T11:55:14+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1733560086332933219",
