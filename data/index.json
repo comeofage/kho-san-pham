@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-13T11:41:13+07:00",
+ "cap_nhat_luc": "2026-10-13T11:54:23+07:00",
  "san_pham": [
   {
    "id": "1737658776116299032",
@@ -80,11 +80,11 @@
    "id": "1730992905271872127",
    "uid": "1730992905271872127",
    "link": "https://shop.tiktok.com/vn/pdp/1730992905271872127?_t=ZS-9AVgie2jHja",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[TẶNG BỘ CỌ VẼ] Bút Chì Màu Gốc Nước Deli - Hộp Thiếc, Tặng Kèm Cọ Vẽ- Có Thể Dùng Như Màu Nước Nén, Hộp Màu Chì Chuyên Nghiệp Tô Màu Mịn Kín Giấy HM451",
+   "gia": "161.490₫",
+   "shop": "Deli Vietnam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -97,9 +97,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:42+07:00",
-   "cap_nhat_luc": "2026-10-13T10:09:42+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-13T11:54:09+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731482718727014015",
