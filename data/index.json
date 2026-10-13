@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-13T11:55:23+07:00",
+ "cap_nhat_luc": "2026-10-13T11:56:03+07:00",
  "san_pham": [
   {
    "id": "1737658776116299032",
@@ -30,11 +30,11 @@
    "id": "1729748241594157069",
    "uid": "1729748241594157069",
    "link": "https://shop.tiktok.com/vn/pdp/1729748241594157069?_t=ZS-9AVgnsGuMSq",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Hình Ủi Nhiệt] Sticker ủi nhiệt áo in tên cho bé theo yêu cầu - TE1",
+   "gia": "46.143₫",
+   "shop": "Thế Giới In Nhiệt",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,9 +47,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:58+07:00",
-   "cap_nhat_luc": "2026-10-13T10:10:58+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-13T11:55:52+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1735557759638668927",
