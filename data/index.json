@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-13T11:56:03+07:00",
+ "cap_nhat_luc": "2026-10-13T11:56:47+07:00",
  "san_pham": [
   {
    "id": "1737658776116299032",
@@ -55,11 +55,11 @@
    "id": "1735557759638668927",
    "uid": "1735557759638668927",
    "link": "https://shop.tiktok.com/vn/pdp/1735557759638668927?_t=ZS-9AVglBvOK2O",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[CÓ NHŨ] Màu Marker Nhũ Đầu Brush Deli - Màu vẽ kim tuyến phối nhũ đầu brush hộp nhựa, có quai xách tiện lợi, lên màu lấp lánh, thích hợp đi nét DIY",
+   "gia": "58.081₫",
+   "shop": "Deli Vietnam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -72,9 +72,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:03+07:00",
-   "cap_nhat_luc": "2026-10-13T10:10:03+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-13T11:56:02+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1730992905271872127",
@@ -105,11 +105,11 @@
    "id": "1731482718727014015",
    "uid": "1731482718727014015",
    "link": "https://shop.tiktok.com/vn/pdp/1731482718727014015?_t=ZS-9AVghdKo0xi",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bút chì màu gốc dầu dạng cốc Deli - 12/24/36/48 màu sắc tươi sáng không dễ gãy màu chì học sinh chuyên nghiệp tô màu vẽ",
+   "gia": "67.796₫",
+   "shop": "Deli Vietnam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -122,9 +122,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:20+07:00",
-   "cap_nhat_luc": "2026-10-13T10:09:20+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-13T11:56:34+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731955210650682419",
