@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T20:16:37+07:00",
+ "cap_nhat_luc": "2026-10-15T21:19:25+07:00",
  "san_pham": [
   {
    "id": "1738002435594552677",
@@ -1584,7 +1584,7 @@
    "gia": "26.641₫",
    "shop": "TIỆM GIA DỤNG THE ONE",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1597,7 +1597,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:15+07:00",
-   "cap_nhat_luc": "2026-10-12T10:28:30+07:00",
+   "cap_nhat_luc": "2026-10-15T21:19:15+07:00",
    "so_caption": 100,
    "co_file01": true
   },
