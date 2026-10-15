@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T16:19:28+07:00",
+ "cap_nhat_luc": "2026-10-15T17:54:05+07:00",
  "san_pham": [
   {
    "id": "1736394027659330950",
@@ -34,7 +34,7 @@
    "gia": "100.258₫",
    "shop": "takenotes.beta",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,7 +47,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:40:35+07:00",
-   "cap_nhat_luc": "2026-10-15T13:44:52+07:00",
+   "cap_nhat_luc": "2026-10-15T17:53:53+07:00",
    "so_caption": 100,
    "co_file01": true
   },
