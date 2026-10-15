@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T13:40:45+07:00",
+ "cap_nhat_luc": "2026-10-15T13:44:12+07:00",
  "san_pham": [
   {
    "id": "1729482409825635197",
@@ -30,11 +30,11 @@
    "id": "1731365843556599677",
    "uid": "1731365843556599677",
    "link": "https://shop.tiktok.com/vn/pdp/1731365843556599677?_t=ZS-9AZKnbT3v3U",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Take Note Văn 6 Kết Nối - Sổ Tay Soạn Văn Học Tốt Ngữ Văn 6 Kết Nối Tri Thức Và Cuộc Sống",
+   "gia": "95.853₫",
+   "shop": "takenotes.beta",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,9 +47,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:39:41+07:00",
-   "cap_nhat_luc": "2026-10-15T13:39:41+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-15T13:44:03+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736123792156951734",
