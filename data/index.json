@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-15T14:07:41+07:00",
+ "cap_nhat_luc": "2026-10-15T14:11:16+07:00",
  "san_pham": [
   {
    "id": "1736394027659330950",
    "uid": "1736394027659330950",
    "link": "1736394027659330950",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Kẹo Dâu Tây Dâu Tằm Phủ Đường Chua Ngọt BonBon Food – Kẹo Dẻo Trái Cây Ăn Vặt Thơm Ngon",
+   "gia": "20.402₫",
+   "shop": "Ăn Vặt BonBon Food",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,9 +22,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T14:07:31+07:00",
-   "cap_nhat_luc": "2026-10-15T14:07:31+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-15T14:11:03+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1729482409825635197",
