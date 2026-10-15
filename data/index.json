@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T14:26:39+07:00",
+ "cap_nhat_luc": "2026-10-15T14:49:08+07:00",
  "san_pham": [
   {
    "id": "1736394027659330950",
@@ -9,7 +9,7 @@
    "gia": "20.402₫",
    "shop": "Ăn Vặt BonBon Food",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,7 +22,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T14:07:31+07:00",
-   "cap_nhat_luc": "2026-10-15T14:11:03+07:00",
+   "cap_nhat_luc": "2026-10-15T14:48:55+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1347,7 +1347,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:33+07:00",
-   "cap_nhat_luc": "2026-10-15T14:26:28+07:00",
+   "cap_nhat_luc": "2026-10-15T14:26:35+07:00",
    "so_caption": 100,
    "co_file01": true
   },
