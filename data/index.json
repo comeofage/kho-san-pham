@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T18:37:55+07:00",
+ "cap_nhat_luc": "2026-10-15T20:16:37+07:00",
  "san_pham": [
   {
    "id": "1738002435594552677",
@@ -1609,7 +1609,7 @@
    "gia": "21.687₫",
    "shop": "HT Resin Tech",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -1622,7 +1622,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:57+07:00",
-   "cap_nhat_luc": "2026-10-12T09:47:29+07:00",
+   "cap_nhat_luc": "2026-10-15T20:16:25+07:00",
    "so_caption": 100,
    "co_file01": true
   },
