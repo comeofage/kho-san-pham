@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-15T09:50:07+07:00",
+ "cap_nhat_luc": "2026-10-15T09:54:34+07:00",
  "san_pham": [
   {
    "id": "1736123792156951734",
@@ -1241,13 +1241,13 @@
     "luc": "2026-10-08T20:09:24+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-15T09:50:02+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:55+07:00",
-   "cap_nhat_luc": "2026-10-08T20:09:24+07:00",
+   "cap_nhat_luc": "2026-10-15T09:50:02+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1334,7 +1334,7 @@
    "gia": "108.478₫",
    "shop": "BiFresh Việt Nam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1347,7 +1347,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:01+07:00",
-   "cap_nhat_luc": "2026-10-15T09:49:57+07:00",
+   "cap_nhat_luc": "2026-10-15T09:54:25+07:00",
    "so_caption": 100,
    "co_file01": true
   },
