@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-16T09:41:08+07:00",
+ "cap_nhat_luc": "2026-10-16T11:04:50+07:00",
  "san_pham": [
   {
    "id": "1738002435594552677",
    "uid": "1738002435594552677",
    "link": "https://shop.tiktok.com/vn/pdp/1738002435594552677",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Tặng Kèm Bình Nước] Combo 30 Bút Chì 2B Color Lab CLASSMATE Lõi Chì Nâng Cấp Khó Gãy, Đậm Chuẩn 2B, Gỗ Bạch Dương Cao Cấp Dễ Gọt",
+   "gia": "173.909₫",
+   "shop": "Classmate Official Store",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -22,9 +22,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T18:37:45+07:00",
-   "cap_nhat_luc": "2026-10-15T18:37:45+07:00",
+   "cap_nhat_luc": "2026-10-16T11:04:36+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1736394027659330950",
