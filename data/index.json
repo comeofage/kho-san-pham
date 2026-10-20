@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:10:17+07:00",
+ "cap_nhat_luc": "2026-10-20T14:10:36+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -180,10 +180,10 @@
    "id": "1732641929439708161",
    "uid": "1732641929439708161",
    "link": "https://shop.tiktok.com/vn/pdp/1732641929439708161",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "[MỚI] Bàn chải du lịch gấp gọn tiện lợi cao cấp - lông tơ mềm mịn Trắng Răng",
+   "gia": "38.947₫",
+   "shop": "Cherif Việt Nam",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -197,7 +197,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:10:25+07:00",
    "so_caption": 100,
    "co_file01": false
   },
