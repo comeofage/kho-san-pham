@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:33:43+07:00",
+ "cap_nhat_luc": "2026-10-20T14:34:14+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -455,10 +455,10 @@
    "id": "1737215726219462639",
    "uid": "1737215726219462639",
    "link": "https://shop.tiktok.com/vn/pdp/1737215726219462639",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Giày Búp Bê, Giày Công Chúa Balabala cho bé gái, mẫu mới xuân–thu 2026, có nơ, ngọt ngào, thời thượng, màu đỏ, giày da cỡ nhỏ, dễ thương, thanh lịch, thoải mái với đế mềm, phù hợp dự tiệc và đi cùng váy cưới",
+   "gia": "763.844₫",
+   "shop": "balabala SEA",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -472,9 +472,9 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:24+07:00",
+   "cap_nhat_luc": "2026-10-20T14:33:42+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1737244314866649071",
@@ -1105,10 +1105,10 @@
    "id": "1737099024341828743",
    "uid": "1737099024341828743",
    "link": "https://shop.tiktok.com/vn/pdp/1737099024341828743",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "[Fungus]Đồ Chơi Titan Armor Quay Vô Cực, Biến Hình Xoay Liên Tục Lạ Tay Đã Mắt, 4 Màu Cá Tính",
+   "gia": "66.515₫",
+   "shop": "FUNGUSVN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -1122,7 +1122,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:33:31+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1130,10 +1130,10 @@
    "id": "1737243774721426620",
    "uid": "1737243774721426620",
    "link": "https://shop.tiktok.com/vn/pdp/1737243774721426620",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Mặt nạ ngủ tạo lực ép | Che sáng | Mềm mại | ôm sát mặt | Ngủ trưa, ngủ ban đêm, du lịch",
+   "gia": "110.191₫",
+   "shop": "VEELORA-VN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -1147,7 +1147,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:33:53+07:00",
    "so_caption": 101,
    "co_file01": false
   },
