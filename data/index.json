@@ -1,6 +1,2831 @@
 {
- "cap_nhat_luc": "2026-10-20T12:24:19+07:00",
+ "cap_nhat_luc": "2026-10-20T13:36:04+07:00",
  "san_pham": [
+  {
+   "id": "1736657942520170092",
+   "uid": "1736657942520170092",
+   "link": "https://shop.tiktok.com/vn/pdp/1736657942520170092",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:33+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737393247280137415",
+   "uid": "1737393247280137415",
+   "link": "https://shop.tiktok.com/vn/pdp/1737393247280137415",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:33+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1729635770334218630",
+   "uid": "1729635770334218630",
+   "link": "https://shop.tiktok.com/vn/pdp/1729635770334218630",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731099943885965713",
+   "uid": "1731099943885965713",
+   "link": "https://shop.tiktok.com/vn/pdp/1731099943885965713",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731685189869798486",
+   "uid": "1731685189869798486",
+   "link": "https://shop.tiktok.com/vn/pdp/1731685189869798486",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731919646474078606",
+   "uid": "1731919646474078606",
+   "link": "https://shop.tiktok.com/vn/pdp/1731919646474078606",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732492821424932508",
+   "uid": "1732492821424932508",
+   "link": "https://shop.tiktok.com/vn/pdp/1732492821424932508",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732641929439708161",
+   "uid": "1732641929439708161",
+   "link": "https://shop.tiktok.com/vn/pdp/1732641929439708161",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733423423079089850",
+   "uid": "1733423423079089850",
+   "link": "https://shop.tiktok.com/vn/pdp/1733423423079089850",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733440314917815431",
+   "uid": "1733440314917815431",
+   "link": "https://shop.tiktok.com/vn/pdp/1733440314917815431",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736277410264549005",
+   "uid": "1736277410264549005",
+   "link": "https://shop.tiktok.com/vn/pdp/1736277410264549005",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736298612170327518",
+   "uid": "1736298612170327518",
+   "link": "https://shop.tiktok.com/vn/pdp/1736298612170327518",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736681820384363606",
+   "uid": "1736681820384363606",
+   "link": "https://shop.tiktok.com/vn/pdp/1736681820384363606",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736818222555104357",
+   "uid": "1736818222555104357",
+   "link": "https://shop.tiktok.com/vn/pdp/1736818222555104357",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736871398245303653",
+   "uid": "1736871398245303653",
+   "link": "https://shop.tiktok.com/vn/pdp/1736871398245303653",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736884334969193526",
+   "uid": "1736884334969193526",
+   "link": "https://shop.tiktok.com/vn/pdp/1736884334969193526",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737002825064482772",
+   "uid": "1737002825064482772",
+   "link": "https://shop.tiktok.com/vn/pdp/1737002825064482772",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737014047508891618",
+   "uid": "1737014047508891618",
+   "link": "https://shop.tiktok.com/vn/pdp/1737014047508891618",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737215726219462639",
+   "uid": "1737215726219462639",
+   "link": "https://shop.tiktok.com/vn/pdp/1737215726219462639",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737244314866649071",
+   "uid": "1737244314866649071",
+   "link": "https://shop.tiktok.com/vn/pdp/1737244314866649071",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737394156416763015",
+   "uid": "1737394156416763015",
+   "link": "https://shop.tiktok.com/vn/pdp/1737394156416763015",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737422436677814024",
+   "uid": "1737422436677814024",
+   "link": "https://shop.tiktok.com/vn/pdp/1737422436677814024",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737749463769581535",
+   "uid": "1737749463769581535",
+   "link": "https://shop.tiktok.com/vn/pdp/1737749463769581535",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:32+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730298851378497547",
+   "uid": "1730298851378497547",
+   "link": "https://shop.tiktok.com/vn/pdp/1730298851378497547",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731154052886727460",
+   "uid": "1731154052886727460",
+   "link": "https://shop.tiktok.com/vn/pdp/1731154052886727460",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731489178965148754",
+   "uid": "1731489178965148754",
+   "link": "https://shop.tiktok.com/vn/pdp/1731489178965148754",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733017122115454689",
+   "uid": "1733017122115454689",
+   "link": "https://shop.tiktok.com/vn/pdp/1733017122115454689",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733633588917274600",
+   "uid": "1733633588917274600",
+   "link": "https://shop.tiktok.com/vn/pdp/1733633588917274600",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1734479788508218973",
+   "uid": "1734479788508218973",
+   "link": "https://shop.tiktok.com/vn/pdp/1734479788508218973",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735596401113859641",
+   "uid": "1735596401113859641",
+   "link": "https://shop.tiktok.com/vn/pdp/1735596401113859641",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735768992798770343",
+   "uid": "1735768992798770343",
+   "link": "https://shop.tiktok.com/vn/pdp/1735768992798770343",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736015415791944875",
+   "uid": "1736015415791944875",
+   "link": "https://shop.tiktok.com/vn/pdp/1736015415791944875",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736081131433854503",
+   "uid": "1736081131433854503",
+   "link": "https://shop.tiktok.com/vn/pdp/1736081131433854503",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736181021338535510",
+   "uid": "1736181021338535510",
+   "link": "https://shop.tiktok.com/vn/pdp/1736181021338535510",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736295444701808020",
+   "uid": "1736295444701808020",
+   "link": "https://shop.tiktok.com/vn/pdp/1736295444701808020",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736298157005702636",
+   "uid": "1736298157005702636",
+   "link": "https://shop.tiktok.com/vn/pdp/1736298157005702636",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736505418883171463",
+   "uid": "1736505418883171463",
+   "link": "https://shop.tiktok.com/vn/pdp/1736505418883171463",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736515447390242101",
+   "uid": "1736515447390242101",
+   "link": "https://shop.tiktok.com/vn/pdp/1736515447390242101",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736541105774495474",
+   "uid": "1736541105774495474",
+   "link": "https://shop.tiktok.com/vn/pdp/1736541105774495474",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736675068576499216",
+   "uid": "1736675068576499216",
+   "link": "https://shop.tiktok.com/vn/pdp/1736675068576499216",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736730770661869121",
+   "uid": "1736730770661869121",
+   "link": "https://shop.tiktok.com/vn/pdp/1736730770661869121",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736734664758429029",
+   "uid": "1736734664758429029",
+   "link": "https://shop.tiktok.com/vn/pdp/1736734664758429029",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736998584257054445",
+   "uid": "1736998584257054445",
+   "link": "https://shop.tiktok.com/vn/pdp/1736998584257054445",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737078940082603356",
+   "uid": "1737078940082603356",
+   "link": "https://shop.tiktok.com/vn/pdp/1737078940082603356",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737099024341828743",
+   "uid": "1737099024341828743",
+   "link": "https://shop.tiktok.com/vn/pdp/1737099024341828743",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737243774721426620",
+   "uid": "1737243774721426620",
+   "link": "https://shop.tiktok.com/vn/pdp/1737243774721426620",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737280688346072412",
+   "uid": "1737280688346072412",
+   "link": "https://shop.tiktok.com/vn/pdp/1737280688346072412",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:31+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:31+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:31+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730055470326254369",
+   "uid": "1730055470326254369",
+   "link": "https://shop.tiktok.com/vn/pdp/1730055470326254369",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731125835314268514",
+   "uid": "1731125835314268514",
+   "link": "https://shop.tiktok.com/vn/pdp/1731125835314268514",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731472416105203045",
+   "uid": "1731472416105203045",
+   "link": "https://shop.tiktok.com/vn/pdp/1731472416105203045",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731743828944325537",
+   "uid": "1731743828944325537",
+   "link": "https://shop.tiktok.com/vn/pdp/1731743828944325537",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731795281269459079",
+   "uid": "1731795281269459079",
+   "link": "https://shop.tiktok.com/vn/pdp/1731795281269459079",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733009536480610195",
+   "uid": "1733009536480610195",
+   "link": "https://shop.tiktok.com/vn/pdp/1733009536480610195",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733402464577619825",
+   "uid": "1733402464577619825",
+   "link": "https://shop.tiktok.com/vn/pdp/1733402464577619825",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1734217570848638355",
+   "uid": "1734217570848638355",
+   "link": "https://shop.tiktok.com/vn/pdp/1734217570848638355",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1734901731724395610",
+   "uid": "1734901731724395610",
+   "link": "https://shop.tiktok.com/vn/pdp/1734901731724395610",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735067593226225633",
+   "uid": "1735067593226225633",
+   "link": "https://shop.tiktok.com/vn/pdp/1735067593226225633",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735335113276032021",
+   "uid": "1735335113276032021",
+   "link": "https://shop.tiktok.com/vn/pdp/1735335113276032021",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735670634794616716",
+   "uid": "1735670634794616716",
+   "link": "https://shop.tiktok.com/vn/pdp/1735670634794616716",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735999469647201758",
+   "uid": "1735999469647201758",
+   "link": "https://shop.tiktok.com/vn/pdp/1735999469647201758",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736133773663437959",
+   "uid": "1736133773663437959",
+   "link": "https://shop.tiktok.com/vn/pdp/1736133773663437959",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736180775825999298",
+   "uid": "1736180775825999298",
+   "link": "https://shop.tiktok.com/vn/pdp/1736180775825999298",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736209337574786802",
+   "uid": "1736209337574786802",
+   "link": "https://shop.tiktok.com/vn/pdp/1736209337574786802",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736225600346293759",
+   "uid": "1736225600346293759",
+   "link": "https://shop.tiktok.com/vn/pdp/1736225600346293759",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736384907216324399",
+   "uid": "1736384907216324399",
+   "link": "https://shop.tiktok.com/vn/pdp/1736384907216324399",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736527186048877884",
+   "uid": "1736527186048877884",
+   "link": "https://shop.tiktok.com/vn/pdp/1736527186048877884",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736747304566032226",
+   "uid": "1736747304566032226",
+   "link": "https://shop.tiktok.com/vn/pdp/1736747304566032226",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736833546746824036",
+   "uid": "1736833546746824036",
+   "link": "https://shop.tiktok.com/vn/pdp/1736833546746824036",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736892899185297023",
+   "uid": "1736892899185297023",
+   "link": "https://shop.tiktok.com/vn/pdp/1736892899185297023",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737019044257236332",
+   "uid": "1737019044257236332",
+   "link": "https://shop.tiktok.com/vn/pdp/1737019044257236332",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737033292640388429",
+   "uid": "1737033292640388429",
+   "link": "https://shop.tiktok.com/vn/pdp/1737033292640388429",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1737742532859037125",
+   "uid": "1737742532859037125",
+   "link": "https://shop.tiktok.com/vn/pdp/1737742532859037125",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:30+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1729420930611055346",
+   "uid": "1729420930611055346",
+   "link": "https://shop.tiktok.com/vn/pdp/1729420930611055346",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730253325752109627",
+   "uid": "1730253325752109627",
+   "link": "https://shop.tiktok.com/vn/pdp/1730253325752109627",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730381604424681577",
+   "uid": "1730381604424681577",
+   "link": "https://shop.tiktok.com/vn/pdp/1730381604424681577",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730405904077654169",
+   "uid": "1730405904077654169",
+   "link": "https://shop.tiktok.com/vn/pdp/1730405904077654169",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730425984528845500",
+   "uid": "1730425984528845500",
+   "link": "https://shop.tiktok.com/vn/pdp/1730425984528845500",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730766216858405306",
+   "uid": "1730766216858405306",
+   "link": "https://shop.tiktok.com/vn/pdp/1730766216858405306",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731149724312241392",
+   "uid": "1731149724312241392",
+   "link": "https://shop.tiktok.com/vn/pdp/1731149724312241392",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731296206901839606",
+   "uid": "1731296206901839606",
+   "link": "https://shop.tiktok.com/vn/pdp/1731296206901839606",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731441964860016263",
+   "uid": "1731441964860016263",
+   "link": "https://shop.tiktok.com/vn/pdp/1731441964860016263",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731991566639465684",
+   "uid": "1731991566639465684",
+   "link": "https://shop.tiktok.com/vn/pdp/1731991566639465684",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732165848127014404",
+   "uid": "1732165848127014404",
+   "link": "https://shop.tiktok.com/vn/pdp/1732165848127014404",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732462583154051070",
+   "uid": "1732462583154051070",
+   "link": "https://shop.tiktok.com/vn/pdp/1732462583154051070",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732494869464516454",
+   "uid": "1732494869464516454",
+   "link": "https://shop.tiktok.com/vn/pdp/1732494869464516454",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732963142691816679",
+   "uid": "1732963142691816679",
+   "link": "https://shop.tiktok.com/vn/pdp/1732963142691816679",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733103099447051843",
+   "uid": "1733103099447051843",
+   "link": "https://shop.tiktok.com/vn/pdp/1733103099447051843",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733290144620316666",
+   "uid": "1733290144620316666",
+   "link": "https://shop.tiktok.com/vn/pdp/1733290144620316666",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733445565630613059",
+   "uid": "1733445565630613059",
+   "link": "https://shop.tiktok.com/vn/pdp/1733445565630613059",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733464207030781602",
+   "uid": "1733464207030781602",
+   "link": "https://shop.tiktok.com/vn/pdp/1733464207030781602",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1733542768421340211",
+   "uid": "1733542768421340211",
+   "link": "https://shop.tiktok.com/vn/pdp/1733542768421340211",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1734680648656585980",
+   "uid": "1734680648656585980",
+   "link": "https://shop.tiktok.com/vn/pdp/1734680648656585980",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735080068006970446",
+   "uid": "1735080068006970446",
+   "link": "https://shop.tiktok.com/vn/pdp/1735080068006970446",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735110061426771192",
+   "uid": "1735110061426771192",
+   "link": "https://shop.tiktok.com/vn/pdp/1735110061426771192",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735279975778322359",
+   "uid": "1735279975778322359",
+   "link": "https://shop.tiktok.com/vn/pdp/1735279975778322359",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735434742949643531",
+   "uid": "1735434742949643531",
+   "link": "https://shop.tiktok.com/vn/pdp/1735434742949643531",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735580116653933799",
+   "uid": "1735580116653933799",
+   "link": "https://shop.tiktok.com/vn/pdp/1735580116653933799",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735636981359739938",
+   "uid": "1735636981359739938",
+   "link": "https://shop.tiktok.com/vn/pdp/1735636981359739938",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735785669013439690",
+   "uid": "1735785669013439690",
+   "link": "https://shop.tiktok.com/vn/pdp/1735785669013439690",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735801314182530174",
+   "uid": "1735801314182530174",
+   "link": "https://shop.tiktok.com/vn/pdp/1735801314182530174",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735825778182490039",
+   "uid": "1735825778182490039",
+   "link": "https://shop.tiktok.com/vn/pdp/1735825778182490039",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1735834531854452712",
+   "uid": "1735834531854452712",
+   "link": "https://shop.tiktok.com/vn/pdp/1735834531854452712",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736021517987120726",
+   "uid": "1736021517987120726",
+   "link": "https://shop.tiktok.com/vn/pdp/1736021517987120726",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736299546721158606",
+   "uid": "1736299546721158606",
+   "link": "https://shop.tiktok.com/vn/pdp/1736299546721158606",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736365412454401935",
+   "uid": "1736365412454401935",
+   "link": "https://shop.tiktok.com/vn/pdp/1736365412454401935",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736460780415976821",
+   "uid": "1736460780415976821",
+   "link": "https://shop.tiktok.com/vn/pdp/1736460780415976821",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736542091862312772",
+   "uid": "1736542091862312772",
+   "link": "https://shop.tiktok.com/vn/pdp/1736542091862312772",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:29+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:29+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1736873471868110172",
+   "uid": "1736873471868110172",
+   "link": "https://shop.tiktok.com/vn/pdp/1736873471868110172",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730115090275732471",
+   "uid": "1730115090275732471",
+   "link": "https://shop.tiktok.com/vn/pdp/1730115090275732471",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:28+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1730273374820928510",
+   "uid": "1730273374820928510",
+   "link": "https://shop.tiktok.com/vn/pdp/1730273374820928510",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:28+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1731678050221196617",
+   "uid": "1731678050221196617",
+   "link": "https://shop.tiktok.com/vn/pdp/1731678050221196617",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:28+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732093741139397554",
+   "uid": "1732093741139397554",
+   "link": "https://shop.tiktok.com/vn/pdp/1732093741139397554",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:28+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
+  {
+   "id": "1732869755608205065",
+   "uid": "1732869755608205065",
+   "link": "https://shop.tiktok.com/vn/pdp/1732869755608205065",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "da_quay",
+   "da_quay_oneshot": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "da_quay_review": {
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:28+07:00"
+   },
+   "them_boi": "poster",
+   "them_luc": "2026-10-20T13:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:28+07:00",
+   "so_caption": 0,
+   "co_file01": false
+  },
   {
    "id": "1733917364193297723",
    "uid": "1733917364193297723",
@@ -286,18 +3111,18 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T14:07:31+07:00",
-   "cap_nhat_luc": "2026-10-15T16:09:43+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -311,18 +3136,18 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:40:35+07:00",
-   "cap_nhat_luc": "2026-10-15T17:53:53+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -336,18 +3161,18 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:39:41+07:00",
-   "cap_nhat_luc": "2026-10-15T16:19:19+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -359,20 +3184,20 @@
    "gia": "24.640₫",
    "shop": "gss0ya6",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-14T22:08:58+07:00",
-   "cap_nhat_luc": "2026-10-14T22:35:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -434,20 +3259,20 @@
    "gia": "58.081₫",
    "shop": "Deli Vietnam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:03+07:00",
-   "cap_nhat_luc": "2026-10-13T11:56:02+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -484,20 +3309,20 @@
    "gia": "67.796₫",
    "shop": "Deli Vietnam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:20+07:00",
-   "cap_nhat_luc": "2026-10-13T11:56:34+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -509,20 +3334,20 @@
    "gia": "65.237₫",
    "shop": "Văn Phòng Phẩm - Thiên Thành",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:05+07:00",
-   "cap_nhat_luc": "2026-10-13T11:55:14+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -534,20 +3359,20 @@
    "gia": "198.066₫",
    "shop": "Bảng Vẽ LCD Cho Bé",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:38:34+07:00",
-   "cap_nhat_luc": "2026-10-12T20:45:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -559,20 +3384,20 @@
    "gia": "34.131₫",
    "shop": "Kaya House",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:46+07:00",
-   "cap_nhat_luc": "2026-10-12T20:43:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -584,20 +3409,20 @@
    "gia": "19.185₫",
    "shop": "HH.Beauty",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:28+07:00",
-   "cap_nhat_luc": "2026-10-12T20:44:47+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -636,18 +3461,18 @@
    "anh_bia": "",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-11T18:02:06+07:00",
-   "cap_nhat_luc": "2026-10-11T18:26:41+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 0,
    "co_file01": false
   },
@@ -672,7 +3497,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-11T18:02:02+07:00",
-   "cap_nhat_luc": "2026-10-15T21:35:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -736,18 +3561,18 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T10:56:21+07:00",
-   "cap_nhat_luc": "2026-10-10T14:07:12+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -759,20 +3584,20 @@
    "gia": "99.984₫",
    "shop": "Life.V",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-09T12:22:12+07:00",
-   "cap_nhat_luc": "2026-10-10T08:46:34+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -786,9 +3611,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -797,7 +3622,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T16:46:24+07:00",
-   "cap_nhat_luc": "2026-10-08T20:14:08+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -811,9 +3636,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -822,7 +3647,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T14:48:18+07:00",
-   "cap_nhat_luc": "2026-10-08T20:14:09+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -836,9 +3661,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -847,7 +3672,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T14:14:34+07:00",
-   "cap_nhat_luc": "2026-10-08T20:14:10+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -861,18 +3686,18 @@
    "anh_bia": "",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:32+07:00"
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T12:08:42+07:00",
-   "cap_nhat_luc": "2026-10-08T13:28:53+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 0,
    "co_file01": false
   },
@@ -886,18 +3711,18 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:30+07:00"
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T12:04:08+07:00",
-   "cap_nhat_luc": "2026-10-08T12:33:26+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:30+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -911,9 +3736,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -922,7 +3747,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T11:36:17+07:00",
-   "cap_nhat_luc": "2026-10-08T20:18:08+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -947,7 +3772,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T22:06:44+07:00",
-   "cap_nhat_luc": "2026-10-08T09:06:35+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -972,7 +3797,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T21:24:36+07:00",
-   "cap_nhat_luc": "2026-10-08T20:08:48+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -997,7 +3822,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T21:24:16+07:00",
-   "cap_nhat_luc": "2026-10-08T07:09:01+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1022,7 +3847,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T19:20:27+07:00",
-   "cap_nhat_luc": "2026-10-08T07:08:58+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1047,7 +3872,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T18:22:33+07:00",
-   "cap_nhat_luc": "2026-10-16T09:19:19+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1072,7 +3897,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T17:48:46+07:00",
-   "cap_nhat_luc": "2026-10-16T09:40:57+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1097,7 +3922,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T16:31:44+07:00",
-   "cap_nhat_luc": "2026-10-16T09:38:24+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1347,7 +4172,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T20:07:33+07:00",
-   "cap_nhat_luc": "2026-10-13T10:55:28+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1397,7 +4222,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:45:58+07:00",
-   "cap_nhat_luc": "2026-10-13T11:33:56+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1416,13 +4241,13 @@
     "luc": "2026-10-08T20:09:16+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:45:42+07:00",
-   "cap_nhat_luc": "2026-10-15T11:50:06+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1436,9 +4261,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1447,7 +4272,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:44:31+07:00",
-   "cap_nhat_luc": "2026-10-13T11:34:45+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1461,9 +4286,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:34+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1472,7 +4297,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:44:12+07:00",
-   "cap_nhat_luc": "2026-10-20T12:24:09+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1547,7 +4372,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:42:57+07:00",
-   "cap_nhat_luc": "2026-10-09T10:44:19+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1597,7 +4422,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:55+07:00",
-   "cap_nhat_luc": "2026-10-15T12:31:40+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1622,7 +4447,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:33+07:00",
-   "cap_nhat_luc": "2026-10-15T14:26:35+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1697,7 +4522,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:01+07:00",
-   "cap_nhat_luc": "2026-10-15T09:54:25+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1761,9 +4586,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1772,7 +4597,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:36:16+07:00",
-   "cap_nhat_luc": "2026-10-13T08:40:20+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1822,7 +4647,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:34+07:00",
-   "cap_nhat_luc": "2026-10-12T19:47:35+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1847,7 +4672,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:15+07:00",
-   "cap_nhat_luc": "2026-10-15T21:19:15+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1861,9 +4686,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1872,7 +4697,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:57+07:00",
-   "cap_nhat_luc": "2026-10-15T20:16:25+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1886,9 +4711,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1897,7 +4722,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:37+07:00",
-   "cap_nhat_luc": "2026-10-09T11:16:13+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1911,9 +4736,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1922,7 +4747,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:17+07:00",
-   "cap_nhat_luc": "2026-10-08T22:43:34+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1936,9 +4761,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1947,7 +4772,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:33:59+07:00",
-   "cap_nhat_luc": "2026-10-14T12:13:38+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1972,7 +4797,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:33:39+07:00",
-   "cap_nhat_luc": "2026-10-09T12:36:29+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1986,9 +4811,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "Thu",
-    "luc": "2026-10-08T09:17:21+07:00"
+    "xong": true,
+    "boi": "poster",
+    "luc": "2026-10-20T13:35:33+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -1997,7 +4822,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:32:35+07:00",
-   "cap_nhat_luc": "2026-10-08T09:17:21+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -2022,7 +4847,7 @@
    },
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T15:12:51+07:00",
-   "cap_nhat_luc": "2026-10-06T15:50:59+07:00",
+   "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
    "so_caption": 100,
    "co_file01": true
   }
