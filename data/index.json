@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T09:08:47+07:00",
+ "cap_nhat_luc": "2026-10-20T11:05:57+07:00",
  "san_pham": [
   {
    "id": "1733917364193297723",
@@ -180,11 +180,11 @@
    "id": "1736724679813661775",
    "uid": "1736724679813661775",
    "link": "https://shop.tiktok.com/vn/pdp/1736724679813661775?_t=ZS-9AhUxmSQDbw",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Cốc cà phê thép không gỉ Xu hướng 2026 màu sang trọng thanh lịch  sử dụng mọi nơi mọi lúc",
+   "gia": "102.056₫",
+   "shop": "Kitchenware",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -197,9 +197,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:56:08+07:00",
-   "cap_nhat_luc": "2026-10-20T08:56:08+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-20T09:08:37+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1732921249915045020",
@@ -259,20 +259,20 @@
    "gia": "173.909₫",
    "shop": "Classmate Official Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-20T11:05:49+07:00"
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T18:37:45+07:00",
-   "cap_nhat_luc": "2026-10-16T11:06:13+07:00",
+   "cap_nhat_luc": "2026-10-20T11:05:49+07:00",
    "so_caption": 100,
    "co_file01": true
   },
