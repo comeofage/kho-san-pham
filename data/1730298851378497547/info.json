@@ -24,9 +24,11 @@
   "luc": "2026-10-20T13:35:31+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 53,
+  "luc": "2026-10-20T13:46:23+07:00",
+  "poster_folder": 85,
+  "duong_dan": "E:\\Aff anh nhan\\review\\lysilicon"
  },
- "cap_nhat_luc": "2026-10-20T13:35:31+07:00"
+ "cap_nhat_luc": "2026-10-20T13:46:23+07:00"
 }

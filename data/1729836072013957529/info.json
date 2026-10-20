@@ -23,10 +23,12 @@
  "da_phan_tich": true,
  "da_lam_video": {
   "xong": true,
-  "so_video": 19,
-  "luc": "2026-10-09T12:07:40+07:00"
+  "so_video": 0,
+  "luc": "2026-10-09T12:07:40+07:00",
+  "poster_folder": 159,
+  "duong_dan": "F:\\0810\\1008 (1)\\gôm to 0810 -  1729836072013957529"
  },
- "cap_nhat_luc": "2026-10-20T13:35:33+07:00",
+ "cap_nhat_luc": "2026-10-20T13:46:24+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",

@@ -24,10 +24,12 @@
  "da_phan_tich": true,
  "da_lam_video": {
   "xong": true,
-  "so_video": 13,
-  "luc": "2026-10-15T09:54:25+07:00"
+  "so_video": 4,
+  "luc": "2026-10-15T09:54:25+07:00",
+  "poster_folder": 187,
+  "duong_dan": "E:\\oneshottramcanh\\toahuong 1736909393337091639\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
+ "cap_nhat_luc": "2026-10-20T13:46:25+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",

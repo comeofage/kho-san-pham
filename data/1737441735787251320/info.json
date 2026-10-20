@@ -25,8 +25,10 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 19,
-  "luc": "2026-10-11T18:26:41+07:00"
+  "so_video": 0,
+  "luc": "2026-10-11T18:26:41+07:00",
+  "poster_folder": 173,
+  "duong_dan": "E:\\oneshottramcanh\\phomai\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T13:35:33+07:00"
+ "cap_nhat_luc": "2026-10-20T13:46:25+07:00"
 }

@@ -24,9 +24,11 @@
   "luc": "2026-10-20T13:35:32+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 8,
+  "luc": "2026-10-20T13:46:24+07:00",
+  "poster_folder": 115,
+  "duong_dan": "E:\\oneshottramcanh\\sacveryking\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T13:35:32+07:00"
+ "cap_nhat_luc": "2026-10-20T13:46:24+07:00"
 }

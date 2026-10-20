@@ -14,11 +14,13 @@
  "them_luc": "2026-10-06T15:12:51+07:00",
  "da_phan_tich": true,
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 6,
+  "luc": "2026-10-20T13:46:23+07:00",
+  "poster_folder": 109,
+  "duong_dan": "E:\\oneshottramcanh\\aokhoacbala\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T13:35:32+07:00",
+ "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Nhân",

@@ -24,9 +24,11 @@
   "luc": "2026-10-20T13:35:28+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 65,
+  "luc": "2026-10-20T13:46:21+07:00",
+  "poster_folder": 2,
+  "duong_dan": "E:\\Aff anh nhan\\review\\export\\bộ phao bơi\\output"
  },
- "cap_nhat_luc": "2026-10-20T13:35:28+07:00"
+ "cap_nhat_luc": "2026-10-20T13:46:21+07:00"
 }

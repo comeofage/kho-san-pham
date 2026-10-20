@@ -24,9 +24,11 @@
   "luc": "2026-10-20T13:35:29+07:00"
  },
  "da_lam_video": {
-  "xong": false,
+  "xong": true,
   "so_video": 0,
-  "luc": ""
+  "luc": "2026-10-20T13:46:21+07:00",
+  "poster_folder": 9,
+  "duong_dan": "E:\\Aff anh nhan\\review\\export\\mayanh\\0618(6)\\cuts\\output"
  },
- "cap_nhat_luc": "2026-10-20T13:35:29+07:00"
+ "cap_nhat_luc": "2026-10-20T13:46:21+07:00"
 }
