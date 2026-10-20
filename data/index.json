@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T08:59:21+07:00",
+ "cap_nhat_luc": "2026-10-20T09:07:00+07:00",
  "san_pham": [
   {
    "id": "1733917364193297723",
@@ -80,11 +80,11 @@
    "id": "1731544576158828510",
    "uid": "1731544576158828510",
    "link": "https://shop.tiktok.com/vn/pdp/1731544576158828510?_t=ZS-9AhV4NtdvEK",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bánh Thèo Lào Mắm Cay Tuổi Thơ, túi 500g giòn ngon MTFoods",
+   "gia": "42.641₫",
+   "shop": "MT Foods HCM",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -97,9 +97,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:34+07:00",
-   "cap_nhat_luc": "2026-10-20T08:57:34+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-20T09:06:50+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737667871290787709",
