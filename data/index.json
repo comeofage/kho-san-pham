@@ -1,14 +1,14 @@
 {
- "cap_nhat_luc": "2026-10-20T13:47:00+07:00",
+ "cap_nhat_luc": "2026-10-20T13:52:05+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
    "uid": "1736657942520170092",
    "link": "https://shop.tiktok.com/vn/pdp/1736657942520170092",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Móc Treo Balo Túi Sách Kẹp Bàn Tiện Lợi - Không Cần Khoan Đục",
+   "gia": "9.836₫",
+   "shop": "Tổng Kho Công Cụ",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -22,7 +22,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:33+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:25+07:00",
+   "cap_nhat_luc": "2026-10-20T13:51:53+07:00",
    "so_caption": 0,
    "co_file01": false
   },
