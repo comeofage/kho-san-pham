@@ -29,10 +29,15 @@
   "poster_folder": 197,
   "duong_dan": "E:\\oneshottramcanh\\banhtrangbotoi 1731818871861445984\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T12:24:09+07:00",
+ "cap_nhat_luc": "2026-10-20T13:35:34+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-20T11:06:29+07:00"
+ },
+ "da_quay_oneshot": {
+  "xong": true,
+  "boi": "poster",
+  "luc": "2026-10-20T13:35:34+07:00"
  }
 }

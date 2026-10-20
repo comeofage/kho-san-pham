@@ -21,19 +21,19 @@
  "them_luc": "2026-10-13T10:09:05+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "poster",
+  "luc": "2026-10-20T13:35:33+07:00"
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "poster",
+  "luc": "2026-10-20T13:35:33+07:00"
  },
  "da_lam_video": {
   "xong": false,
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-13T11:55:14+07:00"
+ "cap_nhat_luc": "2026-10-20T13:35:33+07:00"
 }
