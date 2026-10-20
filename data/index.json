@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:12:17+07:00",
+ "cap_nhat_luc": "2026-10-20T14:12:41+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -205,10 +205,10 @@
    "id": "1733423423079089850",
    "uid": "1733423423079089850",
    "link": "https://shop.tiktok.com/vn/pdp/1733423423079089850",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "[Jinmailang] Combo 5 gói Mì udon ăn liền- NẤU TRONG 4 PHÚT- thơm ngon và tiện lợi, hoàn hảo cho bữa ăn nhanh gọn và đầy đủ mọi lúc, mọi nơi.",
+   "gia": "122.522₫",
+   "shop": "Jin Mai Lang",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -222,7 +222,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:12:17+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -230,10 +230,10 @@
    "id": "1733440314917815431",
    "uid": "1733440314917815431",
    "link": "https://shop.tiktok.com/vn/pdp/1733440314917815431",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "[FUNGUS] 217 Chi Tiết -  Bộ Xếp Hình Robot Wall-E Dễ Thương Màu Sắc Tươi Tắn Dành Cho Bé Từ 6 Tuổi Phát Triển Kỹ Năng Xếp Hình",
+   "gia": "79.045₫",
+   "shop": "FUNGUSVN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -247,9 +247,9 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:12:30+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1736277410264549005",
