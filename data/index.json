@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:36:24+07:00",
+ "cap_nhat_luc": "2026-10-20T14:37:24+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -1780,10 +1780,10 @@
    "id": "1737742532859037125",
    "uid": "1737742532859037125",
    "link": "https://shop.tiktok.com/vn/pdp/1737742532859037125",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "{ giá mở bán } bình giữ nhiệt xcup .Inox 316 có tặng dây treo nhiều hình dễ thương",
+   "gia": "65.871₫",
+   "shop": "GiaDungDangKhoi",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -1797,7 +1797,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:22+07:00",
+   "cap_nhat_luc": "2026-10-20T14:37:06+07:00",
    "so_caption": 100,
    "co_file01": false
   },
