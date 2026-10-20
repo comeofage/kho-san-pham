@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:14:31+07:00",
+ "cap_nhat_luc": "2026-10-20T14:14:47+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -1405,10 +1405,10 @@
    "id": "1735067593226225633",
    "uid": "1735067593226225633",
    "link": "https://shop.tiktok.com/vn/pdp/1735067593226225633",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Bình nước KAKU NIUMI 450ml xinh xắn 3 cách uống, giữ nhiệt tốt, nhỏ gọn mang đi mọi nơi",
+   "gia": "206.237₫",
+   "shop": "NIUMI.VN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -1422,7 +1422,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:22+07:00",
+   "cap_nhat_luc": "2026-10-20T14:14:35+07:00",
    "so_caption": 100,
    "co_file01": false
   },
