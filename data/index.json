@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:08:14+07:00",
+ "cap_nhat_luc": "2026-10-20T14:08:42+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -130,10 +130,10 @@
    "id": "1731919646474078606",
    "uid": "1731919646474078606",
    "link": "https://shop.tiktok.com/vn/pdp/1731919646474078606",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "[GOKOCO]Máy tăm nước GOKOCO SuperClean - Phiên bản nâng cấp với chế độ kháng khuẩn tự động - Làm sạch hiệu quả cao.",
+   "gia": "427.815₫",
+   "shop": "GOKOCO.STORE",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -147,9 +147,9 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:58:29+07:00",
+   "cap_nhat_luc": "2026-10-20T14:08:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1732492821424932508",
@@ -2030,10 +2030,10 @@
    "id": "1731991566639465684",
    "uid": "1731991566639465684",
    "link": "https://shop.tiktok.com/vn/pdp/1731991566639465684",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Sách - Vở ô li Bài Tập Toán, Tiếng Việt Tăng Cường Lớp 3 - Kết Nối",
+   "gia": "61.178₫",
+   "shop": "Tiemsachnhaun",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -2047,7 +2047,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:21+07:00",
+   "cap_nhat_luc": "2026-10-20T14:08:19+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2780,10 +2780,10 @@
    "id": "1732093741139397554",
    "uid": "1732093741139397554",
    "link": "https://shop.tiktok.com/vn/pdp/1732093741139397554",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "120W Bộ sạc điện thoại USB Type-C, Bộ sạc điện thoại ô tô 4 trong 1 có thể thu vào 1 nhanh，Tẩu Sạc Nhanh ô tô 120W 4-in-1 Bộ sạc xe hơi USB Type-C for Samsung Huawei",
+   "gia": "197.789₫",
+   "shop": "95.MMstudio",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -2797,7 +2797,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:21+07:00",
+   "cap_nhat_luc": "2026-10-20T14:08:30+07:00",
    "so_caption": 99,
    "co_file01": false
   },
