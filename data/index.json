@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:11:33+07:00",
+ "cap_nhat_luc": "2026-10-20T14:11:50+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -2155,10 +2155,10 @@
    "id": "1733103099447051843",
    "uid": "1733103099447051843",
    "link": "https://shop.tiktok.com/vn/pdp/1733103099447051843",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "DUCATI XDIAVEL mô hình lắp ghép bằng gỗ cho mọi người kiên trì, sáng tạo. Ecotoy. An toàn, độc đáo",
+   "gia": "221.985₫",
+   "shop": "EcotoyVN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -2172,7 +2172,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:21+07:00",
+   "cap_nhat_luc": "2026-10-20T14:11:39+07:00",
    "so_caption": 100,
    "co_file01": false
   },
