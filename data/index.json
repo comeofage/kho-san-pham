@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:31:32+07:00",
+ "cap_nhat_luc": "2026-10-20T14:31:47+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -355,10 +355,10 @@
    "id": "1736871398245303653",
    "uid": "1736871398245303653",
    "link": "https://shop.tiktok.com/vn/pdp/1736871398245303653",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Hộp 6 Gôm Tẩy NoiR ClassMate Siêu Sạch, Không Bụi, Vụn Tẩy Gom Lại Thành Dòng, Tẩy Đàn Hội Không Làm Mòn Rách Giấy",
+   "gia": "41.462₫",
+   "shop": "Classmate Official Store",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -372,7 +372,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:31:36+07:00",
    "so_caption": 101,
    "co_file01": false
   },
