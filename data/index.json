@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T14:23:21+07:00",
+ "cap_nhat_luc": "2026-10-20T14:23:57+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -955,10 +955,10 @@
    "id": "1736541105774495474",
    "uid": "1736541105774495474",
    "link": "https://shop.tiktok.com/vn/pdp/1736541105774495474",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
+   "ten": "Hương thơm xe KATHWI – Rừng núi, hương mới, tự do hoang dã, Số... 5, Trà trắng, Balsem gỗ Qud, hương thơm bền lâu và dễ chịu, mùi hương xe sang trọng mới nhất 120 ml",
+   "gia": "183.944₫",
+   "shop": "Kathwi Shop VN",
+   "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
@@ -972,7 +972,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-10-20T13:46:23+07:00",
+   "cap_nhat_luc": "2026-10-20T14:23:45+07:00",
    "so_caption": 100,
    "co_file01": false
   },
