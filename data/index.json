@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T09:07:00+07:00",
+ "cap_nhat_luc": "2026-10-20T09:07:44+07:00",
  "san_pham": [
   {
    "id": "1733917364193297723",
@@ -30,11 +30,11 @@
    "id": "1729663345005464423",
    "uid": "1729663345005464423",
    "link": "https://shop.tiktok.com/vn/pdp/1729663345005464423?_t=ZS-9AhVAZ8Ovie",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Thước Kẻ Hình Học 360 Độ Aihao 3306 – Đa Năng, Tiện Dụng Cho Học Sinh",
+   "gia": "37.576₫",
+   "shop": "HUGI KIDS",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -47,9 +47,9 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:58:55+07:00",
-   "cap_nhat_luc": "2026-10-20T08:58:55+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-20T09:06:59+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1729621409674398358",
