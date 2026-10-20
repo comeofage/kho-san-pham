@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T15:25:37+07:00",
+ "cap_nhat_luc": "2026-10-20T15:26:09+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -1397,7 +1397,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-10-20T14:14:18+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:35+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -1422,7 +1422,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-10-20T14:14:35+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:39+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2272,7 +2272,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:13:07+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:28+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2297,7 +2297,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:14:01+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:31+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2347,8 +2347,8 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:15:01+07:00",
-   "so_caption": 100,
+   "cap_nhat_luc": "2026-10-20T15:25:42+07:00",
+   "so_caption": 99,
    "co_file01": false
   },
   {
@@ -2372,7 +2372,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:15:12+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:47+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2397,8 +2397,8 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:15:35+07:00",
-   "so_caption": 99,
+   "cap_nhat_luc": "2026-10-20T15:25:50+07:00",
+   "so_caption": 100,
    "co_file01": false
   },
   {
@@ -2422,7 +2422,7 @@
    },
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:15:45+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:58+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -3447,7 +3447,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T09:16:20+07:00",
-   "cap_nhat_luc": "2026-10-12T09:22:13+07:00",
+   "cap_nhat_luc": "2026-10-20T15:25:54+07:00",
    "so_caption": 100,
    "co_file01": true
   },
