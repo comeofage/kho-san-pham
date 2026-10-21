@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T08:53:45+07:00",
+ "cap_nhat_luc": "2026-10-21T09:23:50+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4386,9 +4386,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-21T09:23:40+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -4397,7 +4397,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:42:11+07:00",
-   "cap_nhat_luc": "2026-10-20T11:06:16+07:00",
+   "cap_nhat_luc": "2026-10-21T09:23:40+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4481,7 +4481,7 @@
    "uid": "1736411278969833334",
    "link": "https://shop.tiktok.com/vn/pdp/1736411278969833334?_t=ZS-9AKBKF7aWyS",
    "ten": "Bình nước hình bầu 700ml phong cách cổ điển Tai Chi, di động, chống rò rỉ, dùng cho thể thao ngoài trời, bền bỉ, có thể dán decal DIY.",
-   "gia": "76.940₫",
+   "gia": "70.081₫",
    "shop": "Gxgroup",
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
@@ -4497,7 +4497,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:28+07:00",
-   "cap_nhat_luc": "2026-10-21T08:53:33+07:00",
+   "cap_nhat_luc": "2026-10-21T08:53:37+07:00",
    "so_caption": 100,
    "co_file01": true
   },
