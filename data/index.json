@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T21:29:04+07:00",
+ "cap_nhat_luc": "2026-10-21T22:43:42+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4260,10 +4260,10 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:41:21+07:00",
-   "cap_nhat_luc": "2026-10-21T15:12:47+07:00",
+   "cap_nhat_luc": "2026-10-21T22:43:08+07:00",
    "so_caption": 100,
    "co_file01": true
   },
