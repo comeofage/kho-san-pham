@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T09:26:13+07:00",
+ "cap_nhat_luc": "2026-10-21T09:26:48+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -3209,11 +3209,11 @@
    "gia": "120.186₫",
    "shop": "Oke Case",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-21T09:26:36+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -3222,7 +3222,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:11:26+07:00",
-   "cap_nhat_luc": "2026-10-13T11:41:03+07:00",
+   "cap_nhat_luc": "2026-10-21T09:26:36+07:00",
    "so_caption": 100,
    "co_file01": true
   },
