@@ -31,9 +31,10 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 4,
+  "luc": "2026-10-21T09:31:59+07:00",
+  "duong_dan": "F:0\\ốp 1910 1737658776116299032"
  },
- "cap_nhat_luc": "2026-10-21T09:26:36+07:00"
+ "cap_nhat_luc": "2026-10-21T09:31:59+07:00"
 }

@@ -34,9 +34,10 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 4,
+  "luc": "2026-10-21T09:31:59+07:00",
+  "duong_dan": "F:0\\lịch cầu được ước thấy 2010 1733404107867850026"
  },
- "cap_nhat_luc": "2026-10-21T09:24:03+07:00"
+ "cap_nhat_luc": "2026-10-21T09:31:59+07:00"
 }
