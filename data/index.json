@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-20T15:27:45+07:00",
+ "cap_nhat_luc": "2026-10-21T08:53:45+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4484,7 +4484,7 @@
    "gia": "76.940₫",
    "shop": "Gxgroup",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -4497,7 +4497,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:28+07:00",
-   "cap_nhat_luc": "2026-10-20T11:06:18+07:00",
+   "cap_nhat_luc": "2026-10-21T08:53:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
