@@ -28,9 +28,9 @@
   "luc": ""
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-21T22:52:00+07:00"
  },
  "da_lam_video": {
   "xong": true,
@@ -39,6 +39,6 @@
   "poster_folder": 199,
   "duong_dan": "E:/oneshottramcanh/binhwings 1736619699461522926/output_poster"
  },
- "cap_nhat_luc": "2026-10-21T22:43:08+07:00",
+ "cap_nhat_luc": "2026-10-21T22:52:00+07:00",
  "can_dang": true
 }
