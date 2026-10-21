@@ -30,9 +30,9 @@
   "luc": ""
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-21T22:54:01+07:00"
  },
  "da_lam_video": {
   "xong": true,
@@ -41,6 +41,6 @@
   "poster_folder": 200,
   "duong_dan": "E:/oneshottramcanh/bigcup 1730796835380103662/output_poster"
  },
- "cap_nhat_luc": "2026-10-21T22:43:13+07:00",
+ "cap_nhat_luc": "2026-10-21T22:54:01+07:00",
  "can_dang": true
 }
