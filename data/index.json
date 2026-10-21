@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T22:43:42+07:00",
+ "cap_nhat_luc": "2026-10-21T22:46:11+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4287,10 +4287,10 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:41:00+07:00",
-   "cap_nhat_luc": "2026-10-21T21:28:50+07:00",
+   "cap_nhat_luc": "2026-10-21T22:43:13+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4653,7 +4653,7 @@
    "gia": "34.277₫",
    "shop": "BERRYLAND VIET NAM",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -4665,10 +4665,10 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:43:15+07:00",
-   "cap_nhat_luc": "2026-10-20T15:24:46+07:00",
+   "cap_nhat_luc": "2026-10-21T22:45:59+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4827,10 +4827,10 @@
     "luc": "2026-10-20T11:06:18+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:28+07:00",
-   "cap_nhat_luc": "2026-10-21T08:53:37+07:00",
+   "cap_nhat_luc": "2026-10-21T22:43:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
