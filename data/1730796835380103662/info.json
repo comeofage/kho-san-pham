@@ -35,9 +35,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 19,
+  "luc": "2026-10-21T21:28:50+07:00",
+  "poster_folder": 200,
+  "duong_dan": "E:/oneshottramcanh/bigcup 1730796835380103662/output_poster"
  },
- "cap_nhat_luc": "2026-10-07T10:54:00+07:00"
+ "cap_nhat_luc": "2026-10-21T21:28:50+07:00"
 }
