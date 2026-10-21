@@ -17,8 +17,14 @@ Lệnh (luôn `export PYTHONIOENCODING=utf-8` trên Windows):
                                                          kéo captions → kich-ban/poster_captions.txt + du_lieu_tho/kho_info.json
   python kho.py quay  <id|link> --loai oneshot|review [--boi TÊN] [--bo]
                                                          đánh dấu đã quay oneshot / review (--bo = gỡ)
-  python kho.py video <id|link> --so N                   đánh dấu đã làm video
+  python kho.py video <id|link> --so N [--folder-id F] [--duong-dan DIR]
+                                                         đánh dấu đã làm video (+ folder Poster V2 và thư mục video)
   python kho.py index                                    dựng lại data/index.json (GitHub Action dùng)
+
+Video tham khảo (tab "🎬 Video tham khảo" trên web — data/<id>/video_tk.json + video_tk/<vid>.json + video_tk/<vid>/cNN.jpg):
+  python kho.py vtk-cho                                  liệt kê video tham khảo chờ phân tích
+  python kho.py vtk-tai <id|link> <vid> [--out DIR]      tải video, tách cảnh, chụp ảnh, dựng tấm soát + nhap.json
+  python kho.py vtk-ghi <id|link> <vid> --tu DIR         kiểm DIR/phan_tich.json rồi đẩy bảng cảnh + ảnh lên kho
 
 data/index.json do GitHub Action dựng — script này KHÔNG commit index để tránh xung đột.
 """
@@ -242,6 +248,7 @@ def tao_index(data: Path) -> dict:
             "gia": i.get("gia", ""), "shop": i.get("shop", ""), "anh_bia": i.get("anh_bia", ""),
             "trang_thai": nhan_trang_thai(i),
             **{f"da_quay_{l}": i.get(f"da_quay_{l}") or {"xong": da_quay(i, l), "boi": "", "luc": ""} for l in LOAI_QUAY},
+            "yeu_thich": bool(i.get("yeu_thich")), "can_dang": bool(i.get("can_dang")),
             "them_boi": i.get("them_boi", ""), "them_luc": i.get("them_luc", ""),
             "cap_nhat_luc": i.get("cap_nhat_luc", ""), "so_caption": so_cap,
             "co_file01": (data / i["id"] / "bo-canh-quay.md").exists(),
@@ -459,8 +466,84 @@ def lenh_video(a):
     keo()
     i = _can(a.khoa)
     i["da_lam_video"] = {"xong": True, "so_video": a.so, "luc": bay_gio()}
+    if a.folder_id is not None:
+        i["da_lam_video"]["poster_folder"] = a.folder_id
+    if a.duong_dan:
+        i["da_lam_video"]["duong_dan"] = a.duong_dan
     luu(DATA, i)
     day(f"video {i['id']} {a.so}")
+
+
+def doc_vtk(data: Path, id_: str) -> dict:
+    p = data / id_ / "video_tk.json"
+    return _doc_json(p) if p.exists() else {"videos": []}
+
+
+def _can_vtk(khoa: str, vid: str) -> tuple[dict, dict]:
+    i = _can(khoa)
+    for v in doc_vtk(DATA, i["id"]).get("videos", []):
+        if v.get("vid") == vid:
+            return i, v
+    raise SystemExit(f"[LỖI] sản phẩm {i['id']} không có video tham khảo {vid} — xem `kho.py vtk-cho`")
+
+
+def thu_muc_vtk(i: dict, vid: str) -> Path:
+    goc = Path(i.get("thu_muc_may") or Path(__file__).resolve().parents[2] / f"sp_{i['id']}")
+    return goc / "video_tham_khao" / vid
+
+
+def lenh_vtk_cho(a):
+    keo()
+    co = False
+    for i in tat_ca(DATA):
+        for v in doc_vtk(DATA, i["id"]).get("videos", []):
+            if v.get("trang_thai") != "da_phan_tich":
+                co = True
+                print(f"{i['id']}\t{v['vid']}\t{v['link']}\t{v.get('ghi_chu') or '-'}\t"
+                      f"thêm bởi {v.get('them_boi') or '?'}\t{(i.get('ten') or '')[:50]}")
+    if not co:
+        print("Không có video tham khảo nào chờ phân tích.")
+
+
+def lenh_vtk_tai(a):
+    import vtk
+    keo()
+    i, v = _can_vtk(a.khoa, a.vid)
+    out = Path(a.out) if a.out else thu_muc_vtk(i, a.vid)
+    kq = vtk.chuan_bi(v["link"], out, a.vid)
+    print(f"✓ {kq['so_canh']} cảnh · {kq['thoi_luong']:.1f}s · thư mục {out}")
+    if v.get("ghi_chu"):
+        print(f"Ghi chú người gửi: {v['ghi_chu']}")
+    print("Tấm soát (Read từng tấm — mỗi hàng 1 cảnh: đầu | giữa | cuối):")
+    for t in kq["tam_soat"]:
+        print(f"  {t}")
+    print(f"Tiếp: chép {kq['nhap']} → {out / 'phan_tich.json'}, điền noi_dung/goc_may/co_canh/chuyen_dong từng cảnh,\n"
+          f"rồi: python {Path(__file__).as_posix()} vtk-ghi {i['id']} {a.vid} --tu \"{out.as_posix()}\"")
+
+
+def lenh_vtk_ghi(a):
+    import vtk
+    keo()
+    i, v = _can_vtk(a.khoa, a.vid)
+    P = Path(a.tu)
+    if not (P / "phan_tich.json").exists():
+        raise SystemExit(f"[LỖI] chưa có {P / 'phan_tich.json'} — chép từ nhap.json rồi điền mô tả")
+    d = _doc_json(P / "phan_tich.json")
+    loi = vtk.kiem_phan_tich(d, P / "anh")
+    if loi:
+        raise SystemExit("[LỖI] phan_tich.json chưa đạt:\n  " + "\n  ".join(loi[:30]))
+    d.update(vid=a.vid, link=v["link"], phan_tich_luc=bay_gio())
+    thu = DATA / i["id"] / "video_tk"
+    _ghi_json(thu / f"{a.vid}.json", d)
+    vtk.chep_anh(d, P / "anh", thu / a.vid)
+    ds = doc_vtk(DATA, i["id"])
+    for x in ds["videos"]:
+        if x.get("vid") == a.vid:
+            x.update(trang_thai="da_phan_tich", so_canh=len(d["canh"]), thoi_luong=d.get("thoi_luong"),
+                     phan_tich_luc=d["phan_tich_luc"])
+    _ghi_json(DATA / i["id"] / "video_tk.json", ds)
+    day(f"vtk {i['id']} {a.vid}")
+    print(f"✓ {i['id']} / {a.vid}: {len(d['canh'])} cảnh đã lên kho")
 
 
 def lenh_index(a):
@@ -482,8 +565,14 @@ def main(argv=None):
     p = sp.add_parser("quay"); p.add_argument("khoa"); p.add_argument("--loai", choices=LOAI_QUAY, required=True)
     p.add_argument("--boi", default="máy nhà")
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_quay)
-    p = sp.add_parser("video"); p.add_argument("khoa"); p.add_argument("--so", type=int, required=True); p.set_defaults(f=lenh_video)
+    p = sp.add_parser("video"); p.add_argument("khoa"); p.add_argument("--so", type=int, required=True)
+    p.add_argument("--folder-id", type=int); p.add_argument("--duong-dan"); p.set_defaults(f=lenh_video)
     p = sp.add_parser("index"); p.set_defaults(f=lenh_index)
+    p = sp.add_parser("vtk-cho"); p.set_defaults(f=lenh_vtk_cho)
+    p = sp.add_parser("vtk-tai"); p.add_argument("khoa"); p.add_argument("vid"); p.add_argument("--out")
+    p.set_defaults(f=lenh_vtk_tai)
+    p = sp.add_parser("vtk-ghi"); p.add_argument("khoa"); p.add_argument("vid"); p.add_argument("--tu", required=True)
+    p.set_defaults(f=lenh_vtk_ghi)
     a = ap.parse_args(argv)
     a.f(a)
 
