@@ -30,7 +30,7 @@
   "poster_folder": 160,
   "duong_dan": "F:\\2010\\khăn thêu 2010 1737545970179802565\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+ "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -40,5 +40,6 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-15T09:50:02+07:00"
- }
+ },
+ "can_dang": true
 }
