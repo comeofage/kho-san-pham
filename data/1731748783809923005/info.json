@@ -29,10 +29,12 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 19,
+  "luc": "2026-10-21T22:45:59+07:00",
+  "poster_folder": 201,
+  "duong_dan": "E:/oneshottramcanh/atiso 1731748783809923005/output_poster"
  },
- "cap_nhat_luc": "2026-10-21T22:43:25+07:00",
+ "cap_nhat_luc": "2026-10-21T22:45:59+07:00",
  "can_dang": true
 }
