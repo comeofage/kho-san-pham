@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T11:25:47+07:00",
+ "cap_nhat_luc": "2026-10-21T13:35:06+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -21,10 +21,10 @@
     "luc": "2026-10-20T13:35:33+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:33+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 68,
    "co_file01": false
   },
@@ -1155,10 +1155,10 @@
     "luc": "2026-10-20T13:35:31+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2076,7 +2076,7 @@
    "can_dang": false,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-20T14:05:28+07:00",
+   "cap_nhat_luc": "2026-10-21T11:06:55+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -2967,7 +2967,7 @@
    "can_dang": false,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-10-20T14:04:43+07:00",
+   "cap_nhat_luc": "2026-10-21T09:48:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -3048,7 +3048,7 @@
    "can_dang": false,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-10-20T14:10:40+07:00",
+   "cap_nhat_luc": "2026-10-21T09:48:32+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -3207,10 +3207,10 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:56:51+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3423,10 +3423,10 @@
     "luc": "2026-10-20T13:35:34+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:39:41+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3477,10 +3477,10 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:11:26+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3693,10 +3693,10 @@
     "luc": "2026-10-20T13:35:33+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:28+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3882,10 +3882,10 @@
     "luc": "2026-10-20T13:35:33+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-09T12:22:12+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4152,10 +4152,10 @@
     "luc": "2026-10-08T07:08:58+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T19:20:27+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -4611,10 +4611,10 @@
     "luc": "2026-10-20T11:06:29+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:44:12+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4719,10 +4719,10 @@
     "luc": "2026-10-20T11:06:16+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:42:11+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4746,10 +4746,10 @@
     "luc": "2026-10-15T09:50:02+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:55+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -5070,10 +5070,10 @@
     "luc": "2026-10-08T11:20:21+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:37+07:00",
-   "cap_nhat_luc": "2026-10-21T09:34:16+07:00",
+   "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
