@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T09:23:50+07:00",
+ "cap_nhat_luc": "2026-10-21T09:24:13+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -2959,11 +2959,11 @@
    "gia": "82.993₫",
    "shop": "M.Y Stationery",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-21T09:24:03+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -2972,7 +2972,7 @@
    },
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:56:51+07:00",
-   "cap_nhat_luc": "2026-10-20T09:08:28+07:00",
+   "cap_nhat_luc": "2026-10-21T09:24:03+07:00",
    "so_caption": 100,
    "co_file01": true
   },
