@@ -27,10 +27,15 @@
   "so_video": 19,
   "luc": "2026-10-10T16:11:17+07:00"
  },
- "cap_nhat_luc": "2026-10-12T20:40:22+07:00",
+ "cap_nhat_luc": "2026-10-22T09:43:12+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Nhân",
   "luc": "2026-10-12T20:40:22+07:00"
+ },
+ "da_quay_oneshot": {
+  "xong": true,
+  "boi": "Linh",
+  "luc": "2026-10-22T09:43:12+07:00"
  }
 }
