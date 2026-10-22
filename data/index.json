@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-22T10:40:49+07:00",
+ "cap_nhat_luc": "2026-10-22T11:09:42+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4788,7 +4788,7 @@
    "gia": "73.658₫",
    "shop": "Kim Bee House",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -4803,7 +4803,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:13+07:00",
-   "cap_nhat_luc": "2026-10-16T09:01:32+07:00",
+   "cap_nhat_luc": "2026-10-22T11:09:31+07:00",
    "so_caption": 100,
    "co_file01": true
   },
