@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-22T19:41:23+07:00",
+ "cap_nhat_luc": "2026-10-22T19:42:08+07:00",
  "san_pham": [
   {
    "id": "1736906665078458194",
    "uid": "1736906665078458194",
    "link": "https://www.tiktok.com/view/product/1736906665078458194?_t=ZS-9AlekBL4rvY",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Hegerbaby ForestFresh Care Xịt Muỗi Cho Bé 100ml - Không DEET, Dịu Nhẹ Cho Da Bé, Hỗ Trợ Xua Đuổi Côn Trùng",
+   "gia": "73.560₫",
+   "shop": "hegerbaby online",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -24,9 +24,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-22T19:38:45+07:00",
-   "cap_nhat_luc": "2026-10-22T19:38:45+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-22T19:41:56+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736466305638172498",
