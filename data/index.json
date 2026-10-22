@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-21T22:54:11+07:00",
+ "cap_nhat_luc": "2026-10-22T08:35:48+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -3492,7 +3492,7 @@
    "gia": "46.143₫",
    "shop": "Thế Giới In Nhiệt",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -3507,7 +3507,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:58+07:00",
-   "cap_nhat_luc": "2026-10-21T22:51:05+07:00",
+   "cap_nhat_luc": "2026-10-22T08:35:36+07:00",
    "so_caption": 100,
    "co_file01": true
   },
