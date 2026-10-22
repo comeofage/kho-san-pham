@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-22T08:38:01+07:00",
+ "cap_nhat_luc": "2026-10-22T09:31:57+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -3330,7 +3330,7 @@
    "gia": "173.909₫",
    "shop": "Classmate Official Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -3345,7 +3345,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T18:37:45+07:00",
-   "cap_nhat_luc": "2026-10-20T11:05:49+07:00",
+   "cap_nhat_luc": "2026-10-22T09:31:45+07:00",
    "so_caption": 100,
    "co_file01": true
   },
