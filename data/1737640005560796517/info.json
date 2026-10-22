@@ -25,11 +25,12 @@
  "da_phan_tich": true,
  "da_lam_video": {
   "xong": true,
-  "so_video": 4,
-  "luc": "2026-10-21T09:31:59+07:00",
-  "duong_dan": "F:\\2010\\giấy kiểm tra 2010 1737640005560796517\\output_poster"
+  "so_video": 19,
+  "luc": "2026-10-22T09:48:44+07:00",
+  "poster_folder": 204,
+  "duong_dan": "E:/oneshottramcanh/giaykiemtra 1737640005560796517/output_poster"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
+ "cap_nhat_luc": "2026-10-22T09:48:44+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
