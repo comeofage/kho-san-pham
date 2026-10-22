@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-22T11:31:41+07:00",
+ "cap_nhat_luc": "2026-10-22T11:38:48+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -4437,22 +4437,22 @@
    "gia": "63.234₫",
    "shop": "Aikomi Việt Nam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-22T11:31:38+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:33:28+07:00",
-   "cap_nhat_luc": "2026-10-07T10:55:38+07:00",
+   "cap_nhat_luc": "2026-10-22T11:31:38+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4464,22 +4464,22 @@
    "gia": "173.359₫",
    "shop": "Aikomi Việt Nam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "Thu",
     "luc": "2026-10-07T17:58:36+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-22T11:38:39+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:32:55+07:00",
-   "cap_nhat_luc": "2026-10-07T17:58:36+07:00",
+   "cap_nhat_luc": "2026-10-22T11:38:39+07:00",
    "so_caption": 100,
    "co_file01": true
   },
