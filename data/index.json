@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-22T09:31:57+07:00",
+ "cap_nhat_luc": "2026-10-22T09:39:16+07:00",
  "san_pham": [
   {
    "id": "1736657942520170092",
@@ -3276,11 +3276,11 @@
    "gia": "20.905₫",
    "shop": "Én decor 02",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Linh",
+    "luc": "2026-10-22T09:39:06+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -3291,7 +3291,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:55:48+07:00",
-   "cap_nhat_luc": "2026-10-20T09:08:23+07:00",
+   "cap_nhat_luc": "2026-10-22T09:39:06+07:00",
    "so_caption": 100,
    "co_file01": true
   },
