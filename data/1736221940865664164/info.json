@@ -33,9 +33,10 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 6,
+  "luc": "2026-10-23T17:55:45+07:00",
+  "duong_dan": "F:/2210/gấu teddy 2210 1736221940865664164/output_poster"
  },
- "cap_nhat_luc": "2026-10-07T10:55:00+07:00"
+ "cap_nhat_luc": "2026-10-23T17:55:45+07:00"
 }
