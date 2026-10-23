@@ -34,9 +34,10 @@
   "luc": "2026-10-23T09:41:34+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 6,
+  "luc": "2026-10-23T17:56:01+07:00",
+  "duong_dan": "F:/2210/thỏ bông 2210 1736224785824908452/output_poster"
  },
- "cap_nhat_luc": "2026-10-23T09:41:34+07:00"
+ "cap_nhat_luc": "2026-10-23T17:56:01+07:00"
 }
