@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-23T20:54:54+07:00",
+ "cap_nhat_luc": "2026-10-23T21:26:56+07:00",
  "san_pham": [
   {
    "id": "1736906665078458194",
@@ -3600,7 +3600,7 @@
    "gia": "161.490₫",
    "shop": "Deli Vietnam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -3615,7 +3615,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:42+07:00",
-   "cap_nhat_luc": "2026-10-13T11:54:09+07:00",
+   "cap_nhat_luc": "2026-10-23T21:26:43+07:00",
    "so_caption": 100,
    "co_file01": true
   },
