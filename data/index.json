@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-23T23:09:03+07:00",
+ "cap_nhat_luc": "2026-10-23T23:11:27+07:00",
  "san_pham": [
   {
    "id": "1735781477486003846",
@@ -24,7 +24,7 @@
    "can_dang": false,
    "them_boi": "máy nhà",
    "them_luc": "2026-10-23T23:08:47+07:00",
-   "cap_nhat_luc": "2026-10-23T23:08:47+07:00",
+   "cap_nhat_luc": "2026-10-23T23:08:52+07:00",
    "so_caption": 0,
    "co_file01": false
   },
@@ -32,11 +32,11 @@
    "id": "1737505766405867446",
    "uid": "1737505766405867446",
    "link": "https://www.tiktok.com/view/product/1737505766405867446",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Ô Siêu Nhẹ - Tặng Hộp Đựng] Ô Mini Chống Tia UV Siêu Nhẹ, Nhỏ Gọn, Chống Nắng UPF 50+, Chống Rò Nước, Khung Hợp Kim Nhôm Siêu Nhẹ 240G",
+   "gia": "141.233₫",
+   "shop": "Deli Lifestyle",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -51,36 +51,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-23T23:01:07+07:00",
-   "cap_nhat_luc": "2026-10-23T23:01:07+07:00",
-   "so_caption": 0,
-   "co_file01": false
-  },
-  {
-   "id": "tam-20261023225832011",
-   "uid": null,
-   "link": "https://vt.tiktok.com/ZS9UwVjq4mXS7-Y1111/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
-   "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "yeu_thich": false,
-   "can_dang": false,
-   "them_boi": "Nhân",
-   "them_luc": "2026-10-23T22:58:32+07:00",
-   "cap_nhat_luc": "2026-10-23T22:58:32+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-23T23:11:12+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736906665078458194",
