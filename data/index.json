@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-23T09:41:36+07:00",
+ "cap_nhat_luc": "2026-10-23T09:42:05+07:00",
  "san_pham": [
   {
    "id": "1736906665078458194",
@@ -3553,15 +3553,15 @@
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-23T09:41:47+07:00"
    },
    "yeu_thich": false,
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:58+07:00",
-   "cap_nhat_luc": "2026-10-22T08:35:36+07:00",
+   "cap_nhat_luc": "2026-10-23T09:41:47+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3870,22 +3870,22 @@
    "gia": "82.718₫",
    "shop": "Ăn Vặt Panda Pẻn",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-23T09:41:27+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:01:00+07:00",
-   "cap_nhat_luc": "2026-10-12T09:21:06+07:00",
+   "cap_nhat_luc": "2026-10-23T09:41:27+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4464,22 +4464,22 @@
    "gia": "63.641₫",
    "shop": "Tiệm nhà Bi và Tin",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-23T09:41:34+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:01+07:00",
-   "cap_nhat_luc": "2026-10-07T10:54:51+07:00",
+   "cap_nhat_luc": "2026-10-23T09:41:34+07:00",
    "so_caption": 100,
    "co_file01": true
   },
