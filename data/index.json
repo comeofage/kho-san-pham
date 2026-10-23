@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-23T16:38:46+07:00",
+ "cap_nhat_luc": "2026-10-23T17:55:59+07:00",
  "san_pham": [
   {
    "id": "1736906665078458194",
@@ -4437,7 +4437,7 @@
    "gia": "68.347₫",
    "shop": "Tiệm nhà Bi và Tin",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -4452,7 +4452,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:13+07:00",
-   "cap_nhat_luc": "2026-10-07T10:55:00+07:00",
+   "cap_nhat_luc": "2026-10-23T17:55:45+07:00",
    "so_caption": 100,
    "co_file01": true
   },
