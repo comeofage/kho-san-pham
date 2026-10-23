@@ -32,9 +32,10 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 6,
+  "luc": "2026-10-23T17:55:58+07:00",
+  "duong_dan": "F:/2210/thèo lèo 2210 1731544576158828510/output_poster"
  },
- "cap_nhat_luc": "2026-10-20T09:06:50+07:00"
+ "cap_nhat_luc": "2026-10-23T17:55:58+07:00"
 }
