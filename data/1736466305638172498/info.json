@@ -30,9 +30,10 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 5,
+  "luc": "2026-10-23T17:55:54+07:00",
+  "duong_dan": "F:/2210/kem muỗi 2210 1736466305638172498/output_poster"
  },
- "cap_nhat_luc": "2026-10-22T19:41:11+07:00"
+ "cap_nhat_luc": "2026-10-23T17:55:54+07:00"
 }
