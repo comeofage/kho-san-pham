@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-23T14:48:38+07:00",
+ "cap_nhat_luc": "2026-10-23T15:28:56+07:00",
  "san_pham": [
   {
    "id": "1736906665078458194",
@@ -4518,7 +4518,7 @@
    "gia": "173.359₫",
    "shop": "Aikomi Việt Nam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "Thu",
@@ -4533,7 +4533,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:32:55+07:00",
-   "cap_nhat_luc": "2026-10-22T11:38:39+07:00",
+   "cap_nhat_luc": "2026-10-23T15:28:39+07:00",
    "so_caption": 100,
    "co_file01": true
   },
