@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-24T13:11:34+07:00",
+ "cap_nhat_luc": "2026-10-24T16:08:30+07:00",
  "san_pham": [
   {
    "id": "1735781477486003846",
@@ -3897,7 +3897,7 @@
    "gia": "115.609₫",
    "shop": "Ăn Vặt Panda Pẻn",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -3912,7 +3912,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:02:11+07:00",
-   "cap_nhat_luc": "2026-10-23T10:59:48+07:00",
+   "cap_nhat_luc": "2026-10-24T16:08:15+07:00",
    "so_caption": 100,
    "co_file01": true
   },
