@@ -31,9 +31,11 @@
   "luc": "2026-10-23T10:59:48+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 17,
+  "luc": "2026-10-24T16:08:15+07:00",
+  "poster_folder": 218,
+  "duong_dan": "E:/oneshottramcanh/keo jelly 1729740251036616992/output_poster"
  },
- "cap_nhat_luc": "2026-10-23T10:59:48+07:00"
+ "cap_nhat_luc": "2026-10-24T16:08:15+07:00"
 }
