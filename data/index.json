@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-24T18:08:30+07:00",
+ "cap_nhat_luc": "2026-10-24T20:33:43+07:00",
  "san_pham": [
   {
    "id": "1735781477486003846",
@@ -24,7 +24,7 @@
    "can_dang": true,
    "them_boi": "máy nhà",
    "them_luc": "2026-10-23T23:08:47+07:00",
-   "cap_nhat_luc": "2026-10-24T18:08:18+07:00",
+   "cap_nhat_luc": "2026-10-24T18:08:25+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -3195,7 +3195,7 @@
    "gia": "37.576₫",
    "shop": "HUGI KIDS",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -3210,7 +3210,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:58:55+07:00",
-   "cap_nhat_luc": "2026-10-20T09:06:59+07:00",
+   "cap_nhat_luc": "2026-10-24T20:33:28+07:00",
    "so_caption": 100,
    "co_file01": true
   },
