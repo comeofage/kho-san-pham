@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-24T16:08:30+07:00",
+ "cap_nhat_luc": "2026-10-24T17:01:56+07:00",
  "san_pham": [
   {
    "id": "1735781477486003846",
@@ -21,7 +21,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "máy nhà",
    "them_luc": "2026-10-23T23:08:47+07:00",
    "cap_nhat_luc": "2026-10-23T23:12:36+07:00",
@@ -48,7 +48,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-23T23:01:07+07:00",
    "cap_nhat_luc": "2026-10-23T23:11:12+07:00",
@@ -75,7 +75,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-22T19:38:45+07:00",
    "cap_nhat_luc": "2026-10-22T19:41:56+07:00",
@@ -399,7 +399,7 @@
     "luc": "2026-10-20T13:35:32+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-10-20T14:20:52+07:00",
@@ -3207,7 +3207,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:58:55+07:00",
    "cap_nhat_luc": "2026-10-20T09:06:59+07:00",
@@ -3234,7 +3234,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:59+07:00",
    "cap_nhat_luc": "2026-10-20T09:07:43+07:00",
@@ -3288,7 +3288,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:10+07:00",
    "cap_nhat_luc": "2026-10-20T09:08:00+07:00",
@@ -3423,7 +3423,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:55:15+07:00",
    "cap_nhat_luc": "2026-10-20T09:08:32+07:00",
@@ -3666,7 +3666,7 @@
     "luc": ""
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:42+07:00",
    "cap_nhat_luc": "2026-10-24T13:11:22+07:00",
@@ -3936,7 +3936,7 @@
     "luc": "2026-10-23T09:41:27+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:01:00+07:00",
    "cap_nhat_luc": "2026-10-24T13:03:10+07:00",
