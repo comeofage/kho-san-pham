@@ -28,9 +28,9 @@
   "luc": ""
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Thu",
+  "luc": "2026-10-26T08:50:52+07:00"
  },
  "da_lam_video": {
   "xong": true,
@@ -39,6 +39,6 @@
   "poster_folder": 222,
   "duong_dan": "E:\\oneshottramcanh\\bothuoc 1729663345005464423\\output"
  },
- "cap_nhat_luc": "2026-10-24T20:45:06+07:00",
+ "cap_nhat_luc": "2026-10-26T08:50:52+07:00",
  "can_dang": true
 }
