@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-27T13:38:11+07:00",
+ "cap_nhat_luc": "2026-10-27T13:38:40+07:00",
  "san_pham": [
   {
    "id": "1733378440723793903",
@@ -24,8 +24,8 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:35:37+07:00",
-   "cap_nhat_luc": "2026-10-27T13:37:00+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-10-27T13:38:00+07:00",
+   "so_caption": 100,
    "co_file01": true
   },
   {
@@ -167,11 +167,11 @@
    "id": "1737093684518225069",
    "uid": "1737093684518225069",
    "link": "https://vt.tiktok.com/ZS9y65A3RggeB-HJtDQ/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Đồ chơi DIY máy tạo kiểu tóc cho mèo, có thể thay đổi kiểu tóc, hạt nam châm, bảng vẽ hai mặt ，đồ chơi sáng tạo giải trí cho trẻ em game   dien",
+   "gia": "76.752₫",
+   "shop": "Youyo toys",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -186,9 +186,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:32+07:00",
-   "cap_nhat_luc": "2026-10-27T13:32:38+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-27T13:38:19+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736267496948925813",
@@ -221,11 +221,11 @@
    "id": "1737205396728808543",
    "uid": "1737205396728808543",
    "link": "https://vt.tiktok.com/ZS9y65Y684bkV-0Bnfe/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Shi3D Keycap Clicker In 3D Custom Theo Tên Riêng - Tặng Cờ Việt Nam",
+   "gia": "43.851₫",
+   "shop": "Shi3D",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -240,9 +240,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:32:18+07:00",
-   "cap_nhat_luc": "2026-10-27T13:32:38+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-27T13:38:02+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1738119746346517633",
