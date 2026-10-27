@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-10-27T13:32:55+07:00",
+ "cap_nhat_luc": "2026-10-27T13:37:00+07:00",
  "san_pham": [
   {
    "id": "1733378440723793903",
    "uid": "1733378440723793903",
    "link": "https://vt.tiktok.com/ZS9y65sBamC5r-krJIi/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Áo Khoác Trẻ Em Balabala, Dành Cho Bé Trai Và Bé Gái, Hàng Mới Về 2026, Áo Mặc Bên Ngoài Lông Cừu Cực Chống Tĩnh Điện, Hợp Xu hướng, Ấm Áp Và Ấm Cúng, Thích Hợp Cho Mùa Đông, Chơi Trong Thời Tiết Lạnh",
+   "gia": "697.380₫",
+   "shop": "balabala SEA",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -24,9 +24,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:35:37+07:00",
-   "cap_nhat_luc": "2026-10-27T13:32:41+07:00",
+   "cap_nhat_luc": "2026-10-27T13:36:49+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1737635369156773564",
