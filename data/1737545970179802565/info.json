@@ -25,12 +25,10 @@
  "da_phan_tich": true,
  "da_lam_video": {
   "xong": true,
-  "so_video": 0,
-  "luc": "2026-10-15T12:31:40+07:00",
-  "poster_folder": 160,
-  "duong_dan": "F:\\2010\\khăn thêu 2010 1737545970179802565\\output_poster"
+  "so_video": 20,
+  "luc": "2026-10-27T10:56:52+07:00"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
+ "cap_nhat_luc": "2026-10-27T10:56:52+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
