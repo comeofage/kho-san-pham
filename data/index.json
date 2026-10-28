@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-28T13:37:29+07:00",
+ "cap_nhat_luc": "2026-10-28T13:39:12+07:00",
  "san_pham": [
   {
    "id": "1733378440723793903",
@@ -198,11 +198,11 @@
    "gia": "114.159₫",
    "shop": "Dencare Official Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-28T13:37:20+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -213,7 +213,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:32:56+07:00",
-   "cap_nhat_luc": "2026-10-27T13:37:05+07:00",
+   "cap_nhat_luc": "2026-10-28T13:37:20+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -225,11 +225,11 @@
    "gia": "43.851₫",
    "shop": "Shi3D",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-28T13:39:01+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -240,7 +240,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:32:18+07:00",
-   "cap_nhat_luc": "2026-10-27T13:38:02+07:00",
+   "cap_nhat_luc": "2026-10-28T13:39:01+07:00",
    "so_caption": 100,
    "co_file01": true
   },
