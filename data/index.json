@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-28T13:49:26+07:00",
+ "cap_nhat_luc": "2026-10-28T15:41:40+07:00",
  "san_pham": [
   {
    "id": "1737958349513197332",
@@ -4763,9 +4763,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Linh",
+    "luc": "2026-10-28T15:41:30+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -4776,7 +4776,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:40:35+07:00",
-   "cap_nhat_luc": "2026-10-23T19:11:25+07:00",
+   "cap_nhat_luc": "2026-10-28T15:41:30+07:00",
    "so_caption": 100,
    "co_file01": true
   },
