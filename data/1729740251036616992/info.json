@@ -21,9 +21,9 @@
  "them_luc": "2026-10-10T11:02:11+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-28T13:36:43+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -37,5 +37,5 @@
   "poster_folder": 218,
   "duong_dan": "E:/oneshottramcanh/keo jelly 1729740251036616992/output_poster"
  },
- "cap_nhat_luc": "2026-10-24T16:08:15+07:00"
+ "cap_nhat_luc": "2026-10-28T13:36:43+07:00"
 }
