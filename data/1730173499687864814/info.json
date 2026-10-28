@@ -24,9 +24,9 @@
  "them_luc": "2026-10-07T10:40:35+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Linh",
+  "luc": "2026-10-28T15:41:30+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -40,6 +40,6 @@
   "poster_folder": 211,
   "duong_dan": "E:/oneshottramcanh/hopcom 1730173499687864814/output_poster"
  },
- "cap_nhat_luc": "2026-10-23T19:11:25+07:00",
+ "cap_nhat_luc": "2026-10-28T15:41:30+07:00",
  "can_dang": true
 }
