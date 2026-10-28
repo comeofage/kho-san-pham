@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-28T13:36:56+07:00",
+ "cap_nhat_luc": "2026-10-28T13:37:29+07:00",
  "san_pham": [
   {
    "id": "1733378440723793903",
@@ -90,11 +90,11 @@
    "gia": "36.495₫",
    "shop": "Lucky@@",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-28T13:36:51+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -105,7 +105,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:34:21+07:00",
-   "cap_nhat_luc": "2026-10-27T13:37:29+07:00",
+   "cap_nhat_luc": "2026-10-28T13:36:51+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -252,11 +252,11 @@
    "gia": "64.724₫",
    "shop": "ĐỒ CHƠI HOTTREND QCN",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-28T13:37:03+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -267,7 +267,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:31:53+07:00",
-   "cap_nhat_luc": "2026-10-27T13:37:54+07:00",
+   "cap_nhat_luc": "2026-10-28T13:37:03+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -279,11 +279,11 @@
    "gia": "44.630₫",
    "shop": "ĐỒ CHƠI HOTTREND QCN",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-28T13:37:10+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -294,7 +294,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:31:35+07:00",
-   "cap_nhat_luc": "2026-10-27T13:37:13+07:00",
+   "cap_nhat_luc": "2026-10-28T13:37:10+07:00",
    "so_caption": 100,
    "co_file01": true
   },
