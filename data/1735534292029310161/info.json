@@ -31,10 +31,12 @@
   "luc": "2026-10-26T10:49:26+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-10-29T09:53:43+07:00",
+  "poster_folder": 226,
+  "duong_dan": "E:/oneshottramcanh/nuochoaplatino 1735534292029310161/output_poster"
  },
- "cap_nhat_luc": "2026-10-28T19:55:22+07:00",
+ "cap_nhat_luc": "2026-10-29T09:53:43+07:00",
  "can_dang": true
 }
