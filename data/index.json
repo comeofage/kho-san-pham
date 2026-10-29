@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-29T13:29:30+07:00",
+ "cap_nhat_luc": "2026-10-29T14:10:54+07:00",
  "san_pham": [
   {
    "id": "tam-20261029101638513",
@@ -3654,7 +3654,7 @@
    "gia": "76.218₫",
    "shop": "Uososo Case Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -3669,7 +3669,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:10+07:00",
-   "cap_nhat_luc": "2026-10-29T13:29:21+07:00",
+   "cap_nhat_luc": "2026-10-29T14:10:41+07:00",
    "so_caption": 100,
    "co_file01": true
   },
