@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-29T09:53:24+07:00",
+ "cap_nhat_luc": "2026-10-29T09:53:54+07:00",
  "san_pham": [
   {
    "id": "1737958349513197332",
@@ -4167,7 +4167,7 @@
    "gia": "524.527₫",
    "shop": "GOCADO Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -4182,7 +4182,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T09:16:20+07:00",
-   "cap_nhat_luc": "2026-10-28T19:55:22+07:00",
+   "cap_nhat_luc": "2026-10-29T09:53:43+07:00",
    "so_caption": 100,
    "co_file01": true
   },
