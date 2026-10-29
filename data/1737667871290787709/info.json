@@ -32,10 +32,12 @@
   "luc": "2026-10-26T10:48:53+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-10-29T14:10:41+07:00",
+  "poster_folder": 231,
+  "duong_dan": "E:/oneshottramcanh/opgadient 1737667871290787709/output_poster"
  },
- "cap_nhat_luc": "2026-10-29T13:29:21+07:00",
+ "cap_nhat_luc": "2026-10-29T14:10:41+07:00",
  "can_dang": true
 }
