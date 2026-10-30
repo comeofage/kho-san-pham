@@ -31,9 +31,10 @@
   "luc": "2026-10-30T13:51:43+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-10-30T14:59:28+07:00",
+  "duong_dan": "F:/3010/3010/ncm/quạt phun 3010 1737635369156773564/output_poster"
  },
- "cap_nhat_luc": "2026-10-30T13:51:43+07:00"
+ "cap_nhat_luc": "2026-10-30T14:59:28+07:00"
 }
