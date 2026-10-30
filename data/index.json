@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-30T14:59:39+07:00",
+ "cap_nhat_luc": "2026-10-30T15:00:07+07:00",
  "san_pham": [
   {
    "id": "tam-20261029101638513",
@@ -102,10 +102,10 @@
     "luc": "2026-10-30T13:51:43+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:35:22+07:00",
-   "cap_nhat_luc": "2026-10-30T14:59:28+07:00",
+   "cap_nhat_luc": "2026-10-30T14:59:54+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -198,7 +198,7 @@
    "gia": "92.053₫",
    "shop": "TinyToyVN",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -210,10 +210,10 @@
     "luc": "2026-10-29T12:49:49+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:50+07:00",
-   "cap_nhat_luc": "2026-10-29T12:49:49+07:00",
+   "cap_nhat_luc": "2026-10-30T14:59:54+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -225,7 +225,7 @@
    "gia": "76.752₫",
    "shop": "Youyo toys",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -237,10 +237,10 @@
     "luc": "2026-10-30T10:26:40+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:32+07:00",
-   "cap_nhat_luc": "2026-10-30T10:26:40+07:00",
+   "cap_nhat_luc": "2026-10-30T14:59:54+07:00",
    "so_caption": 100,
    "co_file01": true
   },
