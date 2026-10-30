@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-30T08:19:23+07:00",
+ "cap_nhat_luc": "2026-10-30T10:26:48+07:00",
  "san_pham": [
   {
    "id": "tam-20261029101638513",
@@ -225,22 +225,22 @@
    "gia": "76.752₫",
    "shop": "Youyo toys",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-10-30T10:26:40+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:32+07:00",
-   "cap_nhat_luc": "2026-10-27T13:38:19+07:00",
+   "cap_nhat_luc": "2026-10-30T10:26:40+07:00",
    "so_caption": 100,
    "co_file01": true
   },
