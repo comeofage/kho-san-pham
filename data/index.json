@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T09:57:03+07:00",
+ "cap_nhat_luc": "2026-10-31T09:57:19+07:00",
  "san_pham": [
   {
    "id": "tam-20261029101638513",
@@ -3629,9 +3629,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-31T09:56:56+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -3642,7 +3642,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:34+07:00",
-   "cap_nhat_luc": "2026-10-30T10:28:07+07:00",
+   "cap_nhat_luc": "2026-10-31T09:56:56+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4304,9 +4304,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-31T09:57:04+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -4317,7 +4317,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:01:00+07:00",
-   "cap_nhat_luc": "2026-10-24T13:03:10+07:00",
+   "cap_nhat_luc": "2026-10-31T09:57:04+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4871,9 +4871,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-31T09:57:07+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -4884,7 +4884,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:13+07:00",
-   "cap_nhat_luc": "2026-10-27T12:49:35+07:00",
+   "cap_nhat_luc": "2026-10-31T09:57:07+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -4898,9 +4898,9 @@
    "anh_bia": "bia.jpg",
    "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-10-31T09:57:09+07:00"
    },
    "da_quay_review": {
     "xong": true,
@@ -4911,7 +4911,7 @@
    "can_dang": true,
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:01+07:00",
-   "cap_nhat_luc": "2026-10-25T22:37:13+07:00",
+   "cap_nhat_luc": "2026-10-31T09:57:09+07:00",
    "so_caption": 100,
    "co_file01": true
   },
