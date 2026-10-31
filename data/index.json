@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T16:00:58+07:00",
+ "cap_nhat_luc": "2026-10-31T16:01:30+07:00",
  "san_pham": [
   {
    "id": "tam-20261029101638513",
@@ -2586,10 +2586,10 @@
     "luc": "2026-10-20T13:35:29+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-31T16:00:46+07:00",
+   "cap_nhat_luc": "2026-10-31T16:01:02+07:00",
    "so_caption": 100,
    "co_file01": false
   },
@@ -3291,7 +3291,7 @@
    "can_dang": false,
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-10-23T10:32:16+07:00",
+   "cap_nhat_luc": "2026-10-31T16:01:07+07:00",
    "so_caption": 100,
    "co_file01": false
   },
