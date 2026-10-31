@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T17:45:42+07:00",
+ "cap_nhat_luc": "2026-10-31T17:46:15+07:00",
  "san_pham": [
   {
    "id": "1734525801092253469",
@@ -32,11 +32,11 @@
    "id": "1737083087942944698",
    "uid": "1737083087942944698",
    "link": "1737083087942944698",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "(Gỗ nhóm 1) Ống Nhang Phúc Lộc Thọ Lục Giác Dát Vàng . Kt: 12cm Cao 26cm Chất Liệu Gỗ Lát Cao Cấp Sơn Pu 3 Lớp Sang Trọng Bền Đẹp Mang Lại Tài Lộ",
+   "gia": "308.216₫",
+   "shop": "DHK Store",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -51,9 +51,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:37:19+07:00",
-   "cap_nhat_luc": "2026-10-31T17:37:19+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:39+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737667830661482063",
@@ -86,11 +86,11 @@
    "id": "1736165804568577652",
    "uid": "1736165804568577652",
    "link": "1736165804568577652",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Combo 10-20]Khăn Lau Đa Năng Thổ Cẩm 25x35cm Chất Cotton Thấm Hút Tốt - Vệ Sinh Bàn Ghế, Bếp, Lau Xe",
+   "gia": "48.315₫",
+   "shop": "TIỆM BÀ SƯƠNG",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -105,9 +105,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:36:28+07:00",
-   "cap_nhat_luc": "2026-10-31T17:36:28+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:31+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1729621861895604766",
@@ -140,11 +140,11 @@
    "id": "1736931664795174256",
    "uid": "1736931664795174256",
    "link": "1736931664795174256",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Decal cửa kính Phúc Lộc phiên bản mới 2026, giấy dán tĩnh điện trang trí cửa sổ sáng tạo hình quả hồ lô, trang trí nhà mới chúc mừng chuyển nhà",
+   "gia": "33.582₫",
+   "shop": "Silt Cove",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -159,19 +159,19 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:35:43+07:00",
-   "cap_nhat_luc": "2026-10-31T17:35:43+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:56+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1732052416722142778",
    "uid": "1732052416722142778",
    "link": "1732052416722142778",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Lót Chuột Gaming Mini Kích Thước 25x20cm Nhỏ Gọn Nhiều Hoạ Tiết Dễ Thương Hot Trend Kích Thước Lý Tưởng Thiết Kế Đa Dạng Mặt Speed Di Chuột Viền May Chắc Chắn Đế Cao Su Vệ Sinh Dễ Dàng",
+   "gia": "27.170₫",
+   "shop": "BOSS PAD",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -186,9 +186,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:35:14+07:00",
-   "cap_nhat_luc": "2026-10-31T17:35:14+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:45+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1730149858573715748",
@@ -356,11 +356,11 @@
    "id": "1731996650665772369",
    "uid": "1731996650665772369",
    "link": "1731996650665772369",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Tranh vải decor phong cảnh thiên nhiên, tranh vải treo tường Hoon Decor cao cấp với nhiều mẫu khách nhau.",
+   "gia": "64.179₫",
+   "shop": "Hoon Decor & Design",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -375,9 +375,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:32:39+07:00",
-   "cap_nhat_luc": "2026-10-31T17:32:39+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:34+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731141980888533631",
