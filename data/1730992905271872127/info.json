@@ -21,9 +21,9 @@
  "them_luc": "2026-10-13T10:09:42+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-31T09:58:33+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -37,6 +37,6 @@
   "poster_folder": 216,
   "duong_dan": "E:/oneshottramcanh/maugocnuoc 1730992905271872127/output"
  },
- "cap_nhat_luc": "2026-10-26T08:51:00+07:00",
+ "cap_nhat_luc": "2026-10-31T09:58:33+07:00",
  "can_dang": true
 }
