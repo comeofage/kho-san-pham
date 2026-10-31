@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T18:20:58+07:00",
+ "cap_nhat_luc": "2026-10-31T18:21:28+07:00",
  "san_pham": [
   {
    "id": "1734525801092253469",
@@ -455,11 +455,11 @@
    "id": "1729647079859718809",
    "uid": "1729647079859718809",
    "link": "https://vt.tiktok.com/ZS9yD3a2mkMqL-lKbqs/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "TRANCY HOME Bình Giữ Nhiệt Inox 304 BTC04 Thể Thao Đựng Nước Lỏi 600-1500ml Giữ Nhiệt 8-10h Có Dây Xách Tiện Lợi & An Toàn",
+   "gia": "187.771₫",
+   "shop": "Trancy.Home",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -475,9 +475,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-29T10:16:38+07:00",
-   "cap_nhat_luc": "2026-10-31T17:39:31+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T18:21:12+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737958349513197332",
@@ -4699,11 +4699,11 @@
     "luc": "2026-10-20T13:35:33+07:00"
    },
    "yeu_thich": false,
-   "can_dang": false,
+   "can_dang": true,
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:09:05+07:00",
-   "cap_nhat_luc": "2026-10-31T18:20:48+07:00",
+   "cap_nhat_luc": "2026-10-31T18:20:51+07:00",
    "so_caption": 100,
    "co_file01": true
   },
