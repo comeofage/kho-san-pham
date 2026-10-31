@@ -248,7 +248,7 @@ def tao_index(data: Path) -> dict:
             "gia": i.get("gia", ""), "shop": i.get("shop", ""), "anh_bia": i.get("anh_bia", ""),
             "trang_thai": nhan_trang_thai(i),
             **{f"da_quay_{l}": i.get(f"da_quay_{l}") or {"xong": da_quay(i, l), "boi": "", "luc": ""} for l in LOAI_QUAY},
-            "yeu_thich": bool(i.get("yeu_thich")), "can_dang": bool(i.get("can_dang")),
+            "yeu_thich": bool(i.get("yeu_thich")), "can_dang": bool(i.get("can_dang")), "the": i.get("the") or [],
             "them_boi": i.get("them_boi", ""), "them_luc": i.get("them_luc", ""),
             "cap_nhat_luc": i.get("cap_nhat_luc", ""), "so_caption": so_cap,
             "co_file01": (data / i["id"] / "bo-canh-quay.md").exists(),
@@ -285,7 +285,7 @@ def day(thong_diep: str) -> None:
         if git("push", "-q", kiem=False).returncode == 0:
             print("✓ đã đẩy lên GitHub")
             return
-        git("pull", "--rebase", "-q")
+        git("pull", "--rebase", "--autostash", "-q")
     raise SystemExit("[LỖI] push thất bại 3 lần")
 
 
@@ -474,6 +474,26 @@ def lenh_video(a):
     day(f"video {i['id']} {a.so}")
 
 
+def lenh_the(a):
+    """Gắn/bỏ thẻ tự đặt (vd pemit89) cho nhiều sản phẩm, 1 commit."""
+    ten = a.ten.strip().lower()
+    if not re.fullmatch(r"[a-z0-9_-]{1,32}", ten):
+        raise SystemExit("[LỖI] tên thẻ chỉ gồm a-z 0-9 _ - (≤32 ký tự)")
+    keo()
+    for k in a.khoa:
+        i = _can(k)
+        ds = [t for t in (i.get("the") or []) if t != ten]
+        if not a.bo:
+            ds.append(ten)
+        if ds:
+            i["the"] = ds
+        else:
+            i.pop("the", None)
+        luu(DATA, i)
+        print(f"  {'bỏ' if a.bo else 'gắn'} #{ten}: {i['id']}")
+    day(f"the {ten} {'bo' if a.bo else 'gan'} {len(a.khoa)} sp")
+
+
 def doc_vtk(data: Path, id_: str) -> dict:
     p = data / id_ / "video_tk.json"
     return _doc_json(p) if p.exists() else {"videos": []}
@@ -567,6 +587,8 @@ def main(argv=None):
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_quay)
     p = sp.add_parser("video"); p.add_argument("khoa"); p.add_argument("--so", type=int, required=True)
     p.add_argument("--folder-id", type=int); p.add_argument("--duong-dan"); p.set_defaults(f=lenh_video)
+    p = sp.add_parser("the"); p.add_argument("ten"); p.add_argument("khoa", nargs="+")
+    p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_the)
     p = sp.add_parser("index"); p.set_defaults(f=lenh_index)
     p = sp.add_parser("vtk-cho"); p.set_defaults(f=lenh_vtk_cho)
     p = sp.add_parser("vtk-tai"); p.add_argument("khoa"); p.add_argument("vid"); p.add_argument("--out")
