@@ -20,9 +20,9 @@
  "them_luc": "2026-10-22T19:38:29+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-31T09:56:52+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -35,6 +35,6 @@
   "luc": "2026-10-23T17:55:54+07:00",
   "duong_dan": "F:/2210/kem muỗi 2210 1736466305638172498/output_poster"
  },
- "cap_nhat_luc": "2026-10-27T12:49:40+07:00",
+ "cap_nhat_luc": "2026-10-31T09:56:52+07:00",
  "can_dang": true
 }
