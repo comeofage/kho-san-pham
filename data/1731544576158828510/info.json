@@ -22,9 +22,9 @@
  "them_luc": "2026-10-20T08:57:34+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-10-31T09:56:56+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -37,6 +37,6 @@
   "luc": "2026-10-23T17:55:58+07:00",
   "duong_dan": "F:/2210/thèo lèo 2210 1731544576158828510/output_poster"
  },
- "cap_nhat_luc": "2026-10-30T10:28:07+07:00",
+ "cap_nhat_luc": "2026-10-31T09:56:56+07:00",
  "can_dang": true
 }
