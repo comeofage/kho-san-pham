@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T17:45:15+07:00",
+ "cap_nhat_luc": "2026-10-31T17:45:42+07:00",
  "san_pham": [
   {
    "id": "1734525801092253469",
@@ -248,11 +248,11 @@
    "id": "1736243048485258925",
    "uid": "1736243048485258925",
    "link": "1736243048485258925",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bàn Ủi Điện Mini 1000W Cầm Tay Xanh Trắng Nóng Nhanh, Chống Dính Chống Quá Nhiệt, Đa Chế Độ Làm Phẳng Khử Nhăn Nhanh",
+   "gia": "165.093₫",
+   "shop": "AMOY Tiệm Nhà Mình",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -267,9 +267,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:34:03+07:00",
-   "cap_nhat_luc": "2026-10-31T17:34:03+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:07+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1735531145125398424",
@@ -302,11 +302,11 @@
    "id": "1729593419311843454",
    "uid": "1729593419311843454",
    "link": "1729593419311843454",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Tranh Dán Bếp kt 60*90cm sẵn keo, chống dầu mỡ, chống chay Decal Decor Phòng",
+   "gia": "43.223₫",
+   "shop": "Tranh Dán Tường Tuyết An",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -321,19 +321,19 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:33:25+07:00",
-   "cap_nhat_luc": "2026-10-31T17:33:25+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:15+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1734495508720682171",
    "uid": "1734495508720682171",
    "link": "1734495508720682171",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Quạt Đeo Cổ Không Cánh Siêu Mát, 5 Mức Gió, PIN 1800MAH, Hiển Thị Hình Pin, Pin Trâu, Nhẹ & Êm",
+   "gia": "137.017₫",
+   "shop": "Smart-HomeX-Việt Nam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -348,9 +348,9 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:33:10+07:00",
-   "cap_nhat_luc": "2026-10-31T17:33:10+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-10-31T17:45:11+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731996650665772369",
