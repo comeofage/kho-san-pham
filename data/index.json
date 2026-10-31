@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-10-31T17:38:39+07:00",
+ "cap_nhat_luc": "2026-10-31T17:39:41+07:00",
  "san_pham": [
   {
    "id": "1734525801092253469",
@@ -407,8 +407,8 @@
    "co_file01": false
   },
   {
-   "id": "tam-20261029101638513",
-   "uid": null,
+   "id": "1729647079859718809",
+   "uid": "1729647079859718809",
    "link": "https://vt.tiktok.com/ZS9yD3a2mkMqL-lKbqs/",
    "ten": "",
    "gia": "",
@@ -429,7 +429,7 @@
    "can_dang": false,
    "them_boi": "Nhân",
    "them_luc": "2026-10-29T10:16:38+07:00",
-   "cap_nhat_luc": "2026-10-29T10:16:38+07:00",
+   "cap_nhat_luc": "2026-10-31T17:39:31+07:00",
    "so_caption": 0,
    "co_file01": false
   },
