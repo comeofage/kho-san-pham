@@ -31,9 +31,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 16,
+  "luc": "2026-10-31T15:21:08+07:00",
+  "poster_folder": 233,
+  "duong_dan": "E:/oneshottramcanh/qua2010 1737958349513197332/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T09:57:21+07:00"
+ "cap_nhat_luc": "2026-10-31T15:21:08+07:00"
 }
