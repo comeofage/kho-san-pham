@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-02T12:23:04+07:00",
+ "cap_nhat_luc": "2026-11-02T12:23:37+07:00",
  "san_pham": [
   {
    "id": "1736489938541905260",
@@ -117,11 +117,11 @@
    "id": "1736399352685823791",
    "uid": "1736399352685823791",
    "link": "https://vt.tiktok.com/ZS9ybTy4K1um1-51P81/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【Heart Moon】Làm sạch răng, Rãnh răng bàn chải nhỏ đầu mềm tóc bàn chải đánh răng, Bàn chải Seam chuyên dụng Wisdom răng ổ làm sạch rãnh, Răng hút, Trẻ em, Người lớn phù hợp cho mỗi người",
+   "gia": "41.053₫",
+   "shop": "Heart Moon",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -137,9 +137,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:49:26+07:00",
-   "cap_nhat_luc": "2026-11-02T12:12:19+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-02T12:23:26+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1738025570373502289",
