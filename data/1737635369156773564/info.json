@@ -35,8 +35,22 @@
   "so_video": 34,
   "luc": "2026-11-02T20:29:41+07:00",
   "poster_folder": 241,
-  "duong_dan": "E:/oneshottramcanh/quatxit 1737635369156773564/output"
+  "duong_dan": "E:/oneshottramcanh/quatxit 1737635369156773564/output",
+  "poster_folders": [
+   {
+    "folder_id": 240,
+    "so_video": 19,
+    "duong_dan": "E:/oneshottramcanh/quatxit 1737635369156773564/output_poster",
+    "ghi_chu": "mẻ TTS giọng Adam (tao-video-tu-canh-quay), mẻ 20261102-cq01"
+   },
+   {
+    "folder_id": 241,
+    "so_video": 15,
+    "duong_dan": "E:/oneshottramcanh/quatxit 1737635369156773564/output",
+    "ghi_chu": "mẻ giọng creator thật (autovideo-oneshot), prefix quatxit2611"
+   }
+  ]
  },
- "cap_nhat_luc": "2026-11-02T20:29:41+07:00",
+ "cap_nhat_luc": "2026-11-02T20:32:22+07:00",
  "can_dang": true
 }
