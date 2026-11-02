@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-02T12:23:37+07:00",
+ "cap_nhat_luc": "2026-11-02T12:23:53+07:00",
  "san_pham": [
   {
    "id": "1736489938541905260",
@@ -33,11 +33,11 @@
    "id": "1735577665725433792",
    "uid": "1735577665725433792",
    "link": "https://vt.tiktok.com/ZS9ybTwX9SLaj-fcjtU/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[MUA 5 TẶNG 1] 5 Bịch Giấy Rút Đáy Cỡ ĐẠI 1500 Tờ 4 Lớp Cao Cấp Tặng 1 Hộp Luala Premium. Khăn Giấy Rút Đáy Sản Xuất Tại Việt Nam",
+   "gia": "202.996₫",
+   "shop": "GIẤY LUALA",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -53,9 +53,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:52:23+07:00",
-   "cap_nhat_luc": "2026-11-02T12:12:20+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-02T12:23:36+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736820796354233662",
