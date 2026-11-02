@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-02T12:23:53+07:00",
+ "cap_nhat_luc": "2026-11-02T12:24:48+07:00",
  "san_pham": [
   {
    "id": "1736489938541905260",
@@ -89,11 +89,11 @@
    "id": "1734321102951122844",
    "uid": "1734321102951122844",
    "link": "https://vt.tiktok.com/ZS9ybTpD2EkSM-GYU8v/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Combo Trọn Vị] Bò Tươi Sấy Aladdin 400g - Xuyên Tiêu & Mắc Khén (Tặng chẩm chéo), Ăn Vặt Hay Làm Quà Đều Sang",
+   "gia": "351.908₫",
+   "shop": "Aladdin Foods",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -109,9 +109,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:51:27+07:00",
-   "cap_nhat_luc": "2026-11-02T12:12:20+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-02T12:24:36+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736399352685823791",
