@@ -31,9 +31,11 @@
   "luc": "2026-11-03T09:41:01+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 15,
+  "luc": "2026-11-03T17:42:36+07:00",
+  "poster_folder": 248,
+  "duong_dan": "E:/oneshottramcanh/rubik 1734893557169030788/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:41:01+07:00"
+ "cap_nhat_luc": "2026-11-03T17:42:36+07:00"
 }
