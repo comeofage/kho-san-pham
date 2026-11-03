@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-03T14:50:38+07:00",
+ "cap_nhat_luc": "2026-11-03T16:54:45+07:00",
  "san_pham": [
   {
    "id": "1737961408372245933",
@@ -9,7 +9,7 @@
    "gia": "82.261₫",
    "shop": "Jasmeen GlowCo",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,7 +25,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-03T14:41:43+07:00",
-   "cap_nhat_luc": "2026-11-03T14:50:24+07:00",
+   "cap_nhat_luc": "2026-11-03T16:54:33+07:00",
    "so_caption": 100,
    "co_file01": true
   },
