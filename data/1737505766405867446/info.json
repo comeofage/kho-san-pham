@@ -32,10 +32,12 @@
   "luc": "2026-10-30T13:51:53+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-03T20:10:11+07:00",
+  "poster_folder": 250,
+  "duong_dan": "E:/oneshottramcanh/dumini 1737505766405867446/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T09:56:44+07:00",
+ "cap_nhat_luc": "2026-11-03T20:10:11+07:00",
  "can_dang": true
 }
