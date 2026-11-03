@@ -32,9 +32,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 17,
+  "luc": "2026-11-03T16:54:33+07:00",
+  "poster_folder": 247,
+  "duong_dan": "E:/oneshottramcanh/kemdua 1737961408372245933/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T14:50:24+07:00"
+ "cap_nhat_luc": "2026-11-03T16:54:33+07:00"
 }
