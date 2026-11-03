@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-03T20:08:31+07:00",
+ "cap_nhat_luc": "2026-11-03T20:10:22+07:00",
  "san_pham": [
   {
    "id": "tam-20261103200813116",
@@ -1215,7 +1215,7 @@
    "gia": "141.233₫",
    "shop": "Deli Lifestyle",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1231,7 +1231,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-23T23:01:07+07:00",
-   "cap_nhat_luc": "2026-10-31T09:56:44+07:00",
+   "cap_nhat_luc": "2026-11-03T20:10:11+07:00",
    "so_caption": 100,
    "co_file01": true
   },
