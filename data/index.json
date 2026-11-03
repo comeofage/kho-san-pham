@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-03T09:01:36+07:00",
+ "cap_nhat_luc": "2026-11-03T09:02:19+07:00",
  "san_pham": [
   {
    "id": "1735094036954711648",
@@ -61,11 +61,11 @@
    "id": "1737491831909025666",
    "uid": "1737491831909025666",
    "link": "https://vt.tiktok.com/ZS9yGtwhuXbY9-mhKv6/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[MỚI LẠ] Móc Khóa Âm Thanh Hình Thỏ Chơi Trống - Đồ Chơi Giảm Căng Thẳng Cho Học Sinh Và Trẻ Em - Món Quà Ý Nghĩa Cho Sinh Nhật Và Lễ Nhỏ - Chất Liệu Bền Đẹp - Tiện Ích Đa Năng Với Mọi Lứa Tuổi",
+   "gia": "77.819₫",
+   "shop": "Store Em Hấu",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -81,9 +81,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:50:48+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:50+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-03T09:02:06+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1736489938541905260",
