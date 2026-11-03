@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-03T09:01:21+07:00",
+ "cap_nhat_luc": "2026-11-03T09:01:36+07:00",
  "san_pham": [
   {
    "id": "1735094036954711648",
    "uid": "1735094036954711648",
    "link": "https://vt.tiktok.com/ZS9yGnNHLu1t8-pIJfl/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Quả Bóng Rổ SPORTS Đủ Size 3-5-7 Cho Học Sinh Và CLB - Bóng Tập Luyện Cao Cấp Siêu Bền, Cầm Chắc Tay, Độ Nảy Tốt, Đầy Đủ Phụ Kiện Kim Bơm Và Túi Lưới",
+   "gia": "97.518₫",
+   "shop": "MAOMI SPORTS 1",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,9 +25,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:52:19+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:51+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-03T09:01:24+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1733268312671290389",
