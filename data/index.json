@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-03T08:54:08+07:00",
+ "cap_nhat_luc": "2026-11-03T09:01:21+07:00",
  "san_pham": [
   {
    "id": "1735094036954711648",
@@ -33,11 +33,11 @@
    "id": "1733268312671290389",
    "uid": "1733268312671290389",
    "link": "https://vt.tiktok.com/ZS9yGn1bgSQEP-E9MAV/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bộ dụng cụ vẽ tranh Nicpro 58 món trong hộp da, Bộ bút chì kỹ thuật với 6 bút chì kim loại 0.5 & 0.7 & 0.9 & 2mm, Bút viết tay micron 12 đầu, Sổ phác thảo, 30 lõi chì dạng ống cho vẽ phác",
+   "gia": "282.113₫",
+   "shop": "Nicpro Vender",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -53,9 +53,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:51:19+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:51+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-03T09:01:09+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737491831909025666",
