@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-04T19:51:15+07:00",
+ "cap_nhat_luc": "2026-11-04T20:03:41+07:00",
  "san_pham": [
   {
    "id": "tam-20261103222446941",
@@ -733,7 +733,7 @@
    "gia": "137.017₫",
    "shop": "Smart-HomeX-Việt Nam",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -751,7 +751,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:33:10+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-04T20:03:38+07:00",
    "so_caption": 100,
    "co_file01": true
   },
