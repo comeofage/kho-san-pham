@@ -32,11 +32,13 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-04T15:47:37+07:00",
+  "poster_folder": 255,
+  "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+ "cap_nhat_luc": "2026-11-04T15:47:37+07:00",
  "the": [
   "pemit89"
  ]
