@@ -32,11 +32,13 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-11-04T20:03:38+07:00",
+  "poster_folder": 257,
+  "duong_dan": "E:/oneshottramcanh/quatco-1734495508720682171/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+ "cap_nhat_luc": "2026-11-04T20:03:38+07:00",
  "the": [
   "pemit89"
  ]
