@@ -133,17 +133,27 @@ async function putFile(env, path, text, sha, message) {
   if (!r.ok) throw await loiGh(r, `Ghi ${path}`);
   return { ok: true };
 }
-// Sửa info.json an toàn khi nhiều người ghi cùng lúc (sha lệch → đọc lại, thử lại).
-async function updateInfo(env, id, mutate, message) {
+// Sửa 1 file JSON an toàn khi nhiều người ghi cùng lúc (sha lệch → đọc lại, thử lại).
+// macDinh: giá trị khi file chưa có (null → báo không tìm thấy). mutate trả chuỗi = lỗi người dùng.
+async function suaJson(env, path, mutate, message, macDinh = null) {
   for (let lan = 0; lan < 3; lan++) {
-    const f = await getFile(env, `data/${id}/info.json`);
-    if (!f) throw Object.assign(new Error("Sản phẩm không còn trong kho"), { status: 404 });
-    const info = JSON.parse(f.text);
-    mutate(info);
-    info.cap_nhat_luc = nowIso();
-    if ((await putFile(env, `data/${id}/info.json`, JSON.stringify(info, null, 1) + "\n", f.sha, message)).ok) return info;
+    const f = await getFile(env, path);
+    if (!f && !macDinh) throw Object.assign(new Error("Sản phẩm không còn trong kho"), { status: 404 });
+    const d = f ? JSON.parse(f.text) : structuredClone(macDinh);
+    const loiND = mutate(d);
+    if (typeof loiND === "string") throw Object.assign(new Error(loiND), { status: 400 });
+    if ((await putFile(env, path, JSON.stringify(d, null, 1) + "\n", f && f.sha, message)).ok) return d;
   }
   throw Object.assign(new Error("Có người vừa sửa cùng lúc — thử lại"), { status: 409 });
+}
+const updateInfo = (env, id, mutate, message) =>
+  suaJson(env, `data/${id}/info.json`, (i) => { mutate(i); i.cap_nhat_luc = nowIso(); }, message);
+
+// Video tham khảo: data/<id>/video_tk.json (danh sách) + data/<id>/video_tk/<vid>.json (bảng cảnh) + video_tk/<vid>/cNN.jpg
+const RE_VID = /^v\d{8,20}$/;
+const VTK_RONG = { videos: [] };
+export function taoVid(ms = Date.now()) {
+  return "v" + nowIso(ms).replace(/\D/g, "").slice(0, 14) + String(ms % 1000).padStart(3, "0");
 }
 
 // index.json (Action dựng) + sản phẩm mới có info.json mà index chưa kịp có.
@@ -161,6 +171,8 @@ async function danhSach(env) {
   // bỏ sản phẩm đã bị xoá/đổi tên (tam-… → UID) nhưng index còn giữ
   return tree.tree ? ds.filter((x) => coFile.has(`data/${x.id}/info.json`)) : ds;
 }
+
+const TAG_RIENG = ["yeu_thich", "can_dang"];
 
 // ---------- API ----------
 async function docBody(req) {
@@ -184,20 +196,72 @@ async function api(req, env, ctx, url) {
   if (!phien) return loi("Chưa đăng nhập", 401);
   if (p === "/api/me") return json(phien);
 
+  let v;
+  if ((v = p.match(/^\/api\/video\/([^/]+)\/(ds|file|xoa)$/))) {
+    if (phien.user !== "nhan" && phien.user !== "comeofage") return loi("Không có quyền", 403);
+    const id = decodeURIComponent(v[1]), act = v[2];
+    if (!RE_ID.test(id)) return loi("ID không hợp lệ");
+    if (!env.VIDEO_ORIGIN || !env.VIDEO_KEY) return loi("Chưa cấu hình máy phát video", 503);
+    if ((act === "xoa") !== (m === "POST")) return loi("Sai phương thức", 405);
+    let r;
+    try {
+      r = await fetch(`${env.VIDEO_ORIGIN}/v/${id}/${act}${url.search}`, { method: m, headers: { "x-key": env.VIDEO_KEY } });
+    } catch { return loi("Máy nhà không trả lời (đã bật video_server và tunnel chưa?)", 502); }
+    const h = new Headers({ "content-type": r.headers.get("content-type") || "application/octet-stream", "cache-control": "no-store" });
+    for (const k of ["content-length", "content-disposition"]) if (r.headers.get(k)) h.set(k, r.headers.get(k));
+    return new Response(r.body, { status: r.status, headers: h });
+  }
+
   if (p === "/api/ds" && m === "GET") return json({ san_pham: await danhSach(env) });
 
   let k;
   if ((k = p.match(/^\/api\/sp\/([^/]+)$/)) && m === "GET") {
     const id = decodeURIComponent(k[1]);
     if (!RE_ID.test(id)) return loi("ID không hợp lệ");
-    const [infoT, md, caps] = await Promise.all(["info.json", "bo-canh-quay.md", "captions.txt"].map((f) => getText(env, `data/${id}/${f}`)));
+    const [infoT, md, caps, vtkT, douyin] = await Promise.all(["info.json", "bo-canh-quay.md", "captions.txt", "video_tk.json", "douyin.md"].map((f) => getText(env, `data/${id}/${f}`)));
     if (!infoT) return loi("Không tìm thấy sản phẩm", 404);
-    return json({ info: JSON.parse(infoT), md, caps });
+    return json({ info: JSON.parse(infoT), md, caps, douyin, vtk: vtkT ? JSON.parse(vtkT).videos || [] : [] });
   }
 
-  if ((k = p.match(/^\/api\/anh\/([^/]+)\/([^/]+)$/)) && m === "GET") {
-    const id = decodeURIComponent(k[1]), file = decodeURIComponent(k[2]);
-    if (!RE_ID.test(id) || !RE_ANH.test(file)) return loi("Đường dẫn ảnh không hợp lệ");
+  if ((k = p.match(/^\/api\/vtk\/([^/]+)\/([^/]+)$/)) && m === "GET") {
+    const id = decodeURIComponent(k[1]), vid = decodeURIComponent(k[2]);
+    if (!RE_ID.test(id) || !RE_VID.test(vid)) return loi("ID không hợp lệ");
+    const t = await getText(env, `data/${id}/video_tk/${vid}.json`);
+    return t ? json(JSON.parse(t)) : loi("Video này chưa được phân tích", 404);
+  }
+
+  if (p === "/api/vtk" && m === "POST") {
+    const { id, link: linkVao = "", ghi_chu = "" } = await docBody(req);
+    const link = String(linkVao).trim();
+    if (!RE_ID.test(String(id))) return loi("ID không hợp lệ");
+    if (!/^https?:\/\/\S+$/i.test(link) || link.length > 1000) return loi("Không thấy link video hợp lệ");
+    if (String(ghi_chu).length > 2000) return loi("Ghi chú quá dài");
+    if (!(await getText(env, `data/${id}/info.json`))) return loi("Không tìm thấy sản phẩm", 404);
+    const v = { vid: taoVid(), link, ghi_chu: String(ghi_chu).trim(), them_boi: phien.ten, them_luc: nowIso(), trang_thai: "cho" };
+    const d = await suaJson(env, `data/${id}/video_tk.json`, (x) => {
+      x.videos = x.videos || [];
+      if (x.videos.some((o) => o.link === link)) return "Video này đã có trong danh sách";
+      x.videos.push(v);
+    }, `Video tham khảo ${id} — ${phien.ten}`, VTK_RONG);
+    return json({ vtk: d.videos });
+  }
+
+  if (p === "/api/vtk-xoa" && m === "POST") {
+    const { id, vid } = await docBody(req);
+    if (!RE_ID.test(String(id)) || !RE_VID.test(String(vid))) return loi("ID không hợp lệ");
+    const d = await suaJson(env, `data/${id}/video_tk.json`, (x) => {
+      const truoc = (x.videos || []).length;
+      x.videos = (x.videos || []).filter((o) => o.vid !== vid);
+      if (x.videos.length === truoc) return "Video không còn trong danh sách";
+    }, `Xoá video tham khảo ${vid} ${id} — ${phien.ten}`);
+    return json({ vtk: d.videos });
+  }
+
+  // /api/anh/<id>/<file> hoặc /api/anh/<id>/video_tk/<vid>/<file>
+  if ((k = p.match(/^\/api\/anh\/([^/]+)\/(?:video_tk\/([^/]+)\/)?([^/]+)$/)) && m === "GET") {
+    const id = decodeURIComponent(k[1]), vid = k[2] && decodeURIComponent(k[2]), ten = decodeURIComponent(k[3]);
+    if (!RE_ID.test(id) || !RE_ANH.test(ten) || (vid !== undefined && !RE_VID.test(vid))) return loi("Đường dẫn ảnh không hợp lệ");
+    const file = vid ? `video_tk/${vid}/${ten}` : ten;
     const cache = caches.default;
     const key = new Request(url.toString(), { method: "GET" }); // ?v=cap_nhat_luc → ảnh đổi thì khoá đổi
     let r = await cache.match(key);
@@ -244,6 +308,13 @@ async function api(req, env, ctx, url) {
     return json({ info: { ...info, trang_thai: trangThai(info) } });
   }
 
+  if (p === "/api/tag" && m === "POST") { // thẻ riêng: yêu thích / cần đăng
+    const { id, tag, bat } = await docBody(req);
+    if (!RE_ID.test(String(id)) || !TAG_RIENG.includes(tag)) return loi("Dữ liệu không hợp lệ");
+    const info = await updateInfo(env, id, (i) => { if (bat) i[tag] = true; else delete i[tag]; }, `${bat ? "Gắn" : "Bỏ"} thẻ ${tag} ${id} — ${phien.ten}`);
+    return json({ info: { ...info, trang_thai: trangThai(info) } });
+  }
+
   if (p === "/api/ghichu" && m === "POST") {
     const { id, ghi_chu = "" } = await docBody(req);
     if (!RE_ID.test(String(id))) return loi("ID không hợp lệ");
@@ -267,7 +338,7 @@ export default {
     try {
       return await api(req, env, ctx, url);
     } catch (e) {
-      console.error(e);
+      if (!e.status || e.status >= 500) console.error(e);
       return loi(e.message || "Lỗi máy chủ", e.status || 500);
     }
   },

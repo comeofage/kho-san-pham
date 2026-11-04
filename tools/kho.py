@@ -228,6 +228,11 @@ def doc_du_lieu_du_an(P: Path) -> dict:
     for ten in ("01-BO-CANH-QUAY-1-BUOI.md",):
         if (P / ten).exists():
             d["file01"] = P / ten
+    d["douyin_file"] = None
+    for dy in (P / "douyin" / "canh_quay_an_tien.md", P / "douyin" / "douyin.md", P / "douyin" / "danh_sach.md"):
+        if dy.exists():
+            d["douyin_file"] = dy
+            break
     if (P / "kich-ban" / "poster_captions.txt").exists():
         d["captions"] = P / "kich-ban" / "poster_captions.txt"
     anh_khac = sorted((P / "anh").rglob("*bia*.*")) if (P / "anh").exists() else []
@@ -421,6 +426,9 @@ def lenh_ghi(a):
         shutil.copyfile(d["file01"], thu / "bo-canh-quay.md")
         i["da_phan_tich"] = True
         print("  file 01: ✓")
+    if d.get("douyin_file"):
+        shutil.copyfile(d["douyin_file"], thu / "douyin.md")
+        print("  douyin: ✓")
     if d["bia_file"]:
         thu_nho_anh(d["bia_file"], thu / "bia.jpg")
         i["anh_bia"] = "bia.jpg"

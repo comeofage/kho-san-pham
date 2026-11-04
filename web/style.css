@@ -33,11 +33,14 @@ label { display: block; margin: 10px 0; font-size: 14px; } label input { margin-
 .chip.on { background: var(--text); color: var(--bg); border-color: var(--text); }
 .search { margin-bottom: 12px; }
 
-.list { display: grid; gap: 10px; }
-.card { display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; align-items: center; }
-.card .thumb { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; background: var(--line); flex: none; }
+.list { display: grid; gap: 6px; }
+.card { display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 8px; align-items: center; }
+.card .thumb { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; background: var(--line); flex: none; }
 .card .body { flex: 1; min-width: 0; text-decoration: none; }
 .card .ten { font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
+.stt { color: #888; font-weight: 700; margin-right: 2px; }
+.uid-copy { cursor: pointer; border-bottom: 1px dashed currentColor; padding: 2px 0; }
+.uid-copy:hover { color: var(--accent, #2563eb); }
 .badge { display: inline-block; font-size: 12px; font-weight: 600; color: #fff; border-radius: 6px; padding: 1px 8px; }
 .b-cho { background: var(--s-cho); } .b-da_phan_tich { background: var(--s-pt); } .b-da_quay { background: var(--s-quay); } .b-da_lam_video { background: var(--s-video); }
 
@@ -74,6 +77,55 @@ dialog::backdrop { background: #0007; }
 dialog h2 { margin: 0 0 6px; }
 #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; opacity: 0; transition: .25s; pointer-events: none; max-width: 90vw; z-index: 20; }
 #toast.on { opacity: .95; }
-@media (max-width: 520px) { .detail .head img { width: 84px; height: 84px; } }
+@media (max-width: 520px) {
+  .detail .head img { width: 84px; height: 84px; }
+  /* iOS Safari tự zoom khi bấm vào input/textarea cỡ chữ <16px, làm layout dịch và "nuốt" cú chạm tiếp theo (vd nút Đăng nhập) */
+  input, textarea { font-size: 16px; }
+}
 .card .switches { display: flex; flex-direction: column; gap: 6px; flex: none; }
+@media (max-width: 520px) {
+  .card { gap: 6px; padding: 5px 6px; }
+  .card .thumb { width: 40px; height: 40px; }
+  .card .ten { font-size: 13px; line-height: 1.25; }
+  .card .small { font-size: 12px; line-height: 1.3; }
+  .card .switches { gap: 3px; }
+}
 .quaybox + .quaybox { margin-top: -4px; }
+
+.vtk-add { display: grid; gap: 8px; margin-bottom: 6px; }
+.vtk-list { display: grid; gap: 10px; margin-top: 10px; }
+.vtk { border: 1px solid var(--line); border-radius: var(--r); padding: 10px; }
+.vtk-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.vtk-link { display: block; font-weight: 600; word-break: break-all; font-size: 14px; }
+.vtk-canh:not(:empty) { margin-top: 10px; display: grid; gap: 8px; }
+.canh { display: flex; gap: 10px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 8px; }
+.canh img, .canh .img { width: 72px; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 6px; background: var(--line); flex: none; }
+.canh-body { min-width: 0; display: grid; gap: 3px; font-size: 14px; word-break: break-word; }
+
+/* QR link sản phẩm trên thẻ: nhỏ, rê chuột / chạm mới phóng to để điện thoại quét */
+.qr { position: relative; flex: none; cursor: zoom-in; outline: none; }
+.qr svg { display: block; width: 100%; height: auto; }
+.qr-mini { width: 44px; padding: 2px; background: #fff; border-radius: 6px; border: 1px solid var(--line); }
+.qr-pop { display: none; position: absolute; right: calc(100% + 8px); top: 50%; transform: translateY(-50%); z-index: 10;
+  width: 240px; padding: 10px; background: #fff; color: #333; border-radius: 12px; box-shadow: 0 8px 28px #0005; text-align: center; }
+.qr:hover .qr-pop, .qr:focus .qr-pop { display: block; }
+
+/* Thẻ danh sách gọn: công tắc nằm ngang, bỏ khoảng thừa trên/dưới */
+.card .switch { flex-direction: row; gap: 5px; line-height: 1; }
+.card .switch .tr { width: 32px; height: 18px; }
+.card .switch .tr::after { top: 2px; left: 2px; width: 14px; height: 14px; }
+.card .switch input:checked + .tr::after { left: 16px; }
+.card .switch span:last-child { width: 40px; }
+.card .body > div { line-height: 1.3; }
+.card .ten { line-height: 1.25; }
+.card .uid-copy { padding: 0; }
+.card .qr-mini { width: 36px; }
+
+/* Thẻ riêng: ★ yêu thích, ⬆ cần đăng — nút tròn nhỏ xếp dọc, không đổi chiều cao thẻ */
+.tagbtns { display: flex; flex-direction: column; gap: 2px; flex: none; }
+.tagbtn { width: 20px; height: 20px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--muted); font-size: 11px; line-height: 1; cursor: pointer; }
+.tagbtn.on[data-tag="yeu_thich"] { background: #f5b301; border-color: #f5b301; color: #fff; }
+.tagbtn.on[data-tag="can_dang"] { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.tagbtn:disabled { opacity: .5; }
+
+.the-rieng { display: inline-block; padding: 0 6px; margin-left: 4px; border-radius: 8px; background: #eef2ff; color: #3730a3; font-size: 11px; font-weight: 600; }
