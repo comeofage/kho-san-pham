@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-05T15:12:08+07:00",
+ "cap_nhat_luc": "2026-11-05T15:25:56+07:00",
  "san_pham": [
   {
    "id": "tam-20261105113708963",
@@ -513,23 +513,23 @@
    "gia": "101.387₫",
    "shop": "Jinwang Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-05T15:11:59+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:49:02+07:00",
-   "cap_nhat_luc": "2026-11-02T12:25:39+07:00",
+   "cap_nhat_luc": "2026-11-05T15:11:59+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1147,7 +1147,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:34:42+07:00",
-   "cap_nhat_luc": "2026-11-05T08:53:13+07:00",
+   "cap_nhat_luc": "2026-11-05T15:25:39+07:00",
    "so_caption": 100,
    "co_file01": true
   },
