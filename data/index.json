@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-05T08:45:53+07:00",
+ "cap_nhat_luc": "2026-11-05T08:46:21+07:00",
  "san_pham": [
   {
    "id": "1735355624002782526",
@@ -609,16 +609,16 @@
    "gia": "27.170₫",
    "shop": "BOSS PAD",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-05T08:46:09+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -627,7 +627,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:35:14+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-05T08:46:09+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -796,9 +796,9 @@
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-05T08:45:56+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -807,7 +807,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:33:10+07:00",
-   "cap_nhat_luc": "2026-11-04T20:30:19+07:00",
+   "cap_nhat_luc": "2026-11-05T08:45:56+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -856,9 +856,9 @@
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-05T08:45:50+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -867,7 +867,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:30:40+07:00",
-   "cap_nhat_luc": "2026-11-04T16:17:49+07:00",
+   "cap_nhat_luc": "2026-11-05T08:45:50+07:00",
    "so_caption": 100,
    "co_file01": true
   },
