@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-05T08:50:03+07:00",
+ "cap_nhat_luc": "2026-11-05T08:50:30+07:00",
  "san_pham": [
   {
    "id": "1735355624002782526",
@@ -149,7 +149,7 @@
    "gia": "97.518₫",
    "shop": "MAOMI SPORTS 1",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -165,7 +165,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:52:19+07:00",
-   "cap_nhat_luc": "2026-11-03T09:01:24+07:00",
+   "cap_nhat_luc": "2026-11-05T08:49:57+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -177,7 +177,7 @@
    "gia": "282.113₫",
    "shop": "Nicpro Vender",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -193,7 +193,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:51:19+07:00",
-   "cap_nhat_luc": "2026-11-03T09:01:09+07:00",
+   "cap_nhat_luc": "2026-11-05T08:50:00+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -261,7 +261,7 @@
    "gia": "202.996₫",
    "shop": "GIẤY LUALA",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -277,7 +277,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:52:23+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:50+07:00",
+   "cap_nhat_luc": "2026-11-05T08:50:14+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -935,7 +935,7 @@
    "gia": "697.380₫",
    "shop": "balabala SEA",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -951,7 +951,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:35:37+07:00",
-   "cap_nhat_luc": "2026-10-27T13:38:00+07:00",
+   "cap_nhat_luc": "2026-11-05T08:50:18+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -991,7 +991,7 @@
    "gia": "207.764₫",
    "shop": "Toy Joy Kid",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1007,7 +1007,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:34:42+07:00",
-   "cap_nhat_luc": "2026-11-04T13:54:53+07:00",
+   "cap_nhat_luc": "2026-11-05T08:50:11+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1215,7 +1215,7 @@
    "gia": "44.630₫",
    "shop": "ĐỒ CHƠI HOTTREND QCN",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1231,7 +1231,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:31:35+07:00",
-   "cap_nhat_luc": "2026-10-29T12:49:27+07:00",
+   "cap_nhat_luc": "2026-11-05T08:50:04+07:00",
    "so_caption": 100,
    "co_file01": true
   },
