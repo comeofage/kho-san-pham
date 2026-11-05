@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-05T21:34:47+07:00",
+ "cap_nhat_luc": "2026-11-05T21:59:57+07:00",
  "san_pham": [
   {
    "id": "tam-20261105113708963",
@@ -839,7 +839,7 @@
    "gia": "165.093₫",
    "shop": "AMOY Tiệm Nhà Mình",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -857,7 +857,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:34:03+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-05T21:57:49+07:00",
    "so_caption": 100,
    "co_file01": true
   },
