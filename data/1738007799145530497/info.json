@@ -31,10 +31,12 @@
   "luc": "2026-10-29T12:49:27+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 12,
+  "luc": "2026-11-05T08:50:04+07:00",
+  "poster_folder": 264,
+  "duong_dan": "F:/0411/1104/chuột 0411-1738007799145530497"
  },
- "cap_nhat_luc": "2026-10-29T12:49:27+07:00",
+ "cap_nhat_luc": "2026-11-05T08:50:04+07:00",
  "can_dang": true
 }
