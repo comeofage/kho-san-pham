@@ -31,9 +31,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 12,
+  "luc": "2026-11-05T08:50:00+07:00",
+  "poster_folder": 263,
+  "duong_dan": "F:/0411/1104/bộ vẽ 0411-1733268312671290389"
  },
- "cap_nhat_luc": "2026-11-03T09:01:09+07:00"
+ "cap_nhat_luc": "2026-11-05T08:50:00+07:00"
 }
