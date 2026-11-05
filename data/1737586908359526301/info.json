@@ -32,9 +32,11 @@
   "luc": "2026-11-03T09:40:59+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 11,
+  "luc": "2026-11-05T08:50:11+07:00",
+  "poster_folder": 265,
+  "duong_dan": "F:/0411/1104/game phím 0411-1737586908359526301"
  },
- "cap_nhat_luc": "2026-11-04T13:54:53+07:00"
+ "cap_nhat_luc": "2026-11-05T08:50:11+07:00"
 }
