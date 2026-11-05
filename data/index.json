@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-05T08:46:21+07:00",
+ "cap_nhat_luc": "2026-11-05T08:50:03+07:00",
  "san_pham": [
   {
    "id": "1735355624002782526",
@@ -345,7 +345,7 @@
    "gia": "41.053₫",
    "shop": "Heart Moon",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -361,7 +361,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:49:26+07:00",
-   "cap_nhat_luc": "2026-11-05T08:45:43+07:00",
+   "cap_nhat_luc": "2026-11-05T08:49:53+07:00",
    "so_caption": 100,
    "co_file01": true
   },
