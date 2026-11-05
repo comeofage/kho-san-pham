@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-05T08:31:29+07:00",
+ "cap_nhat_luc": "2026-11-05T08:36:58+07:00",
  "san_pham": [
   {
    "id": "1735355624002782526",
    "uid": "1735355624002782526",
    "link": "https://vt.tiktok.com/ZS9ywxP2WJwhL-7pY0E/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bộ Xếp  Lực Lượng Đặc Nhiệm Chống Khủng Bố, Đồ Chơi Giáo Dục Cho Trẻ Em, 12   Xe Máy Cảnh Sát Đặc Nhiệm, Quà Tặng Cho Bé Trai mô hình decor để bàn",
+   "gia": "150.450₫",
+   "shop": "Đồ chơi Hải Tử",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,9 +25,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T08:21:46+07:00",
-   "cap_nhat_luc": "2026-11-05T08:22:50+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-05T08:36:46+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1729801684477119432",
