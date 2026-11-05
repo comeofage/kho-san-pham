@@ -33,11 +33,13 @@
   "luc": "2026-11-05T08:46:09+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-11-05T10:53:44+07:00",
+  "poster_folder": 273,
+  "duong_dan": "E:/oneshottramcanh/lotchuot-1732052416722142778/output_poster"
  },
- "cap_nhat_luc": "2026-11-05T08:46:09+07:00",
+ "cap_nhat_luc": "2026-11-05T10:53:44+07:00",
  "the": [
   "pemit89"
  ]
