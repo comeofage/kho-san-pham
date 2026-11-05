@@ -33,9 +33,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 6,
+  "luc": "2026-11-05T08:50:14+07:00",
+  "poster_folder": 266,
+  "duong_dan": "F:/0411/1104/giấy luala 0311-1735577665725433792"
  },
- "cap_nhat_luc": "2026-11-03T08:53:50+07:00"
+ "cap_nhat_luc": "2026-11-05T08:50:14+07:00"
 }
