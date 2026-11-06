@@ -31,10 +31,12 @@
   "luc": "2026-10-29T14:58:36+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-06T10:16:30+07:00",
+  "poster_folder": 292,
+  "duong_dan": "E:/oneshottramcanh/kempolar-1736267496948925813/output_poster"
  },
- "cap_nhat_luc": "2026-10-29T14:58:36+07:00",
+ "cap_nhat_luc": "2026-11-06T10:16:30+07:00",
  "can_dang": true
 }
