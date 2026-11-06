@@ -27,9 +27,9 @@
   "luc": "2026-11-06T08:38:46+07:00"
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-06T08:38:48+07:00"
  },
  "da_lam_video": {
   "xong": true,
@@ -38,7 +38,7 @@
   "poster_folder": 285,
   "duong_dan": "E:\\oneshottramcanh\\banui-1736243048485258925\\output"
  },
- "cap_nhat_luc": "2026-11-06T08:38:46+07:00",
+ "cap_nhat_luc": "2026-11-06T08:38:48+07:00",
  "the": [
   "pemit89"
  ]
