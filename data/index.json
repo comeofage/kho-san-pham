@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-06T11:17:14+07:00",
+ "cap_nhat_luc": "2026-11-06T11:18:30+07:00",
  "san_pham": [
   {
    "id": "tam-20261105113708963",
@@ -697,8 +697,8 @@
    },
    "da_quay_review": {
     "xong": false,
-    "boi": "",
-    "luc": ""
+    "boi": "Thu",
+    "luc": "2026-11-06T11:18:19+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -707,7 +707,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:36:05+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-06T11:18:19+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -719,16 +719,16 @@
    "gia": "33.582₫",
    "shop": "Silt Cove",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-06T11:17:11+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -737,7 +737,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:35:43+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-06T11:17:11+07:00",
    "so_caption": 100,
    "co_file01": true
   },
