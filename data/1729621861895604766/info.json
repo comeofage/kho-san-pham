@@ -27,16 +27,16 @@
   "luc": ""
  },
  "da_quay_review": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Thu",
+  "luc": "2026-11-06T11:17:09+07:00"
  },
  "da_lam_video": {
   "xong": false,
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+ "cap_nhat_luc": "2026-11-06T11:17:09+07:00",
  "the": [
   "pemit89"
  ]
