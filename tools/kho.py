@@ -17,7 +17,7 @@ Lệnh (luôn `export PYTHONIOENCODING=utf-8` trên Windows):
                                                          kéo captions → kich-ban/poster_captions.txt + du_lieu_tho/kho_info.json
   python kho.py quay  <id|link> --loai oneshot|review [--boi TÊN] [--bo]
                                                          đánh dấu đã quay oneshot / review (--bo = gỡ)
-  python kho.py video <id|link> --so N [--folder-id F] [--duong-dan DIR]
+  python kho.py video <id|link> --so N [--folder-id F] [--duong-dan DIR] [--them --nhan TÊN]
                                                          đánh dấu đã làm video (+ folder Poster V2 và thư mục video)
   python kho.py index                                    dựng lại data/index.json (GitHub Action dùng)
 
@@ -473,11 +473,22 @@ def lenh_quay(a):
 def lenh_video(a):
     keo()
     i = _can(a.khoa)
-    i["da_lam_video"] = {"xong": True, "so_video": a.so, "luc": bay_gio()}
-    if a.folder_id is not None:
-        i["da_lam_video"]["poster_folder"] = a.folder_id
-    if a.duong_dan:
-        i["da_lam_video"]["duong_dan"] = a.duong_dan
+    cu = i.get("da_lam_video") or {}
+    if a.them:
+        # Nhiều dòng Poster (mỗi folder 1 dòng + 1 nút tải): thêm/cập nhật theo folder-id, không ghi đè dòng khác.
+        ds = list(cu.get("poster") or [])
+        if not ds and cu.get("poster_folder") is not None:  # dòng cũ kiểu 1-folder -> đưa vào danh sách
+            ds.append({"folder": cu["poster_folder"], "so_video": cu.get("so_video"), "duong_dan": cu.get("duong_dan", "")})
+        muc = {"folder": a.folder_id, "so_video": a.so, "duong_dan": a.duong_dan or "", "nhan": a.nhan or ""}
+        ds = [d for d in ds if d.get("folder") != a.folder_id] + [muc]
+        i["da_lam_video"] = {"xong": True, "so_video": sum(int(d.get("so_video") or 0) for d in ds), "luc": bay_gio(),
+                             "poster": ds, "poster_folder": a.folder_id, "duong_dan": a.duong_dan or ""}
+    else:
+        i["da_lam_video"] = {"xong": True, "so_video": a.so, "luc": bay_gio()}
+        if a.folder_id is not None:
+            i["da_lam_video"]["poster_folder"] = a.folder_id
+        if a.duong_dan:
+            i["da_lam_video"]["duong_dan"] = a.duong_dan
     luu(DATA, i)
     day(f"video {i['id']} {a.so}")
 
@@ -594,7 +605,7 @@ def main(argv=None):
     p.add_argument("--boi", default="máy nhà")
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_quay)
     p = sp.add_parser("video"); p.add_argument("khoa"); p.add_argument("--so", type=int, required=True)
-    p.add_argument("--folder-id", type=int); p.add_argument("--duong-dan"); p.set_defaults(f=lenh_video)
+    p.add_argument("--folder-id", type=int); p.add_argument("--duong-dan"); p.add_argument("--them", action="store_true", help="thêm 1 dòng Poster (không ghi đè dòng khác)"); p.add_argument("--nhan", default=""); p.set_defaults(f=lenh_video)
     p = sp.add_parser("the"); p.add_argument("ten"); p.add_argument("khoa", nargs="+")
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_the)
     p = sp.add_parser("index"); p.set_defaults(f=lenh_index)

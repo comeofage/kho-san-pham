@@ -296,7 +296,7 @@ async function renderDetail(id) {
             ${i.shop ? `<dt>Shop</dt><dd>${esc(i.shop)}</dd>` : ""}
             <dt>Thêm</dt><dd>${esc(i.them_boi || "?")} · ${gio(i.them_luc)}</dd>
             ${i.da_lam_video && i.da_lam_video.xong ? `<dt>Video</dt><dd>${i.da_lam_video.so_video} video · ${gio(i.da_lam_video.luc)}</dd>` : ""}
-            ${i.da_lam_video && i.da_lam_video.xong && (i.da_lam_video.poster_folder != null || i.da_lam_video.duong_dan) ? `<dt>Poster</dt><dd>${i.da_lam_video.poster_folder != null ? "folder " + esc(String(i.da_lam_video.poster_folder)) : ""}${i.da_lam_video.duong_dan ? ` · <code>${esc(i.da_lam_video.duong_dan)}</code>` : ""}</dd>` : ""}
+            ${i.da_lam_video && i.da_lam_video.xong ? ((i.da_lam_video.poster && i.da_lam_video.poster.length ? i.da_lam_video.poster : (i.da_lam_video.poster_folder != null || i.da_lam_video.duong_dan ? [{ folder: i.da_lam_video.poster_folder, duong_dan: i.da_lam_video.duong_dan }] : [])).map((p) => `<dt>Poster</dt><dd>${p.nhan ? esc(p.nhan) + " · " : ""}${p.folder != null ? "folder " + esc(String(p.folder)) : ""}${p.so_video ? " · " + esc(String(p.so_video)) + " video" : ""}${p.duong_dan ? ` · <code>${esc(p.duong_dan)}</code>` : ""}</dd>`).join("")) : ""}
           </dl>
         </div>
       </div>
