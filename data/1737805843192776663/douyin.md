@@ -65,6 +65,7 @@
 * **Ý tưởng từ video**: `15_69like_7659725778153655593.mp4` (69 like - so sánh bản 2m giải phóng không gian) và `12_120like_7532476291589688585.mp4` (120 like - cầm bản 1m cuộn gọn cạnh laptop)
 * **Góc máy & Cỡ cảnh**:
   - Góc máy trung cảnh POV một người tại không gian phòng ngủ / bàn làm việc.
+* **Hành động & Lời kêu gọi hành động (CTA)**:
   - **Nhịp 1 (Bản 1m - Giá 30k)**: Cắm cùng sạc dự phòng cầm trên tay hoặc cắm cạnh máy tính: dây dài vừa vặn, gọn gàng, không bị lòng thòng vướng víu.
   - **Nhịp 2 (Bản 2m - Giá 38k)**: Cắm vào ổ điện sát chân tường, người quay nằm thoải mái trên giường hoặc ngồi sofa cách xa 2 mét vừa sạc vừa lướt TikTok: dây vẫn chùng dồi dào, thoải mái xoay trở mà không sợ giật rơi củ sạc.
   - **CTA chốt đơn dứt khoát**: *"Bản 1 mét mang đi học đi làm chỉ 30k, bản 2 mét nằm giường sạc tẹt ga chỉ 38k — rẻ hơn cả cốc trà sữa nhưng dùng bền bỉ cả năm không lo đứt. Bấm ngay giỏ hàng góc trái chọn màu và nhận ưu đãi hôm nay nhé!"*
