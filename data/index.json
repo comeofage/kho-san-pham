@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-07T08:37:12+07:00",
+ "cap_nhat_luc": "2026-11-07T08:37:40+07:00",
  "san_pham": [
   {
    "id": "1732336903895156166",
@@ -61,11 +61,11 @@
    "id": "1731594463873894796",
    "uid": "1731594463873894796",
    "link": "https://vt.tiktok.com/ZS9ywnnGbbyCL-fMonF/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Sách - Kể Chuyện Cho Bé Trước Giờ Đi Ngủ - Tuyển Chọn Những Truyện Ngắn Hay Và Ý Nghĩa Giúp Bé Phát Triển IQ Và EQ",
+   "gia": "60.704₫",
+   "shop": "Tiên Phong Books New",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -81,19 +81,19 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:33+07:00",
-   "cap_nhat_luc": "2026-11-07T08:34:18+07:00",
+   "cap_nhat_luc": "2026-11-07T08:37:23+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": true
   },
   {
    "id": "1737805843192776663",
    "uid": "1737805843192776663",
    "link": "https://vt.tiktok.com/ZS9ywnGJhMG4v-iC4Mx/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "CápSạc Nhanh 20W Type-C-L, Dây Bọc Dù 5 Lõi Siêu Bền, Chống Rối Chống Gãy, 1m/2m，2.4A, 3 Màu (Chỉ Gồm Dây Cáp)",
+   "gia": "30.018₫",
+   "shop": "MIMI VN1",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -109,9 +109,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:13+07:00",
-   "cap_nhat_luc": "2026-11-07T08:34:18+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-07T08:37:13+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1733191836290548787",
@@ -137,8 +137,8 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:39:39+07:00",
-   "cap_nhat_luc": "2026-11-07T08:36:36+07:00",
-   "so_caption": 0,
+   "cap_nhat_luc": "2026-11-07T08:37:03+07:00",
+   "so_caption": 100,
    "co_file01": true
   },
   {
