@@ -30,9 +30,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-09T14:50:49+07:00",
+  "poster_folder": 310,
+  "duong_dan": "E:/oneshottramcanh/bupbe-1735509156426057262/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:52+07:00"
+ "cap_nhat_luc": "2026-11-09T14:50:49+07:00"
 }
