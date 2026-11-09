@@ -31,9 +31,11 @@
   "luc": "2026-11-09T08:52:14+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-09T15:57:06+07:00",
+  "poster_folder": 314,
+  "duong_dan": "E:\\oneshottramcanh\\nhactrong-1737491831909025666\\output"
  },
- "cap_nhat_luc": "2026-11-09T08:52:14+07:00"
+ "cap_nhat_luc": "2026-11-09T15:57:06+07:00"
 }
