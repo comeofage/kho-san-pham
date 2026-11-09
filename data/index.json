@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-09T20:22:35+07:00",
+ "cap_nhat_luc": "2026-11-09T22:24:06+07:00",
  "san_pham": [
   {
    "id": "tam-20261109104031126",
@@ -569,7 +569,7 @@
    "gia": "351.908₫",
    "shop": "Aladdin Foods",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -585,7 +585,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:51:27+07:00",
-   "cap_nhat_luc": "2026-11-02T12:24:36+07:00",
+   "cap_nhat_luc": "2026-11-09T22:23:54+07:00",
    "so_caption": 100,
    "co_file01": true
   },
