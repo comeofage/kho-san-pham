@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-09T14:29:43+07:00",
+ "cap_nhat_luc": "2026-11-09T14:51:02+07:00",
  "san_pham": [
   {
    "id": "tam-20261109104031126",
@@ -653,7 +653,7 @@
    "gia": "180.250₫",
    "shop": "GoGo@Toy",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Linh",
@@ -669,7 +669,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:48:18+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:52+07:00",
+   "cap_nhat_luc": "2026-11-09T14:50:49+07:00",
    "so_caption": 100,
    "co_file01": true
   },
