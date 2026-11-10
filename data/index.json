@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-10T12:13:48+07:00",
+ "cap_nhat_luc": "2026-11-10T12:14:16+07:00",
  "san_pham": [
   {
    "id": "1737820290740618550",
@@ -61,11 +61,11 @@
    "id": "1733717760954565651",
    "uid": "1733717760954565651",
    "link": "https://vt.tiktok.com/ZS9fAkfSn2gSL-2jtqz/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Vasaline Coconut Oil Squishy Stress Ball dầu dừa Đồ Chơi Giảm Căng Thẳng 6cm Chất Liệu Dẻo Mềm Không Đàn Hồi Phù Hợp Học Sinh Sinh Viên Người Làm Việc",
+   "gia": "75.840₫",
+   "shop": "KoKoRin Store",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -81,9 +81,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T11:26:28+07:00",
-   "cap_nhat_luc": "2026-11-10T12:09:58+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T12:13:52+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737571824605562460",
@@ -117,11 +117,11 @@
    "id": "1737277187860105013",
    "uid": "1737277187860105013",
    "link": "https://vt.tiktok.com/ZS9fSg1xQUHVs-2HJBH/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Họa tiết sóng phù hợp cho ốp điện thoại iPhone 17 Pro, ốp silicone cho iPhone 16 Pro Max, ốp màu trơn cho iPhone 16/15, chống rơi vỡ, ốp mềm dạng sáp cho iPhone 13, thân thiện với da cho iPhone 16e/18",
+   "gia": "31.565₫",
+   "shop": "TJ Mobile phone case",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -137,9 +137,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T08:14:41+07:00",
-   "cap_nhat_luc": "2026-11-10T12:09:57+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T12:13:46+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1733474158850901594",
@@ -221,8 +221,8 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:39:27+07:00",
-   "cap_nhat_luc": "2026-11-10T12:13:38+07:00",
-   "so_caption": 101,
+   "cap_nhat_luc": "2026-11-10T12:13:45+07:00",
+   "so_caption": 100,
    "co_file01": true
   },
   {
