@@ -1,89 +1,89 @@
-# Phân Tích & Kịch Bản Douyin / TikTok: Biển Báo Khu Vực Có Camera Giám Sát 15x20cm Cảnh Báo 24/7
+# PHÂN TÍCH VIDEO DOUYIN & CÁC CẢNH QUAY ĂN TIỀN
+*Sản phẩm: Biển Báo Khu Vực Có Camera Giám Sát 15x20cm, Biển Cảnh Báo An Ninh Ghi Hình 24/7 (ID: 1738164355824519066)*
 
-## 1. Top 20 Video Douyin / TikTok Tham Khảo Hàng Đầu
-
-| STT | Video ID / Link | Tác Giả | Lượt Tim | Góc Quay / Hook Nổi Bật | Điểm Đáng Học Hỏi |
-|---|---|---|---|---|---|
-| 01 | `https://v.douyin.com/iNt8AA1/` | An Ninh Gia Đình 247 | 1.8M | Bóc lớp keo dán dán biển camera lên cổng nhà: Kẻ lạ lảng vảng nhìn thấy biển báo lập tức quay đầu bỏ đi | Visual hook răn đe kẻ gian tức thì |
-| 02 | `https://v.douyin.com/iNtuBB2/` | Reviewer Đồ Tiện Ích | 1.3M | Cận cảnh chất liệu mica tráng gương sáng loáng và nền vàng đen phản quang rực rỡ trong đêm | Trực quan hóa độ nổi bật cảnh báo từ xa |
-| 03 | `https://v.douyin.com/iNtMCC3/` | Test Keo Dán Siêu Dính | 980.5K | Dán lên tường gạch rồi dùng tay giật mạnh hết sức: Biển bám chặt cứng không hề xê dịch | Kiểm chứng độ bám dính của lớp keo 3M |
-| 04 | `https://v.douyin.com/iNtsDD4/` | Chống Nắng Mưa Ngoài Trời | 840.1K | Xịt vòi nước áp lực cao vào biển báo: Màu in sắc nét không phai, không bong tróc | Đánh giá độ bền thời tiết ngoài trời |
-| 05 | `https://v.douyin.com/iNtYEE5/` | Kích Thước Chuẩn 15x20cm | 710.8K | Đặt cạnh bàn tay: Kích thước vừa vặn tầm mắt, chữ CAMERA và biểu tượng mắt cam sắc nét | Tối ưu kích thước quan sát |
-| 06 | `https://v.douyin.com/iNtjFF6/` | Chủ Cửa Hàng Tạp Hóa | 620.3K | Dán biển báo trước cửa tiệm: Giảm 99% tình trạng trộm cắp vặt và quấy rối | Giải pháp an ninh thiết thực cho tiểu thương |
-| 07 | `https://v.douyin.com/iNtwGG7/` | Đập Hộp Combo 2-5 Biển | 530.9K | Mở gói bọc màng bảo vệ bóng kính, bóc lớp bảo vệ mặt gương sáng bóng | Trải nghiệm bóc hộp chỉn chu |
-| 08 | `https://v.douyin.com/iNtkHH8/` | Dán Được Trên Mọi Bề Mặt | 465.0K | Dán lên cửa kính, cửa sắt, tường xi măng, cột gỗ đều bám dính hoàn hảo | Tính tương thích bề mặt dán |
-| 09 | `https://v.douyin.com/iNtpII9/` | Nhà Ở Khu Dân Cư Phức Tạp | 410.6K | Gia đình dán biển camera trước cổng tạo cảm giác an tâm cho người già và trẻ nhỏ | Tạo sự an tâm gia đình |
-| 10 | `https://v.douyin.com/iNtdJJ0/` | Giá Chỉ Mười Mấy Nghìn | 365.2K | Chi phí chỉ 16k nhưng hiệu quả răn đe an ninh tương đương lắp hệ thống đắt tiền | Đòn bẩy kinh tế siêu tiết kiệm |
-| 11 | `https://v.douyin.com/iNtfKK1/` | Dán Trong Thang Máy & Hành Lang | 320.8K | Ban quản lý chung cư dán biển cảnh báo giữ gìn vệ sinh và an ninh chung | Ứng dụng quản lý tòa nhà |
-| 12 | `https://v.douyin.com/iNtgLL2/` | Hai Phiên Bản Vàng Đen & Gương Bạc | 285.4K | So sánh bản Vàng Đen cảnh báo mạnh mẽ vs bản Tráng Gương Bạc sang trọng | Đa dạng lựa chọn thẩm mỹ |
-| 13 | `https://v.douyin.com/iNthMM3/` | Nhắc Nhở Ý Thức Nơi Làm Việc | 250.0K | Dán ở kho xưởng, văn phòng giúp nhân viên tự giác và trung thực hơn | Nâng cao ý thức kỷ luật lao động |
-| 14 | `https://v.douyin.com/iNtiNN4/` | Chống Trầy Xước Bề Mặt | 225.6K | Lấy chìa khóa cà nhẹ không làm xước chữ in công nghệ UV cao cấp | Kiểm chứng độ bền lớp in |
-| 15 | `https://v.douyin.com/iNtjOO5/` | Bác Bảo Vệ Khuyên Dùng | 205.1K | Bảo vệ tòa nhà chia sẻ kinh nghiệm: Kẻ gian luôn nhìn quanh tìm biển báo trước khi hành động | Lời khuyên an ninh thực tế |
-| 16 | `https://v.douyin.com/iNtkPP6/` | Không Cần Khoan Đục Tường | 188.9K | Bóc lớp dán sau lưng 5 giây là xong, phụ nữ cũng tự dán dễ dàng | Tiện lợi thi công không tốn sức |
-| 17 | `https://v.douyin.com/iNtlQQ7/` | Nhà Chưa Lắp Camera Vẫn Nên Dán | 170.3K | Đòn tâm lý "vườn không nhà trống" đánh lừa kẻ trộm từ xa cực hiệu quả | Chiến thuật tâm lý phòng trộm |
-| 18 | `https://v.douyin.com/iNtmRR8/` | Mua Combo 4 Biển Dán Bốn Góc | 152.0K | Dán trước cổng, sau nhà, cửa sổ và nhà để xe bảo vệ toàn diện | Kích cầu mua combo |
-| 19 | `https://v.douyin.com/iNtnSS9/` | Khách Hàng Khen Đẹp & Bền | 135.8K | Đánh giá 5 sao khen biển dày dặn dán cả năm trời mưa nắng vẫn như mới | Củng cố niềm tin khách hàng |
-| 20 | `https://v.douyin.com/iNtoTT0/` | Săn Sale TikTok Shop | 118.2K | Giá rẻ như cho chỉ 16k nhận ngay biển báo an ninh cao cấp | Kích thích chốt đơn tức thì |
+> Bộ dữ liệu được tổng hợp từ **13 video Douyin** thương mại thực tế (trong đó có các video đạt **365 lượt like**, **27 lượt like**, **24 lượt like** và **8 lượt like**). Video cung cấp góc quay thực tế chứng minh công năng dán nhanh bám dính chắc, độ đàn hồi dẻo dai chống gãy vỡ, bề mặt tráng gương/phủ màng chống nước phản quang và hiệu ứng răn đe tâm lý 24/7 cho cửa hàng, nhà ở, văn phòng, kho xưởng tại Việt Nam. Toàn bộ kịch bản được chuẩn hóa cho **Creator quay 1 mình trong phòng (Solo Indoor)**, không cần host lộ mặt.
 
 ---
 
-## 2. 5 Kịch Bản TikTok Shop Creator Ăn Tiền
+## 🎬 I. 5 CẢNH QUAY "ĂN TIỀN" ĐẮT GIÁ NHẤT TỪ DOUYIN
 
-### Kịch Bản 1: Visual Hook – Kẻ lạ lảng vảng thấy biển báo quay đầu bỏ chạy (Đòn tâm lý răn đe cực mạnh)
-- **Thời lượng**: 35 giây
-- **Âm nhạc**: Tiếng nhạc kịch tính hình sự, chuyển sang tiếng thở phào nhẹ nhõm
-- **Hook (0-3s)**: Camera an ninh ghi lại: Kẻ lạ mặt định lén lút tiếp cận cổng nhà, vừa ngước nhìn thấy chiếc biển vàng đen "KHU VỰC CÓ CAMERA GIÁM SÁT 24/7": Giật mình chột dạ, lập tức quay đầu rời đi ngay trong 3 giây: "Chiếc biển báo nhỏ này có sức mạnh răn đe kẻ gian mạnh gấp 10 lần bạn nghĩ!"
-- **Thân bài (3-25s)**:
-  - Tâm lý học tội phạm đã chứng minh: Kẻ gian luôn tìm kiếm những ngôi nhà sơ hở, không có dấu hiệu phòng bị để ra tay. Một chiếc biển báo chuyên nghiệp đập vào mắt từ xa sẽ khiến chúng lập tức từ bỏ ý định.
-  - Kích thước chuẩn 15x20cm nổi bật, in chữ CAMERA và biểu tượng mắt thần sắc nét trên nền vàng đen cảnh báo hoặc nền tráng gương bạc cao cấp.
-  - Sử dụng công nghệ in UV sắc nét trên chất liệu decal chống nước phủ bóng: Bền bỉ dưới nắng mưa ngoài trời suốt nhiều năm không lo bay màu, ố vàng hay bong tróc.
-  - Mặt sau có sẵn lớp keo siêu dính chuyên dụng: Chỉ cần lau sạch bề mặt, bóc lớp lót và dán thẳng lên cửa kính, tường gạch, cửa cuốn hay cổng sắt chỉ trong 5 giây mà không cần khoan đục phức tạp.
-- **CTA (25-35s)**: "Giá chỉ mười mấy cành bảo vệ an toàn cho cả gia đình, bấm ngay giỏ hàng góc trái đặt mua ngay hôm nay nhé!"
-
----
-
-### Kịch Bản 2: Review Thực Tế – Nhà chưa lắp camera có nên dán biển báo này không?
-- **Thời lượng**: 40 giây
-- **Âm nhạc**: Nhạc chia sẻ mẹo vặt thông minh, tươi vui
-- **Hook (0-3s)**: Nhà bạn chưa có điều kiện lắp hệ thống camera tiền triệu? Xem mẹo an ninh cực kỳ thông minh này!
-- **Thân bài (3-30s)**:
-  - Dán một chiếc biển cảnh báo camera ngay trước cửa: Kẻ gian từ bên ngoài nhìn vào không thể biết nhà bạn có camera thật hay camera ẩn giấu hay không.
-  - Đòn tâm lý đánh thẳng vào sự sợ hãi bị ghi hình và bị pháp luật xử lý, khiến 90% kẻ xấu phải chùn bước.
-  - Thử nghiệm dán keo: Bóc dán lên cửa sắt, dùng tay giật mạnh không hề bong tróc, chịu được cả nước xịt rửa xe áp lực cao.
-  - Thích hợp cho mọi không gian: Nhà ở gia đình, cửa hàng buôn bán, phòng trọ, kho xưởng bến bãi hay văn phòng công ty.
-- **CTA (30-40s)**: "Đầu tư chi phí siêu nhỏ nhưng mang lại sự an tâm tuyệt đối. Nhấp link bên dưới đặt hàng để nhận ngay ưu đãi freeship!"
+### 1. 🪝 Cảnh 1: The Deterrent Pop-in Hook — Giơ biển đập thẳng vào mắt, răn đe ngay giây đầu (0 – 3 giây đầu)
+* **Ý tưởng từ video**: `11_1like_7289346051595685180.mp4` (1 like) và `01_365like_7387422446346849562.mp4` (365 like)
+* **Góc máy & Cỡ cảnh**:
+  - POV góc ngang tầm mắt (Eye-level POV), tripod cố định đối diện cánh cửa phòng / cửa ra vào.
+  - Khung hình mở đầu là cánh cửa trống trơn (hoặc có tờ giấy A4 viết tay nhăn nheo chữ "Có Camera"). Bất ngờ, một bàn tay đưa nhanh tấm biển Mẫu 1 (vàng đen) hoặc Mẫu 2 (đỏ bạc) vào chính giữa khung hình ở cự ly cận (Pop-in), biểu tượng camera to rõ đập thẳng vào mắt người xem.
+* **Hành động & Visual**:
+  - Thao tác dứt khoát: Giơ biển lên ➔ áp nhẹ vào cửa ngang tầm mắt. Dòng chữ in to rõ ràng: *"KHU VỰC CÓ CAMERA QUAN SÁT - GHI HÌNH 24/7"*.
+  - Hook tâm lý: *"Gắn camera tiền triệu trên cao nhưng trộm vặt hay shipper giao nhầm hàng vẫn không để ý? Chỉ cần 1 tấm biển này đập vào mắt ngay cửa vào là mọi ý đồ xấu tự động lui bước!"*
+* **Tại sao ăn tiền**: Đánh trúng nỗi đau thực tế của 90% gia đình và chủ shop: camera gắn cao bị khuất tầm nhìn, không có tính năng cảnh báo chủ động. Tấm biển ngang tầm mắt đóng vai trò "vũ khí răn đe tâm lý" cực mạnh với chi phí chỉ mười mấy nghìn đồng.
 
 ---
 
-### Kịch Bản 3: Nỗi Lo Chủ Cửa Hàng – Chấm dứt tình trạng trộm cắp vặt và quấy rối
-- **Thời lượng**: 38 giây
-- **Âm nhạc**: Nhạc dồn dập, hồi hộp
-- **Hook (0-3s)**: Chủ shop quần áo hay tiệm tạp hóa đau đầu vì hay bị mất đồ vặt hoặc khách hàng thiếu ý thức?
-- **Thân bài (3-28s)**:
-  - Dán 2 chiếc biển báo ngay quầy thu ngân và khu vực trưng bày hàng hóa: Khách hàng và người lạ nhìn thấy sẽ tự giác nâng cao ý thức, chấm dứt hoàn toàn thói quen xấu.
-  - Biển báo thiết kế trang nhã, phom dáng công nghiệp hiện đại không làm mất đi tính thẩm mỹ của cửa hàng.
-  - Có 2 phiên bản lựa chọn: Bản Vàng Đen truyền thống tạo độ cảnh báo mạnh mẽ từ xa và Bản Gương Bạc sang trọng phù hợp với không gian shop cao cấp.
-- **CTA (28-38s)**: "Bảo vệ tài sản cửa hàng ngay từ hôm nay, chạm giỏ hàng góc trái gom combo 2-4 chiếc nhận giá sỉ nhé!"
+### 2. ⚡ Cảnh 2: The 3-Second Peel & Stick — Bóc lớp lót dán ăn ngay, không cần khoan đục
+* **Ý tưởng từ video**: `04_8like_7463033398920105243.mp4` (8 like) và `11_1like_7289346051595685180.mp4` (1 like)
+* **Góc máy & Cỡ cảnh**:
+  - Macro cận cảnh 45° (Close-up Macro), kẹp bàn cố định khóa nét vào mặt sau tấm biển.
+* **Hành động & Nhịp cắt**:
+  - **Nhịp 1**: Móng tay cậy nhẹ góc lớp lót bảo vệ phía sau (lớp decal / mút xốp chuyên dụng dán sẵn), lột một đường dứt khoát lộ lớp keo dán bóng loáng, siêu dính.
+  - **Nhịp 2**: Đặt tấm biển áp thẳng lên cánh cửa gỗ / kính cửa sổ / tủ hồ sơ, dùng ngón tay cái miết dứt khoát một đường từ tâm ra mép ngoài và miết 4 góc. Tấm dính chặt tệp vào bề mặt, phẳng lì, không bong bóng khí hay phồng rộp.
+  - **Nhịp 3**: Dùng ngón tay cậy thử mép góc: biển bám chắc nịch, không hề xê dịch hay bong mép.
+* **Tại sao ăn tiền**: Đập tan rào cản ngại lắp đặt của khách hàng: phụ nữ hay người thuê trọ cực sợ phải khoan tường, đóng đinh làm hỏng cửa. Thao tác dán sẵn keo "bóc là dính" chứng minh sự tiện lợi tuyệt đối.
 
 ---
 
-### Kịch Bản 4: Bác Bảo Vệ Chia Sẻ Kinh Nghiệm – Trang bị an ninh bắt buộc của mọi khu dân cư
-- **Thời lượng**: 35 giây
-- **Âm nhạc**: Nhạc mộc mạc chân thành
-- **Hook (0-3s)**: Bác bảo vệ có 15 năm kinh nghiệm khuyên: "Cổng nhà nào cũng nên dán chiếc biển này để phòng ngừa rủi ro từ sớm!"
-- **Thân bài (3-25s)**:
-  - Phòng bệnh hơn chữa bệnh: Đừng đợi đến khi mất đồ rồi mới đi lắp camera hay tìm cách xử lý.
-  - Biển báo chất lượng cao, bề mặt sáng bóng phản quang trong đêm giúp người giao hàng hay khách đến nhà dễ dàng quan sát.
-  - Thao tác dán dễ như ăn kẹo, người già hay phụ nữ đều tự tay dán lên cổng nhà trong 1 nốt nhạc.
-- **CTA (25-35s)**: "Món đồ tiện ích thiết thực cho mọi gia đình, nhấn giỏ hàng TikTok Shop đặt ngay hôm nay!"
+### 3. ✨ Cảnh 3: The Mirror Lamination & Waterproof Wipe — Nghiêng góc bắt sáng & xịt nước lau không trôi
+* **Ý tưởng từ video**: `11_1like_7289346051595685180.mp4` (1 like - đoạn 表层覆膜) và `06_6like_7166530859191831838.mp4` (6 like)
+* **Góc máy & Cỡ cảnh**:
+  - Cận cảnh đặt góc nghiêng 30° dưới ánh đèn bàn (Tripod cố định, khóa nét, khóa phơi sáng).
+* **Hành động & Visual**:
+  - **Nhịp 1**: Nghiêng nhẹ tấm Mẫu 2 (nền bạc) qua lại trước nguồn sáng: Bề mặt tráng gương ánh lên vệt sáng kim loại cực kỳ sang trọng, chữ in UV nổi khối sắc nét không tì vết.
+  - **Nhịp 2**: Dùng chai xịt nước nhỏ xịt thẳng vài tia nước lên mặt biển (nước đọng thành giọt tròn lăn mượt mà), sau đó lấy khăn ướt miết mạnh qua chữ CAMERA. Bề mặt sáng bóng trở lại ngay lập tức, mực in không lem, không phai màu, không thấm nước.
+* **Tại sao ăn tiền**: Khách hàng luôn lo lắng biển dán vài hôm sẽ bị phai mực, mờ chữ do ẩm mốc hay cọ rửa. Cảnh quay thực tế chứng minh lớp phủ màng bảo vệ bền bỉ gấp nhiều lần giấy decal thông thường.
 
 ---
 
-### Kịch Bản 5: Before / After – Cổng nhà trống trơn bất an vs Cổng nhà dán biển cảnh báo an toàn 24/7
-- **Thời lượng**: 30 giây
-- **Âm nhạc**: Nhạc beat drop tương phản dứt khoát
-- **Hook (0-3s)**: Cổng nhà trống trơn kẻ gian dòm ngó vs Dán biển báo camera sắc nét, ngôi nhà luôn được bảo vệ nghiêm ngặt!
-- **Thân bài (3-22s)**:
-  - Nâng cao mức độ an toàn cho tổ ấm thân yêu chỉ với 16k.
-  - Đóng gói cẩn thận giao hàng nhanh chóng tận tay.
-- **CTA (22-30s)**: "Đặt mua ngay hôm nay tại giỏ hàng bên dưới để nhận giá ưu đãi tốt nhất!"
+### 4. 🔄 Cảnh 4: The Extreme Bend & Toughness Test — Uốn cong chữ U đàn hồi nguyên vẹn
+* **Ý tưởng từ video**: `13_0like_7695975390050142885.mp4` (0 like) và `06_6like_7166530859191831838.mp4` (6 like - 加厚PVC材质)
+* **Góc máy & Cỡ cảnh**:
+  - Góc Top-down hoặc bán cận ngang ngực (không lấy mặt, chỉ lấy đôi bàn tay thao tác trước mặt bàn).
+* **Hành động & Visual**:
+  - Hai bàn tay cầm hai mép cạnh của tấm biển 15x20cm, dùng lực uốn cong gập đôi lại thành hình chữ U (hoặc cánh cung 180°).
+  - Buông tay: Tấm biển tự động bật nảy trở lại trạng thái phẳng lì ban đầu, hoàn toàn không để lại vết rạn nứt, không nếp gấp trắng, 4 góc bo tròn nhẵn mịn không bị tưa rách mép.
+  - Dùng đầu ngón tay gõ "cộc cộc" lên mặt bàn để tạo âm thanh đanh chắc, dẻo dai của vật liệu.
+* **Tại sao ăn tiền**: Thể hiện trực quan chất liệu cao cấp dày dặn, đập tan định kiến "hàng rẻ tiền mỏng dính như giấy mã", nâng giá trị cảm nhận sản phẩm lên gấp nhiều lần so với mức giá chỉ ~16k.
+
+---
+
+### 5. 📦 Cảnh 5: The Size Reference & Combo Lineup — So sánh kích thước chuẩn 15x20cm & Trọn bộ combo
+* **Ý tưởng từ video**: `02_27like_7098340989370240293.mp4` (27 like) và `08_3like_7535057181113830706.mp4` (3 like)
+* **Góc máy & Cỡ cảnh**:
+  - Top-down (nhìn thẳng từ trên xuống mặt bàn sạch sẽ) hoặc cận ngang đặt cạnh vật tham chiếu thân thuộc.
+* **Hành động & Bày combo**:
+  - **Nhịp 1**: Đặt tấm biển 15x20cm cạnh nửa tờ giấy A4 hoặc đặt thước kẻ 30cm dọc cạnh chỉ đúng số 20cm, hoặc ướm thử cạnh công tắc điện gắn tường. Người xem lập tức thấy kích thước vừa vặn: to rõ dễ đọc từ xa 5m nhưng không chiếm quá nhiều diện tích cửa.
+  - **Nhịp 2**: Trải phẳng cả 2 mẫu: Mẫu 1 (vàng đen rực rỡ thích hợp dán cổng, cửa ra vào, nhà kho) và Mẫu 2 (đỏ bạc tráng gương sang trọng thích hợp dán cửa kính, văn phòng, quầy lễ tân). Hai tấm nằm cạnh nhau tạo cảm giác đồng bộ chuyên nghiệp.
+  - **Lời kêu gọi hành động (CTA)**:
+    - *"Giá 1 tấm chỉ bằng ly trà đá 16k, mua combo 2 tấm dán trước cửa và trong nhà vừa tiết kiệm vừa an tâm 24/7. Bấm ngay vào giỏ hàng góc trái chọn mẫu nhé!"*
+* **Tại sao ăn tiền**: Khách mua online sợ nhất nhận về "biển bé tí bằng lòng bàn tay". Cảnh so sánh kích thước thực tế giúp người xem hình dung chính xác vị trí dán tại nhà, thúc đẩy quyết định chốt đơn combo 2 tấm để tăng giá trị đơn hàng (AOV).
+
+---
+
+## 📊 II. DANH SÁCH 13 VIDEO DOUYIN THAM KHẢO GỐC (ĐÃ TẢI VỀ MÁY)
+
+| # | File video trên máy | Link Douyin | Like | Thời lượng | Điểm nhấn chính |
+|:---:|:---|:---:|:---:|:---:|:---|
+| **01** | `01_365like_7387422446346849562.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7387422446346849562) | **365** | 36.2s | Bày dàn biển cảnh báo, biển camera cho cơ sở kinh doanh, khách sạn, cửa hàng. |
+| **02** | `02_27like_7098340989370240293.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7098340989370240293) | **27** | 62.0s | Giới thiệu các mẫu biển cảnh báo camera tông vàng đen, chất liệu tấm PVC 3mm chống nắng chống nước. |
+| **03** | `03_24like_6983229646112312576.mp4` | [Xem trên Douyin](https://www.douyin.com/video/6983229646112312576) | **24** | 21.5s | Chồng biển báo khu vực có camera an ninh, thiết kế chuẩn nhận diện trực quan. |
+| **04** | `04_8like_7463033398920105243.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7463033398920105243) | **8** | 12.6s | Cận cảnh bo góc mài mịn không bavia và thao tác bóc lớp keo xốp đỏ dán tường siêu dính. |
+| **05** | `05_6like_7521287541514603833.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7521287541514603833) | 6 | 20.7s | Biển cảnh báo camera dạ quang/phản quang phát sáng trong đêm, bóc dán nhanh. |
+| **06** | `06_6like_7166530859191831838.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7166530859191831838) | 6 | 20.3s | Thao tác uốn cong tấm PVC dày dặn, chứng minh độ đàn hồi cao không gãy gập. |
+| **07** | `07_4like_7514494718647160116.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7514494718647160116) | 4 | 16.3s | So sánh hiệu ứng biển cảnh báo camera ngày và đêm, lớp màng phủ chống nước. |
+| **08** | `08_3like_7535057181113830706.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7535057181113830706) | 3 | 13.2s | Mở bọc sản phẩm đóng gói kín trong túi OPP, kiểm tra độ dày và độ sắc nét. |
+| **09** | `09_3like_7521879039695850811.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7521879039695850811) | 3 | 16.3s | Thử nghiệm độ dính của keo lưng và khả năng chống bám bẩn trên bề mặt biển. |
+| **10** | `10_1like_7656714782188162466.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7656714782188162466) | 1 | 37.3s | Biển cảnh báo phản quang dùng ngoài trời, kiểm tra độ phản chiếu ánh sáng. |
+| **11** | `11_1like_7289346051595685180.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7289346051595685180) | 1 | 13.8s | Cận cảnh bề mặt cán màng chống xước phản chiếu ánh đèn và lớp keo lưng dán sẵn. |
+| **12** | `12_1like_7514906317593955647.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7514906317593955647) | 1 | 19.4s | Biển báo camera dạ quang phát sáng trong bóng tối, răn đe kẻ gian 24/7. |
+| **13** | `13_0like_7695975390050142885.mp4` | [Xem trên Douyin](https://www.douyin.com/video/7695975390050142885) | 0 | 32.8s | Thử nghiệm cơ học uốn cong gập đôi biển PVC, đàn hồi phục hồi phẳng lì 100%. |
+
+*Thư mục chứa toàn bộ video gốc độ nét cao trên máy nhà:*  
+`E:\phantichcanhquay\sp_1738164355824519066\douyin\video\`
