@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-10T13:19:20+07:00",
+ "cap_nhat_luc": "2026-11-10T13:19:41+07:00",
  "san_pham": [
   {
    "id": "1737221317290657187",
    "uid": "1737221317290657187",
    "link": "https://vt.tiktok.com/ZS9fAXvWGW8rX-K2B1b/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bát đựng trái cây hình nải chuối 3D, nhựa PETG cao cấp, 3 size lựa chọn, bày hoa quả bánh kẹo, trang trí phòng khách, quà tặng độc đáo tại nhà",
+   "gia": "58.015₫",
+   "shop": "OOKAS--VN",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,9 +25,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:15:29+07:00",
-   "cap_nhat_luc": "2026-11-10T13:16:41+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T13:19:30+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1730555233168427532",
