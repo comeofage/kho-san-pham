@@ -1,88 +1,102 @@
-# Phân Tích & Kịch Bản Douyin / TikTok: Potato Squishy Khoai Tây Mềm Nặn Tạo Hình Giảm Stress
+# PHÂN TÍCH VIDEO DOUYIN & CÁC CẢNH QUAY ĂN TIỀN
+*Sản phẩm: Potato Squishy Khoai Tây Mềm Có Thể Tạo Hình - Đồ Chơi Bóp Giảm Stress (ID: 1737682770435082158)*
 
-## 1. Top 20 Video Douyin / TikTok Tham Khảo Hàng Đầu
-
-| STT | Video ID / Link | Tác Giả | Lượt Tim | Góc Quay / Hook Nổi Bật | Điểm Đáng Học Hỏi |
-|---|---|---|---|---|---|
-| 01 | `https://v.douyin.com/iNr8AA1/` | Bậc Thầy Bóp Squishy | 1.8M | Dùng hai bàn tay bóp củ khoai tây méo mó thành mặt cười, thả ra củ khoai từ từ phồng lại nguyên vẹn | Visual hook nặn tạo hình củ khoai cực vui |
-| 02 | `https://v.douyin.com/iNruBB2/` | ASMR Cheese Ball Crunchy | 1.3M | Tiếng bóp giòn xốp bên trong "rộp... rạo" như nhai khoai tây lắc phô mai giòn rụm | Kích thích thính giác thèm ăn |
-| 03 | `https://v.douyin.com/iNrMCC3/` | Quả Cầu Nhựa Trong Đựng Khoai | 950.8K | Rút củ khoai tây vàng ươm từ quả cầu nhựa trong suốt ra nặn rồi nhét lại gọn gàng | Trải nghiệm phụ kiện đóng gói độc đáo |
-| 04 | `https://v.douyin.com/iNrsDD4/` | Xả Stress Công Sở Cực Mạnh | 810.2K | Đấm, bóp, kéo giãn củ khoai tây dài ngoằng để giải tỏa bực bội deadline | Đánh trúng tâm lý áp lực công việc |
-| 05 | `https://v.douyin.com/iNrYEE5/` | Vỏ Mỏng Siêu Mềm Đàn Hồi | 690.6K | Cận cảnh lớp vỏ mỏng mịn sờ vào mát rượi êm ái như làn da em bé | Nhấn mạnh ưu điểm vỏ mỏng siêu mềm |
-| 06 | `https://v.douyin.com/iNrjFF6/` | Biến Hình Thành Bánh Bao & Xúc Xích | 580.1K | Dùng ngón tay ấn tạo hình củ khoai thành hình cái nấm, bánh bao, củ cà rốt | Khơi gợi sự sáng tạo vô tận |
-| 07 | `https://v.douyin.com/iNrwGG7/` | Đập Hộp Ball Khoai Tây | 510.5K | Unboxing chiếc hộp xinh xắn bọc quả cầu khoai tây vàng tươi thơm ngát | Trải nghiệm bóc hộp đầy đặn |
-| 08 | `https://v.douyin.com/iNrkHH8/` | Lưu Ý Tránh Móng Tay Sắc Nhọn | 445.0K | Hướng dẫn chơi bằng lòng bàn tay để củ khoai bền bỉ chơi được lâu dài | Cung cấp mẹo sử dụng chân thành |
-| 09 | `https://v.douyin.com/iNrpII9/` | Học Sinh Ôn Thi Đỡ Căng Não | 390.4K | Cầm củ khoai bóp nhịp nhàng trong khi đọc sách giúp tăng độ tập trung | Ứng dụng hỗ trợ học tập |
-| 10 | `https://v.douyin.com/iNrdJJ0/` | Decor Bàn Học Vàng Cam Rực Rỡ | 345.8K | Đặt quả cầu khoai tây cạnh bàn phím máy tính làm phụ kiện decor cực chill | Tăng công năng trang trí |
-| 11 | `https://v.douyin.com/iNrfKK1/` | Bóp Chậm Phục Hồi Thần Kỳ | 310.2K | Bấm đồng hồ quay chậm củ khoai tây từ trạng thái dẹt từ từ nở căng mọng | Hiệu ứng slow motion chữa lành |
-| 12 | `https://v.douyin.com/iNrgLL2/` | Rửa Bụi Bẩn Bằng Nước Sạch | 280.9K | Dính bụi bẩn chỉ cần nhúng qua nước xà phòng thoa chút phấn em bé là mịn tưng | Hướng dẫn vệ sinh dễ dàng |
-| 13 | `https://v.douyin.com/iNrhMM3/` | Món Quà Sinh Nhật Tí Hon | 250.3K | Tặng bạn thân củ khoai tây bóp xả stress làm bạn cười nắc nẻ | Gợi mở quà tặng bạn bè |
-| 14 | `https://v.douyin.com/iNriNN4/` | Rèn Vận Động Khớp Ngón Tay | 225.0K | Bài tập bóp nhả giúp ngón tay linh hoạt chống mỏi sau giờ gõ máy tính | Lợi ích sức khỏe bàn tay |
-| 15 | `https://v.douyin.com/iNrjOO5/` | Troll Bạn Cùng Bàn | 205.6K | Giả vờ đưa củ khoai tây bảo là khoai nướng, bạn cầm vào bẹp dí giật mình | Kịch bản troll hài hước |
-| 16 | `https://v.douyin.com/iNrkPP6/` | Mua Combo 2 Củ Tiết Kiệm | 188.1K | Mua đôi 2 quả cầu khoai tây vàng và xanh giá siêu hời | Kích cầu mua nhiều |
-| 17 | `https://v.douyin.com/iNrlQQ7/` | Bé Chơi Ngoan Cả Buổi | 170.4K | Bé 3 tuổi ngồi nặn hình củ khoai không đòi xem tivi điện thoại | Đồ chơi an toàn cho trẻ |
-| 18 | `https://v.douyin.com/iNrmRR8/` | Chất Liệu TPR An Toàn | 152.8K | Đạt tiêu chuẩn không mùi độc hại, an toàn tuyệt đối khi tiếp xúc da tay | Cam kết an toàn sức khỏe |
-| 19 | `https://v.douyin.com/iNrnSS9/` | Khách Hàng Khen Bóp Sướng | 135.2K | Hàng ngàn đánh giá khen cảm giác bóp crunchy đã tay hơn các loại squishy thường | Khẳng định chất lượng vượt trội |
-| 20 | `https://v.douyin.com/iNroTT0/` | Săn Sale TikTok Shop | 118.7K | Giá mở bán chỉ vài chục ngàn kèm quà tặng độc quyền | Kích thích chốt đơn nhanh |
+> Bộ dữ liệu được tổng hợp từ **20 video Douyin** thương mại thực tế đúng 100% dòng sản phẩm squishy khoai tây tạo hình giảm stress (trong đó có các video đạt **22.436 lượt like**, **18.159 lượt like**, **11.251 lượt like**, **6.933 lượt like** và **5.561 lượt like**). Video cung cấp các góc máy thực tế chứng minh độ mềm lún ngón tay sâu, khả năng nặn tạo hình (moldable) không bục vỡ, âm thanh bóp giòn rộp xốp đã tai và quy cách bóc mở quả cầu nhựa/túi nilon bảo vệ an toàn. Toàn bộ kịch bản được thiết kế phù hợp 100% cho **Creator quay 1 mình trong phòng (Solo Indoor Creator), góc máy đặt mặt bàn, không lộ mặt/không có host**.
 
 ---
 
-## 2. 5 Kịch Bản TikTok Shop Creator Ăn Tiền
+## 🎬 I. 5 CẢNH QUAY "ĂN TIỀN" ĐẮT GIÁ NHẤT TỪ DOUYIN
 
-### Kịch Bản 1: Visual Hook – Bóp bẹp dúm củ khoai tây & Nặn thành đủ mọi hình thù (Bóp sướng đã tay)
-- **Thời lượng**: 35 giây
-- **Âm nhạc**: Tiếng bóp crunchy lạo xạo giòn tai hòa cùng beat lofi vui nhộn
-- **Hook (0-3s)**: Cầm củ khoai tây vàng tươi bóp bẹp dí thành một mảng dẹt, dùng 2 ngón tay nặn thành hình mặt cười ngáo ngơ: Từ từ buông tay ra, củ khoai tự động nở phồng trở lại hình dáng ban đầu: "Món squishy củ khoai tây đang làm mưa làm gió mấy ngày nay đây!"
-- **Thân bài (3-25s)**:
-  - Khác hẳn squishy mút xốp thông thường chỉ phục hồi hình cũ, củ khoai tây này có thể kéo dãn, nhào nặn biến hình thành đủ thứ: chiếc nấm, bánh bao, củ cải tùy theo sự khéo tay của bạn.
-  - Lớp vỏ mỏng siêu mềm mại chạm vào mát mịn như nhung, kết hợp lõi cheese ball crunchy bên trong tạo tiếng lách cách siêu đã tai mỗi khi bóp.
-  - Đựng trọn trong một quả cầu nhựa trong suốt xinh xắn, chơi xong cất vào quả cầu đặt lên bàn làm việc vừa sạch sẽ vừa làm đồ decor cực xinh.
-  - Cực kỳ hữu ích cho những lúc căng thẳng deadline hay học bài mệt mỏi, bóp nhả 1 phút là giải phóng hết mọi bực dọc.
-- **CTA (25-35s)**: "Giá chỉ vài chục ngàn sở hữu ngay em khoai tây bóp siêu mê, bấm ngay giỏ hàng góc trái rinh về hôm nay nhé!"
-
----
-
-### Kịch Bản 2: Review Thực Tế – Ưu điểm siêu mềm & Lưu ý chơi bền bỉ cả năm
-- **Thời lượng**: 40 giây
-- **Âm nhạc**: Nhạc mộc mạc chân thật, tiếng cười vui tươi
-- **Hook (0-3s)**: Người bán có tâm nói thật: "Củ khoai tây squishy này bóp sướng số 1 nhưng nếu không biết chơi thì nhanh rách lắm đấy nhé!"
-- **Thân bài (3-30s)**:
-  - Ưu điểm: Vỏ mỏng dẻo dai tạo cảm giác bóp mềm êm tay đỉnh cao nhất trong các dòng đồ chơi xả stress.
-  - Hướng dẫn bí kíp chơi bền: Dùng lòng bàn tay và các đầu ngón tay xoa bóp, tránh dùng móng tay sắc nhọn bấm chọc vào vỏ.
-  - Nếu chơi lâu dính bụi chỉ cần rửa nhẹ dưới vòi nước sạch, lăn qua một lớp phấn rôm mỏng là lại mịn màng thơm tho như vừa bóc hộp.
-  - Đi kèm quả cầu bảo vệ chống bám bụi và chống đè ép khi bỏ trong balo đi học hay túi xách.
-- **CTA (30-40s)**: "Vừa xả stress lại vừa rèn luyện bàn tay khéo léo. Nhấp link bên dưới đặt hàng nhận ưu đãi freeship ngay!"
+### 1. 🪝 Cảnh 1: The Deep Thumb Squeeze Hook — Cú lún ngón tay 1 chạm cực sâu (0 – 3 giây đầu)
+* **Ý tưởng từ video**: `01_22436like` (22.4k like) và `08_2367like` (2.3k like)
+* **Góc máy & Cỡ cảnh**:
+  - Macro cực cận (Extreme Close-up POV), góc máy thấp 45 độ đặt ngang mặt bàn làm việc hoặc khay gỗ.
+  - Ánh sáng tự nhiên chiếu xiên làm nổi bật bề mặt vàng mịn như phô mai cùng các đốm nâu nướng mô phỏng vỏ khoai tây thật.
+* **Hành động & Visual**:
+  - Bàn tay cầm quả khoai tây đặt trọn trong lòng bàn tay (hoặc để trên mặt bàn).
+  - Ngón tay cái ấn một lực dứt khoát vào chính giữa: ngón tay lún sâu ngập quá nửa củ khoai tây, thân khoai phình nhẹ sang hai bên mềm như cục bột bánh.
+  - Khi nhấc ngón tay ra, củ khoai từ từ đàn hồi hồi lại form tròn ban đầu một cách mượt mà và êm ái.
+  - Hook 3 giây đầu: *"Đừng mua nếu bạn chỉ muốn đồ chơi nhựa cứng thông thường — đây là củ khoai tây squishy mềm lún tay nhất bạn từng thấy!"*
+* **Tại sao ăn tiền**: Đập tan nỗi lo số 1 của người mua hàng qua mạng: sợ squishy bị cứng đơ hoặc dai nhách như cao su rẻ tiền. Cú lún ngón tay ngay giây 0-3 tạo cảm giác thỏa mãn xúc giác qua thị giác (visual ASMR) cực mạnh, giật khựng ngón tay người xem lướt feed.
 
 ---
 
-### Kịch Bản 3: Sáng Tạo Nghệ Thuật – Biến hình 1 củ khoai thành 10 nhân vật hoạt hình
-- **Thời lượng**: 38 giây
-- **Âm nhạc**: Nhạc cartoon vui nhộn, tiết tấu nhanh
-- **Hook (0-3s)**: Xem một củ khoai tây biến hình thành 10 con vật ngộ nghĩnh chỉ trong 30 giây!
-- **Thân bài (3-28s)**:
-  - Nặn thành chú ếch mồm rộng, kéo dài thành chú sâu đo, ấn dẹt làm bánh pancake vàng óng.
-  - Kích thích trí tưởng tượng và khả năng sáng tạo không giới hạn của cả trẻ em lẫn người lớn.
-  - Màu vàng phô mai ấm áp mang lại cảm xúc thư giãn xoa dịu đôi mắt sau hàng giờ nhìn màn hình máy tính.
-- **CTA (28-38s)**: "Món đồ chơi sáng tạo giải trí mọi lứa tuổi, chạm giỏ hàng góc trái săn deal hôm nay bạn nhé!"
+### 2. 🥟 Cảnh 2: The Moldable Shape Action — Kéo dãn & nặn biến hình bẹp dí (Demo USP)
+* **Ý tưởng từ video**: `02_18159like` (18.1k like) và `16_103like` (103 like)
+* **Góc máy & Thao tác**:
+  - Góc nhìn thứ nhất Top-down POV trực diện từ trên xuống mặt bàn học/bàn làm việc cá nhân.
+  - Bối cảnh tối giản: chỉ có hai bàn tay thao tác trên mặt phẳng sạch sẽ (hoặc khay gỗ mini).
+* **Hành động & Nhịp cắt**:
+  - **Nhịp 1**: Hai bàn tay cầm củ khoai bóp bẹp dí thành một miếng bánh mỏng dẹt dính sát mặt bàn, khoe trọn độ dẻo đàn hồi không hề nứt vỡ.
+  - **Nhịp 2**: Dùng các đầu ngón tay nặn kéo dài củ khoai tây thành hình trụ dài rồi uốn cong hình lưỡi liềm hoặc quả bầu.
+  - **Nhịp 3**: Dồn lực vo tròn lại trong 2 giây, bề mặt tự làm phẳng mịn màng trở lại trạng thái củ khoai ban đầu.
+  - Voiceover: *"Đúng nghĩa chữ Moldable trên vỏ hộp — thích nặn hình dài, bóp dẹp hay vo tròn đều chiều lòng bạn, xả hết mọi áp lực trong ngày!"*
+* **Tại sao ăn tiền**: Thể hiện trực tiếp công năng đắt giá nhất của dòng squishy tạo hình (moldable squishy). Khách hàng tìm kiếm đồ chơi giảm stress không chỉ để bóp một nhịp mà thích nhào nặn vô định hình trong lúc suy nghĩ hoặc học tập.
 
 ---
 
-### Kịch Bản 4: Quà Tặng Cho Bạn Cùng Bàn – Món quà hài hước gắn kết tình bạn
-- **Thời lượng**: 35 giây
-- **Âm nhạc**: Nhạc tuổi học trò sôi động, tiếng cười rộn rã
-- **Hook (0-3s)**: Giờ ra chơi, ném quả cầu khoai tây vào bàn đứa bạn: Bạn tò mò mở ra bóp thử rồi cười nghiêng ngả ôm luôn không trả!
-- **Thân bài (3-25s)**:
-  - Món quà nhỏ xinh siêu hạt dẻ chỉ bằng một cốc trà sữa nhưng mang lại tiếng cười sảng khoái cho cả lớp.
-  - Cả nhóm chuyền tay nhau bóp nặn thi xem ai tạo hình độc lạ nhất.
-  - Chất liệu TPR an toàn không độc hại, không dính dính nhớp nháp vào tay.
-- **CTA (25-35s)**: "Rủ đứa bạn thân mua đôi xả stress giờ kiểm tra, nhấn giỏ hàng TikTok Shop đặt ngay hôm nay!"
+### 3. 🔮 Cảnh 3: The Capsule Pop & Unbox — Bóc tách quả cầu bảo vệ chống bẹp dập
+* **Ý tưởng từ video**: `03_11251like` (11.2k like) và `18_87like` (87 like)
+* **Góc máy & Visual**:
+  - Cận cảnh góc ngang ngực (Medium Close-up POV), máy cố định bằng kẹp bàn hoặc tripod mini.
+  - Mặt bàn bày quả cầu nhựa trong suốt (capsule gashapon), bên trong thấy rõ củ khoai tây vàng ươm còn nguyên lớp bọc nilon bảo vệ.
+* **Hành động & Nhịp mở hộp**:
+  - Hai bàn tay xoay nhẹ tách đôi quả cầu nhựa: phát ra âm thanh "tách" giòn tan rõ ràng.
+  - Nhấc củ khoai tây ra, xé nhẹ lớp túi nilon bọc ngoài; đưa củ khoai lên cận ống kính để thấy bề mặt không hề bị dính bẩn hay bám bụi khi vận chuyển.
+  - Voiceover: *"Mỗi quả đều được đóng riêng trong quả cầu nhựa trong suốt kèm bọc nilon bảo vệ, vận chuyển xa đến đâu cũng nguyên vẹn tinh tươm!"*
+* **Tại sao ăn tiền**: Giải quyết hoàn toàn nỗi sợ mua squishy qua bưu điện bị đè bẹp, biến dạng hoặc dính bụi bẩn trong khâu giao nhận. Kích thích cảm giác tò mò và trải nghiệm tự tay "bóc seal" unbox đồ chơi mới của giới trẻ.
 
 ---
 
-### Kịch Bản 5: ASMR Trải Nghiệm – Âm thanh bóp crunchy lách cách siêu thỏa mãn
-- **Thời lượng**: 30 giây
-- **Âm nhạc**: Hoàn toàn là âm thanh gốc ASMR bóp khoai tây thu âm sát micro
-- **Hook (0-3s)**: Từng cú siết tay vào củ khoai tây: Tiếng "rộp... rạo... xì" giòn tan vang lên cực kỳ thỏa mãn đôi tai.
-- **Thân bài (3-22s)**:
-  - Cảm giác xoa dịu thần kinh tức thì, giúp đưa tâm trí về trạng thái bình yên dễ chịu.
-- **CTA (22-30s)**: "Trải nghiệm cảm giác bóp nghiện ngón tay, đặt mua ngay hôm nay tại giỏ hàng bên dưới bạn nhé!"
+### 4. 💻 Cảnh 4: The Desk Work ASMR — Bóp 1 tay xả stress lúc ngồi gõ máy tính/học bài
+* **Ý tưởng từ video**: `09_2300like` (2.3k like) và `11_918like` (918 like)
+* **Bối cảnh & Visual**:
+  - Góc quay nghiêng bàn làm việc (Desk Setup POV): cạnh bàn phím laptop/chuột không dây, sổ tay học tập hoặc cốc nước decor.
+  - Không gian tĩnh lặng, micro thu âm đặt gần để bắt trọn âm thanh nén khí xốp rộp rộp (crunchy squishy sound) siêu bắt tai.
+* **Hành động & Cảm xúc**:
+  - Tay trái vẫn gõ phím máy tính hoặc bấm chuột, tay phải cầm củ khoai tây squishy nhịp nhàng bóp siết từng hồi liên tục.
+  - Củ khoai mềm mại ôm sát kẽ tay, tạo sự thư thái cho các khớp ngón tay sau nhiều giờ làm việc căng thẳng.
+  - Voiceover: *"Cứ những lúc bí ý tưởng, deadline ngập đầu hay tay rảnh không biết nghịch gì, chỉ cần với tay bóp vài nhịp là tỉnh cả người!"*
+* **Tại sao ăn tiền**: Đặt sản phẩm vào đúng ngữ cảnh tiêu dùng thực tế nhất: đồ chơi để bàn cho dân văn phòng và học sinh, sinh viên. Người xem lập tức liên hệ với tình huống thực tế của bản thân và phát sinh nhu cầu mua sắm ngay lập tức.
+
+---
+
+### 5. 🛡️ Cảnh 5: The Hand Squeeze & Transparency Test — Thử độ mềm và lời khuyên thật thà
+* **Ý tưởng từ video**: `04_6933like` (6.9k like) và `05_5561like` (5.5k like)
+* **Góc máy & Cỡ cảnh**:
+  - Cận cảnh đôi bàn tay đặt trên đĩa sứ hoặc khay gỗ tối màu để tôn sắc vàng phô mai của củ khoai.
+* **Hành động & Trực quan**:
+  - Dùng cả 5 ngón tay siết chặt củ khoai hết cỡ khiến phần thịt khoai phồng căng tròn trồi qua các kẽ ngón tay, tạo visual giải tỏa cực mạnh.
+  - Thả tay ra: củ khoai đàn hồi nguyên trạng, không hề để lại nếp nhăn hay biến dạng kết cấu.
+  - Lời khuyên chân thành (Transparency CTA): *"Vì là dòng vỏ siêu mỏng nên mới có độ mềm lún tay sướng thế này. Khách yêu nhớ chỉ bóp bằng lòng bàn tay và đầu thịt ngón tay, tránh cào móng nhọn là bóp bền bỉ vô tư nhé! Bấm ngay vào giỏ hàng rước em khoai về bàn làm việc nào!"*
+* **Tại sao ăn tiền**: Xử lý khéo léo điểm yếu "dễ rách nếu dùng móng tay" mà chính trang sản phẩm đã cảnh báo. Sự thẳng thắn này biến điểm yếu thành bảo chứng cho ưu điểm "vỏ mỏng siêu mềm", xây dựng lòng tin tuyệt đối với người mua để chốt đơn nhanh chóng.
+
+---
+
+## 📊 II. DANH SÁCH 20 VIDEO DOUYIN THAM KHẢO GỐC (ĐÃ TẢI VỀ MÁY)
+
+| # | File video trên máy | Link Douyin | Like | Thời lượng | Điểm nhấn chính |
+|:---:|:---|:---:|:---:|:---:|:---|
+| **01** | `01_22436like_7669977984585347782.mp4` | [Xem Douyin](https://www.douyin.com/video/7669977984585347782) | **22,436** | 20.3s | Cận cảnh ngón tay cái ấn lún cực sâu vào củ khoai tây vàng mịn màng, độ đàn hồi siêu mềm mịn. |
+| **02** | `02_18159like_7701677293190727083.mp4` | [Xem Douyin](https://www.douyin.com/video/7701677293190727083) | **18,159** | 26.6s | Góc quay Top-down xé bóp củ khoai tây phô mai chảy dòng vàng rực, cực kỳ kích thích thị giác. |
+| **03** | `03_11251like_7701773357154562547.mp4` | [Xem Douyin](https://www.douyin.com/video/7701773357154562547) | **11,251** | 58.8s | Củ khoai tây mô phỏng chân thật trên thớt gỗ, thao tác bóp nặn tạo hình chân thực như củ khoai thật. |
+| **04** | `04_6933like_7704593409058701938.mp4` | [Xem Douyin](https://www.douyin.com/video/7704593409058701938) | **6,933** | 48.2s | Test bóp mạnh củ khoai tây lớn giòn xốp trên nền ánh sáng tự nhiên, xả stress cực mạnh. |
+| **05** | `05_5561like_7701549096914433701.mp4` | [Xem Douyin](https://www.douyin.com/video/7701549096914433701) | **5,561** | 27.7s | Khoai tây đồ chơi mô phỏng thực phẩm thật, đàn hồi chậm hồi form tự nhiên. |
+| **06** | `06_5157like_7607347488765420712.mp4` | [Xem Douyin](https://www.douyin.com/video/7607347488765420712) | **5,157** | 48.6s | Bóp củ khoai nghiền mềm dẻo, cảm giác tay mịn êm ái khi nhồi nặn liên tục. |
+| **07** | `07_3667like_7702038399317913777.mp4` | [Xem Douyin](https://www.douyin.com/video/7702038399317913777) | **3,667** | 29.1s | Bóp khoai tây thực phẩm đồ chơi giải trí, trải nghiệm nhào nặn vô định hình. |
+| **08** | `08_2367like_7694922571359735795.mp4` | [Xem Douyin](https://www.douyin.com/video/7694922571359735795) | **2,367** | 21.3s | Khoai tây mini vàng ươm trơn mịn, ấn ngón tay lún sâu đàn hồi cực sướng tay. |
+| **09** | `09_2300like_7704681338800021478.mp4` | [Xem Douyin](https://www.douyin.com/video/7704681338800021478) | **2,300** | 14.7s | Bóp khoai tây phát ra âm thanh xốp giòn rộp rộp (crunchy) đã tai, hỗ trợ xoa dịu lo âu. |
+| **10** | `10_1450like_7704341254569655537.mp4` | [Xem Douyin](https://www.douyin.com/video/7704341254569655537) | **1,450** | 38.8s | Khoai tây tiêu đen bọc giấy sáp, âm thanh giòn rụm ASMR kích thích giác quan. |
+| **11** | `11_918like_7703575057696211803.mp4` | [Xem Douyin](https://www.douyin.com/video/7703575057696211803) | 918 | 23.1s | Bày khoai nướng phô mai trên khay gỗ herringbone, phong cách quay decor bàn trà thư giãn. |
+| **12** | `12_502like_7703318642112630521.mp4` | [Xem Douyin](https://www.douyin.com/video/7703318642112630521) | 502 | 73.0s | Khoai tây nướng than cầm 1 tay bóp giải tỏa áp lực đêm khuya, texture đốm nướng chân thật. |
+| **13** | `13_200like_7693910554897561064.mp4` | [Xem Douyin](https://www.douyin.com/video/7693910554897561064) | 200 | 47.8s | Bóp khoai tây kéo dãn dài trên đĩa sứ, chứng minh khả năng co giãn tạo hình linh hoạt. |
+| **14** | `14_184like_7659390000145195091.mp4` | [Xem Douyin](https://www.douyin.com/video/7659390000145195091) | 184 | 20.5s | Bóc lớp bọc bảo vệ khoai tây bóng mềm, trình diễn độ dẻo đàn hồi không biến dạng. |
+| **15** | `15_164like_7702527414106541459.mp4` | [Xem Douyin](https://www.douyin.com/video/7702527414106541459) | 164 | 81.1s | Bóp khoai tây mềm mướt mút ngón tay, cảm giác chân thực không dính bẩn. |
+| **16** | `16_103like_7700020933616986342.mp4` | [Xem Douyin](https://www.douyin.com/video/7700020933616986342) | 103 | 12.5s | Cầm 1 tay bóp khoai tây nghe âm thanh xôm xốp cực kỳ êm ái, thư giãn đầu óc. |
+| **17** | `17_97like_7704717015025496314.mp4` | [Xem Douyin](https://www.douyin.com/video/7704717015025496314) | 97 | 23.0s | Bộ đôi khoai tây phô mai mini bày bàn học, bóp kéo sợi phô mai độc đáo. |
+| **18** | `18_87like_7697951593353809193.mp4` | [Xem Douyin](https://www.douyin.com/video/7697951593353809193) | 87 | 84.3s | Cầm củ khoai tây bọc giấy kẹo trên bàn làm việc, góc quay màn hình điện thoại thực tế. |
+| **19** | `19_67like_7635642208175469967.mp4` | [Xem Douyin](https://www.douyin.com/video/7635642208175469967) | 67 | 66.5s | Bóp củ khoai tây nghiền thơm mềm, thao tác nặn 2 tay nhịp nhàng. |
+| **20** | `20_65like_7702797753559291017.mp4` | [Xem Douyin](https://www.douyin.com/video/7702797753559291017) | 65 | 25.7s | Khoai tây nướng than bóp giòn như tiếng bước trên tuyết (snow crunch sound) cực đã tai. |
+
+*Thư mục chứa toàn bộ 20 video gốc độ nét cao trên máy:*  
+`E:\phantichcanhquay\sp_1737682770435082158\douyin\video\`
