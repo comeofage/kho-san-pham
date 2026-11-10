@@ -32,9 +32,11 @@
   "luc": "2026-11-10T08:37:09+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-10T13:07:24+07:00",
+  "poster_folder": 319,
+  "duong_dan": "E:/oneshottramcanh/butkimtuyen-1733191836290548787/output_poster"
  },
- "cap_nhat_luc": "2026-11-10T08:37:09+07:00"
+ "cap_nhat_luc": "2026-11-10T13:07:24+07:00"
 }
