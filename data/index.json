@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-10T13:45:54+07:00",
+ "cap_nhat_luc": "2026-11-10T13:48:13+07:00",
  "san_pham": [
   {
    "id": "1731703798106392955",
    "uid": "1731703798106392955",
    "link": "https://vt.tiktok.com/ZS9fAgcsSKtSg-xQXEF/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Quần băng vệ sinh ban đêm mới của Memeeie (15 chiếc) Chống rò rỉ 360°, Khô ráo cả đêm, Màng đáy nhẹ và thoáng khí thấm hút nhanh.",
+   "gia": "37.039₫",
+   "shop": "KAMNENTY",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,9 +25,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:45:03+07:00",
-   "cap_nhat_luc": "2026-11-10T13:45:43+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T13:48:03+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737221317290657187",
