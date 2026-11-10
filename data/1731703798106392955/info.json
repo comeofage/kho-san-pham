@@ -30,9 +30,11 @@
   "luc": ""
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-11-10T14:23:49+07:00",
+  "poster_folder": 321,
+  "duong_dan": "E:/oneshottramcanh/bvs memeeii-1731703798106392955/output_poster"
  },
- "cap_nhat_luc": "2026-11-10T14:03:29+07:00"
+ "cap_nhat_luc": "2026-11-10T14:23:49+07:00"
 }
