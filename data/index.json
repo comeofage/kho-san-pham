@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-10T13:04:40+07:00",
+ "cap_nhat_luc": "2026-11-10T13:07:34+07:00",
  "san_pham": [
   {
    "id": "1737820290740618550",
@@ -373,7 +373,7 @@
    "gia": "17.104₫",
    "shop": "Văn Phòng Phẩm - Thiên Thành",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -389,7 +389,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:39:39+07:00",
-   "cap_nhat_luc": "2026-11-10T08:37:09+07:00",
+   "cap_nhat_luc": "2026-11-10T13:07:24+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1031,16 +1031,16 @@
    "gia": "69.371₫",
    "shop": "NICE HOUSE - Gia dụng tiện ích",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-10T13:04:36+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -1049,7 +1049,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:34:51+07:00",
-   "cap_nhat_luc": "2026-10-31T17:46:22+07:00",
+   "cap_nhat_luc": "2026-11-10T13:04:36+07:00",
    "so_caption": 100,
    "co_file01": true
   },
