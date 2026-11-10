@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-10T12:13:28+07:00",
+ "cap_nhat_luc": "2026-11-10T12:13:48+07:00",
  "san_pham": [
   {
    "id": "1737820290740618550",
@@ -201,11 +201,11 @@
    "id": "1738164355824519066",
    "uid": "1738164355824519066",
    "link": "https://vt.tiktok.com/ZS9frgQTcjBSc-dSLiU/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Biển Báo Khu Vực Có Camera Giám Sát 15x20cm, Biển Cảnh Báo Camera Quan Sát Ghi Hình 24/7 Cho Nhà Ở, Cửa Hàng, Văn Phòng, Kho Xưởng",
+   "gia": "16.785₫",
+   "shop": "Mai Huyền Anh",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -221,9 +221,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:39:27+07:00",
-   "cap_nhat_luc": "2026-11-10T12:09:56+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T12:13:38+07:00",
+   "so_caption": 101,
+   "co_file01": true
   },
   {
    "id": "1734705663399986344",
