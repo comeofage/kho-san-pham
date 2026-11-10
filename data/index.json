@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-10T13:00:21+07:00",
+ "cap_nhat_luc": "2026-11-10T13:04:17+07:00",
  "san_pham": [
   {
    "id": "1737820290740618550",
@@ -548,16 +548,16 @@
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-10T13:04:06+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:52:19+07:00",
-   "cap_nhat_luc": "2026-11-05T08:53:12+07:00",
+   "cap_nhat_luc": "2026-11-10T13:04:06+07:00",
    "so_caption": 100,
    "co_file01": true
   },
