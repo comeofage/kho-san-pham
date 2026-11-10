@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-10T13:17:12+07:00",
+ "cap_nhat_luc": "2026-11-10T13:19:20+07:00",
  "san_pham": [
   {
    "id": "1737221317290657187",
@@ -33,11 +33,11 @@
    "id": "1730555233168427532",
    "uid": "1730555233168427532",
    "link": "https://vt.tiktok.com/ZS9fAXQ27metP-lXhqG/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Mua 1 tặng 1] Băng vệ sinh dạng quần Memeeie (60 miếng), chống tràn 360°, thoáng khí, dùng được cả ngày lẫn đêm / phù hợp cho phụ nữ mang thai và sau sinh.",
+   "gia": "249.955₫",
+   "shop": "Memeeie quần băng vệ sinh",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -53,9 +53,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:13:53+07:00",
-   "cap_nhat_luc": "2026-11-10T13:16:40+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-10T13:19:08+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737820290740618550",
