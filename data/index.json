@@ -1,93 +1,9 @@
 {
- "cap_nhat_luc": "2026-11-11T21:00:13+07:00",
+ "cap_nhat_luc": "2026-11-11T21:01:02+07:00",
  "san_pham": [
   {
-   "id": "tam-20261111210003234",
-   "uid": null,
-   "link": "https://vt.tiktok.com/ZS9f5mAe5goFe-fifbR/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
-   "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "yeu_thich": false,
-   "can_dang": false,
-   "the": [],
-   "them_boi": "Nhân",
-   "them_luc": "2026-11-11T21:00:03+07:00",
-   "cap_nhat_luc": "2026-11-11T21:00:03+07:00",
-   "so_caption": 0,
-   "co_file01": false
-  },
-  {
-   "id": "tam-20261111205947169",
-   "uid": null,
-   "link": "https://vt.tiktok.com/ZS9f5mkXg1X1Q-xOEgz/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
-   "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "yeu_thich": false,
-   "can_dang": false,
-   "the": [],
-   "them_boi": "Nhân",
-   "them_luc": "2026-11-11T20:59:47+07:00",
-   "cap_nhat_luc": "2026-11-11T20:59:47+07:00",
-   "so_caption": 0,
-   "co_file01": false
-  },
-  {
-   "id": "tam-20261111205930936",
-   "uid": null,
-   "link": "https://vt.tiktok.com/ZS9f5mMEgyvCF-p8rLd/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
-   "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "yeu_thich": false,
-   "can_dang": false,
-   "the": [],
-   "them_boi": "Nhân",
-   "them_luc": "2026-11-11T20:59:30+07:00",
-   "cap_nhat_luc": "2026-11-11T20:59:30+07:00",
-   "so_caption": 0,
-   "co_file01": false
-  },
-  {
-   "id": "tam-20261111205910772",
-   "uid": null,
+   "id": "1737248788695451490",
+   "uid": "1737248788695451490",
    "link": "https://vt.tiktok.com/ZS9f5mFd1THqF-LiNCa/",
    "ten": "",
    "gia": "",
@@ -109,7 +25,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-11T20:59:10+07:00",
-   "cap_nhat_luc": "2026-11-11T20:59:10+07:00",
+   "cap_nhat_luc": "2026-11-11T21:00:50+07:00",
    "so_caption": 0,
    "co_file01": false
   },
@@ -557,7 +473,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:33+07:00",
-   "cap_nhat_luc": "2026-11-07T11:59:00+07:00",
+   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -585,7 +501,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:13+07:00",
-   "cap_nhat_luc": "2026-11-07T11:59:20+07:00",
+   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -921,7 +837,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:51:57+07:00",
-   "cap_nhat_luc": "2026-11-03T08:53:51+07:00",
+   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
    "so_caption": 100,
    "co_file01": true
   },
