@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-11T21:04:06+07:00",
+ "cap_nhat_luc": "2026-11-11T21:06:30+07:00",
  "san_pham": [
   {
    "id": "1737248788695451490",
@@ -33,11 +33,11 @@
    "id": "1738022908578923593",
    "uid": "1738022908578923593",
    "link": "https://www.tiktok.com/view/product/1738022908578923593",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[MUA 2 TẶNG 4] Xịt Sáp Ong Lau Đồ Gỗ MỘC AN – Đánh bóng, vệ sinh làm mới, bảo dưỡng, chống rạn nứt và mối mọt 200ml – Mua 2 chai tặng 2 khăn và 2 gói lau ban thờ.",
+   "gia": "102.313₫",
+   "shop": "Chăm sóc đồ gỗ Mộc An",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -53,9 +53,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T13:56:36+07:00",
-   "cap_nhat_luc": "2026-11-10T13:56:36+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-11T21:06:20+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1731703798106392955",
