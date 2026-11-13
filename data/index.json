@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-14T01:10:11+07:00",
+ "cap_nhat_luc": "2026-11-14T01:10:34+07:00",
  "san_pham": [
   {
    "id": "1736956845763364594",
@@ -117,11 +117,11 @@
    "id": "1734668228888855732",
    "uid": "1734668228888855732",
    "link": "https://vt.tiktok.com/ZS9fQx9ntfSyS-Mg22m/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Combo 2 Bịch Bỉm Bejoyle Dream Cao Cấp Chính Hãng - Tã Dán & Tã Quần Size S/M/L/XL/XXL/3XL/4XL",
+   "gia": "360.065₫",
+   "shop": "Bỉm Bejoyle Dream Store",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -137,9 +137,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:19:43+07:00",
-   "cap_nhat_luc": "2026-11-14T01:04:20+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-14T01:10:20+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1737128468075546450",
