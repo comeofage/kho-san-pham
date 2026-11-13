@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-14T01:04:56+07:00",
+ "cap_nhat_luc": "2026-11-14T01:07:03+07:00",
  "san_pham": [
   {
    "id": "1736956845763364594",
@@ -61,11 +61,11 @@
    "id": "1736085773757154442",
    "uid": "1736085773757154442",
    "link": "https://vt.tiktok.com/ZS9fQxs3RoELw-UmwXn/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "mô phỏng sinh viên, mô phỏng cây guitar cho trẻ em, chơi nhạc cụ khai sáng, đồ chơi nhạc",
+   "gia": "53.557₫",
+   "shop": "Treehouse 09",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -81,9 +81,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:20:48+07:00",
-   "cap_nhat_luc": "2026-11-14T01:04:20+07:00",
-   "so_caption": 0,
-   "co_file01": false
+   "cap_nhat_luc": "2026-11-14T01:06:51+07:00",
+   "so_caption": 100,
+   "co_file01": true
   },
   {
    "id": "1733830967505093930",
