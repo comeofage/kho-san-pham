@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-14T08:11:49+07:00",
+ "cap_nhat_luc": "2026-11-14T08:12:23+07:00",
  "san_pham": [
   {
    "id": "tam-20261114080833004",
@@ -625,11 +625,11 @@
    "gia": "140.299₫",
    "shop": "CUTE BOX",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:06+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -641,7 +641,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-07T10:11:33+07:00",
-   "cap_nhat_luc": "2026-11-07T10:37:35+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:06+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -709,11 +709,11 @@
    "gia": "60.704₫",
    "shop": "Tiên Phong Books New",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:02+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -725,7 +725,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:33+07:00",
-   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:02+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -849,11 +849,11 @@
    "gia": "30.778₫",
    "shop": "MUTOSI Làm Đẹp Official",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:11:53+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -865,7 +865,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-03T22:24:46+07:00",
-   "cap_nhat_luc": "2026-11-04T20:52:18+07:00",
+   "cap_nhat_luc": "2026-11-14T08:11:53+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1073,11 +1073,11 @@
    "gia": "106.284₫",
    "shop": "Đồ chơi Hải Tử",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:11:47+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -1089,7 +1089,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:51:57+07:00",
-   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
+   "cap_nhat_luc": "2026-11-14T08:11:47+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1333,11 +1333,11 @@
    "gia": "23.282₫",
    "shop": "Royal Towel",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:11:44+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -1351,7 +1351,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:36:05+07:00",
-   "cap_nhat_luc": "2026-11-06T11:18:19+07:00",
+   "cap_nhat_luc": "2026-11-14T08:11:44+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -1363,11 +1363,11 @@
    "gia": "33.582₫",
    "shop": "Silt Cove",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:11:40+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -1381,7 +1381,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:35:43+07:00",
-   "cap_nhat_luc": "2026-11-06T11:18:22+07:00",
+   "cap_nhat_luc": "2026-11-14T08:11:40+07:00",
    "so_caption": 100,
    "co_file01": true
   },
