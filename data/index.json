@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-14T08:13:16+07:00",
+ "cap_nhat_luc": "2026-11-14T08:27:08+07:00",
  "san_pham": [
   {
-   "id": "tam-20261114080833004",
-   "uid": null,
+   "id": "1737981550082229795",
+   "uid": "1737981550082229795",
    "link": "https://vt.tiktok.com/ZS9fVf1dUqDpd-BbXiD/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Búp bê abstract CORTIS siêu lầy – Đồ chơi nhồi bông PP cotton 28cm, tạo dáng meme, giải tỏa stress, quà tặng độc lạ",
+   "gia": "89.000₫",
+   "shop": "Nhà Của Mít",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -25,7 +25,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-14T08:08:33+07:00",
-   "cap_nhat_luc": "2026-11-14T08:08:33+07:00",
+   "cap_nhat_luc": "2026-11-14T08:25:00+07:00",
    "so_caption": 0,
    "co_file01": false
   },

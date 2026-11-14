@@ -15,3 +15,4 @@ run_worker_first = ["/api/*"]
 [vars]
 GH_REPO = "comeofage/kho-san-pham"
 GH_BRANCH = "main"
+VIDEO_ORIGIN = "https://video.kutidak.com"  # máy nhà qua Cloudflare Tunnel (khoá VIDEO_KEY là secret)

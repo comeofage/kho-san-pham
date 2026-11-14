@@ -407,11 +407,42 @@ async function renderDetail(id) {
     });
     $("#panel [data-copy-all]")?.addEventListener("click", () => copy(capList.join("\n"), `Đã copy ${capList.length} caption`));
     bindVtk();
+    if (k === "douyin") bindDouyin();
     $("#btn-note")?.addEventListener("click", async () => {
       if (!needLogin()) return;
       const v = $("#in-note").value;
       try { await api("ghichu", { id: i.id, ghi_chu: v }); i.ghi_chu = v; toast("✓ Đã lưu ghi chú"); }
       catch (err) { toast("⚠ " + err.message); }
+    });
+  };
+  // Tab Douyin: mỗi dòng bảng có tên file .mp4 → thêm nút ▶ phát thẳng (stream từ máy nhà, tua được).
+  const bindDouyin = () => {
+    if (auth.user !== "nhan" && auth.user !== "comeofage") return;
+    const codes = [...document.querySelectorAll("#panel .md code")].filter((c) => /\.mp4$/i.test(c.textContent.trim()));
+    if (!codes.length) return;
+    $("#panel").insertAdjacentHTML("afterbegin", `<div id="dy-player" class="dy-player" hidden><div class="small"><b id="dy-ten"></b> <button class="btn ghost sm" id="dy-dong">✕ Đóng</button></div><video id="dy-video" controls playsinline preload="metadata"></video></div>`);
+    const vd = $("#dy-video"), box = $("#dy-player");
+    $("#dy-dong").addEventListener("click", () => { vd.pause(); vd.removeAttribute("src"); vd.load(); box.hidden = true; });
+    codes.forEach((c) => {
+      const ten = c.textContent.trim();
+      const b = document.createElement("button");
+      b.className = "btn sm"; b.textContent = "▶"; b.title = "Xem video này ngay trên web";
+      b.addEventListener("click", () => {
+        vd.src = `/api/video/${encodeURIComponent(i.id)}/dyfile?ten=${encodeURIComponent(ten)}`;
+        $("#dy-ten").textContent = ten; box.hidden = false;
+        box.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        vd.play().catch(() => {});
+      });
+      c.after(" ", b);
+    });
+    vd.addEventListener("error", async () => {
+      if (!vd.getAttribute("src")) return; // vừa bấm Đóng
+      const url = vd.getAttribute("src"), mc = vd.error ? vd.error.code : "?";
+      let http = "?", ct = "", loi = "";
+      try { const r = await fetch(url, { headers: { range: "bytes=0-1" } }); http = r.status; ct = r.headers.get("content-type") || ""; if (!r.ok) loi = (await r.json().catch(() => ({}))).loi || ""; }
+      catch (e) { http = "mạng: " + e.message; }
+      $("#dy-ten").insertAdjacentHTML("afterend", ` <span class="small">⚠ HTTP ${esc(String(http))} · lỗi player ${mc} · ${esc(ct)} ${esc(loi)} · <a href="${esc(url)}" target="_blank">mở tab riêng</a></span>`);
+      toast(`⚠ Không phát được (HTTP ${http}, player ${mc}) ${loi}`);
     });
   };
   document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab)));

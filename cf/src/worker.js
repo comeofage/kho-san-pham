@@ -197,7 +197,7 @@ async function api(req, env, ctx, url) {
   if (p === "/api/me") return json(phien);
 
   let v;
-  if ((v = p.match(/^\/api\/video\/([^/]+)\/(ds|file|xoa)$/))) {
+  if ((v = p.match(/^\/api\/video\/([^/]+)\/(ds|file|xoa|dy|dyfile)$/))) {
     if (phien.user !== "nhan" && phien.user !== "comeofage") return loi("Không có quyền", 403);
     const id = decodeURIComponent(v[1]), act = v[2];
     if (!RE_ID.test(id)) return loi("ID không hợp lệ");
@@ -205,10 +205,10 @@ async function api(req, env, ctx, url) {
     if ((act === "xoa") !== (m === "POST")) return loi("Sai phương thức", 405);
     let r;
     try {
-      r = await fetch(`${env.VIDEO_ORIGIN}/v/${id}/${act}${url.search}`, { method: m, headers: { "x-key": env.VIDEO_KEY } });
+      r = await fetch(`${env.VIDEO_ORIGIN}/v/${id}/${act}${url.search}`, { method: m, headers: { "x-key": env.VIDEO_KEY, ...(req.headers.get("range") ? { range: req.headers.get("range") } : {}) } });
     } catch { return loi("Máy nhà không trả lời (đã bật video_server và tunnel chưa?)", 502); }
     const h = new Headers({ "content-type": r.headers.get("content-type") || "application/octet-stream", "cache-control": "no-store" });
-    for (const k of ["content-length", "content-disposition"]) if (r.headers.get(k)) h.set(k, r.headers.get(k));
+    for (const k of ["content-length", "content-disposition", "content-range", "accept-ranges"]) if (r.headers.get(k)) h.set(k, r.headers.get(k));
     return new Response(r.body, { status: r.status, headers: h });
   }
 
