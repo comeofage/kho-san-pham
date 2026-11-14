@@ -23,9 +23,9 @@
  "them_luc": "2026-10-31T17:35:14+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-14T08:10:09+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -39,7 +39,7 @@
   "poster_folder": 274,
   "duong_dan": "E:/oneshottramcanh/lotchuot-1732052416722142778/output"
  },
- "cap_nhat_luc": "2026-11-05T11:12:01+07:00",
+ "cap_nhat_luc": "2026-11-14T08:10:09+07:00",
  "the": [
   "pemit89"
  ]
