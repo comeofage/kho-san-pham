@@ -21,9 +21,9 @@
  "them_luc": "2026-11-03T08:50:48+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-14T08:09:25+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -37,5 +37,5 @@
   "poster_folder": 314,
   "duong_dan": "E:\\oneshottramcanh\\nhactrong-1737491831909025666\\output"
  },
- "cap_nhat_luc": "2026-11-09T15:57:06+07:00"
+ "cap_nhat_luc": "2026-11-14T08:09:25+07:00"
 }
