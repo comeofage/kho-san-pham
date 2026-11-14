@@ -22,9 +22,9 @@
  "them_luc": "2026-10-31T17:33:10+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-14T08:10:24+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -38,7 +38,7 @@
   "poster_folder": 258,
   "duong_dan": "E:/oneshottramcanh/quatco-1734495508720682171/output"
  },
- "cap_nhat_luc": "2026-11-05T08:45:56+07:00",
+ "cap_nhat_luc": "2026-11-14T08:10:24+07:00",
  "the": [
   "pemit89"
  ]
