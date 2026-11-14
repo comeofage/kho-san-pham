@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-14T08:12:23+07:00",
+ "cap_nhat_luc": "2026-11-14T08:12:54+07:00",
  "san_pham": [
   {
    "id": "tam-20261114080833004",
@@ -541,11 +541,11 @@
    "gia": "40.733₫",
    "shop": "Thùy Quân sỉ Chợ Lớn",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:28+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -557,7 +557,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:40:31+07:00",
-   "cap_nhat_luc": "2026-11-10T12:40:00+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:28+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -569,11 +569,11 @@
    "gia": "87.850₫",
    "shop": "THORAKAO STORE",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:26+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -585,7 +585,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:39:58+07:00",
-   "cap_nhat_luc": "2026-11-10T12:21:03+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:26+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -597,11 +597,11 @@
    "gia": "16.785₫",
    "shop": "Mai Huyền Anh",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:21+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -613,7 +613,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:39:27+07:00",
-   "cap_nhat_luc": "2026-11-10T14:10:52+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:21+07:00",
    "so_caption": 100,
    "co_file01": true
   },
@@ -737,11 +737,11 @@
    "gia": "30.018₫",
    "shop": "MIMI VN1",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-14T08:12:15+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -753,7 +753,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:13+07:00",
-   "cap_nhat_luc": "2026-11-11T21:00:51+07:00",
+   "cap_nhat_luc": "2026-11-14T08:12:15+07:00",
    "so_caption": 100,
    "co_file01": true
   },
