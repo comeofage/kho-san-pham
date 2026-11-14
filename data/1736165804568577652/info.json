@@ -23,9 +23,9 @@
  "them_luc": "2026-10-31T17:36:28+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-14T08:10:05+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -39,7 +39,7 @@
   "poster_folder": 313,
   "duong_dan": "E:/oneshottramcanh/khancaro-1736165804568577652/output"
  },
- "cap_nhat_luc": "2026-11-09T15:39:57+07:00",
+ "cap_nhat_luc": "2026-11-14T08:10:05+07:00",
  "the": [
   "pemit89"
  ]
