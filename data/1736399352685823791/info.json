@@ -20,9 +20,9 @@
  "them_luc": "2026-11-02T11:49:26+07:00",
  "da_phan_tich": true,
  "da_quay_oneshot": {
-  "xong": false,
-  "boi": "",
-  "luc": ""
+  "xong": true,
+  "boi": "Nhân",
+  "luc": "2026-11-14T08:09:47+07:00"
  },
  "da_quay_review": {
   "xong": true,
@@ -50,5 +50,5 @@
   "poster_folder": 287,
   "duong_dan": "E:/oneshottramcanh/banchaimini-1736399352685823791/output"
  },
- "cap_nhat_luc": "2026-11-06T07:14:17+07:00"
+ "cap_nhat_luc": "2026-11-14T08:09:47+07:00"
 }
