@@ -139,3 +139,6 @@ dialog h2 { margin: 0 0 6px; }
 .rr-tbl { border-collapse: collapse; width: 100%; font-size: .9rem; }
 .rr-tbl th, .rr-tbl td { border: 1px solid rgba(128,128,128,.35); padding: 6px 8px; text-align: left; vertical-align: top; }
 .rr-tbl th { background: rgba(128,128,128,.12); }
+.tagbtn.on[data-tag="ngung_dang"] { background: #d92d20; border-color: #d92d20; color: #fff; }
+.card.ngung { opacity: .6; border-color: #d92d20; }
+.ngung-tag { background: #d92d20; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }

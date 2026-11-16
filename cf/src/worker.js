@@ -172,7 +172,7 @@ async function danhSach(env) {
   return tree.tree ? ds.filter((x) => coFile.has(`data/${x.id}/info.json`)) : ds;
 }
 
-const TAG_RIENG = ["yeu_thich", "can_dang"];
+const TAG_RIENG = ["yeu_thich", "can_dang", "ngung_dang"];
 
 // ---------- API ----------
 async function docBody(req) {

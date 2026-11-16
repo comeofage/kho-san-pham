@@ -289,7 +289,7 @@ def tao_index(data: Path) -> dict:
             "gia": i.get("gia", ""), "shop": i.get("shop", ""), "anh_bia": i.get("anh_bia", ""),
             "trang_thai": nhan_trang_thai(i),
             **{f"da_quay_{l}": i.get(f"da_quay_{l}") or {"xong": da_quay(i, l), "boi": "", "luc": ""} for l in LOAI_QUAY},
-            "yeu_thich": bool(i.get("yeu_thich")), "can_dang": bool(i.get("can_dang")), "the": i.get("the") or [],
+            "yeu_thich": bool(i.get("yeu_thich")), "can_dang": bool(i.get("can_dang")), "ngung_dang": bool(i.get("ngung_dang")), "the": i.get("the") or [],
             "them_boi": i.get("them_boi", ""), "them_luc": i.get("them_luc", ""),
             "cap_nhat_luc": i.get("cap_nhat_luc", ""), "so_caption": so_cap,
             "co_file01": (data / i["id"] / "bo-canh-quay.md").exists(),

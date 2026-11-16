@@ -87,8 +87,8 @@ function switchHtml(i, loai, label = LOAI_QUAY[loai]) {
     <input type="checkbox" ${q.xong ? "checked" : ""}><span class="tr"></span><span>${label}</span></label>`;
 }
 const soLoaiDaQuay = (x) => Object.keys(LOAI_QUAY).filter((l) => quay(x, l).xong).length;
-const LOC_THEM = { yeu_thich: "★ Yêu thích", can_dang: "⬆ Cần đăng", chua_oneshot: "Chưa quay oneshot", chua_review: "Chưa quay review" };
-const TAG_RIENG = { yeu_thich: ["★", "Yêu thích"], can_dang: ["⬆", "Cần đăng"] };
+const LOC_THEM = { yeu_thich: "★ Yêu thích", can_dang: "⬆ Cần đăng", ngung_dang: "⛔ Ngừng đăng", chua_oneshot: "Chưa quay oneshot", chua_review: "Chưa quay review" };
+const TAG_RIENG = { yeu_thich: ["★", "Yêu thích"], can_dang: ["⬆", "Cần đăng"], ngung_dang: ["⛔", "Ngừng đăng (có phản hồi tiêu cực)"] };
 function tagHtml(x) {
   return `<div class="tagbtns">${Object.entries(TAG_RIENG).map(([t, [ic, ten]]) =>
     `<button type="button" class="tagbtn ${x[t] ? "on" : ""}" data-tag="${t}" data-id="${esc(x.id)}" title="${x[t] ? "Bỏ thẻ" : "Gắn thẻ"} ${ten}" aria-pressed="${!!x[t]}">${ic}</button>`).join("")}</div>`;
@@ -97,7 +97,7 @@ const theCua = (x) => Array.isArray(x.the) ? x.the : [];
 function khopLoc(x, loc) {
   if (loc === "tat_ca") return true;
   if (loc.startsWith("the:")) return theCua(x).includes(loc.slice(4));
-  if (loc === "yeu_thich" || loc === "can_dang") return !!x[loc];
+  if (loc === "yeu_thich" || loc === "can_dang" || loc === "ngung_dang") return !!x[loc];
   if (loc === "chua_oneshot") return !quay(x, "oneshot").xong;
   if (loc === "chua_review") return !quay(x, "review").xong;
   return (x.trang_thai || trangThai(x)) === loc;
@@ -158,10 +158,10 @@ function ruiRoPanel(r) {
 function cardHtml(x, stt) {
   const tt = x.trang_thai || trangThai(x);
   const img = anhBia(x);
-  return `<div class="card">
+  return `<div class="card${x.ngung_dang ? " ngung" : ""}">
     ${img ? `<img class="thumb" src="${esc(img)}" referrerpolicy="no-referrer" loading="lazy" alt="">` : `<div class="thumb"></div>`}
     <a class="body" href="#/sp/${encodeURIComponent(x.id)}">
-      <div class="ten"><span class="stt">#${stt}</span> ${ruiRoIcon(x)} ${esc(x.ten || x.link)}</div>
+      <div class="ten"><span class="stt">#${stt}</span> ${ruiRoIcon(x)} ${x.ngung_dang ? `<span class="ngung-tag" title="Có phản hồi tiêu cực — ngừng đăng video">⛔ NGỪNG ĐĂNG</span> ` : ""}${esc(x.ten || x.link)}</div>
       <div class="small muted"><span class="badge b-${tt}">${NHAN[tt]}</span>${x.gia ? " <b>" + esc(x.gia) + "</b> ·" : ""} ${x.uid ? `<span class="uid-copy" role="button" title="Bấm để copy UID" data-copy="${esc(x.uid)}" data-copy-msg="Đã copy UID ${esc(x.uid)}">${esc(x.uid)} ⧉</span>` : "link rút gọn"}${theCua(x).map((t) => ` <span class="the-rieng">#${esc(t)}</span>`).join("")}</div>
     </a>
     ${tagHtml(x)}
