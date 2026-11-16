@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-16T19:02:05+07:00",
+ "cap_nhat_luc": "2026-11-16T19:12:37+07:00",
  "san_pham": [
   {
    "id": "1731293444546790853",
@@ -95,11 +95,11 @@
    "id": "1737578176595133905",
    "uid": "1737578176595133905",
    "link": "https://vt.tiktok.com/ZS9fGLEPXAVLt-Twsfs/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Butter ,phô mai, cube các loại,Kneader có thể được giải nén",
+   "gia": "22.900₫",
+   "shop": "Zelid Shop",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -116,9 +116,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-15T15:03:44+07:00",
-   "cap_nhat_luc": "2026-11-16T19:01:49+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-16T19:12:25+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
