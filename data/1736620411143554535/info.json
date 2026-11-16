@@ -28,7 +28,7 @@
   "so_video": 31,
   "luc": "2026-10-29T16:22:41+07:00"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -41,53 +41,53 @@
  },
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Dùng hình ảnh cầu thủ thật (Neymar, Mbappe, CR7...) và cúp vàng mà không có giấy phép, vi phạm quyền hình ảnh và IPR.",
-   "khuyen_nghi": "Không nên làm Affiliate vì lõi sản phẩm là hình ảnh cầu thủ có bản quyền, dễ bị gỡ video và ảnh hưởng tài khoản."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tượng cầu thủ thật (CR7, Mbappe, Neymar...) dùng tên và hình ảnh người nổi tiếng/đội bóng, chưa rõ có phép.",
+   "khuyen_nghi": "Chỉ làm khi shop có giấy phép hình ảnh; trong video nói 'hộp thiếc cầu thủ bóng đá có đèn', tránh gọi tên đội/logo CLB và không gợi là hàng chính hãng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Quà trang trí, không có claim y tế."
+    "nhan_xet": "Là đồ trang trí/quà tặng, không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Brand ghi 'NO BRANDE' nhưng gắn tên và hình cầu thủ, câu lạc bộ (Real, MU) và có thể có logo đội bóng."
+    "muc_do": "🟡",
+    "nhan_xet": "Tên cầu thủ, CLB (Real, MU) trong tên biến thể là nhãn hiệu/quyền hình ảnh bên khác, tránh lặp trong lời nói (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Hình tượng cầu thủ thật và cúp là quyền hình ảnh cá nhân/liên đoàn, không có giấy phép bán."
+    "muc_do": "🟠",
+    "nhan_xet": "Tượng chân dung cầu thủ nổi tiếng không phép có thể vi phạm bản quyền/hình ảnh, và logo CLB trên áo là nhãn hiệu (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm cấm, nhưng có đèn pin nhỏ cần pin an toàn."
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế mục G, H; brand 'NO BRANDE'."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Fan nhỏ tuổi có thể mua, có pin nút và chi tiết nhỏ cần cảnh báo."
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Hình ảnh và tên cầu thủ thật cùng cúp không có giấy phép",
-    "rui_ro": "🔴",
-    "xu_ly": "Không đăng video hiển thị rõ tên/hình cầu thủ hoặc logo đội bóng; tốt nhất bỏ sản phẩm."
+    "van_de": "Hình/tên cầu thủ và CLB không rõ giấy phép",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop về nguồn mẫu; chỉ quay mẫu không có logo CLB/áo đấu có bản quyền, nói chung 'cầu thủ bóng đá'."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Sản phẩm chính hãng CR7/Messi, licensed",
-    "goi_y": "Không có cách nói an toàn, khuyến nghị không làm."
+    "khong_nen": "Hàng chính hãng/licensed cầu thủ",
+    "goi_y": "Nói 'hộp quà tặng thiết kế cầu thủ có đèn, hợp tặng người mê bóng'."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Không có giấy phép sử dụng hình ảnh cầu thủ; chưa xem ảnh để xác nhận logo CLB.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa xem ảnh nên chưa rõ có logo CLB/áo đấu không; chưa rõ giấy phép hình ảnh cầu thủ.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

@@ -30,61 +30,54 @@
   "poster_folder": 11,
   "duong_dan": "E:\\oneshottramcanh\\canhbuom 1732462583154051070\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi lắp ráp có đèn nhạc cho bé dùng pin, thiếu chứng nhận an toàn và có claim 'an toàn cho sức khỏe'.",
-   "khuyen_nghi": "Cần chứng nhận đồ chơi (QCVN 3, CR) và bỏ claim phát triển tư duy trước khi làm."
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi trẻ em có tiêu đề claim 'an toàn cho sức khỏe', 'phát triển tư duy' mà trang không nêu kiểm nghiệm (mục C/A: claim cần bằng chứng).",
+   "khuyen_nghi": "Tả đúng đặc điểm: lắp ráp, có đèn và nhạc, nhựa ABS. Người lớn demo, không nói 'an toàn tuyệt đối' hay cam kết phát triển trí tuệ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'An toàn cho sức khỏe', 'phát triển tư duy' là claim chưa kiểm chứng."
+    "nhan_xet": "'An toàn cho sức khỏe', 'phát triển toàn diện' là claim cần giấy kiểm nghiệm, trang chưa có (mục C, mục A: claim phải có bằng chứng)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên 'Cánh Thiên Thần' chung, cần kiểm tra không giống thương hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy tên thương hiệu nào trong tiêu đề/mô tả (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟢",
-    "nhan_xet": "Không có nhân vật bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Mô hình cánh thiên thần chung chung, chưa xem ảnh nên cần kiểm tra không có kiểu dáng/nhân vật nhái (mục I: hàng nhái/bản quyền)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi điện/pin cần hợp quy, thông tin tổ chức chịu trách nhiệm ghi 'Trung quốc' không đầy đủ."
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi có đèn/nhạc (pin) không thuộc nhóm cấm, nhưng đồ chơi gây hại trẻ bị cấm nên cần nhãn an toàn (mục G)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm cho trẻ em, cần cảnh báo độ tuổi và chi tiết nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm dành cho bé, trẻ xuất hiện phải có người lớn trong khung và không để trẻ tự giới thiệu hay đòi mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Thiếu chứng nhận đồ chơi trẻ em",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu CR/QCVN 3 trước khi làm"
-   },
-   {
-    "van_de": "Thông tin chịu trách nhiệm hàng hóa không đầy đủ",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung"
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn tuyệt đối cho sức khỏe bé, phát triển toàn diện",
-    "goi_y": "Nói chất liệu nhựa ABS, có đèn nhạc, bé thích chơi"
+    "khong_nen": "An toàn tuyệt đối cho sức khỏe bé, giúp bé thông minh hơn",
+    "goi_y": "Nói 'bé tự lắp ráp, có đèn và nhạc, chất liệu nhựa ABS theo mô tả shop'."
+   },
+   {
+    "khong_nen": "Để bé nói 'mẹ mua cho con'",
+    "goi_y": "Người lớn giới thiệu, bé chỉ chơi trong khung hình."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận đồ chơi, độ tuổi khuyến nghị, loại pin.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa có kiểm nghiệm an toàn đồ chơi; tổ chức chịu trách nhiệm ghi chung 'Trung quốc'; chưa biết loại pin.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

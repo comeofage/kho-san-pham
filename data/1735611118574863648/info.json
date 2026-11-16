@@ -37,62 +37,51 @@
   "poster_folder": 215,
   "duong_dan": "E:/oneshottramcanh/dauphong 1735611118574863648/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm có số đăng ký công bố ghi '1', nghi không hợp lệ, và có biến thể 'QUÀ KO BÁN' giá 599k.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung giấy công bố hợp lệ; không nói công dụng sức khỏe, không dẫn vào biến thể 'quà ko bán'."
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm cần hồ sơ công bố nhưng các trường nơi cấp/ngày cấp/số đăng ký chỉ ghi \"1\", chưa xác thực được.",
+   "khuyen_nghi": "Chỉ quảng bá hương vị và độ giòn, kiểm tra lại giấy tiếp nhận bản công bố trước khi làm; không nói tác dụng sức khỏe."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô tả chỉ tả hương vị, cần tránh 'tốt cho sức khỏe'."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ tả vị giòn, bùi, không có claim sức khỏe/giảm cân (mục A/B)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Panda Pẻn của shop."
+    "nhan_xet": "Thương hiệu Panda Pẻn của chính shop, không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy vấn đề hình ảnh."
+    "nhan_xet": "Không có hình/nhân vật có bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Nơi cấp/ngày cấp/số đăng ký đều ghi '1', giấy công bố thực phẩm nghi không hợp lệ."
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm thuộc nhóm cần giấy tờ (mục H), nhưng nơi cấp/ngày cấp/số đăng ký chỉ ghi \"1\" nên chưa xác thực được hồ sơ."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm riêng trẻ em."
+    "nhan_xet": "Không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Giấy công bố thực phẩm điền '1'",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop nộp số công bố thật trước khi làm."
-   },
-   {
-    "van_de": "Biến thể 'QUÀ KO BÁN' giá 599.403₫",
-    "rui_ro": "🟠",
-    "xu_ly": "Không dẫn người xem vào biến thể này."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Tốt cho sức khỏe, ăn không béo",
-    "goi_y": "Nói 'giòn, 4 vị trong 1 hũ'."
+    "khong_nen": "\"Tốt cho sức khỏe\", \"bổ dưỡng\", \"không lo béo\"",
+    "goi_y": "Chỉ nói vị, độ giòn, đóng hũ tiện mang theo."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Số tiếp nhận công bố thật, hạn sử dụng.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Số/ngày/nơi cấp bản công bố ghi \"1\", cần xem phiếu công bố thật; biến thể \"QUÀ KO BÁN\" giá 599k chưa rõ.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

@@ -35,57 +35,51 @@
   "poster_folder": 251,
   "duong_dan": "E:/oneshottramcanh/dumini 1737505766405867446/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Ô chống nắng nêu 'UPF 50+ cản 99% tia cực tím bảo vệ làn da' là số liệu kỹ thuật cần giấy kiểm nghiệm.",
-   "khuyen_nghi": "Chỉ nêu UPF 50+ nếu shop có báo cáo kiểm nghiệm; không nói 'bảo vệ làn da' như tác dụng y tế; nêu trọng lượng và kích thước gấp theo thông số."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'cản 99% tia cực tím', 'UPF 50+' và 'chống lật gió bão' là số liệu cần bằng chứng kiểm nghiệm, có thể phóng đại.",
+   "khuyen_nghi": "Chỉ nói UPF 50+ khi có in trên bao bì/phiếu kiểm nghiệm; dùng 'giúp che nắng, gọn nhẹ 240g', bỏ 'gió bão' và 'bảo vệ làn da' như cam kết."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Cản 99% tia UV, bảo vệ làn da, chống thấm' là claim có số liệu, cần giấy kiểm nghiệm UPF."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục A/C: claim chống tia UV 99% và bảo vệ da cần bằng chứng in trên bao bì hoặc kiểm nghiệm, nếu không thì chuyển sang 'giúp che nắng'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand Deli có công ty TNHH Deli Việt Nam chịu trách nhiệm, tương đối rõ ràng."
+    "nhan_xet": "Brand Deli, shop Deli Lifestyle và Công ty TNHH Phát Triển Deli Việt Nam là tổ chức chịu trách nhiệm nên khớp chủ nhãn (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy yếu tố bản quyền."
+    "nhan_xet": "Ô thiết kế chung, không thấy nhân vật/logo bên thứ ba (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Ô che nắng không thuộc nhóm hạn chế."
+    "nhan_xet": "Ô che nắng không thuộc nhóm cấm/hạn chế mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em."
+    "nhan_xet": "Sản phẩm người lớn, không nhắm trẻ em (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'cản 99% UV' và 'bảo vệ làn da'",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ dùng khi có báo cáo kiểm nghiệm, nếu không thì nói là ô che nắng nhẹ, gấp gọn."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Cản 99% tia UV, chống ung thư da, bảo vệ làn da tuyệt đối",
-    "goi_y": "Ô gấp gọn 240g, có lớp phủ chống nắng UPF 50+ theo công bố của shop"
+    "khong_nen": "Cản 99% tia cực tím / chống lật gió bão",
+    "goi_y": "Ô mini 240g, chống nắng UPF 50+ (nếu có bằng chứng), gấp gọn bỏ túi nhỏ."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có báo cáo kiểm nghiệm UPF/UV, chưa xác nhận Deli Lifestyle là kênh chính hãng Deli.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa có phiếu kiểm nghiệm UPF 50+; chưa đọc ảnh và phần mô tả bị trống ở các mục.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

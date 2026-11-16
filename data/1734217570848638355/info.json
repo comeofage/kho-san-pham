@@ -29,65 +29,60 @@
   "luc": "2026-11-02T20:22:07+07:00",
   "duong_dan": "E:/Aff anh nhan/review/bodam 1734217570848638355/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi điện tử trẻ em có vô tuyến, camera và pin, hồ sơ hợp quy chưa thấy.",
-   "khuyen_nghi": "Chỉ làm khi shop có hợp quy vô tuyến và đồ chơi, quay với người lớn hay trẻ lớn có giám sát."
+   "muc_do": "🟡",
+   "nguy_co": "Thiết bị liên lạc không dây có camera nhắm trẻ em, thông số tầm xa mâu thuẫn (100M/200M, 150-500m) và có thể cần chứng nhận thiết bị vô tuyến (mục C, mục D).",
+   "khuyen_nghi": "Chỉ nói chức năng gọi video 1 chạm, đổi giọng; dùng một con số tầm xa theo giá trị shop xác nhận, có người lớn trong khung hình."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Nói yên tâm theo dõi con dễ thành claim an toàn, nên nói là đồ chơi liên lạc."
+    "nhan_xet": "Claim tầm xa 150-500m, 200m, mẫu 100M lệch nhau có thể bị xem là sai lệch về thông số (mục C); 'bố mẹ nhìn thấy con yên tâm hơn' là cảm xúc nên chấp nhận."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand KIUMO của shop, không dấu hiệu nhái."
+    "nhan_xet": "Brand KIUMO là shop tự bán."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật có bản quyền."
+    "nhan_xet": "Không thấy nhân vật hay logo bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thiết bị phát sóng vô tuyến 200m và pin sạc cần hợp quy vô tuyến và an toàn pin."
+    "muc_do": "🟡",
+    "nhan_xet": "Có camera và truyền sóng nhưng là đồ chơi liên lạc, không phải thiết bị nghe lén/gây nhiễu (mục G: công cụ gian lận); cần chứng nhận thiết bị vô tuyến theo quy định, chưa thấy trên trang."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi điện tử cho trẻ em có camera cần QCVN 3:2019 và lưu ý quyền riêng tư của trẻ."
+    "nhan_xet": "Sản phẩm dành cho trẻ em, trẻ không được trình bày bằng lời và phải có người lớn trong khung hình (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Thiếu hợp quy thiết bị vô tuyến và đồ chơi",
+    "van_de": "Nội dung quay có trẻ dùng bộ đàm video; trẻ không được giới thiệu sản phẩm và không khuyến khích trẻ đòi cha mẹ mua (mục D).",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy chứng nhận trước khi làm."
-   },
-   {
-    "van_de": "Camera và gọi video của trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quay mặt trẻ em nhận dạng được."
+    "xu_ly": "Người lớn cầm và giới thiệu, chỉ để trẻ xuất hiện chơi cùng có người lớn; kịch bản nhắm phụ huynh."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Đảm bảo an toàn, giám sát trẻ từ xa",
-    "goi_y": "Nói đồ chơi gọi video cho bé chơi."
+    "khong_nen": "Tầm xa tới 500m (khi bản 100M/200M)",
+    "goi_y": "Nói tầm xa theo đúng phân loại 100M hoặc 200M."
    },
    {
-    "khong_nen": "Phạm vi 500m chắc chắn",
-    "goi_y": "Chỉ nói thông số theo trang, tùy môi trường."
+    "khong_nen": "Trẻ nói: bố mẹ mua cho con đi",
+    "goi_y": "Người lớn nói: ba mẹ gọi video cho con khi con chơi gần nhà."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng từ hợp quy vô tuyến, đồ chơi, pin và độ tuổi khuyến nghị.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Thiếu chứng nhận thiết bị vô tuyến/hợp quy, tầm xa thực tế; mô tả bị cắt phần pin.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

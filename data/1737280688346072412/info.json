@@ -35,65 +35,50 @@
   "poster_folder": 93,
   "duong_dan": "E:\\oneshottramcanh\\binhphg 1737280688346072412\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bình dùng cho trẻ em kèm claim 'inox 316 y tế kháng khuẩn' và 'chống rò rỉ 100%' dễ bị coi là quảng cáo sai/không có kiểm định.",
-   "khuyen_nghi": "Bỏ từ 'y tế', 'kháng khuẩn', '100%'; yêu cầu shop cung cấp giấy kiểm nghiệm vật liệu tiếp xúc thực phẩm và nêu giữ nhiệt theo số giờ đã kiểm chứng."
+   "muc_do": "🟡",
+   "nguy_co": "Nhiều số liệu tuyệt đối (giữ nhiệt 12-24h, chống rò rỉ 100%, kháng khuẩn, 'chống sặc') cần tránh; sản phẩm trẻ em và túi in hình hoạt hình cần chú ý bản quyền.",
+   "khuyen_nghi": "Nói 'hạn chế rò rỉ, giữ nhiệt tốt' thay vì con số/100%; không dùng 'chống sặc' hay 'kháng khuẩn' như cam kết. Quay có người lớn, không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Claim 'Inox 316 y tế kháng khuẩn', 'giữ nhiệt 12-24h', 'chống rò rỉ 100%' là cam kết tuyệt đối khó chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống rò rỉ 100%', 'giữ nhiệt 12-24 giờ', 'kháng khuẩn', 'chống sặc' là số liệu/tuyệt đối cần bằng chứng (mục C: sai lệch kích thước/phóng đại), sửa được bằng lời nói."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand MODOFO do shop tự đăng ký, cần xác nhận quyền sử dụng nhãn hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand MODOFO trùng tên shop, có tổ chức chịu trách nhiệm hàng hóa, không ám chỉ hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Túi bọc in hình hoạt hình, cần chắc chắn không dùng nhân vật có bản quyền."
+    "nhan_xet": "Túi tặng kèm in hình hoạt hình, nếu là nhân vật có bản quyền thì vi phạm (mục I: bản quyền nhân vật); chưa rõ hình gì."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Bình đựng đồ uống tiếp xúc thực phẩm, cần kiểm nghiệm vật liệu inox/silicone."
+    "muc_do": "🟢",
+    "nhan_xet": "Bình nước inox, không thuộc nhóm cấm/hạn chế mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm dành cho bé đi học, ống hút silicon 'chống sặc' là claim an toàn trẻ em cần chứng cứ."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: sản phẩm cho bé, nếu có trẻ xuất hiện phải có người lớn cạnh, không để trẻ thuyết phục mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'inox 316 y tế kháng khuẩn' và 'chống sặc'",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ các từ y tế/kháng khuẩn/chống sặc, chỉ nói chất liệu inox 316 theo thông số shop và cần có giấy kiểm nghiệm."
-   },
-   {
-    "van_de": "Sản phẩm trẻ em tiếp xúc thực phẩm",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy kiểm nghiệm vật liệu và không khẳng định tuyệt đối về an toàn cho bé."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chống rò rỉ 100%, kháng khuẩn, inox y tế",
-    "goi_y": "Nắp khóa bấm giúp hạn chế đổ nước khi bỏ trong cặp"
-   },
-   {
-    "khong_nen": "Giữ nhiệt 12-24 giờ",
-    "goi_y": "Giữ nhiệt tốt, theo thông số shop công bố"
+    "khong_nen": "Chống rò rỉ 100% / giữ nhiệt 12-24 giờ / inox y tế kháng khuẩn",
+    "goi_y": "Nắp kín hạn chế đổ nước, giữ nhiệt tốt, inox 316 cấp thực phẩm."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có giấy kiểm nghiệm vật liệu tiếp xúc thực phẩm, chưa rõ bản quyền hình hoạt hình trên túi bọc.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa rõ hình in hoạt hình trên túi là nhân vật nào; chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

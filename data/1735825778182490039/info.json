@@ -30,65 +30,56 @@
   "poster_folder": 47,
   "duong_dan": "E:\\Aff anh nhan\\review\\1107-móc khóa thông tin 1735825778182490039\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Biến thể Tom và Jerry là nhân vật Tom & Jerry (Warner Bros) có bản quyền, rủi ro gỡ sản phẩm; xuất xứ ghi Việt Nam nhưng địa chỉ yiwu.",
-   "khuyen_nghi": "Chỉ quảng bá biến thể con trai/con gái ngồi scooter, không quay hay nhắc Tom, Jerry."
+   "muc_do": "🟡",
+   "nguy_co": "Có biến thể Tom và Jerry (nhân vật có bản quyền) và ghi xuất xứ Việt Nam trong khi địa chỉ ở yiwu.",
+   "khuyen_nghi": "Chỉ quảng bá mẫu bé trai/bé gái đi scooter, không nhắc Tom & Jerry; nói đúng xuất xứ, nhấn đồ treo chìa khóa/balo làm quà nhỏ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Móc khóa trang trí, không có claim công dụng."
+    "nhan_xet": "Chỉ là phụ kiện trang trí, không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Tom', 'Jerry' là tên nhân vật/nhãn hiệu của bên thứ ba."
+    "muc_do": "🟡",
+    "nhan_xet": "Không thấy thương hiệu, nhưng tên Tom/Jerry gợi hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Hình nhân vật Tom & Jerry là IP có bản quyền, khả năng cao là hàng không ủy quyền."
+    "muc_do": "🟠",
+    "nhan_xet": "Biến thể Tom và Jerry là nhân vật hoạt hình có bản quyền (mục I), sửa bằng cách chỉ quảng bá mẫu không nhân vật."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "muc_do": "🟡",
+    "nhan_xet": "Xuất xứ ghi Việt Nam nhưng đơn vị chịu trách nhiệm ở yiwu, mục C cấm sai xuất xứ nên tránh khẳng định \"made in Vietnam\"."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Quảng cáo cho bé trai/bé gái; kim loại và chi tiết nhỏ cần cảnh báo, không dành cho trẻ nhỏ."
+    "muc_do": "🟢",
+    "nhan_xet": "Quà cho học sinh nhưng không nhắm trẻ, chỉ cần không để trẻ trình bày sản phẩm."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Biến thể Tom, Jerry",
-    "rui_ro": "🔴",
-    "xu_ly": "Loại các biến thể này khỏi video và không hiển thị trong cảnh quay."
-   },
-   {
-    "van_de": "Xuất xứ mâu thuẫn Việt Nam và yiwu",
+    "van_de": "Biến thể Tom, Jerry là nhân vật có bản quyền",
     "rui_ro": "🟠",
-    "xu_ly": "Không nói 'sản xuất tại Việt Nam' khi chưa có giấy tờ."
+    "xu_ly": "Không quay/nhắc hai mẫu này, chọn mẫu con trai/con gái."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Móc khóa Tom và Jerry chính hãng",
-    "goi_y": "Chỉ nói 'móc khóa scooter hoạt hình dễ thương'."
-   },
-   {
-    "khong_nen": "Hàng sản xuất tại Việt Nam",
-    "goi_y": "Không nói xuất xứ nếu không xác minh được."
+    "khong_nen": "Nhắc \"Tom và Jerry\", khẳng định hàng Việt Nam",
+    "goi_y": "Nói \"móc khóa scooter hoạt hình dễ thương\"."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Ảnh biến thể, ủy quyền bản quyền nhân vật, xuất xứ thật.",
-  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+  "thieu_thong_tin": "Chưa rõ xuất xứ thật và chi tiết thiết kế mẫu Tom/Jerry.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

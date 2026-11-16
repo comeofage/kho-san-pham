@@ -30,65 +30,60 @@
   "poster_folder": 126,
   "duong_dan": "E:/oneshottramcanh/balochonggu 1730425984528845500/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
+   "nen_lam": "❌",
    "muc_do": "🔴",
-   "nguy_co": "Hình Kuromi/Cinnamoroll/My Melody thuộc bản quyền Sanrio, shop khó có giấy ủy quyền; balo trẻ em có claim chống gù.",
-   "khuyen_nghi": "Chỉ làm nếu shop chứng minh được license, nếu không thì nên tránh. Nếu làm, không nhắc chống gù hay tác dụng chỉnh dáng lưng."
+   "nguy_co": "Balo in nhân vật Sanrio (Kuromi, Cinnamoroll, My Melody) bán bởi tổng kho không rõ ủy quyền nên rất dễ là hàng vi phạm bản quyền/IPR, không thể sửa bằng lời quảng bá.",
+   "khuyen_nghi": "Không nên làm affiliate vì chính sản phẩm là mặt hàng in nhân vật có bản quyền, đổi cách nói cũng không hết rủi ro. Chỉ cân nhắc lại nếu shop xuất trình được thư ủy quyền của chủ bản quyền."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Tên sản phẩm có claim 'chống gù', là claim y tế/chỉnh hình chưa có bằng chứng."
+    "nhan_xet": "Mục C/H: 'chống gù' là tuyên bố liên quan sức khỏe cần bằng chứng, nên tránh hứa hẹn bảo vệ cột sống."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Dùng tên và hình Kuromi, Cinnamoroll, My Melody của Sanrio, không thấy giấy phép thương hiệu."
+    "muc_do": "🔴",
+    "nhan_xet": "Mục I: tên SP và phân loại dùng thẳng Kuromi, Cinnamon, Meloly là tên thương hiệu/nhân vật Sanrio, không thể bỏ vì đó chính là sản phẩm."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🔴",
-    "nhan_xet": "Họa tiết nhân vật Sanrio in trên balo, móc bông và sticker tặng kèm, shop gốc Trung Quốc, nhiều khả năng là hàng không bản quyền."
+    "nhan_xet": "Mục G/I: sản phẩm in nhân vật hoạt hình khi chưa được cấp phép bị coi vi phạm bản quyền, thuộc nhóm hàng cấm vi phạm IPR."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Balo là hàng thông thường, không thuộc danh mục hạn chế."
+    "nhan_xet": "Mục H: balo không thuộc nhóm hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Dành cho học sinh lớp 1-6, cần tránh quay trẻ em nhận diện được và không hứa hẹn tác dụng với cột sống."
+    "nhan_xet": "Mục D: sản phẩm cho học sinh tiểu học nên bé xuất hiện cần có người lớn và không được tự giới thiệu hay thúc giục đòi mua."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Nhân vật Sanrio không có giấy ủy quyền, dễ bị gỡ video hoặc hạn chế sản phẩm vì IPR.",
+    "van_de": "Balo in nhân vật Sanrio, shop bán sỉ, trường 'tổ chức chịu trách nhiệm' ghi Tik tok, không có dấu hiệu được ủy quyền.",
     "rui_ro": "🔴",
-    "xu_ly": "Hỏi shop giấy ủy quyền Sanrio, chưa có thì không làm."
-   },
-   {
-    "van_de": "Tên sản phẩm dùng 'chống gù' cho trẻ em.",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói đệm lưng dày, quai rộng, không nhắc chống gù hay chỉnh dáng."
+    "xu_ly": "Không làm; chỉ xem xét lại khi có LoA hợp lệ từ chủ thương hiệu."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Chống gù, chỉnh cột sống, bảo vệ lưng cho bé",
-    "goi_y": "Đệm lưng dày, quai rộng đeo đỡ hằn vai"
+    "khong_nen": "Nhắc tên Kuromi, Cinnamoroll, My Melody hoặc Sanrio khi quảng bá.",
+    "goi_y": "Không áp dụng được vì sản phẩm chính là hàng in nhân vật."
    },
    {
-    "khong_nen": "Balo Kuromi/Sanrio chính hãng",
-    "goi_y": "Balo họa tiết hoạt hình dễ thương (không gọi tên nhân vật nếu chưa có license)"
+    "khong_nen": "'Balo chống gù, bảo vệ cột sống cho bé'.",
+    "goi_y": "Nói 'dây đeo êm vai, thiết kế gọn nhẹ'."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy ủy quyền/license Sanrio; chứng nhận chất liệu an toàn cho đồ dùng trẻ em; chất liệu và thông số balo.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa có thư ủy quyền (LoA) của Sanrio hay giấy tờ cho thấy shop được phép bán hàng in nhân vật.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

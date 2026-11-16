@@ -36,61 +36,56 @@
   "poster_folder": 309,
   "duong_dan": "E:/oneshottramcanh/rapxe-1735355624002782526/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi súng/vũ khí chủ đề đặc nhiệm chống khủng bố dành cho bé trai dễ bị gỡ hoặc hạn chế hiển thị.",
-   "khuyen_nghi": "Không nên làm vì chủ đề vũ khí và khủng bố gắn với trẻ em; nếu vẫn làm thì chỉ nhấn vào xếp hình lắp ráp, bỏ hình ảnh súng."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Mô hình có \"vũ khí\" và tên \"chống khủng bố\" dễ bị hiểu là súng đồ chơi/đồ cảnh sát, kiểu minifigure có thể gần LEGO.",
+   "khuyen_nghi": "Gọi là mô hình nhân vật lắp ráp để bàn, nhấn tháo lắp phụ kiện, không bắn được; tránh nói \"súng\", \"lego\" và không quay cảnh chĩa vũ khí."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có claim y tế, nhưng quảng cáo 'giáo dục' cần có căn cứ."
+    "nhan_xet": "Chỉ tả mô hình, không có claim sức khỏe hay giáo dục có số liệu (mục A/B/C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Không rõ thương hiệu, hình mô hình giống dòng xếp hình có sẵn trên thị trường."
+    "nhan_xet": "Không thấy tên hãng, nhưng dạng minifigure xếp hình dễ gợi LEGO (mục I vi phạm nhãn hiệu), tránh nhắc \"lego\"."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Nhân vật/xe cảnh sát có thể mô phỏng sản phẩm xếp hình có bản quyền, cần kiểm tra."
+    "nhan_xet": "Chưa rõ thiết kế có sao chép bộ có bản quyền không, cần xem ảnh mô tả (mục I bản quyền)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🔴",
-    "nhan_xet": "Mô hình vũ khí, chủ đề chống khủng bố thuộc nhóm hạn chế trên TikTok Shop."
+    "muc_do": "🟠",
+    "nhan_xet": "Phụ kiện súng của mô hình: mục G chỉ cấm súng đồ chơi bắn được hoặc đồng phục/phù hiệu thật, ở đây là nhựa tháo lắp nên chỉ cần tránh nói \"súng\"."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em có chi tiết nhỏ (súng, mũ, tóc) nguy cơ nuốt phải, thiếu cảnh báo độ tuổi và chứng nhận an toàn."
+    "muc_do": "🟡",
+    "nhan_xet": "Bán cho bé trai, mục D yêu cầu có người lớn trong khung hình và trẻ không tự giới thiệu."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Đồ chơi vũ khí/khủng bố hướng tới trẻ em",
-    "rui_ro": "🔴",
-    "xu_ly": "Không quay/nhấn cận cảnh súng, tránh từ 'chống khủng bố'."
-   },
-   {
-    "van_de": "Chi tiết nhỏ không có cảnh báo độ tuổi",
+    "van_de": "Phụ kiện \"vũ khí\", \"súng\" trong mô hình",
     "rui_ro": "🟠",
-    "xu_ly": "Xác nhận độ tuổi và chứng nhận an toàn đồ chơi trước khi làm."
+    "xu_ly": "Gọi là \"phụ kiện\", quay đặt bàn, không dùng đạo cụ giống thật hay tả khả năng bắn."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Chống khủng bố, súng, vũ khí, đồ chơi cho bé trai",
-    "goi_y": "Gọi là mô hình nhân vật cảnh sát lắp ráp, không nhấn vũ khí."
+    "khong_nen": "Mô tả \"súng\", \"chống khủng bố thật\", cảnh chĩa súng",
+    "goi_y": "Nói \"mô hình đặc nhiệm tháo lắp để bàn\"."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chưa có thông tin độ tuổi, chứng nhận an toàn đồ chơi, nguồn gốc nhà sản xuất.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Cần xem ảnh mô tả để xác nhận không có logo/bao bì hãng khác và phụ kiện không bắn được.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

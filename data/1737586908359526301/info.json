@@ -35,61 +35,50 @@
   "poster_folder": 277,
   "duong_dan": "E:/oneshottramcanh/phimgame-1737586908359526301/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em có pin và claim phát triển kỹ năng/thay thế điện thoại, thiếu cảnh báo tuổi và kiểm định.",
-   "khuyen_nghi": "Chỉ giới thiệu như đồ chơi giải trí, không hứa tăng tập trung hay phát triển trí não; xác nhận độ tuổi và an toàn pin trước khi làm."
+   "muc_do": "🟡",
+   "nguy_co": "Claim phát triển kỹ năng/thay thế điện thoại cho trẻ cần nói nhẹ; hàng kèm pin cần đúng thông tin.",
+   "khuyen_nghi": "Giới thiệu như đồ chơi giải trí, phụ huynh là người mua; bé không tự giới thiệu hay giục bố mẹ mua."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Rèn phản xạ, tăng tập trung, thay thế điện thoại' là claim phát triển trẻ chưa có cơ sở."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C: 'rèn phản xạ, trí nhớ', 'thay thế điện thoại' là claim giáo dục chưa kiểm chứng, nên nói 'hỗ trợ vui chơi'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "'Pop It' là tên đồ chơi phổ biến, tránh dùng như thương hiệu cụ thể."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy tên hãng."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Kiểu dáng chung, không thấy nhân vật bản quyền."
+    "nhan_xet": "Nhân vật/tên game bên ngoài không thấy; cần xem ảnh."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Có pin kèm theo nhưng thông số ghi 'Pin trong sản phẩm: Không' mâu thuẫn."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi thường, không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi có pin và chi tiết nhỏ, trang không ghi độ tuổi và cảnh báo nguy cơ nuốt pin."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: đồ chơi trẻ em, trẻ xuất hiện phải có người lớn, không để bé trình bày hay khuyến khích đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim phát triển kỹ năng, tăng tập trung, thay thế điện thoại cho trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ các câu này, chỉ nói đồ chơi bấm đèn nhạc vui nhộn."
-   },
-   {
-    "van_de": "Đồ chơi có pin cho trẻ thiếu cảnh báo tuổi và kiểm định",
-    "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop độ tuổi, chứng nhận an toàn đồ chơi và thêm lưu ý pin để xa tầm tay trẻ nhỏ."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Rèn phản xạ, tăng tập trung, thay thế điện thoại cho bé",
-    "goi_y": "Máy game mini có đèn và âm thanh, bé chơi giải trí cùng gia đình."
+    "khong_nen": "'Thay thế việc cầm điện thoại', 'tăng tập trung'",
+    "goi_y": "'Món đồ chơi vui cho bé phối hợp tay mắt'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Độ tuổi khuyến nghị, chứng nhận an toàn đồ chơi, loại pin và thông tin pin kèm theo.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Spec ghi 'Pin trong sản phẩm: Không' nhưng shop tặng 3 pin; chưa rõ độ tuổi khuyến nghị.Chưa đối chiếu ảnh mô tả/ảnh bìa với listing.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

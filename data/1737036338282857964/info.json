@@ -29,7 +29,7 @@
   "poster_folder": 169,
   "duong_dan": "F:\\0910-ncm\\ba gác 0910 - 1737036338282857964"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -43,57 +43,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em, thông tin pin mâu thuẫn, mô tả tiếng Anh sao chép và shop điểm thấp 3.0.",
-   "khuyen_nghi": "Xin giấy an toàn đồ chơi, xác nhận có pin hay không ở bản Premium. Nói độ tuổi trên 8 tuổi như trang, không nhắc bé nhỏ."
+   "muc_do": "🟡",
+   "nguy_co": "Phiên bản Premium quảng bá âm thanh đèn nhưng thông số ghi không có pin, nội dung dễ không khớp listing (mục C, mục D).",
+   "khuyen_nghi": "Quay đúng bản thực tế bán; nhắc độ tuổi 8+; nếu có trẻ xuất hiện phải có người lớn trong khung, trẻ không tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟢",
-    "nhan_xet": "Chỉ là xe đồ chơi, không có claim công dụng."
+    "muc_do": "🟡",
+    "nhan_xet": "Bản Premium có đèn, âm thanh nhưng thông số ghi không pin; tránh nói đèn/âm thanh nếu chưa rõ (mục C: nội dung phải khớp sản phẩm)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy thương hiệu bên thứ ba trong tên."
+    "nhan_xet": "Không có thương hiệu/logo nổi bật."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Kiểu xe ba gác có thể dựa theo mẫu xe nhãn hiệu, cần xem ảnh có logo không."
+    "muc_do": "🟢",
+    "nhan_xet": "Xe ba gác chung chung, không có nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Bản Premium có đèn và âm thanh nhưng ghi không có pin, cần làm rõ thông tin pin."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi thường, không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em, có chi tiết nhỏ và đèn âm thanh, cần chứng nhận an toàn và đúng độ tuổi."
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi trẻ em, tuổi khuyến nghị trên 8: phải có người lớn trong khung hình, không để trẻ giới thiệu bằng lời, không giục trẻ đòi mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em chưa có chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Xin giấy QCVN 3:2019 hoặc tương đương; nêu độ tuổi trên 8 tuổi."
-   },
-   {
-    "van_de": "Thông tin pin không khớp với tính năng đèn âm thanh",
-    "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop có pin hay không, khai báo đúng thuộc tính hàng pin."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giúp bé phát triển trí tuệ, hoàn toàn an toàn cho mọi lứa tuổi",
-    "goi_y": "Nói xe đẩy đà, mở được thùng, dành cho bé từ 8 tuổi."
+    "khong_nen": "Quảng cáo âm thanh, đèn LED hoạt động bằng pin",
+    "goi_y": "Chỉ nói âm thanh/đèn khi đã kiểm tra bản Premium thực tế"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ chứng nhận đồ chơi, tình trạng pin bản Premium, và xuất xứ thật; mô tả bị cắt.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "thieu_thong_tin": "Bản Premium dùng pin gì, cảnh báo tuổi/chi tiết nhỏ, bảo hành (hiện ghi không bảo hành).",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

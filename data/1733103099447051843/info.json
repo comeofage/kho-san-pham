@@ -30,56 +30,60 @@
   "poster_folder": 14,
   "duong_dan": "E:\\Aff anh nhan\\review\\diavel 1733103099447051843\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Dùng tên và kiểu dáng xe Ducati XDiavel khi chưa có ủy quyền, rủi ro vi phạm nhãn hiệu và kiểu dáng.",
-   "khuyen_nghi": "Không nên làm khi shop chưa chứng minh được giấy phép Ducati. Nếu có giấy phép, quay lại đánh giá."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tên/hình mô hình xe Ducati XDiavel là nhãn hiệu và kiểu dáng của hãng, shop chưa thấy giấy ủy quyền (mục I: hàng nhái, nhãn hiệu).",
+   "khuyen_nghi": "Chỉ gọi chung là mô hình xe moto gỗ lắp ghép, không đọc tên Ducati hay nói chính hãng/được cấp phép. Nên hỏi shop về LoA trước khi quay."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có claim công dụng lớn."
+    "nhan_xet": "Chỉ nói lắp ráp, rèn kiên nhẫn, trang trí; không có claim sức khỏe (mục A không áp dụng)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🔴",
-    "nhan_xet": "Tên 'DUCATI XDIAVEL' là nhãn hiệu của Ducati, đồ chơi/mô hình dùng tên này cần license."
+    "muc_do": "🟠",
+    "nhan_xet": "Tên Ducati XDiavel trong tiêu đề là nhãn hiệu của bên thứ ba, cấm gợi liên tưởng/ngụ ý hợp tác (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Kiểu dáng xe đặc trưng của Ducati, hashtag #ducatixdiavel, rủi ro IPR cao."
+    "muc_do": "🟡",
+    "nhan_xet": "Mô hình tái tạo kiểu dáng xe có thương hiệu, cần LoA nếu không sẽ bị coi là hàng nhái (mục I: hàng giả và hàng nhái)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Đồ chơi lắp ghép gỗ, không thuộc nhóm cấm/hạn chế mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Ghi trên 13 tuổi nhưng 'sự phát triển của trẻ', mảnh nhỏ cần lưu ý."
+    "muc_do": "🟢",
+    "nhan_xet": "Ghi trên 13 tuổi, không nhắm trẻ nhỏ; nếu có trẻ lên hình phải có người lớn (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Sử dụng tên và kiểu dáng Ducati XDiavel không có giấy phép",
-    "rui_ro": "🔴",
-    "xu_ly": "Không quảng bá sản phẩm khi chưa có ủy quyền của Ducati."
+    "van_de": "Tên và hình xe Ducati XDiavel có thể bị xem là dùng nhãn hiệu/kiểu dáng trái phép nếu shop không có ủy quyền (mục I).",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop về LoA/giấy phép; trong video gọi là mô hình xe moto phân khối lớn bằng gỗ, không nhắc Ducati, không che logo trên bao bì."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Mô hình Ducati chính hãng, y như thật",
-    "goi_y": "Không dùng tên Ducati nếu chưa có giấy phép."
+    "khong_nen": "Mô hình chính hãng Ducati / được Ducati cấp phép",
+    "goi_y": "Mô hình xe moto gỗ tự lắp 115 mảnh, tự tay lắp rất đã."
+   },
+   {
+    "khong_nen": "Giống hệt xe Ducati thật",
+    "goi_y": "Dáng xe moto mạnh mẽ, chi tiết cắt laser khít."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Giấy phép/ủy quyền Ducati, độ tuổi và cảnh báo mảnh nhỏ.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu giấy ủy quyền/giấy phép thương hiệu Ducati của shop; mô tả trang bị rút gọn (không có nội dung mục 1-4).",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

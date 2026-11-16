@@ -30,70 +30,61 @@
   "poster_folder": 41,
   "duong_dan": "E:\\Aff anh nhan\\review\\baloxuatnga 1735785669013439690\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "'Chống gù' là claim y tế/chỉnh hình, và các biến thể Người Nhện, Melody, Công chúa dùng nhân vật bản quyền.",
-   "khuyen_nghi": "Không dùng cụm 'chống gù', chuyển sang 'balo nhẹ, đệm vai êm' và chỉ giới thiệu biến thể quân đội/trơn không nhân vật."
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể in Người Nhện, Melody, Elsa, Kurumi dễ vi phạm bản quyền, kèm claim \"chống gù\" và \"xuất Nga\" lệch xuất xứ.",
+   "khuyen_nghi": "Chỉ quay mẫu không nhân vật (quân đội, xe, phi hành gia, cô gái), nói balo nhẹ, nhiều ngăn; bỏ \"chống gù\", \"xuất Nga\"."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "'Chống gù' hàm ý ngăn/điều trị cong vẹo cột sống, claim y tế cho trẻ em cần bằng chứng."
+    "muc_do": "🟠",
+    "nhan_xet": "\"Chống gù\" là claim chỉnh hình/y tế không có bằng chứng (mục A/C, mục G thiết bị y tế), sửa bằng \"đệm lưng êm, đeo thoải mái\"."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Brand XBEI và 'xuất Nga' chưa xác minh; Melody, Người Nhện là tên nhãn hiệu của bên thứ ba."
+    "muc_do": "🟡",
+    "nhan_xet": "Brand XBEI, chưa rõ có LoA; tên nhân vật trong variant gợi hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Biến thể Người Nhện (Marvel), Melody (Sanrio), Công chúa gợi Frozen có bản quyền, rủi ro hàng nhái."
+    "nhan_xet": "Biến thể Người Nhện, Melody, Công chúa EOSA, Kurumi là nhân vật có bản quyền (mục I), tránh quảng bá các mẫu này."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Balo thông thường, không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm cho học sinh lớp 1-6, claim ảnh hưởng sức khỏe trẻ em nhạy cảm."
+    "muc_do": "🟡",
+    "nhan_xet": "Cho học sinh lớp 1-6, mục D cấm nhắm trẻ đòi cha mẹ mua và trẻ tự giới thiệu, nên người lớn dẫn."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim 'chống gù' cho trẻ em",
-    "rui_ro": "🔴",
-    "xu_ly": "Đổi sang 'thiết kế đệm lưng, dây đeo êm, phân bổ trọng lượng' và không hứa bảo vệ cột sống."
-   },
-   {
-    "van_de": "Biến thể nhân vật Người Nhện, Melody, Công chúa",
-    "rui_ro": "🔴",
-    "xu_ly": "Không quay/nhắc các biến thể này, chỉ giới thiệu mẫu quân đội, trơn."
-   },
-   {
-    "van_de": "Balo trẻ em cho học sinh",
+    "van_de": "Claim \"chống gù\" và \"xuất Nga\"",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói chất liệu, dung tích, độ nhẹ theo thông số có thật."
+    "xu_ly": "Bỏ cả hai; xuất xứ ghi Trung Quốc, nói đúng thực tế (mục C)."
+   },
+   {
+    "van_de": "Mẫu in nhân vật Người Nhện, Melody, Elsa, Kurumi",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ làm mẫu không nhân vật, không hiển thị tên nhân vật."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Balo chống gù, chỉnh dáng lưng",
-    "goi_y": "Nói 'balo có đệm lưng, quai đeo êm cho bé đi học'."
-   },
-   {
-    "khong_nen": "Bảo vệ cột sống trẻ",
-    "goi_y": "Nói 'giúp bé đeo thoải mái hơn'."
+    "khong_nen": "Chống gù, chữa cong vẹo, hàng xuất Nga",
+    "goi_y": "Nói \"đệm lưng êm, quai rộng đeo thoải mái\"."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Ảnh mô tả chưa kiểm tra, thông số dung tích/trọng lượng, nguồn gốc 'xuất Nga'.",
-  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+  "thieu_thong_tin": "Chưa có mô tả chữ, cần đọc ảnh để xem claim trên ảnh và có kiểm nghiệm cho \"chống gù\" hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

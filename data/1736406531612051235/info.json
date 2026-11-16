@@ -34,34 +34,34 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đèn pha LED siêu sáng độ cho xe máy có thể vi phạm quy định đèn xe, thiếu thông tin tổ chức chịu trách nhiệm.",
-   "khuyen_nghi": "Chỉ làm khi quay như đèn trợ sáng, nhắc dùng đúng quy định giao thông, không khuyến khích thay đèn pha chính."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần nói đúng thông số và nhắc lắp đặt đúng quy định.",
+   "khuyen_nghi": "Quảng bá theo thông số trên listing (1500LM, 3 chế độ), không hứa 'siêu sáng hơn đèn zin' hay độ bền tuyệt đối."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Số liệu 1500LM, tuổi thọ 20000 giờ chưa có kiểm chứng."
+    "muc_do": "🟢",
+    "nhan_xet": "Thông số kỹ thuật ghi rõ, không có claim sức khỏe; chỉ cần không phóng đại độ sáng và tuổi thọ (mục C: thông số sai lệch)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "No brand, không có nhãn hiệu rõ ràng."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand 'No brand', không dùng tên hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình nhân vật hay thương hiệu."
+    "nhan_xet": "Không có logo hay kiểu dáng nhái thương hiệu nào trong mô tả."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Đèn siêu sáng, chế độ passing có thể vi phạm quy định đèn xe, dễ bị hạn chế."
+    "muc_do": "🟢",
+    "nhan_xet": "Đèn xe máy không nằm trong nhóm cấm/hạn chế ở mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -69,21 +69,10 @@
     "nhan_xet": "Không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đèn độ siêu sáng, chế độ passing",
-    "rui_ro": "🟠",
-    "xu_ly": "Mô tả là đèn trợ sáng, không quảng cáo chiếu chói mắt."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Sáng nhất, lái xe ban đêm tuyệt đối an toàn",
-    "goi_y": "Chỉ nêu thông số và cách lắp, không cam kết an toàn."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Tổ chức chịu trách nhiệm hàng hóa đang để Updating, thiếu chứng nhận chất lượng.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Tên tổ chức/địa chỉ chịu trách nhiệm hàng hóa đang ghi 'Updating'; nên đối chiếu thông số 12V-36W với 12V-85V trên mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

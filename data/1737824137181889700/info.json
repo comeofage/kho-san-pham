@@ -35,56 +35,45 @@
   "poster_folder": 225,
   "duong_dan": "E:/oneshottramcanh/heobong 1737824137181889700/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thú bông bán cho trẻ em/quà tặng chưa thấy chứng nhận an toàn đồ chơi, và có claim tuyệt đối.",
-   "khuyen_nghi": "Bỏ câu 'không xù không rụng', 'an toàn cho trẻ'. Tránh hình giống nhân vật có bản quyền (cánh cụt, thỏ/heo nấm). Hỏi shop chứng nhận QCVN 3:2019."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Thú bông thông thường, rủi ro thấp; chỉ cần tránh nói quá về chất liệu.",
+   "khuyen_nghi": "Giới thiệu như quà tặng; nói theo mô tả listing."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "'Không xù lông không rụng bụi', '100% bông PP' là claim tuyệt đối khó chứng minh."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục C: 'không xù lông không rụng bụi' hơi tuyệt đối, nên nói 'mềm mịn, dễ thương'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu rõ."
+    "nhan_xet": "Không thấy tên hãng."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Hình thú nấm/cánh cụt/cún đeo kính có thể giống mẫu nổi tiếng."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: tạo hình 'nấm', 'cún đeo kính' là chung, chưa thấy nhân vật bản quyền (cần xem ảnh)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Thú bông không thuộc nhóm hạn chế."
+    "nhan_xet": "Thú bông không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Thú bông/quà cho trẻ em cần QCVN 3:2019/BKHCN về an toàn đồ chơi, tem nhãn rõ."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: nếu có bé xuất hiện cần người lớn trong khung hình."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em thiếu chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra giấy tờ shop, không quảng bá 'an toàn cho bé sơ sinh'."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Không xù không rụng, an toàn tuyệt đối cho bé",
-    "goi_y": "Nói 'mềm mịn, size 22-25cm, làm quà tặng'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận an toàn đồ chơi; chưa xác định hình mẫu trong ảnh; đơn bán 0.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa xem ảnh để kiểm nhân vật bản quyền; shop mới (đã bán 0).",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

@@ -38,61 +38,50 @@
   "poster_folder": 90,
   "duong_dan": "E:\\oneshottramcanh\\banchaichuoi 1736730770661869121\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm chăm sóc răng miệng dành cho trẻ 3-12 tuổi có claim bảo vệ nướu, cần chứng nhận an toàn trẻ em.",
-   "khuyen_nghi": "Chỉ làm nếu shop có kiểm nghiệm an toàn; nói bàn chải lông mềm hình chuối dễ thương, không claim bảo vệ nướu hay làm sạch hiệu quả."
+   "muc_do": "🟡",
+   "nguy_co": "Sản phẩm dành cho trẻ nên khi quay phải tuân thủ mục D, và \"bảo vệ nướu\" là claim nhẹ cần tránh nói quá.",
+   "khuyen_nghi": "Người lớn giới thiệu bàn chải, bé chỉ xuất hiện minh họa có người lớn bên cạnh; nói \"lông mềm, làm sạch dịu nhẹ\" thay vì hứa bảo vệ nướu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Bảo vệ nướu non', 'làm sạch răng' là claim chăm sóc sức khỏe răng miệng, thông số ghi 'phi y tế'."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Bảo vệ nướu\" gần claim viêm nướu (mục A) nhưng chỉ cần đổi thành \"lông mềm, dịu nhẹ với nướu\" là ổn."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên 'KaShi' có thể trùng nhãn hiệu khác, cần xác nhận."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Kashi của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình quả chuối mặt cười chung chung, không có nhân vật bản quyền rõ ràng."
+    "nhan_xet": "Thiết kế hình quả chuối + mặt cười là hình chung, không phải nhân vật có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Bàn chải đánh răng tiếp xúc khoang miệng cần chứng nhận chất liệu an toàn."
+    "muc_do": "🟢",
+    "nhan_xet": "Thông số ghi \"phi y tế\", bàn chải thường không thuộc nhóm thiết bị y tế bị hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm cho trẻ 3-12 tuổi, cần chứng nhận an toàn, chi tiết nhỏ và cảnh báo độ tuổi."
+    "muc_do": "🟡",
+    "nhan_xet": "Hướng tới bé 3-12 tuổi nên bé chỉ được xuất hiện khi có người lớn trong khung hình, không để bé tự giới thiệu hay giục cha mẹ mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Sản phẩm trẻ em tiếp xúc miệng, claim bảo vệ nướu",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp kiểm nghiệm; bỏ claim bảo vệ nướu, không quay trẻ dưới 3 tuổi."
-   },
-   {
-    "van_de": "Hình ảnh trẻ em trong video",
-    "rui_ro": "🟠",
-    "xu_ly": "Dùng người lớn hoặc tay demo, tránh quay mặt trẻ nhỏ."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Bảo vệ nướu non, làm sạch răng tối ưu cho bé",
-    "goi_y": "Nói 'lông mềm, cán silicon chống trơn, hình chuối dễ thương cho bé hứng thú đánh răng'."
+    "khong_nen": "Ngừa sâu răng, chữa viêm nướu, làm sạch hoàn toàn mảng bám",
+    "goi_y": "Lông mềm hình núi, cán silicon chống trơn, hình chuối dễ thương giúp bé thích đánh răng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu chứng nhận an toàn trẻ em/vật liệu tiếp xúc miệng và chưa xem ảnh mô tả.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa rõ độ tuổi an toàn thực tế cho từng nhóm 3-12 tuổi và chất liệu lông, cán có kiểm nghiệm hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

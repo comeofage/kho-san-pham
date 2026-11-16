@@ -25,7 +25,7 @@
   "poster_folder": 188,
   "duong_dan": "E:/oneshottramcanh/xepcao 1737659393375831833/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -39,57 +39,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em có chi tiết nhỏ, không có thông tin tuổi và kiểm định, claim 'giáo dục' và 'an toàn cho trẻ nhỏ'.",
-   "khuyen_nghi": "Chỉ giới thiệu đồ chơi xếp tháp giải trí cho trẻ lớn, không nói an toàn cho trẻ nhỏ hay phát triển tư duy; cần giấy an toàn và độ tuổi từ shop."
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi nhỏ cho trẻ, listing không ghi độ tuổi và cảnh báo; claim 'an toàn cho trẻ nhỏ' chưa có căn cứ.",
+   "khuyen_nghi": "Không nói 'an toàn cho trẻ nhỏ' hay 'phát triển tư duy'; chỉ nói trò chơi xếp cân bằng, ghi chú độ tuổi theo bao bì."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Rèn tư duy cân bằng vật lý, kiên nhẫn' là claim phát triển chưa có cơ sở."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C: 'rèn tư duy, kiên nhẫn', 'an toàn' là claim chưa có bằng chứng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Biến thể 'Hercules' có thể liên quan tên nhân vật/thương hiệu, cần tránh dùng làm điểm bán."
+    "muc_do": "🟢",
+    "nhan_xet": "Tên 'Hercules' mô tả chung, chưa thấy là thương hiệu."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Búp bê võ sĩ kiểu Hercules, cần xem ảnh có bắt chước nhân vật nổi tiếng không."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật bản quyền; cần xem ảnh."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ chơi nhựa không pin, không thuộc nhóm hạn chế."
+    "nhan_xet": "Đồ chơi xếp hình không thuộc mục G (không phải vũ khí); 'đối kháng' chỉ là cách chơi."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Quả bóng và búp bê nhỏ có nguy cơ nuốt, trang không ghi tuổi và cảnh báo."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục G/D: chi tiết nhỏ có nguy cơ cho trẻ nhỏ; trẻ xuất hiện cần người lớn."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi chi tiết nhỏ cho trẻ, không có cảnh báo tuổi/kiểm định, claim 'an toàn cho trẻ nhỏ'",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim an toàn, thêm lưu ý có chi tiết nhỏ, hỏi shop độ tuổi và giấy kiểm định."
-   },
-   {
-    "van_de": "Claim rèn tư duy, kiên nhẫn cho trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Đổi thành 'trò chơi xếp tháp thử độ khéo tay vui nhộn'."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn cho trẻ nhỏ, rèn tư duy và tính kiên nhẫn",
-    "goi_y": "Bộ xếp tháp 8 võ sĩ kèm bóng, chơi vui cùng gia đình cho trẻ từ độ tuổi shop khuyến nghị."
+    "khong_nen": "'An toàn cho trẻ nhỏ'",
+    "goi_y": "'Phù hợp cho bé theo độ tuổi ghi trên bao bì'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Độ tuổi, kiểm định an toàn đồ chơi, thông tin tổ chức chịu trách nhiệm, nội dung ảnh mô tả.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Không có thông số tuổi/cảnh báo; shop điểm 3.7; chưa có mô tả chữ.Chưa đối chiếu ảnh mô tả/ảnh bìa với listing.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

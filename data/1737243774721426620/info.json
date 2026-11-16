@@ -35,60 +35,50 @@
   "poster_folder": 102,
   "duong_dan": "E:\\oneshottramcanh\\che_mat_ngu 1737243774721426620\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim 'kích thích thần kinh, ngủ sâu giấc tức thì' là claim y tế, 'chặn sáng 100%' là tuyệt đối.",
-   "khuyen_nghi": "Chỉ nói che sáng và êm mềm, không hứa ngủ sâu hay tác động thần kinh."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'ngủ sâu giấc tức thì' và 'chặn sáng tuyệt đối 100%' có khung thời gian/tuyệt đối, cần nói lại; brand Colugea khác tên shop VEELORA-VN.",
+   "khuyen_nghi": "Dùng 'giúp dễ thư giãn, che sáng tốt' kèm 'cảm nhận mỗi người có thể khác nhau', không nói 'tức thì/100%'. Kiểm tra ảnh/listing có logo Colugea đúng chủ shop không."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Kích thích thư giãn hệ thần kinh, ngủ sâu giấc tức thì' là claim sức khỏe không có cơ sở."
+    "muc_do": "🟡",
+    "nhan_xet": "'Ngủ sâu giấc tức thì' và 'kích thích thần kinh' là khung thời gian + tác dụng sức khỏe cần tránh theo mục A (cấm 'ngay lập tức'), đổi thành 'giúp thoải mái hơn khi ngủ' là sửa được."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand Colugea khác tên shop VEELORA, cần xác minh nguồn."
+    "nhan_xet": "Thông số ghi Brand Colugea nhưng shop là VEELORA-VN, chưa rõ có ủy quyền (mục I: cần LoA cho hàng có thương hiệu) nên chỉ nói tên chung 'mặt nạ ngủ'."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy logo hay nhân vật bên thứ ba."
+    "nhan_xet": "Mặt nạ ngủ trơn, không thấy nhân vật/logo bên thứ ba trong thông tin text (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ dùng thông thường, không thuộc nhóm hạn chế."
+    "nhan_xet": "Phụ kiện che mắt thông thường, không thuộc nhóm cấm/hạn chế mục G/H, không phải thiết bị y tế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em."
+    "nhan_xet": "Sản phẩm người lớn, không nhắm đến trẻ em (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim tác động thần kinh, ngủ tức thì",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ câu này, chỉ nói che sáng và thoải mái."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Ngủ sâu tức thì, kích thích thư giãn thần kinh",
-    "goi_y": "Nói 'che sáng giúp dễ chợp mắt hơn nơi nhiều ánh sáng'."
-   },
-   {
-    "khong_nen": "Chặn sáng tuyệt đối 100%",
-    "goi_y": "Nói 'che sáng tốt' và quay thử thực tế."
+    "khong_nen": "Ngủ sâu giấc tức thì / chặn sáng tuyệt đối 100%",
+    "goi_y": "Giúp che sáng tốt, hỗ trợ ngủ thoải mái hơn; cảm nhận mỗi người có thể khác nhau."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ chất liệu thật (thông số ghi bông, USP ghi lụa băng) và brand Colugea.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa rõ ủy quyền thương hiệu Colugea của shop; mô tả chữ trống, chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

@@ -24,7 +24,7 @@
   "luc": "2026-10-25T11:46:13+07:00",
   "duong_dan": "E:\\oneshottramcanh\\banchaitao 1737523566576240431\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -38,57 +38,52 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bàn chải trẻ em kèm claim làm sạch mảng bám, răng trắng sáng, bảo vệ nướu là claim chăm sóc răng miệng không có căn cứ.",
-   "khuyen_nghi": "Bỏ 'răng trắng sáng', 'loại bỏ mảng bám nhanh chóng', 'bảo vệ nướu'; chỉ nói lông mềm, tay cầm chống trơn, độ tuổi 3-12; cần kiểm nghiệm vật liệu."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả có 'giúp răng trắng sáng', 'nhanh chóng loại bỏ mảng bám', 'không làm tổn thương nướu' là claim răng miệng/làm trắng răng; sản phẩm trẻ em cần tuân thủ quy định trẻ vị thành niên.",
+   "khuyen_nghi": "Bỏ 'răng trắng sáng', chỉ nói 'lông mềm, mật độ dày, tay cầm chống trơn, 4 màu cho bé'; quay có người lớn, không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Làm sạch mảng bám, răng trắng sáng, bảo vệ nướu' là claim chăm sóc răng miệng cần chứng cứ."
+    "nhan_xet": "Mục A: cấm claim 'làm trắng răng' và khung thời gian 'nhanh chóng', 'loại bỏ mảng bám', nhưng bàn chải thường nên sửa được bằng cách nói 'làm sạch nhẹ nhàng'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand Heart Moon của shop, cần xác minh quyền sử dụng nhãn hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Heart Moon trùng tên shop, không ám chỉ hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Tay cầm hình quả táo dễ thương, cần kiểm ảnh không dùng nhân vật bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Bàn chải hình núi/quả táo là thiết kế chung, chưa thấy nhân vật bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Bàn chải tiếp xúc miệng, cần kiểm nghiệm vật liệu và chứng nhận an toàn."
+    "muc_do": "🟢",
+    "nhan_xet": "Bàn chải không chứa kem/thuốc, không phải thiết bị y tế nên không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Dành cho trẻ 3-12 tuổi, đồ dùng chăm sóc răng miệng trẻ em cần nghiêm ngặt về an toàn."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: sản phẩm cho bé 3-12 tuổi, nếu có bé phải có người lớn trong khung hình, không để bé giới thiệu hay kêu gọi đòi mua."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim chăm sóc răng miệng cho trẻ",
+    "van_de": "Mô tả có 'giúp răng trắng sáng', 'nhanh chóng loại bỏ mảng bám'",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói lông mềm, hình dáng, màu sắc; không cam kết hiệu quả làm sạch."
-   },
-   {
-    "van_de": "Sản phẩm trẻ em tiếp xúc miệng",
-    "rui_ro": "🟠",
-    "xu_ly": "Cần giấy kiểm nghiệm vật liệu, không khẳng định tuyệt đối an toàn."
+    "xu_ly": "Bỏ hai câu này, đổi thành 'lông mềm giúp bé đánh răng dễ chịu, làm sạch nhẹ nhàng'; cảm nhận có thể khác nhau."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Làm răng trắng sáng, loại bỏ mảng bám nhanh chóng, bảo vệ nướu",
-    "goi_y": "Lông mềm, tay cầm chống trơn phù hợp bàn tay bé"
+    "khong_nen": "Giúp răng trắng sáng / nhanh chóng loại bỏ mảng bám / không làm tổn thương nướu",
+    "goi_y": "Lông mềm, mật độ dày, tay cầm silicon chống trơn, hợp bé 3-12 tuổi."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thông số kỹ thuật trống, chưa rõ chất liệu lông/cán và kiểm nghiệm; mới có 3 đánh giá.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Phần thông số trống, chưa rõ nhãn mác/độ tuổi và xuất xứ; chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

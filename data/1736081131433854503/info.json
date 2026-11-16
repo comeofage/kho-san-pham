@@ -30,61 +30,56 @@
   "poster_folder": 99,
   "duong_dan": "E:\\oneshottramcanh\\c_sui 1736081131433854503\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Viên sủi vitamin C là thực phẩm bổ sung nên dễ vi phạm claim 'thanh nhiệt, bù khoáng' khi chưa có giấy công bố.",
-   "khuyen_nghi": "Chỉ làm khi shop cung cấp giấy công bố/tự công bố sản phẩm; nội dung chỉ nói hương vị, cách pha, không nói công dụng sức khỏe."
+   "muc_do": "🟡",
+   "nguy_co": "Là thực phẩm/thực phẩm bổ sung vitamin nên thuộc nhóm hạn chế cần giấy tờ, claim 'thanh nhiệt, bù khoáng' dễ thành claim y tế.",
+   "khuyen_nghi": "Chỉ làm nếu listing có giấy tự công bố/xác nhận quảng cáo; nói theo hướng giải khát, hương vị, tiện pha, tránh claim chữa/ngừa bệnh."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Thanh nhiệt', 'bù khoáng' là claim sức khỏe cần cơ sở và giấy tờ."
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'thanh nhiệt, bù khoáng' cần bằng chứng trên bao bì/giấy công bố, mục A và C (claim phải có bằng chứng, tránh tuyên bố y tế)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Chưa rõ thương hiệu, cần kiểm tra có dùng tên thương hiệu nổi tiếng hay không."
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy tên thương hiệu khác trong dữ liệu (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Chưa thấy yếu tố hình ảnh/nhân vật bản quyền."
+    "nhan_xet": "Chưa thấy dấu hiệu IPR, chưa có ảnh để kiểm (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟠",
-    "nhan_xet": "Thực phẩm bổ sung/thực phẩm chức năng cần giấy công bố, nhãn phụ tiếng Việt, hạn dùng."
+    "nhan_xet": "Thực phẩm/thực phẩm bổ sung thuộc nhóm hạn chế, cần giấy xác nhận quảng cáo/tự công bố và dòng 'không phải là thuốc' (mục H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm đến trẻ em, nhưng cần ghi rõ đối tượng sử dụng."
+    "nhan_xet": "Không nhắm tới trẻ em (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim thanh nhiệt/bù khoáng không có giấy tờ chứng minh",
+    "van_de": "Viên sủi vitamin C là nhóm thực phẩm/bổ sung hạn chế, chưa rõ giấy tờ",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop gửi giấy công bố sản phẩm và chỉ dùng claim ghi trên nhãn đã công bố."
-   },
-   {
-    "van_de": "Thực phẩm bổ sung thiếu giấy tờ có thể bị gỡ video/hạn chế shop",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra ngành hàng được phép trên TikTok Shop và hồ sơ của shop trước khi làm."
+    "xu_ly": "Chỉ làm khi listing hiển thị giấy tự công bố/xác nhận quảng cáo; nếu là thực phẩm bổ sung phải nói kèm 'Sản phẩm này không phải là thuốc và không có tác dụng thay thế thuốc chữa bệnh'."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'thanh nhiệt, giải độc, bù khoáng, tăng đề kháng, thay thuốc'",
-    "goi_y": "Nói 'vị cam chanh dâu, pha nước uống ngon, tiện mang đi'"
+    "khong_nen": "Thanh nhiệt, giải độc, chữa nóng trong, tăng đề kháng chống bệnh",
+    "goi_y": "Nói 'vị cam chanh mát, tiện pha uống giải khát'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu giá, shop, thành phần, giấy công bố, nhà sản xuất và ảnh sản phẩm.",
-  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+  "thieu_thong_tin": "Thiếu giá, shop, giấy tờ công bố/xác nhận quảng cáo, thành phần và hàm lượng vitamin C, ảnh sản phẩm.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

@@ -35,56 +35,56 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi bóp mềm cho trẻ 3-4 tuổi dễ rách, ruột có thể rò vào miệng, kèm claim giảm stress.",
-   "khuyen_nghi": "Chỉ giới thiệu như đồ chơi bóp giải trí, bỏ claim giảm stress/tăng cơ, thêm lưu ý trẻ nhỏ cần người lớn giám sát; hỏi shop kiểm định chất liệu."
+   "muc_do": "🟡",
+   "nguy_co": "Squishy bóp mềm cho trẻ 3-4 tuổi, cần cảnh báo vỏ dễ rách và chất liệu; claim giảm stress cần nói nhẹ.",
+   "khuyen_nghi": "Nói 'bóp vui tay, xả stress nhẹ', nêu rõ cần người lớn giám sát với bé nhỏ và vỏ dễ rách."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Giảm stress' và 'tăng cường cơ' là claim công dụng nhẹ, không nên khẳng định."
+    "nhan_xet": "Mục A/C: 'giảm stress' chỉ nên là cảm nhận ('vui tay'), không hứa hiệu quả."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand 'Đồ chơi' chung chung, không dùng nhãn hiệu bên thứ ba."
+    "nhan_xet": "Brand 'Đồ chơi' chung chung."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình khoai tây trơn, không có nhân vật bản quyền."
+    "nhan_xet": "Không thấy bản quyền; hình khoai tây là chung."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không pin, không thuộc nhóm hạn chế."
+    "nhan_xet": "Squishy không thuộc mục G/H trừ khi chất liệu độc."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Ghi tuổi 3-4 nhưng chính shop nêu nhược điểm dễ rách, ruột squishy có nguy cơ cho trẻ nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục G/D: đồ chơi trẻ 3-4 tuổi, spec ghi cảnh báo tuổi 'Không', cần người lớn giám sát; trẻ xuất hiện có người lớn."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Sản phẩm dễ rách cho trẻ nhỏ, chưa có kiểm định chất liệu, ghi tuổi 3-4 không kèm cảnh báo",
+    "van_de": "Mô tả tự ghi 'dễ rách', chất bên trong không rõ",
     "rui_ro": "🟠",
-    "xu_ly": "Không nhắm trẻ nhỏ trong video, thêm lưu ý giám sát, yêu cầu shop giấy kiểm định."
+    "xu_ly": "Nói thẳng vỏ mỏng dễ rách, nhắc giám sát; không quay cảnh bé cắn/ngậm."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giảm stress hiệu quả, tăng cường cơ tay cho bé",
-    "goi_y": "Quả khoai tây bóp mềm vui tay, nặn thành nhiều hình rồi hồi form từ từ."
+    "khong_nen": "'Giảm stress' như điều trị",
+    "goi_y": "'Bóp vui tay, thư giãn'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Kiểm định chất liệu, thành phần ruột squishy, cảnh báo độ tuổi chính thức.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Không rõ chất liệu ruột squishy, không có chứng nhận an toàn đồ chơi.Chưa đối chiếu ảnh mô tả/ảnh bìa với listing.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

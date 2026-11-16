@@ -30,61 +30,45 @@
   "poster_folder": 113,
   "duong_dan": "E:\\oneshottramcanh\\micro 1731099943885965713\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em hàng nhập từ nước ngoài, shop điểm thấp (2.3), không có chứng nhận an toàn và thông tin đơn vị chịu trách nhiệm.",
-   "khuyen_nghi": "Không nên làm vì thiếu hồ sơ an toàn đồ chơi và shop kém uy tín. Chỉ xem lại nếu shop bổ sung hợp quy và tổ chức chịu trách nhiệm tại Việt Nam."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Đồ chơi micro nhựa đơn giản không thuộc nhóm cấm; cần lưu ý cảnh báo bộ phận nhỏ cho trẻ dưới 3 tuổi và độ tin cậy của shop.",
+   "khuyen_nghi": "Có thể làm; nói đúng là micro đồ chơi tạo tiếng vang bằng cơ học, không phải micro điện tử, và nhắc dùng dưới sự giám sát của người lớn."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên sản phẩm có 'đồ chơi giáo dục' và mô tả 'an toàn', chưa có căn cứ."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục C: không có claim sức khỏe, cần nói đúng 'không phải thiết bị điện tử ghi âm hay khuếch đại' như mô tả để tránh sai lệch."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu rõ ràng, không thấy dấu hiệu nhái nhãn hiệu."
+    "nhan_xet": "Mục I: không nhắc thương hiệu nào."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Mô tả không nêu nhân vật hay hình ảnh có bản quyền."
+    "nhan_xet": "Mục I: thiết kế micro nhựa chung, không thấy nhân vật hay logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em nhập khẩu bắt buộc hợp quy QCVN 3:2019, hồ sơ không thấy chứng nhận và không có tổ chức chịu trách nhiệm."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục G/H: không thuộc nhóm cấm hay hạn chế; hàng gửi từ nước ngoài nên tránh hứa freeship hay thời gian giao."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🔴",
-    "nhan_xet": "Đồ chơi trẻ em, mô tả ghi 'bộ phận nhỏ, không phù hợp dưới 3 tuổi' nhưng mục cảnh báo tuổi lại ghi 'Không', mâu thuẫn."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: đồ chơi trẻ em được phép có bé xuất hiện khi có người lớn trong khung hình, và nên nêu cảnh báo bộ phận nhỏ không phù hợp trẻ dưới 3 tuổi."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em thiếu hợp quy, thông tin cảnh báo tuổi mâu thuẫn.",
-    "rui_ro": "🔴",
-    "xu_ly": "Không làm cho tới khi shop bổ sung giấy hợp quy và cảnh báo tuổi đúng."
-   },
-   {
-    "van_de": "Shop điểm 2.3, chỉ 1 đánh giá, hàng gửi từ nước ngoài.",
-    "rui_ro": "🟠",
-    "xu_ly": "Cân nhắc chọn shop khác bán cùng loại có uy tín hơn."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "An toàn cho bé, đồ chơi giáo dục phát triển kỹ năng",
-    "goi_y": "Micro nhựa tạo tiếng vang, không dùng pin, màu ngẫu nhiên"
-   }
-  ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chứng nhận hợp quy đồ chơi, tổ chức chịu trách nhiệm tại Việt Nam, độ tuổi khuyến nghị chính xác.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Shop điểm 2.3 và chỉ 1 đánh giá nên cần cân nhắc chất lượng thực tế; thông số ghi 'Cảnh báo tuổi: Không' mâu thuẫn với ghi chú bộ phận nhỏ trong mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

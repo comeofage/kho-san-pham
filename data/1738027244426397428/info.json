@@ -36,65 +36,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:13+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em hàng overseas, cần chứng nhận an toàn đồ chơi, và họa tiết hộp nước ngọt có thể giống nhãn hiệu thật.",
-   "khuyen_nghi": "Chỉ làm khi xác nhận hộp không in logo nước ngọt có thật và shop có giấy tờ đồ chơi. Không quay cảnh trẻ nhỏ cho đồ chơi vào miệng."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi trẻ em giả dạng hộp đồ uống, chỉ cần chú ý không nhắc tên hãng nước ngọt và có người lớn trong khung hình.",
+   "khuyen_nghi": "Có thể làm; nói \"robot biến hình hộp đồ uống\", quay người lớn thao tác, và nêu đúng hàng gửi từ nước ngoài 4-8 ngày."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Chỉ là đồ chơi biến hình, không có claim y tế, giáo dục vượt mức; tránh nói \"phát triển trí tuệ\" nếu không có căn cứ."
+    "nhan_xet": "Chỉ là đồ chơi biến hình giải trí, claim \"nhận biết sớm nhiều loại đồ uống\" trên ảnh là mô tả nhẹ, không thuộc nhóm cấm mục A/B."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Họa tiết hộp nước ngọt có nguy cơ mô phỏng nhãn Coca-Cola, Pepsi hoặc tương tự, cần xem ảnh để xác nhận."
+    "muc_do": "🟡",
+    "nhan_xet": "Hộp in chữ MECH BEVERAGE, Cool Drink, MILK WARRIOR là tên chung, nhưng tiêu đề nói \"hộp nước ngọt\" nên không nhắc tên hãng thật (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Kiểu robot biến hình có thể gần dòng Transformers hoặc đồ chơi đã có thiết kế, chưa rõ nguồn."
+    "nhan_xet": "Robot biến hình dễ bị liên tưởng dòng Transformers nhưng ảnh không có logo hay tên nhân vật cụ thể (mục I: hàng nhái)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi nhập từ nước ngoài, cần chứng nhận hợp quy QCVN 3:2019/BKHCN và thông tin tổ chức chịu trách nhiệm, trang thông số trống."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi nhựa thông thường, không thuộc nhóm cấm/hạn chế mục G và H; không có hộp đồ uống thật."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm dành cho bé, chi tiết nhỏ ráp gập có nguy cơ hóc và cần ghi độ tuổi phù hợp."
+    "muc_do": "🟡",
+    "nhan_xet": "Dành cho bé nên cần người lớn trong khung hình, không để trẻ giới thiệu bằng lời và không kêu trẻ đòi cha mẹ mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Hộp nước ngọt in họa tiết có thể trùng nhãn hiệu thật",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra ảnh, chỉ quảng bá khi họa tiết là thiết kế chung, không logo hãng."
-   },
-   {
-    "van_de": "Đồ chơi trẻ em chưa thấy chứng nhận an toàn và độ tuổi",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy hợp quy, ghi rõ độ tuổi và cảnh báo hóc."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn tuyệt đối cho bé mọi lứa tuổi, giúp phát triển trí thông minh",
-    "goi_y": "Đồ chơi biến hình vui, nên có người lớn giám sát với trẻ nhỏ."
+    "khong_nen": "\"Giống Transformers\"",
+    "goi_y": "\"Robot biến hình hộp đồ uống 2 hình thái\"."
    },
    {
-    "khong_nen": "Nhắc tên hãng nước ngọt thật (Coca, Pepsi...)",
-    "goi_y": "Gọi chung là hộp nước ngọt biến thành robot."
+    "khong_nen": "\"Freeship\" khi trang ghi freeship=False",
+    "goi_y": "Chỉ nói đúng phí ship hiển thị trên trang (mục C)."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa đọc ảnh nên chưa biết họa tiết hộp có logo thật không; thiếu độ tuổi, chất liệu, chứng nhận QCVN đồ chơi.",
-  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Trang chưa có bảng thông số (chất liệu, độ tuổi, chứng nhận an toàn đồ chơi); hàng gửi từ nước ngoài.",
+  "danh_gia_luc": "2026-11-16T08:46:13+07:00"
  }
 }

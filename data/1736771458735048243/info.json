@@ -38,61 +38,45 @@
   "poster_folder": 122,
   "duong_dan": "E:\\oneshottramcanh\\aokhoacvang 1736771458735048243\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Quần áo trẻ em có claim chống mưa, giữ ấm và thông tin tổ chức chịu trách nhiệm hàng hóa điền sai ('1').",
-   "khuyen_nghi": "Chỉ nên làm khi shop bổ sung thông tin tổ chức chịu trách nhiệm hợp lệ; nội dung nên nói đơn giản là áo cản gió nhẹ, tránh claim chống mưa hay giữ ấm tuyệt đối."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Áo khoác thường không vướng nhóm cấm; chỉ cần lưu ý khi quay có bé mặc áo.",
+   "khuyen_nghi": "Có thể làm Affiliate, nói đúng công năng cản gió, giữ ấm nhẹ; nếu quay bé mặc thì phải có người lớn trong khung hình."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "USP nêu 'cản gió rét và mưa phùn', 'giữ ấm' trong khi mô tả shop chỉ ghi 'giữ ấm nhẹ', dễ vượt quá mô tả thật."
+    "muc_do": "🟢",
+    "nhan_xet": "Cản gió, giữ ấm nhẹ là mô tả công năng quần áo, không phải claim sức khỏe (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mã 'j1688' là tên shop, không rõ có nhãn hiệu đăng ký hay không."
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu j1688 của shop, không gợi liên tưởng hãng nổi tiếng (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Áo trơn một màu, không có hình nhân vật."
+    "nhan_xet": "Áo trơn, không in nhân vật hay logo (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên và địa chỉ tổ chức chịu trách nhiệm đều ghi '1', thiếu thông tin truy xuất nguồn gốc."
+    "muc_do": "🟢",
+    "nhan_xet": "Quần áo trẻ em không thuộc danh mục cấm hay hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Quần áo trẻ em cần nhãn mác, an toàn dây rút ở mũ và chất liệu; trang không có chứng nhận nào."
+    "muc_do": "🟢",
+    "nhan_xet": "Quần áo là nhóm được phép có trẻ xuất hiện nếu có người lớn trong khung hình và bé không tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim chống mưa phùn, giữ ấm mạnh cho trẻ em",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói 'vải gió lì cản gió nhẹ' đúng mô tả shop."
-   },
-   {
-    "van_de": "Quần áo trẻ em chưa có thông tin an toàn, dây rút mũ chưa rõ",
-    "rui_ro": "🟠",
-    "xu_ly": "Xem ảnh mô tả và yêu cầu shop xác nhận không có dây rút ở cổ và mũ trước khi quay."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Nói 'chống mưa', 'giữ ấm như áo lông' cho bé",
-    "goi_y": "Nói 'áo khoác gió mỏng, cản gió nhẹ, có mũ trùm'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Tên và địa chỉ tổ chức chịu trách nhiệm hàng hóa là '1'; chưa có chứng nhận an toàn quần áo trẻ em; chưa đọc ảnh mô tả.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Mô tả \"2 lớp tráng bạc cản mưa phùn\" chưa có trong trang gốc, cần xác nhận lại; xuất xứ trang ghi Việt Nam nhưng tổ chức chịu trách nhiệm ghi \"1\".",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

@@ -29,56 +29,50 @@
   "luc": "2026-10-22T11:12:06+07:00",
   "duong_dan": "E:\\oneshottramcanh\\butxoay 1729635770334218630\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim giảm căng thẳng, tăng tập trung là claim tác động tinh thần như y tế, kèm pin cúc áo và nam châm là nguy cơ nuốt phải với trẻ nhỏ.",
-   "khuyen_nghi": "Bán như đồ chơi tay/bút tiện ích, bỏ claim giảm stress chữa lành; kèm cảnh báo để xa tầm tay trẻ nhỏ."
+   "muc_do": "🟡",
+   "nguy_co": "Claim giảm căng thẳng/tăng tập trung dễ thành claim sức khỏe, và sản phẩm có pin cúc/nam châm nhỏ cần lưu ý an toàn trẻ em.",
+   "khuyen_nghi": "Có thể làm; định vị là đồ chơi tay/bút viết tiện, nói 'thư giãn tay', không hứa điều trị stress hay ADHD. Không quay trẻ nhỏ chơi sản phẩm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả 'giảm căng thẳng, tăng hiệu suất công việc' là claim tác động sức khỏe tinh thần không kiểm chứng."
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả 'giảm căng thẳng, tăng hiệu suất' là claim sức khỏe/tinh thần cần bằng chứng (mục A/C, thông tin y tế gây hiểu lầm) nên chỉ nói 'xoay cho vui tay, thư giãn'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi tiếng được nêu."
+    "nhan_xet": "Không thấy tên hãng, 'Fidget Spinner' là tên gọi chung (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Kiểu dáng fidget spinner phổ biến, chưa rõ thiết kế có được đăng ký."
+    "muc_do": "🟢",
+    "nhan_xet": "Kiểu dáng phổ thông, không in logo hay nhân vật."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Có pin và nam châm, cần tuân thủ quy định vận chuyển pin."
+    "nhan_xet": "Có pin và nam châm (thông số) nên cần khai/ghi đúng, không thuộc nhóm cấm mục G."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Pin cúc áo và nam châm nhỏ nguy hiểm nếu trẻ nuốt phải."
+    "nhan_xet": "Pin nhỏ và nam châm nguy hiểm nếu trẻ nuốt, nên không nhắm trẻ nhỏ và không để trẻ giới thiệu sản phẩm (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim giảm stress, tăng tập trung",
-    "rui_ro": "🟠",
-    "xu_ly": "Chuyển sang nói 'xoay chơi cho tay đỡ rảnh', không nói tác dụng điều trị hoặc cải thiện tâm lý."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giảm căng thẳng, trị stress, tăng tập trung",
-    "goi_y": "Nói 'bút xoay độc đáo, có đèn LED, viết và nghịch tiện'."
+    "khong_nen": "Chữa/giảm stress, hỗ trợ trẻ tăng động giảm chú ý",
+    "goi_y": "Bút xoay vui tay, tiện viết, kèm đèn LED; kết quả cảm nhận mỗi người khác nhau."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ loại pin và chứng nhận an toàn pin.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ loại pin cụ thể và độ tuổi khuyến nghị.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

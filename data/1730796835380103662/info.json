@@ -41,66 +41,66 @@
   "poster_folder": 200,
   "duong_dan": "E:/oneshottramcanh/bigcup 1730796835380103662/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mô tả ghi 'ly giữ nhiệt Snoopy chính hãng' và có mẫu hoạt hình, nguy cơ IPR; nhãn BIGCUP cũng giống kiểu bình nổi tiếng.",
-   "khuyen_nghi": "Tránh nhắc Snoopy hay 'chính hãng' và chỉ làm các mẫu họa tiết chung. Không hứa hẹn giữ nhiệt 24h nếu chưa có kiểm nghiệm."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả ghi 'ly giữ nhiệt Snoopy chính hãng' và có nhiều mẫu hoạt hình nên có nguy cơ bản quyền nếu không có ủy quyền; claim 'giữ nhiệt 24h' cần dẫn đúng thông số.",
+   "khuyen_nghi": "Làm được khi chỉ nói về bình inox 304 dung tích 1500ml, không nhắc Snoopy hay 'chính hãng' của nhân vật nào, và ưu tiên mẫu không in nhân vật. Con số giữ nhiệt nên nói 'theo nhà bán công bố'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Giữ nhiệt nóng lạnh tới 24h' và 'không BPA' là thông số cần giấy kiểm nghiệm."
+    "nhan_xet": "Mục C: 'giữ nhiệt 24h', 'không BPA', 'inox 304' là thông số cần khớp thông tin listing và giấy tờ, tránh nói tuyệt đối."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟠",
-    "nhan_xet": "Tên BIGCUP giống dòng bình dung tích lớn của hãng khác và mô tả nhắc tên Snoopy chính hãng."
+    "nhan_xet": "Mục I: mô tả nhắc Snoopy 'chính hãng' và tên BIGCUP có thể gợi liên tưởng thương hiệu khác, cần bỏ các từ này trong lời quảng bá."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Mẫu Snoopy, hoạt hình, Smile, Vịt Ducky có thể dùng hình có bản quyền mà không có ủy quyền."
+    "muc_do": "🟠",
+    "nhan_xet": "Mục I: các mẫu Snoopy/hoạt hình nếu in nhân vật mà không có LoA là vi phạm bản quyền, nên chọn quay mẫu trơn hoặc mẫu họa tiết chung."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Vật dụng tiếp xúc thực phẩm cần chứng nhận an toàn thực phẩm, hồ sơ chưa nêu."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục G/H: bình giữ nhiệt không thuộc nhóm cấm hay hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm riêng đến trẻ em."
+    "nhan_xet": "Mục D: sản phẩm cho người lớn, không nhắm tới trẻ."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Mô tả nhắc Snoopy chính hãng và nhiều họa tiết hoạt hình, dễ bị gỡ vì IPR.",
-    "rui_ro": "🔴",
-    "xu_ly": "Không quay hoặc nhắc mẫu có nhân vật, chỉ giới thiệu mẫu trơn/họa tiết chung."
+    "van_de": "Mô tả ghi 'Snoopy chính hãng' trong khi brand là FANHOUSE F, chưa thấy ủy quyền Peanuts.",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc Snoopy hay 'chính hãng' của nhân vật; quay mẫu không in nhân vật hoặc chỉ dùng tên 'bình giữ nhiệt họa tiết hoạt hình' chung."
    },
    {
-    "van_de": "Chất liệu và an toàn thực phẩm chưa có giấy tờ, xuất xứ ghi 'Asia'.",
+    "van_de": "Nhiều mẫu in nhân vật hoạt hình và combo 'Hộp quà 20.10' dùng hình sản phẩm khó xác minh nguồn.",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp chứng nhận inox 304 và an toàn thực phẩm."
+    "xu_ly": "Chỉ quay mẫu mình có thật và khớp listing, nói đúng tên phân loại."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giữ nhiệt 24h, inox 304 chuẩn y tế",
-    "goi_y": "Bình hai lớp inox có chân không, giữ lạnh lâu hơn bình thường"
+    "khong_nen": "'Bình Snoopy chính hãng', 'giống Stanley'.",
+    "goi_y": "Nói 'bình giữ nhiệt 1500ml inox 304, có ống hút, nắp kín'."
    },
    {
-    "khong_nen": "Bình Snoopy chính hãng",
-    "goi_y": "Bình họa tiết hoạt hình (chỉ khi có ủy quyền)"
+    "khong_nen": "'Giữ lạnh/nóng đảm bảo 24h' như cam kết.",
+    "goi_y": "Nói 'nhà bán công bố giữ nhiệt tới 24h, thực tế tùy điều kiện sử dụng'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy ủy quyền nhân vật, chứng nhận an toàn thực phẩm/inox 304, xuất xứ cụ thể.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa có LoA của chủ nhân vật; chưa có giấy kiểm nghiệm inox 304 và BPA; xuất xứ ghi chung 'Asia'.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

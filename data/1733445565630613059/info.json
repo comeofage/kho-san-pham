@@ -30,65 +30,56 @@
   "poster_folder": 7,
   "duong_dan": "E:\\Aff anh nhan\\review\\robot gỗ 1733445565630613059\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
    "muc_do": "🔴",
-   "nguy_co": "Mô hình gỗ tên 'Gipsy Avenger' là robot từ phim Pacific Rim (Legendary), không rõ có bản quyền.",
-   "khuyen_nghi": "Không nên làm khi chưa có cấp phép; không nêu tên 'Gipsy Avenger', hoặc chọn mẫu robot gốc."
+   "nguy_co": "Mô hình robot Gipsy Avenger là nhân vật trong phim (Pacific Rim), shop chưa có cấp phép nên vi phạm bản quyền (mục I, mục G).",
+   "khuyen_nghi": "Không làm. Tên sản phẩm và thông số 'Nhân vật hoạt hình: Gipsy Avenger' đều chỉ rõ nhân vật có bản quyền nên lời nói không sửa được."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Claim 'rèn tư duy, phát triển trí não' là cam kết quá mức; chỉ nói 'lắp ráp giải trí'."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nói rèn tư duy, lắp ráp; cần tránh hứa phát triển trí não (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand ecotoy của shop, nhưng tên mẫu mượn thương hiệu phim."
+    "muc_do": "🟠",
+    "nhan_xet": "Gipsy Avenger là tên nhân vật/nhãn hiệu của phim, không phải của shop (mục I: nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🔴",
-    "nhan_xet": "Gipsy Avenger là nhân vật phim Pacific Rim, mô hình sao chép dễ vi phạm IPR."
+    "nhan_xet": "Mô hình lắp ghép nhân vật phim khi chưa được cấp phép là vi phạm bản quyền (mục I: bản quyền; mục G: vi phạm IPR)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Mô hình gỗ thủ công, không thuộc nhóm cấm."
+    "nhan_xet": "Không thuộc nhóm cấm khác."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Thông số ghi 'trên 13 tuổi' nhưng mô tả 'từ 12 tuổi', cần thống nhất độ tuổi và có chi tiết nhỏ."
+    "nhan_xet": "Ghi trên 13 tuổi nhưng mô tả lại ghi từ 12 tuổi và nhắm phụ huynh cho con; cần nhất quán (mục C, mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Tên và hình dạng Gipsy Avenger là nhân vật Pacific Rim",
+    "van_de": "Nhân vật Gipsy Avenger từ phim Pacific Rim không có LoA (mục I, mục G).",
     "rui_ro": "🔴",
-    "xu_ly": "Không dùng tên, không quảng cáo là 'robot trong phim'."
-   },
-   {
-    "van_de": "Claim 'phát triển trí não' cho trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Đổi thành 'mô hình lắp ráp thư giãn, rèn kiên nhẫn'."
+    "xu_ly": "Không quảng bá; chỉ xem xét lại nếu shop có giấy phép."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'phát triển trí não, tăng IQ'",
-    "goi_y": "Nói 'tự tay lắp ráp mô hình gỗ'"
-   },
-   {
-    "khong_nen": "Nhắc 'Gipsy Avenger', 'Pacific Rim'",
-    "goi_y": "Nói 'robot gỗ lắp ráp'"
+    "khong_nen": "Mô hình Gipsy Avenger chính hãng/như phim",
+    "goi_y": "Không áp dụng; nên chọn mô hình gỗ không dùng nhân vật có bản quyền."
    }
   ],
   "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chưa có giấy phép Legendary/Warner; độ tuổi khuyến nghị không đồng nhất.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Thiếu giấy phép/LoA nhân vật; mô tả bị cắt, chưa rõ phần ưu điểm.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

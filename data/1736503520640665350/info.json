@@ -37,61 +37,50 @@
   "poster_folder": 196,
   "duong_dan": "E:/oneshottramcanh/phomai 1736503520640665350/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi TPR cho trẻ em gửi từ nước ngoài, mô tả có claim phát triển kỹ năng.",
-   "khuyen_nghi": "Chỉ làm khi bỏ claim phát triển và ghi cảnh báo độ tuổi; cân nhắc thời gian giao 9-10 ngày."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả có claim 'giảm căng thẳng' và 'phát triển phối hợp mắt-tay' cho trẻ, cần nói mềm; hàng gửi từ nước ngoài, thiếu thông tin an toàn đồ chơi.",
+   "khuyen_nghi": "Nói 'bóp mềm, vui tay' thay vì giảm căng thẳng/phát triển kỹ năng; nhắc người lớn giám sát trẻ nhỏ, không để trẻ giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Claim phát triển phối hợp mắt tay là claim giáo dục nhẹ chưa kiểm chứng."
+    "muc_do": "🟡",
+    "nhan_xet": "'Giảm căng thẳng', 'tốt cho phát triển vận động tinh' là claim sức khỏe cần bằng chứng, nên nói theo cảm giác (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy thương hiệu."
+    "nhan_xet": "Hình phô mai chung, không có nhãn hiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình phô mai chung."
+    "nhan_xet": "Không có nhân vật hay logo bên thứ ba."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm cấm."
+    "nhan_xet": "Đồ chơi squishy không thuộc nhóm cấm mục G, nhưng cần chất liệu an toàn."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi nhắm trẻ em, thiếu chứng nhận an toàn, chất TPR."
+    "muc_do": "🟡",
+    "nhan_xet": "Dành cho trẻ em và người lớn; nếu có trẻ trong video phải có người lớn bên cạnh, không để trẻ trình bày (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim phát triển kỹ năng vận động",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim, chỉ nói bóp mềm, giảm căng thẳng."
-   },
-   {
-    "van_de": "Đồ chơi trẻ em thiếu chứng nhận",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy kiểm định đồ chơi."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Phát triển phối hợp mắt tay, cảm giác xúc giác",
-    "goi_y": "Chỉ nói bóp mềm vui tay."
+    "khong_nen": "Giảm căng thẳng, trị lo âu, phát triển trí não",
+    "goi_y": "Nói 'bóp mềm mại, vui tay, chơi giải trí'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu chứng nhận an toàn đồ chơi, tuổi khuyến nghị.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa rõ chứng nhận an toàn đồ chơi/độ tuổi khuyến nghị; hàng overseas 9-10 ngày nên cần nói rõ thời gian giao.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

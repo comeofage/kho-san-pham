@@ -30,56 +30,50 @@
   "poster_folder": 125,
   "duong_dan": "E:\\oneshottramcanh\\mitomtuoitho 1732492821424932508\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm cho trẻ em có claim an toàn/không chất bảo quản, giấy tờ là chứng nhận cơ sở chưa phải công bố sản phẩm.",
-   "khuyen_nghi": "Chỉ làm khi bỏ claim an toàn/phù hợp trẻ và dùng hình ảnh người lớn cầm gói, có thể xem xét giấy công bố."
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm cho trẻ nhỏ thuộc nhóm cần phê duyệt (mục H) và mô tả có claim 'an toàn cho sức khỏe', 'không chất bảo quản' cần bằng chứng.",
+   "khuyen_nghi": "Làm theo hướng mì ăn vặt giòn, tiện cho mẹ, set 50 gói. Không nói công dụng dinh dưỡng, không để trẻ tự giới thiệu, người lớn cầm sản phẩm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'An toàn cho sức khỏe', 'không chất bảo quản' cần dẫn chứng, không nói tốt cho bé."
+    "nhan_xet": "'An toàn cho sức khỏe', 'không chất bảo quản' chỉ nên nói đúng như in trên bao bì (mục A/H: claim phải có bằng chứng; thực phẩm không được claim chữa bệnh theo mục G)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Vifon, shop chính thức."
+    "nhan_xet": "Thương hiệu Vifon, shop VIFON Online Shop là gian hàng chính hãng (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không phát hiện vấn đề hình ảnh."
+    "nhan_xet": "Không thấy nhân vật hay hình có bản quyền trên trang (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Giấy tờ là chứng nhận cơ sở đủ điều kiện ATTP, thiếu bản công bố sản phẩm."
+    "nhan_xet": "Thực phẩm/đồ ăn cho bé cần phê duyệt (mục H); trang chỉ có giấy chứng nhận cơ sở đủ điều kiện ATTP, chưa thấy tự công bố sản phẩm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Thực phẩm cho trẻ em, nhạy cảm về quảng cáo dinh dưỡng trẻ nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm cho trẻ nên không để trẻ trình bày/thuyết phục mua, nếu có trẻ phải có người lớn trong khung (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Quảng cáo thực phẩm trẻ em với claim an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim dinh dưỡng/an toàn, chỉ mô tả đồ ăn vặt"
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn cho sức khỏe bé, không chất bảo quản",
-    "goi_y": "Nói giòn tan, đóng gói tiện, theo mô tả nhà sản xuất"
+    "khong_nen": "Tốt cho sức khỏe, bổ sung dinh dưỡng, thay bữa chính",
+    "goi_y": "Chỉ nói giòn, vị ngọt dịu, gói 15g tiện mang đi, set 50 gói tiết kiệm."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy công bố sản phẩm, độ tuổi khuyến nghị.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa thấy bản tự công bố sản phẩm; chưa xem nhãn bao bì để đối chiếu thành phần và hạn dùng.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

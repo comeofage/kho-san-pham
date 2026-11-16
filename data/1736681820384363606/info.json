@@ -38,65 +38,50 @@
   "poster_folder": 120,
   "duong_dan": "E:\\oneshottramcanh\\khankhotopgia 1736681820384363606\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "USP và mô tả có claim ngừa mụn viêm, giảm đỏ khô da, an toàn cho da nhạy cảm và em bé, là claim y tế/mỹ phẩm không được phép.",
-   "khuyen_nghi": "Chỉ làm nếu bỏ hoàn toàn claim điều trị da; nói đây là khăn khô dùng một lần mềm, thấm tốt, tiện lau mặt và lau đồ."
+   "muc_do": "🟡",
+   "nguy_co": "USP \"ngừa mụn viêm\" và \"giảm đỏ khô da\" là claim tình trạng da (mục A) cần bỏ khi quảng bá.",
+   "khuyen_nghi": "Chỉ nói khăn mềm, dai, không rụng xơ, lau khô/ướt đa năng, thay khăn vải; bỏ hẳn ngừa mụn, giảm đỏ da."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "'Ngừa mụn viêm', 'giảm đỏ khô da', 'không hóa chất độc hại' là claim y tế/da liễu không được chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Ngừa mụn viêm\", \"giảm đỏ khô da\" thuộc claim tình trạng da (mục A) nhưng sửa được bằng cách chỉ nói công năng lau và độ mềm."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand 'TOP GIA [maen wi jib]' ghi kèm phiên âm lạ, cần xác nhận đăng ký nhãn hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand TOP GIA là thương hiệu riêng của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có nhân vật hay hình ảnh bản quyền."
+    "nhan_xet": "Khăn trơn, không có nhân vật hay hình in nào cần bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Khăn tiếp xúc da có thể cần công bố/kiểm nghiệm; sản phẩm giấy vệ sinh da không được tự nhận y tế."
+    "muc_do": "🟢",
+    "nhan_xet": "Khăn khô dùng 1 lần là hàng tiêu dùng, không phải mỹ phẩm hay thuốc nên không vào danh mục hạn chế (mục H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả nói dùng được cho da em bé, claim an toàn cho trẻ cần bằng chứng kiểm nghiệm."
+    "muc_do": "🟢",
+    "nhan_xet": "Mô tả nhắc dùng được cho da em bé, nếu quay bé thì phải có người lớn trong khung hình và bé không tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim ngừa mụn viêm, giảm đỏ khô da trong USP và mô tả",
-    "rui_ro": "🔴",
-    "xu_ly": "Loại bỏ khỏi kịch bản và caption, chỉ nói mềm, dai, thay khăn vải ẩm."
-   },
-   {
-    "van_de": "Nhắc dùng cho da em bé và da nhạy cảm",
-    "rui_ro": "🟠",
-    "xu_ly": "Không khẳng định an toàn cho bé; chỉ nói 'chất liệu mềm' nếu có giấy kiểm nghiệm."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Ngừa mụn viêm, giảm đỏ khô da, không hóa chất độc hại",
-    "goi_y": "Nói 'khăn khô mềm, thấm tốt, dùng một lần cho tiện vệ sinh'."
-   },
-   {
-    "khong_nen": "Thay thế khăn vải vì vi khuẩn, an toàn cho em bé",
-    "goi_y": "Nói 'dùng một lần, không cần giặt phơi'."
+    "khong_nen": "Ngừa mụn, trị viêm, giảm đỏ da, hết khô da",
+    "goi_y": "Khăn mềm, dai, không rụng xơ, dùng thay khăn vải để lau mặt sạch gọn."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu giấy kiểm nghiệm da/em bé và chứng nhận chất liệu; mô tả bị cắt.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa thấy nhãn/phiếu kiểm nghiệm về độ an toàn cho da nhạy cảm và da em bé nên không khẳng định \"không kích ứng\".",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

@@ -38,56 +38,56 @@
   "poster_folder": 33,
   "duong_dan": "E:\\oneshottramcanh\\lygapgon 1736460780415976821\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Nhiều mẫu cốc mang nhân vật Chiikawa, CapyLulu dễ vi phạm IPR.",
-   "khuyen_nghi": "Chỉ quay mẫu họa tiết chung hoặc đã có ủy quyền; tránh mẫu Chiikawa, CapyLulu."
+   "muc_do": "🟡",
+   "nguy_co": "Một số mẫu cốc in nhân vật Chiikawa (và có thể CapyLulu) là bản quyền của bên khác.",
+   "khuyen_nghi": "Quay các mẫu không phải nhân vật có bản quyền (Mèo, Pink Candy, Khỉ Rainbow...), không nhắc tên Chiikawa; claim chịu nhiệt đúng như listing."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Tránh claim an toàn thực phẩm tuyệt đối nếu không có kiểm nghiệm."
+    "nhan_xet": "Claim chịu nhiệt -40 đến 200°C và 'kín nước' phải đúng thông số trên listing, không nói 'an toàn tuyệt đối' (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Tên mẫu nhắc tên thương hiệu khác như Chiikawa."
+    "nhan_xet": "Tên 'Chiikawa' trong biến thể là nhãn hiệu bên khác, không nhắc trong video (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Họa tiết Chiikawa và nhân vật tương tự thuộc bản quyền chủ sở hữu."
+    "nhan_xet": "Mẫu in nhân vật Chiikawa cần giấy phép; mẫu không phép là vi phạm bản quyền, nhưng có thể tránh bằng cách không quảng bá mẫu này (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ dùng tiếp xúc thực phẩm, silicon cần kiểm nghiệm."
+    "muc_do": "🟢",
+    "nhan_xet": "Cốc silicon gấp gọn không thuộc nhóm cấm/hạn chế mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em."
+    "nhan_xet": "Không nhắm tới trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Mẫu Chiikawa, CapyLulu",
+    "van_de": "Biến thể Chiikawa/CapyLulu có thể là IP bên thứ ba",
     "rui_ro": "🟠",
-    "xu_ly": "Không quay hay đọc tên nhân vật, chọn mẫu họa tiết chung."
+    "xu_ly": "Không chọn/nhắc các mẫu này trong video, chỉ quay mẫu hoạt hình chung chung."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Silicon an toàn tuyệt đối, chuẩn thực phẩm",
-    "goi_y": "Chỉ nêu gấp gọn, chịu nhiệt theo mô tả shop."
+    "khong_nen": "Cốc Chiikawa chính hãng",
+    "goi_y": "Nói 'cốc gấp gọn họa tiết hoạt hình dễ thương'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận silicon tiếp xúc thực phẩm.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "thieu_thong_tin": "Chưa rõ chất liệu silicon có chứng nhận tiếp xúc thực phẩm không; chưa rõ ủy quyền các nhân vật.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

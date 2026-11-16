@@ -35,56 +35,56 @@
   "poster_folder": 97,
   "duong_dan": "E:\\oneshottramcanh\\captain xoay 1737099024341828743\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Biến thể Spiderman, Ironman, Batman, Captain America là nhân vật Marvel/DC, khả năng cao không có bản quyền.",
-   "khuyen_nghi": "Không làm, hoặc chỉ làm nếu shop chứng minh giấy phép nhân vật."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể đặt tên Spiderman, Ironman, Batman, Captain American, thiết kế gợi biểu tượng Marvel/DC, nguy cơ vi phạm bản quyền (mục I).",
+   "khuyen_nghi": "Không nhắc tên siêu anh hùng, chỉ gọi theo màu và tên Titan Armor; yêu cầu shop xác nhận giấy phép trước khi chạy, nếu không có thì cân nhắc bỏ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟢",
-    "nhan_xet": "Chỉ là đồ chơi xoay, claim giải tỏa stress nhẹ."
+    "muc_do": "🟡",
+    "nhan_xet": "'Giải tỏa stress' chỉ nên nói giải trí, thư giãn (mục A); ảnh có 3+ AGES cần khớp thực tế."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand 'FUNGUS so good' tự đặt, không rõ đăng ký."
+    "nhan_xet": "Phân loại ghi tên Spiderman, Ironman, Batman, Captain American; nhắc tên là vi phạm nhãn hiệu (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Bán theo nhân vật Marvel/DC không rõ ủy quyền, nguy cơ bị gỡ vì vi phạm IPR."
+    "muc_do": "🟠",
+    "nhan_xet": "Họa tiết ngôi sao, tia sáng, mạng nhện gợi biểu tượng nhân vật Marvel/DC; chưa thấy giấy phép (mục I: bản quyền nhân vật)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Xuất xứ Trung Quốc, đồ chơi cần hợp quy."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi hướng tới học sinh và trẻ em, chưa thấy độ tuổi hay hợp quy."
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh dùng trẻ em, nhắm tới học sinh; cần người lớn trong khung, trẻ không tự giới thiệu (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Nhân vật Marvel/DC không rõ giấy phép",
-    "rui_ro": "🔴",
-    "xu_ly": "Không đưa tên và hình nhân vật vào video, ưu tiên loại màu thường nếu có."
+    "van_de": "Biến thể mang tên nhân vật Marvel/DC, thiết kế gợi biểu tượng nhân vật",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay theo màu, không nhắc tên nhân vật; yêu cầu shop giấy phép hoặc đổi tên biến thể"
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Spiderman, Ironman, Batman chính hãng",
-    "goi_y": "Không dùng tên nhân vật trong lời thoại hay caption."
+    "khong_nen": "Bản Spiderman, Ironman, Captain America; chữa stress",
+    "goi_y": "Gọi bản đỏ, vàng, đen đỏ, xanh bạc; xả stress, giải trí khi rảnh tay"
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Thiếu giấy phép bản quyền nhân vật và chứng nhận đồ chơi.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép/LoA nhân vật, chứng nhận an toàn đồ chơi, độ tuổi, bảo hành.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

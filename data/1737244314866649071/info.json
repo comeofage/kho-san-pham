@@ -35,65 +35,50 @@
   "poster_folder": 128,
   "duong_dan": "E:\\oneshottramcanh\\giaybalatrang 1737244314866649071\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thương hiệu Balabala cần xác minh ủy quyền, claim bảo vệ xương bàn chân của bé là claim y tế, giày trẻ em cần hợp quy.",
-   "khuyen_nghi": "Chỉ nói chất liệu mềm, đế chống trượt và dịp mặc; bỏ claim bảo vệ xương; xác minh shop là kênh chính hãng."
+   "muc_do": "🟡",
+   "nguy_co": "Hàng thương hiệu Balabala cần shop có ủy quyền/chính hãng, và là sản phẩm trẻ em nên video phải có người lớn trong khung hình.",
+   "khuyen_nghi": "Chỉ làm khi listing là shop chính hãng (balabala SEA); để người lớn/chân bé không lộ mặt trình bày, tránh nói 'bảo vệ xương bàn chân' như tác dụng y khoa."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Bảo vệ sự phát triển xương bàn chân của bé' là claim y tế, không được nói."
+    "muc_do": "🟡",
+    "nhan_xet": "'Bảo vệ gót và xương bàn chân non nớt', 'chống trượt' là claim sức khỏe/an toàn cần nói nhẹ thành 'êm chân, đế chống trượt' (mục C/H phần tuyên bố y tế)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Balabala là thương hiệu thật, cần xác nhận shop 'balabala SEA' là gian hàng chính thức."
+    "nhan_xet": "Thương hiệu có thật, shop mang tên balabala SEA nên khả năng chính hãng, nhưng USP 'nổi tiếng quốc tế' cần bằng chứng (mục C) và cần LoA khi dùng tên hãng (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật bản quyền."
+    "nhan_xet": "Giày búp bê đính nơ thiết kế chung, không thấy nhân vật bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Chất liệu ghi 'da' nhưng thông số là cao su và sợi tổng hợp, mô tả trống nên khó xác minh."
+    "muc_do": "🟢",
+    "nhan_xet": "Giày dép trẻ em không thuộc nhóm cấm/hạn chế mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm dành cho trẻ em, cần nhãn chất lượng và hợp quy giày trẻ em."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: trẻ chỉ xuất hiện khi sản phẩm liên quan trực tiếp (giày) và có người lớn trong khung hình, không để bé tự giới thiệu hay kêu gọi bé đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim bảo vệ xương bàn chân trẻ",
-    "rui_ro": "🔴",
-    "xu_ly": "Bỏ câu này, chỉ nói êm chân, đế mềm."
-   },
-   {
-    "van_de": "Chất liệu da thật hay da tổng hợp chưa rõ",
-    "rui_ro": "🟠",
-    "xu_ly": "Nói 'da tổng hợp' hoặc theo đúng thông số của shop."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Bảo vệ xương bàn chân, giúp bé phát triển",
-    "goi_y": "Nói 'đế mềm, êm chân khi đi'."
-   },
-   {
-    "khong_nen": "Da thật cao cấp",
-    "goi_y": "Nói theo nhãn chất liệu thực tế."
+    "khong_nen": "Bảo vệ xương bàn chân non nớt / thương hiệu nổi tiếng quốc tế",
+    "goi_y": "Chất liệu mềm, êm chân, đế chống trượt, hợp đi tiệc."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu xác nhận ủy quyền thương hiệu, hợp quy giày trẻ em. Mô tả chữ trống, cần đọc ảnh; giá cao 892k, ít đánh giá.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa xác nhận shop có chứng nhận thương hiệu/LoA trên TikTok Shop; mô tả chữ trống, chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

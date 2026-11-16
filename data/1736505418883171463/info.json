@@ -38,61 +38,54 @@
   "poster_folder": 94,
   "duong_dan": "E:\\oneshottramcanh\\sticker fungus 1736505418883171463\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sách tô màu công chúa có thể dùng hình nhân vật Disney, kèm claim cho trẻ em.",
-   "khuyen_nghi": "Chỉ làm khi xác nhận không có nhân vật Disney; bỏ claim giảm điện thoại, tăng tập trung."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả có claim phát triển cho bé ('tăng tập trung', 'giảm thời gian dùng điện thoại') cần nói mềm; cần chắc sách thuộc danh mục được bán.",
+   "khuyen_nghi": "Nói 'giúp bé có hoạt động tô màu dán sticker vui', không hứa tăng tập trung/giảm điện thoại; không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Giảm điện thoại, tăng tập trung là claim phát triển chưa kiểm chứng."
+    "muc_do": "🟡",
+    "nhan_xet": "'Tăng khả năng tập trung, giảm thời gian dùng điện thoại' là claim kết quả cần nói 'có thể giúp' (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand FUNGUS so good, cần tránh nhái."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand FUNGUS của shop, không nhắc hãng khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Công chúa cổ tích có thể trùng nhân vật Disney."
+    "muc_do": "🟡",
+    "nhan_xet": "Chủ đề 'công chúa' dễ trùng nhân vật Disney, cần quay đúng hình trong sách, không gọi tên công chúa có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Sách không thuộc nhóm hạn chế."
+    "muc_do": "🟡",
+    "nhan_xet": "Sách tô màu/sticker là hàng truyền thông, cần chắc nằm đúng danh mục được hỗ trợ (mục G: sách ngoài danh mục)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Nhắm bé gái 4-8 tuổi, cần an toàn vật liệu sticker và mực in."
+    "muc_do": "🟡",
+    "nhan_xet": "Nhắm bé gái 4-8 tuổi, nếu có trẻ xuất hiện cần có người lớn, không để trẻ trình bày hay đòi cha mẹ mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Hình công chúa cổ tích",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra hình không phải nhân vật Disney."
-   },
-   {
-    "van_de": "Claim tăng tập trung, giảm điện thoại",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ các claim này."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giảm thời gian dùng điện thoại, tăng khả năng tập trung",
-    "goi_y": "Chỉ nói tô màu, dán sticker, khổ lớn."
+    "khong_nen": "Giúp bé tập trung hơn, bỏ điện thoại",
+    "goi_y": "Nói 'hoạt động thư giãn thay phiên với màn hình, kết quả mỗi bé khác nhau'."
+   },
+   {
+    "khong_nen": "Bé xin mẹ mua ngay",
+    "goi_y": "Nói với người lớn: 'quà cho bé nhân dịp sinh nhật/1-6'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ danh sách nhân vật công chúa.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa xem ảnh nên chưa kiểm tra có nhân vật Disney không; chưa rõ danh mục sách.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

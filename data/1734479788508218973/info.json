@@ -30,65 +30,56 @@
   "poster_folder": 87,
   "duong_dan": "E:\\oneshottramcanh\\spider 1734479788508218973\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
    "muc_do": "🔴",
-   "nguy_co": "Dạng đồ chơi mô phỏng Spider-Man, rủi ro IPR và an toàn trẻ em, mô tả thiếu.",
-   "khuyen_nghi": "Không nên làm khi chưa có bằng chứng bản quyền và hợp quy."
+   "nguy_co": "Găng tay Spider-Man (Marvel) không có cấp phép và là đồ chơi bắn được phi tiêu hút chân không, vừa vi phạm IPR vừa dính nhóm súng đồ chơi bắn được (mục I, mục G).",
+   "khuyen_nghi": "Không làm. Hình nhân vật Spider-Man trên ảnh và cơ chế bắn không sửa được bằng lời quảng bá."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có claim y tế."
+    "nhan_xet": "Mô tả trống, chỉ có tên 'công nghệ hiện đại'; không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Không có thương hiệu rõ ràng, thông tin shop sơ sài."
+    "muc_do": "🔴",
+    "nhan_xet": "Ảnh dùng hình Spider-Man, thương hiệu của Marvel, mà shop không rõ thương hiệu hay cấp phép (mục I: nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🔴",
-    "nhan_xet": "Găng tay bắn tơ nhện mô phỏng Spider-Man, rủi ro dùng hình ảnh nhân vật Marvel."
+    "nhan_xet": "Găng và hình nhân vật Marvel là hàng nhái/vi phạm bản quyền khi chưa cấp phép (mục I: hàng nhái, bản quyền; mục G: vi phạm IPR)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi bắn có thể bị coi là vũ khí đồ chơi, gây thương tích mắt."
+    "muc_do": "🔴",
+    "nhan_xet": "Găng bắn dây và phi tiêu hút chân không thuộc đồ chơi bắn được, dễ bị xếp vào nhóm súng đồ chơi/vũ khí không hỗ trợ (mục G)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi cho bé trai cần QCVN 3:2019 và cảnh báo độ tuổi, mô tả trang trống."
+    "nhan_xet": "Nhắm bé trai, có yếu tố bắn gây hại nếu bắn vào mặt; nội dung không được hướng trẻ đòi cha mẹ mua (mục D, mục G: đồ chơi gây hại trẻ)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Mô phỏng nhân vật Spider-Man",
+    "van_de": "Hình Spider-Man Marvel không có LoA và găng bắn phi tiêu hút chân không (mục I, mục G).",
     "rui_ro": "🔴",
-    "xu_ly": "Không nhắc tên, hình hay mô phỏng nhân vật."
-   },
-   {
-    "van_de": "Đồ chơi bắn gây nguy hiểm",
-    "rui_ro": "🟠",
-    "xu_ly": "Không hướng bắn vào người."
+    "xu_ly": "Không quảng bá; chỉ xem xét lại nếu shop có giấy phép và TikTok xác nhận loại đồ chơi này được phép."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Găng tay Người Nhện chính hãng",
-    "goi_y": "Không nhắc nhân vật."
-   },
-   {
-    "khong_nen": "An toàn tuyệt đối cho bé",
-    "goi_y": "Không cam kết an toàn."
+    "khong_nen": "Găng tay Người Nhện chính hãng bắn tơ như phim",
+    "goi_y": "Không áp dụng; nên chọn đồ chơi vận động không dùng nhân vật bản quyền hay bắn vật."
    }
   ],
   "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Mô tả, độ tuổi, chứng nhận đồ chơi, nguồn gốc.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Mô tả trống; thiếu giấy phép Marvel, thông số vật liệu, độ tuổi, an toàn phi tiêu.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

@@ -35,61 +35,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Nhãn dán gấu trúc có thể là nhân vật meme có bản quyền, mô tả nhạy cảm kiểu bệnh xã hội.",
-   "khuyen_nghi": "Chỉ làm khi xác nhận gấu trúc không phải nhân vật có bản quyền; bỏ câu nhạy cảm trong nội dung."
+   "muc_do": "🟡",
+   "nguy_co": "Nhân vật gấu trúc/meme và lời thoại có thể là IP, mô tả có câu 'người có bệnh xã hội' dễ gây phản cảm.",
+   "khuyen_nghi": "Quay theo hướng nhãn dán ngộ nghĩnh để dán đồ/ghép mặt, bỏ cụm 'bệnh xã hội', không nhắc tên meme/nhân vật nếu có."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Mô tả người bị bệnh xã hội dễ gây phản cảm."
+    "nhan_xet": "Không có claim sức khỏe, nhưng cụm 'dành cho người có bệnh xã hội' là cách nói phản cảm, nên bỏ (mục A: tránh nội dung phản cảm)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy thương hiệu nhái."
+    "nhan_xet": "Không thấy tên thương hiệu trong tiêu đề và mô tả."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Gấu trúc meme biểu cảm có thể là nhân vật bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Hình gấu trúc biểu cảm có thể là meme/nhân vật có bản quyền, chưa xác định (mục I: bản quyền nhân vật)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Nhãn dán không thuộc nhóm hạn chế."
+    "nhan_xet": "Nhãn dán không thuộc nhóm cấm/hạn chế mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Khai chủ đề đồ chơi phát triển trẻ, cần tránh lệch đối tượng."
+    "nhan_xet": "Danh mục 'sự phát triển của trẻ', nếu trẻ xuất hiện cần có người lớn và không để trẻ giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nhân vật gấu trúc biểu cảm",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra nguồn nhân vật, nếu là meme có chủ thì bỏ."
-   },
-   {
-    "van_de": "Câu bệnh xã hội trong mô tả",
-    "rui_ro": "🟠",
-    "xu_ly": "Không dùng trong nội dung quay."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Dành cho người bệnh xã hội",
-    "goi_y": "Nói là nhãn dán biểu cảm hài hước để dán đồ."
+    "khong_nen": "Dành cho người có bệnh xã hội",
+    "goi_y": "Nói 'nhãn dán biểu cảm hài hước để dán sổ, điện thoại, ghép mặt gấu riêng'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ nguồn gốc nhân vật gấu trúc.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "thieu_thong_tin": "Chưa xem ảnh nên chưa chắc hình gấu có phải IP; chưa rõ chất liệu nhãn.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

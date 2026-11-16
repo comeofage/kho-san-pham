@@ -40,57 +40,61 @@
   "poster_folder": 291,
   "duong_dan": "E:/oneshottramcanh/mkhoahoc-1732921249915045020/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Nhiều biến thể in nhân vật (Hello Kitty, Doraemon, Shin, Conan) và người nổi tiếng là vi phạm IPR.",
-   "khuyen_nghi": "Chỉ quảng bá mẫu Bảng tuần hoàn cơ bản/Tím, tránh quay các mẫu có nhân vật hoặc nghệ sĩ."
+   "muc_do": "🟡",
+   "nguy_co": "Nhiều biến thể in nhân vật (Hello Kitty, Doraemon, Conan, Shin) và người thật là bản quyền (mục I); tránh được nếu chỉ làm mẫu cơ bản/màu trơn.",
+   "khuyen_nghi": "Chỉ quay và dẫn giỏ cho mẫu 'Bảng tuần hoàn cơ bản' hoặc 'Tím', nhấn mạnh tiện học bài/thi. Không quay mẫu nhân vật hay tên nghệ sĩ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟢",
-    "nhan_xet": "Là đồ học tập, nội dung tra cứu, claim đúng chương trình cần dẫn nguồn cho chính xác."
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'chính xác cho học tập và thi cử' chỉ nói đúng như mô tả (nguyên tử khối làm tròn theo chương trình mới), không hứa tăng điểm (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Có tên XoBox Offica, chưa thấy dấu hiệu nhái."
+    "nhan_xet": "Có tên thương hiệu XoBox Offica trong tiêu đề, và tên nhân vật/nghệ sĩ trong biến thể gợi liên tưởng thương hiệu khác (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Biến thể Hello Kitty, Shin, Doraemon, Conan cần ủy quyền; hieuthuhai, Rhyder, Dương Domic dùng hình ảnh/tên người nổi tiếng."
+    "muc_do": "🟠",
+    "nhan_xet": "Biến thể Hello Kitty, Doraemon, Conan, Shin in nhân vật có bản quyền chưa thấy giấy phép (mục I: bản quyền nhân vật); mẫu cơ bản thì không vướng."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Móc khóa mica học tập không thuộc nhóm cấm hay hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Dành cho học sinh, không phải đồ chơi."
+    "nhan_xet": "Đối tượng học sinh, nếu có trẻ trong video phải có người lớn và không tự giới thiệu (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Biến thể in nhân vật hoạt hình và người nổi tiếng",
-    "rui_ro": "🔴",
-    "xu_ly": "Không đưa các mẫu này vào video, chỉ dùng mẫu cơ bản/màu trơn."
+    "van_de": "Biến thể in nhân vật hoạt hình và tên người nổi tiếng (Hello Kitty, Doraemon, Conan, Shin, hieuthuhai, Rhyder, Dương Domic)",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ giới thiệu mẫu cơ bản/Tím, không hiện, không nhắc tên nhân vật hoặc nghệ sĩ trong video và caption."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Theo đúng chương trình mới của Bộ GD, đảm bảo điểm cao",
-    "goi_y": "Nói 'in nội dung tham khảo các bộ sách Cánh diều, Kết nối tri thức, Chân trời sáng tạo' và không hứa điểm số."
+    "khong_nen": "Đảm bảo đạt điểm cao, thi là nhớ hết",
+    "goi_y": "Nói 'tra nhanh nguyên tử khối, hóa trị, cấu hình electron ngay trên móc khóa'."
+   },
+   {
+    "khong_nen": "Nhắc Doraemon, Hello Kitty, Conan, tên ca sĩ",
+    "goi_y": "Gọi 'mẫu cơ bản', 'mẫu tím'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy phép sử dụng nhân vật và hình ảnh nghệ sĩ của các mẫu biến thể.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa biết biến thể nhân vật có giấy phép bản quyền không; chưa xem ảnh các mẫu cơ bản.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

@@ -35,56 +35,50 @@
   "poster_folder": 111,
   "duong_dan": "E:\\oneshottramcanh\\thefungus 1737394156416763015\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thẻ giáo dục cho trẻ 3-6 tuổi có claim 'cai nghiện tivi điện thoại' và 'phát triển toàn diện' dễ bị coi là cam kết y tế/giáo dục không có căn cứ.",
-   "khuyen_nghi": "Bỏ 'cai nghiện', thay bằng 'hoạt động chơi cùng con'; không cam kết kết quả phát triển, chỉ mô tả cách chơi và số thẻ."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'giúp con cai nghiện tivi điện thoại', 'phát triển toàn diện' là cam kết hiệu quả quá mức; sản phẩm dành cho trẻ 3-6 tuổi nên cần tuân thủ quy định trẻ em.",
+   "khuyen_nghi": "Nói 'bố mẹ và bé cùng chơi, có thêm hoạt động ngoài màn hình', không hứa cai điện thoại; quay có người lớn, không để bé đứng ra giới thiệu hay kêu gọi đòi mua."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Giúp con cai nghiện tivi điện thoại' là claim liên quan sức khỏe/tâm lý trẻ, không có căn cứ."
+    "muc_do": "🟡",
+    "nhan_xet": "'Giải pháp hoàn hảo cai nghiện tivi điện thoại' và 'phát triển toàn diện' là cam kết hiệu quả không có bằng chứng (mục C/H tuyên bố y tế gây hiểu lầm), sửa được bằng cách nói trải nghiệm."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand FUNGUS so good của shop, cần tránh ngụ ý hợp tác với thương hiệu khác."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand FUNGUS trùng shop FUNGUSVN, có tổ chức chịu trách nhiệm (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Hình minh họa thám tử/con vật có thể trùng nhân vật quen thuộc, cần kiểm ảnh."
+    "nhan_xet": "Thẻ 'Siêu thám tử nhí' có hình minh họa, chưa rõ có dùng nhân vật bên thứ ba (mục I: bản quyền nhân vật)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Thẻ giấy giáo dục, không thuộc nhóm hạn chế."
+    "nhan_xet": "Thẻ học tập bằng giấy, không phải sách xuất bản/đĩa game nên không rơi vào mục 'sản phẩm truyền thông' mục G; nên xác nhận."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Sản phẩm cho trẻ 3-6 tuổi, cần nêu độ tuổi và lưu ý giám sát khi dùng móc ring."
+    "nhan_xet": "Mục D: sản phẩm của trẻ 3-6 tuổi, nếu có bé trong video phải có người lớn và không để bé trình bày hay thuyết phục mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'cai nghiện tivi điện thoại', 'phát triển toàn diện'",
-    "rui_ro": "🟠",
-    "xu_ly": "Thay bằng cách nói trung tính về hoạt động chơi cùng con 10 phút mỗi ngày."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Cai nghiện điện thoại, giúp con thông minh/phát triển toàn diện",
-    "goi_y": "Bộ thẻ để bố mẹ chơi cùng con, rèn nghe hiểu và quan sát"
+    "khong_nen": "Giải pháp hoàn hảo giúp con cai nghiện tivi điện thoại",
+    "goi_y": "Bộ thẻ để bố mẹ và bé chơi cùng 10 phút mỗi ngày, rèn nghe hiểu và quan sát."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa xem được hình minh họa trên thẻ để loại trừ nhân vật có bản quyền, chưa rõ kiểm định an toàn cho trẻ.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh minh họa thẻ để xác nhận không có nhân vật bản quyền; mô tả bị cắt cuối.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

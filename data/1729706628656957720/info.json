@@ -39,61 +39,56 @@
   "poster_folder": 210,
   "duong_dan": "E:/oneshottramcanh/thongtac 1729706628656957720/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm hóa chất đánh dấu hàng nguy hiểm, kèm claim diệt khuẩn và tên thương hiệu không khớp (CLEANZ so với Lovenose).",
-   "khuyen_nghi": "Chỉ làm khi shop có giấy tờ hóa chất đầy đủ; không claim diệt khuẩn, an toàn tuyệt đối, và nhắc đeo găng tay, để xa trẻ em."
+   "muc_do": "🟡",
+   "nguy_co": "Là hóa chất có cờ hàng nguy hiểm, mô tả tự mâu thuẫn 'sinh học' và 'hóa chất', kèm claim diệt khuẩn cần chứng từ.",
+   "khuyen_nghi": "Có thể làm nếu bỏ claim 'diệt khuẩn/đánh bay vi khuẩn', không nhấn 'sinh học' khi thông số ghi hóa chất, và luôn nhắc dùng đúng hướng dẫn, đeo găng. Kiểm lại giấy tờ hàng nguy hiểm với shop."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "Mô tả 'đánh bay vi khuẩn, diệt khuẩn, không hư hại đường ống' là claim hiệu quả/an toàn cần chứng minh."
+    "nhan_xet": "'Đánh bay vi khuẩn, diệt khuẩn' cần phiếu kiểm nghiệm/giấy phép, và 'sinh học' mâu thuẫn thông số 'hóa chất' (mục C: tuyên bố sai lệch), sửa được bằng cách chỉ nói thông tắc, hòa tan dầu mỡ, khử mùi."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Tên CLEANZ trong tiêu đề khác với Brand Lovenose trong thông số, cần làm rõ."
+    "nhan_xet": "Tên CLEANZ trên listing nhưng brand khai là Lovenose, cần nói đúng tên sản phẩm khớp listing (mục C: nội dung khớp sản phẩm)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy hình ảnh hoặc nhân vật bản quyền."
+    "nhan_xet": "Không thấy logo hay nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thông số ghi hàng nguy hiểm, hóa chất tẩy rửa thuộc nhóm hạn chế cần giấy tờ và quy định vận chuyển."
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số ghi 'Contains dangerous goods: Có', mục G cấm hóa chất độc và trang hàng hóa nguy hiểm (ID 2899353232951057) chưa đọc chi tiết, cần xác nhận listing đã được duyệt."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Hóa chất gia dụng, cần cảnh báo để xa tầm tay trẻ em."
+    "nhan_xet": "Hóa chất gia dụng phải để xa tầm tay trẻ, không quay trẻ em tiếp xúc (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Hàng nguy hiểm/hóa chất và claim diệt khuẩn",
+    "van_de": "Claim diệt khuẩn và 'sinh học' mâu thuẫn thông số hóa chất, dễ bị đánh dấu sai lệch.",
     "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra giấy công bố hóa chất, phiếu an toàn (MSDS); bỏ claim diệt khuẩn và 'sinh học' nếu không có kiểm nghiệm."
-   },
-   {
-    "van_de": "Mô tả tự thừa nhận kém hiệu quả với đường ống phức tạp",
-    "rui_ro": "🟠",
-    "xu_ly": "Nêu rõ phạm vi dùng, không hứa thông mọi loại tắc."
+    "xu_ly": "Chỉ nói thông tắc, hòa tan dầu mỡ, giảm mùi hôi; không nói diệt khuẩn hay an toàn tuyệt đối."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Diệt sạch vi khuẩn, thông tắc mọi loại, hoàn toàn an toàn cho ống và da tay",
-    "goi_y": "Nói 'gel hỗ trợ làm mềm dầu mỡ, tóc trong ống thoát, dùng theo hướng dẫn'."
+    "khong_nen": "Đánh bay vi khuẩn, diệt khuẩn, hoàn toàn sinh học không hại ống",
+    "goi_y": "Gel giúp làm mềm dầu mỡ, tóc, thức ăn thừa gây tắc nhẹ và giảm mùi hôi; không hiệu quả với tắc nặng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có phiếu an toàn hóa chất, giấy công bố; chưa rõ thương hiệu thật (CLEANZ hay Lovenose); thành phần chưa nêu.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ giấy tờ hàng nguy hiểm/phiếu kiểm nghiệm và thành phần chính xác.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

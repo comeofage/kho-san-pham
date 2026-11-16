@@ -30,56 +30,45 @@
   "poster_folder": 88,
   "duong_dan": "E:\\Aff anh nhan\\review\\roingontay"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi nhỏ cho trẻ thiếu chứng nhận an toàn và thông tin sản phẩm.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung thông số, chất liệu silicon an toàn và độ tuổi; video chú trọng chơi kể chuyện có người lớn giám sát."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Đồ chơi silicon hình động vật chung, không thấy claim hay thương hiệu vi phạm.",
+   "khuyen_nghi": "Làm được; có người lớn trong khung hình khi trẻ xuất hiện và không nhắc tên nhân vật có bản quyền."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có claim công dụng, mô tả chỉ có ảnh."
+    "nhan_xet": "Mục A/C: đồ chơi giải trí, không có claim sức khỏe, chỉ cần không hứa hẹn phát triển trí tuệ."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Shop DEVELOPING ROAD 3.9 sao, không có thương hiệu, thông số trống."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: không có thương hiệu trong tên, không gợi liên tưởng hãng khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Hình Shiba, Pug, gấu trúc là động vật chung nhưng thiết kế có thể sao chép sản phẩm có bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I (bản quyền nhân vật): sóc, gấu trúc, mèo, Shiba, Pug là hình động vật chung, cần xem ảnh để chắc không phải nhân vật hoạt hình có bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ chơi thông thường, không thuộc nhóm cấm."
+    "nhan_xet": "Mục G/H: không thuộc nhóm cấm hay hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi silicon nhỏ cho ngón tay, nguy cơ hóc ở trẻ nhỏ, thiếu chứng nhận an toàn và thông tin nhà chịu trách nhiệm."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: đồ chơi được phép quảng bá với trẻ nếu có người lớn trong khung hình và trẻ không tự trình bày sản phẩm."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi kích thước nhỏ, nguy cơ hóc, thiếu chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy kiểm định chất liệu, khuyến cáo độ tuổi 3+ và giám sát người lớn."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Nói 'an toàn cho mọi lứa tuổi', 'silicon cao cấp không độc' khi chưa có chứng nhận",
-    "goi_y": "Nói 'bộ rối ngón tay thú vui nhộn, dùng kể chuyện và làm quà'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Mô tả chữ, kích thước, chất liệu, chứng nhận an toàn, độ tuổi, nhà chịu trách nhiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Trang không có mô tả chữ, chưa đọc ảnh mô tả; chưa rõ chứng nhận an toàn đồ chơi và nguy cơ nuốt phải chi tiết nhỏ.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

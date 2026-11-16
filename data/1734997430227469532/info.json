@@ -36,64 +36,63 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "the": [
   "pemit89"
  ],
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim giảm/làm phẳng nếp nhăn và \"dưỡng chất\" là công dụng mỹ phẩm, trang chưa thấy số công bố mỹ phẩm.",
-   "khuyen_nghi": "Chỉ làm nếu shop cung cấp phiếu công bố mỹ phẩm; nói theo hướng miếng dán hỗ trợ giữ phẳng nếp da khi ngủ, bỏ hứa hẹn kết quả."
+   "muc_do": "🟡",
+   "nguy_co": "Claim xoá/làm phẳng nếp nhăn và 'qua đêm' vi phạm mục A; sản phẩm có 'dưỡng chất' có thể thuộc mỹ phẩm cần phiếu công bố.",
+   "khuyen_nghi": "Chỉ nói miếng dán hỗ trợ làm mờ nếp nhăn nhìn thấy và dưỡng ẩm, kèm 'kết quả mỗi người khác nhau'; không hứa hiệu quả sau một đêm hay số ngày."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "\"Làm phẳng nếp nhăn sâu, săn chắc, trẻ trung\" là claim hiệu quả vượt mức mỹ phẩm."
+    "muc_do": "🟠",
+    "nhan_xet": "Mục A: cấm claim loại bỏ/xoá nếp nhăn và khung thời gian ('qua đêm', 'làm phẳng nếp nhăn sâu', 'ngăn ngừa'); sửa được bằng 'giúp làm mờ, hỗ trợ cải thiện'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Shop sdsfs666 không rõ thương hiệu, hàng cần có nhãn phụ."
+    "muc_do": "🟢",
+    "nhan_xet": "Shop không rõ brand, không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình nhân vật hay tác phẩm có bản quyền."
+    "nhan_xet": "Không thấy nhân vật/logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm chăm sóc da cần công bố mỹ phẩm; dán lên da có nguy cơ kích ứng."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: mô tả có 'bổ sung dưỡng chất' nên nếu là mỹ phẩm cần phiếu công bố và nhãn đủ thông tin; chưa thấy giấy tờ."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Nhắm người lớn, không liên quan trẻ em."
+    "nhan_xet": "Không nhắm trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim giảm nếp nhăn, săn chắc da, dưỡng chất",
-    "rui_ro": "🔴",
-    "xu_ly": "Không hứa hiệu quả, không dùng hình trước-sau; chỉ mô tả cách dùng."
-   },
-   {
-    "van_de": "Chưa thấy công bố mỹ phẩm",
+    "van_de": "Claim 'làm phẳng nếp nhăn sâu', 'dùng qua đêm là săn chắc trẻ trung'",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp số phiếu công bố trước khi làm."
+    "xu_ly": "Đổi sang 'miếng dán hỗ trợ làm mờ nếp nhăn do biểu cảm', bỏ mốc thời gian, thêm 'kết quả mỗi người có thể khác nhau'."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Xoá sạch nếp nhăn, trẻ lại sau 1 đêm",
+    "goi_y": "Giúp làm mờ nếp nhăn nhìn thấy, hỗ trợ da mịn hơn"
+   },
+   {
+    "khong_nen": "Before/after chỉnh filter",
+    "goi_y": "Chỉ kể trải nghiệm cá nhân 'da mình thấy...'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có số công bố mỹ phẩm, thành phần miếng dán, hướng dẫn thử trên da.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ phiếu công bố mỹ phẩm/nhãn đủ thông tin; nhà sản xuất không rõ (shop sdsfs666); chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

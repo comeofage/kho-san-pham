@@ -30,56 +30,56 @@
   "poster_folder": 17,
   "duong_dan": "E:\\oneshottramcanh\\khunglongbay"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em nhỏ, thông số tuổi 6-8, cảnh báo tuổi ghi 'Không' có thể gây rủi ro chi tiết nhỏ và thiếu hợp quy.",
-   "khuyen_nghi": "Chỉ nói đồ chơi phóng ngón tay vui nhộn, thêm cảnh báo cho trẻ nhỏ, không nói tăng khả năng giải quyết vấn đề."
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi bắn cho trẻ không có cảnh báo tuổi và mô tả claim giáo dục/an toàn quá đà.",
+   "khuyen_nghi": "Có thể làm; định vị là đồ chơi vui cho bé có người lớn, hướng dẫn không bắn vào mặt/mắt, bỏ claim 'cải thiện giải quyết vấn đề, không độc hại'. Không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Mô tả 'không độc hại', 'cải thiện giải quyết vấn đề' khó chứng minh."
+    "nhan_xet": "Mô tả 'cải thiện khả năng giải quyết vấn đề, không độc hại, an toàn' cần bằng chứng (mục C) nên chỉ nói đồ chơi giải trí, vui."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand chung chung, không mạo danh."
+    "nhan_xet": "Brand chung 'Đồ chơi cho trẻ em', nhân vật 'KHÁC', không gợi hãng nào (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Khủng long, gà là hình chung, không phải nhân vật có bản quyền rõ."
+    "nhan_xet": "Khủng long và gà là hình chung, không thấy nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi cần hợp quy QCVN 3:2019, chưa thấy thông tin."
+    "nhan_xet": "Mục G cấm đồ chơi gây hại trẻ, đồ chơi phóng ngón tay nhỏ nên cảnh báo tuổi 'Không' là điểm cần hỏi shop, không phải loại bắn bằng lực như BB/airsoft."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟠",
-    "nhan_xet": "Trẻ em, chi tiết nhỏ, cảnh báo tuổi ghi 'Không'."
+    "nhan_xet": "Đồ chơi phóng, vật nhỏ nên chú ý nuốt và mắt, mục D yêu cầu có người lớn trong khung hình và không để bé trình bày hay kêu gọi đòi cha mẹ mua."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Đồ chơi trẻ em thiếu cảnh báo tuổi và hợp quy",
+    "van_de": "Đồ chơi phóng vật nhỏ, thông số ghi tuổi 6-8 nhưng cảnh báo tuổi là 'Không'.",
     "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop chứng nhận hợp quy và thêm cảnh báo chi tiết nhỏ."
+    "xu_ly": "Quay người lớn chơi hoặc có người lớn kèm, nói 'cho bé từ 6 tuổi có người lớn giám sát', không bắn vào người."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Cải thiện khả năng giải quyết vấn đề của trẻ, không độc hại",
-    "goi_y": "Đồ chơi giải trí cho bé từ 6 tuổi."
+    "khong_nen": "Giúp bé thông minh, cải thiện giải quyết vấn đề, hoàn toàn không độc hại",
+    "goi_y": "Đồ chơi phóng khủng long/gà vui nhộn, chơi cùng người lớn; không bắn vào mặt."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy hợp quy QCVN 3:2019, cảnh báo tuổi.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ chứng nhận an toàn đồ chơi và cảnh báo vật nhỏ trên bao bì.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

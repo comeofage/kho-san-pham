@@ -33,56 +33,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
+   "nen_lam": "❌",
    "muc_do": "🔴",
-   "nguy_co": "Nhân vật hoạt hình có thể vi phạm IPR và đồ chơi điện tử nhắm học sinh chưa rõ chứng nhận.",
-   "khuyen_nghi": "Tập trung quay cơ chế ấn cả cụm phím, đèn và tiếng; không nhắc tên nhân vật, không hứa xả stress."
+   "nguy_co": "Bàn phím in rõ nhân vật Sanrio (My Melody, Kuromi) nhiều khả năng không có giấy phép, vi phạm bản quyền/IPR ngay trên sản phẩm.",
+   "khuyen_nghi": "Không nên làm trừ khi shop có thư ủy quyền (LoA) của chủ bản quyền; nếu có thì mới cân nhắc lại và tránh dùng tên nhân vật trong lời quảng bá."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Xua tan áp lực căng thẳng tức thì' là claim quá mức."
+    "nhan_xet": "Câu \"xua tan áp lực căng thẳng tức thì\" là claim giải stress kèm khung thời gian, nên đổi thành \"giải trí, vui tay\" (mục C: tuyên bố sai lệch)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi tiếng."
+    "muc_do": "🔴",
+    "nhan_xet": "Ảnh in nhân vật My Melody và Kuromi của Sanrio trên keycap và bối cảnh, gợi liên tưởng thương hiệu khác (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Nhân vật hoạt hình hot trend có nguy cơ nhái bản quyền."
+    "muc_do": "🔴",
+    "nhan_xet": "Sản phẩm in/sao chép nhân vật hoạt hình khi chưa được cấp phép là vi phạm bản quyền và bị xử lý nặng hơn (mục I: vi phạm bản quyền; mục E)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Có đèn và âm thanh, dùng pin, xuất xứ Trung Quốc."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi/phụ kiện điện tử thông thường, không thuộc nhóm cấm hay hạn chế ở mục G và H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Học sinh dùng giờ ra chơi, thiếu chứng nhận an toàn đồ chơi."
+    "nhan_xet": "Gợi ý dùng giờ ra chơi, gắn balo nên đối tượng có thể là học sinh; không để trẻ tự giới thiệu sản phẩm (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Nhân vật hoạt hình trên sản phẩm chưa rõ bản quyền",
-    "rui_ro": "🟠",
-    "xu_ly": "Đọc ảnh, tránh cận cảnh/đặt tên nhân vật nếu giống hình thương hiệu."
+    "van_de": "Keycap và thân bàn phím in nhân vật Sanrio, giá 79k nhiều khả năng là hàng không bản quyền",
+    "rui_ro": "🔴",
+    "xu_ly": "Yêu cầu shop cung cấp LoA/giấy phép; nếu không có thì bỏ sản phẩm vì đây là lỗi ở chính sản phẩm, không sửa được bằng lời nói."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Xua tan áp lực tức thì",
-    "goi_y": "Nói 'ấn vui tay, giải trí thư giãn'."
+    "khong_nen": "Nói tên nhân vật Kuromi, My Melody, Sanrio hoặc \"hàng chính hãng\"",
+    "goi_y": "Chỉ mô tả \"bàn phím mini hình cute, đèn nhấp nháy\" và không làm nổi bật nhân vật."
+   },
+   {
+    "khong_nen": "\"Xua tan stress tức thì\"",
+    "goi_y": "\"Ấn vui tay, giải trí\"."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Mô tả trang gần như trống; chưa rõ nhân vật và chứng nhận pin/đồ chơi.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa biết shop có giấy ủy quyền/giấy phép Sanrio hay không; trang không có mô tả chữ, chỉ có ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

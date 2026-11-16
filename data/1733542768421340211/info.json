@@ -30,34 +30,34 @@
   "poster_folder": 38,
   "duong_dan": "E:\\Aff anh nhan\\review\\singumcoolair 1733542768421340211\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Kẹo cao su thực phẩm nhưng mô tả có claim làm sạch mảng bám, giảm căng thẳng, tỉnh táo.",
-   "khuyen_nghi": "Giữ chỉ 'hương bạc hà mát, hơi thở thơm'; bỏ các claim giảm căng thẳng, tỉnh táo, làm sạch khoang miệng."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả có các claim làm sạch mảng bám, giảm căng thẳng, tỉnh táo thuộc nhóm claim sức khỏe/thực phẩm cần bằng chứng (mục A, mục C, mục H).",
+   "khuyen_nghi": "Nói đây là kẹo cao su bạc hà mát, thơm miệng sau bữa ăn; bỏ claim loại bỏ mảng bám, giảm stress, tạo năng lượng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Loại bỏ mảng bám', 'giảm căng thẳng', 'tỉnh táo' là claim ngoài phạm vi thực phẩm thường."
+    "nhan_xet": "Mô tả có 'loại bỏ một phần mảng bám', 'hỗ trợ giảm căng thẳng', 'tỉnh táo' là claim sức khỏe, thực phẩm không được tuyên bố công dụng không có trong giấy công bố (mục A, mục H, mục G: thực phẩm có tuyên bố chữa bệnh)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand Sing-Gum của Mars Việt Nam, shop MarsSnacking.VN, có giấy công bố 22/MARS VN/2021."
+    "nhan_xet": "Sing-Gum là thương hiệu của Mars, shop MarsSnacking.VN là shop chính hãng."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình bản quyền bên thứ ba."
+    "nhan_xet": "Không thấy nội dung bản quyền hay hàng nhái."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Thực phẩm có giấy tiếp nhận bản công bố, không thuộc nhóm cấm."
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm thuộc nhóm hạn chế nhưng đã có số tiếp nhận công bố 22/MARS VN/2021 và tổ chức chịu trách nhiệm rõ (mục H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -67,19 +67,23 @@
   ],
   "luu_y": [
    {
-    "van_de": "Claim loại bỏ mảng bám, hỗ trợ giảm căng thẳng, tỉnh táo",
+    "van_de": "Claim làm sạch mảng bám, giảm căng thẳng, tạo năng lượng tích cực cho kẹo cao su (mục A, mục H).",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói hương vị thơm mát; không so sánh với chữa trị hay vệ sinh răng miệng."
+    "xu_ly": "Chỉ nói hương bạc hà khuynh diệp mát, thơm miệng, sảng khoái sau bữa ăn; không nhắc công dụng làm sạch răng hay tinh thần."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'làm sạch mảng bám', 'giảm stress', 'giúp tỉnh táo'",
-    "goi_y": "Nói 'kẹo cao su vị bạc hà khuynh diệp the mát'"
+    "khong_nen": "Loại bỏ mảng bám, làm sạch răng miệng",
+    "goi_y": "Nhai kẹo mát lạnh, hơi thở thơm mát sau bữa ăn."
+   },
+   {
+    "khong_nen": "Giảm căng thẳng, tăng tỉnh táo, tạo năng lượng",
+    "goi_y": "Vị bạc hà mát, nhai cho sảng khoái khi làm việc, học bài."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Bảng thành phần trong tóm tắt bị cắt; chưa rõ bản công bố có nêu công dụng nào không.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

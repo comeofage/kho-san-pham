@@ -36,62 +36,70 @@
   "poster_folder": 232,
   "duong_dan": "E:/oneshottramcanh/kemmuoi  1736466305638172498/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Kem bôi trị muỗi đốt cho trẻ sơ sinh, claim giảm đau/ngứa/sưng giống thuốc.",
-   "khuyen_nghi": "Không nên làm vì dễ bị coi là claim y tế cho sản phẩm bôi da trẻ nhỏ; chỉ cân nhắc khi có giấy công bố mỹ phẩm."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Là kem bôi 'giảm ngứa tức thì' cho trẻ sơ sinh, nếu thuộc diện thuốc OTC thì không được quảng bá bằng video; nếu là mỹ phẩm thì không được claim y tế.",
+   "khuyen_nghi": "Chỉ làm khi trên listing sản phẩm có phiếu công bố mỹ phẩm; nói 'giúp làm dịu da sau muỗi đốt', không hứa tức thì/không chứa hóa chất, không gọi là thuốc. Nếu là thuốc OTC thì bỏ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "Giảm đau tức thì, giảm ngứa, giảm sưng là claim y tế, không được nói."
+    "muc_do": "🟠",
+    "nhan_xet": "'Giảm ngứa tức thì/nhanh', 'giảm đau', 'không hóa chất gây hại' vi phạm quy định khung thời gian và claim cần bằng chứng (mục A); mô tả gọi 'thuốc mỡ' làm tăng rủi ro."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand hegerbaby, cần kiểm tra chính hãng."
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu hegerbaby của chính shop, không nhắc hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình khỉ là thiết kế bao bì, chưa thấy nhân vật bản quyền."
+    "nhan_xet": "Không thấy nhân vật/kiểu dáng của bên khác (hình khỉ trong hộp là thiết kế chung)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🔴",
-    "nhan_xet": "Kem bôi da, dễ bị xếp vào mỹ phẩm hay thuốc, cần công bố."
+    "muc_do": "🟠",
+    "nhan_xet": "Nếu phân loại là thuốc OTC (giảm ngứa/côn trùng cắn) thì chỉ được đăng listing, cấm video ngắn (mục H); nếu là mỹ phẩm thì phải có phiếu công bố, không có công bố y tế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🔴",
-    "nhan_xet": "Dùng cho bé từ 0 tháng tuổi, nhóm rất nhạy cảm."
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng cho trẻ 0-6 tháng, không để trẻ xuất hiện giới thiệu, nên nhắc thử trước trên vùng da nhỏ (mục D, A)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim giảm đau, giảm sưng, không hóa chất gây hại",
-    "rui_ro": "🔴",
-    "xu_ly": "Không dùng các claim này, nếu làm chỉ nói hương bạc hà, nhỏ gọn."
+    "van_de": "Phân loại pháp lý chưa rõ (mỹ phẩm hay thuốc OTC)",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra phiếu công bố/số đăng ký trên trang listing; nếu là thuốc OTC thì không làm video."
    },
    {
-    "van_de": "Dùng cho trẻ 0-6 tháng",
-    "rui_ro": "🔴",
-    "xu_ly": "Không nhắm vào trẻ sơ sinh."
+    "van_de": "Claim 'giảm ngứa tức thì', 'giảm đau', 'không hóa chất gây hại'",
+    "rui_ro": "🟠",
+    "xu_ly": "Dùng 'giúp làm dịu, hỗ trợ giảm cảm giác ngứa', kèm 'kết quả mỗi bé có thể khác nhau'."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giảm ngứa tức thì, an toàn cho da nhạy cảm",
-    "goi_y": "Chỉ nói hộp nhỏ gọn bỏ túi, hương bạc hà."
+    "khong_nen": "Giảm ngứa tức thì / giảm đau ngay",
+    "goi_y": "Nói 'giúp làm dịu da sau khi muỗi đốt'."
+   },
+   {
+    "khong_nen": "Không chứa hóa chất gây hại, an toàn tuyệt đối cho bé",
+    "goi_y": "Nói 'dành cho da nhạy cảm của bé, nên thử trên vùng da nhỏ trước'."
+   },
+   {
+    "khong_nen": "Chữa/điều trị vết côn trùng cắn",
+    "goi_y": "Nói 'hỗ trợ làm dịu'."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Thiếu số công bố mỹ phẩm, thành phần đầy đủ.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa biết sản phẩm là mỹ phẩm hay thuốc OTC, có phiếu công bố hay không; chưa xem ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

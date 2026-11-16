@@ -30,56 +30,50 @@
   "poster_folder": 59,
   "duong_dan": "E:\\Aff anh nhan\\review\\cắt fungus 1736133773663437959\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm trẻ em 2-5 tuổi có kéo và claim phát triển/giảm dùng điện thoại cần thận trọng.",
-   "khuyen_nghi": "Chỉ làm với giám sát người lớn; nói 'rèn khéo tay' nhẹ nhàng, không hứa giảm điện thoại, quay có người lớn kèm và kéo nhựa đầu tù."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Sản phẩm cho trẻ 2-5 tuổi kèm kéo, cần người lớn giám sát và không để trẻ tự giới thiệu.",
+   "khuyen_nghi": "Quay tay người lớn hướng dẫn bé cắt, nhấn 'kéo nhựa an toàn, cần người lớn giám sát'; tránh nói chắc chắn giúp bé tập trung hơn hay giảm hẳn dùng điện thoại."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Tăng tập trung, phát triển vận động tinh, giảm thiết bị điện tử' là claim phát triển cần nói nhẹ."
+    "nhan_xet": "'Tăng tập trung, giảm thời gian dùng điện thoại' là lợi ích không có bằng chứng, nên nói nhẹ 'giúp bé luyện sự khéo léo' (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand FUNGUS là thương hiệu của shop, không phải hãng nổi tiếng."
+    "nhan_xet": "Brand FUNGUS là của chính shop, không gợi thương hiệu khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Mẫu động vật, trái cây, phương tiện cần kiểm tra không có nhân vật bản quyền."
+    "nhan_xet": "124 mẫu động vật/phương tiện, cần kiểm ảnh có hình nhân vật hoạt hình bản quyền không (mục I: bản quyền)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế, có thông tin tổ chức chịu trách nhiệm."
+    "nhan_xet": "Đồ chơi giáo dục, không thuộc nhóm hạn chế; kéo là kéo nhựa (mục G dao/kéo)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Nhắm trẻ 2-5 tuổi, có kéo; cần cảnh báo giám sát và hợp quy đồ chơi."
+    "muc_do": "🟡",
+    "nhan_xet": "Trẻ <18 xuất hiện phải liên quan trực tiếp sản phẩm và có người lớn trong khung, trẻ không tự trình bày (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Sản phẩm cho trẻ nhỏ kèm kéo, cần giám sát và chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Quay có người lớn kèm, nói rõ kéo nhựa an toàn nhưng vẫn cần giám sát; kiểm tra giấy hợp quy."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'giúp bé thông minh hơn, hết nghiện điện thoại'",
-    "goi_y": "Nói 'bé tập cắt giấy vui, 124 mẫu, có kéo nhựa kèm'"
+    "khong_nen": "Đảm bảo bé hết nghiện điện thoại, chắc chắn tăng tập trung",
+    "goi_y": "Nói 'một hoạt động thay thế màn hình 10-15 phút mỗi ngày'."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa đọc ảnh mô tả, chưa có giấy hợp quy và mô tả bị cắt cuối đoạn.",
-  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có ảnh kiểm hình mẫu cắt có nhân vật bản quyền hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

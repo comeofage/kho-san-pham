@@ -30,51 +30,45 @@
   "poster_folder": 34,
   "duong_dan": "E:/Aff anh nhan/review/xedap"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Móc khoá nam châm cỡ nhỏ có nguy cơ nuốt/hút cho trẻ em và mô tả sản phẩm trống, thông tin xuất xứ mâu thuẫn.",
-   "khuyen_nghi": "Làm được nếu xác nhận loại nam châm và cảnh báo để xa trẻ nhỏ; không quảng bá cho trẻ em."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp; chỉ cần tránh nói xuất xứ Việt Nam do thông tin mâu thuẫn và nhắc nam châm nhỏ để xa trẻ nhỏ.",
+   "khuyen_nghi": "Giới thiệu như móc khoá/đồ trang trí vui nhộn, không nói xuất xứ và không dùng cảnh trẻ nhỏ cầm nam châm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ trang trí, không có claim công dụng."
+    "nhan_xet": "Chỉ là đồ trang trí, không có claim công dụng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand QUAFF, chưa rõ nguồn gốc; xuất xứ Việt Nam nhưng địa chỉ yiwu."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand QUAFF không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô hình xe đạp nhỏ, cần tránh dáng giống nhãn hàng xe đạp cụ thể."
+    "muc_do": "🟢",
+    "nhan_xet": "Mẫu xe đạp chung, chưa thấy logo/nhân vật có bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm cấm rõ ràng."
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Nam châm nhỏ rất nguy hiểm khi trẻ nuốt, cần cảnh báo."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ trang trí cho người lớn/học sinh; nên nhắc để nam châm xa trẻ nhỏ."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nam châm nhỏ",
-    "rui_ro": "🟠",
-    "xu_ly": "Ghi cảnh báo để xa trẻ dưới 14 tuổi, không quay có trẻ em."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Mô tả chữ gần như trống, chưa rõ lực từ, tuổi khuyến nghị và xuất xứ thật.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Xuất xứ ghi Việt Nam nhưng địa chỉ chịu trách nhiệm ở yiwu (mâu thuẫn, mục C); mô tả trang trống, chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

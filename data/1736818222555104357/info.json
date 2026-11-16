@@ -38,61 +38,50 @@
   "poster_folder": 106,
   "duong_dan": "E:\\oneshottramcanh\\50oto 1736818222555104357\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em có claim 'an toàn, không độc hại' không kèm chứng nhận, mẫu xe có thể nhái xe hãng thật.",
-   "khuyen_nghi": "Chỉ làm nếu tránh nói an toàn tuyệt đối và không nhắc tên hãng xe; nên xin shop giấy kiểm định đồ chơi trước khi quay."
+   "muc_do": "🟡",
+   "nguy_co": "Claim \"phát triển trí thông minh\" cần tránh nói quá, và xe mô hình có thể mang dáng/logo hãng xe thật (mục I).",
+   "khuyen_nghi": "Chỉ nói xe nhỏ chạy cót vui, nhiều mẫu; không nêu tên hãng xe thật; nhắc chi tiết nhỏ chỉ phù hợp bé đủ tuổi, có người lớn giám sát."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'An toàn, không độc hại', 'dẫm không hỏng, ném không vỡ', 'phát triển trí thông minh' là claim tuyệt đối không có bằng chứng."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Phát triển trí thông minh, tư duy sáng tạo\" là tuyên bố phóng đại không có bằng chứng (mục C) nhưng sửa được bằng cách nói là đồ chơi vui."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand ghi 'Không hương liệu' là giá trị vô nghĩa, tên và địa chỉ tổ chức chịu trách nhiệm ghi 'khác'."
+    "nhan_xet": "Xe đua, bán tải, SUV nếu có dáng/logo hãng thật thì không được gọi tên hãng hay nói \"giống\" (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Xe đua, bán tải, SUV có thể mô phỏng kiểu dáng hãng thật nếu có logo hoặc tên hãng."
+    "nhan_xet": "Màu ngẫu nhiên nên khó kiểm soát mẫu có logo hãng xe thật, cần xem ảnh mô tả (mục I, kiểu dáng)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi trẻ em cần hợp quy; trang chưa có thông tin chứng nhận."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi xe không bắn, không phải vũ khí nên không vào mục G."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi hợp kim nhỏ có nguy cơ nuốt phải với trẻ nhỏ, chưa thấy cảnh báo độ tuổi."
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi cho bé, nếu quay trẻ phải có người lớn và bé không tự giới thiệu hay giục mua (mục D); \"an toàn không độc hại\" cần có chứng nhận (mục C)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim an toàn, không độc hại cho trẻ không có chứng nhận",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim; chỉ mô tả chất liệu hợp kim và cơ chế chạy cót."
-   },
-   {
-    "van_de": "Thiếu cảnh báo độ tuổi và nguy cơ nuốt phải chi tiết nhỏ",
-    "rui_ro": "🟠",
-    "xu_ly": "Nhắc người lớn giám sát, nói rõ độ tuổi phù hợp theo shop xác nhận."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'an toàn tuyệt đối', 'không độc hại', 'giúp bé thông minh hơn'",
-    "goi_y": "Nói 'xe mini chạy cót, kéo lùi thả tay xe lao đi, nhiều mẫu và màu'."
+    "khong_nen": "Giúp bé thông minh hơn, an toàn tuyệt đối, dẫm không hỏng",
+    "goi_y": "Xe hợp kim nhỏ gọn, kéo lùi thả tay chạy vút, nhiều mẫu để bé sưu tầm."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận hợp quy đồ chơi, tên tổ chức chịu trách nhiệm ghi 'khác', chưa có độ tuổi khuyến nghị; chưa đọc ảnh.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh nên chưa biết xe có logo hãng thật hay không; chưa rõ chứng nhận an toàn đồ chơi; trường Brand ghi \"Không hương liệu\" bất thường.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

@@ -35,65 +35,50 @@
   "poster_folder": 172,
   "duong_dan": "E:\\oneshottramcanh\\mamdua 1737393247280137415\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm lên men có claim 'hữu cơ', 'không chất bảo quản độc hại' và mô tả thành phần không thống nhất giữa USP và trang.",
-   "khuyen_nghi": "Chỉ nói hương vị, cách ăn, bảo quản; bỏ 'hữu cơ' và 'không chất bảo quản độc hại' nếu không có chứng nhận, đối chiếu thành phần với nhãn thực tế."
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm thuộc nhóm hạn chế cần giấy tờ (có giấy công bố), nhưng claim 'không chất bảo quản độc hại', 'hữu cơ' và 'gia truyền' chưa có bằng chứng.",
+   "khuyen_nghi": "Chỉ quảng bá vị, cách ăn, hạn dùng 3 tháng trong ngăn mát; bỏ 'không chất bảo quản độc hại' và 'hữu cơ' nếu không có chứng nhận hữu cơ trên nhãn."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Hữu cơ', 'không chất bảo quản độc hại', 'kích thích vị giác' là claim cần chứng nhận hoặc dễ bị coi là phóng đại."
+    "muc_do": "🟡",
+    "nhan_xet": "'Không chất bảo quản độc hại', 'hữu cơ', 'kích thích vị giác' là tuyên bố cần bằng chứng (mục C/H); tránh claim sức khỏe, chỉ nói hương vị."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Shop bán đặc sản địa phương, không dùng thương hiệu nổi tiếng."
+    "nhan_xet": "Đặc sản Huế mang tính chung, hộ kinh doanh là chủ sản phẩm (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy yếu tố bản quyền."
+    "nhan_xet": "Không có hình ảnh/nhân vật bên thứ ba trong thông tin text (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Thực phẩm cần giấy công bố tiêu chuẩn và ATTP; trang có số công bố nhưng hộ kinh doanh nhỏ, cần xác minh."
+    "nhan_xet": "Mục H: thực phẩm & đồ uống cần phê duyệt; listing có giấy công bố tiêu chuẩn số 862VVCT9889 nên cơ bản đáp ứng, cần nhãn đủ thông tin."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em."
+    "nhan_xet": "Món ăn gia đình, không nhắm trẻ em (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'hữu cơ' và 'không chất bảo quản độc hại'",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ nếu không có chứng nhận hữu cơ và kiểm nghiệm, chỉ nói đặc sản Huế, hương vị đậm đà."
-   },
-   {
-    "van_de": "Thành phần mâu thuẫn: USP nói nước mắm nhỉ, mô tả nói mắm nêm cá cơm, thông số chỉ ghi đu đủ",
-    "rui_ro": "🟠",
-    "xu_ly": "Đối chiếu nhãn thực tế và chỉ nêu đúng thành phần."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Hữu cơ, không chất bảo quản, an toàn tuyệt đối",
-    "goi_y": "Đu đủ giòn, vị mắm đậm, ăn kèm cơm nóng"
-   },
-   {
-    "khong_nen": "Tốt cho tiêu hóa, kích thích tiêu hóa",
-    "goi_y": "Món ăn kèm dân dã của người Huế"
+    "khong_nen": "Không chất bảo quản độc hại / hữu cơ",
+    "goi_y": "Đu đủ giòn, vị mắm nêm đậm đà, ăn kèm cơm nóng; bảo quản ngăn mát 3 tháng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ thành phần thật, chứng nhận hữu cơ, ngày sản xuất và hạn sử dụng trên nhãn.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa thấy nhãn thật (ngày sản xuất, thành phần) và chứng nhận hữu cơ; USP nói không có cà pháo/kiệu nhưng mô tả có, cần khớp lại.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

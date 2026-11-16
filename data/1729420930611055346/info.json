@@ -30,60 +30,50 @@
   "poster_folder": 15,
   "duong_dan": "E:\\Aff anh nhan\\review\\0710 1729420930611055346\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm thể thao rủi ro chấn thương dành cho trẻ em, dễ bị gắn cờ nếu quảng bá không kèm cảnh báo an toàn.",
-   "khuyen_nghi": "Chỉ làm nếu nhấn mạnh có đồ bảo hộ, người lớn giám sát; không hứa hẹn tuyệt đối an toàn hay lợi ích sức khỏe."
+   "muc_do": "🟡",
+   "nguy_co": "Đồ trẻ em nên cần giữ đúng quy tắc hình ảnh trẻ và không phóng đại claim an toàn/sức khỏe.",
+   "khuyen_nghi": "Có thể làm; để người lớn xuất hiện trong khung hình khi có bé và chỉ nói tính năng thực tế (bộ bảo hộ, chỉnh 2 hàng bánh). Tránh claim an toàn tuyệt đối."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Mô tả có câu 'trái tim khỏe mạnh, cơ thể dẻo dai' và 'bảo vệ mắt cá' dễ bị hiểu thành claim sức khỏe/an toàn tuyệt đối."
+    "nhan_xet": "Mô tả shop có câu 'tim khỏe, cơ thể cân đối' và 'bảo vệ mắt cá', mục A/C yêu cầu claim phải có bằng chứng nên chỉ nên nói bảo hộ giúp giảm va chạm khi ngã."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên 'Sport Kids' chưa rõ chủ sở hữu nhãn hiệu, chưa thấy dấu hiệu hàng nhái."
+    "muc_do": "🟢",
+    "nhan_xet": "'Sport Kids' là tên chung, không thấy gợi liên tưởng thương hiệu lớn (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật hoặc hình ảnh bản quyền trong thông tin được cung cấp."
+    "nhan_xet": "Giày patin kiểu dáng phổ thông, không in nhân vật hay logo hãng (mục I: bản quyền)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ thể thao mạo hiểm, cần cảnh báo an toàn; chưa thuộc nhóm cấm."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm mục G hay hạn chế mục H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm dành cho trẻ em có nguy cơ chấn thương, video không nên dùng trẻ nhỏ trượt không bảo hộ hay ở nơi nguy hiểm."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D cho phép bé xuất hiện với đồ thể thao nhưng phải có người lớn trong khung hình, không để bé tự giới thiệu và không kêu gọi bé đòi cha mẹ mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Hình ảnh trẻ em trượt patin trong video",
-    "rui_ro": "🟠",
-    "xu_ly": "Luôn quay có đủ bảo hộ 6 món, có người lớn, địa điểm an toàn, không quay cảnh nhảy cao hoặc đổ dốc."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Cam kết an toàn tuyệt đối, không bao giờ chấn thương",
-    "goi_y": "Nói 'có kèm bộ bảo hộ 6 món giúp giảm va chạm khi tập'."
-   },
-   {
-    "khong_nen": "Hứa hẹn tốt cho tim mạch, chiều cao, phát triển cơ thể",
-    "goi_y": "Nói 'môn vận động ngoài trời cho bé'."
+    "khong_nen": "Bảo hộ 6 món giúp bé không bao giờ chấn thương / an toàn tuyệt đối",
+    "goi_y": "Bộ bảo hộ tay chân đầu gối giúp giảm va chạm khi bé ngã, vẫn cần người lớn giám sát."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận chất lượng/an toàn đồ chơi-thể thao trẻ em; chưa rõ chủ nhãn hiệu Sport Kids.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ có chứng nhận an toàn cho đồ bảo hộ/giày và tuổi khuyến nghị cụ thể.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

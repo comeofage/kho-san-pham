@@ -30,61 +30,46 @@
   "poster_folder": 26,
   "duong_dan": "E:/oneshottramcanh/dan61 1730766216858405306/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em có điện tử/loa, hồ sơ không có cảnh báo độ tuổi và chứng nhận an toàn đồ chơi, tên có chữ 'bảo hành' dễ gây hiểu lầm.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung chứng nhận hợp quy đồ chơi (QCVN 3:2019) và cảnh báo tuổi. Không quay trẻ nhỏ cầm sản phẩm và không hứa hẹn phát triển trí tuệ."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Đồ chơi đàn điện tử cho bé không thuộc nhóm cấm hay hạn chế, chỉ cần lưu ý khi có trẻ xuất hiện trong video.",
+   "khuyen_nghi": "Có thể làm; quay tay người lớn hoặc có người lớn trong khung hình, nói đúng tính năng thật (61 phím, 2 loa, micro) và không hứa 'phát triển năng khiếu'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Chủ đề 'sự phát triển của trẻ' và 'vừa học vừa chơi' dễ thành claim giáo dục/phát triển năng khiếu chưa có căn cứ."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục C: mô tả chỉ nêu tính năng nhạc cụ nên không có claim sức khỏe, chỉ cần nói đúng số phím, loa, bản nhạc."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Mã MQ-6106 là mã chung, không thấy dùng thương hiệu lớn."
+    "nhan_xet": "Mục I: mã MQ-6106 là mã của shop, không nhắc hãng nhạc cụ nào khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có nhân vật hay hình ảnh có bản quyền trong mô tả, cần xem ảnh để xác nhận."
+    "nhan_xet": "Mục I: không có nhân vật hay logo hãng trong mô tả."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi dùng điện (loa, micro) nhập khẩu phải có hợp quy, hồ sơ không thấy giấy chứng nhận."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục G/H: đồ chơi nhạc cụ không thuộc nhóm cấm; sách bài hát kèm chỉ là phụ kiện nên không bị tính vào nhóm sản phẩm truyền thông."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em, mục 'Cảnh báo tuổi: Không' và chưa có chứng nhận an toàn, có chi tiết nhỏ và micro dây."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: nhạc cụ trẻ em được phép có bé xuất hiện nếu có người lớn trong khung hình và bé không tự giới thiệu hay thúc giục đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em thiếu cảnh báo độ tuổi và chứng nhận hợp quy.",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung chứng nhận hợp quy, thêm cảnh báo tuổi vào nội dung video."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Giúp bé phát triển thiên phú âm nhạc, thông minh hơn",
-    "goi_y": "Đàn 61 phím có loa, micro, nhiều tiếng nhạc cụ cho bé chơi"
-   },
-   {
-    "khong_nen": "Quay trẻ nhỏ nhận diện được khi chơi",
-    "goi_y": "Quay tay người lớn bấm phím hoặc quay riêng sản phẩm"
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận hợp quy đồ chơi, độ tuổi khuyến nghị, loại nguồn điện/pin, nội dung bảo hành thực tế.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thông số ghi 'Pin: Không' và 'Cảnh báo tuổi: Không' chưa rõ nguồn điện thực tế (pin/dây sạc); chưa có giấy kiểm nghiệm đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

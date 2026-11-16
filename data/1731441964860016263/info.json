@@ -30,61 +30,54 @@
   "poster_folder": 36,
   "duong_dan": "E:\\oneshottramcanh\\bangtuxoa 1731441964860016263\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim bảo vệ mắt/chống cận không có căn cứ và đồ chơi có pin cho trẻ em.",
-   "khuyen_nghi": "Làm nếu bỏ hẳn claim bảo vệ mắt/chống cận, nhấn mạnh tiện dụng (xóa một chạm, không dùng giấy mực) và nhắc để pin xa tầm tay trẻ."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'chống cận, loại bỏ bức xạ ánh sáng xanh, bảo vệ mắt' dễ bị coi là tuyên bố sai lệch, và listing đánh dấu 'Contains Dangerous Goods: Có' (pin).",
+   "khuyen_nghi": "Chỉ nói công năng viết vẽ/xóa bằng một chạm, không nói bảo vệ mắt hay chống cận; dùng người lớn demo và nhắm nội dung tới phụ huynh."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả 'loại bỏ bức xạ ánh sáng xanh', 'bảo vệ mắt', 'chống cận', 'tốt cho sức khỏe' là claim y tế/sức khỏe không có chứng nhận."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C/mục A: 'chống cận, loại bỏ bức xạ ánh sáng xanh, tốt cho sức khỏe' là tuyên bố y tế/sức khỏe không có bằng chứng, nhưng sửa được bằng cách bỏ claim."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Không thấy thương hiệu, shop tổng kho, khó xác minh nguồn."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: không thấy tên thương hiệu khác trong tên và mô tả, chỉ cần không gợi liên tưởng hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Bảng viết LCD chung, chưa thấy nhân vật bản quyền."
+    "nhan_xet": "Mục I: chưa thấy nhân vật/logo bản quyền, cần xem lại ảnh mô tả nếu có hình in hoạt hình."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thông số ghi 'Contains Dangerous Goods: Có' (có thể do pin cúc áo), cần tuân thủ quy định hàng pin."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H (hàng hóa nguy hiểm): thông số ghi có hàng nguy hiểm (pin), không thuộc nhóm cấm nhưng cần giữ listing đúng và không bảo hành ('Không bảo hành' - mục C về bảo hành)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đối tượng chính là trẻ em, pin cúc áo có nguy cơ nuốt; không bảo hành, không có chứng nhận."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: sản phẩm dành cho bé nên phải có người lớn trong khung hình, không để trẻ tự giới thiệu hoặc đòi cha mẹ mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'bảo vệ mắt, chống cận, loại bỏ ánh sáng xanh' không có chứng nhận",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ hoàn toàn claim, chỉ nói 'màn hình LCD không đèn nền, không chói'."
-   },
-   {
-    "van_de": "Hàng có pin (dangerous goods), dành cho trẻ nhỏ",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp thông tin pin, chứng nhận an toàn và khuyến cáo độ tuổi."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'chống cận', 'bảo vệ mắt cho bé', 'tốt cho sức khỏe'",
-    "goi_y": "Nói 'màn hình LCD viết vẽ mượt, xóa một chạm, đỡ tốn giấy'."
+    "khong_nen": "Chống cận, bảo vệ mắt, loại bỏ hoàn toàn ánh sáng xanh",
+    "goi_y": "Nói 'màn hình không đèn nền, viết xóa một chạm, nhẹ khoảng 100g'."
+   },
+   {
+    "khong_nen": "Tốt cho sức khỏe, đạt tiêu chuẩn chất lượng quốc tế",
+    "goi_y": "Chỉ nêu thông số kích thước 16 inch, chất liệu ABS, kèm bút cảm ứng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Loại pin, chứng nhận an toàn, độ tuổi khuyến nghị, nguồn gốc.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh mô tả; chưa rõ chứng nhận an toàn pin và hình in trên bảng.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

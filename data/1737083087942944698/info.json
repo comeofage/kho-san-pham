@@ -38,37 +38,37 @@
   "poster_folder": 307,
   "duong_dan": "E:/oneshottramcanh/ongnhang-1737083087942944698/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "the": [
   "pemit89"
  ],
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Câu 'mang lại tài lộ' là cam kết tâm linh/mê tín dễ bị gỡ video.",
-   "khuyen_nghi": "Chỉ giới thiệu như vật phẩm thờ cúng, nhấn chất liệu gỗ và hoàn thiện, bỏ mọi lời hứa tài lộ, may mắn."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'mang lại tài lộ' và 'gỗ nhóm 1', 'dát vàng' cần khớp thực tế, tránh sai lệch (mục C).",
+   "khuyen_nghi": "Mô tả đẹp, sang trọng, dùng thờ cúng; không hứa tài lộ, không nói 'vàng thật' nếu chỉ dát lớp trang trí."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Tên có 'mang lại tài lộ', cam kết vận may/tài chính là nội dung mê tín bị hạn chế."
+    "muc_do": "🟡",
+    "nhan_xet": "'Mang lại tài lộ' là hứa hẹn không có căn cứ (mục C); 'gỗ nhóm 1', 'dát vàng' phải đúng chất liệu."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand Dhk deco của shop, không có dấu hiệu nhái."
+    "nhan_xet": "Brand Dhk deco của chính shop."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hoa văn Phúc Lộc Thọ truyền thống, không vướng bản quyền."
+    "nhan_xet": "Không thấy dấu hiệu IPR; họa tiết Phúc Lộc Thọ truyền thống."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Vật phẩm thờ cúng nhạy cảm tôn giáo; 'gỗ nhóm 1' và gỗ lát cần chứng minh nguồn gốc hợp pháp."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ thờ cúng không thuộc nhóm cấm/hạn chế; chỉ cần gỗ có nguồn gốc hợp pháp (mục G)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -76,25 +76,15 @@
     "nhan_xet": "Không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Cam kết 'mang lại tài lộ'",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ câu này khỏi lời thoại và caption, chỉ nói công năng cắm nhang."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Mang lại tài lộ, hút tiền, may mắn",
-    "goi_y": "Nói 'mẫu ống nhang trang nghiêm cho bàn thờ'."
-   },
-   {
-    "khong_nen": "Gỗ nhóm 1 quý hiếm",
-    "goi_y": "Chỉ nói 'gỗ lát' nếu có giấy tờ."
+    "khong_nen": "Mang lại tài lộ, hút tiền tài chắc chắn",
+    "goi_y": "Sang trọng, hợp không gian thờ, bền đẹp"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu giấy tờ nguồn gốc gỗ; kích thước USP 27cm khác tên 26cm.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "thieu_thong_tin": "Giấy tờ nguồn gốc gỗ, độ dày lớp dát vàng/chất liệu dát.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

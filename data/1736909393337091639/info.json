@@ -29,7 +29,7 @@
   "poster_folder": 187,
   "duong_dan": "E:\\oneshottramcanh\\toahuong 1736909393337091639\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -43,52 +43,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thông số ghi 'không hóa chất, không gây dị ứng' mâu thuẫn với việc dùng tinh dầu hương liệu và là claim tuyệt đối.",
-   "khuyen_nghi": "Có thể làm nếu bỏ các claim 'không hóa chất, không dị ứng'; chỉ nói về mùi hương và cách lật úp sử dụng."
+   "muc_do": "🟡",
+   "nguy_co": "Thông số ghi \"không hóa chất, không gây dị ứng\" là claim tuyệt đối cần bằng chứng (mục C) và đây là tinh dầu dạng lỏng cần chú ý an toàn.",
+   "khuyen_nghi": "Chỉ quảng bá mùi hương, cách dùng lật úp tiện lợi; bỏ \"không hóa chất, không dị ứng\", nhắc để xa tầm tay trẻ và thú cưng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Không hóa chất', 'không gây dị ứng', 'tỏa hương 360 độ' là claim tuyệt đối không có kiểm nghiệm."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Không hóa chất, không gây dị ứng, công nghệ mới\" là tuyên bố cần bằng chứng (mục C) nhưng bỏ đi là hết rủi ro, chỉ cần nói về mùi hương."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "BiFresh Việt Nam có hộ kinh doanh chịu trách nhiệm rõ ràng, không thấy dấu hiệu nhái."
+    "nhan_xet": "Brand Bifresh là của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Thiết kế lọ riêng, không dùng hình ảnh bản quyền."
+    "nhan_xet": "Thiết kế quả cầu lật úp không thấy hàng nhái thương hiệu cụ thể (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Tinh dầu dạng lỏng chứa hương liệu, cần kiểm tra công bố thành phần và không thuộc hàng nguy hiểm theo khai báo."
+    "nhan_xet": "Tinh dầu/chất lỏng tạo hương có thể thuộc hàng hóa nguy hiểm (mục H chưa đọc chi tiết) nhưng trang ghi không chứa hàng nguy hiểm và có đơn vị chịu trách nhiệm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Chất lỏng thơm có thể bị trẻ hoặc thú cưng nghịch, nên có lưu ý để xa tầm tay."
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em, chỉ cần nhắc để xa tầm tay trẻ (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'không hóa chất, không gây dị ứng' cho sản phẩm tinh dầu",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim, nói 'hương hoa hồng nhẹ' và nhắc người nhạy cảm mùi nên thử trước."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'không hóa chất', 'không dị ứng', 'an toàn cho cả bà bầu và trẻ nhỏ'",
-    "goi_y": "Nói 'lọ tỏa hương hoa hồng, lật úp là dùng được, đặt phòng khách hoặc tủ giày'."
+    "khong_nen": "Không hóa chất, không gây dị ứng, an toàn tuyệt đối",
+    "goi_y": "Hương hoa hồng dịu, lật úp là tự tỏa hương, thay thế xịt thơm thông thường."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có bảng thành phần và công bố mỹ phẩm hay hóa chất gia dụng; chưa đọc ảnh.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa có phiếu kiểm nghiệm/MSDS cho tinh dầu và thành phần chính (mô tả trang trống ở mục thành phần).",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

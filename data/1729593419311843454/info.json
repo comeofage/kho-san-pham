@@ -35,59 +35,53 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "the": [
   "pemit89"
  ],
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Tên sản phẩm có claim 'chống cháy' và 'chống dầu mỡ' tuyệt đối gần bếp, có thể bị coi là claim an toàn không kiểm chứng.",
-   "khuyen_nghi": "Chỉ nói che dầu mỡ, dễ lau chùi; không nói chống cháy hay chịu nhiệt trực tiếp bếp lửa nếu chưa có chứng nhận."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'chống chay' gần bếp có thể bị hiểu là chống cháy tuyệt đối, và mẫu in có thể dính bản quyền hình ảnh.",
+   "khuyen_nghi": "Có thể làm; chỉ nói chống dầu mỡ, dễ lau, và dặn dán xa lửa trực tiếp. Chỉ quay đúng mẫu trong listing, tránh mẫu có nhân vật."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Claim 'chống cháy' khu vực bếp là claim an toàn nhạy cảm cần có kiểm nghiệm."
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống chay' có thể gây hiểu lầm về an toàn cháy (mục C: tuyên bố sai lệch) nên chỉ nói chống dầu mỡ, chịu nhiệt vừa phải theo mô tả."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Tuyết An riêng, không thấy dấu hiệu nhái."
+    "nhan_xet": "Brand Tuyết An là của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Hơn 50 mẫu hoa văn, một số mẫu có thể lấy hình từ nguồn khác chưa rõ bản quyền."
+    "nhan_xet": "Nhiều mẫu in hình/tranh (M1–M57), mục I nêu hình ảnh và nhân vật có thể có bản quyền nên tránh mẫu có nhân vật hoạt hình."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Decal PVC dán tường, không thuộc nhóm hạn chế."
+    "nhan_xet": "Decal PVC gia dụng, không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không liên quan trẻ em."
+    "nhan_xet": "Không nhắm tới trẻ em (mục D không áp dụng)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim chống cháy/chịu nhiệt khi dán gần bếp",
-    "rui_ro": "🟠",
-    "xu_ly": "Hướng dẫn dán cách bếp lửa an toàn và không khẳng định chống cháy."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chống cháy, chịu nhiệt tuyệt đối, dán sát bếp lửa vẫn an toàn",
-    "goi_y": "Nói 'chống thấm dầu mỡ, lau sạch dễ dàng'."
+    "khong_nen": "Chống cháy hoàn toàn, dán sát bếp lửa vẫn an toàn",
+    "goi_y": "Chống dầu mỡ bắn, dễ lau chùi; nên dán cách xa ngọn lửa trực tiếp."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có thông số chịu nhiệt hoặc chứng nhận chống cháy; chưa rõ nguồn mẫu hoa văn.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ mức chịu nhiệt thực tế (độ C) và mẫu nào có hình nhân vật.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

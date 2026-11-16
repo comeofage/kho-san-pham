@@ -27,7 +27,7 @@
   "so_video": 19,
   "luc": "2026-10-10T16:11:17+07:00"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Nhân",
@@ -41,57 +41,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thiếu giấy chứng nhận ATTP và có claim 'hữu cơ' chưa có chứng nhận.",
-   "khuyen_nghi": "Làm nếu shop cung cấp giấy ATTP/ngày hạn dùng; bỏ claim hữu cơ; chỉ nói về hương vị và cách ăn."
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm cần giấy tờ công bố, và thông số ghi 'Hữu cơ' có thể bị coi là tuyên bố cần bằng chứng.",
+   "khuyen_nghi": "Chỉ nói hương vị, cách ăn kèm; không nhắc 'hữu cơ' nếu bao bì không có chứng nhận, và không nói tác dụng sức khỏe."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Thông số ghi 'Hữu cơ' là claim cần chứng nhận hữu cơ; 'chống ngán hiệu quả' cũng nên tránh."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C/H: 'chống ngán hiệu quả, kích thích vị giác' là mô tả ẩm thực nhẹ, nhưng 'Hữu cơ' cần chứng nhận trên bao bì."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Mắm Huế Thu Đông của chính shop, chưa thấy vấn đề."
+    "nhan_xet": "Mục I: 'Mắm Huế Thu Đông' là tên shop, không gợi liên tưởng hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình ảnh món ăn, chưa thấy vi phạm."
+    "nhan_xet": "Mục I: món ăn truyền thống, không có hình/nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thực phẩm đóng hũ cần công bố/giấy chứng nhận ATTP, thông số chưa có số đăng ký, hạn dùng."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: thực phẩm & đồ uống cần giấy tờ công bố, listing chưa thể hiện số tự công bố; hàng cần bảo quản lạnh nên đóng gói phải đúng nhãn (mục G: hàng không nhãn/đóng gói lại)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Thực phẩm người lớn, không liên quan trẻ em."
+    "nhan_xet": "Mục D: không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'Hữu cơ' trong thông số chưa có chứng nhận",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim hữu cơ hoặc yêu cầu chứng nhận hữu cơ."
-   },
-   {
-    "van_de": "Thực phẩm chưa thấy giấy chứng nhận ATTP và hạn dùng",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung giấy ATTP, thành phần, hạn sử dụng."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'hữu cơ', 'chống ngán hiệu quả', 'tốt cho tiêu hóa'",
-    "goi_y": "Nói 'mắm dưa đu đủ giòn, đậm vị Huế, ăn với cơm nóng, bún'."
+    "khong_nen": "Mắm hữu cơ, sạch tuyệt đối, tốt cho sức khỏe",
+    "goi_y": "Nói 'mặn ngọt chua cay, giòn sật, ăn kèm cơm nóng, bún, thịt luộc'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy chứng nhận ATTP, thành phần, hạn sử dụng, chứng nhận hữu cơ.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa thấy số tự công bố và chứng nhận hữu cơ trong listing; chưa đọc ảnh nhãn hũ.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

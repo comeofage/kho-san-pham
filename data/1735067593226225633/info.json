@@ -30,56 +30,56 @@
   "poster_folder": 64,
   "duong_dan": "E:\\Aff anh nhan\\review\\bình kaku 1735067593226225633\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mẫu Snoopy và các mẫu hoạt hình (capybara, puppy) có nguy cơ vi phạm bản quyền nhân vật.",
-   "khuyen_nghi": "Chỉ quay mẫu trơn inox, tránh mẫu Snoopy; claim giữ nhiệt phải theo thông số shop và không hứa số giờ."
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể Snoopy có thể là nhân vật bản quyền nếu shop chưa có giấy phép; claim 'Inox 316', 'giữ nhiệt tốt' cần bằng chứng.",
+   "khuyen_nghi": "Chỉ quảng bá các mẫu trơn/nhân vật chung (cún, capybara); không dẫn người xem sang mẫu Snoopy; nói thông số giữ nhiệt theo nhãn/ảnh."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "\"Giữ nhiệt tốt\" cần chỉ số thực tế, không thổi phồng; inox 316/304 cần có chứng minh nếu nhắc an toàn thực phẩm."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả vật liệu, giữ nhiệt; không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand NIUMI, cần xác nhận shop là chủ nhãn; tên \"KAKU\" không rõ."
+    "nhan_xet": "Brand NIUMI/KAKU là của shop; tên 'KAKU' cần tránh gợi hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Biến thể SNOOPY là nhân vật có bản quyền, cần giấy phép."
+    "nhan_xet": "Mục I: mẫu 'SNOOPY' là nhân vật có bản quyền, bán khi chưa có cấp phép là vi phạm; sửa được bằng cách không quảng bá mẫu đó."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Bình nước thường, không thuộc nhóm hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em rõ ràng."
+    "nhan_xet": "Không nhắm riêng trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Biến thể Snoopy và mẫu hoạt hình",
+    "van_de": "Biến thể SNOOPY ĐỎ 500ML",
     "rui_ro": "🟠",
-    "xu_ly": "Không quay hoặc nhắc mẫu Snoopy; chỉ dùng mẫu màu trơn."
+    "xu_ly": "Không quay/nhắc mẫu Snoopy, chỉ dùng mẫu inox trơn hoặc cún/capybara chung."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Nhắc tên Snoopy/nhân vật bản quyền",
+    "goi_y": "Mẫu bình họa tiết dễ thương"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Không có USP và mô tả chữ; chưa có thời gian giữ nhiệt thật, chứng nhận inox.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ shop có giấy phép Snoopy; chưa có thông số giữ nhiệt/phiếu inox 316; chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

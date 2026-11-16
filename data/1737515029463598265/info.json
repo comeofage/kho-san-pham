@@ -25,7 +25,7 @@
   "poster_folder": 198,
   "duong_dan": "E:\\oneshottramcanh\\holo 1737515029463598265\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -35,57 +35,52 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bình nước nhựa có claim 'không chứa BPA' mâu thuẫn chất liệu PC, shop điểm thấp 2.6 và giá gốc giảm 70% đáng ngờ.",
-   "khuyen_nghi": "Bỏ claim không BPA, an toàn sức khỏe, chống tràn 100% nếu không có kiểm nghiệm; chỉ nói thiết kế hồ lô, dung tích 700ml, decal DIY."
+   "muc_do": "🟡",
+   "nguy_co": "USP nói 'Tritan không BPA' nhưng mô tả ghi chất liệu PC, mâu thuẫn dễ thành tuyên bố sai lệch; giá giảm 70% và shop 2.6 sao cũng đáng lưu ý.",
+   "khuyen_nghi": "Không nói 'Tritan/không BPA/chịu nhiệt/chống tràn 100%' khi chưa xác nhận trên nhãn; chỉ nói dung tích 700ml, kiểu hồ lô, decal DIY, và tránh kể giá gốc khi không có căn cứ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Không chứa BPA', 'an toàn cho sức khỏe', 'chống tràn 100%' mâu thuẫn với chất liệu PC ghi trên trang."
+    "nhan_xet": "Mục C: 'Tritan không chứa BPA' mâu thuẫn mô tả 'PC' và 'chống tràn 100%', 'chịu nhiệt' là tuyên bố vật liệu/an toàn sai lệch, nhưng sửa được bằng cách bỏ những câu này."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Không có thương hiệu rõ ràng, tiêu đề dùng cụm 'Tai Chi' chỉ để chỉ phong cách."
+    "muc_do": "🟢",
+    "nhan_xet": "Không có brand ngoài, 'Tai Chi' chỉ là phong cách, không ám chỉ hãng (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Bộ decal DIY phong cách kiếm hiệp có thể chứa hình nhân vật/logo có bản quyền, cần kiểm ảnh."
+    "muc_do": "🟢",
+    "nhan_xet": "Họa tiết cổ điển, decal DIY thông thường, chưa thấy nhân vật bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Bình đựng đồ uống cần kiểm nghiệm vật liệu tiếp xúc thực phẩm, thông số trang trống."
+    "nhan_xet": "Mục G: hàng tiêu dùng phải có nhãn đầy đủ; thông số trống, không có tổ chức chịu trách nhiệm hàng hóa nên cần bổ sung."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em."
+    "nhan_xet": "Sản phẩm cho người lớn tập võ/dã ngoại, không nhắm trẻ em (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Mâu thuẫn chất liệu PC và claim PC/Tritan không BPA",
+    "van_de": "Mâu thuẫn chất liệu: USP 'nhựa PC/Tritan không BPA' so với mô tả 'PC' và giảm giá 70% từ giá gốc 233k",
     "rui_ro": "🟠",
-    "xu_ly": "Không nhắc 'không BPA' khi chưa có giấy kiểm nghiệm."
-   },
-   {
-    "van_de": "Giá gốc 233k giảm 70% và shop 2.6 sao",
-    "rui_ro": "🟠",
-    "xu_ly": "Không nhấn 'giảm 70%', chọn kỹ nguồn hàng vì dễ bị khiếu nại."
+    "xu_ly": "Không nói 'Tritan, không BPA, chống tràn 100%'; chỉ nói theo nhãn thật trên ảnh và tránh so sánh giá gốc."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Không BPA, an toàn cho sức khỏe, chống tràn 100%",
-    "goi_y": "Bình 700ml thiết kế hồ lô, có dây đeo và decal DIY"
+    "khong_nen": "Tritan không chứa BPA / chống tràn 100% / chịu nhiệt",
+    "goi_y": "Bình hồ lô 700ml, có nắp khóa, kèm decal DIY và dây đeo."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thông số kỹ thuật trang trống, chưa rõ chất liệu thực (PC hay Tritan), không có giấy kiểm nghiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Phần thông số trống, thiếu tổ chức chịu trách nhiệm; ảnh ghép nằm ở thư mục khác (oneshottramcanh) chưa đọc; shop đánh giá 2.6.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

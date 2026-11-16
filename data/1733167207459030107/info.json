@@ -28,7 +28,7 @@
   "poster_folder": 205,
   "duong_dan": "E:/oneshottramcanh/matloi 1733167207459030107/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -42,52 +42,50 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi bóp cho trẻ 3+ có claim giảm stress, phát triển kỹ năng và an toàn mà không có chứng nhận.",
-   "khuyen_nghi": "Chỉ mô tả hành vi bóp, mắt lồi. Không nói giảm stress, phát triển trí tưởng tượng. Cần chứng nhận an toàn đồ chơi."
+   "muc_do": "🟡",
+   "nguy_co": "Claim giảm stress, phát triển kỹ năng cho trẻ cần nói nhẹ tay; sản phẩm dành trẻ 3+ nên cần cảnh báo người lớn giám sát (mục A, D).",
+   "khuyen_nghi": "Nói bóp thấy vui tay, mắt bật ra; không hứa chữa/giảm stress hiệu quả, không để trẻ tự giới thiệu, nhắc không cho vào miệng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Giảm căng thẳng', 'phát triển kỹ năng/sáng tạo' là claim không có bằng chứng."
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả có giảm căng thẳng, phát triển kỹ năng cho trẻ; nên dùng 'thư giãn tay', 'vui' thay vì hiệu quả điều trị (mục A: dùng giúp/hỗ trợ)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand NIMO, tên 'Nimo' gần tên nhân vật (cá Nemo/Nimo), cần xác minh không nhái."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand NIMO là tên shop/dòng đồ chơi, không thấy mượn nhãn hiệu khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Hình sâu mắt lồi là đồ chơi phổ biến, chưa thấy nhân vật bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Sâu xanh mắt lồi dạng chung, không thấy nhân vật có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Đồ chơi PVC, không thuộc nhóm cấm/hạn chế; chưa thấy chứng nhận an toàn nhưng không bắt buộc nêu."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Trẻ 3+, kích thước nhỏ 7,5cm, PVC 'an toàn' cần chứng nhận, nguy cơ nuốt/mắt nhỏ rơi ra."
+    "nhan_xet": "Nhắm trẻ từ 3 tuổi, kích thước nhỏ 7,5cm dễ nuốt; trẻ không được trình bày sản phẩm, có người lớn trong khung hình (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim giảm stress, phát triển kỹ năng và an toàn cho trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ các claim này, chỉ quay cảnh bóp mắt lồi."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giảm stress, phát triển trí tưởng tượng, an toàn tuyệt đối",
-    "goi_y": "Nói 'bóp nhẹ là mắt lồi ra, thả tay lại về dáng cũ'."
+    "khong_nen": "Giúp trẻ giảm stress, phát triển trí tưởng tượng hiệu quả",
+    "goi_y": "Bóp nhẹ là mắt lồi bật ra, thả tay sâu về dáng cũ, rất vui tay."
+   },
+   {
+    "khong_nen": "Thân thiện môi trường, an toàn tuyệt đối cho trẻ",
+    "goi_y": "Chất liệu PVC, trẻ từ 3 tuổi chơi có người lớn bên cạnh, không cho vào miệng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận an toàn đồ chơi, độ tuổi tối thiểu, thông tin tổ chức chịu trách nhiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Chưa có chứng nhận an toàn đồ chơi; mã PO96-22 và độ tuổi cảnh báo trên bao bì chưa rõ.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

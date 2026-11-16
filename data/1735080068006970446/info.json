@@ -30,56 +30,56 @@
   "poster_folder": 40,
   "duong_dan": "E:\\Aff anh nhan\\review\\stem xe 1735080068006970446\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi lắp ráp có motor/chi tiết nhỏ cho trẻ em cần hợp quy an toàn đồ chơi và có claim phát triển tư duy.",
-   "khuyen_nghi": "Làm được nếu shop có chứng nhận hợp quy đồ chơi, ghi độ tuổi và cảnh báo chi tiết nhỏ; bỏ hứa hẹn phát triển."
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể quả địa cầu có thể sai bản đồ Hoàng Sa/Trường Sa (mục G); đồ chơi trẻ em cần chú ý an toàn, không để trẻ tự giới thiệu.",
+   "khuyen_nghi": "Không quảng bá biến thể 'Địa Cầu' trừ khi đã kiểm tra bản đồ đúng; nhấn lắp ráp có người lớn kèm; không nói 'giảm thời gian dùng điện thoại' nếu không có căn cứ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "\"Rèn tư duy, giảm thời gian màn hình, tăng khả năng tự học\" là claim lợi ích cần nói mức độ nhẹ."
+    "nhan_xet": "Mục C: 'rèn tư duy', 'giảm th...' là claim phát triển/giảm màn hình chưa có bằng chứng; sửa được bằng 'giúp bé học qua chơi'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy thương hiệu bên thứ ba."
+    "nhan_xet": "Brand EDOURA của shop."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô hình xe đua, máy bay, vệ tinh nên tránh logo hãng thật."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật/logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm cấm, nhưng có pin/motor nếu bản có điện."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục G: quả địa cầu bị cấm nếu thiếu Hoàng Sa/Trường Sa hoặc có đường lưỡi bò; cần kiểm tra biến thể 'Quạt Điện, Địa Cầu'."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em cần QCVN 3:2019 và cảnh báo chi tiết nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: đồ chơi hợp lệ cho trẻ nhưng phải có người lớn trong khung, không để bé trình bày hay thúc bố mẹ mua; chi tiết nhỏ cần cảnh báo."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Đồ chơi trẻ em chưa rõ hợp quy",
+    "van_de": "Biến thể Quạt Điện, Địa Cầu",
     "rui_ro": "🟠",
-    "xu_ly": "Xin giấy hợp quy và độ tuổi; không quay trẻ nhỏ chơi chi tiết nhỏ."
+    "xu_ly": "Kiểm tra ảnh địa cầu; nếu bản đồ sai thì không quảng bá biến thể này, chỉ quảng bá xe, tàu, máy bay."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Bé phát triển IQ vượt trội, bé hết nghiện điện thoại",
+    "goi_y": "Bé vừa chơi vừa học nguyên lý cơ bản cùng bố mẹ"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Không có USP; chưa có độ tuổi, chứng nhận hợp quy, thông tin pin/motor.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh nên chưa biết bản đồ trên địa cầu; chưa rõ chứng nhận an toàn đồ chơi/độ tuổi, pin; mô tả bị cắt.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

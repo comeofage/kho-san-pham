@@ -30,56 +30,50 @@
   "poster_folder": 71,
   "duong_dan": "E:\\Aff anh nhan\\review\\butchithienlonghb 1735335113276032021\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim \"chính hãng\" Thiên Long nhưng shop là cửa hàng văn phòng phẩm, combo lẫn bút \"định vị KING\" không rõ nhãn.",
-   "khuyen_nghi": "Chỉ nói \"chính hãng\" nếu shop có ủy quyền Thiên Long; tách rõ combo mang nhãn Thiên Long và combo khác."
+   "muc_do": "🟡",
+   "nguy_co": "Brand Thiên Long và chữ \"chính hãng\" nhưng shop Văn Phòng Phẩm Minh Ngọc có thể chưa có LoA.",
+   "khuyen_nghi": "Chỉ nói \"bút chì HB nét mượt, khó gãy\", tránh khẳng định \"chính hãng Thiên Long\" nếu chưa thấy giấy ủy quyền; không so sánh với hãng khác."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Bút chì không có claim y tế."
+    "nhan_xet": "Chỉ tả công năng thông thường (nét chì, khó gãy), không thuộc nhóm claim sức khỏe mục A/B."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Gắn Brand Thiên Long và \"chính hãng\" cần giấy ủy quyền, tránh bán nhái."
+    "muc_do": "🟡",
+    "nhan_xet": "Brand Thiên Long và mô tả \"chính hãng\" cần LoA/hóa đơn theo mục I (Nên/không nên), shop bán lại chưa rõ ủy quyền."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình nhân vật bản quyền được nêu."
+    "nhan_xet": "Không thấy nhân vật hay logo bên thứ ba ngoài thương hiệu trên thân bút."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Văn phòng phẩm thông thường, không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Dùng cho học sinh, cần nói bút không độc hại nếu có kiểm nghiệm."
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng cho học sinh nhưng không nhắm thuyết phục trẻ (mục D), chỉ cần không để trẻ tự giới thiệu."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim chính hãng Thiên Long",
-    "rui_ro": "🟠",
-    "xu_ly": "Xin giấy ủy quyền; nếu không có thì bỏ chữ chính hãng và tên hãng."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "\"Chính hãng Thiên Long\" / \"hàng hãng 100%\"",
+    "goi_y": "Nói \"bút chì HB nét mượt, dễ gọt\" nếu chưa có giấy ủy quyền (mục C)."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Không có USP; chưa có giấy ủy quyền Thiên Long; chưa rõ nhãn của bút \"định vị KING\".",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ shop có thư ủy quyền Thiên Long hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

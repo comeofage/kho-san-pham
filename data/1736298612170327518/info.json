@@ -30,56 +30,50 @@
   "poster_folder": 252,
   "duong_dan": "E:/oneshottramcanh/maufiller 1736298612170327518/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bút màu 'cho trẻ em' vẽ được trên quần áo/gỗ/đá, thiếu thông tin an toàn mực và tổ chức chịu trách nhiệm ghi mơ hồ.",
-   "khuyen_nghi": "Làm được nếu không nhắm trẻ nhỏ và không nói 'không độc hại' khi chưa có chứng từ; quay người lớn vẽ đá, gỗ."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Bút màu cho trẻ em, cần chứng nhận an toàn và người lớn trong khung; claim vẽ được trên quần áo/gỗ/đá cần khớp ảnh thật.",
+   "khuyen_nghi": "Chỉ nói đúng chất liệu vẽ được theo ảnh và demo thực tế; có người lớn khi trẻ xuất hiện, không nói 'an toàn tuyệt đối' khi chưa có chứng nhận."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Không dùng 'không độc hại, an toàn tuyệt đối', 'vẽ lên quần áo không phai' khi chưa có test."
+    "nhan_xet": "Claim vẽ được trên quần áo, gỗ, đá và độ bền màu cần demo thật, không phóng đại (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không gắn thương hiệu."
+    "nhan_xet": "Không thấy thương hiệu khác (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Ảnh vẽ có thể dùng nhân vật hoạt hình, cần đọc ảnh."
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy dấu hiệu IPR (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Mực marker acrylic cần thông tin an toàn hóa chất; tổ chức chịu trách nhiệm 'yiwu/oukwen' chưa rõ."
+    "muc_do": "🟢",
+    "nhan_xet": "Bút màu văn phòng phẩm không thuộc nhóm hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Tên sản phẩm nhắm trẻ em nên cần chứng nhận an toàn mực/văn phòng phẩm cho trẻ."
+    "muc_do": "🟡",
+    "nhan_xet": "Tên có 'cho trẻ em', trẻ xuất hiện phải có người lớn và không tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Sản phẩm gắn nhãn dành cho trẻ em nhưng thiếu chứng nhận an toàn mực",
-    "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop giấy kiểm nghiệm; trong video không quay trẻ nhỏ ngậm bút, nhấn mạnh có người lớn giám sát."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'mực không độc hại, an toàn cho bé, giặt không ra'",
-    "goi_y": "Nói 'bút màu acrylic đầu mềm, vẽ được trên đá, gỗ, vải theo mô tả shop'."
+    "khong_nen": "Mực an toàn tuyệt đối cho bé, không phai không lem",
+    "goi_y": "Nói 'demo vẽ trên vải/gỗ/đá' và chỉ nêu đúng theo thử thực tế."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy kiểm nghiệm mực, thông tin tổ chức chịu trách nhiệm đầy đủ, ảnh mô tả chưa đọc.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Trang không có mô tả chữ, thiếu thông số mực, chứng nhận an toàn; cần đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

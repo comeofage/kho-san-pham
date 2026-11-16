@@ -30,34 +30,34 @@
   "poster_folder": 112,
   "duong_dan": "E:\\oneshottramcanh\\migoi3009 1733423423079089850\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm nhập khẩu từ overseas nhưng trang không thấy giấy công bố hoặc nhãn phụ tiếng Việt.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung giấy công bố/nhãn phụ; chỉ nói mì tiện lợi, không claim sức khỏe."
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm nhập khẩu (gửi từ overseas, nhãn tiếng Trung) thuộc nhóm hạn chế cần hồ sơ và nhãn phụ tiếng Việt (mục H, mục G: không nhãn).",
+   "khuyen_nghi": "Chỉ làm khi shop có tự công bố và nhãn phụ tiếng Việt; trong video nói về vị và cách nấu 4 phút, không so sánh giá khống hay claim sức khỏe."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Chỉ nói mì ăn liền ngon, tiện; không nói tốt cho sức khỏe hay khẳng định 'thuần Nhật'."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nói sợi dai, nước dùng đậm, nấu 4 phút; không có claim sức khỏe (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand 今麦郎 (Jinmailang) có vẻ thật, nhưng chưa rõ shop có phải đại lý chính thức."
+    "muc_do": "🟢",
+    "nhan_xet": "Jinmailang (今麦郎) là nhãn hiệu của chính shop đang bán, không mượn thương hiệu khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy hình ảnh hay nhân vật bản quyền."
+    "nhan_xet": "Không thấy yếu tố bản quyền hay hàng nhái."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thực phẩm nhập khẩu gửi từ nước ngoài, không thấy số công bố sản phẩm, nhãn phụ tiếng Việt hay ngày sản xuất."
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm/đồ uống cần phê duyệt và giấy tờ; hàng gửi từ nước ngoài, cần nhãn phụ và nguồn nhập hợp pháp (mục H, mục G)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -65,26 +65,15 @@
     "nhan_xet": "Không nhắm trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Thực phẩm nhập khẩu thiếu giấy công bố/nhãn phụ tiếng Việt",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy tự công bố và nhãn phụ trước khi làm video."
-   },
-   {
-    "van_de": "Mô tả 'chuẩn phong cách Nhật Bản' có thể gây hiểu lầm xuất xứ",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói đúng xuất xứ theo nhãn, bỏ cụm 'chuẩn Nhật'."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'chuẩn vị Nhật', 'tốt cho sức khỏe'",
-    "goi_y": "Nói 'sợi udon to dai, nấu 4 phút'"
+    "khong_nen": "Giảm 50%, rẻ nhất sàn khi giá gốc không rõ",
+    "goi_y": "Nêu giá trang hiện tại, combo 5 gói, 2 vị (mục C: phóng đại giá)."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có nhãn phụ, giấy công bố, xuất xứ thực tế và hạn dùng in trên bao bì.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Khối lượng mỗi gói và nhãn phụ tiếng Việt, ngày sản xuất chưa có; chưa thấy giấy tự công bố nhập khẩu.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

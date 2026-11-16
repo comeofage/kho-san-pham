@@ -29,61 +29,50 @@
   "luc": "2026-10-22T14:25:16+07:00",
   "duong_dan": "E:\\oneshottramcanh\\tamnuoc 1731919646474078606\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Có claim nha khoa/kháng khuẩn và hồ sơ ghi bằng sáng chế thay vì giấy công bố.",
-   "khuyen_nghi": "Chỉ quay cảnh dùng và thông số cơ bản, bỏ các câu bác sĩ khuyên dùng và kháng khuẩn."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'được bác sĩ nha khoa khuyên dùng' và 'kháng khuẩn tự động' cần bằng chứng, và máy răng miệng dễ bị đẩy sang claim điều trị viêm nướu/làm trắng răng.",
+   "khuyen_nghi": "Giới thiệu như thiết bị vệ sinh răng miệng hằng ngày, nêu số chế độ, 4 đầu phun, pin dùng 6 tuần; không nhắc trị viêm nướu hay làm trắng răng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả nêu chế độ kháng khuẩn, được bác sĩ nha khoa khuyên dùng, là claim y tế chưa chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục A/C: 'bác sĩ nha khoa khuyên dùng, làm sạch sâu, kháng khuẩn' cần bằng chứng, nhưng sửa được bằng lời nói trung tính."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand GOKOCO chưa xác minh, tên SuperClean có thể trùng nhãn khác."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: thương hiệu GOKOCO tự có, tặng 'tâm nha khoa BN007' là phụ kiện của shop."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Số đăng ký ZL 2023... là bằng sáng chế kiểu dáng, không phải giấy chứng nhận chất lượng."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: có số bằng sáng chế kiểu dáng ZL, không thấy hình bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thiết bị chăm sóc răng miệng có pin sạc, có thể bị xếp là thiết bị y tế hoặc cần hợp quy điện."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục G (không hỗ trợ thiết bị y tế/trị liệu): máy tăm nước bán như hàng gia dụng chăm sóc răng miệng, giữ đúng cách nói không y tế; 'Giấy công bố tiêu chuẩn' ghi nơi cấp là cơ quan sở hữu trí tuệ nên chưa khớp loại giấy."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em."
+    "nhan_xet": "Mục D: không nhắm tới trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim được bác sĩ nha khoa khuyên dùng và kháng khuẩn tự động",
-    "rui_ro": "🟠",
-    "xu_ly": "Bỏ hoàn toàn các câu này và dùng thông số kỹ thuật thật."
-   },
-   {
-    "van_de": "Giấy phép đăng ký là bằng sáng chế, không phải công bố tiêu chuẩn",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung giấy hợp quy và công bố phù hợp."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chữa viêm nướu / diệt khuẩn / bác sĩ khuyên dùng",
-    "goi_y": "Nói làm sạch kẽ răng, 3 chế độ, có thể sạc lại."
+    "khong_nen": "Bác sĩ nha khoa khuyên dùng, trị viêm nướu, làm trắng răng, diệt sạch vi khuẩn",
+    "goi_y": "Nói 'có 3 chế độ, 4 đầu phun thay thế, gương soi, sạc dùng được khoảng 6 tuần'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Hợp quy điện, phân loại thiết bị y tế hay không, bằng chứng kháng khuẩn.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa có giấy công bố tiêu chuẩn đúng loại hoặc chứng nhận an toàn pin/điện; chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

@@ -35,61 +35,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em nhập từ nước ngoài cần chứng nhận hợp quy an toàn đồ chơi, có pick nhỏ nguy cơ nuốt.",
-   "khuyen_nghi": "Chỉ làm khi shop có hợp quy đồ chơi (QCVN 3:2019); không nói 'phát triển trí tuệ' và ghi rõ độ tuổi, chi tiết nhỏ cần người lớn giám sát."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi nhạc cụ trẻ em, cần có người lớn trong khung hình và không để trẻ tự giới thiệu; gửi từ nước ngoài 9-11 ngày.",
+   "khuyen_nghi": "Quay người lớn chơi/hướng dẫn, trẻ chỉ xuất hiện cùng người lớn; nói rõ thời gian giao từ nước ngoài, không hứa giao nhanh."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô tả 'phát triển kỹ năng vận động', 'giáo dục âm nhạc' là claim phát triển cần nói nhẹ."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nêu 'khai sáng âm nhạc, rèn vận động', không claim y tế hay thời gian cụ thể (mục A không liên quan)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Tên dùng 'mô phỏng guitar' chung chung, cần xem ảnh có logo thương hiệu đàn không."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Họa tiết gấu, cáo, khủng long cần kiểm tra có nhân vật bản quyền hay không."
+    "nhan_xet": "Họa tiết gấu, cáo, khủng long phổ thông, nhưng nên kiểm ảnh xem có in nhân vật có bản quyền không (mục I: bản quyền)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Gửi từ nước ngoài 9-11 ngày, cần chứng từ nguồn gốc và nhãn phụ."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi nhạc cụ không thuộc nhóm cấm/hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi cho trẻ em cần hợp quy; pick gắn sẵn là chi tiết nhỏ có nguy cơ hóc."
+    "muc_do": "🟡",
+    "nhan_xet": "Trẻ xuất hiện phải có người lớn và liên quan trực tiếp tới sản phẩm, không để trẻ tự giới thiệu hay thuyết phục mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em chưa rõ chứng nhận hợp quy",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy chứng nhận hợp quy và thử nghiệm an toàn trước khi quay."
-   },
-   {
-    "van_de": "Chi tiết nhỏ (pick, dây đàn) có nguy cơ hóc và không có cảnh báo độ tuổi",
-    "rui_ro": "🟠",
-    "xu_ly": "Ghi rõ độ tuổi khuyến nghị và cảnh báo người lớn giám sát trong video."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'giúp bé thông minh, khai sáng tài năng âm nhạc'",
-    "goi_y": "Nói 'đàn mini nhẹ, vừa tay bé, nhiều họa tiết dễ thương'"
+    "khong_nen": "Giao nhanh, freeship",
+    "goi_y": "Nói đúng: gửi từ nước ngoài 9-11 ngày, phí vận chuyển tính theo đơn (mục C)."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu độ tuổi khuyến nghị, chứng nhận hợp quy đồ chơi và thông tin nhà nhập khẩu.",
-  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ chứng nhận an toàn đồ chơi, độ tuổi khuyến nghị; thông số trang trống.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

@@ -36,60 +36,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mỹ phẩm có claim 'ngăn ngừa rụng tóc', 'kích thích mọc tóc' mang tính chữa trị, vượt phạm vi công bố của mỹ phẩm.",
-   "khuyen_nghi": "Làm được vì có phiếu công bố, nhưng chỉ nói làm sạch tóc, hương bưởi, tóc mượt. Bỏ mọi claim rụng tóc/mọc tóc."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả dùng 'ngăn ngừa rụng tóc', 'kích thích mọc tóc' là claim điều trị tình trạng rụng tóc mà chính sách cấm, nhưng sửa được bằng lời nói.",
+   "khuyen_nghi": "Làm được vì có phiếu công bố mỹ phẩm và thương hiệu chính hãng; chỉ nói 'làm sạch, hương hoa bưởi, tóc mềm mượt' và nếu nhắc rụng tóc thì dùng 'hỗ trợ giảm gãy rụng', kèm 'kết quả mỗi người có thể khác nhau'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "Tên sản phẩm 'giảm rụng' và mô tả 'ngăn ngừa rụng tóc, kích thích mọc tóc' là claim điều trị đối với mỹ phẩm."
+    "nhan_xet": "Mục A: 'ngăn ngừa rụng tóc', 'kích thích mọc tóc' thuộc nhóm hói/rụng tóc bị cấm, nên đổi sang 'hỗ trợ giảm gãy rụng', 'làm sạch da đầu' và bỏ khung thời gian."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thorakao là thương hiệu Việt, shop chính hãng, có đơn vị chịu trách nhiệm rõ."
+    "nhan_xet": "Mục I: Thorakao là thương hiệu chính chủ bán qua gian hàng THORAKAO STORE."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình ảnh hay nhân vật vi phạm."
+    "nhan_xet": "Mục I: không thấy hình ảnh hay nhân vật của hãng khác."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Có phiếu công bố mỹ phẩm số 003763, thuộc hàng được phép bán."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: mỹ phẩm cần phiếu công bố, listing có phiếu số 003763 do Sở Y Tế cấp nên chỉ cần quay đúng nhãn."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm đến trẻ em."
+    "nhan_xet": "Mục D: sản phẩm cho người lớn, không nhắm tới trẻ."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim 'giảm rụng tóc', 'kích thích mọc tóc' vượt công dụng mỹ phẩm.",
+    "van_de": "Mô tả listing có 'ngăn ngừa rụng tóc' và 'kích thích mọc tóc' mà chính sách xem là claim điều trị rụng tóc.",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói làm sạch da đầu, hương hoa bưởi, tóc mềm mượt sau gội."
+    "xu_ly": "Không đọc nguyên văn mô tả; dùng 'giúp tóc chắc khỏe, giảm gãy rụng' và nêu theo bao bì."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giảm rụng tóc, ngăn ngừa rụng, kích thích mọc tóc",
-    "goi_y": "Làm sạch dầu thừa trên da đầu, hương hoa bưởi dịu nhẹ, tóc mềm mượt"
+    "khong_nen": "'Ngăn ngừa rụng tóc', 'kích thích mọc tóc', 'hết rụng sau 2 tuần'.",
+    "goi_y": "Nói 'hỗ trợ giảm gãy rụng, làm sạch da đầu, tóc mềm mượt, kết quả mỗi người có thể khác nhau'."
    },
    {
-    "khong_nen": "Tóc đen huyền, hết gãy rụng",
-    "goi_y": "Cảm giác tóc suôn mượt sau khi gội"
+    "khong_nen": "'Tóc đen huyền tự nhiên' như hiệu quả nhuộm hay trị bạc.",
+    "goi_y": "Nói 'tóc óng mượt, hương hoa bưởi dịu'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Mô tả ghi 'bản cũ 500ml', chưa rõ bao bì đang bán có khớp phiếu công bố và công thức mới hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

@@ -28,7 +28,7 @@
   "poster_folder": 109,
   "duong_dan": "E:\\oneshottramcanh\\aokhoacbala 1737073725391275988\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Nhân",
@@ -41,58 +41,42 @@
  },
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thương hiệu Balabala hàng gửi từ nước ngoài, giá lệch giữa các trường và size liệt kê lỗi, đồ trẻ em.",
-   "khuyen_nghi": "Xác nhận chính hãng, uỷ quyền và kho hàng ở nước ngoài trước khi làm; không hứa giữ ấm tuyệt đối. Đối chiếu lại giá, size."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp: áo khoác thương hiệu Balabala bán qua shop hãng, chỉ cần tuân thủ quy định có trẻ xuất hiện.",
+   "khuyen_nghi": "Dùng người lớn/người mẫu theo quy định, tả chất lông cừu, giữ ấm nhẹ; không so sánh với hãng khác."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Nói khoá nhiệt giữ ấm, mềm xốp như mây là claim cảm quan, không nên tuyệt đối hoá."
+    "muc_do": "🟢",
+    "nhan_xet": "Mô tả 'giữ ấm', 'mềm xốp' là tính chất áo, không phải claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Balabala là thương hiệu có thật, cần xác nhận quyền bán; shop mới, chỉ bán 5."
+    "muc_do": "🟢",
+    "nhan_xet": "Balabala do shop balabala clothes bán, giữ nguyên tên hãng, không che logo (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Chưa thấy nhân vật bản quyền trong thông tin chữ."
+    "nhan_xet": "Không thấy sao chép nhân vật hay hàng nhái."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Hàng gửi từ overseas, giao 4 đến 12 ngày, cần rõ thông tin nhập khẩu và đổi trả."
+    "muc_do": "🟢",
+    "nhan_xet": "Quần áo thường, không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Quần áo trẻ em, cần đúng size, nhãn mác thành phần và an toàn hàng dệt."
+    "muc_do": "🟢",
+    "nhan_xet": "Quần áo trẻ em được phép nếu có người lớn trong khung, không đồ bơi/khêu gợi, trẻ không tự trình bày (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Cần xác nhận quyền bán thương hiệu Balabala",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra huy hiệu chính hãng hoặc giấy uỷ quyền."
-   },
-   {
-    "van_de": "Giá và size trong dữ liệu không nhất quán (491127 và 545.948, size ghi triệu)",
-    "rui_ro": "🟠",
-    "xu_ly": "Đối chiếu lại trang trước khi nêu giá, size trong video."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Giữ ấm tuyệt đối mùa đông, hàng chính hãng 100% khi chưa có giấy",
-    "goi_y": "Nói áo lót nỉ mềm, dùng mùa lạnh nhẹ."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Trang không có thông số và mô tả chữ; chưa rõ giấy uỷ quyền, thành phần vải, bảng size đúng.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Giấy ủy quyền thương hiệu, nhãn chất liệu; hàng gửi từ nước ngoài 4-12 ngày nên cần nói đúng thời gian giao (mục C).",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

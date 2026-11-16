@@ -37,67 +37,57 @@
   "poster_folder": 218,
   "duong_dan": "E:/oneshottramcanh/keo jelly 1729740251036616992/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mô tả mâu thuẫn và sai sự thật (sản xuất tại Đức nhưng xuất xứ Việt Nam; 'không đường, tốt cho sức khỏe, cung cấp dinh dưỡng' cho kẹo) và giấy công bố ghi '1'.",
-   "khuyen_nghi": "Chỉ làm nếu shop bổ sung giấy công bố hợp lệ và sửa mô tả; trong video chỉ nói kẹo ăn vặt nhiều màu, không nói lợi ích dinh dưỡng, không nhắc 'thương hiệu Đức'."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả shop mâu thuẫn (sản xuất tại Đức nhưng xuất xứ Việt Nam, kẹo mà 'không đường, giữ giá trị dinh dưỡng') và thông tin giấy công bố điền placeholder.",
+   "khuyen_nghi": "Có thể làm nếu chỉ nói là kẹo ăn vặt nhiều màu, ngọt/chua, theo trang hiển thị; không dùng mô tả 'dinh dưỡng, không đường' và không nhắc xuất xứ Đức. Nên xác nhận số công bố thật với shop."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "Claim 'không đường, không chất bảo quản, giữ giá trị dinh dưỡng, cung cấp năng lượng' sai bản chất kẹo và có thể vi phạm quy định thực phẩm."
+    "muc_do": "🟠",
+    "nhan_xet": "Câu 'cung cấp dinh dưỡng, không đường, không chất bảo quản' cho kẹo là sai lệch (mục C, mục H thực phẩm) nhưng bỏ được bằng cách chỉ nói vị và màu sắc."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Cụm 'thương hiệu Đức' không có thương hiệu cụ thể, dễ gây hiểu lầm nguồn gốc."
+    "nhan_xet": "'Candy thương hiệu Đức' có thể gợi thương hiệu khác (mục I) nên chỉ gọi tên sản phẩm của shop Panda Pẻn."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật bản quyền, trừ phần bao bì quà Thần Tài cần kiểm tra."
+    "nhan_xet": "Kẹo dạng bi, không thấy nhân vật/logo bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thực phẩm cần giấy tiếp nhận công bố hợp lệ, các trường nơi cấp/số đăng ký đang ghi '1'."
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm thuộc nhóm cần giấy tờ (mục H) và có 'Giấy tiếp nhận công bố' nhưng nơi cấp/số đăng ký đều ghi '1' nên cần kiểm lại."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Kẹo thu hút trẻ em, không nên quay trẻ nhỏ ăn kẹo cứng/bi gây nghẹn."
+    "nhan_xet": "Kẹo hấp dẫn trẻ nhỏ nên không nhắm trẻ và không để trẻ giới thiệu hay đòi mua (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Xuất xứ mâu thuẫn (Việt Nam so với sản xuất tại Đức)",
-    "rui_ro": "🔴",
-    "xu_ly": "Yêu cầu shop làm rõ xuất xứ và hóa đơn nhập khẩu; không nói 'hàng Đức' trong video."
-   },
-   {
-    "van_de": "Giấy công bố sản phẩm điền '1'",
+    "van_de": "Xuất xứ Việt Nam trên trang nhưng mô tả nói sản xuất tại Đức, kèm các tuyên bố dinh dưỡng sai lệch.",
     "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra số tiếp nhận công bố thật trước khi làm."
-   },
-   {
-    "van_de": "Claim dinh dưỡng và không đường sai thực tế",
-    "rui_ro": "🔴",
-    "xu_ly": "Bỏ hoàn toàn các câu về sức khỏe, dinh dưỡng."
+    "xu_ly": "Không nhắc Đức hay dinh dưỡng; chỉ nói theo thông số trang và hỏi shop xác nhận xuất xứ."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Không đường, không chất bảo quản, bổ sung năng lượng, hàng Đức chính gốc",
-    "goi_y": "Nói 'kẹo bi nhiều màu, chọn vị ngọt hoặc chua, đóng hũ làm quà'."
+    "khong_nen": "Sản xuất tại Đức, không đường, không chất bảo quản, bổ sung dinh dưỡng",
+    "goi_y": "Kẹo bi nhiều màu, chọn vị ngọt hoặc chua, hợp ăn vặt hay làm quà."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có số tiếp nhận công bố sản phẩm, nơi sản xuất thật, thành phần và hạn sử dụng.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Số giấy công bố sản phẩm thật, xuất xứ thật và thành phần.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

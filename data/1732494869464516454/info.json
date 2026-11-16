@@ -30,65 +30,65 @@
   "poster_folder": 25,
   "duong_dan": "E:\\Aff anh nhan\\review\\balo tang hop but 1732494869464516454\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Balo in hình Người Nhện có nguy cơ vi phạm bản quyền Marvel và claim chống gù là claim y tế.",
-   "khuyen_nghi": "Không nên làm vì vừa có IPR nhân vật vừa có claim y tế chống gù, khó chỉnh sửa gọn."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'chống gù', 'bảo vệ cột sống' mang tính y tế (mục A/C) và có biến thể Người Nhện là nhân vật có bản quyền (mục I); cả hai tránh được bằng cách nói và chọn mẫu.",
+   "khuyen_nghi": "Nói theo hướng 'đệm lưng, quai êm, phân bổ trọng lượng, nhẹ 600g' và chỉ quay mẫu phi hành gia/màu trơn. Không quay, không nhắc mẫu Người Nhện."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Chống gù, bảo vệ cột sống, giải nén' là claim y tế, không có chứng nhận."
+    "nhan_xet": "'Chống gù', 'giải nén bảo vệ cột sống' là claim y tế không có kiểm nghiệm, cần thay bằng mô tả thiết kế (mục A/C: claim phải có bằng chứng, mục G: thiết bị y tế/trị liệu không hỗ trợ)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Hình Siêu Nhân Nhện có thể liên quan thương hiệu Marvel."
+    "nhan_xet": "Tiêu đề dùng tên 'Siêu Nhân Nhện' gợi liên tưởng thương hiệu Marvel (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Họa tiết Người Nhện và phi hành gia khả năng cao không có bản quyền."
+    "muc_do": "🟠",
+    "nhan_xet": "Có biến thể 'Người Nhện' in nhân vật có bản quyền, chưa thấy giấy phép (mục I: bản quyền nhân vật); mẫu phi hành gia thì ít rủi ro."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Balo không thuộc nhóm hạn chế."
+    "nhan_xet": "Balo học sinh không thuộc nhóm cấm/hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Sản phẩm cho học sinh tiểu học, cần thận trọng claim sức khỏe trẻ em."
+    "nhan_xet": "Dành cho học sinh tiểu học, trẻ xuất hiện phải có người lớn và không tự giới thiệu hay đòi mua (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim chống gù, bảo vệ cột sống",
+    "van_de": "Claim 'chống gù', 'bảo vệ cột sống' trong tiêu đề và mô tả",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói thiết kế đệm lưng thoải mái"
+    "xu_ly": "Không đọc nguyên văn; nói 'thiết kế đệm lưng, quai rộng, nhẹ 600g, giúp phân bổ trọng lượng đều' kèm 'cảm nhận mỗi người có thể khác nhau'."
    },
    {
-    "van_de": "Hình Người Nhện không rõ bản quyền",
-    "rui_ro": "🔴",
-    "xu_ly": "Không làm mẫu có nhân vật bản quyền"
+    "van_de": "Biến thể Người Nhện là nhân vật có bản quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay và dẫn giỏ cho mẫu phi hành gia/màu trơn, không nhắc Spider-Man/Người Nhện."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Chống gù, chỉnh cột sống cho bé",
-    "goi_y": "Nói balo nhẹ 600g, dây đeo êm"
+    "khong_nen": "Chống gù, chỉnh cột sống, bảo vệ cột sống cho bé",
+    "goi_y": "Nói 'đệm lưng dày, quai êm, nhẹ 600g, nhiều ngăn'."
    },
    {
-    "khong_nen": "Balo Spider-Man chính hãng",
-    "goi_y": "Không nhắc tên nhân vật"
+    "khong_nen": "Nhắc tên Spider-Man, Siêu nhân nhện",
+    "goi_y": "Gọi chung là 'balo phi hành gia', 'balo màu xanh đỏ'."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Giấy phép bản quyền nhân vật, chứng nhận thiết kế công thái học.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có kiểm nghiệm/tiêu chuẩn cho tuyên bố hỗ trợ cột sống; chưa rõ ảnh biến thể nhân vật có logo hãng không.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

@@ -36,61 +36,50 @@
   "poster_folder": 322,
   "duong_dan": "E:/oneshottramcanh/bvs memeeii-1731703798106392955/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Hàng vệ sinh phụ nữ có hồ sơ công bố điền sơ sài, dễ vướng claim y tế và bị gỡ.",
-   "khuyen_nghi": "Chỉ nên làm khi shop cung cấp giấy công bố thật, nội dung chỉ nói tiện lợi và thấm hút, không nói bảo vệ sức khỏe."
+   "muc_do": "🟡",
+   "nguy_co": "Hàng chăm sóc cá nhân cần giấy công bố, thông tin đăng ký trong listing trông như điền tạm và các phân loại lẫn tên thương hiệu khác.",
+   "khuyen_nghi": "Chỉ nói thiết kế dạng quần, thấm hút, đóng gói riêng từng miếng; không so sánh hãng khác và không nói tác dụng y tế."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả chống tràn, khử mùi, thoáng khí dễ bị coi là claim hiệu quả và có thể bị suy diễn thành y tế."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C/H: 'chống rò rỉ 360°, khô ráo cả đêm' là claim tuyệt đối, nên nói 'giúp hạn chế tràn' và khuyến khích dùng theo nhu cầu."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Thương hiệu Memeeie lẫn phân loại Lailek và MIIOW, chưa rõ ủy quyền."
+    "nhan_xet": "Mục I/C: phân loại lẫn Lailek, MIIOW và Memeeie, cần quảng bá đúng thương hiệu của biến thể đang giới thiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình ảnh bản quyền rõ ràng."
+    "nhan_xet": "Mục I: chưa thấy hình/nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Giấy công bố ghi nơi cấp abc, số đăng ký 1234, ngày cấp 13/3, rất đáng ngờ; ngành hàng quản lý chặt."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: chăm sóc cá nhân cần phiếu công bố, listing ghi số đăng ký '1234' và nơi cấp 'abc' nên chưa xác thực được."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em, nhưng cần tránh hình thiếu niên."
+    "nhan_xet": "Mục D: không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Hồ sơ công bố sản phẩm điền sai (abc / 1234)",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy công bố thật trước khi quay."
-   },
-   {
-    "van_de": "Claim khô ráo cả đêm, chống rò rỉ 360°, khử mùi",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói theo mô tả của nhà sản xuất, không tuyệt đối hóa."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Hết rò rỉ / ngừa viêm nhiễm / an toàn cho vùng kín",
-    "goi_y": "Nói thiết kế dạng quần, thấm hút nhanh, dùng một lần."
+    "khong_nen": "Không bao giờ tràn, khô ráo tuyệt đối, ngừa viêm nhiễm",
+    "goi_y": "Nói 'thiết kế dạng quần, đai eo co giãn, thấm hút nhanh, có gói riêng mang theo'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Số công bố thật, thành phần, nhà sản xuất; xác nhận các mã Lailek và MIIOW có cùng thương hiệu không.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Số đăng ký/phiếu công bố thật của sản phẩm; chưa xác định bao bì thực tế có đúng thương hiệu Memeeie không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

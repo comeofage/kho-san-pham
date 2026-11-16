@@ -38,57 +38,55 @@
   "poster_folder": 192,
   "duong_dan": "F:\\2010\\văn 6 2010 1731365843556599677\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Rủi ro bản quyền nội dung dựa trên SGK và xuất bản phẩm giáo dục chưa rõ giấy phép.",
-   "khuyen_nghi": "Làm nếu shop xác nhận giấy phép xuất bản/quyền nội dung; nói đây là sổ tay ghi chép theo chương trình, không cam kết điểm số."
+   "muc_do": "🟡",
+   "nguy_co": "Sổ tay tóm tắt theo sách giáo khoa có thể bị xếp vào nhóm sách/ấn phẩm ngoài danh mục và câu 'chinh phục điểm A+' là hứa hẹn kết quả.",
+   "khuyen_nghi": "Làm được nếu listing đã được duyệt đúng danh mục; chỉ giới thiệu là sổ tay ghi chép sketchnote hỗ trợ hệ thống hóa kiến thức, không hứa điểm số, và không để học sinh tự trình bày bán hàng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Chinh phục điểm A+' là cam kết kết quả học tập, cần tránh khẳng định."
+    "nhan_xet": "Mục C: 'điểm A+', 'học tốt' là hứa hẹn kết quả, nên nói 'giúp ghi chép gọn, dễ ôn' và không cam kết điểm."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Dùng tên 'Kết Nối Tri Thức và Cuộc Sống' của bộ sách NXB Giáo dục, cần dùng đúng mục đích mô tả chương trình."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: thương hiệu TAKENOTES BETA của shop; tên 'Kết Nối Tri Thức' chỉ là tên bộ sách cần nhắc trung tính, không ngụ ý hợp tác với NXB."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Nội dung tóm tắt dựa trên sách giáo khoa và có sticker/hình minh họa; cần xác minh quyền tác giả và giấy phép xuất bản."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục I (bản quyền văn bản): nội dung tóm tắt từ sách giáo khoa do shop biên soạn lại, nên không dùng ảnh hay trang của sách gốc."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Sổ tay kiến thức có tính chất xuất bản phẩm, có thể cần giấy phép xuất bản/liên kết."
+    "nhan_xet": "Mục G: sản phẩm truyền thông/sách ngoài danh mục không hỗ trợ, sổ tay có nội dung bài học cần xác nhận listing đã được duyệt."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Hướng tới học sinh lớp 6 (khoảng 11-12 tuổi), cần nội dung phù hợp và có phụ huynh mua."
+    "nhan_xet": "Mục D: người dùng là học sinh lớp 6, nên không để học sinh tự giới thiệu hay thúc giục đòi cha mẹ mua và có người lớn khi bé xuất hiện."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nội dung biên soạn từ SGK, chưa có thông tin giấy phép xuất bản",
-    "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop về giấy phép xuất bản/ISBN và quyền sử dụng nội dung trước khi đăng."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Hứa 'đạt A+', 'chắc chắn điểm cao'",
-    "goi_y": "Nói 'sổ tay sketchnote giúp ghi chép gọn, có mục lục chia Kỳ I, Kỳ II'."
+    "khong_nen": "'Chinh phục điểm A+', 'học xong là điểm cao'.",
+    "goi_y": "Nói 'sổ tay sketchnote giúp ghi chép và ôn bài Ngữ Văn 6 gọn gàng, dễ nhớ'."
+   },
+   {
+    "khong_nen": "'Sách chính thống của Kết Nối Tri Thức' hoặc ngụ ý được NXB cấp phép.",
+    "goi_y": "Nói 'soạn theo chương trình Kết Nối Tri Thức và Cuộc Sống'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy phép xuất bản/ISBN, quyền sử dụng hình minh họa và nội dung.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa rõ listing nằm danh mục sổ tay hay sách; chưa có thông tin xuất bản; thông số sản phẩm trống.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

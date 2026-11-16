@@ -35,65 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi dạng dẻo dễ bị nhầm là đồ ăn và thiếu chứng từ an toàn đồ chơi.",
-   "khuyen_nghi": "Làm được nếu nhấn mạnh không phải đồ ăn, trên 7 tuổi, không quay trẻ nhỏ cho vào miệng."
+   "muc_do": "🟡",
+   "nguy_co": "Tên sản phẩm dùng 'Vasaline Coconut Oil' gợi tới nhãn hiệu Vaseline; claim giảm căng thẳng cần nói nhẹ (mục I, mục A).",
+   "khuyen_nghi": "Gọi là squishy bóp xả stress 6cm, không nhắc Vaseline; nói bóp lún rồi hồi chậm, không hứa hiệu quả xả stress và nhắc không được ăn."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Nói giảm căng thẳng, xả stress hiệu quả cần diễn đạt là giải trí, không phải hiệu quả trị liệu."
+    "nhan_xet": "Ảnh có chữ 'Giảm stress' và mô tả 'xả stress hiệu quả'; nên nói chơi cho thư giãn tay, không cam kết hiệu quả (mục A, mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi tiếng, tên Vasaline chỉ mô tả kiểu dáng."
+    "muc_do": "🟡",
+    "nhan_xet": "Tiêu đề dùng 'Vasaline Coconut Oil' gợi liên tưởng thương hiệu Vaseline, cần dùng từ chung 'squishy trong suốt' (mục I: vi phạm nhãn hiệu); ảnh sản phẩm không thấy logo hãng."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Kiểu tuýt kem và ball hồng đá bào có thể bị nhầm với hình ảnh thương hiệu mỹ phẩm hay đồ ăn thật."
+    "muc_do": "🟢",
+    "nhan_xet": "Hình sản phẩm là khối trong suốt và tuýt kem sao, không thấy nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Thông số ghi CẢNH BÁO TUỔI là Không nhưng mô tả khuyến cáo trên 7 tuổi và dễ bị nhầm là đồ ăn."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi squishy, không thuộc nhóm cấm/hạn chế; shop ghi rõ không phải thực phẩm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi có thể bị trẻ nhỏ cho vào miệng, cần chứng nhận hợp quy an toàn đồ chơi QCVN 3:2019/BKHCN."
+    "muc_do": "🟡",
+    "nhan_xet": "Khuyến cáo trên 7 tuổi, có người lớn giám sát, nhưng ảnh dạng thạch dễ nhầm đồ ăn; cần nhắc không được ăn (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Thiếu chứng nhận an toàn đồ chơi trẻ em",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp công bố hợp quy trước khi làm."
-   },
-   {
-    "van_de": "Hình dáng giống đồ ăn, kem",
-    "rui_ro": "🟠",
-    "xu_ly": "Ghi rõ không ăn được trên video, không quay hành động ăn."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giúp trị căng thẳng, lo âu",
-    "goi_y": "Chỉ nói bóp cho vui tay, thư giãn."
+    "khong_nen": "Vaseline/dầu dừa Vaseline squishy",
+    "goi_y": "Squishy trong suốt 6cm, bóp lún rồi chậm rãi hồi form."
    },
    {
-    "khong_nen": "Quay bé nhỏ ngậm hay cắn",
-    "goi_y": "Quay người lớn, học sinh lớn dùng, đúng độ tuổi."
+    "khong_nen": "Xả stress hiệu quả, chữa căng thẳng",
+    "goi_y": "Bóp chơi cho thư giãn tay, nhiều màu sắc."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có giấy hợp quy đồ chơi.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Chưa rõ hãng thật của mẫu 'dầu dừa'; sản phẩm thủ công, chưa có chứng nhận an toàn.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

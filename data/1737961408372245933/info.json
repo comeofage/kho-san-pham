@@ -35,61 +35,64 @@
   "poster_folder": 247,
   "duong_dan": "E:/oneshottramcanh/kemdua 1737961408372245933/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Kem đánh răng có claim làm trắng, ngừa sâu răng, giảm ê buốt, điều trị loét miệng vi phạm quy định mỹ phẩm/y tế.",
-   "khuyen_nghi": "Không nên làm vì trang gốc đầy claim y tế và trắng răng 7 ngày. Chỉ cân nhắc nếu shop sửa lại listing và có công bố mỹ phẩm."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Listing và USP chứa nhiều claim làm trắng răng kèm khung thời gian (7 ngày, 4 tông), \"đánh bay\" và \"điều trị loét miệng\", nhưng đều sửa được bằng cách đổi lời quảng bá.",
+   "khuyen_nghi": "Có thể làm nếu chỉ nói \"giúp răng sáng hơn, hơi thở thơm mát\", bỏ mọi mốc thời gian, \"đánh bay\" và claim điều trị; kèm câu \"kết quả mỗi người có thể khác nhau\"."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "Claim làm trắng 4 tông sau 7 ngày, ngừa sâu răng, giảm ê buốt, điều trị loét miệng là claim y tế/trị liệu."
+    "muc_do": "🟠",
+    "nhan_xet": "\"Bật 4 tông sau 7 ngày\", \"đánh bay mảng bám\", \"điều trị loét miệng\", \"ngừa sâu răng\" vi phạm mục A (cấm khung thời gian, cấm \"đánh bay\", làm trắng răng) và mục C (tuyên bố y tế)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand Jasmeen ít nổi tiếng, chưa rõ đăng ký nhãn hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Jasmeen của chính shop, không nhắc hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có vấn đề hình ảnh bản quyền."
+    "nhan_xet": "Không thấy hình hay nhân vật có bản quyền trong thông tin trang."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Mỹ phẩm/chăm sóc răng miệng cần công bố sản phẩm, hàng Trung Quốc; thông số ghi 'phi y tế' mâu thuẫn claim."
+    "muc_do": "🟡",
+    "nhan_xet": "Chăm sóc cá nhân cần phiếu công bố mỹ phẩm và nhãn đủ thông tin (mục H); trang ghi xuất xứ Trung Quốc và \"phi y tế\", chưa thấy giấy tờ."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em."
+    "nhan_xet": "Sản phẩm người lớn, không có yếu tố hướng tới trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim điều trị, giảm ê buốt, ngừa sâu răng, trắng 4 tông 7 ngày",
-    "rui_ro": "🔴",
-    "xu_ly": "Bỏ toàn bộ claim, chỉ nói mùi hương/cảm giác sử dụng nếu làm."
-   },
-   {
-    "van_de": "Thiếu công bố mỹ phẩm và nguồn gốc rõ",
+    "van_de": "Claim \"làm trắng 4 tông sau 7 ngày\", \"đánh bay ố vàng\", \"điều trị loét miệng\" trong tên, USP và mục Benefit",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy công bố sản phẩm trước khi làm."
+    "xu_ly": "Không đọc lại các câu này trong video; chỉ dùng \"giúp răng sáng hơn\", \"hỗ trợ làm sạch mảng bám\", kèm \"kết quả mỗi người có thể khác nhau\" (mục A)."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Làm trắng 4 tông sau 7 ngày, trị ê buốt, ngừa sâu răng, điều trị loét miệng",
-    "goi_y": "Nói 'hương dừa mát, cảm giác sạch miệng sau khi dùng'."
+    "khong_nen": "\"Trắng 4 tông sau 7 ngày\", \"đánh bay ố vàng\"",
+    "goi_y": "\"Giúp răng trông sáng hơn khi dùng đều đặn\"."
+   },
+   {
+    "khong_nen": "\"Điều trị loét miệng\", \"ngừa sâu răng\", \"hết ê buốt\"",
+    "goi_y": "\"Hương dừa bạc hà thơm mát, dịu nhẹ cho người răng nhạy cảm\" nếu có ghi trên bao bì."
+   },
+   {
+    "khong_nen": "Before/after răng đã chỉnh sửa hoặc filter",
+    "goi_y": "Chỉ kể trải nghiệm cá nhân của chính người quay."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chưa có số công bố mỹ phẩm; chưa kiểm tra nội dung ảnh mô tả.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa thấy phiếu công bố mỹ phẩm/kiểm nghiệm; ảnh mô tả ở thư mục oneshottramcanh chưa đối chiếu.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

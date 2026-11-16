@@ -35,56 +35,50 @@
   "poster_folder": 214,
   "duong_dan": "E:\\oneshottramcanh\\banphim output 1737749463769581535\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Hình nhân vật hoạt hình có thể vi phạm IPR và đồ chơi dùng pin/đèn nhắm trẻ em chưa rõ chứng nhận an toàn.",
-   "khuyen_nghi": "Chỉ quay thao tác bấm, tiếng click, đèn LED; không nhắc tên nhân vật và không hứa giải stress. Kiểm tra ảnh xem có logo/nhân vật bản quyền không."
+   "muc_do": "🟡",
+   "nguy_co": "Tiêu đề ghi giá '19k' trong khi giá trang 22.433₫, dễ bị tuyên bố giá sai; hình nhân vật hoạt hình chưa rõ.",
+   "khuyen_nghi": "Nói đúng giá hiển thị trên trang, không dùng '19k/38k' nếu không khớp; chỉ nói 'vui tay, có đèn'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Quảng cáo 'giải tỏa stress' chỉ nên nói vui, không hứa hiệu quả tâm lý."
+    "nhan_xet": "Mục A/C: 'giải tỏa stress' nên nói nhẹ; 'giá chỉ từ 19k' không khớp giá trang là tuyên bố giá sai (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟢",
-    "nhan_xet": "Brand ghi 'Không hương liệu' là điền sai, không có thương hiệu nổi tiếng."
+    "muc_do": "🟡",
+    "nhan_xet": "Brand ghi 'Không hương liệu' sai trường, không nhắc hãng khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Tạo hình nhân vật hoạt hình dễ thương có nguy cơ nhái nhân vật có bản quyền (Sanrio, Sonny Angel...)."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục I: 'hình hoạt hình' có thể là nhân vật có bản quyền, cần xem ảnh."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Có đèn LED và pin cúc áo, cần tránh nói an toàn tuyệt đối."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi/móc khóa không thuộc G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi giá rẻ học sinh dùng, thiếu thông tin chứng nhận an toàn đồ chơi."
+    "nhan_xet": "Mục D: dùng làm móc khóa balo học sinh, trẻ xuất hiện cần người lớn, không khuyến khích bé đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nhân vật hoạt hình trên bàn phím có thể là hình có bản quyền",
-    "rui_ro": "🟠",
-    "xu_ly": "Đọc ảnh, nếu giống nhân vật thương hiệu thì không quay cận cảnh hay nhắc tên nhân vật."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giải tỏa hoàn toàn căng thẳng, trị stress",
-    "goi_y": "Nói 'bấm vui tay, giải trí giờ ra chơi'."
+    "khong_nen": "'Giá chỉ 19k' khi giá trang khác",
+    "goi_y": "Đọc đúng giá phân loại đang hiển thị"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa thấy chứng nhận hợp quy đồ chơi/pin; chưa xác nhận nhân vật trong ảnh.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Tên/địa chỉ tổ chức chịu trách nhiệm điền 'gf/ft'; không có mô tả chữ.Chưa đối chiếu ảnh mô tả/ảnh bìa với listing.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

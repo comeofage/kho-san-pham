@@ -38,61 +38,60 @@
   "poster_folder": 54,
   "duong_dan": "E:\\Aff anh nhan\\review\\bàn chải kashi 1736384907216324399\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Họa tiết Labubu (Pop Mart) có nguy cơ vi phạm IPR cao, kèm sản phẩm chăm sóc răng miệng cho trẻ em.",
-   "khuyen_nghi": "Không nên làm vì rủi ro IPR Labubu và sản phẩm trẻ em; chỉ cân nhắc nếu shop có giấy ủy quyền Pop Mart."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Họa tiết Labubu là nhân vật có bản quyền, nếu shop không có ủy quyền thì sản phẩm vi phạm IPR.",
+   "khuyen_nghi": "Chỉ làm khi shop xác nhận có LoA/giấy phép từ chủ bản quyền; trong video nói 'bàn chải hình thú hoạt hình', không nói tên Labubu và không để trẻ tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Chỉ nên nói bàn chải lông mềm, không hứa bảo vệ nướu hay phòng sâu răng."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là bàn chải vệ sinh răng miệng thông thường, claim 'lông mềm, làm sạch nhẹ nhàng' không thuộc nhóm cấm ở mục A."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand Heart Moon và tên bộ Kashi trong mô tả không đồng nhất."
+    "nhan_xet": "Tên 'Labubu' trong tiêu đề là nhãn hiệu của bên khác, tránh nhắc tên khi không có ủy quyền (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Nhân vật Labubu thuộc Pop Mart, bán hàng không ủy quyền dễ bị gỡ."
+    "muc_do": "🟠",
+    "nhan_xet": "Họa tiết nhân vật Labubu in trên sản phẩm cần giấy phép, hàng không phép là vi phạm bản quyền (mục I: bản quyền nhân vật)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Bàn chải không thuộc nhóm hạn chế."
+    "nhan_xet": "Bàn chải không thuộc nhóm cấm/hạn chế ở mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm vệ sinh răng miệng cho bé 3-12 tuổi, cần an toàn vật liệu."
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm cho bé 3-12 tuổi, nếu có trẻ xuất hiện phải có người lớn và không để trẻ trình bày sản phẩm (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Họa tiết Labubu",
-    "rui_ro": "🔴",
-    "xu_ly": "Hỏi shop giấy ủy quyền Pop Mart, nếu không có thì bỏ sản phẩm."
-   },
-   {
-    "van_de": "Sản phẩm trẻ em, thiếu chứng nhận an toàn",
+    "van_de": "Họa tiết Labubu chưa rõ có ủy quyền",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp kiểm nghiệm vật liệu cho trẻ em."
+    "xu_ly": "Hỏi shop LoA/giấy phép Pop Mart; nếu không có thì không làm, nếu có thì mô tả chung là bàn chải hình thú hoạt hình."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Bảo vệ nướu non, làm sạch hiệu quả",
-    "goi_y": "Chỉ mô tả lông mềm, tay cầm trong suốt."
+    "khong_nen": "Dùng tên Labubu như điểm bán / 'chính hãng Labubu'",
+    "goi_y": "Nói 'bàn chải hình thú ngộ nghĩnh, tay cầm pha lê trong suốt'."
+   },
+   {
+    "khong_nen": "Bàn chải bảo vệ/trị sâu răng, viêm nướu",
+    "goi_y": "Nói 'lông mềm, nhẹ nhàng với nướu bé'."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chưa có giấy ủy quyền Labubu, chứng nhận an toàn trẻ em.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ shop có giấy phép Labubu; chưa xem ảnh ghép.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

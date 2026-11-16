@@ -33,69 +33,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm vệ sinh phụ nữ dùng cho mẹ bầu/sau sinh với claim tuyệt đối, chứng nhận nhập khẩu chỉ là CFS/CCPIT.",
-   "khuyen_nghi": "Làm được nếu kiểm tra được giấy công bố/lưu hành tại Việt Nam, và bỏ mọi claim tuyệt đối hoặc y tế khi quay."
+   "muc_do": "🟡",
+   "nguy_co": "Băng vệ sinh thuộc nhóm chăm sóc cá nhân cần giấy tờ, và các câu 'chống tràn tuyệt đối', 'chống hăm', 'chuẩn EU' dễ thành claim không có bằng chứng.",
+   "khuyen_nghi": "Làm được nếu bám thông tin trên bao bì và giấy công bố, nói giảm nhẹ ('giúp hạn chế tràn', 'êm mềm') và không minh họa dịch cơ thể trực quan. Không dùng từ 'tuyệt đối' hay hứa trị hăm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Chống tràn tuyệt đối 360°', 'chống hăm', 'giảm kích ứng da', 'an toàn cho mẹ bầu/sau sinh' là claim tuyệt đối và có yếu tố y tế."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục A/C: 'chống tràn tuyệt đối', 'chống hăm bí', 'giảm kích ứng da' là claim cần bằng chứng, nên đổi sang 'giúp hạn chế tràn' và dẫn theo bao bì."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Thương hiệu Memeeie là nhãn hàng nhập khẩu, chưa rõ đã đăng ký nhãn hiệu tại Việt Nam."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: thương hiệu Memeeie là nhãn riêng của shop, không thấy gợi liên tưởng hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy dùng nhân vật hay hình ảnh có bản quyền."
+    "nhan_xet": "Mục I: không thấy hình ảnh hay kiểu dáng của hãng khác trong mô tả."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Băng vệ sinh nhập khẩu cần giấy phép lưu hành phù hợp, hồ sơ chỉ nêu CFS/CCPIT Trung Quốc và 'giấy tiếp nhận bản công bố'."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: thuộc nhóm chăm sóc cá nhân cần phê duyệt, listing đã có giấy tiếp nhận công bố nên chỉ cần quay đúng theo nhãn; mục A: tránh hình ảnh dịch cơ thể quá trực quan."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm đến trẻ em."
+    "nhan_xet": "Mục D: sản phẩm cho phụ nữ, không liên quan trẻ vị thành niên."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim 'chống tràn tuyệt đối', 'chống hăm', 'an toàn cho thai phụ' không có kiểm nghiệm đi kèm.",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ mô tả đặc điểm đai lưng co giãn, lõi thấm hút theo mô tả shop, không cam kết tuyệt đối."
-   },
-   {
-    "van_de": "Hồ sơ lưu hành tại Việt Nam chưa rõ, chứng nhận EU trong mô tả không có số kiểm chứng.",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy công bố/tiếp nhận tại VN trước khi làm."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chống tràn tuyệt đối, không bao giờ tràn",
-    "goi_y": "Thiết kế dạng quần, đai lưng co giãn ôm eo"
+    "khong_nen": "'Chống tràn tuyệt đối', 'không bao giờ hăm'.",
+    "goi_y": "Nói 'thiết kế chống tràn 360 độ, giúp hạn chế tràn khi trở mình'."
    },
    {
-    "khong_nen": "Chống hăm, trị kích ứng, an toàn tuyệt đối cho mẹ bầu và sau sinh",
-    "goi_y": "Chất liệu mềm, thoáng khí, nhiều size cho vòng mông 80-142 cm"
-   },
-   {
-    "khong_nen": "Đạt chuẩn vệ sinh Liên minh Châu Âu",
-    "goi_y": "Chỉ nói khi có giấy chứng nhận cụ thể"
+    "khong_nen": "'Đạt chứng nhận tiêu chuẩn vệ sinh mới nhất của EU' khi không đưa được giấy.",
+    "goi_y": "Chỉ nêu giấy tiếp nhận công bố hiển thị trên listing."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy công bố/lưu hành tại Việt Nam, kết quả kiểm nghiệm da liễu, tình trạng đăng ký nhãn hiệu Memeeie.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa xem được nhãn Việt hóa trên bao bì và bản scan giấy công bố; chưa rõ giấy CCPIT/CFS có khớp sản phẩm đang bán không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

@@ -23,7 +23,7 @@
   "so_video": 20,
   "luc": "2026-10-27T10:56:52+07:00"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -38,57 +38,50 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Khăn trẻ em ghi '100% sợi bông' nhưng thông số là Polyester, cộng claim kháng khuẩn và thời gian giao 31-33 ngày.",
-   "khuyen_nghi": "Sửa mô tả theo đúng chất liệu polyester, bỏ 'kháng khuẩn', 'dịu nhẹ da nhạy cảm'; cảnh báo thời gian giao dài trước khi làm."
+   "muc_do": "🟡",
+   "nguy_co": "USP nói 100% bông nhưng thông số ghi polyester, dễ vi phạm tuyên bố sai lệch về chất liệu.",
+   "khuyen_nghi": "Chỉ nói theo thông số trên listing (khăn mặt trẻ em, thấm hút tốt), không nói 100% bông hay số lần thấm hút nếu không có căn cứ."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'100% sợi bông tự nhiên' mâu thuẫn thông số polyester, 'kháng khuẩn', 'thấm gấp 3 lần' là claim sai/khó chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C: 'thấm hút gấp 3 lần', 'chống vi khuẩn', '100% bông' chưa có bằng chứng và mâu thuẫn với spec polyester."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Không có thương hiệu, cần tránh nhắc tên hãng khác."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy tên hãng; 'hoạt hình' chung chung, mục I không phát sinh."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Thêu hình hoạt hình, cần kiểm ảnh không dùng nhân vật có bản quyền."
+    "nhan_xet": "Mục I (bản quyền): hình thêu hoạt hình có thể là nhân vật có bản quyền, cần xem ảnh; hiện mô tả chỉ ghi chung 'động vật'."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Khăn mặt không thuộc nhóm hạn chế."
+    "nhan_xet": "Khăn mặt không thuộc nhóm cấm/hạn chế mục G/H; không phải mỹ phẩm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Nhắm tới da bé, cần nêu đúng chất liệu và không khẳng định an toàn tuyệt đối cho da nhạy cảm."
+    "nhan_xet": "Mục D: sản phẩm cho trẻ, nếu có bé xuất hiện phải có người lớn trong khung hình, không để bé tự giới thiệu."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Mâu thuẫn chất liệu bông và polyester",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nêu chất liệu theo thông số thật, không dùng '100% bông'."
-   },
-   {
-    "van_de": "Giao 31-33 ngày, shop chưa có đánh giá",
-    "rui_ro": "🟠",
-    "xu_ly": "Cân nhắc kỹ vì dễ gây khiếu nại chậm giao."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "100% bông tự nhiên, kháng khuẩn, dịu nhẹ cho da nhạy cảm",
-    "goi_y": "Khăn nhỏ 25x50cm thêu hình hoạt hình, mềm, thấm nước"
+    "khong_nen": "Nói '100% bông' hoặc 'gấp 3 lần khăn thường'",
+    "goi_y": "Nói 'khăn mềm, thấm hút tốt' đúng theo spec"
+   },
+   {
+    "khong_nen": "Nói 'chống vi khuẩn', 'cho da nhạy cảm' như tác dụng chữa trị",
+    "goi_y": "Nói 'chất vải mềm, dùng lau mặt cho bé'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa rõ chất liệu thật, bản quyền họa tiết hoạt hình; chưa có đánh giá.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Chưa xem ảnh để xác định hình thêu có phải nhân vật bản quyền; không có đánh giá, shop mới (đã bán 44).",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

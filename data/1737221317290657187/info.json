@@ -33,60 +33,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim 'nhựa PETG an toàn thực phẩm' chưa có chứng nhận, sản phẩm dạng in 3D thường không đạt chuẩn tiếp xúc thực phẩm.",
-   "khuyen_nghi": "Chỉ giới thiệu như đồ trang trí đựng bánh kẹo đóng gói, bỏ claim an toàn thực phẩm nếu shop không có giấy tờ."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'nhựa PETG an toàn thực phẩm' cần bằng chứng; thông tin tổ chức chịu trách nhiệm ghi '111' chưa đầy đủ (mục C, mục H).",
+   "khuyen_nghi": "Tả bát trang trí, đựng bánh kẹo, trái cây; chỉ nói an toàn thực phẩm khi shop có kiểm nghiệm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'An toàn thực phẩm, không mùi, chống rơi vỡ' là claim chưa chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "'An toàn thực phẩm', 'chống rơi vỡ' cần bằng chứng (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu rõ ràng, không thấy dấu hiệu nhái."
+    "nhan_xet": "Không có thương hiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Hình nải chuối là hình chung, không vướng nhân vật bản quyền."
+    "nhan_xet": "Hình nải chuối là hình chung, không có nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Đựng trái cây tươi là tiếp xúc thực phẩm trực tiếp, cần giấy kiểm nghiệm vật liệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ gia dụng thường, không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em."
+    "nhan_xet": "Không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim an toàn thực phẩm không có chứng nhận",
-    "rui_ro": "🟠",
-    "xu_ly": "Hỏi shop giấy kiểm nghiệm, nếu không có thì chỉ nói dùng trang trí, đựng bánh kẹo có bao gói."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn thực phẩm, đựng trái cây trực tiếp",
-    "goi_y": "Nói 'bát trang trí cho bàn trà'."
-   },
-   {
-    "khong_nen": "Chống rơi vỡ bền bỉ",
-    "goi_y": "Nói 'nhựa PETG nhẹ' và quay thực tế."
+    "khong_nen": "An toàn thực phẩm 100%, rơi không vỡ",
+    "goi_y": "Dùng bày trái cây, bánh kẹo, trang trí bàn trà"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu giấy kiểm nghiệm vật liệu; tên và địa chỉ tổ chức chịu trách nhiệm ghi '111' không hợp lệ.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Giấy kiểm nghiệm tiếp xúc thực phẩm, thông tin tổ chức chịu trách nhiệm (đang ghi '111').",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

@@ -37,66 +37,57 @@
   "luc": "2026-10-23T17:56:05+07:00",
   "duong_dan": "F:/2210/transformer 2210 1735655451667432542/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Biến thể Robot Bumblebee/Optimus bám nhân vật Transformers (Hasbro) và hashtag lego_robot dễ bị gỡ vì IP/hàng nhái.",
-   "khuyen_nghi": "Chỉ quảng bá các biến thể không gắn tên nhân vật (bộ swat, tàu chiến), không nhắc Transformers/Lego, nhấn mạnh tuổi 6+ và chi tiết nhỏ."
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể Bumblebee/Optimus và hashtag lego gợi Transformers/LEGO, dễ vi phạm IPR nếu nhắc tên.",
+   "khuyen_nghi": "Gọi là robot mecha lắp ráp biến thành xe tải, dùng từ chung, không nhắc Bumblebee/Optimus/Transformers/lego; có người lớn lắp cùng trong khung hình."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô tả 'tăng tập trung, tư duy sáng tạo' là claim phát triển trẻ nên nói ở mức giải trí, không cam kết hiệu quả."
+    "muc_do": "🟢",
+    "nhan_xet": "Nói về lắp ráp rèn tập trung ở mức thông thường, không vượt giới hạn mục C."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟠",
-    "nhan_xet": "Tên biến thể Bumblebee/Optimus và hashtag lego_robot gợi nhãn hiệu Transformers/Lego của bên thứ ba."
+    "nhan_xet": "Tên biến thể \"Bumblebee\", \"Optimus\" và hashtag lego_robot gợi liên tưởng hãng khác (mục I), sửa được nếu không dùng các tên này."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Hình dáng robot đỏ xanh giống nhân vật Optimus Prime có bản quyền, rủi ro bị khiếu nại IPR."
+    "muc_do": "🟡",
+    "nhan_xet": "Dáng robot đỏ xanh biến thành xe tải gần thiết kế Transformers, mục I cấm hàng nhái nên cần xem ảnh/LoA."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế, nhưng đồ chơi cần có công bố hợp quy."
+    "muc_do": "🟡",
+    "nhan_xet": "Có phân loại \"bộ swat\", \"tàu chiến\" nhưng là đồ xếp hình không bắn được, chưa thuộc mục G."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi cho trẻ 6-8 tuổi nhiều chi tiết nhỏ, mục CẢNH BÁO TUỔI ghi 'Không' mâu thuẫn, cần chứng nhận QCVN 3:2009 an toàn đồ chơi."
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi 6+ cho bé trai, mục D cần người lớn trong khung hình, trẻ không tự giới thiệu."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Biến thể Bumblebee/Optimus và hashtag lego_robot",
-    "rui_ro": "🔴",
-    "xu_ly": "Không nhắc tên nhân vật/Lego trong video, không quay cận biến thể mang tên nhân vật."
-   },
-   {
-    "van_de": "Đồ chơi trẻ em chưa rõ cảnh báo tuổi/hợp quy",
+    "van_de": "Tên biến thể Bumblebee/Optimus và hashtag lego/transformers",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ nói 'từ 6 tuổi trở lên, cần người lớn giám sát' và yêu cầu shop cung cấp giấy hợp quy."
+    "xu_ly": "Gọi \"robot đỏ xanh\", \"robot xe tải\"; bỏ hashtag có tên hãng, chọn biến thể không mang tên nhân vật."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giống Lego/Transformers chính hãng",
-    "goi_y": "Nói 'bộ xếp hình robot biến hình 2 trong 1' và không so sánh với hãng khác."
-   },
-   {
-    "khong_nen": "Giúp bé thông minh, tăng IQ",
-    "goi_y": "Nói 'bé thích lắp ráp, rèn sự kiên nhẫn' mang tính giải trí."
+    "khong_nen": "Nhắc Optimus, Bumblebee, Transformers, lego",
+    "goi_y": "Nói \"robot mecha biến hình 2 trong 1\"."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy hợp quy đồ chơi, ảnh mô tả chưa kiểm tra, shop có ủy quyền nhân vật hay không.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ thiết kế có được cấp phép hay là hàng nhái Transformers; cần xem ảnh sản phẩm.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

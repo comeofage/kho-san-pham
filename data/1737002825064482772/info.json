@@ -38,61 +38,50 @@
   "poster_folder": 110,
   "duong_dan": "E:\\oneshottramcanh\\aothunbalamattroi 1737002825064482772\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thương hiệu Balabala cần xác nhận shop chính hãng; sản phẩm cho trẻ sơ sinh và claim bảo vệ da.",
-   "khuyen_nghi": "Xác nhận shop là gian hàng chính hãng hoặc có uỷ quyền; không nói bảo vệ da bé theo kiểu chữa trị. Chỉ nói chất liệu cotton, mềm."
+   "muc_do": "🟡",
+   "nguy_co": "Hàng thương hiệu Balabala cần Thư ủy quyền/xác nhận gian hàng chính hãng (mục I), và \"bảo vệ làn da bé sơ sinh\" cần tránh nói quá.",
+   "khuyen_nghi": "Xác nhận shop là gian hàng chính hãng trước khi làm; nói chất cotton mềm, thấm hút, đường may phẳng, không hứa bảo vệ da."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Nói bảo vệ làn da bé sơ sinh, mềm như mây, thấm hút mồ hôi cần tránh tuyệt đối hoá; đã bán 22, chưa có đánh giá."
+    "nhan_xet": "\"Bảo vệ làn da bé sơ sinh\" nên đổi thành \"chất cotton mềm, đường may phẳng\" vì cần bằng chứng (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Balabala là thương hiệu có thật, cần xác nhận shop balabala clothes là chính hãng hoặc có uỷ quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Balabala là thương hiệu lớn nên chỉ dùng tên khi shop có ủy quyền/chính hãng (mục I: LoA); shop tên \"balabala clothes\" có thể là gian hàng chính hãng nhưng chưa xác nhận."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Chưa thấy hình nhân vật bản quyền trong thông tin chữ."
+    "nhan_xet": "Áo thun trơn, mô tả không thấy nhân vật bản quyền (mục I), cần xem ảnh để chắc."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Quần áo trẻ em không thuộc danh mục cấm hay hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Quần áo trẻ em đến sơ sinh, cần đúng nhãn mác, thành phần vải và an toàn hàng dệt cho trẻ nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Có size sơ sinh nên bé mẫu phải mặc kín, có người lớn trong khung hình, bé không tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Cần xác nhận quyền bán thương hiệu Balabala",
-    "rui_ro": "🟠",
-    "xu_ly": "Kiểm tra huy hiệu gian hàng chính hãng, yêu cầu giấy uỷ quyền."
-   },
-   {
-    "van_de": "Claim 100% cotton và an toàn cho da bé sơ sinh",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu nhãn thành phần, kết quả kiểm nghiệm; không dùng từ bảo vệ da."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Bảo vệ da bé, không bao giờ kích ứng",
-    "goi_y": "Nói chất liệu cotton mềm, đường may phẳng."
+    "khong_nen": "Bảo vệ da sơ sinh, chống kích ứng, hàng chính hãng khi chưa có giấy",
+    "goi_y": "Cotton chải kỹ mềm, thấm hút mồ hôi, đường may phẳng thoải mái cho bé."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Trang không có mô tả chữ; chưa rõ giấy uỷ quyền thương hiệu và thành phần vải thực tế.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "thieu_thong_tin": "Chưa xác nhận shop có phải gian hàng chính hãng Balabala; mới bán 22 đơn, 0 đánh giá nên ít bằng chứng; chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

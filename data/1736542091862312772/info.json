@@ -38,61 +38,56 @@
   "poster_folder": 46,
   "duong_dan": "E:\\Aff anh nhan\\review\\xemohinh 1736542091862312772\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mô hình xe McLaren Senna có thể vi phạm nhãn hiệu và kiểu dáng của McLaren nếu không có giấy phép.",
-   "khuyen_nghi": "Chỉ làm nếu shop chứng minh được giấy phép hoặc đổi cách gọi thành 'mô hình siêu xe'; nên cân nhắc vì doanh số rất thấp."
+   "muc_do": "🟡",
+   "nguy_co": "Mô hình McLaren Senna có tên và kiểu dáng thương hiệu McLaren, nếu không có ủy quyền thì vi phạm nhãn hiệu/IPR.",
+   "khuyen_nghi": "Chỉ làm khi shop có LoA/giấy phép; nếu làm thì nhấn vào tính năng (mở cửa, sơn đổi màu), tránh khoe logo/tên hãng và không dùng 'chính hãng'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ sưu tầm, không có claim y tế; 'giá trị sưu tầm lớn' cần tránh hứa hẹn tăng giá."
+    "nhan_xet": "Mô hình trưng bày, không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Tên McLaren Senna là nhãn hiệu của hãng xe, thông số không ghi brand hay giấy phép."
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'McLaren Senna' là nhãn hiệu hãng xe, cần ủy quyền hoặc dùng cách nói chung 'mô hình siêu xe' (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Kiểu dáng xe thương hiệu cần license; mô hình không phép dễ bị gỡ."
+    "nhan_xet": "Mô hình sao chép kiểu dáng/logo xe hiệu mà không có giấy phép dễ bị coi là hàng nhái (mục I: hàng giả & nhái)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Mô hình hợp kim không thuộc nhóm cấm."
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô hình có chi tiết nhỏ mở cửa, nếu bé dùng cần ghi độ tuổi khuyến nghị."
+    "muc_do": "🟢",
+    "nhan_xet": "Là đồ sưu tầm, không nhắm trẻ em."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Dùng tên và kiểu dáng McLaren Senna không rõ giấy phép",
+    "van_de": "Tên/kiểu dáng McLaren không rõ có phép",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy phép hoặc tránh nhắc tên hãng trong video."
-   },
-   {
-    "van_de": "Hàng gửi từ nước ngoài, ít đơn (15) và đánh giá thấp",
-    "rui_ro": "🟠",
-    "xu_ly": "Cân nhắc độ tin cậy shop trước khi đầu tư video."
+    "xu_ly": "Hỏi shop LoA hoặc chứng nhận từ hãng; nếu không có thì chọn sản phẩm khác."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Xe McLaren chính hãng, đầu tư sưu tầm tăng giá",
-    "goi_y": "Nói 'mô hình siêu xe hợp kim, mở được cửa' không gắn hãng."
+    "khong_nen": "Hàng chính hãng McLaren/licensed",
+    "goi_y": "Nói 'mô hình siêu xe hợp kim, mở được cửa cánh chim'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có giấy phép từ McLaren, độ tuổi khuyến nghị và chưa xem ảnh mô tả.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Shop mới (15 đơn, 3 đánh giá), chưa rõ giấy phép McLaren; chưa xem ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

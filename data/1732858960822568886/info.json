@@ -38,57 +38,51 @@
   "poster_folder": 146,
   "duong_dan": "F:\\2010\\ổ cắm deli 2010 1732858960822568886\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Ổ cắm chuyển đổi là đồ điện, dễ dính claim an toàn tuyệt đối (chịu 750°C, an toàn trẻ em).",
-   "khuyen_nghi": "Chỉ nói chức năng chuyển chuẩn chân cắm và chú ý công suất tối đa. Không hứa an toàn tuyệt đối."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hàng điện du lịch của hãng Deli chính hãng, chỉ cần thận trọng với claim an toàn như 'chịu nhiệt 750°C', 'an toàn với trẻ em' (mục C).",
+   "khuyen_nghi": "Demo cắm thử và tả đúng chuẩn chân Anh/Mỹ/châu Âu. Chỉ nhắc thông số chịu nhiệt khi đúng như nhãn/mô tả shop, tránh nói 'tuyệt đối an toàn'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Claim 'chịu nhiệt 750°C', 'an toàn với trẻ em' cần có kiểm định, không được khẳng định tuyệt đối."
+    "muc_do": "🟡",
+    "nhan_xet": "'Chịu nhiệt 750°C', 'an toàn với trẻ em' là thông số/claim cần đúng với mô tả shop, không nói thêm (mục C: tuyên bố sai lệch/thông số phải đúng)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Shop Deli Lifestyle là thương hiệu chính chủ, đã có tổ chức chịu trách nhiệm tại Việt Nam."
+    "nhan_xet": "Deli Lifestyle là gian hàng thương hiệu Deli, tên pháp nhân Việt Nam rõ ràng (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình ảnh/nhân vật bản quyền."
+    "nhan_xet": "Không có nhân vật hay logo bên thứ ba; chuẩn chân cắm là tiêu chuẩn chung (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Thiết bị điện cần hợp quy và ghi công suất, trang chưa nêu."
+    "muc_do": "🟢",
+    "nhan_xet": "Ổ cắm chuyển đổi không thuộc nhóm cấm hay hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Có nhắc 'an toàn với trẻ em', nhưng sản phẩm không dành cho trẻ."
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em, chỉ nhắc có vỏ bảo vệ; không cần có trẻ trong video (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim chịu nhiệt 750°C, an toàn với trẻ em",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ nhắc khi có báo cáo thử nghiệm, hoặc bỏ hẳn khỏi nội dung video."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn tuyệt đối, không bao giờ chập cháy, trẻ em cầm cũng an toàn",
-    "goi_y": "Nhắc 'có vỏ bảo vệ' và nhắc người dùng kiểm tra công suất thiết bị."
+    "khong_nen": "Tuyệt đối an toàn, không bao giờ cháy nổ, trẻ nghịch thoải mái",
+    "goi_y": "Nói 'có vỏ bảo vệ' và 'dùng đúng công suất ghi trên sản phẩm'."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Công suất/điện áp tối đa, giấy hợp quy, báo cáo thử nghiệm 750°C.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có công suất định mức và chứng nhận an toàn điện của từng loại củ.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

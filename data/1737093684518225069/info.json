@@ -37,61 +37,57 @@
   "poster_folder": 283,
   "duong_dan": "E:/oneshottramcanh/tocmeo-1737093684518225069/output"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em có hạt nam châm nhỏ, nguy cơ nuốt phải mà chưa thấy cảnh báo độ tuổi hay chứng nhận.",
-   "khuyen_nghi": "Chỉ làm khi shop cung cấp chứng nhận an toàn đồ chơi và độ tuổi; nhấn mạnh người lớn giám sát."
+   "muc_do": "🟡",
+   "nguy_co": "Hạt nam châm nhỏ có nguy cơ nuốt phải với trẻ, listing không ghi tuổi (mục G: đồ chơi gây hại trẻ, mục D).",
+   "khuyen_nghi": "Nhắc dành cho trẻ lớn có người lớn giám sát, người lớn xuất hiện trong khung; xác minh độ tuổi và chứng nhận an toàn trước khi chạy."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Thông số ghi 'phát triển trẻ, rèn trí nhớ', không được hứa phát triển trí tuệ."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả đồ chơi sáng tạo, không có claim sức khỏe/phát triển cụ thể."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy thương hiệu, chưa rõ brand."
+    "nhan_xet": "Không nhắc thương hiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Nhân vật thú cưng (corgi, mèo ragdoll) dạng chung, nhưng cần xem ảnh có bắt chước nhân vật có bản quyền không."
+    "nhan_xet": "Hình mèo, Corgi ở mức chung, chưa thấy nhân vật có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi có nam châm, cần QCVN 3:2019 về an toàn đồ chơi."
+    "nhan_xet": "Đồ chơi có hạt nam châm nhỏ: cần chứng nhận an toàn, không có cảnh báo tuổi (mục G)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟠",
-    "nhan_xet": "Dành cho trẻ em, hạt nam châm nhỏ có nguy cơ nuốt, thiếu cảnh báo tuổi."
+    "nhan_xet": "Đồ chơi trẻ em: người lớn phải có mặt, trẻ không tự giới thiệu (mục D); nam châm nhỏ nguy hiểm nếu nuốt."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Hạt nam châm nhỏ cho trẻ",
+    "van_de": "Hạt nam châm nhỏ, listing không có cảnh báo tuổi",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ quay với người lớn hướng dẫn, nêu độ tuổi khuyến nghị từ shop, không quay trẻ nhỏ cầm hạt."
+    "xu_ly": "Chỉ làm khi shop bổ sung độ tuổi/chứng nhận; trong video nhắc có người lớn giám sát, không cho trẻ nhỏ chơi một mình"
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giúp bé phát triển trí tuệ, trí nhớ",
-    "goi_y": "Nói 'trò chơi sáng tạo giải trí'."
-   },
-   {
-    "khong_nen": "An toàn cho mọi lứa tuổi",
-    "goi_y": "Không khẳng định tuổi nếu shop chưa nêu."
+    "khong_nen": "Cho bé từ 1-2 tuổi chơi, bé tự chơi một mình",
+    "goi_y": "Ghi rõ dành cho trẻ lớn, cần người lớn giám sát"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thiếu độ tuổi, chứng nhận QCVN, thương hiệu và tổ chức chịu trách nhiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "thieu_thong_tin": "Độ tuổi khuyến nghị, kích thước hạt nam châm, chứng nhận an toàn đồ chơi, tổ chức chịu trách nhiệm hàng hóa.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

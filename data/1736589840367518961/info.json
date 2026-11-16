@@ -37,56 +37,50 @@
   "luc": "2026-10-22T13:44:48+07:00",
   "duong_dan": "E:\\oneshottramcanh\\thotaicup 1736589840367518961\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Móc khóa búp bê thỏ 'thịnh hành' dễ là hàng nhái kiểu Labubu/Jellycat, không có brand và thông số trống.",
-   "khuyen_nghi": "Xem ảnh đối chiếu với mẫu có bản quyền; nếu giống thì bỏ, nếu là thiết kế riêng thì làm và không nhắc tên hãng."
+   "muc_do": "🟡",
+   "nguy_co": "Thiết kế búp bê/thỏ bông có thể na ná nhân vật nổi tiếng, và mô tả 'quà đang thịnh hành trên TikTok' là tuyên bố khó chứng minh.",
+   "khuyen_nghi": "Quay là 'móc khóa thỏ bông mềm, có chuông', không nói 'giống Labubu/dupe'; kiểm tra ảnh thật xem có logo/nhân vật hãng nào."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟢",
-    "nhan_xet": "Phụ kiện trang trí, không có claim y tế."
+    "muc_do": "🟡",
+    "nhan_xet": "'Thịnh hành trên TikTok', 'cao cấp' là tuyên bố không có căn cứ, nên bỏ (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Không ghi brand, kiểu 'búp bê mini' dễ bị đồng nhất với Labubu hoặc nhãn đồ chơi nổi tiếng."
+    "muc_do": "🟡",
+    "nhan_xet": "Tránh từ 'giống Labubu/dupe/inspired by' khi mô tả (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Mặt búp bê mắt to tai cụp có thể sao chép thiết kế nhân vật có bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Mặt búp bê mắt to, lông xù có thể na ná mẫu thương hiệu khác, chưa xác định (mục I: hàng nhái)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Móc khóa không thuộc nhóm cấm/hạn chế mục G, H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Có chuông nhỏ và chi tiết dễ tháo, trẻ nhỏ có nguy cơ nuốt; cần ghi độ tuổi."
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đặc biệt tới trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nghi ngờ nhái thiết kế búp bê/nhân vật nổi tiếng",
-    "rui_ro": "🟠",
-    "xu_ly": "Đối chiếu ảnh sản phẩm, tránh nhắc 'Labubu', 'trend' của hãng."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giống Labubu, hàng hot TikTok chính hãng",
-    "goi_y": "Chỉ nói 'móc khóa thỏ bông tai cụp, treo balo'."
+    "khong_nen": "Quà đang hot nhất TikTok, giống Labubu",
+    "goi_y": "Nói 'móc khóa thỏ bông treo balo/túi, có chuông leng keng'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thông số trống (không có brand, chất liệu), cần xem ảnh để loại trừ nhân vật bản quyền.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Ảnh ghép lấy từ thư mục oneshot, cần xem ảnh để chắc không có logo/nhân vật hãng; chưa rõ thương hiệu.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

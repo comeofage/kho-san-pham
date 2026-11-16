@@ -30,56 +30,45 @@
   "poster_folder": 39,
   "duong_dan": "E:\\Aff anh nhan\\review\\dochoinauan 1731296206901839606\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em nhiều chi tiết nhỏ, thiếu thông tin an toàn và nguồn gốc.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung thông số, chứng nhận QCVN 3:2019 và độ tuổi; nội dung tập trung vào chơi giả lập, có người lớn giám sát."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Bộ đồ chơi nấu ăn nhựa không thuộc nhóm cấm; chỉ cần nói đúng số chi tiết theo từng phân loại.",
+   "khuyen_nghi": "Có thể làm; nêu rõ chỉ bản '69 chi tiết' và '84 chi tiết' có bếp, không dùng từ 'thông minh' như cam kết phát triển trí tuệ, và có người lớn trong khung hình nếu bé xuất hiện."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "'Đồ chơi giáo dục thông minh' là claim phát triển trí tuệ cần tránh khẳng định hiệu quả."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục C: 'giáo dục thông minh' chỉ là cách gọi chung, nên nói 'chơi nhập vai nấu ăn' và khớp số chi tiết, phụ kiện với từng phân loại."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Shop chuangjiang456 không có thương hiệu rõ, nhiều biến thể khó kiểm soát nguồn."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: không nhắc thương hiệu nào."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ chơi nhà bếp mô phỏng chung, chưa thấy nhân vật bản quyền."
+    "nhan_xet": "Mục I: đồ chơi nhà bếp chung, không thấy nhân vật hay logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm cấm; bộ dao/kéo là đồ chơi nhựa."
+    "nhan_xet": "Mục G: đồ chơi dao cắt nhựa không phải vũ khí; hàng không thuộc nhóm hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ nhiều chi tiết nhỏ (tới 109 món), nguy cơ nuốt/hóc, thông số trống, không có tổ chức chịu trách nhiệm, shop điểm 3.6."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: đồ chơi trẻ em được phép có bé xuất hiện khi có người lớn trong khung hình, và bé không tự giới thiệu hay thúc giục đòi cha mẹ mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Chi tiết nhỏ gây hóc, thiếu chứng nhận an toàn và nhà chịu trách nhiệm",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu giấy kiểm định, ghi rõ khuyến cáo độ tuổi 3+ và giám sát người lớn."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Nói 'giúp bé thông minh', 'phát triển IQ'",
-    "goi_y": "Nói 'bé chơi nấu ăn giả lập, tập vai làm đầu bếp'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thông số kỹ thuật, chất liệu, độ tuổi, chứng nhận an toàn, tổ chức chịu trách nhiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Phần thông số trống nên không biết xuất xứ, tổ chức chịu trách nhiệm hay cảnh báo độ tuổi; chưa có giấy kiểm nghiệm đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

@@ -37,62 +37,46 @@
   "poster_folder": 202,
   "duong_dan": "E:/oneshottramcanh/uiten 1729748241594157069/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm in tên bé theo yêu cầu, video dễ lộ tên và hình ảnh trẻ em, kèm nguy cơ mẫu tem có hình nhân vật bản quyền.",
-   "khuyen_nghi": "Dùng tên giả hoặc vật thể mẫu, không quay mặt và thông tin thật của bé; kiểm tra các mẫu hình trong 'Full mẫu 72 tem'."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp; chỉ cần tránh mẫu có nhân vật bản quyền và không lộ tên thật của bé.",
+   "khuyen_nghi": "Có thể làm; quay demo ủi tem lên áo, giữ người lớn thao tác bàn ủi và chỉ quay mẫu tên/chữ không có nhân vật."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Claim 'giặt máy bình thường, ủi lên mọi chất liệu vải' cần quay thử thực tế, không nói bền vĩnh viễn."
+    "muc_do": "🟢",
+    "nhan_xet": "Công dụng chỉ là dán tên lên áo bằng bàn ủi, giặt máy bình thường; không claim sức khỏe (mục A không áp dụng)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand POLE không phải thương hiệu lớn, chưa thấy dấu hiệu nhái."
+    "nhan_xet": "Brand POLE không gợi liên tưởng hãng lớn (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Bộ 72 mẫu tem thường chứa hình thú, nhân vật hoạt hình có thể vướng bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Là tem tên theo yêu cầu, nhưng nếu có mẫu in nhân vật hoạt hình thì mục I coi là vi phạm bản quyền nên chỉ quay mẫu chữ/hình chung."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Tem ủi nhiệt không thuộc nhóm hạn chế."
+    "nhan_xet": "Không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "In tên bé là thông tin cá nhân trẻ em, cần tránh lộ trong video."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ may mặc cho bé liên quan trực tiếp tới sản phẩm, chỉ cần có người lớn trong khung hình và không để bé tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Tên và hình ảnh trẻ em trong video",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ dùng tên giả, không quay mặt bé, không dán lên đồ bé đang mặc để quay cận."
-   },
-   {
-    "van_de": "Hình trong 72 mẫu có thể là nhân vật bản quyền",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ quay các mẫu chữ/hình trơn, tránh mẫu nhân vật hoạt hình."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Dán vĩnh viễn, không bong tróc dù giặt thế nào",
-    "goi_y": "Nói 'dán bằng bàn ủi, giặt máy bình thường theo hướng dẫn'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa xem được hình các mẫu trong Full mẫu 72 tem và chất liệu mực in.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ mẫu trong bộ 72 tem có nhân vật hoạt hình hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

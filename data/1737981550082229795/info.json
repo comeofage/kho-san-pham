@@ -37,61 +37,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "CORTIS là nhóm nhạc thần tượng có bản quyền; dùng tên làm búp bê vi phạm IPR/nhãn hiệu.",
-   "khuyen_nghi": "Không nên làm cho đến khi shop bỏ tên CORTIS và chứng minh được nguồn gốc/giấy phép."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tên sản phẩm dùng CORTIS, trùng tên nhóm nhạc có thật nên có nguy cơ vi phạm nhãn hiệu/hình ảnh nếu không được cấp phép.",
+   "khuyen_nghi": "Chỉ làm nếu xác minh được shop có giấy phép hoặc bản thân sản phẩm là thiết kế gốc; trong video gọi chung \"búp bê nhồi bông meme\", không nhắc tên nhóm."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Giải tỏa căng thẳng tức thì' là claim quá mức."
+    "nhan_xet": "\"Giải tỏa căng thẳng tức thì\" là claim kèm khung thời gian, nên đổi thành \"bóp nắn vui tay, trang trí bàn\" (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🔴",
-    "nhan_xet": "Tên CORTIS là nhóm nhạc K-pop (HYBE), dùng tên thương hiệu để bán hàng."
+    "muc_do": "🟠",
+    "nhan_xet": "Tên CORTIS trùng nhóm nhạc có thật, cấm hiện tên thương hiệu trái phép và gợi liên tưởng (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🔴",
-    "nhan_xet": "Gắn tên nghệ sĩ lên búp bê là hàng fan không bản quyền, dễ bị gỡ."
+    "muc_do": "🟡",
+    "nhan_xet": "Chưa rõ búp bê có nhân vật/hình ảnh nhóm nhạc hay thiết kế meme tự do (mục I: vi phạm bản quyền, hàng nhái); không có ảnh để kiểm."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Thú nhồi bông thông thường, không thuộc nhóm cấm hay hạn chế ở mục G và H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi nhồi bông, đối tượng teen và trẻ em, chưa rõ chứng nhận."
+    "nhan_xet": "Đồ nhồi bông có thể có trẻ em xuất hiện, phải có người lớn trong khung hình và không để trẻ tự giới thiệu (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Dùng tên CORTIS trong tên sản phẩm",
-    "rui_ro": "🔴",
-    "xu_ly": "Không làm; chỉ cân nhắc khi shop đổi tên và dùng hình trung tính."
-   },
-   {
-    "van_de": "Nghi hàng fan merch không bản quyền",
-    "rui_ro": "🔴",
-    "xu_ly": "Yêu cầu giấy phép từ chủ sở hữu."
+    "van_de": "Tên CORTIS trong tiêu đề có thể bị coi là dùng trái phép tên nhóm nhạc",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nói hay hiện chữ CORTIS trong video; xin shop chứng minh quyền sử dụng hoặc xác nhận đây là thiết kế gốc (mục I)."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "CORTIS, búp bê chính hãng/idol",
-    "goi_y": "Nói 'búp bê nhồi bông abstract meme 28cm'."
+    "khong_nen": "Nói \"búp bê CORTIS\", \"merch nhóm CORTIS\", \"chính hãng\"",
+    "goi_y": "\"Búp bê meme siêu lầy 28cm\"."
+   },
+   {
+    "khong_nen": "\"Giải tỏa căng thẳng tức thì\"",
+    "goi_y": "\"Bóp nắn vui tay, để bàn làm việc\"."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Không có ảnh để xác nhận; không rõ shop có giấy phép.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Không có ảnh, giá, số liệu bán; chưa biết CORTIS ở đây là tên nhân vật gốc của shop hay nhóm nhạc, và có giấy phép hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

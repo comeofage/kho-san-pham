@@ -28,7 +28,7 @@
   "poster_folder": 161,
   "duong_dan": "F:\\0810\\1008 (1)\\kẹo chua 0810-1736347028657702774"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -42,57 +42,52 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm kẹo có claim chống buồn ngủ, giải mệt, tỉnh táo ngay lập tức, kèm quảng cáo cho trẻ em và đề cập lái xe.",
-   "khuyen_nghi": "Chỉ nói hương vị chua và tiện mang theo; bỏ claim tỉnh táo/chống buồn ngủ, không nói ngậm khi lái xe, không nhắm trẻ nhỏ."
+   "muc_do": "🟡",
+   "nguy_co": "Kẹo thực phẩm có claim 'chống buồn ngủ, tỉnh táo ngay lập tức, lái xe đường dài' sửa được bằng lời nói; có yếu tố trẻ em ăn kẹo cứng.",
+   "khuyen_nghi": "Nói vị chua the mát, ngậm cho tỉnh vị giác, tiện mang theo; bỏ 'chống buồn ngủ, tỉnh ngay lập tức, an toàn khi lái xe'; không để trẻ tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Chống buồn ngủ', 'tỉnh táo ngay lập tức', 'giải mệt', 'xua tan uể oải' là claim công dụng không được phép đối với kẹo."
+    "nhan_xet": "'Chống buồn ngủ', 'tỉnh táo ngay lập tức' là claim chức năng kèm khung thời gian không có bằng chứng, có thể bị coi là tuyên bố y tế gây hiểu lầm (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟢",
-    "nhan_xet": "Không gắn thương hiệu lớn."
+    "muc_do": "🟡",
+    "nhan_xet": "Vị 'coca' nên nói 'hương cola', tránh dùng tên hãng nước ngọt (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy vấn đề IPR."
+    "nhan_xet": "Chưa thấy dấu hiệu IPR (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Thực phẩm nhập khẩu cần công bố an toàn thực phẩm, trang chỉ có giấy công bố tiêu chuẩn của đơn vị nhập, cần nhãn phụ tiếng Việt."
+    "nhan_xet": "Thực phẩm thuộc nhóm hạn chế cần giấy tờ, listing có giấy công bố tiêu chuẩn 24/JIAXIANG/2026 (mục H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Quảng cáo 'ăn vặt trẻ em', 'các bé yêu thích', kẹo cứng có nguy cơ hóc cho trẻ nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Có quảng bá 'ăn vặt trẻ em', không để trẻ tự giới thiệu hay đòi cha mẹ mua (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim chống buồn ngủ, tỉnh táo khi lái xe là công dụng ngoài phạm vi thực phẩm",
+    "van_de": "Claim chống buồn ngủ và tỉnh ngay lập tức, nhắc lái xe đường dài",
     "rui_ro": "🟠",
-    "xu_ly": "Chỉ mô tả vị chua, hương vị, tiện mang theo; không nhắc lái xe hay tỉnh táo."
-   },
-   {
-    "van_de": "Nhắm trẻ em cho kẹo cứng",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quay trẻ nhỏ ăn kẹo, nhắm người lớn."
+    "xu_ly": "Chỉ nói vị chua thanh, ngậm cho đã miệng khi học, làm việc; bỏ nhắc lái xe và mốc thời gian."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'ngậm là tỉnh ngay, chống buồn ngủ khi lái xe, giải mệt'",
-    "goi_y": "Nói 'kẹo chua 3 vị việt quất, chanh, coca, ống nắp kín mang theo tiện'."
+    "khong_nen": "Chống buồn ngủ, tỉnh táo ngay lập tức, an toàn khi lái xe đường dài",
+    "goi_y": "Nói 'vị chua mạnh, ngậm cho đỡ nhàm khi học bài'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Bản công bố an toàn thực phẩm, nhãn phụ tiếng Việt, hạn sử dụng.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "thieu_thong_tin": "Chưa rõ thành phần, hạn dùng; giấy công bố tiêu chuẩn do trung tâm chứng nhận cấp, chưa kiểm ảnh nhãn.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

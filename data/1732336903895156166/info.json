@@ -35,56 +35,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thực phẩm có giấy phép mơ hồ (số đăng ký và ngày cấp không rõ ràng), dễ bị kiểm tra ATTP.",
-   "khuyen_nghi": "Chỉ làm khi shop bổ sung giấy công bố/ATTP hợp lệ, tránh nhắm đến trẻ em."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm thuộc nhóm cần phê duyệt (mục H) nhưng trang đã có giấy chứng nhận lưu hành; chỉ cần tránh claim sức khỏe.",
+   "khuyen_nghi": "Làm theo hướng review ăn vặt: vị chua cay, có nhân, bọc riêng từng viên. Không nói công dụng sức khỏe, không để trẻ em giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Chỉ mô tả vị, không có claim sức khỏe."
+    "nhan_xet": "Kẹo ăn vặt, USP chỉ về hình dáng/vị nên không vướng claim sức khỏe (mục A/H); kẹo dẻo chỉ bị cấm khi gắn giảm cân (mục B)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi bật."
+    "nhan_xet": "Shop tự đóng gói thương hiệu Kfood, không thấy tên hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình ảnh bản quyền rõ."
+    "nhan_xet": "Hình trái xoài, không nhân vật hay logo có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Giấy phép 'chứng nhận lưu hành', số đăng ký và ngày cấp 2026 cần xác minh."
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm thuộc nhóm cần phê duyệt (mục H), trang có số đăng ký/giấy chứng nhận lưu hành nhưng nên đối chiếu nhãn thật khi quay (mục G: hàng không nhãn/đóng gói lại bị cấm)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟡",
-    "nhan_xet": "Kẹo dẻo hấp dẫn trẻ em, cần cảnh báo hóc."
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em; nếu trẻ xuất hiện phải có người lớn và không để trẻ giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Giấy tờ ATTP không rõ ràng",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop gửi giấy công bố/ATTP trước khi làm"
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Kẹo tốt cho sức khỏe, không chất bảo quản",
-    "goi_y": "Chỉ nói vị chua cay ngọt, có nhân"
+    "khong_nen": "Nói tốt cho sức khỏe, giúp tiêu hóa, giảm cân",
+    "goi_y": "Chỉ tả vị chua ngọt cay, độ dẻo, nhân bên trong."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy công bố sản phẩm/ATTP, thành phần, hạn dùng.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa xem ảnh nhãn bao bì để xác nhận đủ thông tin nhãn và hạn dùng.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

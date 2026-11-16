@@ -38,56 +38,50 @@
   "poster_folder": 208,
   "duong_dan": "E:/oneshottramcanh/binh2l5 1736299546721158606/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bình giữ nhiệt tên 'Fit' kiểu dáng giống dòng bình dung tích lớn nổi tiếng, xuất xứ ghi Hungary và thông tin chịu trách nhiệm là dấu '...' không đáng tin.",
-   "khuyen_nghi": "Chỉ làm khi xác minh không phải hàng nhái thương hiệu và có thông tin nguồn gốc đúng; không so sánh tên hãng khác."
+   "muc_do": "🟡",
+   "nguy_co": "Bình giữ nhiệt kiểu dáng gần dòng bình lớn có quai xách và ống hút nổi tiếng, tên 'Fit' chưa rõ thương hiệu, xuất xứ Hungary và thông tin tổ chức ghi '..' khó tin.",
+   "khuyen_nghi": "Chỉ gọi 'bình giữ nhiệt dung tích lớn', không so sánh với hãng khác; không nêu số giờ giữ nhiệt khi không có thông số."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Giữ nhiệt' cần nêu đúng số giờ theo shop, không hứa nóng/lạnh cả ngày nếu chưa có test."
+    "nhan_xet": "Chưa có thông số giữ nóng/lạnh bao lâu, tránh nêu số giờ nếu chưa có bằng chứng (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Kiểu dáng bình dung tích lớn có quai xách có thể bắt chước thương hiệu lớn, cần xem ảnh có logo/khắc tên."
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'Fit' có thể gợi thương hiệu khác, không nói 'giống/dupe' hãng nào (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Cần xem ảnh để kiểm tra logo hoặc kiểu dáng có đăng ký."
+    "nhan_xet": "Kiểu dáng quai xách to và ống hút gần các mẫu bình nổi tiếng, cần kiểm ảnh xem có logo/dập chữ hãng không (mục I: hàng nhái kiểu dáng)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Vật dụng tiếp xúc thực phẩm cần chất liệu inox 304 hay nhựa an toàn; xuất xứ Hungary và tổ chức chịu trách nhiệm '...' bất thường."
+    "muc_do": "🟢",
+    "nhan_xet": "Bình giữ nhiệt không thuộc nhóm cấm/hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm trẻ em."
+    "nhan_xet": "Không nhắm tới trẻ em (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nghi ngờ nhái kiểu dáng thương hiệu bình giữ nhiệt lớn, nguồn gốc không rõ",
-    "rui_ro": "🟠",
-    "xu_ly": "Xem ảnh/logo, yêu cầu giấy tờ nguồn gốc; nếu có logo hãng khác thì không làm."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'giống/ngang hàng Stanley', 'giữ lạnh 48h'",
-    "goi_y": "Nói 'bình dung tích lớn miệng rộng, thả được đá viên, có quai xách'."
+    "khong_nen": "Giống Stanley, giữ lạnh 24 giờ",
+    "goi_y": "Nói 'bình 1500-2500ml miệng rộng, thả được đá, có ống hút'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chất liệu bình, giấy nguồn gốc, thông tin tổ chức chịu trách nhiệm thật, ảnh ở thư mục khác chưa đọc.",
-  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+  "thieu_thong_tin": "Xuất xứ Hungary và thông tin tổ chức chịu trách nhiệm ghi '..' không đáng tin; chưa có thông số vật liệu, thời gian giữ nhiệt, ảnh nằm ở thư mục khác (oneshottramcanh).",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

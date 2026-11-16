@@ -30,56 +30,60 @@
   "poster_folder": 335,
   "duong_dan": "E:/oneshottramcanh/leupvc 1730273374820928510/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Thông số ghi nhân vật Hello Kitty, có rủi ro IPR; sản phẩm liên quan trẻ em ngủ trong lều cần an toàn.",
-   "khuyen_nghi": "Không nhắc Hello Kitty, chỉ quay lều công chúa/hoàng tử; làm rõ khung PVC/ABS và các phụ kiện bán riêng."
+   "muc_do": "🟡",
+   "nguy_co": "Thông số listing ghi nhân vật Hello Kitty (Sanrio) nên có nguy cơ vướng bản quyền nếu lều có in hình nhân vật; claim 'an toàn cho trẻ em' cần bằng chứng.",
+   "khuyen_nghi": "Chỉ quay và nói về lều trơn (khung, vải, kích thước), không nhắc tên Hello Kitty; kiểm tra ảnh listing xem có in nhân vật không trước khi làm. Khi có trẻ vào khung hình phải có người lớn và không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Chất liệu 'siêu bền, an toàn cho trẻ em' không có chứng nhận."
+    "nhan_xet": "Mục C/H: 'siêu bền, an toàn cho trẻ em' là tuyên bố cần bằng chứng, nên nói theo mô tả thật (khung nhựa ABS, vải dù) thay vì cam kết an toàn tuyệt đối."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟢",
-    "nhan_xet": "Chưa thấy thương hiệu rõ."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục I: thông số ghi 'Hello Kitty' là tên thương hiệu, tránh nhắc tên này hoặc gợi liên tưởng khi quảng bá."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Thông số khai Hello Kitty (Sanrio), nếu hình có nhân vật là rủi ro bản quyền."
+    "nhan_xet": "Mục I (bản quyền nhân vật hoạt hình): nếu lều có in Hello Kitty mà không có LoA thì vi phạm, hiện chưa rõ qua mô tả vì tên SP không nhắc nhân vật."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Lều có đèn pin, mây treo cần chú ý an toàn cháy."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục G/H: lều đồ chơi không thuộc nhóm cấm hay hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm cho trẻ ngủ/chơi trong lều, cần an toàn và cảnh báo tuổi."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: sản phẩm dành cho trẻ nên nếu bé xuất hiện phải có người lớn trong khung hình và không để bé tự trình bày hay thúc giục đòi cha mẹ mua."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Thông số khai nhân vật Hello Kitty",
+    "van_de": "Thông số 'Nhân vật hoạt hình: Hello Kitty' có thể nghĩa là lều in nhân vật Sanrio không được cấp phép.",
     "rui_ro": "🟠",
-    "xu_ly": "Không nhắc nhân vật, kiểm tra hình có logo/nhân vật; yêu cầu shop sửa thông số."
+    "xu_ly": "Xem kỹ ảnh listing; chỉ làm khi lều trơn hoặc shop có LoA, và không nhắc tên nhân vật trong video."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Hoàn toàn an toàn cho trẻ em",
-    "goi_y": "Lều dạng lâu đài cho bé vui chơi, nên có người lớn bên cạnh."
+    "khong_nen": "Cam kết 'tuyệt đối an toàn cho bé' hoặc 'chuẩn an toàn' khi không có giấy kiểm nghiệm.",
+    "goi_y": "Nói 'khung nhựa ABS, vải dù chắc chắn' và nhắc ba mẹ dùng dưới sự giám sát của người lớn."
+   },
+   {
+    "khong_nen": "Gọi là 'lều Hello Kitty' hay 'lều Sanrio'.",
+    "goi_y": "Gọi chung là 'lều lâu đài công chúa hoàng tử'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Hình thật có nhân vật không, an toàn đèn pin và vải khi ngủ.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ ảnh listing có in nhân vật Hello Kitty hay không và shop có LoA không; chưa có giấy kiểm nghiệm an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

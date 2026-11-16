@@ -37,57 +37,55 @@
   "poster_folder": 176,
   "duong_dan": "F:\\2010\\sticker halo 2010 1732325861462542279\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Hình xăm dán dùng cho da mặt và trẻ em chưa có công bố an toàn, hàng gửi từ nước ngoài.",
-   "khuyen_nghi": "Chỉ làm khi bỏ nội dung dán lên mặt bé, tập trung người lớn hoặc dán đồ vật, kiểm tra giấy tờ an toàn da."
+   "muc_do": "🟡",
+   "nguy_co": "Hình xăm dán dùng trên da, có nhắm cả trẻ em nên cần tránh claim an toàn tuyệt đối và để trẻ tự giới thiệu sản phẩm (mục D).",
+   "khuyen_nghi": "Để người lớn demo dán lên tay/mặt, chỉ nói 'chống nước, dễ tẩy' theo mô tả trang, không nói 'an toàn cho da bé'. Quay chỉ các mẫu họa tiết chung (bí ngô, ma, lâu đài)."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Chống nước, dễ tẩy là claim cần kiểm chứng, không nói an toàn da."
+    "nhan_xet": "Chỉ là đồ hóa trang tạm thời, không claim điều trị; cần tránh nói 'an toàn/không kích ứng da' khi trang chưa có kiểm nghiệm (mục A/C: claim phải có bằng chứng)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi bật."
+    "nhan_xet": "Họa tiết chung (bí ngô, ma, lâu đài), shop không gắn thương hiệu nào (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Họa tiết Halloween chung nhưng cần kiểm tra không có nhân vật bản quyền."
+    "nhan_xet": "Có hàng chục mã mẫu chưa xem hết ảnh, cần loại các mẫu có nhân vật hoạt hình/phim nếu có (mục I: bản quyền nhân vật)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Sản phẩm dán lên da giống mỹ phẩm, thiếu công bố và thông số."
+    "nhan_xet": "Hình xăm dán lên da có thể bị coi gần mỹ phẩm/chăm sóc cá nhân (mục H) nhưng trang không có công bố; hàng gửi overseas nên cần đúng mô tả nguồn gốc (mục C)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Ghi rõ dùng cho bé trên mặt, nhạy cảm về an toàn da trẻ em."
+    "muc_do": "🟡",
+    "nhan_xet": "Tiêu đề nhắm 'cho bé', nếu có trẻ xuất hiện phải có người lớn trong khung và không để trẻ tự giới thiệu (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Dán lên mặt và da của bé",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quay hoặc nói dùng cho bé, chỉ nói người lớn và đồ vật"
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn cho da bé, không độc hại",
-    "goi_y": "Không nêu an toàn, nói chỉ dùng cho da nguyên vẹn"
+    "khong_nen": "An toàn tuyệt đối cho da bé, không gây kích ứng",
+    "goi_y": "Dán thử một vùng nhỏ trước, hướng dẫn tẩy bằng dầu/nước ấm đúng như mô tả trang."
+   },
+   {
+    "khong_nen": "Nói hàng ship nhanh/freeship khi trang ghi gửi từ overseas 4-7 ngày",
+    "goi_y": "Nói đúng thời gian giao 4-7 ngày để kịp đặt trước Halloween."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thành phần keo/mực, chứng nhận an toàn da, độ tuổi.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa biết toàn bộ họa tiết các mã mẫu có nhân vật có bản quyền không; chưa có kiểm nghiệm an toàn da.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

@@ -30,56 +30,50 @@
   "poster_folder": 13,
   "duong_dan": "E:\\Aff anh nhan\\review\\vở ô li bài tập(1) 1731991566639465684\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sách giáo dục cần kiểm soát bản quyền nội dung và giấy phép xuất bản.",
-   "khuyen_nghi": "Chỉ giới thiệu bìa và nội dung chung, không quay nội dung chi tiết hay hứa điểm."
+   "muc_do": "🟡",
+   "nguy_co": "Sách thuộc nhóm sản phẩm truyền thông, cần chắc là sách trong danh mục được hỗ trợ; tên 'Kết Nối' gắn với bộ sách giáo khoa của nhà xuất bản khác.",
+   "khuyen_nghi": "Giới thiệu là vở bài tập bổ trợ theo chương trình, không ngụ ý là sách chính thức của bộ sách; không để học sinh tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Chỉ mô tả sách bài tập, không có claim."
+    "nhan_xet": "Mục C: không có claim sức khỏe, chỉ cần không hứa điểm số hay kết quả học tập."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Brand THANH NGA, tên Kết Nối có thể bị coi là mượn nhãn sách giáo khoa."
+    "nhan_xet": "Mục I: cụm 'Kết Nối' là tên bộ sách, nên nói 'bám sát chương trình' và 'bổ trợ', không ngụ ý hợp tác với nhà xuất bản."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Nội dung và hình minh họa của nhà xuất bản, quay trang sách chi tiết có thể vi phạm bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục I (bản quyền): nội dung và hình minh họa của sách không được tự chụp/sao chép ra ngoài ảnh listing."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Xuất bản phẩm cần giấy phép xuất bản/ISBN, thông số trang chưa thể hiện."
+    "nhan_xet": "Mục G: 'sản phẩm truyền thông (sách ngoài danh mục)' không hỗ trợ, cần xác nhận mặt hàng nằm trong danh mục sách học tập được phép."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Đối tượng học sinh lớp 3, tránh hình ảnh trẻ em và lời hứa kết quả học."
+    "nhan_xet": "Mục D: sản phẩm cho học sinh lớp 3 nên nhắm tới phụ huynh và giáo viên, không để trẻ giới thiệu."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Quay cận cảnh nội dung bài tập của nhà xuất bản",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ quay bìa và lướt nhanh một vài trang, không đọc nội dung."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Học giỏi chắc chắn / tăng điểm",
-    "goi_y": "Nói vở phù hợp làm thêm buổi 2 và cuối tuần."
+    "khong_nen": "Học là giỏi toán chắc chắn, đảm bảo điểm 10",
+    "goi_y": "Nói 'bài tập phân hóa từ cơ bản đến nâng cao, có bài cuối tuần, 116 trang'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy phép xuất bản/ISBN, quan hệ giữa NXB Thanh Niên và nhà phát hành Việt Hà.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa xác nhận danh mục sách được hỗ trợ trên TikTok Shop và giấy phép xuất bản/liên kết xuất bản.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

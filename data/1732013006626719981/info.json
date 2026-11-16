@@ -27,7 +27,7 @@
   "so_video": 18,
   "luc": "2026-10-28T10:48:54+07:00"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -41,58 +41,58 @@
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "❌",
-   "muc_do": "🔴",
-   "nguy_co": "Mỹ phẩm trang điểm (phấn mắt, sơn móng) nhắm vào trẻ em, thiếu giấy công bố mỹ phẩm và dễ bị gỡ/vi phạm an toàn trẻ em.",
-   "khuyen_nghi": "Không nên làm affiliate vì mỹ phẩm cho trẻ em là nhóm rủi ro cao về an toàn và chính sách."
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Bộ trang điểm cho bé gái không có số công bố mỹ phẩm trong listing và nội dung dễ vướng quy định trẻ vị thành niên.",
+   "khuyen_nghi": "Nhắm nội dung tới phụ huynh, dùng người lớn demo, chỉ nói hộp trang điểm có gương và phụ kiện; không để bé tự giới thiệu, không nói 'an toàn tuyệt đối'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Quảng cáo 'không thấm nước' chấp nhận được nhưng không được nói an toàn cho da bé."
+    "nhan_xet": "Mục A: mỹ phẩm trang điểm chỉ nên nói hiệu quả tạm thời, 'không thấm nước' và 'an toàn cho trẻ' cần bằng chứng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Igoodco không thấy dấu hiệu nhái thương hiệu lớn."
+    "nhan_xet": "Mục I: brand Igoodco tự có, không thấy gợi liên tưởng hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Chưa rõ nguồn gốc ảnh/hình thiết kế, cần kiểm tra hình ảnh trên hộp."
+    "nhan_xet": "Mục I (bản quyền): hộp đồ chơi cho bé gái hay in nhân vật hoạt hình, cần xem ảnh để chắc không có nhân vật có bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟠",
-    "nhan_xet": "Mỹ phẩm cần số công bố sản phẩm mỹ phẩm, trang không có."
+    "nhan_xet": "Mục H: mỹ phẩm cần phiếu công bố và nhãn đủ thông tin, listing chỉ có hạn dùng và nơi sản xuất, chưa có số công bố nên có nguy cơ listing bị xử lý."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🔴",
-    "nhan_xet": "Mỹ phẩm trang điểm cho bé gái là nhóm nhạy cảm, dễ vi phạm chính sách trẻ em và an toàn."
+    "muc_do": "🟠",
+    "nhan_xet": "Mục D: nội dung không được để trẻ trình bày sản phẩm hay thuyết phục trẻ đòi cha mẹ mua, mà sản phẩm này tự nhiên hướng tới bé gái."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Mỹ phẩm trẻ em không có công bố mỹ phẩm",
-    "rui_ro": "🔴",
-    "xu_ly": "Không làm hoặc yêu cầu shop cung cấp phiếu công bố trước khi làm"
+    "van_de": "Thiếu số công bố mỹ phẩm trên listing (mục H)",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung phiếu công bố và nhãn phụ tiếng Việt trước khi quảng bá."
    },
    {
-    "van_de": "Trang điểm cho bé gái, tiếp xúc da và mắt",
+    "van_de": "Nội dung có bé trang điểm (mục D)",
     "rui_ro": "🟠",
-    "xu_ly": "Tránh quay trẻ em thực sự bôi sản phẩm"
+    "xu_ly": "Dùng người lớn hoặc tay người lớn demo, quay hướng tới cha mẹ chọn quà, không để bé nói lời giới thiệu."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "An toàn cho da bé, không độc hại",
-    "goi_y": "Chỉ nói đây là bộ đồ chơi hóa trang, không nêu an toàn"
+    "khong_nen": "An toàn tuyệt đối cho da bé, không thấm nước 100%",
+    "goi_y": "Nói 'bộ hộp trang điểm 2 tầng có gương, nhiều ô phấn, kèm phụ kiện tóc, hợp làm quà sinh nhật'."
    }
   ],
-  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Số công bố mỹ phẩm, thành phần, giấy kiểm định an toàn đồ chơi/mỹ phẩm trẻ em.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Số công bố mỹ phẩm, thành phần, chứng nhận an toàn đồ chơi; chưa đọc ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

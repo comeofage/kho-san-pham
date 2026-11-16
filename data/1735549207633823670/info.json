@@ -38,56 +38,56 @@
   "poster_folder": 148,
   "duong_dan": "E:\\oneshottramcanh\\dualungdeli 1735549207633823670\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim giảm đau lưng, bảo vệ cột sống, 'giảm tới 60% áp lực' mang tính y tế và không có chứng cứ.",
-   "khuyen_nghi": "Làm khi bỏ hết claim y tế/số liệu; chỉ nói tựa lưng hỗ trợ tư thế ngồi, thoáng khí, chỉnh độ cao."
+   "muc_do": "🟡",
+   "nguy_co": "Có claim y tế \"cứu cánh cho cột sống\", \"giảm tới 60% áp lực\" và lệch tên VUSION/VUSIGN, cần bỏ khi quảng bá.",
+   "khuyen_nghi": "Nói tựa lưng hỗ trợ tư thế ngồi thoải mái, thoáng khí, tháo giặt được; bỏ \"cứu cánh/chữa đau lưng\" và số 60%."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "Mô tả có 'giảm đau lưng', 'cứu cánh cột sống', 'giảm tới 60% áp lực' là claim y tế không kiểm chứng."
+    "muc_do": "🟠",
+    "nhan_xet": "\"Cứu cánh cho cột sống\", \"giảm tới 60% áp lực\" là claim y tế/trị liệu không có bằng chứng (mục C, mục G thiết bị trị liệu), sửa được bằng lời."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Tên không thống nhất (VUSION/VUSIGN), nên xác minh thương hiệu."
+    "nhan_xet": "Tên listing VUSION nhưng mô tả VUSIGN, mục C yêu cầu nội dung khớp sản phẩm, chưa rõ thương hiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy vấn đề hình ảnh."
+    "nhan_xet": "Không thấy logo hay nhân vật bên thứ ba."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Là phụ kiện ghế, không phải thiết bị y tế nếu không claim điều trị."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không hướng tới trẻ em."
+    "nhan_xet": "Có nhắc học sinh nhưng không nhắm trẻ."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim y tế về cột sống, đau lưng",
-    "rui_ro": "🔴",
-    "xu_ly": "Xóa claim, chỉ mô tả cảm giác ngồi và thiết kế."
+    "van_de": "Claim giảm đau lưng, giảm 60% áp lực cột sống",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói \"hỗ trợ ngồi thoải mái hơn\", kèm \"cảm nhận mỗi người khác nhau\", không dùng số liệu."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giảm đau lưng, giảm 60% áp lực cột sống, bảo vệ cột sống",
-    "goi_y": "Nói 'hỗ trợ tựa lưng, ngồi thoải mái hơn'."
+    "khong_nen": "Chữa/hết đau lưng, cứu cánh cột sống, giảm 60% áp lực",
+    "goi_y": "Nói \"đệm tựa giúp ngồi thoải mái hơn\"."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Thương hiệu đúng là VUSION hay VUSIGN, tài liệu thử nghiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ tên thương hiệu đúng (VUSION hay VUSIGN) và có kiểm nghiệm cho con số 60% hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

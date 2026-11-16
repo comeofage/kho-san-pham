@@ -30,56 +30,50 @@
   "poster_folder": 2,
   "duong_dan": "E:\\Aff anh nhan\\review\\bo phao boi 1730115090275732471\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Phao bơi dành cho trẻ em, dễ bị hiểu nhầm là thiết bị cứu sinh; thiếu thông tin an toàn và kiểm định.",
-   "khuyen_nghi": "Luôn nhắc cần người lớn giám sát, không nói 'an toàn chống đuối nước'; làm rõ phao hỗ trợ tập bơi chứ không thay áo phao cứu sinh."
+   "muc_do": "🟡",
+   "nguy_co": "Phao bơi trẻ em dễ bị hiểu là dụng cụ an toàn chống đuối nước, và cảnh quay trẻ dưới nước cần người lớn.",
+   "khuyen_nghi": "Có thể làm; nói đây là phao hỗ trợ tập bơi, không phải áo phao cứu sinh, luôn có người lớn kèm sát. Quay người lớn thao tác hoặc bé có người lớn cạnh bên."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Không được nói giúp chống đuối nước hay đảm bảo an toàn khi bơi."
+    "muc_do": "🟡",
+    "nhan_xet": "Cấm hứa 'an toàn tuyệt đối/chống đuối nước' (mục C: tuyên bố sai lệch, thông tin gây hiểu lầm), chỉ nói hỗ trợ nổi khi tập bơi."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand sportslink của shop, không thấy mạo danh."
+    "nhan_xet": "Brand Sportslink của shop, không gợi hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật hay hình ảnh bản quyền."
+    "nhan_xet": "Chưa thấy hình nhân vật hay logo bản quyền, mô tả chủ yếu nằm trong ảnh."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Sản phẩm thể thao dưới nước, cần cảnh báo an toàn, chưa rõ kiểm định."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Dùng cho trẻ em trong môi trường nguy hiểm, cần cảnh báo độ tuổi và giám sát."
+    "muc_do": "🟡",
+    "nhan_xet": "Trẻ mặc đồ bơi trong video bị hạn chế (mục D) nên tránh quay bé hở nhiều, ưu tiên quay phao đặt riêng hay người lớn thao tác."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Phao bơi trẻ em liên quan an toàn tính mạng",
-    "rui_ro": "🟠",
-    "xu_ly": "Thêm cảnh báo cần người lớn giám sát và hỏi shop về tiêu chuẩn an toàn."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Phao giúp bé không bao giờ bị đuối nước",
-    "goi_y": "Phao hỗ trợ tập bơi, luôn cần người lớn bên cạnh."
+    "khong_nen": "Phao đảm bảo bé không bị đuối nước, an toàn tuyệt đối",
+    "goi_y": "Phao hỗ trợ bé nổi khi tập bơi; cần người lớn kèm sát, không thay áo phao cứu sinh."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận an toàn, độ tuổi và cân nặng áp dụng từng loại phao.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ tải trọng/độ tuổi từng loại phao và chứng nhận an toàn.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

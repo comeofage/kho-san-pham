@@ -27,7 +27,7 @@
   "so_video": 19,
   "luc": "2026-10-28T10:49:15+07:00"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -41,52 +41,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Tuỳ chọn \"idol\" và in tên theo yêu cầu dễ vi phạm bản quyền/nhãn hiệu của người nổi tiếng, nhân vật hoặc nội dung nhạy cảm.",
-   "khuyen_nghi": "Chỉ làm video với tên/chữ cái thường, không nhận hoặc gợi ý in tên idol, thương hiệu, nhân vật."
+   "muc_do": "🟡",
+   "nguy_co": "Tên/idol/nhân vật khách ghi chú có thể trùng thương hiệu hoặc IP có bản quyền nếu quảng bá 'in theo idol'.",
+   "khuyen_nghi": "Chỉ nói in tên/chữ cái theo ý khách; không hứa in tên idol, nhân vật, logo hãng; không dùng hình idol trong video."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Phụ kiện trang trí, không có claim công dụng."
+    "nhan_xet": "Chỉ là phụ kiện trang trí, không claim công dụng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Khách có thể ghi tên thương hiệu vào đơn tuỳ chỉnh, shop khó kiểm soát."
+    "nhan_xet": "Mục I: tiêu đề nhắc 'idol', cần tránh gợi tên thương hiệu/nghệ sĩ; keycap dạng bàn phím có thể giống kiểu dáng hãng nhưng chưa thấy logo."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "In theo yêu cầu \"sở thích, idol\" có nguy cơ in tên/hình nhân vật, nhóm nhạc có bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục I: in chữ theo yêu cầu có thể sao chép nhân vật/tên có bản quyền; sửa được bằng lời quảng bá."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Bản có led kèm pin cúc áo, cần ghi rõ nếu có pin."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm đối tượng trẻ em."
+    "nhan_xet": "Không nhắm trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Tuỳ chọn in theo idol/sở thích",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quảng bá in tên idol, nhân vật, thương hiệu; chỉ demo chữ cái hoặc tên cá nhân."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Làm móc khoá tên idol, nhân vật anime/game",
+    "goi_y": "Khắc tên của bạn, chữ cái yêu thích, tên thú cưng"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có thông tin pin của bản led.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh để kiểm tra có logo hãng bàn phím trên keycap không.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

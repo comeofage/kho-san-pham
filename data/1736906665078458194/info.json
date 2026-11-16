@@ -36,62 +36,57 @@
   "poster_folder": 227,
   "duong_dan": "E:/oneshottramcanh/xitmuoi 1736906665078458194/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Chế phẩm xua côn trùng dùng cho trẻ từ 6 tháng với claim 'dịu nhẹ, không DEET' chưa kèm số đăng ký lưu hành.",
-   "khuyen_nghi": "Chỉ làm khi shop cung cấp giấy phép lưu hành chế phẩm côn trùng và công bố thành phần; không nói an toàn tuyệt đối cho bé, chỉ hướng dẫn xịt lên quần áo."
+   "muc_do": "🟡",
+   "nguy_co": "Xịt chống muỗi cho trẻ 6 tháng là sản phẩm hóa chất/chế phẩm cần giấy tờ, và các câu \"dịu nhẹ, an toàn cho bé\" cần bằng chứng (mục C, H).",
+   "khuyen_nghi": "Chỉ nói \"hỗ trợ xua đuổi muỗi\", làm theo hướng dẫn xịt lên quần áo/xe đẩy, không xịt trực tiếp lên da bé nhỏ; không khẳng định an toàn tuyệt đối."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Xua đuổi muỗi', 'dịu nhẹ', 'phù hợp bé từ 6 tháng' là claim hiệu quả và an toàn cần có chứng nhận thử nghiệm."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Dịu nhẹ, không DEET, an toàn cho bé\" cần bằng chứng trên bao bì/kiểm nghiệm (mục A, C); dùng \"hỗ trợ xua đuổi\" thay vì \"diệt/chống tuyệt đối\"."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Hegerbaby có shop riêng, không thấy dấu hiệu hàng nhái."
+    "nhan_xet": "Brand Hegerbaby là của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật hay hình ảnh có bản quyền."
+    "nhan_xet": "Không có nhân vật hay hình ảnh bản quyền rõ ràng (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🔴",
-    "nhan_xet": "Chế phẩm diệt hoặc xua côn trùng gia dụng thuộc nhóm cần giấy đăng ký lưu hành của Bộ Y tế, trang không hiển thị số đăng ký."
+    "muc_do": "🟠",
+    "nhan_xet": "Chế phẩm xua đuổi côn trùng là hóa chất/hàng hóa nguy hiểm tiềm năng (mục H chưa đọc chi tiết) và cần giấy công bố; trang chưa thấy số công bố hay phép lưu hành."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🔴",
-    "nhan_xet": "Dùng cho trẻ sơ sinh từ 6 tháng, xịt gần da, có tinh dầu nên rủi ro an toàn cao."
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng cho bé từ 6 tháng nên tránh quay xịt trực tiếp lên bé; nếu có bé xuất hiện phải có người lớn và bé không tự giới thiệu (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Chưa thấy giấy đăng ký lưu hành chế phẩm xua côn trùng",
-    "rui_ro": "🔴",
-    "xu_ly": "Yêu cầu shop cung cấp số đăng ký trước khi làm."
-   },
-   {
-    "van_de": "Claim an toàn cho bé từ 6 tháng với tinh dầu",
-    "rui_ro": "🔴",
-    "xu_ly": "Chỉ đọc đúng hướng dẫn: xịt lên quần áo, xe đẩy, tránh xịt trực tiếp lên da."
+    "van_de": "Chưa rõ giấy công bố/lưu hành chế phẩm xua đuổi côn trùng dùng cho trẻ nhỏ",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra trang có số công bố hoặc phép lưu hành; trong video chỉ hướng dẫn đúng cách dùng như trên bao bì."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Nói 'tuyệt đối an toàn cho da nhạy cảm', 'diệt sạch muỗi', 'thay thế kem chống muỗi y tế'",
-    "goi_y": "Nói 'xịt thảo mộc hỗ trợ xua muỗi, xịt lên quần áo hoặc xe đẩy theo hướng dẫn'."
+    "khong_nen": "An toàn tuyệt đối cho trẻ sơ sinh, diệt sạch muỗi, xịt trực tiếp lên da bé 6 tháng",
+    "goi_y": "Hỗ trợ xua đuổi muỗi; xịt lên quần áo, xe đẩy; thử vùng da nhỏ trước; kết quả có thể khác nhau."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có số đăng ký lưu hành, thành phần đầy đủ, tổ chức chịu trách nhiệm hàng hóa; chưa đọc ảnh.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa thấy giấy công bố/lưu hành chế phẩm và phiếu kiểm nghiệm; mục hàng hóa nguy hiểm trong chính sách chưa đọc chi tiết.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

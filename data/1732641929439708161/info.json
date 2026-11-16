@@ -30,56 +30,56 @@
   "poster_folder": 108,
   "duong_dan": "E:\\oneshottramcanh\\banchaigapgon 1732641929439708161\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Bàn chải có claim trắng răng, là claim chăm sóc răng miệng không chứng minh được.",
-   "khuyen_nghi": "Làm được nếu bỏ claim trắng răng và chỉ nói tiện gấp gọn, lông mềm."
+   "muc_do": "🟡",
+   "nguy_co": "Tiêu đề có 'Trắng Răng' là claim làm trắng răng bị cấm (mục A), nhưng chỉ cần không nói lại là tránh được.",
+   "khuyen_nghi": "Bán theo hướng bàn chải du lịch gấp gọn, lông mềm, thân đen. Tuyệt đối không nhắc làm trắng răng hay trị viêm nướu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "'Trắng răng' là claim hiệu quả không thể kiểm chứng với bàn chải."
+    "nhan_xet": "'Trắng Răng' trong tiêu đề là claim làm trắng răng thuộc nhóm cấm của mục A; bàn chải không có tác dụng này nên phải bỏ khỏi lời quảng bá."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Có logo Cherif, cần chắc chắn là thương hiệu của shop."
+    "muc_do": "🟢",
+    "nhan_xet": "Logo Cherif trùng tên shop Cherif Việt Nam, nhiều khả năng là nhãn riêng (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có hình ảnh bản quyền."
+    "nhan_xet": "Thiết kế bàn chải gấp thông dụng, không thấy nhân vật/logo bên thứ ba (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Sản phẩm chăm sóc răng miệng, trang thiếu thông tin công bố/chất liệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Bàn chải đánh răng không thuộc nhóm cấm hay hạn chế (mục G, H) vì không phải thiết bị y tế hay mỹ phẩm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm vào trẻ em."
+    "nhan_xet": "Sản phẩm người lớn/du lịch, không nhắm trẻ em (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim trắng răng",
+    "van_de": "Tiêu đề chứa claim 'Trắng Răng'",
     "rui_ro": "🟠",
-    "xu_ly": "Bỏ claim, chỉ nói lông mềm gấp gọn"
+    "xu_ly": "Không đọc tiêu đề trong video; chỉ nói 'lông mềm, gấp gọn bỏ túi, không đau nướu khi đánh mạnh tay' hạn chế, ưu tiên mô tả theo trang."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Giúp răng trắng hơn, trị ê buốt",
-    "goi_y": "Nói lông tơ mềm, gấp gọn mang đi du lịch"
+    "khong_nen": "Làm trắng răng, hết ố vàng, trị viêm nướu",
+    "goi_y": "Nói 'bàn chải gấp gọn mang đi du lịch, lông tơ mềm'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chất liệu lông bàn chải, tiêu chuẩn sản phẩm.",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Trang không có thông số chi tiết (chất liệu lông, xuất xứ) và chưa xem ảnh để đối chiếu logo.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

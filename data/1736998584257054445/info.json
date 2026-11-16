@@ -38,57 +38,46 @@
   "poster_folder": 98,
   "duong_dan": "F:\\2010\\sticker puzzle 2010 1736998584257054445\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi giáo dục mầm non có chi tiết xốp EVA nhỏ, claim phát triển tư duy.",
-   "khuyen_nghi": "Không nói kích thích trí tuệ chắc chắn; nêu độ tuổi, cảnh báo chi tiết nhỏ, có người lớn giám sát. Xin giấy an toàn đồ chơi."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Tranh dán xốp EVA không vướng nhóm cấm; chỉ cần tránh nói quá về phát triển tư duy.",
+   "khuyen_nghi": "Có thể làm Affiliate, nói \"giúp bé vui khi tự dán, phối màu\" thay vì hứa kích thích trí tuệ; nhắc chi tiết nhỏ cần người lớn giám sát."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Nói kích thích tư duy logic, phối màu cho bé là claim giáo dục khó chứng minh."
+    "muc_do": "🟢",
+    "nhan_xet": "\"Phát triển tư duy sáng tạo\" là claim giáo dục thông thường, không thuộc claim sức khỏe (mục A), chỉ nên nói nhẹ nhàng, tránh hứa kết quả (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand Bei Fen Er không phải thương hiệu lớn, không thấy dấu hiệu hàng nhái."
+    "nhan_xet": "Brand Bei Fen Er của shop, không gợi liên tưởng hãng khác (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Chủ đề khủng long, động vật, nghề nghiệp chung, chưa thấy nhân vật bản quyền."
+    "nhan_xet": "Chủ đề khủng long, động vật, trái cây là hình chung, chưa thấy nhân vật bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Đồ thủ công EVA không thuộc danh mục cấm hay hạn chế (mục G, H)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi cho bé 3 đến 6 tuổi, mảnh dán xốp nhỏ có nguy cơ nuốt, cần chứng nhận an toàn."
+    "muc_do": "🟢",
+    "nhan_xet": "Dành cho bé 3-6 tuổi, quay có người lớn trong khung hình, bé không tự giới thiệu hay giục mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em có chi tiết nhỏ, cần chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Nhắc có người lớn giám sát, xin giấy QCVN 3:2019 hoặc tương đương."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Giúp bé thông minh hơn, phát triển trí tuệ vượt trội",
-    "goi_y": "Nói bé thích dán, thực hành phối màu và hình khối."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận an toàn đồ chơi, cần xem ảnh mô tả để kiểm tra nhân vật.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Trang không có mô tả chữ, chưa đọc ảnh mô tả nên chưa xác nhận số tranh/kích thước và chứng nhận an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

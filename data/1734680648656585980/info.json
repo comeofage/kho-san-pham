@@ -30,65 +30,56 @@
   "poster_folder": 12,
   "duong_dan": "E:\\Aff anh nhan\\review\\phao nằm 1734680648656585980\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Sản phẩm dưới nước cho trẻ em thiếu độ tuổi, tải trọng và cảnh báo an toàn.",
-   "khuyen_nghi": "Chỉ làm khi có cảnh báo giám sát và quay người lớn hay trẻ lớn trong vùng nước nông."
+   "muc_do": "🟡",
+   "nguy_co": "Quay trẻ em mặc đồ bơi/ngồi phao trong video vi phạm mục D; phao bơi có rủi ro an toàn nếu không nhắc người lớn giám sát.",
+   "khuyen_nghi": "Dùng người lớn demo hoặc chỉ quay sản phẩm; nếu có trẻ thì phải có người lớn trong khung, không mặc đồ bơi khêu gợi, và nhắc cần giám sát khi dùng."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Nên tránh nói an toàn tuyệt đối khi bé nằm phao."
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả công năng nằm/nổi, không có claim sức khỏe."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có thương hiệu nổi tiếng."
+    "nhan_xet": "Không thấy thương hiệu."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy nhân vật có bản quyền."
+    "nhan_xet": "Kiểu phao lưới chung, không có nhân vật/logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Phao bơi không phải thiết bị cứu sinh, cần cảnh báo giám sát."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế; xuất xứ Trung Quốc ghi rõ."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟠",
-    "nhan_xet": "Nhóm tuổi trẻ em, rủi ro đuối nước và thông tin tải trọng, độ tuổi chưa rõ."
+    "nhan_xet": "Mục D: nhóm tuổi trẻ em, cảnh trẻ mặc đồ bơi bị cấm; trẻ phải liên quan sản phẩm và có người lớn trong khung."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Rủi ro đuối nước cho trẻ em",
-    "rui_ro": "🔴",
-    "xu_ly": "Ghi cảnh báo luôn có người lớn giám sát."
-   },
-   {
-    "van_de": "Thiếu độ tuổi và tải trọng",
+    "van_de": "Cảnh trẻ em mặc đồ bơi dùng phao",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung thông số."
+    "xu_ly": "Dùng người lớn làm mẫu hoặc quay phao đặt trên nước/bãi biển không có trẻ; nếu có trẻ phải mặc kín, có người lớn cạnh bên."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Phao an toàn, chống lật, cứu hộ",
-    "goi_y": "Nói ghế lưới nằm chơi nước, cần người lớn giám sát."
-   },
-   {
-    "khong_nen": "Cho bé nằm một mình dưới nước",
-    "goi_y": "Quay cảnh có người lớn bên cạnh."
+    "khong_nen": "Khẳng định an toàn tuyệt đối, bé tự bơi một mình",
+    "goi_y": "Luôn có người lớn giám sát khi bé dùng phao"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Tải trọng, độ tuổi, kích thước, vật liệu, chứng từ an toàn.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ tải trọng/chứng nhận an toàn; mô tả trang gần như trống.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

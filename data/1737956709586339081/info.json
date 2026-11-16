@@ -34,56 +34,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi con quay chiến đấu giống dòng Beyblade, nhắm trẻ em, hàng Trung Quốc chưa rõ chứng nhận an toàn.",
-   "khuyen_nghi": "Chỉ quay cách chơi 4 người, không nhắc Beyblade hay anime. Kiểm tra ảnh xem có logo/nhân vật nhái."
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi trẻ em có dạng con quay chiến đấu giống kiểu Beyblade, cần lưu ý khung hình có người lớn và không nhắc tên hãng.",
+   "khuyen_nghi": "Có thể làm; quay người lớn chơi cùng, không nói \"Beyblade\" hay \"giống Beyblade\" và không để trẻ tự giới thiệu bằng lời."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Không có claim công dụng."
+    "nhan_xet": "Chỉ là đồ chơi giải trí, claim \"tương tác cha mẹ con cái\" là mô tả cách chơi, không thuộc nhóm claim cấm ở mục A/B."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Thiết kế con quay chiến đấu dễ bị coi là nhái Beyblade/Takara Tomy."
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu con quay chiến đấu dễ bị gọi là Beyblade, cấm dùng \"giống/tương tự/inspired by\" thương hiệu khác (mục I: vi phạm nhãn hiệu)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Kiểu dáng bệ phóng/con quay hợp kim có nguy cơ vi phạm kiểu dáng đồ chơi thương hiệu."
+    "muc_do": "🟢",
+    "nhan_xet": "Ảnh chỉ thấy mâm đấu và con quay hợp kim chung chung, không có nhân vật hay logo hãng rõ ràng (mục I: hàng nhái)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Có đèn (pin), bộ phóng và chi tiết kim loại, cần kiểm soát an toàn."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi thông thường, bệ phóng kéo vòng không phải vũ khí hay đạn bắn; không thuộc nhóm cấm ở mục G."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi cho trẻ em cần QCVN 3:2019, cảnh báo chi tiết nhỏ/pin/vật phóng."
+    "muc_do": "🟡",
+    "nhan_xet": "Hướng tới trẻ em nên phải có người lớn trong khung hình và không khuyến khích trẻ đòi cha mẹ mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Nguy cơ nhái Beyblade và thiếu chứng nhận đồ chơi",
-    "rui_ro": "🟠",
-    "xu_ly": "Không dùng từ 'Beyblade', 'bay chiến', yêu cầu shop giấy tờ trước khi làm."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chính hãng, an toàn tuyệt đối cho trẻ",
-    "goi_y": "Nói 'mâm đấu 4 bệ phóng, 4 con quay phát sáng'."
+    "khong_nen": "\"Giống Beyblade\", \"phiên bản Beyblade\"",
+    "goi_y": "Dùng \"con quay đối kháng có đèn\"."
+   },
+   {
+    "khong_nen": "Giá gốc 362k giảm 40% nếu không phải giá thật",
+    "goi_y": "Chỉ nói giá đang hiển thị trên trang."
    }
   ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có chứng nhận đồ chơi/pin; ảnh mô tả chưa kiểm tra logo.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có chứng nhận an toàn đồ chơi; shop điểm 3.7, ít đánh giá.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

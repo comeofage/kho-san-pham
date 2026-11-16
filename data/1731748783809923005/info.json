@@ -30,7 +30,7 @@
   "poster_folder": 201,
   "duong_dan": "E:/oneshottramcanh/atiso 1731748783809923005/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "da_quay_review": {
   "xong": true,
@@ -40,52 +40,46 @@
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Mô tả gọi là vị thuốc quý với nhiều công dụng sức khỏe, vi phạm claim thực phẩm.",
-   "khuyen_nghi": "Chỉ nói đây là đồ uống chua ngọt pha 1:4, ướp bánh; bỏ hết nội dung sức khỏe."
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả listing gọi hoa atiso đỏ là 'vị thuốc quý' có nhiều công dụng sức khỏe, nếu lặp lại sẽ vi phạm quy định claim thực phẩm.",
+   "khuyen_nghi": "Chỉ nói vị chua ngọt, màu đỏ ruby, cách pha 1 nước cốt với 4 nước và dùng ướp bánh; không nhắc công dụng sức khỏe."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Mô tả nêu vị thuốc quý và lợi ích sức khỏe, là claim y tế cho thực phẩm thường."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H/G: thực phẩm không được tuyên bố chữa bệnh hay công dụng y tế, 'vị thuốc quý, lợi ích sức khỏe' cần bỏ hoàn toàn."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand Berryland của chính shop."
+    "nhan_xet": "Mục I: thương hiệu Berryland là của shop, không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có yếu tố bản quyền."
+    "nhan_xet": "Mục I: không có hình/nhân vật bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Thực phẩm tự công bố, cần số công bố và hạn dùng rõ trên bao bì."
+    "nhan_xet": "Mục H: thực phẩm & đồ uống cần giấy tự công bố, listing có số 09/BERRRYLAND/2025 (có vẻ gõ thừa chữ R) nên nên đối chiếu với nhãn."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm tới trẻ em."
+    "nhan_xet": "Mục D: không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Mô tả hoa atiso đỏ là vị thuốc, công dụng cho sức khỏe",
-    "rui_ro": "🟠",
-    "xu_ly": "Không đọc hay hiển thị phần công dụng, chỉ nói hương vị và cách pha."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giải nhiệt, hạ mỡ máu, hạ huyết áp, tốt cho gan",
-    "goi_y": "Nói vị chua ngọt tự nhiên, pha lạnh, làm đồ uống hoặc ướp bánh."
+    "khong_nen": "Giảm mỡ máu, hạ huyết áp, thải độc, tốt cho gan",
+    "goi_y": "Nói 'chua ngọt tự nhiên, không caffeine, pha đồ uống hoặc ướp bánh'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "thieu_thong_tin": "Chưa xem ảnh nhãn để đối chiếu số tự công bố.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

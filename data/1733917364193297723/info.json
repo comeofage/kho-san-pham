@@ -37,65 +37,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim diệt mạt và kháng khuẩn thiếu giấy phép lưu hành, thông tin chủ thể trên trang trống.",
-   "khuyen_nghi": "Chỉ làm khi shop đưa được giấy phép lưu hành, nếu không chỉ nói xịt thơm vải."
+   "muc_do": "🟡",
+   "nguy_co": "Claim diệt mạt 99.9%, kháng khuẩn, an toàn cho mẹ và bé cần bằng chứng và có thể thuộc chế phẩm diệt khuẩn/côn trùng cần giấy phép; thông tin tổ chức chịu trách nhiệm trống (mục A, mục C, mục G).",
+   "khuyen_nghi": "Chỉ làm nếu shop có phiếu kiểm nghiệm/giấy phép; nói xịt vải thơm và hỗ trợ giảm mạt bụi, không con số 99.9%, không nói an toàn tuyệt đối cho bé."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟠",
-    "nhan_xet": "Diệt mạt, kháng khuẩn là claim của chế phẩm diệt khuẩn, cần số lưu hành hay phiếu công bố."
+    "nhan_xet": "Ảnh có 'diệt mạt 99.9%', 'ức chế vi khuẩn', 'xịt một lần là sạch', 'an toàn không độc hại' là claim cần bằng chứng và dễ gây hiểu sai (mục A: claim cần bằng chứng, mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu Klinx của shop, không dấu hiệu nhái."
+    "nhan_xet": "Klinx là brand của shop đang bán."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không thấy hình ảnh hay nhân vật có bản quyền."
+    "nhan_xet": "Không thấy yếu tố bản quyền hay hàng nhái."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟠",
-    "nhan_xet": "Chế phẩm diệt côn trùng, diệt khuẩn gia dụng cần giấy phép lưu hành của Bộ Y tế."
+    "nhan_xet": "Chế phẩm diệt khuẩn/diệt mạt gia dụng thuộc hóa chất cần kiểm soát, thông tin tổ chức chịu trách nhiệm hàng hóa để trống '/' và nhập từ Trung Quốc (mục G: hóa chất, hàng không nhãn)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Xịt lên thú bông, gối nằm có thể liên quan đồ dùng trẻ em nên cần cảnh báo an toàn."
+    "nhan_xet": "Ảnh dùng hình em bé và nhắc phù hợp gia đình có mẹ và bé; không dùng trẻ để giới thiệu (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Claim diệt mạt, diệt bọ ve, kháng khuẩn chưa có giấy phép",
-    "rui_ro": "🔴",
-    "xu_ly": "Yêu cầu số lưu hành chế phẩm, thiếu thì bỏ claim."
-   },
-   {
-    "van_de": "Thông tin tổ chức chịu trách nhiệm chỉ ghi dấu gạch chéo",
+    "van_de": "Claim diệt mạt 99.9%, kháng khuẩn, không độc hại, an toàn cho bé khi chưa có kiểm nghiệm; thông tin tổ chức chịu trách nhiệm để trống (mục A, mục C, mục G).",
     "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung trước khi đăng."
+    "xu_ly": "Xin phiếu kiểm nghiệm và giấy tờ lưu hành từ shop; trong video bỏ con số và cam kết an toàn, chỉ mô tả cách dùng và mùi hương."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Diệt 99% mạt, kháng khuẩn, an toàn cho bé",
-    "goi_y": "Nói xịt lên ga gối cho thơm vải và đúng hương liệu."
+    "khong_nen": "Diệt mạt 99.9%, xịt một lần là sạch",
+    "goi_y": "Xịt lên ga gối, rèm, sofa, không cần giặt phơi, thơm vải."
    },
    {
-    "khong_nen": "Giảm dị ứng, hen suyễn",
-    "goi_y": "Không nhắc bệnh."
+    "khong_nen": "An toàn không độc hại cho mẹ và bé",
+    "goi_y": "Dùng theo hướng dẫn, thử trước ở chỗ nhỏ, tránh để gần mắt."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy phép lưu hành, thành phần, cảnh báo an toàn, thông tin tổ chức chịu trách nhiệm.",
-  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+  "thieu_thong_tin": "Thiếu phiếu kiểm nghiệm, giấy phép lưu hành và tên tổ chức chịu trách nhiệm; thành phần chiết xuất thực vật chưa rõ.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

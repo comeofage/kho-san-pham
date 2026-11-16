@@ -35,56 +35,50 @@
   "poster_folder": 173,
   "duong_dan": "E:\\oneshottramcanh\\phomai\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi squishy cho học sinh/trẻ em kèm claim 'giảm stress tức thì' và 'an toàn', dễ vướng quy định đồ chơi trẻ em.",
-   "khuyen_nghi": "Bỏ claim giảm stress/an toàn, chỉ nói cảm giác bóp, kích thước, phục hồi chậm; cần giấy kiểm định đồ chơi và cảnh báo độ tuổi."
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'giảm stress tức thì', 'giảm căng thẳng hiệu quả' có khung thời gian/hiệu quả sức khỏe; đồ chơi mút có hương thơm dễ bị trẻ nhỏ đưa vào miệng.",
+   "khuyen_nghi": "Nói 'bóp cho vui tay, thư giãn' thay vì 'giảm stress tức thì'; ghi cảnh báo không cho trẻ nhỏ ngậm/cắn, quay có người lớn."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Giảm stress tức thì', 'hương thơm thư giãn' là claim sức khỏe tâm lý, nên nói là đồ chơi bóp vui."
+    "nhan_xet": "'Giảm stress tức thì' vi phạm cấm khung thời gian (mục A) và là tuyên bố sức khỏe không bằng chứng (mục C), đổi thành 'bóp xả stress nhẹ, vui tay' là sửa được."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Brand NO BRAND, không mạo danh thương hiệu."
+    "nhan_xet": "Ghi 'NO BRAND', không ám chỉ thương hiệu (mục I)."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Tạo hình phô mai/bơ/khoai tây chung chung, cần kiểm ảnh không có nhân vật bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Hình khối phô mai/bơ/khoai tây là hình chung, không phải nhân vật có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Đồ chơi mút PU có hương thơm, cần giấy chứng nhận an toàn hóa chất (QCVN đồ chơi)."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi squishy thông thường, không thuộc nhóm cấm mục G; chưa có dấu hiệu bị thu hồi."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Nhắm tới học sinh, đồ chơi trẻ em xuất xứ Trung Quốc cần kiểm định, chưa có độ tuổi và cảnh báo nuốt vật nhỏ."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D/G: đồ chơi dễ thu hút trẻ nhỏ, cần cảnh báo an toàn (nhỏ dễ nuốt/ngậm) và không để trẻ giới thiệu sản phẩm."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em chưa có kiểm định và cảnh báo độ tuổi",
-    "rui_ro": "🟠",
-    "xu_ly": "Chỉ làm khi shop có giấy chứng nhận hợp quy đồ chơi, nêu khuyến cáo độ tuổi, không quay cảnh trẻ nhỏ ngậm/cắn."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Giảm stress tức thì, an toàn cho bé",
-    "goi_y": "Bóp mềm, phục hồi chậm, vui tay"
+    "khong_nen": "Giảm stress tức thì / giảm căng thẳng hiệu quả",
+    "goi_y": "Bóp chậm phục hồi nên vui tay, giúp thư giãn khi rảnh; cảm nhận mỗi người có thể khác nhau."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có kiểm định đồ chơi, độ tuổi khuyến cáo, thành phần hương liệu; giá gốc và phí vận chuyển trống.",
-  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+  "thieu_thong_tin": "Chưa rõ nhãn độ tuổi và chứng nhận an toàn đồ chơi, xuất xứ Trung Quốc; chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

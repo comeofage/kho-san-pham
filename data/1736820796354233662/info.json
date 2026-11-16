@@ -35,66 +35,51 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
    "muc_do": "🔴",
-   "nguy_co": "Nhân vật đầu TV, camera, loa, bồn cầu giống thương hiệu Toilet/Skibidi có bản quyền, đồ chơi trẻ em kèm vũ khí, hàng gửi từ nước ngoài.",
-   "khuyen_nghi": "Không nên làm Affiliate vì nguy cơ vi phạm IPR và đồ chơi vũ khí cho trẻ, shop mới ít đánh giá."
+   "nguy_co": "Bộ \"MT Toilet Series\" (đầu TV, camera, loa, bồn cầu) là nhân vật nhái của series Skibidi Toilet, vi phạm bản quyền/hàng nhái (mục I) và không thể sửa bằng lời quảng bá.",
+   "khuyen_nghi": "Không nên làm Affiliate vì rủi ro bản quyền nằm ở chính sản phẩm; nên chọn đồ lắp ghép có nhân vật gốc hoặc thương hiệu có ủy quyền."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô tả chữ trống, claim 'tương tác' cần đối chiếu ảnh nhưng ít rủi ro y tế."
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi lắp ghép tương tác không có claim sức khỏe đáng kể (mục A, C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "Không có brand, không có thông tin tổ chức chịu trách nhiệm hàng hóa, khó xác minh nguồn gốc."
+    "muc_do": "🔴",
+    "nhan_xet": "Tên và nhân vật gợi liên tưởng trực tiếp series nổi tiếng (mục I: gợi liên tưởng thương hiệu khác) và không thể quảng bá mà không nhắc tới nguồn gốc."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🔴",
-    "nhan_xet": "Nhân vật người đầu TV, camera, loa kết hợp bồn cầu khớp mô-típ Skibidi Toilet, đồ chơi lắp ráp kiểu mô phỏng nhân vật có bản quyền."
+    "nhan_xet": "Nhân vật hoạt hình/game in/sao chép khi chưa được cấp phép là vi phạm bản quyền, hàng nhái bị xử lý nặng (mục I, E)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Có phụ kiện vũ khí tháo rời, đồ chơi dạng vũ khí có thể bị hạn chế."
+    "muc_do": "🟡",
+    "nhan_xet": "Kèm \"vũ khí tháo rời\" dạng đồ chơi lắp ghép nhựa không bắn được nên chưa vào mục G, nhưng cần tránh quay như vũ khí thật."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi lắp ghép nhiều chi tiết nhỏ cho trẻ, chưa có hợp quy hay cảnh báo độ tuổi."
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi cho trẻ nên nếu có bé xuất hiện cần người lớn và bé không tự giới thiệu (mục D); nội dung nhân vật toilet/vũ khí cần tránh khuyến khích bạo lực."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Nhân vật mô phỏng thương hiệu có bản quyền (Toilet series)",
+    "van_de": "Nhân vật nhái series có bản quyền, shop không có thư ủy quyền, gửi từ overseas",
     "rui_ro": "🔴",
-    "xu_ly": "Không làm; nếu vẫn quay, phải được chủ sở hữu hoặc shop chứng minh quyền bán."
-   },
-   {
-    "van_de": "Phụ kiện vũ khí đồ chơi cho trẻ",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quay cảnh nhắm bắn hay bạo lực."
-   },
-   {
-    "van_de": "Thiếu thông tin hợp quy và nguồn gốc",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung trước khi cân nhắc."
+    "xu_ly": "Không thể sửa bằng lời; chọn sản phẩm khác."
    }
   ],
-  "claim_cam": [
-   {
-    "khong_nen": "Gọi tên Skibidi Toilet hoặc các nhân vật nổi tiếng",
-    "goi_y": "Không dùng tên nhân vật; chỉ nói 'đồ chơi lắp ghép 12 mảnh'."
-   }
-  ],
+  "claim_cam": [],
   "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
-  "thieu_thong_tin": "Chưa đọc ảnh để xác nhận nhân vật, không có thông tin tổ chức chịu trách nhiệm, hợp quy hay độ tuổi.",
-  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+  "thieu_thong_tin": "Chưa đọc ảnh mô tả nên suy luận nhân vật từ tên và USP; chưa có thư ủy quyền hay chứng nhận an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }

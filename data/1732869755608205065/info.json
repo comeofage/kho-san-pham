@@ -30,56 +30,50 @@
   "poster_folder": 5,
   "duong_dan": "E:\\oneshottramcanh\\leubeige 1732869755608205065\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Lều trẻ em có yêu cầu an toàn đồ chơi, tên gợi nhân vật công chúa/hoàng tử và trang chưa có chứng nhận.",
-   "khuyen_nghi": "Làm khi shop cung cấp chứng nhận an toàn đồ chơi. Không dùng hình ảnh trẻ em, tránh claim phát triển trẻ."
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi/lều cho trẻ nhỏ nên phải có người lớn trong khung hình và tránh claim an toàn/'không BPA' khi chưa có kiểm nghiệm (mục D, C).",
+   "khuyen_nghi": "Người lớn dựng lều, bé chỉ chơi cùng trong khung. Nói kích thước, chất liệu vải dù và khung theo mô tả, không cam kết an toàn tuyệt đối."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "'Không chứa BPA', 'sự phát triển của trẻ' là claim cần chứng từ."
+    "nhan_xet": "'Không chứa BPA', 'giúp phát triển' chỉ nói khi có kiểm nghiệm (mục A/C: claim phải có bằng chứng); 'ngủ riêng' không nên hứa giúp bé ngủ ngon."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Thương hiệu Doudou của shop, không thấy xung đột rõ."
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Doudou của shop, tên công chúa/hoàng tử là từ chung (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Tên 'công chúa/hoàng tử' và mẫu in họa tiết cần kiểm tra không dùng nhân vật bản quyền."
+    "nhan_xet": "Mẫu 'họa tiết xung quanh' chưa xem ảnh nên cần kiểm tra không in nhân vật có bản quyền (mục I)."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟡",
-    "nhan_xet": "Khung inox/PVC, vải polyester cần kiểm định vật liệu."
+    "nhan_xet": "Đồ chơi/lều trẻ em không thuộc nhóm cấm nhưng cần an toàn, nhất là khung kim loại/nhựa PVC (mục G: đồ chơi gây hại trẻ)."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Dành cho trẻ 1-12 tuổi, yêu cầu an toàn đồ chơi, nguy cơ kẹt/đổ khung và trẻ nhỏ ngủ trong lều."
+    "muc_do": "🟡",
+    "nhan_xet": "Quay có trẻ phải có người lớn, không để trẻ tự giới thiệu hay đòi cha mẹ mua (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Sản phẩm trẻ em chưa có chứng nhận an toàn đồ chơi trên trang",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp QCVN 3:2019/BKHCN hoặc kiểm định tương đương trước khi làm."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "An toàn tuyệt đối cho bé, giúp bé phát triển trí tuệ, bé ngủ ngon hơn",
-    "goi_y": "Nói về kích thước, chất liệu, cách lắp và nhắc có người lớn giám sát."
+    "khong_nen": "An toàn tuyệt đối cho bé, giúp bé ngủ ngon/phát triển tư duy",
+    "goi_y": "Nói 'lều cỡ đại 1,2x1,0x1,3m, vải dù, khung inox, góc chơi riêng cho bé'."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận an toàn đồ chơi, độ tuổi tối thiểu, thông tin tổ chức chịu trách nhiệm (đang ghi 'china').",
-  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+  "thieu_thong_tin": "Chưa có chứng nhận an toàn đồ chơi; chưa xem ảnh họa tiết mẫu S7/S8 và hướng dẫn thông gió khi bé chơi bên trong.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

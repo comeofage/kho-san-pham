@@ -35,60 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Tên listing có claim \"chống rạn nứt và mối mọt\" mang tính diệt/phòng côn trùng, cần giấy tờ chứng minh nếu quảng cáo.",
-   "khuyen_nghi": "Chỉ nói công dụng làm sạch, đánh bóng, dưỡng bề mặt gỗ; không hứa chống mối mọt hay rạn nứt. Tránh khẳng định tác dụng vĩnh viễn."
+   "muc_do": "🟡",
+   "nguy_co": "Claim \"chống rạn nứt và mối mọt\" cần bằng chứng, và đây là hóa chất gia dụng dạng xịt nên cần nói đúng công dụng đánh bóng.",
+   "khuyen_nghi": "Làm được; chỉ nhấn vào lau bóng, làm mới bề mặt gỗ, không hứa diệt/ngừa mối mọt, và demo đúng cách xịt rồi lau."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "Claim \"chống rạn nứt và mối mọt\" là công dụng như diệt côn trùng/bảo quản gỗ, không có bằng chứng trong thông tin trang."
+    "muc_do": "🟡",
+    "nhan_xet": "\"Chống rạn nứt và mối mọt\" là claim chưa có bằng chứng trên bao bì/kiểm nghiệm, nên dùng \"đánh bóng, dưỡng bề mặt gỗ\" (mục C: tuyên bố sai lệch)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟢",
-    "nhan_xet": "Thương hiệu MỘC AN của chính shop, có tổ chức chịu trách nhiệm là Công Ty Proschem Việt Nam, không thấy dấu hiệu nhái."
+    "nhan_xet": "Thương hiệu Mộc An của shop; hashtag #loxus cần tránh nhắc vì là tên khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Sản phẩm không dùng nhân vật hay hình ảnh có bản quyền; chỉ cần dùng ảnh/clip tự quay."
+    "nhan_xet": "Không có hình nhân vật hay logo hãng khác trong thông tin trang."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Chất làm bóng dạng xịt chứa dầu thông, tinh dầu, dễ cháy nhẹ; trang ghi không phải hàng nguy hiểm nhưng nên kiểm tra nhãn và phiếu an toàn."
+    "muc_do": "🟢",
+    "nhan_xet": "Trang khai không có hàng nguy hiểm, nhà sản xuất Proschem Việt Nam; không thuộc nhóm cấm/hạn chế mục G và H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không phải sản phẩm cho trẻ em, chỉ cần không quay cảnh trẻ em tiếp xúc hóa chất."
+    "nhan_xet": "Sản phẩm gia dụng, không nhắm tới trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim chống rạn nứt, mối mọt trong tên listing và nội dung video",
-    "rui_ro": "🟠",
-    "xu_ly": "Không đọc claim này trong video; chỉ nói làm sạch, đánh bóng, làm mới bề mặt gỗ."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chống mối mọt, diệt mối, chống nứt gỗ vĩnh viễn",
-    "goi_y": "Giúp bề mặt gỗ sáng bóng, dễ lau chùi, gỗ trông như mới sau khi lau."
+    "khong_nen": "\"Chống mối mọt, diệt mối\", \"chống nứt gỗ vĩnh viễn\"",
+    "goi_y": "\"Giúp bề mặt gỗ sáng bóng, dưỡng gỗ đỡ khô\"."
    },
    {
-    "khong_nen": "An toàn tuyệt đối, không độc hại",
-    "goi_y": "Dùng theo hướng dẫn trên nhãn, để xa tầm tay trẻ em."
+    "khong_nen": "\"Mua 2 tặng 4\" nếu quà tặng thực tế khác phân loại",
+    "goi_y": "Đọc đúng ưu đãi từng phân loại: 1 chai + 1 khăn, hoặc 2 chai + 2 khăn + 2 gói lau."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa thấy thành phần chi tiết, giấy công bố sản phẩm tẩy rửa gia dụng, bằng chứng chống mối mọt.",
-  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+  "thieu_thong_tin": "Mô tả chi tiết công dụng bị cắt trong dữ liệu; chưa có kết quả kiểm nghiệm cho claim chống mối mọt.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

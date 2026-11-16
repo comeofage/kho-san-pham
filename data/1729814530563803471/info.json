@@ -37,60 +37,56 @@
   "poster_folder": 67,
   "duong_dan": "E:\\Aff anh nhan\\review\\baothuc 1729814530563803471\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Tiêu đề nhắc 'Mèo kity' và viết lách né từ khoá (ch.o b.é) có thể bị gắn cờ IPR/né kiểm duyệt.",
-   "khuyen_nghi": "Chỉ giới thiệu mẫu ong/hươu, không nhắc Kitty; không nói 'tập cho bé dậy đúng giờ' như hiệu quả giáo dục."
+   "muc_do": "🟡",
+   "nguy_co": "Tên listing có 'Mèo kity' gợi liên tưởng Hello Kitty (nhãn hiệu/bản quyền), và mẫu giao ngẫu nhiên dễ lệch với video.",
+   "khuyen_nghi": "Có thể làm nếu chỉ giới thiệu mẫu con ong/hươu, không nhắc tên Kitty và nói rõ có thể giao ngẫu nhiên mẫu. Không để bé tự giới thiệu, chỉ quay có người lớn."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟢",
-    "nhan_xet": "Chỉ là đồng hồ để bàn, không có claim y tế."
+    "muc_do": "🟡",
+    "nhan_xet": "'Tập cho bé dậy đúng giờ' là lợi ích mềm nên nói 'hỗ trợ bé làm quen giờ giấc', không cam kết hiệu quả (mục C)."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Chưa rõ thương hiệu, hàng giao mẫu ngẫu nhiên."
+    "muc_do": "🟠",
+    "nhan_xet": "'Mèo kity' gợi liên tưởng Hello Kitty (mục I: cấm gợi liên tưởng thương hiệu khác) nhưng sửa được bằng cách không đọc/viết từ này và chỉ quay mẫu ong, hươu."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟠",
-    "nhan_xet": "Tiêu đề nhắc Kitty (Sanrio), nếu mẫu giống nhân vật có thể vi phạm bản quyền."
+    "muc_do": "🟡",
+    "nhan_xet": "Mẫu hình mèo có thể sao chép nhân vật có bản quyền (mục I) nên tránh quay hay nhắc mẫu mèo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Đồng hồ dùng pin, không thuộc nhóm hạn chế."
+    "nhan_xet": "Đồng hồ để bàn dùng pin, không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟡",
-    "nhan_xet": "Quảng bá cho trẻ nhỏ, cần ghi chú chi tiết nhỏ/pin."
+    "nhan_xet": "Đồ trang trí bàn học cho bé, cần người lớn trong khung hình và không để bé giới thiệu hay đòi mua (mục D)."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Nhắc Mèo Kitty trong tiêu đề",
+    "van_de": "Tiêu đề có 'Mèo kity' gợi Hello Kitty, cộng với mẫu hình mèo có thể sao chép nhân vật.",
     "rui_ro": "🟠",
-    "xu_ly": "Không nhắc Kitty trong video, chỉ quay mẫu ong/hươu và kiểm tra hình thật có giống nhân vật không."
+    "xu_ly": "Không nhắc từ Kitty trong lời và caption, chỉ trình bày mẫu ong và hươu; hỏi shop mẫu mèo có phải nhân vật có bản quyền không."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Dùng tên Hello Kitty/Mèo Kitty",
-    "goi_y": "Gọi là đồng hồ báo thức hình ong, hươu dễ thương."
-   },
-   {
-    "khong_nen": "Đảm bảo giúp bé dậy đúng giờ",
-    "goi_y": "Đồng hồ báo thức tiện cho bàn học."
+    "khong_nen": "Đồng hồ Mèo Kitty / mẫu giống Hello Kitty",
+    "goi_y": "Đồng hồ báo thức con ong dễ thương, có chỗ cắm bút bên hông, mẫu giao có thể ngẫu nhiên."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Mẫu thật có giống nhân vật có bản quyền không, độ an toàn pin.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ mẫu mèo có là nhân vật bản quyền không; mẫu ong có đúng hình như ảnh listing không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

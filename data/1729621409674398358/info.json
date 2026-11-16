@@ -37,35 +37,35 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Dùng tên KingKong và tên iPhone kèm chữ 'chính hãng', dễ bị coi là gian lận nhãn hiệu/hàng nhái nếu không có ủy quyền.",
-   "khuyen_nghi": "Không dùng chữ 'chính hãng'; nói là kính tương thích iPhone và kiểm chứng giấy ủy quyền KingKong của shop trước khi làm."
+   "muc_do": "🟡",
+   "nguy_co": "Thương hiệu KingKong và tên iPhone cần dùng đúng cách (tương thích), và chữ 'chính hãng' cần có ủy quyền.",
+   "khuyen_nghi": "Có thể làm; nói 'dùng cho iPhone' thay vì ngụ ý hợp tác với Apple, chỉ nói 'chính hãng' nếu shop có LoA. Mô tả là chống nhìn trộm màn hình, không phải chống trộm máy."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟡",
-    "nhan_xet": "Claim chống nhìn trộm 2 chiều/4 chiều và độ cứng cần demo thật, không nên nói tuyệt đối không ai nhìn được."
+    "nhan_xet": "'Chống trộm' dễ bị hiểu là chống mất cắp máy (mục C) nên gọi là 'chống nhìn trộm/riêng tư màn hình', không hứa hiệu quả tuyệt đối ở mọi góc."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "KingKong là thương hiệu phụ kiện có nhiều hàng nhái, kèm tên iPhone/ProMax dùng để mô tả tương thích."
+    "muc_do": "🟡",
+    "nhan_xet": "Tên KingKong và iPhone/Apple là nhãn hiệu, mục I yêu cầu dùng 'tương thích với' và không ngụ ý hợp tác chủ nhãn."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Hình ảnh iPhone/logo Apple trong video có thể vướng IPR nếu hiện logo rõ."
+    "nhan_xet": "Kính KingKong hay bị làm giả (mục I/G: hàng giả) nên chỉ nói 'chính hãng' khi shop có thư ủy quyền thương hiệu."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Phụ kiện điện thoại không thuộc nhóm hạn chế."
+    "nhan_xet": "Phụ kiện điện thoại, không thuộc mục G/H; kính chống nhìn trộm không phải thiết bị gián điệp."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -73,25 +73,15 @@
     "nhan_xet": "Không liên quan trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Chữ 'chính hãng' và thương hiệu KingKong không có bằng chứng ủy quyền",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop cung cấp giấy ủy quyền hoặc bỏ chữ 'chính hãng' trong lời thoại."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Chính hãng KingKong, Apple chứng nhận",
-    "goi_y": "Nói 'kính cường lực chống nhìn trộm cho iPhone'."
-   },
-   {
-    "khong_nen": "Người ngồi cạnh tuyệt đối không nhìn thấy gì",
-    "goi_y": "Nói 'nhìn nghiêng thấy màn tối, khó nhìn rõ'."
+    "khong_nen": "Kính chính hãng Apple / chống trộm điện thoại",
+    "goi_y": "Kính cường lực dùng cho iPhone, chống nhìn trộm màn hình khi người bên cạnh nhìn nghiêng."
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chưa có giấy ủy quyền thương hiệu KingKong cho shop.",
-  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+  "thieu_thong_tin": "Chưa rõ shop có thư ủy quyền thương hiệu KingKong hay không.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

@@ -30,60 +30,45 @@
   "poster_folder": 6,
   "duong_dan": "E:\\oneshottramcanh\\anime 1731149724312241392\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
  "rui_ro": {
   "ket_luan": {
-   "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Đồ chơi trẻ em thiếu thông tin tổ chức chịu trách nhiệm và chứng nhận an toàn.",
-   "khuyen_nghi": "Chỉ làm nếu shop bổ sung tổ chức chịu trách nhiệm và giấy kiểm định đồ chơi; video nhấn mạnh trưng bày/sưu tầm, không khẳng định an toàn tuyệt đối cho bé."
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Búp bê khớp cử động không thuộc nhóm cấm; chỉ cần tránh nhắc BJD/nhân vật anime cụ thể và lưu ý thông tin tổ chức chịu trách nhiệm ghi 'NO'.",
+   "khuyen_nghi": "Có thể làm; nói chung là 'búp bê 30cm 23 khớp cử động', không gắn tên nhân vật hay thương hiệu, và có người lớn trong khung hình nếu bé xuất hiện."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟡",
-    "nhan_xet": "Mô tả 'thân thiện môi trường', 'an toàn' cho bé là claim cần có chứng từ, nên tránh khẳng định."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục C: chỉ là đồ chơi trưng bày, nói đúng chiều cao 30cm và 23 khớp như mô tả."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Không có thương hiệu rõ ràng (shop intactVN, tên chung chung), có nguy cơ hàng không rõ nguồn gốc."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: không nhắc thương hiệu cụ thể, chỉ cần tránh gọi tên hãng búp bê khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Mặt anime và kiểu BJD có thể bắt chước nhân vật/thiết kế có bản quyền, khó xác minh."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục I: 'mặt anime' là phong cách chung, tuy nhiên cần xem ảnh để chắc không phải mô phỏng nhân vật cụ thể."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Đồ chơi thông thường, không thuộc nhóm cấm."
+    "nhan_xet": "Mục G/H: đồ chơi không thuộc nhóm cấm hay hạn chế."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Đồ chơi trẻ em xuất xứ Trung Quốc, tổ chức chịu trách nhiệm hàng hóa ghi 'NO', thiếu chứng nhận an toàn QCVN 3:2019; có tóc/phụ kiện nhỏ."
+    "muc_do": "🟢",
+    "nhan_xet": "Mục D: đồ chơi cho bé gái được phép có bé xuất hiện khi có người lớn trong khung hình, và bé không tự giới thiệu hay thúc giục đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Đồ chơi trẻ em không có thông tin tổ chức chịu trách nhiệm, thiếu chứng nhận an toàn",
-    "rui_ro": "🟠",
-    "xu_ly": "Yêu cầu shop bổ sung giấy kiểm định QCVN 3:2019 trước khi đăng; ghi khuyến cáo độ tuổi."
-   }
-  ],
-  "claim_cam": [
-   {
-    "khong_nen": "Nói 'an toàn tuyệt đối', 'thân thiện môi trường' cho bé",
-    "goi_y": "Nói 'búp bê 23 khớp, cao 30cm, dùng trưng bày hoặc chơi dưới sự giám sát của người lớn'."
-   },
-   {
-    "khong_nen": "Gắn tên nhân vật anime/hãng nổi tiếng",
-    "goi_y": "Gọi chung là 'búp bê mặt anime dễ thương'."
-   }
-  ],
-  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chứng nhận an toàn đồ chơi, tổ chức chịu trách nhiệm hàng hóa, độ tuổi khuyến nghị.",
-  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Tên và địa chỉ tổ chức chịu trách nhiệm hàng hóa ghi 'NO'; chưa xem ảnh để loại trừ nhân vật có bản quyền; chưa có giấy kiểm nghiệm đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:46:08+07:00"
  }
 }

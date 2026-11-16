@@ -30,61 +30,54 @@
   "poster_folder": 56,
   "duong_dan": "E:\\Aff anh nhan\\review\\balo hello 1734901731724395610\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Claim \"chống gù\" là tuyên bố y tế/chỉnh hình cho trẻ nhỏ và sản phẩm thuộc nhóm trẻ em 1-6 tuổi.",
-   "khuyen_nghi": "Bỏ claim chống gù, chỉ nói nhẹ, hai quai êm, họa tiết dễ thương; xác nhận shop là chủ nhãn OLANG."
+   "muc_do": "🟡",
+   "nguy_co": "'Chống gù' là claim y tế/sức khỏe cần bằng chứng; trẻ em xuất hiện cần người lớn trong khung.",
+   "khuyen_nghi": "Nói balo nhẹ, quai êm, vừa vóc bé; không nói chống gù/chỉnh dáng; nếu quay bé phải có người lớn, không để bé tự giới thiệu."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🔴",
-    "nhan_xet": "\"Chống gù\" là claim y tế không có bằng chứng, dễ bị gỡ/vi phạm."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C (tuyên bố y tế): 'chống gù' cần bằng chứng, sửa được bằng cách chỉ mô tả thiết kế nhẹ, đệm lưng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Thương hiệu OLANG cần đối chiếu shop là chính hãng/được ủy quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "OLANG là brand của chính shop 'OLANG KIDS VN' (shop thương hiệu), không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
-    "muc_do": "🟡",
-    "nhan_xet": "Các mẫu xe cảnh sát, thỏ, dâu, khủng long cần kiểm tra không có hình nhân vật bản quyền."
+    "muc_do": "🟢",
+    "nhan_xet": "Mẫu khủng long, máy xúc, xe cảnh sát là hình chung; chưa thấy nhân vật có bản quyền."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
     "muc_do": "🟢",
-    "nhan_xet": "Không thuộc nhóm hạn chế."
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế; hình xe cảnh sát chỉ là hoạ tiết, không phải phù hiệu thật."
    },
    {
     "hang_muc": "Liên quan trẻ em",
-    "muc_do": "🟠",
-    "nhan_xet": "Sản phẩm dùng cho trẻ 1-6 tuổi, cần tuân thủ quy định nội dung trẻ em và an toàn vật liệu."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục D: sản phẩm cho bé 1-6 tuổi, trẻ xuất hiện phải liên quan sản phẩm và có người lớn, không thuyết phục trẻ đòi mua."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Claim \"chống gù\" trong tên sản phẩm",
-    "rui_ro": "🔴",
-    "xu_ly": "Không nhắc chống gù/chỉnh dáng lưng; thay bằng nhẹ, quai đeo êm."
-   },
-   {
-    "van_de": "Sản phẩm cho trẻ 1-6 tuổi",
-    "rui_ro": "🟠",
-    "xu_ly": "Không quay trẻ nhỏ lộ mặt; dùng người lớn cầm balo hoặc đặt cố định."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Chống gù, bảo vệ cột sống cho bé",
+    "goi_y": "Balo nhẹ, quai êm, vừa size bé mầm non"
+   },
+   {
+    "khong_nen": "Bé tự nói 'mẹ mua cho con'",
+    "goi_y": "Phụ huynh giới thiệu, bé chỉ đeo thử cùng người lớn"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Không có USP và chưa có thông tin giấy tờ thương hiệu OLANG, chất liệu, trọng lượng.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ có hình nhân vật licensed ở mẫu nào không (chưa đọc ảnh); giá gốc gạch 436k cần tránh so sánh giá không căn cứ.",
+  "danh_gia_luc": "2026-11-16T08:46:09+07:00"
  }
 }

@@ -30,34 +30,34 @@
   "poster_folder": 35,
   "duong_dan": "E:\\Aff anh nhan\\review\\nước giặt deefy 1735110061426771192\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Hoá chất giặt tẩy đánh dấu có hàng nguy hiểm, kèm claim \"lành tính, không kích ứng\" và \"công nghệ Hàn Quốc\".",
-   "khuyen_nghi": "Làm được nếu bỏ claim tuyệt đối về an toàn da và nguồn gốc công nghệ; nói về mùi hương và dung tích."
+   "muc_do": "🟡",
+   "nguy_co": "Ghi 'Công nghệ Hàn Quốc' trong khi xuất xứ Việt Nam là sai lệch (mục C); trang gắn 'hàng hóa nguy hiểm: Có' nên cần xử lý vận chuyển/nhãn.",
+   "khuyen_nghi": "Bỏ 'công nghệ Hàn Quốc', 'đánh bay mọi vết bẩn', 'an toàn không kích ứng'; nói theo nhãn: hương hoa anh đào, dung tích 5.2kg, dùng cho máy giặt."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "\"Lành tính, không kích ứng, sạch sâu\", \"chống vi khuẩn\" cần chứng minh."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C: 'Hàn Quốc 5 trong 1', 'thơm 24h', 'kháng khuẩn', 'không kích ứng' cần bằng chứng/xuất xứ đúng; sửa được bằng lời nói."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟡",
-    "nhan_xet": "Brand DEEFY, \"Công nghệ Hàn Quốc\" lệch với xuất xứ Việt Nam."
+    "muc_do": "🟢",
+    "nhan_xet": "Brand DEEFY của shop, không gợi hãng khác."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟢",
-    "nhan_xet": "Không có vấn đề IPR được nêu."
+    "nhan_xet": "Không thấy nhân vật/logo."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Thông số ghi có hàng nguy hiểm, nước giặt là hoá chất cần nhãn và đóng gói đúng quy định."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục H: trang đánh dấu hàng hóa nguy hiểm; nước giặt gia dụng không nằm nhóm cấm nhưng cần nhãn và tuân thủ quy định hàng nguy hiểm."
    },
    {
     "hang_muc": "Liên quan trẻ em",
@@ -65,21 +65,15 @@
     "nhan_xet": "Không nhắm trẻ em."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Hàng nguy hiểm và claim an toàn da",
-    "rui_ro": "🟠",
-    "xu_ly": "Không nói không kích ứng; nhắc để xa tầm tay trẻ em."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "khong_nen",
-    "goi_y": "goi_y"
+    "khong_nen": "Công nghệ Hàn Quốc, sạch mọi vết bẩn chỉ một lần giặt, an toàn tuyệt đối",
+    "goi_y": "Nước giặt hương hoa anh đào, dung tích 5.2kg, dùng cho máy giặt"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Không có USP; chưa có giấy công bố sản phẩm tẩy rửa; shop có rating 3.9.",
-  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+  "thieu_thong_tin": "Chưa rõ phiếu an toàn/nhãn hàng nguy hiểm (chưa đọc kỹ trang hàng hóa nguy hiểm ID 2899353232951057); shop điểm 3.9, giá gốc 197k (-58%) cần tránh so sánh giá.",
+  "danh_gia_luc": "2026-11-16T08:46:10+07:00"
  }
 }

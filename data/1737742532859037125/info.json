@@ -35,61 +35,60 @@
   "poster_folder": 72,
   "duong_dan": "E:\\oneshottramcanh\\binhnumdo 1737742532859037125\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Nhiều biến thể in nhân vật Kitty, Doraemon, Kuromi, Pococha có bản quyền, claim 'Inox 316 y tế' cho bình đựng đồ uống chưa có giấy tờ.",
-   "khuyen_nghi": "Chỉ quay màu trơn, không nêu tên nhân vật, bỏ 'inox y tế/không thôi nhiễm kim loại' nếu shop không có kiểm nghiệm; lưu ý shop điểm thấp."
+   "muc_do": "🟡",
+   "nguy_co": "Biến thể in nhân vật Doremon, Kuromi, Kiti, Pococha và claim Inox 316 y tế/kín khít tuyệt đối dễ vi phạm bản quyền/tuyên bố sai lệch.",
+   "khuyen_nghi": "Chỉ quay màu trơn hoặc hình chung; nói 'inox 316' theo listing, không hứa 'kín tuyệt đối' hay 'y tế'."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
-    "muc_do": "🟠",
-    "nhan_xet": "'Inox 316 y tế, không thôi nhiễm kim loại', 'giữ nóng lạnh bền bỉ' là claim chưa có kiểm nghiệm."
+    "muc_do": "🟡",
+    "nhan_xet": "Mục C: 'Inox 316 y tế', 'kín khít tuyệt đối', 'không thôi nhiễm kim loại' cần bằng chứng; nên nói 'giữ nhiệt tốt'."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
     "muc_do": "🟡",
-    "nhan_xet": "Tên 'xcup' có thể là nhãn hiệu bên thứ ba, chưa rõ shop có quyền bán."
+    "nhan_xet": "Mục I: 'xcup' có thể là nhãn hiệu, listing không có thương hiệu rõ ràng, tránh nhắc tên hãng."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟠",
-    "nhan_xet": "Biến thể Kitty, Doraemon, Kuromi, Pococha là nhân vật có bản quyền, shop không có giấy phép."
+    "nhan_xet": "Mục I: biến thể Doremon, Kuromi, Kiti, Pococha là nhân vật có bản quyền, không có LoA."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟡",
-    "nhan_xet": "Vật dụng tiếp xúc thực phẩm, thông tin tổ chức chịu trách nhiệm ghi sai ('Sản xuất', 'Bảo hành')."
+    "muc_do": "🟢",
+    "nhan_xet": "Bình giữ nhiệt không thuộc mục G/H."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm riêng trẻ em dù có hình hoạt hình."
+    "nhan_xet": "Không nhắm trẻ em rõ ràng."
    }
   ],
   "luu_y": [
    {
-    "van_de": "Biến thể in nhân vật Kitty, Doraemon, Kuromi, Pococha vi phạm bản quyền",
+    "van_de": "Biến thể mang nhân vật bản quyền",
     "rui_ro": "🟠",
-    "xu_ly": "Không dùng tên/hình nhân vật trong video, chỉ quay màu trơn."
-   },
-   {
-    "van_de": "Claim 'Inox 316 y tế' chưa chứng minh",
-    "rui_ro": "🟠",
-    "xu_ly": "Đổi thành 'bình giữ nhiệt inox', yêu cầu shop giấy kiểm nghiệm."
+    "xu_ly": "Không quay/nhắc các biến thể Doremon, Kuromi, Kiti, Pococha; chỉ giới thiệu màu trơn."
    }
   ],
   "claim_cam": [
    {
-    "khong_nen": "Inox 316 y tế, không thôi nhiễm kim loại tuyệt đối",
-    "goi_y": "Bình giữ nhiệt inox nắp bật, kèm dây treo tiện mang đi học, đi làm."
+    "khong_nen": "'Inox 316 y tế không thôi nhiễm kim loại'",
+    "goi_y": "'Inox 316, giữ nhiệt tốt'"
+   },
+   {
+    "khong_nen": "'Kín khít tuyệt đối không rò'",
+    "goi_y": "'Gioăng silicon, hạn chế rò nước'"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Giấy kiểm nghiệm inox, nguồn gốc nhãn hiệu xcup, thông tin tổ chức chịu trách nhiệm thật, giá gốc.",
-  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+  "thieu_thong_tin": "Shop điểm 2.9; tên/địa chỉ tổ chức chịu trách nhiệm điền sai ('Sản xuất', 'Bảo hành'); chưa có giấy chứng nhận inox 316.Chưa đối chiếu ảnh mô tả/ảnh bìa với listing.",
+  "danh_gia_luc": "2026-11-16T08:46:12+07:00"
  }
 }

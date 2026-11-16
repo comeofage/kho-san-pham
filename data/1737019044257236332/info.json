@@ -38,61 +38,50 @@
   "poster_folder": 70,
   "duong_dan": "E:\\oneshottramcanh\\mkdep 1737019044257236332\\output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
-   "muc_do": "🔴",
-   "nguy_co": "Hình thức túi mù ngẫu nhiên và dáng giống dép Crocs, có thể bị xem là liên quan thương hiệu.",
-   "khuyen_nghi": "Nói rõ là móc khoá mini ngẫu nhiên màu, không nhắc Crocs. Kiểm tra chính sách túi mù trước khi làm."
+   "muc_do": "🟡",
+   "nguy_co": "Mô hình dép tên 'crocs' trong USP gợi thương hiệu Crocs và kiểu dáng dép Crocs, có thể bị coi là nhái (mục I).",
+   "khuyen_nghi": "Không nhắc 'crocs' trong video/caption, chỉ gọi 'móc khóa dép mini'; xác nhận shop tự thiết kế; không nhấn mạnh yếu tố ngẫu nhiên kiểu cờ bạc."
   },
   "tong_hop": [
    {
     "hang_muc": "Công dụng (Claim)",
     "muc_do": "🟢",
-    "nhan_xet": "Chỉ là móc khoá trang trí, không có claim công dụng."
+    "nhan_xet": "Chỉ mô tả hiệu ứng hologram lấp lánh, không có claim công dụng."
    },
    {
     "hang_muc": "Nhãn hiệu (Trademark)",
-    "muc_do": "🟠",
-    "nhan_xet": "USP nhắc crocs và mô hình dép mini, dễ bị xem là dùng tên thương hiệu hoặc kiểu dáng của Crocs."
+    "muc_do": "🟡",
+    "nhan_xet": "USP nhắc 'crocs'; nhắc tên hãng hoặc gợi 'giống Crocs' là vi phạm nhãn hiệu (mục I)."
    },
    {
     "hang_muc": "IPR",
     "muc_do": "🟡",
-    "nhan_xet": "Dáng dép clog có thể trùng kiểu dáng đã đăng ký, cần xem ảnh có logo hay charm Jibbitz không."
+    "nhan_xet": "Hình dép mini mô phỏng kiểu dáng Crocs có thể bị xem là nhái kiểu dáng (mục I: hàng nhái), chưa rõ có logo/charm riêng hay không."
    },
    {
     "hang_muc": "Sản phẩm hạn chế",
-    "muc_do": "🟠",
-    "nhan_xet": "Bán dạng túi mù, ngẫu nhiên màu, là hình thức dễ bị siết chặt, cần mô tả rõ cơ chế ngẫu nhiên."
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm/hạn chế (mục G, H); túi mù là ngẫu nhiên màu, không phải thưởng tiền."
    },
    {
     "hang_muc": "Liên quan trẻ em",
     "muc_do": "🟢",
-    "nhan_xet": "Không nhắm riêng đến trẻ em."
+    "nhan_xet": "Bán cho giới trẻ, không có yếu tố nhắm riêng trẻ nhỏ; không để trẻ trình bày (mục D)."
    }
   ],
-  "luu_y": [
-   {
-    "van_de": "Dùng từ crocs trong nội dung",
-    "rui_ro": "🟠",
-    "xu_ly": "Đổi thành dép sục mini, không dùng tên hãng."
-   },
-   {
-    "van_de": "Hình thức túi mù ngẫu nhiên màu",
-    "rui_ro": "🟠",
-    "xu_ly": "Nói rõ nhận ngẫu nhiên, không hứa màu cụ thể, không quảng cáo như trò may rủi."
-   }
-  ],
+  "luu_y": [],
   "claim_cam": [
    {
-    "khong_nen": "Móc khoá Crocs chính hãng, đảm bảo ra màu hiếm",
-    "goi_y": "Nói móc khoá dép mini, nhận màu ngẫu nhiên."
+    "khong_nen": "Gọi là 'dép Crocs mini', 'giống Crocs'",
+    "goi_y": "Gọi 'móc khóa dép mini hologram', không nhắc tên hãng"
    }
   ],
   "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
-  "thieu_thong_tin": "Chỉ có 1 ảnh ghép, cần xem ảnh để chắc không có logo hãng; chưa rõ tỷ lệ màu trong túi mù.",
-  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+  "thieu_thong_tin": "Thiết kế gốc của shop hay không, có logo hãng nào không (cần xem ảnh sản phẩm thật).",
+  "danh_gia_luc": "2026-11-16T08:46:11+07:00"
  }
 }
