@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-16T08:35:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:46:53+07:00",
  "san_pham": [
   {
    "id": "tam-20261115213414126",
@@ -27,7 +27,8 @@
    "them_luc": "2026-11-15T21:34:14+07:00",
    "cap_nhat_luc": "2026-11-15T21:34:14+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "tam-20261115163312052",
@@ -55,7 +56,8 @@
    "them_luc": "2026-11-15T16:33:12+07:00",
    "cap_nhat_luc": "2026-11-15T16:33:12+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "tam-20261115163211318",
@@ -83,7 +85,8 @@
    "them_luc": "2026-11-15T16:32:11+07:00",
    "cap_nhat_luc": "2026-11-15T16:32:11+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "tam-20261115150439825",
@@ -111,7 +114,8 @@
    "them_luc": "2026-11-15T15:04:39+07:00",
    "cap_nhat_luc": "2026-11-15T15:04:39+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "tam-20261115150410675",
@@ -139,7 +143,8 @@
    "them_luc": "2026-11-15T15:04:10+07:00",
    "cap_nhat_luc": "2026-11-15T15:04:10+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "tam-20261115150344846",
@@ -167,7 +172,8 @@
    "them_luc": "2026-11-15T15:03:44+07:00",
    "cap_nhat_luc": "2026-11-15T15:03:44+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": null
   },
   {
    "id": "1737981550082229795",
@@ -193,9 +199,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-14T08:08:33+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 0,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736956845763364594",
@@ -223,7 +233,11 @@
    "them_luc": "2026-11-13T18:30:42+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738027244426397428",
@@ -249,9 +263,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:27:47+07:00",
-   "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:13+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736085773757154442",
@@ -277,9 +295,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:20:48+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733830967505093930",
@@ -307,7 +329,11 @@
    "them_luc": "2026-11-13T11:20:10+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1734668228888855732",
@@ -335,7 +361,11 @@
    "them_luc": "2026-11-13T11:19:43+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737128468075546450",
@@ -361,9 +391,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:19:00+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735077231426504112",
@@ -389,9 +423,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:18:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737956709586339081",
@@ -417,9 +455,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:18:04+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737248788695451490",
@@ -447,7 +489,11 @@
    "them_luc": "2026-11-11T20:59:10+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738022908578923593",
@@ -473,9 +519,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T13:56:36+07:00",
-   "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731703798106392955",
@@ -501,9 +551,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:45:03+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737221317290657187",
@@ -529,9 +583,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:15:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730555233168427532",
@@ -557,9 +615,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:13:53+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737820290740618550",
@@ -587,7 +649,11 @@
    "them_luc": "2026-11-10T11:27:55+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737682770435082158",
@@ -613,9 +679,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T11:26:59+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733717760954565651",
@@ -641,9 +711,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T11:26:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737571824605562460",
@@ -671,7 +745,11 @@
    "them_luc": "2026-11-10T08:15:01+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737277187860105013",
@@ -699,7 +777,11 @@
    "them_luc": "2026-11-10T08:14:41+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733474158850901594",
@@ -727,7 +809,11 @@
    "them_luc": "2026-11-09T10:40:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730954302026582741",
@@ -753,9 +839,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-09T10:39:58+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738164355824519066",
@@ -783,7 +873,11 @@
    "them_luc": "2026-11-09T10:39:27+07:00",
    "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734705663399986344",
@@ -811,7 +905,11 @@
    "them_luc": "2026-11-07T10:11:33+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732336903895156166",
@@ -837,9 +935,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T11:37:08+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736499977795110809",
@@ -865,9 +967,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T11:36:40+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731594463873894796",
@@ -895,7 +1001,11 @@
    "them_luc": "2026-11-05T09:40:33+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737805843192776663",
@@ -921,9 +1031,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:13+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733191836290548787",
@@ -951,7 +1065,11 @@
    "them_luc": "2026-11-05T09:39:39+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1735355624002782526",
@@ -977,9 +1095,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T08:21:46+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729801684477119432",
@@ -1007,7 +1129,11 @@
    "them_luc": "2026-11-04T20:41:17+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735830926198539697",
@@ -1035,7 +1161,11 @@
    "them_luc": "2026-11-03T22:24:46+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731931849923201911",
@@ -1063,7 +1193,11 @@
    "them_luc": "2026-11-03T20:08:13+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737961408372245933",
@@ -1089,9 +1223,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-03T14:41:43+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735094036954711648",
@@ -1119,7 +1257,11 @@
    "them_luc": "2026-11-03T08:52:19+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733268312671290389",
@@ -1147,7 +1289,11 @@
    "them_luc": "2026-11-03T08:51:19+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1737491831909025666",
@@ -1173,9 +1319,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-03T08:50:48+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736489938541905260",
@@ -1203,7 +1353,11 @@
    "them_luc": "2026-11-02T11:53:06+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735577665725433792",
@@ -1231,7 +1385,11 @@
    "them_luc": "2026-11-02T11:52:23+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736820796354233662",
@@ -1257,9 +1415,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:51:57+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1734321102951122844",
@@ -1287,7 +1449,11 @@
    "them_luc": "2026-11-02T11:51:27+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736399352685823791",
@@ -1315,7 +1481,11 @@
    "them_luc": "2026-11-02T11:49:26+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738025570373502289",
@@ -1341,9 +1511,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-02T11:49:02+07:00",
-   "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:13+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735509156426057262",
@@ -1371,7 +1545,11 @@
    "them_luc": "2026-11-02T11:48:18+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734525801092253469",
@@ -1399,9 +1577,13 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:37:54+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737083087942944698",
@@ -1429,9 +1611,13 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:37:19+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737667830661482063",
@@ -1461,7 +1647,11 @@
    "them_luc": "2026-10-31T17:37:00+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736165804568577652",
@@ -1491,7 +1681,11 @@
    "them_luc": "2026-10-31T17:36:28+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1729621861895604766",
@@ -1521,7 +1715,11 @@
    "them_luc": "2026-10-31T17:36:05+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736931664795174256",
@@ -1551,7 +1749,11 @@
    "them_luc": "2026-10-31T17:35:43+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1732052416722142778",
@@ -1581,7 +1783,11 @@
    "them_luc": "2026-10-31T17:35:14+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730149858573715748",
@@ -1611,7 +1817,11 @@
    "them_luc": "2026-10-31T17:34:51+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1734997430227469532",
@@ -1639,9 +1849,13 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:34:25+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736243048485258925",
@@ -1671,7 +1885,11 @@
    "them_luc": "2026-10-31T17:34:03+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735531145125398424",
@@ -1701,7 +1919,11 @@
    "them_luc": "2026-10-31T17:33:46+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729593419311843454",
@@ -1729,9 +1951,13 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:33:25+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734495508720682171",
@@ -1761,7 +1987,11 @@
    "them_luc": "2026-10-31T17:33:10+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731996650665772369",
@@ -1791,7 +2021,11 @@
    "them_luc": "2026-10-31T17:32:39+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731141980888533631",
@@ -1821,7 +2055,11 @@
    "them_luc": "2026-10-31T17:30:40+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1729647079859718809",
@@ -1849,7 +2087,11 @@
    "them_luc": "2026-10-29T10:16:38+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737958349513197332",
@@ -1877,7 +2119,11 @@
    "them_luc": "2026-10-28T13:39:57+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733378440723793903",
@@ -1905,7 +2151,11 @@
    "them_luc": "2026-10-27T12:35:37+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737635369156773564",
@@ -1933,7 +2183,11 @@
    "them_luc": "2026-10-27T12:35:22+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737586908359526301",
@@ -1959,9 +2213,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:34:42+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733630689270990225",
@@ -1989,7 +2247,11 @@
    "them_luc": "2026-10-27T12:34:21+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736406531612051235",
@@ -2015,9 +2277,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:34:07+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736947694440449199",
@@ -2043,9 +2309,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:50+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737093684518225069",
@@ -2071,9 +2341,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:33:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736267496948925813",
@@ -2099,9 +2373,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-27T12:32:56+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737205396728808543",
@@ -2129,7 +2407,11 @@
    "them_luc": "2026-10-27T12:32:18+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738119746346517633",
@@ -2157,7 +2439,11 @@
    "them_luc": "2026-10-27T12:31:53+07:00",
    "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738007799145530497",
@@ -2185,7 +2471,11 @@
    "them_luc": "2026-10-27T12:31:35+07:00",
    "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734893557169030788",
@@ -2213,7 +2503,11 @@
    "them_luc": "2026-10-27T12:31:20+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735781477486003846",
@@ -2241,7 +2535,11 @@
    "them_luc": "2026-10-23T23:08:47+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737505766405867446",
@@ -2267,9 +2565,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-23T23:01:07+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736906665078458194",
@@ -2295,9 +2597,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-22T19:38:45+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736466305638172498",
@@ -2323,9 +2629,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-22T19:38:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736657942520170092",
@@ -2353,7 +2663,11 @@
    "them_luc": "2026-10-20T13:35:33+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 68,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737393247280137415",
@@ -2379,9 +2693,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:33+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729635770334218630",
@@ -2407,9 +2725,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731099943885965713",
@@ -2435,9 +2757,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731685189869798486",
@@ -2465,7 +2791,11 @@
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731919646474078606",
@@ -2491,9 +2821,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732492821424932508",
@@ -2519,9 +2853,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732641929439708161",
@@ -2547,9 +2885,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733423423079089850",
@@ -2575,9 +2917,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733440314917815431",
@@ -2603,9 +2949,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1736277410264549005",
@@ -2633,7 +2983,11 @@
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736298612170327518",
@@ -2659,9 +3013,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736681820384363606",
@@ -2687,9 +3045,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736818222555104357",
@@ -2715,9 +3077,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736871398245303653",
@@ -2745,7 +3111,11 @@
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736884334969193526",
@@ -2773,7 +3143,11 @@
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737002825064482772",
@@ -2799,9 +3173,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737014047508891618",
@@ -2827,9 +3205,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737215726219462639",
@@ -2855,9 +3237,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737244314866649071",
@@ -2883,9 +3269,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737394156416763015",
@@ -2911,9 +3301,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737422436677814024",
@@ -2941,7 +3335,11 @@
    "them_luc": "2026-10-20T13:35:32+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737749463769581535",
@@ -2967,9 +3365,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:32+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730298851378497547",
@@ -2997,7 +3399,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731154052886727460",
@@ -3025,7 +3431,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731489178965148754",
@@ -3051,9 +3461,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1733017122115454689",
@@ -3081,7 +3495,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733633588917274600",
@@ -3109,7 +3527,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1734479788508218973",
@@ -3135,9 +3557,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1735596401113859641",
@@ -3163,9 +3589,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1735768992798770343",
@@ -3193,7 +3623,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736015415791944875",
@@ -3221,7 +3655,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736081131433854503",
@@ -3247,9 +3685,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736181021338535510",
@@ -3277,7 +3719,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736295444701808020",
@@ -3305,7 +3751,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736298157005702636",
@@ -3331,9 +3781,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736505418883171463",
@@ -3359,9 +3813,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736515447390242101",
@@ -3389,7 +3847,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736541105774495474",
@@ -3417,7 +3879,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736675068576499216",
@@ -3445,7 +3911,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736730770661869121",
@@ -3471,9 +3941,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736734664758429029",
@@ -3501,7 +3975,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736998584257054445",
@@ -3527,9 +4005,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1737078940082603356",
@@ -3557,7 +4039,11 @@
    "them_luc": "2026-10-20T13:35:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737099024341828743",
@@ -3583,9 +4069,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737243774721426620",
@@ -3611,9 +4101,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737280688346072412",
@@ -3639,9 +4133,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:31+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730055470326254369",
@@ -3669,7 +4167,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731125835314268514",
@@ -3697,7 +4199,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731472416105203045",
@@ -3725,7 +4231,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731743828944325537",
@@ -3753,7 +4263,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731795281269459079",
@@ -3781,7 +4295,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733009536480610195",
@@ -3809,7 +4327,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733402464577619825",
@@ -3837,7 +4359,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734217570848638355",
@@ -3863,9 +4389,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734901731724395610",
@@ -3891,9 +4421,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735067593226225633",
@@ -3919,9 +4453,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735335113276032021",
@@ -3947,9 +4485,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735670634794616716",
@@ -3977,7 +4519,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735999469647201758",
@@ -4005,7 +4551,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736133773663437959",
@@ -4031,9 +4581,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736180775825999298",
@@ -4061,7 +4615,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736209337574786802",
@@ -4087,9 +4645,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736225600346293759",
@@ -4117,7 +4679,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736384907216324399",
@@ -4143,9 +4709,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 99,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736527186048877884",
@@ -4173,7 +4743,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736747304566032226",
@@ -4201,7 +4775,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736833546746824036",
@@ -4229,7 +4807,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736892899185297023",
@@ -4257,7 +4839,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737019044257236332",
@@ -4283,9 +4869,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737033292640388429",
@@ -4313,7 +4903,11 @@
    "them_luc": "2026-10-20T13:35:30+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737742532859037125",
@@ -4339,9 +4933,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:30+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729420930611055346",
@@ -4367,9 +4965,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730253325752109627",
@@ -4395,9 +4997,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730381604424681577",
@@ -4425,7 +5031,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730405904077654169",
@@ -4453,7 +5063,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730425984528845500",
@@ -4479,9 +5093,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1730766216858405306",
@@ -4507,9 +5125,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731149724312241392",
@@ -4535,9 +5157,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731296206901839606",
@@ -4563,9 +5189,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731441964860016263",
@@ -4591,9 +5221,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731991566639465684",
@@ -4619,9 +5253,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732165848127014404",
@@ -4649,7 +5287,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732462583154051070",
@@ -4675,9 +5317,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732494869464516454",
@@ -4703,9 +5349,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732963142691816679",
@@ -4731,9 +5381,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733103099447051843",
@@ -4759,9 +5413,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733290144620316666",
@@ -4789,7 +5447,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733445565630613059",
@@ -4815,9 +5477,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 164,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1733464207030781602",
@@ -4845,7 +5511,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733542768421340211",
@@ -4871,9 +5541,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734680648656585980",
@@ -4899,9 +5573,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735080068006970446",
@@ -4927,9 +5605,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735110061426771192",
@@ -4955,9 +5637,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 99,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735279975778322359",
@@ -4983,9 +5669,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1735434742949643531",
@@ -5013,7 +5703,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735580116653933799",
@@ -5041,7 +5735,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735636981359739938",
@@ -5069,7 +5767,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735785669013439690",
@@ -5095,9 +5797,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735801314182530174",
@@ -5125,7 +5831,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735825778182490039",
@@ -5151,9 +5861,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735834531854452712",
@@ -5179,9 +5893,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736021517987120726",
@@ -5209,7 +5927,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736299546721158606",
@@ -5235,9 +5957,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736365412454401935",
@@ -5265,7 +5991,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736460780415976821",
@@ -5291,9 +6021,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 101,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736542091862312772",
@@ -5319,9 +6053,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:29+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736873471868110172",
@@ -5349,7 +6087,11 @@
    "them_luc": "2026-10-20T13:35:29+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730115090275732471",
@@ -5375,9 +6117,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730273374820928510",
@@ -5403,9 +6149,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731678050221196617",
@@ -5431,9 +6181,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732093741139397554",
@@ -5461,7 +6215,11 @@
    "them_luc": "2026-10-20T13:35:28+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732869755608205065",
@@ -5487,9 +6245,13 @@
    "the": [],
    "them_boi": "poster",
    "them_luc": "2026-10-20T13:35:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733917364193297723",
@@ -5515,9 +6277,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:59:13+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729663345005464423",
@@ -5545,7 +6311,11 @@
    "them_luc": "2026-10-20T08:58:55+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729621409674398358",
@@ -5571,9 +6341,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:57:59+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731544576158828510",
@@ -5601,7 +6375,11 @@
    "them_luc": "2026-10-20T08:57:34+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737667871290787709",
@@ -5629,7 +6407,11 @@
    "them_luc": "2026-10-20T08:57:10+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733404107867850026",
@@ -5657,7 +6439,11 @@
    "them_luc": "2026-10-20T08:56:51+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1737867175628211329",
@@ -5683,9 +6469,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:56:26+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "❌",
+    "muc_do": "🔴"
+   }
   },
   {
    "id": "1736724679813661775",
@@ -5713,7 +6503,11 @@
    "them_luc": "2026-10-20T08:56:08+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1732921249915045020",
@@ -5739,9 +6533,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-20T08:55:48+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733719198132307238",
@@ -5769,7 +6567,11 @@
    "them_luc": "2026-10-20T08:55:15+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1738002435594552677",
@@ -5797,7 +6599,11 @@
    "them_luc": "2026-10-15T18:37:45+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736394027659330950",
@@ -5825,7 +6631,11 @@
    "them_luc": "2026-10-15T14:07:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729482409825635197",
@@ -5853,7 +6663,11 @@
    "them_luc": "2026-10-15T13:40:35+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731365843556599677",
@@ -5879,9 +6693,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-15T13:39:41+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736123792156951734",
@@ -5909,7 +6727,11 @@
    "them_luc": "2026-10-14T22:08:58+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737658776116299032",
@@ -5937,7 +6759,11 @@
    "them_luc": "2026-10-13T10:11:26+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729748241594157069",
@@ -5963,9 +6789,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-13T10:10:58+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1735557759638668927",
@@ -5993,7 +6823,11 @@
    "them_luc": "2026-10-13T10:10:03+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1730992905271872127",
@@ -6021,7 +6855,11 @@
    "them_luc": "2026-10-13T10:09:42+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1731482718727014015",
@@ -6049,7 +6887,11 @@
    "them_luc": "2026-10-13T10:09:20+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731955210650682419",
@@ -6077,7 +6919,11 @@
    "them_luc": "2026-10-13T10:09:05+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733560086332933219",
@@ -6105,7 +6951,11 @@
    "them_luc": "2026-10-12T20:38:34+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737766480344745911",
@@ -6133,7 +6983,11 @@
    "them_luc": "2026-10-12T20:37:46+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732325861462542279",
@@ -6159,9 +7013,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T20:37:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735534292029310161",
@@ -6187,9 +7045,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-12T09:16:20+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1737441735787251320",
@@ -6215,9 +7077,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-11T18:02:06+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736503520640665350",
@@ -6243,9 +7109,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-11T18:02:02+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729740251036616992",
@@ -6271,9 +7141,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:02:11+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735611118574863648",
@@ -6299,9 +7173,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-10T11:01:00+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731065831523911793",
@@ -6329,7 +7207,11 @@
    "them_luc": "2026-10-10T10:56:21+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732834173126674416",
@@ -6357,7 +7239,11 @@
    "them_luc": "2026-10-09T12:22:12+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736123711208457922",
@@ -6385,7 +7271,11 @@
    "them_luc": "2026-10-08T16:46:24+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732253102624376883",
@@ -6413,7 +7303,11 @@
    "them_luc": "2026-10-08T14:48:18+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736589840367518961",
@@ -6439,9 +7333,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T14:14:34+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736771458735048243",
@@ -6467,9 +7365,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T12:08:42+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1729814530563803471",
@@ -6495,9 +7397,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T12:04:08+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735655451667432542",
@@ -6523,9 +7429,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-08T11:36:17+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730580955373472694",
@@ -6553,7 +7463,11 @@
    "them_luc": "2026-10-07T22:06:44+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735549207633823670",
@@ -6579,9 +7493,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T21:24:36+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731957689214797750",
@@ -6609,7 +7527,11 @@
    "them_luc": "2026-10-07T21:24:16+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732858960822568886",
@@ -6635,9 +7557,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T19:20:27+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731138606159202925",
@@ -6665,7 +7591,11 @@
    "them_luc": "2026-10-07T18:22:33+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737444773443241333",
@@ -6693,7 +7623,11 @@
    "them_luc": "2026-10-07T17:48:46+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732073269932427662",
@@ -6719,9 +7653,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-07T16:31:44+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736619699461522926",
@@ -6749,7 +7687,11 @@
    "them_luc": "2026-10-07T10:41:21+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730796835380103662",
@@ -6775,9 +7717,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:41:00+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1730173499687864814",
@@ -6805,7 +7751,11 @@
    "them_luc": "2026-10-07T10:40:35+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737548032978028263",
@@ -6831,9 +7781,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:38:39+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737824137181889700",
@@ -6859,9 +7813,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:25+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1736221940865664164",
@@ -6889,7 +7847,11 @@
    "them_luc": "2026-10-07T10:34:13+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736224785824908452",
@@ -6915,9 +7877,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:34:01+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736255243766498584",
@@ -6945,7 +7911,11 @@
    "them_luc": "2026-10-07T10:33:28+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729706628656957720",
@@ -6971,9 +7941,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-07T10:32:55+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737667760427796253",
@@ -6999,9 +7973,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T20:07:33+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": false
+   "co_file01": false,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729836072013957529",
@@ -7029,7 +8007,11 @@
    "them_luc": "2026-10-06T15:45:58+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737659393375831833",
@@ -7055,9 +8037,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:45:42+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737190162175198462",
@@ -7085,7 +8071,11 @@
    "them_luc": "2026-10-06T15:44:31+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731818871861445984",
@@ -7113,7 +8103,11 @@
    "them_luc": "2026-10-06T15:44:12+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732989957715625144",
@@ -7141,7 +8135,11 @@
    "them_luc": "2026-10-06T15:43:55+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731748783809923005",
@@ -7167,9 +8165,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:43:15+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736347028657702774",
@@ -7195,9 +8197,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:42:57+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737640005560796517",
@@ -7225,7 +8231,11 @@
    "them_luc": "2026-10-06T15:42:11+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   },
   {
    "id": "1737545970179802565",
@@ -7251,9 +8261,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:55+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736620411143554535",
@@ -7279,9 +8293,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:41:33+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736938915041936633",
@@ -7309,7 +8327,11 @@
    "them_luc": "2026-10-06T15:41:13+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737515029463598265",
@@ -7335,9 +8357,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736909393337091639",
@@ -7363,9 +8389,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:40:01+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1733167207459030107",
@@ -7391,9 +8421,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:39:44+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736441894606505028",
@@ -7421,7 +8455,11 @@
    "them_luc": "2026-10-06T15:36:34+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737036338282857964",
@@ -7447,9 +8485,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:36:16+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1731535115776459975",
@@ -7475,9 +8517,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:35:55+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735779013828118180",
@@ -7505,7 +8551,11 @@
    "them_luc": "2026-10-06T15:35:34+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736944494920238608",
@@ -7533,7 +8583,11 @@
    "them_luc": "2026-10-06T15:35:15+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734776808630420613",
@@ -7559,9 +8613,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:57+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1732013006626719981",
@@ -7587,9 +8645,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:34:37+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1729774420086721151",
@@ -7617,7 +8679,11 @@
    "them_luc": "2026-10-06T15:34:17+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736413722278069750",
@@ -7645,7 +8711,11 @@
    "them_luc": "2026-10-06T15:33:59+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737523566576240431",
@@ -7671,9 +8741,13 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-10-06T15:33:39+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1736363944802289590",
@@ -7701,7 +8775,11 @@
    "them_luc": "2026-10-06T15:32:35+07:00",
    "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1737073725391275988",
@@ -7727,9 +8805,13 @@
    "the": [],
    "them_boi": "máy nhà",
    "them_luc": "2026-10-06T15:12:51+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
    "so_caption": 100,
-   "co_file01": true
+   "co_file01": true,
+   "rui_ro": {
+    "nen_lam": "✅",
+    "muc_do": "🟢"
+   }
   }
  ]
 }
