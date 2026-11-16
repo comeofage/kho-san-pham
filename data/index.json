@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-16T19:18:56+07:00",
+ "cap_nhat_luc": "2026-11-16T19:24:15+07:00",
  "san_pham": [
   {
    "id": "1731293444546790853",
@@ -35,11 +35,11 @@
    "id": "1731778117967972293",
    "uid": "1731778117967972293",
    "link": "https://vt.tiktok.com/ZS9fGyFBtE5yM-crKAP/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "WiFi Tăng Tốc, Không Lộ Độ Lag, Hẹn Giờ Tự Động Khởi Động Lại, Cho Modem Và Bộ Định Tuyến, Bao Gồm Cáp Đặt Lại",
+   "gia": "52.748₫",
+   "shop": "Cửa hàng tự cung tự cấp",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-15T16:33:12+07:00",
-   "cap_nhat_luc": "2026-11-16T19:01:50+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-16T19:24:01+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
