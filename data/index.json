@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-16T08:49:08+07:00",
+ "cap_nhat_luc": "2026-11-16T08:49:22+07:00",
  "san_pham": [
   {
    "id": "tam-20261115213414126",
@@ -919,23 +919,23 @@
    "gia": "35.471₫",
    "shop": "Ăn vặt KFOOD",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-16T08:49:11+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T11:37:08+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
+   "cap_nhat_luc": "2026-11-16T08:49:11+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
