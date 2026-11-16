@@ -133,13 +133,35 @@ function renderList() {
   bindSwitches();
 }
 
+const RR_TEN = { "🟢": "Thấp", "🟡": "Trung bình", "🟠": "Khá cao", "🔴": "Cao" };
+const NL_TEN = { "✅": "Có thể làm Affiliate", "⚠️": "Làm được nhưng cần chỉnh nội dung", "❌": "Không nên làm Affiliate" };
+function ruiRoIcon(x) {
+  const r = x.rui_ro && (x.rui_ro.ket_luan || x.rui_ro);
+  if (!r || !r.muc_do) return `<span class="rr rr-none" title="Chưa đánh giá rủi ro">⚪</span>`;
+  return `<span class="rr" title="Rủi ro ${RR_TEN[r.muc_do] || ""} — ${NL_TEN[r.nen_lam] || ""}">${r.muc_do}</span>`;
+}
+function ruiRoPanel(r) {
+  if (!r || !r.ket_luan) return `<p class="muted">Chưa đánh giá rủi ro. Chạy <code>/phantichcanhquay</code> (hoặc <code>/phantichsanpham</code>) cho sản phẩm này, bước đánh giá rủi ro sẽ đẩy kết quả lên đây.</p>`;
+  const k = r.ket_luan;
+  const bang = (heads, rows) => `<div class="tbl-wrap"><table class="rr-tbl"><thead><tr>${heads.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((c) => `<tr>${c.map((v) => `<td>${esc(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  return `<h3>1. Kết luận</h3>
+    ${bang(["Hạng mục", "Kết quả"], [["Có nên làm Affiliate", `${k.nen_lam} ${NL_TEN[k.nen_lam] || ""}`], ["Mức độ rủi ro", `${k.muc_do} ${RR_TEN[k.muc_do] || ""}`], ["Nguy cơ lớn nhất", k.nguy_co], ["Khuyến nghị", k.khuyen_nghi]])}
+    <h3>2. Tổng hợp rủi ro</h3>
+    ${bang(["Hạng mục", "Mức độ", "Nhận xét"], (r.tong_hop || []).map((t) => [t.hang_muc, t.muc_do, t.nhan_xet || ""]))}
+    ${(r.luu_y || []).length ? `<h3>3. Các rủi ro cần lưu ý</h3>${bang(["Vấn đề", "Rủi ro", "Cách xử lý"], r.luu_y.map((t) => [t.van_de, t.rui_ro, t.xu_ly]))}` : ""}
+    ${(r.claim_cam || []).length ? `<h3>4. Claim không nên dùng</h3>${bang(["Không nên nói", "Gợi ý thay thế"], r.claim_cam.map((t) => [t.khong_nen, t.goi_y]))}` : ""}
+    <h3>5. Kết luận cuối</h3><p><b>${esc(r.ket_luan_cuoi)}</b></p>
+    ${r.thieu_thong_tin ? `<p class="small muted">Cần bổ sung: ${esc(r.thieu_thong_tin)}</p>` : ""}
+    <p class="small muted">Đánh giá lúc ${gio(r.danh_gia_luc)} theo chính sách TikTok Shop VN — chỉ mang tính tham khảo, cần người duyệt lại.</p>`;
+}
+
 function cardHtml(x, stt) {
   const tt = x.trang_thai || trangThai(x);
   const img = anhBia(x);
   return `<div class="card">
     ${img ? `<img class="thumb" src="${esc(img)}" referrerpolicy="no-referrer" loading="lazy" alt="">` : `<div class="thumb"></div>`}
     <a class="body" href="#/sp/${encodeURIComponent(x.id)}">
-      <div class="ten"><span class="stt">#${stt}</span> ${esc(x.ten || x.link)}</div>
+      <div class="ten"><span class="stt">#${stt}</span> ${ruiRoIcon(x)} ${esc(x.ten || x.link)}</div>
       <div class="small muted"><span class="badge b-${tt}">${NHAN[tt]}</span>${x.gia ? " <b>" + esc(x.gia) + "</b> ·" : ""} ${x.uid ? `<span class="uid-copy" role="button" title="Bấm để copy UID" data-copy="${esc(x.uid)}" data-copy-msg="Đã copy UID ${esc(x.uid)}">${esc(x.uid)} ⧉</span>` : "link rút gọn"}${theCua(x).map((t) => ` <span class="the-rieng">#${esc(t)}</span>`).join("")}</div>
     </a>
     ${tagHtml(x)}
@@ -309,6 +331,7 @@ async function renderDetail(id) {
         <button class="tab" data-tab="douyin">🎵 Douyin</button>
         <button class="tab" data-tab="cap">💬 Caption (${capList.length})</button>
         <button class="tab" data-tab="tt">📋 Tóm tắt & USP</button>
+        <button class="tab" data-tab="ruiro">${i.rui_ro && i.rui_ro.ket_luan ? i.rui_ro.ket_luan.muc_do : "⚪"} Rủi ro</button>
         <button class="tab" data-tab="vtk">🎬 Video tham khảo (<span id="vtk-dem">${vtk.length}</span>)</button>
         <button class="tab" data-tab="video">🎞 Làm video</button>
         <button class="tab" data-tab="note">📝 Ghi chú</button>
@@ -331,6 +354,7 @@ async function renderDetail(id) {
       : `<p class="muted">Chưa có caption.</p>`,
     tt: () => `${i.usp && i.usp.cau ? `<h3>USP</h3><p><b>${esc(i.usp.cau)}</b></p><p class="small muted">Từ khoá: ${esc((i.usp.tu_khoa || []).join(", "))}</p>` : `<p class="muted">Chưa có USP.</p>`}
        ${i.tom_tat ? `<h3>Tóm tắt sản phẩm</h3><div class="md">${window.DOMPurify && window.marked ? DOMPurify.sanitize(marked.parse(i.tom_tat)) : `<pre>${esc(i.tom_tat)}</pre>`}</div>` : ""}`,
+    ruiro: () => ruiRoPanel(i.rui_ro),
     video: () => `<p class="small">Thông tin đưa sang <b>/tao-video-tu-canh-quay</b>:</p>
        <pre class="cmd">${esc(prompt)}</pre>
        <div class="row"><button class="btn sm" data-copy="${esc(prompt)}">Copy cho Claude</button>

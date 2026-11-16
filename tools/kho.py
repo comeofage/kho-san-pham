@@ -243,6 +243,42 @@ def doc_du_lieu_du_an(P: Path) -> dict:
     return d
 
 
+MUC_RUI_RO = ("🟢", "🟡", "🟠", "🔴")
+NEN_LAM = ("✅", "⚠️", "❌")
+
+
+def kiem_rui_ro(d: dict) -> list[str]:
+    """rui_ro: ket_luan{nen_lam,muc_do,nguy_co,khuyen_nghi}, tong_hop[{hang_muc,muc_do,nhan_xet}],
+    luu_y[{van_de,rui_ro,xu_ly}], claim_cam[{khong_nen,goi_y}], ket_luan_cuoi."""
+    loi = []
+    kl = d.get("ket_luan")
+    if not isinstance(kl, dict):
+        return ["thiếu ket_luan"]
+    if kl.get("nen_lam") not in NEN_LAM:
+        loi.append(f"ket_luan.nen_lam phải là một trong {NEN_LAM}")
+    if kl.get("muc_do") not in MUC_RUI_RO:
+        loi.append(f"ket_luan.muc_do phải là một trong {MUC_RUI_RO}")
+    for k in ("nguy_co", "khuyen_nghi"):
+        if not str(kl.get(k, "")).strip():
+            loi.append(f"ket_luan.{k} trống")
+    th = d.get("tong_hop")
+    if not isinstance(th, list) or not th:
+        loi.append("tong_hop trống")
+    else:
+        for r in th:
+            if not isinstance(r, dict) or r.get("muc_do") not in MUC_RUI_RO or not r.get("hang_muc"):
+                loi.append(f"tong_hop dòng sai: {r}")
+    if not str(d.get("ket_luan_cuoi", "")).strip():
+        loi.append("thiếu ket_luan_cuoi")
+    return loi
+
+
+def tom_tat_rui_ro(r) -> dict | None:
+    if not isinstance(r, dict) or not isinstance(r.get("ket_luan"), dict):
+        return None
+    return {"nen_lam": r["ket_luan"].get("nen_lam", ""), "muc_do": r["ket_luan"].get("muc_do", "")}
+
+
 def tao_index(data: Path) -> dict:
     ds = []
     for i in tat_ca(data):
@@ -257,6 +293,7 @@ def tao_index(data: Path) -> dict:
             "them_boi": i.get("them_boi", ""), "them_luc": i.get("them_luc", ""),
             "cap_nhat_luc": i.get("cap_nhat_luc", ""), "so_caption": so_cap,
             "co_file01": (data / i["id"] / "bo-canh-quay.md").exists(),
+            "rui_ro": tom_tat_rui_ro(i.get("rui_ro")),
         })
     ds.sort(key=lambda x: x.get("them_luc", ""), reverse=True)
     return {"cap_nhat_luc": bay_gio(), "san_pham": ds}
@@ -585,6 +622,45 @@ def lenh_vtk_ghi(a):
     print(f"✓ {i['id']} / {a.vid}: {len(d['canh'])} cảnh đã lên kho")
 
 
+def _nap_rui_ro(i: dict, f: Path) -> None:
+    d = _doc_json(f)
+    loi = kiem_rui_ro(d)
+    if loi:
+        raise ValueError("; ".join(loi))
+    d["danh_gia_luc"] = bay_gio()
+    i["rui_ro"] = d
+    luu(DATA, i)
+
+
+def lenh_rui_ro(a):
+    keo()
+    i = _can(a.khoa)
+    try:
+        _nap_rui_ro(i, Path(a.tu))
+    except ValueError as e:
+        raise SystemExit(f"[LỖI] rui_ro chưa đạt: {e}")
+    day(f"rui-ro {i['id']}")
+    print(f"✓ {i['id']} — rủi ro {i['rui_ro']['ket_luan']['muc_do']} {i['rui_ro']['ket_luan']['nen_lam']}")
+
+
+def lenh_rui_ro_hang_loat(a):
+    """Thư mục chứa <id>.json — nạp hết, 1 commit."""
+    keo()
+    n = 0
+    for f in sorted(Path(a.tu_thu_muc).glob("*.json")):
+        i = tim(DATA, f.stem)
+        if not i:
+            print(f"[!] bỏ qua {f.name}: không có trong kho", file=sys.stderr)
+            continue
+        try:
+            _nap_rui_ro(i, f)
+            n += 1
+        except ValueError as e:
+            print(f"[!] bỏ qua {f.name}: {e}", file=sys.stderr)
+    day(f"rui-ro hang loat {n} sp")
+    print(f"✓ {n} sản phẩm")
+
+
 def lenh_index(a):
     _ghi_json(DATA / "index.json", tao_index(DATA))
     print(f"✓ index: {len(tat_ca(DATA))} sản phẩm")
@@ -608,6 +684,8 @@ def main(argv=None):
     p.add_argument("--folder-id", type=int); p.add_argument("--duong-dan"); p.add_argument("--them", action="store_true", help="thêm 1 dòng Poster (không ghi đè dòng khác)"); p.add_argument("--nhan", default=""); p.set_defaults(f=lenh_video)
     p = sp.add_parser("the"); p.add_argument("ten"); p.add_argument("khoa", nargs="+")
     p.add_argument("--bo", action="store_true"); p.set_defaults(f=lenh_the)
+    p = sp.add_parser("rui-ro"); p.add_argument("khoa"); p.add_argument("--tu", required=True); p.set_defaults(f=lenh_rui_ro)
+    p = sp.add_parser("rui-ro-hang-loat"); p.add_argument("--tu-thu-muc", required=True); p.set_defaults(f=lenh_rui_ro_hang_loat)
     p = sp.add_parser("index"); p.set_defaults(f=lenh_index)
     p = sp.add_parser("vtk-cho"); p.set_defaults(f=lenh_vtk_cho)
     p = sp.add_parser("vtk-tai"); p.add_argument("khoa"); p.add_argument("vid"); p.add_argument("--out")
