@@ -38,6 +38,57 @@
   "poster_folder": 146,
   "duong_dan": "F:\\2010\\ổ cắm deli 2010 1732858960822568886\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Ổ cắm chuyển đổi là đồ điện, dễ dính claim an toàn tuyệt đối (chịu 750°C, an toàn trẻ em).",
+   "khuyen_nghi": "Chỉ nói chức năng chuyển chuẩn chân cắm và chú ý công suất tối đa. Không hứa an toàn tuyệt đối."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Claim 'chịu nhiệt 750°C', 'an toàn với trẻ em' cần có kiểm định, không được khẳng định tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shop Deli Lifestyle là thương hiệu chính chủ, đã có tổ chức chịu trách nhiệm tại Việt Nam."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình ảnh/nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện cần hợp quy và ghi công suất, trang chưa nêu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Có nhắc 'an toàn với trẻ em', nhưng sản phẩm không dành cho trẻ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chịu nhiệt 750°C, an toàn với trẻ em",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nhắc khi có báo cáo thử nghiệm, hoặc bỏ hẳn khỏi nội dung video."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối, không bao giờ chập cháy, trẻ em cầm cũng an toàn",
+    "goi_y": "Nhắc 'có vỏ bảo vệ' và nhắc người dùng kiểm tra công suất thiết bị."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Công suất/điện áp tối đa, giấy hợp quy, báo cáo thử nghiệm 750°C.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

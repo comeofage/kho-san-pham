@@ -38,6 +38,51 @@
   "poster_folder": 315,
   "duong_dan": "E:/oneshottramcanh/phimamy-1737205396728808543/output_poster"
  },
- "cap_nhat_luc": "2026-11-09T20:22:24+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hàng cá nhân hoá theo tên khách thường không được đổi trả, dễ phát sinh khiếu nại.",
+   "khuyen_nghi": "Nói rõ đây là hàng làm theo yêu cầu, hướng dẫn đúng cách ghi tên trước khi đặt."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là móc khóa trang trí, không claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shi3D là brand shop tự đặt."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Nội dung theo tên khách, cảnh báo không in tên thương hiệu hay nhân vật có bản quyền; kiểu keycap clicker giống đồ chơi nhiều nơi."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Hàng in 3D nhựa, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Đổi trả thoải mái",
+    "goi_y": "Nói 'hàng làm theo tên, kiểm tra kỹ chính tả trước khi chốt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ chính sách đổi trả hàng cá nhân hoá và thời gian làm.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

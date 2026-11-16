@@ -35,5 +35,61 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:07:24+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ lót trẻ em 3-16 tuổi: claim \"kháng khuẩn 7A\" chưa có kiểm định và nội dung có thể liên quan hình ảnh trẻ mặc đồ lót.",
+   "khuyen_nghi": "Chỉ quay sản phẩm bày phẳng, không có trẻ em mặc; bỏ claim kháng khuẩn khi chưa có giấy kiểm nghiệm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "\"Kháng khuẩn 7A\", \"không gây đỏ mông\" là claim tác động da cần chứng minh; \"lụa tơ tằm\" cần đúng thành phần."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand Jiusuiban nhập từ Trung Quốc, chưa rõ giấy phép phân phối."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình nhân vật có bản quyền được nêu."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm, nhưng đồ lót trẻ em cần nhãn mác đúng quy định."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Đồ lót cho bé gái: nội dung có trẻ mặc đồ lót vi phạm chính sách an toàn trẻ vị thành niên."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hình ảnh trẻ em mặc đồ lót",
+    "rui_ro": "🔴",
+    "xu_ly": "Chỉ quay sản phẩm đặt phẳng/treo, không có trẻ em hoặc mẫu nhỏ tuổi."
+   },
+   {
+    "van_de": "Claim kháng khuẩn 7A",
+    "rui_ro": "🟠",
+    "xu_ly": "Không dùng khi chưa có kết quả kiểm nghiệm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "khong_nen",
+    "goi_y": "goi_y"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy kiểm nghiệm kháng khuẩn và thành phần vải; mới có 6 đánh giá.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

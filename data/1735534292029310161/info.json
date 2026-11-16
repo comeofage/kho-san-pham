@@ -37,6 +37,57 @@
   "poster_folder": 226,
   "duong_dan": "E:/oneshottramcanh/nuochoaplatino 1735534292029310161/output_poster"
  },
- "cap_nhat_luc": "2026-10-29T09:53:43+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Thiết bị phun tinh dầu có pin sạc và chất lỏng dễ cháy, dễ vướng quy định hàng hạn chế vận chuyển và claim khử mùi/làm dịu.",
+   "khuyen_nghi": "Chỉ làm khi shop có đủ giấy tờ hóa chất/pin; không nói công dụng sức khỏe, không quay cảnh phun trong xe có trẻ em."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Khử mùi', 'làm dịu mùi gây...' cần nói theo cảm nhận, tránh claim sức khỏe/diệt khuẩn."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu GOCADO của shop, không nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy vấn đề hình ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Tinh dầu dạng lỏng và pin sạc type-C có thể thuộc hàng dễ cháy/pin lithium, khai báo 'không hàng nguy hiểm' cần kiểm tra."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không hướng tới trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Tinh dầu và pin lithium trong thiết bị",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp MSDS và giấy chứng nhận pin."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Khử mùi, làm dịu mùi gây khó chịu như điều trị",
+    "goi_y": "Nói 'giúp xe thơm hơn theo cảm nhận'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "MSDS tinh dầu, chứng nhận pin, thành phần tinh dầu.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

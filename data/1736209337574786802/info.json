@@ -30,5 +30,61 @@
   "poster_folder": 53,
   "duong_dan": "E:\\Aff anh nhan\\review\\mặt nạ mắt 1736209337574786802\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:50+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Mỹ phẩm nhưng claim 'đánh bay quầng thâm', 'dưỡng sáng mắt' vượt phạm vi, thông tin listing mâu thuẫn.",
+   "khuyen_nghi": "Chỉ làm khi shop có phiếu công bố mỹ phẩm hợp lệ; nói 'làm mát, thư giãn vùng mắt', bỏ claim trị quầng thâm và xác minh xuất xứ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Đánh bay quầng thâm', 'mờ thâm hiệu quả', 'dưỡng sáng mắt' là claim điều trị vượt phạm vi mỹ phẩm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chưa rõ thương hiệu, cần kiểm tra có dùng tên hãng khác không."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh/nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Mỹ phẩm cần phiếu công bố thật; thông số ghi 'Việt Nam' chung chung, xuất xứ Hungary và biến thể 'viên nén' gây nghi vấn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em, nhưng mô tả có 'học sinh'."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim quầng thâm/dưỡng sáng mắt vượt phạm vi mỹ phẩm",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ claim điều trị, chỉ nói làm mát, giảm cảm giác mỏi mắt."
+   },
+   {
+    "van_de": "Thông tin giấy phép và xuất xứ mâu thuẫn, biến thể ghi 'viên nén' không khớp miếng dán",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop gửi phiếu công bố thật và sửa lại listing trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'đánh bay quầng thâm, trị thâm, sáng mắt, giảm sưng'",
+    "goi_y": "Nói 'miếng dán mát lạnh, thư giãn mắt sau giờ làm, 5 miếng/túi'"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu phiếu công bố mỹ phẩm, thành phần đầy đủ và xuất xứ thật.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

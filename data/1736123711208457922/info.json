@@ -36,5 +36,50 @@
   "luc": "2026-10-22T12:16:04+07:00",
   "duong_dan": "E:\\oneshottramcanh\\sqduahau 1736123711208457922\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:02:56+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'giảm căng thẳng' có thể bị coi là claim sức khỏe nếu nói quá.",
+   "khuyen_nghi": "Nói theo hướng đồ chơi bóp cho vui tay, tránh hứa chữa căng thẳng/lo âu; quay cảnh bóp xẹp rồi phồng lại."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên ghi 'giảm căng thẳng hiệu quả' cần nói như cảm giác thư giãn, không hứa tác dụng y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình dưa hấu là hình chung, không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả hướng đến người lớn và thanh thiếu niên, nhưng đồ chơi nhỏ trẻ nhỏ có thể cầm, nên nhắc không dành cho trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'chữa stress, trị lo âu, hỗ trợ điều trị'",
+    "goi_y": "Nói 'bóp cho đã tay, thư giãn, để bàn làm việc'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thiếu chứng nhận chất liệu PU và độ tuổi khuyến nghị.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

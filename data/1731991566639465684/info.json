@@ -30,5 +30,56 @@
   "poster_folder": 13,
   "duong_dan": "E:\\Aff anh nhan\\review\\vở ô li bài tập(1) 1731991566639465684\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sách giáo dục cần kiểm soát bản quyền nội dung và giấy phép xuất bản.",
+   "khuyen_nghi": "Chỉ giới thiệu bìa và nội dung chung, không quay nội dung chi tiết hay hứa điểm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả sách bài tập, không có claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand THANH NGA, tên Kết Nối có thể bị coi là mượn nhãn sách giáo khoa."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Nội dung và hình minh họa của nhà xuất bản, quay trang sách chi tiết có thể vi phạm bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Xuất bản phẩm cần giấy phép xuất bản/ISBN, thông số trang chưa thể hiện."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đối tượng học sinh lớp 3, tránh hình ảnh trẻ em và lời hứa kết quả học."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Quay cận cảnh nội dung bài tập của nhà xuất bản",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay bìa và lướt nhanh một vài trang, không đọc nội dung."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Học giỏi chắc chắn / tăng điểm",
+    "goi_y": "Nói vở phù hợp làm thêm buổi 2 và cuối tuần."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép xuất bản/ISBN, quan hệ giữa NXB Thanh Niên và nhà phát hành Việt Hà.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

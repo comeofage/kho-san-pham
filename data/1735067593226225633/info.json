@@ -30,5 +30,56 @@
   "poster_folder": 64,
   "duong_dan": "E:\\Aff anh nhan\\review\\bình kaku 1735067593226225633\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:46+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Mẫu Snoopy và các mẫu hoạt hình (capybara, puppy) có nguy cơ vi phạm bản quyền nhân vật.",
+   "khuyen_nghi": "Chỉ quay mẫu trơn inox, tránh mẫu Snoopy; claim giữ nhiệt phải theo thông số shop và không hứa số giờ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "\"Giữ nhiệt tốt\" cần chỉ số thực tế, không thổi phồng; inox 316/304 cần có chứng minh nếu nhắc an toàn thực phẩm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand NIUMI, cần xác nhận shop là chủ nhãn; tên \"KAKU\" không rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Biến thể SNOOPY là nhân vật có bản quyền, cần giấy phép."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em rõ ràng."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Biến thể Snoopy và mẫu hoạt hình",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay hoặc nhắc mẫu Snoopy; chỉ dùng mẫu màu trơn."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "khong_nen",
+    "goi_y": "goi_y"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Không có USP và mô tả chữ; chưa có thời gian giữ nhiệt thật, chứng nhận inox.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

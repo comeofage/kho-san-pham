@@ -38,5 +38,45 @@
   "poster_folder": 319,
   "duong_dan": "E:/oneshottramcanh/butkimtuyen-1733191836290548787/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:09:03+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Văn phòng phẩm thông thường, rủi ro thấp.",
+   "khuyen_nghi": "Có thể làm. Nói đúng ngòi 1.0mm, nhũ trong thân bút, thay ruột."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ có mô tả tính năng bút, không claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy dùng thương hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dành cho học sinh và văn phòng, không phải đồ chơi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

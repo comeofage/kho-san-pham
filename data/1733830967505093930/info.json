@@ -34,5 +34,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:07:30+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh claim chỉnh tư thế cầm bút.",
+   "khuyen_nghi": "Làm được, quay phần cầm silicon tam giác và đầu gọt trên nắp."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nói bút viết đậm, dễ cầm, tránh hứa sửa tật cầm bút."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu M.Y của shop, không nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thân bút cá heo là kiểu dáng chung, không dùng nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng đến học sinh tiểu học nhưng không phải đồ chơi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chỉnh tật cầm bút, đảm bảo viết đẹp",
+    "goi_y": "Nói phần cầm có chỗ đặt ba ngón tay."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

@@ -29,5 +29,56 @@
   "luc": "2026-10-28T10:48:49+07:00",
   "duong_dan": "E:\\oneshottramcanh\\walle 1733440314917815431\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:02:56+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Bộ xếp hình gắn tên và hình nhân vật WALL-E (Disney/Pixar) mà shop không phải đơn vị được cấp phép.",
+   "khuyen_nghi": "Không nên làm; nếu muốn làm, chỉ làm khi shop có giấy ủy quyền Disney, hoặc chọn mẫu robot không nhân vật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là đồ chơi xếp hình, không claim công dụng đặc biệt."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand FUNGUS so good của shop, nhưng gắn nhân vật có thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Nhân vật WALL-E thuộc Disney/Pixar, bán đồ chơi mô phỏng nhân vật khi không có cấp phép dễ bị gỡ."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi từ 6 tuổi, 217 chi tiết nhỏ cần nhắc người lớn giám sát."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nhân vật WALL-E thuộc bản quyền Disney/Pixar",
+    "rui_ro": "🔴",
+    "xu_ly": "Không làm nếu không có giấy ủy quyền; không đưa tên nhân vật vào caption."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nhắc 'WALL-E', 'Pixar', 'Disney'",
+    "goi_y": "Nói 'robot nhỏ xếp hình' nếu shop có mẫu không nhân vật"
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa có giấy ủy quyền của Disney, chưa có chứng nhận an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

@@ -30,5 +30,65 @@
   "poster_folder": 87,
   "duong_dan": "E:\\oneshottramcanh\\spider 1734479788508218973\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Dạng đồ chơi mô phỏng Spider-Man, rủi ro IPR và an toàn trẻ em, mô tả thiếu.",
+   "khuyen_nghi": "Không nên làm khi chưa có bằng chứng bản quyền và hợp quy."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Không có thương hiệu rõ ràng, thông tin shop sơ sài."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Găng tay bắn tơ nhện mô phỏng Spider-Man, rủi ro dùng hình ảnh nhân vật Marvel."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi bắn có thể bị coi là vũ khí đồ chơi, gây thương tích mắt."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi cho bé trai cần QCVN 3:2019 và cảnh báo độ tuổi, mô tả trang trống."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Mô phỏng nhân vật Spider-Man",
+    "rui_ro": "🔴",
+    "xu_ly": "Không nhắc tên, hình hay mô phỏng nhân vật."
+   },
+   {
+    "van_de": "Đồ chơi bắn gây nguy hiểm",
+    "rui_ro": "🟠",
+    "xu_ly": "Không hướng bắn vào người."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Găng tay Người Nhện chính hãng",
+    "goi_y": "Không nhắc nhân vật."
+   },
+   {
+    "khong_nen": "An toàn tuyệt đối cho bé",
+    "goi_y": "Không cam kết an toàn."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Mô tả, độ tuổi, chứng nhận đồ chơi, nguồn gốc.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

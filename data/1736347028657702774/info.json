@@ -28,7 +28,7 @@
   "poster_folder": 161,
   "duong_dan": "F:\\0810\\1008 (1)\\kẹo chua 0810-1736347028657702774"
  },
- "cap_nhat_luc": "2026-10-20T13:46:24+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -38,5 +38,61 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-09T10:44:19+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Thực phẩm kẹo có claim chống buồn ngủ, giải mệt, tỉnh táo ngay lập tức, kèm quảng cáo cho trẻ em và đề cập lái xe.",
+   "khuyen_nghi": "Chỉ nói hương vị chua và tiện mang theo; bỏ claim tỉnh táo/chống buồn ngủ, không nói ngậm khi lái xe, không nhắm trẻ nhỏ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Chống buồn ngủ', 'tỉnh táo ngay lập tức', 'giải mệt', 'xua tan uể oải' là claim công dụng không được phép đối với kẹo."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không gắn thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy vấn đề IPR."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm nhập khẩu cần công bố an toàn thực phẩm, trang chỉ có giấy công bố tiêu chuẩn của đơn vị nhập, cần nhãn phụ tiếng Việt."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Quảng cáo 'ăn vặt trẻ em', 'các bé yêu thích', kẹo cứng có nguy cơ hóc cho trẻ nhỏ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chống buồn ngủ, tỉnh táo khi lái xe là công dụng ngoài phạm vi thực phẩm",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ mô tả vị chua, hương vị, tiện mang theo; không nhắc lái xe hay tỉnh táo."
+   },
+   {
+    "van_de": "Nhắm trẻ em cho kẹo cứng",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay trẻ nhỏ ăn kẹo, nhắm người lớn."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'ngậm là tỉnh ngay, chống buồn ngủ khi lái xe, giải mệt'",
+    "goi_y": "Nói 'kẹo chua 3 vị việt quất, chanh, coca, ống nắp kín mang theo tiện'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Bản công bố an toàn thực phẩm, nhãn phụ tiếng Việt, hạn sử dụng.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
  }
 }

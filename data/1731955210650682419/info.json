@@ -37,6 +37,51 @@
   "poster_folder": 184,
   "duong_dan": "E:/oneshottramcanh/acrylic 1731955210650682419/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T18:20:51+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Tên gọi acrylic không khớp mô tả bút lông đầu kép, dễ gây hiểu nhầm; claim an toàn cần cẩn thận.",
+   "khuyen_nghi": "Quay đúng loại bút lông hai đầu và nói rõ là mực gốc nước, không gọi là màu acrylic thật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả nói mực không độc hại, không mùi, kết cấu huỳnh quang; không khớp với nhũ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nêu thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhắm tới học sinh nên chỉ nói theo mô tả, không tuyên bố an toàn cho trẻ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Mực hoàn toàn không độc, an toàn cho bé",
+    "goi_y": "Nói mực gốc nước, dùng cho học sinh."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Loại sản phẩm thật (bút nhũ hay màu acrylic), chứng nhận an toàn đồ dùng học tập.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

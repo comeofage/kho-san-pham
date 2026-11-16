@@ -28,7 +28,7 @@
   "poster_folder": 149,
   "duong_dan": "E:\\oneshottramcanh\\duxanhduong 1736363944802289590\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:51+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "poster",
@@ -38,5 +38,50 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-08T09:15:17+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Ô gấp ngược của hãng Deli có tổ chức chịu trách nhiệm rõ, rủi ro duy nhất là claim chống UV UPF50+ và 'bảo vệ sức khỏe da'.",
+   "khuyen_nghi": "Làm được, nói theo thông số hãng và khuyến cáo là che nắng hỗ trợ; không nói thay thế kem chống nắng hay phòng bệnh da."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống UV >95%, UPF50+, hạ nhiệt tức thì' cần test report, tránh 'bảo vệ sức khỏe da/ngừa ung thư da'."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Deli Lifestyle có đơn vị Deli Việt Nam chịu trách nhiệm, chính hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có vấn đề IPR."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Ô dù không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'chặn 100% tia UV, ngăn ung thư da, hạ nhiệt tức thì'",
+    "goi_y": "Nói 'phủ keo đen chống UV UPF50+ theo thông số hãng, che nắng mưa, gấp ngược không nhỏ giọt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Báo cáo thử nghiệm UPF của hãng.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
  }
 }

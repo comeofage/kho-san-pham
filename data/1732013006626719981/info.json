@@ -27,7 +27,7 @@
   "so_video": 18,
   "luc": "2026-10-28T10:48:54+07:00"
  },
- "cap_nhat_luc": "2026-10-28T10:48:54+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -38,5 +38,61 @@
   "boi": "poster",
   "luc": "2026-10-20T13:35:33+07:00"
  },
- "can_dang": true
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Mỹ phẩm trang điểm (phấn mắt, sơn móng) nhắm vào trẻ em, thiếu giấy công bố mỹ phẩm và dễ bị gỡ/vi phạm an toàn trẻ em.",
+   "khuyen_nghi": "Không nên làm affiliate vì mỹ phẩm cho trẻ em là nhóm rủi ro cao về an toàn và chính sách."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Quảng cáo 'không thấm nước' chấp nhận được nhưng không được nói an toàn cho da bé."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Igoodco không thấy dấu hiệu nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Chưa rõ nguồn gốc ảnh/hình thiết kế, cần kiểm tra hình ảnh trên hộp."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Mỹ phẩm cần số công bố sản phẩm mỹ phẩm, trang không có."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Mỹ phẩm trang điểm cho bé gái là nhóm nhạy cảm, dễ vi phạm chính sách trẻ em và an toàn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Mỹ phẩm trẻ em không có công bố mỹ phẩm",
+    "rui_ro": "🔴",
+    "xu_ly": "Không làm hoặc yêu cầu shop cung cấp phiếu công bố trước khi làm"
+   },
+   {
+    "van_de": "Trang điểm cho bé gái, tiếp xúc da và mắt",
+    "rui_ro": "🟠",
+    "xu_ly": "Tránh quay trẻ em thực sự bôi sản phẩm"
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho da bé, không độc hại",
+    "goi_y": "Chỉ nói đây là bộ đồ chơi hóa trang, không nêu an toàn"
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Số công bố mỹ phẩm, thành phần, giấy kiểm định an toàn đồ chơi/mỹ phẩm trẻ em.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

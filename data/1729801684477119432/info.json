@@ -37,5 +37,56 @@
   "poster_folder": 259,
   "duong_dan": "E:/oneshottramcanh/banhpia-1729801684477119432/output_poster"
  },
- "cap_nhat_luc": "2026-11-15T17:18:36+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm: thông tin giấy công bố trên trang chưa rõ (nơi cấp/số đăng ký ghi '1'), dễ bị soi nếu claim vượt mức.",
+   "khuyen_nghi": "Chỉ nói hương vị, hình ảnh bổ đôi lộ trứng muối; không claim sức khỏe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm thường, không được nói bổ dưỡng, tốt cho sức khỏe hay chữa bệnh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhãn hiệu lớn bị mạo danh, chỉ tên shop Hải Yến."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình thật của shop, không có nhân vật hay bản quyền rõ."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm cần giấy công bố tiêu chuẩn hợp lệ, trang ghi nơi cấp/số đăng ký là '1'."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thông tin giấy công bố/ATTP không rõ ràng",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop số công bố và hạn sử dụng thực tế trước khi lên video."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Bánh giúp bổ dưỡng, tốt cho sức khỏe",
+    "goi_y": "Bánh pía Sóc Trăng nhân đậu sầu riêng trứng muối, thơm béo."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Số công bố, nơi cấp, hạn sử dụng, bảo quản thực tế.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

@@ -35,5 +35,56 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:15+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Cáp ghi 'Type-C-L/IP' ám chỉ Lightning/iPhone của Apple, không rõ chứng nhận MFi và hợp quy đồ điện.",
+   "khuyen_nghi": "Gọi là 'cáp Type-C sang cổng Lightning', không dùng tên/logo Apple hay nói chính hãng/MFi. Không hứa sạc nhanh tuyệt đối."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Sạc nhanh 20W', 'siêu bền, chống gãy' cần dựa trên thông số thật, tránh nói tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Lightning/iPhone là nhãn hiệu Apple, cáp bên thứ ba không MFi dễ bị khiếu nại."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình ảnh sản phẩm trơn, không nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ điện/phụ kiện sạc cần chứng nhận hợp quy, xuất xứ Trung Quốc."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Dùng tên Apple/iPhone/Lightning để quảng bá",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nêu 'cổng sạc Lightning' để mô tả tương thích, không dùng logo."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chính hãng Apple, MFi, sạc nhanh nhất, không bao giờ đứt",
+    "goi_y": "Nói 'dây bọc dù 5 lõi, dài 1m/2m, 20W'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy hợp quy/MFi; chưa rõ tương thích đời iPhone nào.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

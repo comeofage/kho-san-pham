@@ -37,5 +37,60 @@
   "poster_folder": 67,
   "duong_dan": "E:\\Aff anh nhan\\review\\baothuc 1729814530563803471\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:44+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tiêu đề nhắc 'Mèo kity' và viết lách né từ khoá (ch.o b.é) có thể bị gắn cờ IPR/né kiểm duyệt.",
+   "khuyen_nghi": "Chỉ giới thiệu mẫu ong/hươu, không nhắc Kitty; không nói 'tập cho bé dậy đúng giờ' như hiệu quả giáo dục."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là đồng hồ để bàn, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chưa rõ thương hiệu, hàng giao mẫu ngẫu nhiên."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Tiêu đề nhắc Kitty (Sanrio), nếu mẫu giống nhân vật có thể vi phạm bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồng hồ dùng pin, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Quảng bá cho trẻ nhỏ, cần ghi chú chi tiết nhỏ/pin."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nhắc Mèo Kitty trong tiêu đề",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc Kitty trong video, chỉ quay mẫu ong/hươu và kiểm tra hình thật có giống nhân vật không."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Dùng tên Hello Kitty/Mèo Kitty",
+    "goi_y": "Gọi là đồng hồ báo thức hình ong, hươu dễ thương."
+   },
+   {
+    "khong_nen": "Đảm bảo giúp bé dậy đúng giờ",
+    "goi_y": "Đồng hồ báo thức tiện cho bàn học."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Mẫu thật có giống nhân vật có bản quyền không, độ an toàn pin.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

@@ -34,5 +34,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:02+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chủ yếu claim phát triển IQ/EQ và thông tin xuất bản chưa thống nhất.",
+   "khuyen_nghi": "Làm được; nói 45 truyện ngắn, tranh màu, có khung trò chuyện cùng bé; không cam kết IQ/EQ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Giúp bé phát triển IQ và EQ' là claim phát triển trí tuệ cần tránh khẳng định hiệu quả."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Tiên Phong Books, NXB Tri Thức, thương hiệu nhà sách chính chủ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Truyện tuyển chọn và tranh minh họa, cần chắc chắn có quyền; số trang/năm xuất bản trong mô tả không khớp thông số."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Sách thiếu nhi, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sách cho trẻ nhỏ, nội dung kể chuyện phù hợp; cần tránh nói về phát triển trí não."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'chắc chắn tăng IQ, EQ cho bé'",
+    "goi_y": "Nói 'sách kể chuyện trước giờ đi ngủ, 45 truyện ngắn tranh minh họa lớn'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Số trang và năm xuất bản không thống nhất (108/104 trang, 2024/2025).",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

@@ -36,5 +36,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:04:18+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hàng gửi từ nước ngoài, pin lithium tích hợp và shop điểm thấp nên cần chú ý chất lượng và thời gian giao.",
+   "khuyen_nghi": "Có thể làm, chỉ nói đúng tính năng, không hứa bass 'siêu trầm' hay thời lượng pin cụ thể."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Bass cực mạnh', 'pin dài' mang tính chủ quan, không nên cam kết con số khi trang không nêu."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy gắn thương hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế loa trơn, không dùng hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị có pin lithium tích hợp, trang không khai thông tin pin và tổ chức chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm dành cho người lớn, không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Bass siêu trầm mạnh nhất, pin dùng cả ngày",
+    "goi_y": "Loa nhỏ gọn bỏ túi, nghe nhạc khi đi chơi, ghép 2 loa thành cặp."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Dung lượng pin, thời gian phát nhạc thực tế, chứng nhận pin và bảo hành.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

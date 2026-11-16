@@ -30,5 +30,50 @@
   "poster_folder": 8,
   "duong_dan": "E:\\Aff anh nhan\\review\\bé làm việc nhà 1730405904077654169\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi trẻ em không rõ độ tuổi/hợp quy, shop ít đánh giá so với số bán nên cần thận trọng uy tín.",
+   "khuyen_nghi": "Chỉ giới thiệu bộ chổi hót rác vịt vàng cho bé bắt chước dọn dẹp; không nói 'giáo dục' như hiệu quả, kiểm tra hợp quy."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Hoàn hảo, giáo dục' là claim chung không chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand SANSANVU của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình vịt vàng cần kiểm tra không giống nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Nhựa ABS thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi trẻ em không ghi độ tuổi và hợp quy."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp bé phát triển tư duy chắc chắn",
+    "goi_y": "Bộ đồ chơi chổi quét nhà cho bé bắt chước người lớn."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Độ tuổi khuyến nghị, chứng nhận hợp quy, đánh giá thấp so với số bán.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

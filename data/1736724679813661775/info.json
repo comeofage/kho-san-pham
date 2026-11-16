@@ -37,5 +37,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:10:40+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Cốc thép không gỉ thông thường, rủi ro thấp; chỉ cần tránh claim giữ nhiệt và an toàn tuyệt đối.",
+   "khuyen_nghi": "Có thể làm, giới thiệu thiết kế, nắp xoay và dung tích 500ml; lưu ý hàng gửi từ nước ngoài 5-8 ngày."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thông số ghi 'hâm nóng 0-6 giờ', 'chống nổ' nên không lặp lại khi chưa có kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không brand, không logo hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ có kiểu chữ cái và màu trơn, không thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ gia dụng thông thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dành cho người lớn."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giữ nóng 6 giờ, chống nổ tuyệt đối",
+    "goi_y": "Nói 'cốc thép không gỉ 500ml, nắp xoay, quai to'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa xem ảnh mô tả; thiếu chứng nhận vật liệu tiếp xúc thực phẩm.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

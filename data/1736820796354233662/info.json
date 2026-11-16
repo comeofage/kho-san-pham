@@ -35,5 +35,66 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:47+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Nhân vật đầu TV, camera, loa, bồn cầu giống thương hiệu Toilet/Skibidi có bản quyền, đồ chơi trẻ em kèm vũ khí, hàng gửi từ nước ngoài.",
+   "khuyen_nghi": "Không nên làm Affiliate vì nguy cơ vi phạm IPR và đồ chơi vũ khí cho trẻ, shop mới ít đánh giá."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả chữ trống, claim 'tương tác' cần đối chiếu ảnh nhưng ít rủi ro y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Không có brand, không có thông tin tổ chức chịu trách nhiệm hàng hóa, khó xác minh nguồn gốc."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Nhân vật người đầu TV, camera, loa kết hợp bồn cầu khớp mô-típ Skibidi Toilet, đồ chơi lắp ráp kiểu mô phỏng nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Có phụ kiện vũ khí tháo rời, đồ chơi dạng vũ khí có thể bị hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi lắp ghép nhiều chi tiết nhỏ cho trẻ, chưa có hợp quy hay cảnh báo độ tuổi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nhân vật mô phỏng thương hiệu có bản quyền (Toilet series)",
+    "rui_ro": "🔴",
+    "xu_ly": "Không làm; nếu vẫn quay, phải được chủ sở hữu hoặc shop chứng minh quyền bán."
+   },
+   {
+    "van_de": "Phụ kiện vũ khí đồ chơi cho trẻ",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay cảnh nhắm bắn hay bạo lực."
+   },
+   {
+    "van_de": "Thiếu thông tin hợp quy và nguồn gốc",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung trước khi cân nhắc."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Gọi tên Skibidi Toilet hoặc các nhân vật nổi tiếng",
+    "goi_y": "Không dùng tên nhân vật; chỉ nói 'đồ chơi lắp ghép 12 mảnh'."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa đọc ảnh để xác nhận nhân vật, không có thông tin tổ chức chịu trách nhiệm, hợp quy hay độ tuổi.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

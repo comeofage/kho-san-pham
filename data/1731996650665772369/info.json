@@ -37,8 +37,53 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:34+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, cần xác minh nguồn hình ảnh tranh in và thông số bất thường.",
+   "khuyen_nghi": "Quay tranh thật treo trên tường, không dùng ảnh phong cảnh của người khác và giữ nội dung giới thiệu đơn giản."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là đồ trang trí, không có claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Hoon Decor của shop, không trùng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình phong cảnh có thể lấy từ ảnh stock hoặc tác giả khác, chưa xác minh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Tranh vải thông thường, không hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Tranh phong thủy, hút tài lộc",
+    "goi_y": "Nói trang trí phòng, in chuyển nhiệt, kèm đồ treo."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Nguồn bản quyền ảnh phong cảnh; thông số trang ghi loại thảm và hình dạng chữ cái, có thể nhập sai.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

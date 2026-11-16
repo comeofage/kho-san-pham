@@ -38,5 +38,50 @@
   "poster_folder": 182,
   "duong_dan": "F:\\1410\\1013 (1)(1)\\hộp chì gốc dầu 1410-1731482718727014015"
  },
- "cap_nhat_luc": "2026-10-20T13:46:25+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, cần chú ý claim độ bền và độ an toàn cho trẻ.",
+   "khuyen_nghi": "Làm được; nêu đúng 12/24/36/48 màu, có mút bảo vệ ngòi, tránh nói 'tuyệt đối không gãy'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Không dễ gãy', 'chuyên nghiệp' là so sánh/cam kết cần nói vừa phải."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Deli Vietnam, thương hiệu chính chủ, có tổ chức chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chì màu thân lục giác phổ thông, không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng cho học sinh, nên đảm bảo chứng nhận an toàn bút màu cho trẻ em (xuất xứ Trung Quốc)."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'không bao giờ gãy', 'an toàn tuyệt đối cho bé'",
+    "goi_y": "Nói 'ngòi bền hơn, có mút bảo vệ ngòi trong nắp'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chứng nhận an toàn sản phẩm cho trẻ em.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

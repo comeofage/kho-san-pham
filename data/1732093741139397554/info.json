@@ -30,5 +30,54 @@
   "poster_folder": 3,
   "duong_dan": "E:\\Aff anh nhan\\review\\tausac 1732093741139397554\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thiết bị sạc ô tô công suất lớn cần chứng nhận an toàn, tên có 'for Samsung Huawei' có thể bị xem là dùng thương hiệu.",
+   "khuyen_nghi": "Có thể làm nếu không nêu tên Samsung/Huawei và không hứa bảo vệ tuyệt đối, cần kiểm tra chứng nhận CR."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim bảo vệ quá dòng, quá nhiệt, quá tải cần có chứng nhận, không nên cam kết tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tiêu đề có Samsung, Huawei, cần tránh nhắc tên thương hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh nhân vật hay bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện/sạc cần chứng nhận hợp quy, xuất xứ khai Đài Loan cần kiểm tra."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm vào trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Sạc nhanh 120W tuyệt đối an toàn, chống cháy nổ",
+    "goi_y": "Nói 'có bảo vệ quá dòng, quá nhiệt theo mô tả nhà sản xuất'"
+   },
+   {
+    "khong_nen": "Dùng cho Samsung, Huawei",
+    "goi_y": "Nói tương thích điện thoại Android và iPhone"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận hợp quy (CR/CE), công suất thực tế khi sạc đồng thời 4 cổng.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

@@ -36,8 +36,53 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:44+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Tên sản phẩm cam kết tuyệt đối 'không xổ lông, không phai màu' dễ bị khiếu nại nếu khách dùng thực tế khác.",
+   "khuyen_nghi": "Làm được; dùng cách nói 'hạn chế xổ lông, bền màu' và quay thử thấm nước thật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'không xổ lông, không phai màu, thấm hút tốt' mang tính tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Royal Towel là thương hiệu của công ty có đăng ký, không thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Khăn trơn nhiều màu, không có hình bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ gia dụng thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dành cho người lớn theo thông số."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Tuyệt đối không xổ lông, không bao giờ phai màu",
+    "goi_y": "Nói 'ít xổ lông, giặt vẫn giữ màu tốt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

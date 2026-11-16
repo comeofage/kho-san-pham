@@ -37,5 +37,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:28+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ thờ cúng có thể bị gán claim tâm linh; sản phẩm cát thường ít rủi ro.",
+   "khuyen_nghi": "Chỉ nói đúng công dụng đổ lư hương, độ mịn, không đóng cứng theo ảnh shop; tránh nói may mắn, tài lộc."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'không đóng cứng' chỉ nên nói theo mô tả của shop; tránh cam kết tâm linh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ thờ cúng cần tránh yếu tố mê tín, hứa hẹn tài lộc."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'thắp hương linh, mang lại may mắn tài lộc'",
+    "goi_y": "Nói 'cát vàng sạch, dễ thay tro lư hương'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ thành phần cát (có xử lý hóa chất không).",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

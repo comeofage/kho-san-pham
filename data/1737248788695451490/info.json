@@ -35,5 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-11T22:10:26+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Thương hiệu POSE cần xác minh ủy quyền, đơn vị chịu trách nhiệm ở Hồng Kông.",
+   "khuyen_nghi": "Nói đúng đặc điểm EVA nhẹ, đế chống trượt, không hứa chữa đau chân."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Hạt massage dưới đế có thể bị nói quá thành công dụng sức khỏe; chỉ nói êm chân."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand POSE, chủ thể trách nhiệm là công ty ở Hồng Kông, cần xác minh ủy quyền và không nhái dáng dép thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy logo hay nhân vật bên thứ ba, cần xem ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Dép EVA thông thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em, size từ 35."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Massage chân, tốt cho sức khỏe",
+    "goi_y": "Nói 'đế có hạt tạo cảm giác êm chân'."
+   },
+   {
+    "khong_nen": "Chống trượt tuyệt đối",
+    "goi_y": "Nói 'có rãnh chống trượt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa xem ảnh mô tả để kiểm tra logo; chưa rõ giấy ủy quyền thương hiệu.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

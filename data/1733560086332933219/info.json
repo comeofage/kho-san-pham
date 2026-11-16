@@ -37,5 +37,50 @@
   "poster_folder": 230,
   "duong_dan": "E:/oneshottramcanh/kèn 1733560086332933219/output_poster"
  },
- "cap_nhat_luc": "2026-10-29T12:13:47+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Nhạc cụ cho bé từ 4 tuổi, ống thổi cần vệ sinh; claim 'âm chuẩn' hơi quá.",
+   "khuyen_nghi": "Có thể làm; nhắc vệ sinh ống thổi, trẻ dùng có người lớn, không hứa tiến bộ nhanh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Âm chuẩn, không rè', 'tiến bộ nhanh' nên nói nhẹ, không cam kết kết quả học."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand ghi 'KHÔNG CÓ', hàng không thương hiệu nên cần tránh nhái Yamaha, Hohner."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng ống thổi bằng miệng cho trẻ, cần nhắc vệ sinh và khuyến cáo độ tuổi 4+."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'chuẩn như Yamaha', 'bé tiến bộ nhanh'",
+    "goi_y": "Nói 'kèn 32 phím, có túi và ống thổi, bé làm quen nhạc'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ chất liệu ống thổi (an toàn tiếp xúc miệng) và chứng nhận.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

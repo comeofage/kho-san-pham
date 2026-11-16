@@ -28,7 +28,7 @@
   "so_video": 6,
   "luc": "2026-11-02T08:20:13+07:00"
  },
- "cap_nhat_luc": "2026-11-02T08:20:13+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -38,5 +38,54 @@
   "xong": true,
   "boi": "poster",
   "luc": "2026-10-20T13:35:33+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Giá giảm 84% so với giá gốc và thông số pin/Bluetooth chưa kiểm chứng, shop điểm thấp 3.9.",
+   "khuyen_nghi": "Chỉ nói thông số theo trang và tránh nhấn mạnh phần trăm giảm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Bluetooth 6.0, pin loa 6 giờ, MP3 30 giờ cần nói đúng như mô tả."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Kiểu 'Retro', không thấy logo thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình dáng băng cassette là kiểu chung, nhưng không dùng logo hãng nhạc."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị pin lithium và Bluetooth cần chứng nhận hợp quy."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm 84%, giá gốc 889k",
+    "goi_y": "Chỉ nói giá hiển thị hiện tại."
+   },
+   {
+    "khong_nen": "Bluetooth 6.0 mới nhất, âm thanh như loa xịn",
+    "goi_y": "Nói 'hỗ trợ Bluetooth', chỉ demo âm thanh thực."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có giấy hợp quy thiết bị điện và xác nhận thông số pin; shop đánh giá 3.9.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
  }
 }

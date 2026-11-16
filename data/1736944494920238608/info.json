@@ -30,7 +30,7 @@
   "poster_folder": 134,
   "duong_dan": "F:\\0510\\1005\\ncm\\bình oh yes 0510"
  },
- "cap_nhat_luc": "2026-10-20T15:27:19+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -40,5 +40,56 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-12T10:28:30+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim an toàn thực phẩm, không BPA chưa có chứng từ; thông tin tổ chức chịu trách nhiệm là ĐANG CẬP NHẬT.",
+   "khuyen_nghi": "Chỉ nói dung tích, nắp chống rò rỉ, không chịu nhiệt trên 60 độ. Xin giấy kiểm nghiệm trước khi nói an toàn, không BPA."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nói nhựa PET an toàn, không chứa BPA là claim vật liệu tiếp xúc thực phẩm cần giấy tờ chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Hashtag Say Yes và Summer có thể là tên kiểu dáng của hãng khác, brand ghi Tân Lập Thành."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Ly nhựa trơn, không có nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế; có lưu ý không chịu quá 60 độ C."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim an toàn, không BPA khi đựng đồ uống",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói khi shop có giấy kiểm nghiệm; không quay cảnh đổ nước nóng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối cho sức khoẻ, đựng nước nóng được",
+    "goi_y": "Nói ly dùng cho nước mát, trà sữa, không chịu quá 60 độ C."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Tổ chức chịu trách nhiệm hàng hoá ghi ĐANG CẬP NHẬT; chưa rõ giấy kiểm nghiệm.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
  }
 }

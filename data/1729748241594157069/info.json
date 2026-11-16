@@ -37,6 +37,62 @@
   "poster_folder": 202,
   "duong_dan": "E:/oneshottramcanh/uiten 1729748241594157069/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:10:47+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sản phẩm in tên bé theo yêu cầu, video dễ lộ tên và hình ảnh trẻ em, kèm nguy cơ mẫu tem có hình nhân vật bản quyền.",
+   "khuyen_nghi": "Dùng tên giả hoặc vật thể mẫu, không quay mặt và thông tin thật của bé; kiểm tra các mẫu hình trong 'Full mẫu 72 tem'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'giặt máy bình thường, ủi lên mọi chất liệu vải' cần quay thử thực tế, không nói bền vĩnh viễn."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand POLE không phải thương hiệu lớn, chưa thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Bộ 72 mẫu tem thường chứa hình thú, nhân vật hoạt hình có thể vướng bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Tem ủi nhiệt không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "In tên bé là thông tin cá nhân trẻ em, cần tránh lộ trong video."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Tên và hình ảnh trẻ em trong video",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ dùng tên giả, không quay mặt bé, không dán lên đồ bé đang mặc để quay cận."
+   },
+   {
+    "van_de": "Hình trong 72 mẫu có thể là nhân vật bản quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay các mẫu chữ/hình trơn, tránh mẫu nhân vật hoạt hình."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Dán vĩnh viễn, không bong tróc dù giặt thế nào",
+    "goi_y": "Nói 'dán bằng bàn ủi, giặt máy bình thường theo hướng dẫn'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa xem được hình các mẫu trong Full mẫu 72 tem và chất liệu mực in.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

@@ -35,6 +35,51 @@
   "poster_folder": 238,
   "duong_dan": "E:/oneshottramcanh/opgadient 1737667871290787709/output"
  },
- "cap_nhat_luc": "2026-11-15T00:26:36+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dùng nhãn hiệu iPhone trong tiêu đề và liệt kê dòng máy chưa chắc tồn tại, claim chống ố vàng/chống sốc.",
+   "khuyen_nghi": "Có thể làm, dùng 'ốp cho iPhone' để chỉ tương thích, không nói chính hãng và không cam kết chống sốc tối ưu."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống ố vàng', 'chống va đập tối ưu' là cam kết chưa kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "iPhone là nhãn hiệu Apple, chỉ dùng để nói tương thích."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Mẫu ốp chuyển màu trơn, không có nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Phụ kiện điện thoại thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống ố vàng vĩnh viễn, chống sốc tối ưu",
+    "goi_y": "Ốp TPU mềm hiệu ứng chuyển màu, viền gờ bảo vệ camera."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thông số kỹ thuật trang trống, chưa xác nhận danh sách dòng iPhone có thật.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

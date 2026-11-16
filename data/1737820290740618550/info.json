@@ -34,5 +34,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:59+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Túi quà ngẫu nhiên giá 10k dễ khiếu nại sai mô tả, kẹp tóc có thể mang hình nhân vật có bản quyền.",
+   "khuyen_nghi": "Nói rõ 5 món ngẫu nhiên, không hứa mẫu cụ thể. Quay thật đúng nội dung túi, không dùng ảnh mẫu đẹp hơn thực tế."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhãn hiệu cụ thể."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kẹp tóc ngẫu nhiên có thể là hình nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Dạng túi mù ngẫu nhiên, dễ bị khiếu nại sai mô tả/chất lượng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Phụ kiện tóc, không nhắm trẻ em rõ ràng."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết chắc chắn có mẫu đẹp/đắt tiền",
+    "goi_y": "Nói 'ngẫu nhiên 5 món, mỗi túi khác nhau'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

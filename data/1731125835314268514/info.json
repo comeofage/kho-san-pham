@@ -30,5 +30,50 @@
   "poster_folder": 57,
   "duong_dan": "E:\\Aff anh nhan\\review\\cốc thủy tinh 1731125835314268514\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:44+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Từ khóa 'giữ nhiệt' trong tên với cốc thủy tinh có thể là claim sai, chưa rõ chứng nhận an toàn thực phẩm.",
+   "khuyen_nghi": "Có thể làm, không nói giữ nhiệt nếu cốc chỉ là thủy tinh một lớp, và chỉ nhấn mạnh ống hút, bao da, khắc tên."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên chứa từ khóa 'giunhiet' trong khi sản phẩm là cốc thủy tinh, dễ thành claim giữ nhiệt không đúng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "ChouChou là thương hiệu của shop, không thấy nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Cốc trơn nhiều màu, không có nhân vật bản quyền, khắc tên theo yêu cầu cần tránh tên nhân vật hay thương hiệu."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ gia dụng thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giữ nhiệt nóng lạnh nhiều giờ",
+    "goi_y": "Cốc thủy tinh 420 ml, có ống hút và bao da, khắc tên theo yêu cầu"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chất liệu thủy tinh (borosilicate hay thường), chứng nhận an toàn thực phẩm.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

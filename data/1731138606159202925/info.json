@@ -38,5 +38,50 @@
   "poster_folder": 145,
   "duong_dan": "E:/oneshottramcanh/bongtaytrang 1731138606159202925/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T11:01:47+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'hữu cơ', 'chứng nhận GOTS/Ecocert', 'an toàn mọi loại da' chưa kèm giấy chứng nhận đầy đủ.",
+   "khuyen_nghi": "Có thể làm, chỉ nói bông cotton mềm, dùng lau son/tẩy trang. Không dùng chữ 'hữu cơ', 'GOTS' hay 'an toàn mọi loại da' khi chưa có giấy."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Làm đẹp da hiệu quả', 'an toàn mọi loại da', 'hữu cơ' là claim mỹ phẩm/chứng nhận chưa kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'Organyc' viết gần với 'Organic' có thể gây hiểu nhầm, thương hiệu Emalia do shop chính chủ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật hay hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bông tẩy trang là hàng thông thường, có giấy công bố hợp quy."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cotton hữu cơ, chuẩn GOTS/Ecocert, an toàn mọi loại da",
+    "goi_y": "Bông cotton viền dập mềm, thấm tốt, kéo căng vẫn không rách"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy chứng nhận GOTS/OCS/Ecocert, kết quả kiểm nghiệm 'an toàn mọi loại da'.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

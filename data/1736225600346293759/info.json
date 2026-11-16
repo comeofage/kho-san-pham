@@ -30,5 +30,50 @@
   "poster_folder": 80,
   "duong_dan": "E:\\Aff anh nhan\\review\\depyamiz 1736225600346293759\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:50+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dép EVA kiểu sục có charm rời, rủi ro chủ yếu là charm mix có thể in hình nhân vật có bản quyền.",
+   "khuyen_nghi": "Làm được, chỉ nói đặc điểm thực tế (nhẹ, êm, chống trượt) và kiểm tra ảnh charm trước khi quay cận cảnh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nêu đặc tính vật lý (nhẹ, êm, chống trơn trượt), không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Yamiz của shop chính chủ nhưng kiểu dáng sục + charm gần dòng dép sục nổi tiếng, tránh so sánh tên hãng khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Set charm mix có thể chứa hình nhân vật hoạt hình, cần xem ảnh để loại charm có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Dép EVA thời trang, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Size 36-40 dành cho người lớn, không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'tốt cho sức khỏe/chữa đau chân/chỉnh dáng chân'",
+    "goi_y": "Nói 'đế EVA nhẹ, êm chân, đi mưa ít trơn'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa thấy ảnh charm cụ thể để kiểm tra hình nhân vật.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

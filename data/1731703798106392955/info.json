@@ -36,5 +36,61 @@
   "poster_folder": 322,
   "duong_dan": "E:/oneshottramcanh/bvs memeeii-1731703798106392955/output"
  },
- "cap_nhat_luc": "2026-11-10T15:46:26+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Hàng vệ sinh phụ nữ có hồ sơ công bố điền sơ sài, dễ vướng claim y tế và bị gỡ.",
+   "khuyen_nghi": "Chỉ nên làm khi shop cung cấp giấy công bố thật, nội dung chỉ nói tiện lợi và thấm hút, không nói bảo vệ sức khỏe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả chống tràn, khử mùi, thoáng khí dễ bị coi là claim hiệu quả và có thể bị suy diễn thành y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Memeeie lẫn phân loại Lailek và MIIOW, chưa rõ ủy quyền."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình ảnh bản quyền rõ ràng."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Giấy công bố ghi nơi cấp abc, số đăng ký 1234, ngày cấp 13/3, rất đáng ngờ; ngành hàng quản lý chặt."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em, nhưng cần tránh hình thiếu niên."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hồ sơ công bố sản phẩm điền sai (abc / 1234)",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp giấy công bố thật trước khi quay."
+   },
+   {
+    "van_de": "Claim khô ráo cả đêm, chống rò rỉ 360°, khử mùi",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói theo mô tả của nhà sản xuất, không tuyệt đối hóa."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Hết rò rỉ / ngừa viêm nhiễm / an toàn cho vùng kín",
+    "goi_y": "Nói thiết kế dạng quần, thấm hút nhanh, dùng một lần."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Số công bố thật, thành phần, nhà sản xuất; xác nhận các mã Lailek và MIIOW có cùng thương hiệu không.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

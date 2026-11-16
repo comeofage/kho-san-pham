@@ -39,5 +39,61 @@
   "poster_folder": 210,
   "duong_dan": "E:/oneshottramcanh/thongtac 1729706628656957720/output_poster"
  },
- "cap_nhat_luc": "2026-11-05T09:03:21+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sản phẩm hóa chất đánh dấu hàng nguy hiểm, kèm claim diệt khuẩn và tên thương hiệu không khớp (CLEANZ so với Lovenose).",
+   "khuyen_nghi": "Chỉ làm khi shop có giấy tờ hóa chất đầy đủ; không claim diệt khuẩn, an toàn tuyệt đối, và nhắc đeo găng tay, để xa trẻ em."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả 'đánh bay vi khuẩn, diệt khuẩn, không hư hại đường ống' là claim hiệu quả/an toàn cần chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên CLEANZ trong tiêu đề khác với Brand Lovenose trong thông số, cần làm rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh hoặc nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thông số ghi hàng nguy hiểm, hóa chất tẩy rửa thuộc nhóm hạn chế cần giấy tờ và quy định vận chuyển."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Hóa chất gia dụng, cần cảnh báo để xa tầm tay trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hàng nguy hiểm/hóa chất và claim diệt khuẩn",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra giấy công bố hóa chất, phiếu an toàn (MSDS); bỏ claim diệt khuẩn và 'sinh học' nếu không có kiểm nghiệm."
+   },
+   {
+    "van_de": "Mô tả tự thừa nhận kém hiệu quả với đường ống phức tạp",
+    "rui_ro": "🟠",
+    "xu_ly": "Nêu rõ phạm vi dùng, không hứa thông mọi loại tắc."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Diệt sạch vi khuẩn, thông tắc mọi loại, hoàn toàn an toàn cho ống và da tay",
+    "goi_y": "Nói 'gel hỗ trợ làm mềm dầu mỡ, tóc trong ống thoát, dùng theo hướng dẫn'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có phiếu an toàn hóa chất, giấy công bố; chưa rõ thương hiệu thật (CLEANZ hay Lovenose); thành phần chưa nêu.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

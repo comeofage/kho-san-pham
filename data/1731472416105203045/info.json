@@ -30,5 +30,50 @@
   "poster_folder": 76,
   "duong_dan": "E:\\Aff anh nhan\\review\\tralvelnote 1731472416105203045\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh claim bảo vệ mắt.",
+   "khuyen_nghi": "Làm được; tập trung bìa đẹp, giá combo, 70gsm, 80/120 trang."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống lóa mắt' là mô tả tính năng giấy/dòng kẻ, nên nói nhẹ nhàng, không cam kết bảo vệ thị lực."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Classmate Official Store, thương hiệu chính chủ, có công ty chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình bìa Travel Note có thể có hình minh họa/bản quyền, shop chính hãng nên rủi ro thấp."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Vở học sinh thông thường, không có rủi ro đặc biệt."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'bảo vệ mắt, chống cận cho học sinh'",
+    "goi_y": "Nói 'dòng kẻ dịu mắt, giấy 70gsm viết êm'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

@@ -38,6 +38,51 @@
   "poster_folder": 243,
   "duong_dan": "E:/oneshottramcanh/theoleo 1731544576158828510/output"
  },
- "cap_nhat_luc": "2026-11-02T21:48:04+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, cần xác minh giấy ATTP và tránh claim vệ sinh tuyệt đối.",
+   "khuyen_nghi": "Làm được; nói về độ giòn, vị mắm cay, túi zip 500g; không cam kết vệ sinh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Đảm bảo vệ sinh', 'làm bằng tay' là cam kết cần có chứng từ hỗ trợ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu MTFoods của chính shop, chưa thấy vấn đề."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Món ăn truyền thống, không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có đăng ký ATTP nhưng nơi cấp ghi là tổ chức chứng nhận quốc tế EFC, nên xác minh tính hợp lệ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ ăn vặt chung, không nhắm tới trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'đảm bảo vệ sinh tuyệt đối', 'tốt cho sức khỏe'",
+    "goi_y": "Nói 'bánh thèo lèo giòn, áo bột mắm cay, đựng túi zip'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Xác minh giấy chứng nhận cơ sở đủ điều kiện ATTP.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

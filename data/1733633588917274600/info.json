@@ -30,5 +30,50 @@
   "poster_folder": 104,
   "duong_dan": "E:\\oneshottramcanh\\butxoa 1733633588917274600\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh nói quá về độ bền hay chất lượng.",
+   "khuyen_nghi": "Có thể làm, quay demo xóa thực tế và dùng đúng thông tin trên trang."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand QUAFF không phải thương hiệu nổi tiếng, không thấy dấu hiệu hàng nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng nhân vật hay hình ảnh có bản quyền trong mô tả."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Băng xóa không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Là đồ dùng học tập chung, không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết chất lượng cao nhất, không bao giờ lem",
+    "goi_y": "Chỉ mô tả thao tác bấm, xoay và các màu có thật."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ nguồn gốc thương hiệu QUAFF và chứng từ nhập khẩu.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

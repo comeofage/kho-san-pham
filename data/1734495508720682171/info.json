@@ -38,8 +38,53 @@
   "poster_folder": 258,
   "duong_dan": "E:/oneshottramcanh/quatco-1734495508720682171/output"
  },
- "cap_nhat_luc": "2026-11-14T08:10:24+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh nói quá thời lượng pin và độ mát.",
+   "khuyen_nghi": "Làm được, quay cảnh tóc dài và màn LCD đúng như trang."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Công dụng làm mát thông thường, tránh nói thời lượng pin tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi tiếng, không thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Pin lithium 1800mAh thuộc loại thông thường, nên ghi chú an toàn pin."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Pin 5 tiếng chắc chắn, mát như điều hòa",
+    "goi_y": "Nói tùy mức gió, dùng khoảng 3-5 giờ theo mô tả."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chứng nhận an toàn pin và hợp quy điện.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

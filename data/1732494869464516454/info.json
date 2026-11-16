@@ -30,5 +30,65 @@
   "poster_folder": 25,
   "duong_dan": "E:\\Aff anh nhan\\review\\balo tang hop but 1732494869464516454\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:40:19+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Balo in hình Người Nhện có nguy cơ vi phạm bản quyền Marvel và claim chống gù là claim y tế.",
+   "khuyen_nghi": "Không nên làm vì vừa có IPR nhân vật vừa có claim y tế chống gù, khó chỉnh sửa gọn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Chống gù, bảo vệ cột sống, giải nén' là claim y tế, không có chứng nhận."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình Siêu Nhân Nhện có thể liên quan thương hiệu Marvel."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Họa tiết Người Nhện và phi hành gia khả năng cao không có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Balo không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm cho học sinh tiểu học, cần thận trọng claim sức khỏe trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chống gù, bảo vệ cột sống",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói thiết kế đệm lưng thoải mái"
+   },
+   {
+    "van_de": "Hình Người Nhện không rõ bản quyền",
+    "rui_ro": "🔴",
+    "xu_ly": "Không làm mẫu có nhân vật bản quyền"
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống gù, chỉnh cột sống cho bé",
+    "goi_y": "Nói balo nhẹ 600g, dây đeo êm"
+   },
+   {
+    "khong_nen": "Balo Spider-Man chính hãng",
+    "goi_y": "Không nhắc tên nhân vật"
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Giấy phép bản quyền nhân vật, chứng nhận thiết kế công thái học.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

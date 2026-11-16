@@ -39,6 +39,51 @@
   "poster_folder": 209,
   "duong_dan": "E:/oneshottramcanh/vs máy giặt 1736255243766498584/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:11:15+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hóa chất tẩy rửa gia dụng, rủi ro nằm ở claim diệt khuẩn/khử mùi tuyệt đối và nhãn phụ tiếng Việt.",
+   "khuyen_nghi": "Làm được, chỉ nói làm sạch cặn bẩn và hạn chế mùi, không nói diệt khuẩn/an toàn cho sức khỏe nếu không có chứng từ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'5 trong 1', 'loại bỏ cặn vôi, hạn chế mùi ẩm mốc' cần nói mức độ hỗ trợ, tránh 'diệt sạch 100% vi khuẩn'."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand CleanZ có đơn vị chịu trách nhiệm (Ximo Việt Nam), chưa thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có vấn đề IPR."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Dung dịch hóa chất gia dụng cần nhãn, thành phần, cảnh báo an toàn; trang ghi không phải hàng nguy hiểm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em, nhắc để xa tầm tay trẻ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'diệt 99.9% vi khuẩn, an toàn cho sức khỏe'",
+    "goi_y": "Nói 'giúp làm sạch cặn vôi, bùn bẩn và hạn chế mùi ẩm mốc trong lồng giặt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thành phần, số công bố/phiếu an toàn hóa chất; shop mới chỉ có 1 đánh giá.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

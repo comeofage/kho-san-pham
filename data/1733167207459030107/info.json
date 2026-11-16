@@ -28,7 +28,7 @@
   "poster_folder": 205,
   "duong_dan": "E:/oneshottramcanh/matloi 1733167207459030107/output_poster"
  },
- "cap_nhat_luc": "2026-10-22T10:22:56+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -38,5 +38,56 @@
   "xong": true,
   "boi": "Linh",
   "luc": "2026-10-22T09:43:06+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi bóp cho trẻ 3+ có claim giảm stress, phát triển kỹ năng và an toàn mà không có chứng nhận.",
+   "khuyen_nghi": "Chỉ mô tả hành vi bóp, mắt lồi. Không nói giảm stress, phát triển trí tưởng tượng. Cần chứng nhận an toàn đồ chơi."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Giảm căng thẳng', 'phát triển kỹ năng/sáng tạo' là claim không có bằng chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand NIMO, tên 'Nimo' gần tên nhân vật (cá Nemo/Nimo), cần xác minh không nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình sâu mắt lồi là đồ chơi phổ biến, chưa thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Trẻ 3+, kích thước nhỏ 7,5cm, PVC 'an toàn' cần chứng nhận, nguy cơ nuốt/mắt nhỏ rơi ra."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim giảm stress, phát triển kỹ năng và an toàn cho trẻ",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ các claim này, chỉ quay cảnh bóp mắt lồi."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm stress, phát triển trí tưởng tượng, an toàn tuyệt đối",
+    "goi_y": "Nói 'bóp nhẹ là mắt lồi ra, thả tay lại về dáng cũ'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận an toàn đồ chơi, độ tuổi tối thiểu, thông tin tổ chức chịu trách nhiệm.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
  }
 }

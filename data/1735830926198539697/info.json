@@ -36,5 +36,45 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:53+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dụng cụ trang điểm, các câu 'không gây rít da', 'phù hợp mọi loại da' là claim da liễu nhẹ cần tránh.",
+   "khuyen_nghi": "Có thể làm, tập trung demo tán nền mịn và dễ vệ sinh; không khẳng định an toàn cho mọi loại da."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Không gây rít da, không mốc nền, phù hợp mọi loại da', 'căng bóng không tì vết' là cam kết cần nói ở mức cảm nhận."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có brand thứ ba, shop Official tự phân phối."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Dụng cụ không phải mỹ phẩm, không cần công bố mỹ phẩm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Ảnh mô tả chưa kiểm tra, chất liệu lông cọ, không rõ combo 3 món có đủ không do giá phân loại khác nhau.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

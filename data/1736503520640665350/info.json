@@ -37,5 +37,61 @@
   "poster_folder": 196,
   "duong_dan": "E:/oneshottramcanh/phomai 1736503520640665350/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:54:40+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi TPR cho trẻ em gửi từ nước ngoài, mô tả có claim phát triển kỹ năng.",
+   "khuyen_nghi": "Chỉ làm khi bỏ claim phát triển và ghi cảnh báo độ tuổi; cân nhắc thời gian giao 9-10 ngày."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Claim phát triển phối hợp mắt tay là claim giáo dục nhẹ chưa kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình phô mai chung."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi nhắm trẻ em, thiếu chứng nhận an toàn, chất TPR."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim phát triển kỹ năng vận động",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ claim, chỉ nói bóp mềm, giảm căng thẳng."
+   },
+   {
+    "van_de": "Đồ chơi trẻ em thiếu chứng nhận",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu giấy kiểm định đồ chơi."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Phát triển phối hợp mắt tay, cảm giác xúc giác",
+    "goi_y": "Chỉ nói bóp mềm vui tay."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu chứng nhận an toàn đồ chơi, tuổi khuyến nghị.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

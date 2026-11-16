@@ -35,5 +35,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:21+07:00"
+ "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp; chỉ cần tránh nói biển có thể thay camera thật hay đảm bảo chống trộm.",
+   "khuyen_nghi": "Có thể làm, nhấn vào việc cảnh báo khu vực có camera và dễ dán. Không hứa chống trộm hay hiệu lực pháp lý."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chỉ là biển thông báo, không nên claim ngăn chặn trộm cắp hay có giá trị pháp lý."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Mai Huyền Anh của shop, không dùng nhãn hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Biểu tượng camera, chữ cảnh báo thông dụng, không có hình nhân vật hay bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là biển báo, không phải thiết bị giám sát; có tổ chức chịu trách nhiệm rõ ràng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Dán biển là hết trộm, đảm bảo an ninh tuyệt đối",
+    "goi_y": "Biển cảnh báo giúp người ra vào nhận biết khu vực có camera, tăng tính răn đe."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thông số ghi vật liệu Gỗ nhưng mô tả nói nền bạc tráng gương, nên xác nhận chất liệu thật.",
+  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+ }
 }

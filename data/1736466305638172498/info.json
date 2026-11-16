@@ -36,6 +36,62 @@
   "poster_folder": 232,
   "duong_dan": "E:/oneshottramcanh/kemmuoi  1736466305638172498/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T14:27:13+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Kem bôi trị muỗi đốt cho trẻ sơ sinh, claim giảm đau/ngứa/sưng giống thuốc.",
+   "khuyen_nghi": "Không nên làm vì dễ bị coi là claim y tế cho sản phẩm bôi da trẻ nhỏ; chỉ cân nhắc khi có giấy công bố mỹ phẩm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🔴",
+    "nhan_xet": "Giảm đau tức thì, giảm ngứa, giảm sưng là claim y tế, không được nói."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand hegerbaby, cần kiểm tra chính hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình khỉ là thiết kế bao bì, chưa thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🔴",
+    "nhan_xet": "Kem bôi da, dễ bị xếp vào mỹ phẩm hay thuốc, cần công bố."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Dùng cho bé từ 0 tháng tuổi, nhóm rất nhạy cảm."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim giảm đau, giảm sưng, không hóa chất gây hại",
+    "rui_ro": "🔴",
+    "xu_ly": "Không dùng các claim này, nếu làm chỉ nói hương bạc hà, nhỏ gọn."
+   },
+   {
+    "van_de": "Dùng cho trẻ 0-6 tháng",
+    "rui_ro": "🔴",
+    "xu_ly": "Không nhắm vào trẻ sơ sinh."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm ngứa tức thì, an toàn cho da nhạy cảm",
+    "goi_y": "Chỉ nói hộp nhỏ gọn bỏ túi, hương bạc hà."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Thiếu số công bố mỹ phẩm, thành phần đầy đủ.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

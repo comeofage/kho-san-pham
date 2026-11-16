@@ -30,5 +30,56 @@
   "poster_folder": 5,
   "duong_dan": "E:\\oneshottramcanh\\leubeige 1732869755608205065\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T09:48:32+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Lều trẻ em có yêu cầu an toàn đồ chơi, tên gợi nhân vật công chúa/hoàng tử và trang chưa có chứng nhận.",
+   "khuyen_nghi": "Làm khi shop cung cấp chứng nhận an toàn đồ chơi. Không dùng hình ảnh trẻ em, tránh claim phát triển trẻ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Không chứa BPA', 'sự phát triển của trẻ' là claim cần chứng từ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Doudou của shop, không thấy xung đột rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'công chúa/hoàng tử' và mẫu in họa tiết cần kiểm tra không dùng nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Khung inox/PVC, vải polyester cần kiểm định vật liệu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Dành cho trẻ 1-12 tuổi, yêu cầu an toàn đồ chơi, nguy cơ kẹt/đổ khung và trẻ nhỏ ngủ trong lều."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Sản phẩm trẻ em chưa có chứng nhận an toàn đồ chơi trên trang",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp QCVN 3:2019/BKHCN hoặc kiểm định tương đương trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối cho bé, giúp bé phát triển trí tuệ, bé ngủ ngon hơn",
+    "goi_y": "Nói về kích thước, chất liệu, cách lắp và nhắc có người lớn giám sát."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận an toàn đồ chơi, độ tuổi tối thiểu, thông tin tổ chức chịu trách nhiệm (đang ghi 'china').",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

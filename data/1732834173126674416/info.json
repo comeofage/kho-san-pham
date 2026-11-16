@@ -37,6 +37,51 @@
   "poster_folder": 302,
   "duong_dan": "E:/oneshottramcanh/kara 1410-1732834173126674416/output"
  },
- "cap_nhat_luc": "2026-11-08T14:24:59+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Loa kèm micro không dây là hàng điện tử, thiếu thông tin chứng nhận hợp quy và nhãn hiệu rõ ràng.",
+   "khuyen_nghi": "Chỉ nói tính năng thực tế (đèn LED, đổi giọng, Bluetooth), tránh so sánh công suất cường điệu. Kiểm tra chứng nhận hợp quy trước khi quay."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên có 'gọn cực mạnh' và 'âm thanh sống động' dễ thành claim tuyệt đối nếu không có số liệu."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên Life.V và K12 là nhãn shop, không thấy ủy quyền thương hiệu nào khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy dùng hình ảnh/nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện có pin lithium và micro không dây cần hợp quy, thiếu thông tin trên trang."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Loa mạnh nhất, to nhất, hay nhất",
+    "goi_y": "Nói theo thông số trang (2000mAh, 90Hz-20kHz) và demo thực tế."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy chứng nhận hợp quy loa/pin/micro không dây; thông tin tổ chức chịu trách nhiệm trên trang chỉ ghi '1'; xuất xứ Việt Nam cần kiểm chứng.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

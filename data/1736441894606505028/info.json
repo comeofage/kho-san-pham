@@ -27,7 +27,7 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-09T10:44:12+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -37,5 +37,50 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-09T10:44:12+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi squishy gửi từ nước ngoài, claim giảm stress, trẻ em dễ mua.",
+   "khuyen_nghi": "Làm được nếu nói là đồ chơi bóp tay, không claim điều trị căng thẳng; ghi rõ tuổi từ 14 trở lên."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Giảm stress, thư giãn chỉ ở mức cảm giác, không là điều trị."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nhái rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình khối phô mai chung, không nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi không thuộc nhóm cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Ghi tuổi từ 14 trở lên nhưng trẻ nhỏ dễ mua, cần cảnh báo."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chữa stress, lo âu",
+    "goi_y": "Chỉ nói bóp êm tay, hồi form chậm."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu chứng nhận an toàn đồ chơi và chất liệu lõi vaseline.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
  }
 }

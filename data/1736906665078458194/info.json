@@ -36,6 +36,62 @@
   "poster_folder": 227,
   "duong_dan": "E:/oneshottramcanh/xitmuoi 1736906665078458194/output_poster"
  },
- "cap_nhat_luc": "2026-10-29T11:08:08+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Chế phẩm xua côn trùng dùng cho trẻ từ 6 tháng với claim 'dịu nhẹ, không DEET' chưa kèm số đăng ký lưu hành.",
+   "khuyen_nghi": "Chỉ làm khi shop cung cấp giấy phép lưu hành chế phẩm côn trùng và công bố thành phần; không nói an toàn tuyệt đối cho bé, chỉ hướng dẫn xịt lên quần áo."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Xua đuổi muỗi', 'dịu nhẹ', 'phù hợp bé từ 6 tháng' là claim hiệu quả và an toàn cần có chứng nhận thử nghiệm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Hegerbaby có shop riêng, không thấy dấu hiệu hàng nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🔴",
+    "nhan_xet": "Chế phẩm diệt hoặc xua côn trùng gia dụng thuộc nhóm cần giấy đăng ký lưu hành của Bộ Y tế, trang không hiển thị số đăng ký."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Dùng cho trẻ sơ sinh từ 6 tháng, xịt gần da, có tinh dầu nên rủi ro an toàn cao."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Chưa thấy giấy đăng ký lưu hành chế phẩm xua côn trùng",
+    "rui_ro": "🔴",
+    "xu_ly": "Yêu cầu shop cung cấp số đăng ký trước khi làm."
+   },
+   {
+    "van_de": "Claim an toàn cho bé từ 6 tháng với tinh dầu",
+    "rui_ro": "🔴",
+    "xu_ly": "Chỉ đọc đúng hướng dẫn: xịt lên quần áo, xe đẩy, tránh xịt trực tiếp lên da."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'tuyệt đối an toàn cho da nhạy cảm', 'diệt sạch muỗi', 'thay thế kem chống muỗi y tế'",
+    "goi_y": "Nói 'xịt thảo mộc hỗ trợ xua muỗi, xịt lên quần áo hoặc xe đẩy theo hướng dẫn'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có số đăng ký lưu hành, thành phần đầy đủ, tổ chức chịu trách nhiệm hàng hóa; chưa đọc ảnh.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

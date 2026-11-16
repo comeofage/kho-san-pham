@@ -30,5 +30,50 @@
   "poster_folder": 68,
   "duong_dan": "E:\\Aff anh nhan\\review\\balokekemi 1730055470326254369\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:44+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, cần tránh tuyên bố chống nước tuyệt đối và kiểm tra chất liệu mô tả mâu thuẫn (nylon/poly).",
+   "khuyen_nghi": "Nói 'bề mặt trượt nước' thay cho 'chống nước hoàn toàn', quay đúng thông số 45x15x35cm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nên nói bề mặt trượt nước, không hứa bảo vệ tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "KEKEMI là tên thương hiệu của shop, không thấy mạo danh hãng nổi tiếng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Gấu tặng kèm là charm chung, cần xem hình để chắc không phải nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Phù hợp học sinh cấp 2-3, không đồ chơi trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nước hoàn toàn, bảo vệ laptop khi mưa",
+    "goi_y": "Bề mặt trượt nước, dễ lau chùi."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Charm gấu có phải nhân vật có bản quyền không.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

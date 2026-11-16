@@ -40,6 +40,57 @@
   "poster_folder": 211,
   "duong_dan": "E:/oneshottramcanh/hopcom 1730173499687864814/output_poster"
  },
- "cap_nhat_luc": "2026-10-28T15:41:30+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ dùng tiếp xúc thực phẩm có tiêu đề 'vì sức khỏe', thông số 'an toàn với lò vi sóng' mâu thuẫn mô tả (inox không dùng vi sóng).",
+   "khuyen_nghi": "Nói rõ chỉ dùng phần nhựa ngoài trong lò vi sóng, bỏ lõi inox; tránh cụm 'chọn vì sức khỏe' và 'tuyệt đối an toàn'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chọn vì sức khỏe', 'an toàn sức khỏe' là claim chưa có kiểm định kèm theo."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Fan House của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình thật của shop, kèm charm 3D cần xem có nhân vật không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ tiếp xúc thực phẩm cần kiểm định inox 304, xuất xứ ghi 'Asia' chưa rõ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Mô tả vi sóng mâu thuẫn, xuất xứ không rõ",
+    "rui_ro": "🟠",
+    "xu_ly": "Nêu đúng hướng dẫn tháo lõi inox khi dùng vi sóng và hỏi shop về xuất xứ, kiểm định."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Hộp cơm an toàn tuyệt đối cho sức khỏe, dùng được vi sóng",
+    "goi_y": "Lõi inox 304, nắp zoăng chống tràn; chỉ dùng phần nhựa ngoài trong vi sóng."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy kiểm định inox 304, xuất xứ thực tế, hình charm 3D.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

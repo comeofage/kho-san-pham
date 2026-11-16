@@ -33,8 +33,53 @@
   "so_video": 9,
   "luc": "2026-11-07T09:12:30+07:00"
  },
- "cap_nhat_luc": "2026-11-14T08:10:01+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dụng cụ tiếp xúc thực phẩm có claim 'an toàn tuyệt đối', thông tin tổ chức chịu trách nhiệm ghi sơ sài.",
+   "khuyen_nghi": "Có thể làm, nói 'inox 304 chống gỉ' theo mô tả của shop và bỏ 'an toàn tuyệt đối', 'chống bỏng'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'An toàn tuyệt đối', 'chống bỏng' là cam kết quá mức đối với dụng cụ tiếp xúc nhiệt và thực phẩm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand ghi 'Nội địa trung quốc', không phải nhãn hiệu cụ thể bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm trơn, không có hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Dụng cụ bếp thông thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối, tay cầm chống bỏng",
+    "goi_y": "Rổ inox 304 có móc cài vào mép nồi, nhúng lẩu tiện tay."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Mô tả trang gần như trống, thông tin tổ chức chịu trách nhiệm ghi 'Vn', chưa có chứng nhận inox 304.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

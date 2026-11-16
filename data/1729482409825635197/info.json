@@ -38,5 +38,50 @@
   "poster_folder": 193,
   "duong_dan": "E:\\oneshottramcanh\\toán 6 - 1729482409825635197\\output_poster"
  },
- "cap_nhat_luc": "2026-10-20T13:46:25+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Nội dung theo sách giáo khoa Cánh Diều/Kết Nối/Chân Trời và hình minh họa có thể vướng bản quyền.",
+   "khuyen_nghi": "Có thể làm; tránh claim cam kết điểm số và không dùng nguyên trang sách giáo khoa hay hình nhân vật có bản quyền."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Dễ phát sinh claim 'học giỏi, tăng điểm' không có căn cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shop tự đặt thương hiệu, không thấy dấu hiệu nhái nhãn hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên bộ sách giáo khoa và hình minh họa/sticker trong sổ chưa rõ nguồn bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đối tượng học sinh cấp 2 nên không dùng trẻ em dưới 13 tuổi làm mẫu bán hàng."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết học là giỏi, đảm bảo điểm 9-10",
+    "goi_y": "Nói 'gom kiến thức cả năm gọn một cuốn, dễ ôn'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ nguồn hình minh họa và việc xin phép dùng nội dung theo bộ sách.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

@@ -30,5 +30,50 @@
   "poster_folder": 9,
   "duong_dan": "E:\\Aff anh nhan\\review\\mayanh 1733464207030781602\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:03:04+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Máy ảnh trẻ em có pin lithium, claim 'phát triển' và 'chống sốc', thiếu chứng nhận.",
+   "khuyen_nghi": "Quay thực tế, nói đúng tính năng chụp/quay và chơi game đơn giản; kiểm tra chứng nhận pin và an toàn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống sốc', 'phát triển' cần nói vừa phải, không hứa bền tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand CLUBLU của shop (Mall)."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Chủ đề 'TV & Phim, Truyện tranh' trong thông số; cần kiểm tra ảnh có hình mèo giống nhân vật bản quyền không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có pin tích hợp và thẻ nhớ; cần giấy chứng nhận an toàn pin."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhắm trẻ em, thông số 'Cảnh báo tuổi: Không' nhưng cần ghi tuổi phù hợp."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'rơi không hỏng', 'tăng thông minh'",
+    "goi_y": "Nói 'thiết kế mèo dễ thương, bé chụp ảnh và quay video'"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có chứng nhận pin, QCVN đồ chơi, độ tuổi khuyến nghị; chưa xem ảnh mô tả.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

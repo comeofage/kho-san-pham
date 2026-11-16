@@ -30,5 +30,65 @@
   "poster_folder": 7,
   "duong_dan": "E:\\Aff anh nhan\\review\\robot gỗ 1733445565630613059\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Mô hình gỗ tên 'Gipsy Avenger' là robot từ phim Pacific Rim (Legendary), không rõ có bản quyền.",
+   "khuyen_nghi": "Không nên làm khi chưa có cấp phép; không nêu tên 'Gipsy Avenger', hoặc chọn mẫu robot gốc."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'rèn tư duy, phát triển trí não' là cam kết quá mức; chỉ nói 'lắp ráp giải trí'."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand ecotoy của shop, nhưng tên mẫu mượn thương hiệu phim."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Gipsy Avenger là nhân vật phim Pacific Rim, mô hình sao chép dễ vi phạm IPR."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Mô hình gỗ thủ công, không thuộc nhóm cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số ghi 'trên 13 tuổi' nhưng mô tả 'từ 12 tuổi', cần thống nhất độ tuổi và có chi tiết nhỏ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Tên và hình dạng Gipsy Avenger là nhân vật Pacific Rim",
+    "rui_ro": "🔴",
+    "xu_ly": "Không dùng tên, không quảng cáo là 'robot trong phim'."
+   },
+   {
+    "van_de": "Claim 'phát triển trí não' cho trẻ",
+    "rui_ro": "🟠",
+    "xu_ly": "Đổi thành 'mô hình lắp ráp thư giãn, rèn kiên nhẫn'."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'phát triển trí não, tăng IQ'",
+    "goi_y": "Nói 'tự tay lắp ráp mô hình gỗ'"
+   },
+   {
+    "khong_nen": "Nhắc 'Gipsy Avenger', 'Pacific Rim'",
+    "goi_y": "Nói 'robot gỗ lắp ráp'"
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa có giấy phép Legendary/Warner; độ tuổi khuyến nghị không đồng nhất.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

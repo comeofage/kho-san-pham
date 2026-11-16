@@ -35,5 +35,50 @@
   "so_video": 23,
   "luc": "2026-10-27T09:43:37+07:00"
  },
- "cap_nhat_luc": "2026-10-27T09:43:37+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Kẹo ăn vặt, rủi ro thấp, chủ yếu là claim thực phẩm.",
+   "khuyen_nghi": "Có thể làm, chỉ mô tả hương vị chua ngọt và cách ăn vặt."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả vị chua ngọt, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu BonBon Food của shop, không thấy nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình dâu tây và dâu tằm không có nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm cần giấy tờ, shop đã có số đăng ký, nên xác minh đúng sản phẩm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Kẹo tốt cho sức khỏe, bổ sung vitamin",
+    "goi_y": "Chỉ nói vị chua ngọt, ăn vặt."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa đối chiếu giấy tờ 41y8025906 có đúng sản phẩm kẹo hay không.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

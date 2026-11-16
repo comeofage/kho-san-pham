@@ -28,6 +28,51 @@
   "so_video": 14,
   "luc": "2026-11-01T02:51:53+07:00"
  },
- "cap_nhat_luc": "2026-11-01T02:51:53+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Củ sạc điện công suất cao chưa có mô tả chữ và chưa thấy chứng từ hợp quy, brand Veryking cần xác minh.",
+   "khuyen_nghi": "Làm được nếu đọc ảnh xác nhận thông số thật (65W, 2 cổng) và có chứng nhận; không nói 'không bao giờ chai pin/cháy nổ'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Sạc siêu nhanh 65W' cần đúng thông số, không hứa tương thích mọi thiết bị."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand VERYKING chưa rõ chính hãng hay nhà bán, nên kiểm tra giấy ủy quyền; không nhắc tên Apple/Samsung khi so sánh."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy vấn đề hình ảnh bản quyền, cần xem ảnh để chắc chắn."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Củ sạc/cáp thuộc nhóm thiết bị điện cần hợp quy và thông tin tổ chức chịu trách nhiệm, trang chưa có."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'sạc không bao giờ nóng/chai pin, an toàn tuyệt đối'",
+    "goi_y": "Nói 'công suất 65W theo thông số, có 2 cổng USB-C và USB'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Mô tả chữ, giấy hợp quy, thông tin tổ chức chịu trách nhiệm, chính sách bảo hành, ảnh mô tả chưa đọc.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

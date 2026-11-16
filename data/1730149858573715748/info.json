@@ -36,8 +36,53 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:10:13+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh claim bảo vệ tuyệt đối đồ lót hoặc quần áo.",
+   "khuyen_nghi": "Quay cảnh đóng khóa và giặt thử, nói đúng kích thước S-XL; có thể làm Affiliate bình thường."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nói công dụng bảo vệ quần áo khi giặt, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu đặc biệt."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình sản phẩm thông thường."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Gia dụng thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giặt không bao giờ hư hay giãn",
+    "goi_y": "Giảm va đập khi giặt máy."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

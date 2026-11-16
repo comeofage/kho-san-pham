@@ -37,6 +37,46 @@
   "poster_folder": 216,
   "duong_dan": "E:/oneshottramcanh/maugocnuoc 1730992905271872127/output"
  },
- "cap_nhat_luc": "2026-10-31T09:58:33+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Không có rủi ro đáng kể, chỉ cần lưu ý nội dung quay với trẻ em.",
+   "khuyen_nghi": "Có thể làm, quay demo tô và chấm nước thật, không cần chỉnh sửa lớn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Claim chỉ về cách dùng chì màu tan nước, không có yếu tố y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Deli là thương hiệu có công ty đại diện tại Việt Nam, shop chính chủ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hộp thiếc trơn, không dùng nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng được cho học sinh nhưng không đánh dấu là đồ chơi, chỉ cần tránh claim an toàn cho trẻ nếu chưa có chứng nhận."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

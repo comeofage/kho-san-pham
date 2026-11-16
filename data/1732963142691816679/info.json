@@ -30,5 +30,56 @@
   "poster_folder": 27,
   "duong_dan": "E:\\oneshottramcanh\\cotyphu 1732963142691816679\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tên 'Monopoly' và mô-típ Cờ Tỷ Phú là nhãn hiệu của Hasbro, có nguy cơ hàng nhái.",
+   "khuyen_nghi": "Dùng tên 'Cờ Tỷ Phú Việt Nam' của Foxi, không gọi Monopoly. Hỏi shop về bản quyền trước khi làm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có claim công dụng đặc biệt."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Tiêu đề chứa 'Monopoly', nhãn hiệu của Hasbro."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết kế bàn cờ gần mô hình Monopoly, cần xem Foxi có bản quyền/giấy phép không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Cờ cho trẻ em và gia đình, có quân nhỏ, cần cảnh báo độ tuổi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Dùng tên Monopoly trong tiêu đề",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc 'Monopoly' trong video và caption, chỉ gọi 'Cờ Tỷ Phú Việt Nam Foxi'."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Y như Monopoly chính hãng",
+    "goi_y": "Nói 'trò chơi kinh doanh phiên bản Việt Nam, 34 thẻ đất'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép/ủy quyền của Foxi, độ tuổi khuyến nghị, chứng nhận an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

@@ -36,6 +36,62 @@
   "poster_folder": 281,
   "duong_dan": "E:\\oneshottramcanh\\trungkl-1736947694440449199\\output"
  },
- "cap_nhat_luc": "2026-11-05T18:52:40+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em dùng búa đục, bột thạch cao, cần chứng nhận an toàn đồ chơi và cảnh báo độ tuổi.",
+   "khuyen_nghi": "Chỉ quay có người lớn đi kèm, nêu rõ từ 3 tuổi trở lên, không nói an toàn tuyệt đối. Yêu cầu shop cung cấp QCVN 3:2019 hoặc tương đương."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nói thạch cao an toàn, không mùi nhưng mô tả có cảnh báo không hít, không nuốt bột."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Biến thể có nhẫn cổ, động vật biển phát sáng, cần xem ảnh có nhân vật hay logo không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi cho trẻ 3 tuổi, có búa, đục cứng và bụi thạch cao, nguy cơ nuốt hít và gây thương tích."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi trẻ em có dụng cụ cứng và bụi thạch cao",
+    "rui_ro": "🟠",
+    "xu_ly": "Luôn có người lớn trong cảnh quay, nhắc cảnh báo hít, nuốt; xin giấy chứng nhận an toàn đồ chơi."
+   },
+   {
+    "van_de": "Phân loại 1 giá 89.618 và 137.693 gồm cả nhẫn, khoáng vật, khác với trứng khủng long",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop rõ từng biến thể trước khi chốt nội dung."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối, bé tự chơi một mình",
+    "goi_y": "Nói bé chơi cùng bố mẹ, từ 3 tuổi trở lên."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ giấy chứng nhận an toàn đồ chơi và thông tin tổ chức chịu trách nhiệm hàng hoá.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

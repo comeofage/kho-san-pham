@@ -30,5 +30,56 @@
   "poster_folder": 335,
   "duong_dan": "E:/oneshottramcanh/leupvc 1730273374820928510/output_poster"
  },
- "cap_nhat_luc": "2026-11-13T21:02:27+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Thông số ghi nhân vật Hello Kitty, có rủi ro IPR; sản phẩm liên quan trẻ em ngủ trong lều cần an toàn.",
+   "khuyen_nghi": "Không nhắc Hello Kitty, chỉ quay lều công chúa/hoàng tử; làm rõ khung PVC/ABS và các phụ kiện bán riêng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chất liệu 'siêu bền, an toàn cho trẻ em' không có chứng nhận."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy thương hiệu rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Thông số khai Hello Kitty (Sanrio), nếu hình có nhân vật là rủi ro bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Lều có đèn pin, mây treo cần chú ý an toàn cháy."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Sản phẩm cho trẻ ngủ/chơi trong lều, cần an toàn và cảnh báo tuổi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thông số khai nhân vật Hello Kitty",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc nhân vật, kiểm tra hình có logo/nhân vật; yêu cầu shop sửa thông số."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Hoàn toàn an toàn cho trẻ em",
+    "goi_y": "Lều dạng lâu đài cho bé vui chơi, nên có người lớn bên cạnh."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Hình thật có nhân vật không, an toàn đèn pin và vải khi ngủ.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

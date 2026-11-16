@@ -33,5 +33,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:10:54+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Claim bảo vệ giác mạc/chống UV 99% cho trẻ em chưa có kiểm định, kèm xuất xứ ghi 'Design By Japan' gây hiểu nhầm.",
+   "khuyen_nghi": "Chỉ nói 'che bụi, che nắng khi đi xe', không cam kết bảo vệ mắt hay chỉ số UV; không nhắc xuất xứ Nhật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Chống UV 99%', 'bảo vệ giác mạc tối ưu' là claim y tế/kỹ thuật cần giấy kiểm định, trang chưa cung cấp."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu KOOKID của chính shop, không thấy dùng nhãn hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Kiểu dáng kính trơn, không có nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Xuất xứ ghi 'Design By Japan' dễ bị coi là khai sai nguồn gốc, tên tổ chức chịu trách nhiệm chưa rõ ràng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Sản phẩm bảo vệ mắt cho trẻ nhỏ, cần chất liệu an toàn và độ tuổi phù hợp mà trang chưa ghi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chống UV 99%, bảo vệ giác mạc cho bé không có chứng nhận",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói mô tả chung 'kính râm cho bé', không nêu phần trăm hay công dụng y tế."
+   },
+   {
+    "van_de": "Sản phẩm trẻ em thiếu thông tin độ tuổi và kiểm định an toàn",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop giấy kiểm định và độ tuổi khuyến nghị trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống tia UV 99%, bảo vệ giác mạc bé tối ưu",
+    "goi_y": "Kính râm thời trang ôm sát, che bụi và gió khi đi xe máy."
+   },
+   {
+    "khong_nen": "Sản xuất/thiết kế tại Nhật",
+    "goi_y": "Không nhắc xuất xứ, chỉ nói kiểu dáng và màu sắc."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy kiểm định UV, độ tuổi khuyến nghị, tiêu chuẩn an toàn đồ dùng trẻ em.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

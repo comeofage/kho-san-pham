@@ -29,7 +29,7 @@
   "poster_folder": 169,
   "duong_dan": "F:\\0910-ncm\\ba gác 0910 - 1737036338282857964"
  },
- "cap_nhat_luc": "2026-10-20T13:46:25+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -39,5 +39,61 @@
   "xong": true,
   "boi": "poster",
   "luc": "2026-10-20T13:35:33+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em, thông tin pin mâu thuẫn, mô tả tiếng Anh sao chép và shop điểm thấp 3.0.",
+   "khuyen_nghi": "Xin giấy an toàn đồ chơi, xác nhận có pin hay không ở bản Premium. Nói độ tuổi trên 8 tuổi như trang, không nhắc bé nhỏ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là xe đồ chơi, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu bên thứ ba trong tên."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu xe ba gác có thể dựa theo mẫu xe nhãn hiệu, cần xem ảnh có logo không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Bản Premium có đèn và âm thanh nhưng ghi không có pin, cần làm rõ thông tin pin."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi trẻ em, có chi tiết nhỏ và đèn âm thanh, cần chứng nhận an toàn và đúng độ tuổi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi trẻ em chưa có chứng nhận an toàn",
+    "rui_ro": "🟠",
+    "xu_ly": "Xin giấy QCVN 3:2019 hoặc tương đương; nêu độ tuổi trên 8 tuổi."
+   },
+   {
+    "van_de": "Thông tin pin không khớp với tính năng đèn âm thanh",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop có pin hay không, khai báo đúng thuộc tính hàng pin."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp bé phát triển trí tuệ, hoàn toàn an toàn cho mọi lứa tuổi",
+    "goi_y": "Nói xe đẩy đà, mở được thùng, dành cho bé từ 8 tuổi."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ chứng nhận đồ chơi, tình trạng pin bản Premium, và xuất xứ thật; mô tả bị cắt.",
+  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
  }
 }

@@ -35,8 +35,59 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:37+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tên sản phẩm có claim 'chống cháy' và 'chống dầu mỡ' tuyệt đối gần bếp, có thể bị coi là claim an toàn không kiểm chứng.",
+   "khuyen_nghi": "Chỉ nói che dầu mỡ, dễ lau chùi; không nói chống cháy hay chịu nhiệt trực tiếp bếp lửa nếu chưa có chứng nhận."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Claim 'chống cháy' khu vực bếp là claim an toàn nhạy cảm cần có kiểm nghiệm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Tuyết An riêng, không thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hơn 50 mẫu hoa văn, một số mẫu có thể lấy hình từ nguồn khác chưa rõ bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Decal PVC dán tường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chống cháy/chịu nhiệt khi dán gần bếp",
+    "rui_ro": "🟠",
+    "xu_ly": "Hướng dẫn dán cách bếp lửa an toàn và không khẳng định chống cháy."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống cháy, chịu nhiệt tuyệt đối, dán sát bếp lửa vẫn an toàn",
+    "goi_y": "Nói 'chống thấm dầu mỡ, lau sạch dễ dàng'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có thông số chịu nhiệt hoặc chứng nhận chống cháy; chưa rõ nguồn mẫu hoa văn.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

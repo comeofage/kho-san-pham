@@ -37,5 +37,50 @@
   "so_video": 0,
   "luc": "2026-11-05T08:50:14+07:00"
  },
- "cap_nhat_luc": "2026-11-05T08:53:13+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'phù hợp người viêm mũi dị ứng', 'an toàn cho trẻ nhỏ' có tính y tế nhẹ.",
+   "khuyen_nghi": "Làm được nếu bỏ claim cho người viêm mũi dị ứng; chỉ nói ít bụi giấy, mềm, 1500 tờ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'cho người viêm mũi dị ứng' mang tính y tế, và 'ít bụi' cần chứng cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Luala của shop, không nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy vấn đề hình ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "'An toàn cho trẻ nhỏ' chỉ là nhắc, không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Phù hợp người viêm mũi dị ứng, cảm cúm",
+    "goi_y": "Nói 'ít bụi giấy khi lau'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy kiểm nghiệm 'không huỳnh quang', 'ít bụi'.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

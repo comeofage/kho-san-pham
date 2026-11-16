@@ -35,5 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-10T13:17:01+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chỉ cần lưu ý nhắc tên iPhone và không hứa hẹn chống rơi tuyệt đối.",
+   "khuyen_nghi": "Chỉ nêu tương thích dòng máy, tả chất liệu/độ bám tay; tránh cam kết bảo vệ máy 100%."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tiêu đề 'chống rơi vỡ' là cam kết quá mức, chỉ nên nói giảm sốc/bảo vệ cơ bản."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhắc iPhone/Apple chỉ để mô tả tương thích, không được dùng như logo hay ngụ ý hàng chính hãng Apple."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Họa tiết vân sóng đồng tâm chung chung, không thấy nhân vật hay thương hiệu có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Ốp điện thoại không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống rơi vỡ tuyệt đối, bảo vệ máy 100%",
+    "goi_y": "Ốp mềm dạng sáp, vân nổi, giảm trượt tay, khoét camera rộng"
+   },
+   {
+    "khong_nen": "Hàng chính hãng Apple",
+    "goi_y": "Ốp phụ kiện tương thích iPhone 14 đến 17"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Tiêu đề liệt kê iPhone 18 chưa phát hành, cần xác nhận các dòng máy tương thích thực tế; hàng gửi từ overseas 4-8 ngày.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

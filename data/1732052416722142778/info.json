@@ -39,8 +39,53 @@
   "poster_folder": 274,
   "duong_dan": "E:/oneshottramcanh/lotchuot-1732052416722142778/output"
  },
- "cap_nhat_luc": "2026-11-14T08:10:09+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Một số họa tiết có thể là nhân vật anime/game có bản quyền (Pika, Wano, Chiến Binh Tóc Trắng).",
+   "khuyen_nghi": "Chỉ quay các mẫu họa tiết gốc, tránh mẫu mô phỏng nhân vật có bản quyền và đừng gọi tên nhân vật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Mô tả công năng thông thường, không có claim nhạy cảm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand &2023 không giống thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Một số mẫu có tên gợi nhân vật anime/Pokemon, cần tránh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Lót chuột thông thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm vào trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Gọi tên nhân vật như Pikachu, Wano, One Piece",
+    "goi_y": "Gọi chung là mẫu hoạ tiết dễ thương, không nêu tên nhân vật"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Nguồn gốc bản quyền của các họa tiết 127 mẫu.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

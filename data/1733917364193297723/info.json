@@ -37,5 +37,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-29T09:53:15+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Claim diệt mạt và kháng khuẩn thiếu giấy phép lưu hành, thông tin chủ thể trên trang trống.",
+   "khuyen_nghi": "Chỉ làm khi shop đưa được giấy phép lưu hành, nếu không chỉ nói xịt thơm vải."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Diệt mạt, kháng khuẩn là claim của chế phẩm diệt khuẩn, cần số lưu hành hay phiếu công bố."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Klinx của shop, không dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh hay nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Chế phẩm diệt côn trùng, diệt khuẩn gia dụng cần giấy phép lưu hành của Bộ Y tế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Xịt lên thú bông, gối nằm có thể liên quan đồ dùng trẻ em nên cần cảnh báo an toàn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim diệt mạt, diệt bọ ve, kháng khuẩn chưa có giấy phép",
+    "rui_ro": "🔴",
+    "xu_ly": "Yêu cầu số lưu hành chế phẩm, thiếu thì bỏ claim."
+   },
+   {
+    "van_de": "Thông tin tổ chức chịu trách nhiệm chỉ ghi dấu gạch chéo",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung trước khi đăng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Diệt 99% mạt, kháng khuẩn, an toàn cho bé",
+    "goi_y": "Nói xịt lên ga gối cho thơm vải và đúng hương liệu."
+   },
+   {
+    "khong_nen": "Giảm dị ứng, hen suyễn",
+    "goi_y": "Không nhắc bệnh."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép lưu hành, thành phần, cảnh báo an toàn, thông tin tổ chức chịu trách nhiệm.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

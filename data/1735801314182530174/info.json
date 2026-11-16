@@ -30,5 +30,45 @@
   "poster_folder": 37,
   "duong_dan": "E:\\Aff anh nhan\\review\\hopbutvali 1735801314182530174\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:40:02+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hộp bút dạng vali kèm sticker, cần kiểm tra ảnh không có nhân vật bản quyền; xuất xứ Trung Quốc nhưng kho Bắc Ninh.",
+   "khuyen_nghi": "Có thể làm, chỉ nói ngăn chứa, chống thấm và tránh nhắc nhân vật cụ thể nếu trên sticker có."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chống thấm là tính năng vật lý, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có brand rõ ràng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Sticker, họa tiết 'cute' có thể là nhân vật bản quyền, cần xem ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ dùng học tập, không phải đồ chơi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Ảnh ghép chưa kiểm tra, không rõ sticker/họa tiết có nhân vật bản quyền không.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

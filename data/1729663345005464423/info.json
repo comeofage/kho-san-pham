@@ -39,6 +39,51 @@
   "poster_folder": 222,
   "duong_dan": "E:/oneshottramcanh/bothuoc 1729663345005464423/output"
  },
- "cap_nhat_luc": "2026-11-15T12:09:35+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dùng tên thương hiệu Aihao mà shop HUGI KIDS có thể chưa được ủy quyền.",
+   "khuyen_nghi": "Làm được; tránh nói 'chính hãng Aihao' nếu chưa có ủy quyền và không cam kết giúp học giỏi hình học."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Công dụng đo vẽ nhìn thấy được, ít rủi ro nếu không hứa hẹn kết quả học tập."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Aihao là thương hiệu văn phòng phẩm, shop chưa nêu ủy quyền."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu thước đa năng có thể có bằng sáng chế kiểu dáng, rủi ro thấp."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm nhựa thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dành cho học sinh, claim 'an toàn không mùi' cần thận trọng."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chính hãng Aihao, đảm bảo giỏi hình học",
+    "goi_y": "Nói 'thước đa năng đo góc, kẻ song song, vẽ hình mẫu'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ ủy quyền thương hiệu Aihao và chứng nhận an toàn nhựa cho học sinh.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

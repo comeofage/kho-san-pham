@@ -37,5 +37,50 @@
   "poster_folder": 325,
   "duong_dan": "E:/oneshottramcanh/setchi-1733268312671290389/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:09:20+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Bộ dụng cụ vẽ của thương hiệu Nicpro, rủi ro thấp, chỉ cần chú ý thông số mô tả.",
+   "khuyen_nghi": "Có thể làm. Nói đúng số món theo từng phân loại và không hứa chất lượng chuyên nghiệp tuyệt đối."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ có mô tả dụng cụ, không claim công dụng đặc biệt."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Nicpro là thương hiệu thật, shop mang tên Nicpro Vender."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế (có dao gọt bút nhỏ, thông thường)."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng đến người vẽ, không phải trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nước 100%, vẽ chuyên nghiệp như họa sĩ",
+    "goi_y": "Nói 'micron chống nước' theo mô tả và số món của từng phân loại."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Số món khác nhau theo phân loại (34/35/58), cần nêu đúng; thiếu thông tin tổ chức chịu trách nhiệm.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

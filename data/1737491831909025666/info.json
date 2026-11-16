@@ -37,5 +37,61 @@
   "poster_folder": 314,
   "duong_dan": "E:\\oneshottramcanh\\nhactrong-1737491831909025666\\output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:25+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Móc khóa phát tiếng là đồ chơi cho trẻ em, có pin và chi tiết nhỏ, thông số tuyên bố 'phát triển trẻ' không có căn cứ.",
+   "khuyen_nghi": "Giới thiệu như phụ kiện quà tặng vui, bỏ claim phát triển cơ/trí nhớ, nêu cảnh báo pin và độ tuổi; cần kiểm định đồ chơi."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Thông số ghi 'tăng cường cơ, rèn trí nhớ, phát triển của trẻ' và 'giảm căng thẳng' là claim không có căn cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không mạo danh thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình thỏ chơi trống có thể giống nhân vật có bản quyền, cần kiểm ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có pin/cơ cấu phát âm, cần chứng nhận an toàn pin và hợp quy."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Nhắm tới trẻ em, có chi tiết nhỏ và pin nút, nguy cơ nuốt phải."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi trẻ em có pin và chi tiết nhỏ",
+    "rui_ro": "🟠",
+    "xu_ly": "Nêu cảnh báo độ tuổi, không quay trẻ nhỏ cầm/ngậm, cần giấy kiểm định đồ chơi."
+   },
+   {
+    "van_de": "Claim phát triển cơ/trí nhớ trong thông số",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc lại các claim này trong video."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Tăng cường cơ, rèn trí nhớ, giảm stress",
+    "goi_y": "Móc khóa 3 trong 1: gương, lược, nút bấm phát tiếng trống"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ loại pin, kiểm định đồ chơi, độ tuổi khuyến cáo.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

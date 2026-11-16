@@ -30,5 +30,50 @@
   "poster_folder": 73,
   "duong_dan": "E:\\oneshottramcanh\\tainghesun 1731743828944325537\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thông số tự mâu thuẫn và cần hợp quy thiết bị vô tuyến, shop điểm thấp.",
+   "khuyen_nghi": "Dùng đúng thông số trên trang, không nói trị liệu hay bảo vệ thính lực, và yêu cầu shop đính chính phiên bản Bluetooth."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên ghi Bluetooth 5.3 nhưng mô tả ghi 5.4, pin 10H và 8-10H; cụm không đau tai cần diễn đạt thận trọng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "BRIDIO chưa xác nhận đăng ký; không so sánh với thương hiệu dẫn truyền xương khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị Bluetooth và pin lithium cần hợp quy, trang chỉ ghi nhà sản xuất Dongguan."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Bảo vệ tai / tốt cho thính lực / không gây đau tai tuyệt đối",
+    "goi_y": "Nói thiết kế mở tai, cảm giác thoải mái khi đeo."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận hợp quy, phiên bản Bluetooth thực tế (5.3 hay 5.4), bảo hành.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

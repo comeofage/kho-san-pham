@@ -30,5 +30,50 @@
   "poster_folder": 77,
   "duong_dan": "E:\\Aff anh nhan\\review\\bothuoc 1733009536480610195\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Nhãn ghi sản xuất tại Việt Nam nhưng xuất xứ Trung Quốc, và có compa/eke sắc nhọn cho trẻ.",
+   "khuyen_nghi": "Không nói 'sản xuất tại Việt Nam' hoặc 'chất lượng cao nhất'. Nhắc dùng dưới giám sát với bé nhỏ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả 'chất lượng cao' khó chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên M.Y.Never là nhãn shop, khai báo tổ chức chịu trách nhiệm là 'Muyuan' không rõ ràng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng cho học sinh, compa có đầu kim nhọn."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Sản xuất tại Việt Nam, bồi thường 100%",
+    "goi_y": "Dùng đúng xuất xứ ghi ở thông số (Trung Quốc) hoặc không nhắc xuất xứ."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thông tin tổ chức chịu trách nhiệm đầy đủ, hình ảnh ghép thực tế để kiểm tra nhãn.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

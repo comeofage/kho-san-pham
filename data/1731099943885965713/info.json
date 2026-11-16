@@ -30,5 +30,61 @@
   "poster_folder": 113,
   "duong_dan": "E:\\oneshottramcanh\\micro 1731099943885965713\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:44+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em hàng nhập từ nước ngoài, shop điểm thấp (2.3), không có chứng nhận an toàn và thông tin đơn vị chịu trách nhiệm.",
+   "khuyen_nghi": "Không nên làm vì thiếu hồ sơ an toàn đồ chơi và shop kém uy tín. Chỉ xem lại nếu shop bổ sung hợp quy và tổ chức chịu trách nhiệm tại Việt Nam."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên sản phẩm có 'đồ chơi giáo dục' và mô tả 'an toàn', chưa có căn cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu rõ ràng, không thấy dấu hiệu nhái nhãn hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Mô tả không nêu nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi trẻ em nhập khẩu bắt buộc hợp quy QCVN 3:2019, hồ sơ không thấy chứng nhận và không có tổ chức chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Đồ chơi trẻ em, mô tả ghi 'bộ phận nhỏ, không phù hợp dưới 3 tuổi' nhưng mục cảnh báo tuổi lại ghi 'Không', mâu thuẫn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi trẻ em thiếu hợp quy, thông tin cảnh báo tuổi mâu thuẫn.",
+    "rui_ro": "🔴",
+    "xu_ly": "Không làm cho tới khi shop bổ sung giấy hợp quy và cảnh báo tuổi đúng."
+   },
+   {
+    "van_de": "Shop điểm 2.3, chỉ 1 đánh giá, hàng gửi từ nước ngoài.",
+    "rui_ro": "🟠",
+    "xu_ly": "Cân nhắc chọn shop khác bán cùng loại có uy tín hơn."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho bé, đồ chơi giáo dục phát triển kỹ năng",
+    "goi_y": "Micro nhựa tạo tiếng vang, không dùng pin, màu ngẫu nhiên"
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chứng nhận hợp quy đồ chơi, tổ chức chịu trách nhiệm tại Việt Nam, độ tuổi khuyến nghị chính xác.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

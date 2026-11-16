@@ -39,8 +39,48 @@
   "poster_folder": 313,
   "duong_dan": "E:/oneshottramcanh/khancaro-1736165804568577652/output"
  },
- "cap_nhat_luc": "2026-11-14T08:10:05+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần nói đúng chất liệu và kích thước khăn.",
+   "khuyen_nghi": "Quay cảnh đổ nước thấm khô và đếm số khăn trong combo, nói đúng kích thước 25x35cm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả thấm hút, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand ghi 'KHÔNG CÓ', không dùng tên hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Họa tiết sọc, ca rô thông thường."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Khăn lau gia dụng, không hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ tỷ lệ cotton thực tế; mô tả trang rất ngắn.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

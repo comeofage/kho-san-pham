@@ -36,5 +36,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:09:40+07:00"
+ "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em hàng overseas, cần chứng nhận an toàn đồ chơi, và họa tiết hộp nước ngọt có thể giống nhãn hiệu thật.",
+   "khuyen_nghi": "Chỉ làm khi xác nhận hộp không in logo nước ngọt có thật và shop có giấy tờ đồ chơi. Không quay cảnh trẻ nhỏ cho đồ chơi vào miệng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là đồ chơi biến hình, không có claim y tế, giáo dục vượt mức; tránh nói \"phát triển trí tuệ\" nếu không có căn cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Họa tiết hộp nước ngọt có nguy cơ mô phỏng nhãn Coca-Cola, Pepsi hoặc tương tự, cần xem ảnh để xác nhận."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu robot biến hình có thể gần dòng Transformers hoặc đồ chơi đã có thiết kế, chưa rõ nguồn."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi nhập từ nước ngoài, cần chứng nhận hợp quy QCVN 3:2019/BKHCN và thông tin tổ chức chịu trách nhiệm, trang thông số trống."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Sản phẩm dành cho bé, chi tiết nhỏ ráp gập có nguy cơ hóc và cần ghi độ tuổi phù hợp."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hộp nước ngọt in họa tiết có thể trùng nhãn hiệu thật",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra ảnh, chỉ quảng bá khi họa tiết là thiết kế chung, không logo hãng."
+   },
+   {
+    "van_de": "Đồ chơi trẻ em chưa thấy chứng nhận an toàn và độ tuổi",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp giấy hợp quy, ghi rõ độ tuổi và cảnh báo hóc."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối cho bé mọi lứa tuổi, giúp phát triển trí thông minh",
+    "goi_y": "Đồ chơi biến hình vui, nên có người lớn giám sát với trẻ nhỏ."
+   },
+   {
+    "khong_nen": "Nhắc tên hãng nước ngọt thật (Coca, Pepsi...)",
+    "goi_y": "Gọi chung là hộp nước ngọt biến thành robot."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa đọc ảnh nên chưa biết họa tiết hộp có logo thật không; thiếu độ tuổi, chất liệu, chứng nhận QCVN đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+ }
 }

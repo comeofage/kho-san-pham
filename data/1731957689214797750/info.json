@@ -38,5 +38,50 @@
   "poster_folder": 147,
   "duong_dan": "E:\\oneshottramcanh\\hopdeli 1731957689214797750\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:51+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, cần tránh claim chống mốc và an toàn tuyệt đối, tên thương hiệu cần xác nhận.",
+   "khuyen_nghi": "Quay cảnh xếp chồng, thông số rõ ràng, không hứa chống mốc hay bảo quản vô thời hạn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chống ẩm mốc và duy trì tươi mới là claim cần diễn đạt vừa phải."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Deli và Vusign cần xác nhận shop chính hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Nhựa PP tiếp xúc thực phẩm, thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống mốc tuyệt đối / giữ tươi nhiều ngày",
+    "goi_y": "Nói kín khít, tủ lạnh gọn gàng, dùng được trong lò vi sóng."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chứng nhận nhựa PP tiếp xúc thực phẩm, xác nhận ủy quyền thương hiệu Deli.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

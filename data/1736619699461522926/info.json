@@ -39,6 +39,51 @@
   "poster_folder": 199,
   "duong_dan": "E:/oneshottramcanh/binhwings 1736619699461522926/output_poster"
  },
- "cap_nhat_luc": "2026-10-21T22:52:00+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Một số phân loại hoạt hình/Mèo Galaxy có thể là họa tiết bản quyền, giao hàng 13 ngày dễ gây khiếu nại.",
+   "khuyen_nghi": "Chỉ quay phân loại trơn hoặc họa tiết gốc của shop, nói rõ thời gian giao và nguyên liệu inox 304/thủy tinh theo thông tin shop."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'giữ nhiệt', inox 304 và thủy tinh borosilicate cần có chứng nhận, không hứa số giờ cụ thể."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Wings' và 'YUY' là tên riêng của shop nhưng cần chắc không trùng nhãn hiệu đã đăng ký."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Họa tiết 'Hoạt Hình Dễ Thương', 'Mèo Galaxy', 'TWINKLE' có thể gần nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Ly giữ nhiệt không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Nhắm tới người lớn, không dành cho trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giữ nóng/lạnh X giờ, an toàn tuyệt đối thực phẩm",
+    "goi_y": "Nói 'ly giữ nhiệt inox 304, lõi thủy tinh rút ra dùng riêng'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu chứng nhận vật liệu tiếp xúc thực phẩm và thông số giữ nhiệt; đoạn mô tả bị cắt.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

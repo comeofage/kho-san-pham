@@ -34,5 +34,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:12:06+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Tên listing chèn từ khoá lệch (\"đồ chơi gãi ngứa\") và mẫu gà Gugu có thể giống nhân vật có bản quyền.",
+   "khuyen_nghi": "Làm được, chỉ nói về túi thú bông đeo chéo thời trang, không nhắc từ \"gãi ngứa\" và không gọi tên nhân vật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Là túi thời trang, không có công dụng y tế cần claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Shop CUTE BOX không nêu thương hiệu rõ, cần tránh gắn tên thương hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Mẫu \"Gà Gugu\" mặt lờ đờ có thể gần với nhân vật/meme đã có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dáng thú bông dễ thu hút trẻ em nhưng không ghi độ tuổi, không có chi tiết nhỏ nguy hiểm được nêu."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "khong_nen",
+    "goi_y": "goi_y"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ nguồn gốc thiết kế gà Gugu; chưa có thông tin tuổi khuyến nghị.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

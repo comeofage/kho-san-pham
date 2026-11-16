@@ -38,8 +38,53 @@
   "poster_folder": 285,
   "duong_dan": "E:\\oneshottramcanh\\banui-1736243048485258925\\output"
  },
- "cap_nhat_luc": "2026-11-06T08:38:48+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thiết bị điện gia dụng không bảo hành, thông tin tổ chức chịu trách nhiệm ghi '0' và claim an toàn (chống quá nhiệt) chưa có chứng từ.",
+   "khuyen_nghi": "Làm được nếu shop bổ sung chứng nhận hợp quy/thông tin chịu trách nhiệm; không nhấn mạnh 'an toàn tuyệt đối', luôn nhắc dùng đúng hướng dẫn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống quá nhiệt', 'chống dính' là claim kỹ thuật cần chứng từ; không hứa 'không bao giờ cháy/bỏng'."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Mã HA-226 không gắn thương hiệu lớn, chưa thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình nhân vật hay bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện 1000W cần hợp quy/dán nhãn năng lượng và tổ chức chịu trách nhiệm hợp lệ; trang ghi '0' và không bảo hành."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em, nhưng nên nhắc để xa tầm tay trẻ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'tuyệt đối an toàn, không bao giờ quá nhiệt'",
+    "goi_y": "Nói 'có tự ngắt/chống quá nhiệt theo mô tả của shop, dùng đúng hướng dẫn'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy hợp quy/CR, thông tin tổ chức chịu trách nhiệm thật (đang ghi '0'), chính sách bảo hành.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

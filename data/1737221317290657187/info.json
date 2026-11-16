@@ -33,5 +33,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:08:59+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Claim 'nhựa PETG an toàn thực phẩm' chưa có chứng nhận, sản phẩm dạng in 3D thường không đạt chuẩn tiếp xúc thực phẩm.",
+   "khuyen_nghi": "Chỉ giới thiệu như đồ trang trí đựng bánh kẹo đóng gói, bỏ claim an toàn thực phẩm nếu shop không có giấy tờ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'An toàn thực phẩm, không mùi, chống rơi vỡ' là claim chưa chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu rõ ràng, không thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình nải chuối là hình chung, không vướng nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Đựng trái cây tươi là tiếp xúc thực phẩm trực tiếp, cần giấy kiểm nghiệm vật liệu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim an toàn thực phẩm không có chứng nhận",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop giấy kiểm nghiệm, nếu không có thì chỉ nói dùng trang trí, đựng bánh kẹo có bao gói."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn thực phẩm, đựng trái cây trực tiếp",
+    "goi_y": "Nói 'bát trang trí cho bàn trà'."
+   },
+   {
+    "khong_nen": "Chống rơi vỡ bền bỉ",
+    "goi_y": "Nói 'nhựa PETG nhẹ' và quay thực tế."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu giấy kiểm nghiệm vật liệu; tên và địa chỉ tổ chức chịu trách nhiệm ghi '111' không hợp lệ.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

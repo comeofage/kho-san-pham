@@ -30,5 +30,56 @@
   "poster_folder": 84,
   "duong_dan": "E:\\Aff anh nhan\\review\\maytinh 1735596401113859641\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:46+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Dùng nhân vật Crayon Shin-chan có bản quyền, shop không phải chủ sở hữu hoặc được cấp phép, dễ bị gỡ vì vi phạm IPR.",
+   "khuyen_nghi": "Không nên làm vì hình ảnh/tên nhân vật bản quyền; chỉ cân nhắc khi shop có giấy phép."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là máy tính bỏ túi, không claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🔴",
+    "nhan_xet": "Tên 'Crayon Shin-chan' là thương hiệu/nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Hình nhân vật vi phạm IPR khi không có giấy phép."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Hướng tới học sinh, thông số trống nên khó kiểm chứng an toàn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Dùng nhân vật Shin-chan không giấy phép",
+    "rui_ro": "🔴",
+    "xu_ly": "Yêu cầu giấy phép hoặc bỏ sản phẩm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Tên/hình Crayon Shin-chan chính hãng",
+    "goi_y": "Không gắn tên nhân vật."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Giấy phép nhân vật, nguồn gốc, thông số kỹ thuật máy tính.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

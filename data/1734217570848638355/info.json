@@ -29,5 +29,65 @@
   "luc": "2026-11-02T20:22:07+07:00",
   "duong_dan": "E:/Aff anh nhan/review/bodam 1734217570848638355/output_poster"
  },
- "cap_nhat_luc": "2026-11-02T20:22:07+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi điện tử trẻ em có vô tuyến, camera và pin, hồ sơ hợp quy chưa thấy.",
+   "khuyen_nghi": "Chỉ làm khi shop có hợp quy vô tuyến và đồ chơi, quay với người lớn hay trẻ lớn có giám sát."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nói yên tâm theo dõi con dễ thành claim an toàn, nên nói là đồ chơi liên lạc."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand KIUMO của shop, không dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thiết bị phát sóng vô tuyến 200m và pin sạc cần hợp quy vô tuyến và an toàn pin."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi điện tử cho trẻ em có camera cần QCVN 3:2019 và lưu ý quyền riêng tư của trẻ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thiếu hợp quy thiết bị vô tuyến và đồ chơi",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu giấy chứng nhận trước khi làm."
+   },
+   {
+    "van_de": "Camera và gọi video của trẻ",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay mặt trẻ em nhận dạng được."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Đảm bảo an toàn, giám sát trẻ từ xa",
+    "goi_y": "Nói đồ chơi gọi video cho bé chơi."
+   },
+   {
+    "khong_nen": "Phạm vi 500m chắc chắn",
+    "goi_y": "Chỉ nói thông số theo trang, tùy môi trường."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng từ hợp quy vô tuyến, đồ chơi, pin và độ tuổi khuyến nghị.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

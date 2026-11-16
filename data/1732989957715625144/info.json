@@ -27,7 +27,7 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:01+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -37,5 +37,50 @@
   "xong": true,
   "boi": "Nhân",
   "luc": "2026-11-14T08:11:01+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm ăn liền, cần giữ đúng giấy công bố và không nêu claim sức khỏe.",
+   "khuyen_nghi": "Nói về vị, độ dẻo, cách trộn. Có thể nhắc có giấy công bố tiêu chuẩn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Dùng chay được' ổn nếu thành phần đúng; tránh claim sức khỏe."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shop tự bán dưới tên Bánh Tráng Ông Tân Vlog, không nhái hãng lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm cần giấy công bố (GKVN-0217-FC), hạn sử dụng và nhãn đầy đủ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Ăn không lo béo, tốt cho sức khỏe",
+    "goi_y": "Nói về vị muối hành phi, độ dẻo, cách trộn."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thành phần chi tiết, hạn sử dụng, chứng nhận vệ sinh an toàn thực phẩm của cơ sở.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
  }
 }

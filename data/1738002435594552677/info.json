@@ -35,5 +35,50 @@
   "poster_folder": 203,
   "duong_dan": "E:/oneshottramcanh/colorlab 1738002435594552677/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:11:26+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp: hàng của shop chính hãng, chỉ cần tránh claim tuyệt đối và nói rõ quà tặng bình nước.",
+   "khuyen_nghi": "Dùng đúng thông tin shop chính hãng; không hứa 'không bao giờ gãy' hay 'an toàn tuyệt đối cho trẻ'. Nói rõ bình nước tặng kèm màu ngẫu nhiên."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Khó gãy', 'chống gãy tối đa', 'an toàn cho da tay trẻ' là claim cần dè chừng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Classmate là thương hiệu của shop chính hãng (Official Store)."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình ảnh bút chì thông thường."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Bình nước tặng kèm là vật dụng tiếp xúc thực phẩm, cần đảm bảo tiêu chuẩn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Học sinh dùng, cần an toàn sơn bút nhưng không phải đồ chơi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Không bao giờ gãy, an toàn tuyệt đối cho trẻ",
+    "goi_y": "Nói 'lõi chì nâng cấp, độ đậm 2B, dễ gọt'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Xuất xứ ghi Trung Quốc nhưng tên tổ chức ghi Việt Nam; chưa rõ chứng nhận bình nước.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

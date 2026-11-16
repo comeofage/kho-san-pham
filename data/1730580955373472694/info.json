@@ -37,5 +37,50 @@
   "poster_folder": 150,
   "duong_dan": "E:\\oneshottramcanh\\duspanspace 1730580955373472694\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:51+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Chỉ có claim tuyệt đối về chống thấm và chặn 99% tia UV trong mô tả.",
+   "khuyen_nghi": "Có thể làm, nên quay demo chống nắng/mưa thật và tránh con số 99% UV hoặc 'chống thấm tuyệt đối' nếu không có kiểm nghiệm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chặn 99% tia cực tím' và 'chống thấm tuyệt đối' là con số/claim tuyệt đối cần giấy kiểm nghiệm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Deli là thương hiệu có công ty đại diện tại Việt Nam, shop chính chủ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Ô trơn nhiều màu, không dùng nhân vật hay hình có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Ô dù là hàng thông thường, không hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chặn 99% tia UV, chống thấm tuyệt đối",
+    "goi_y": "Vải dày có lớp phủ chống nắng, che nắng che mưa tiện lợi"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Báo cáo kiểm nghiệm chỉ số UPF/chống UV nếu muốn dùng con số 99%.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

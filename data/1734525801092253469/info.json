@@ -37,8 +37,73 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:09:57+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Claim thư cân hoạt lạc, nâng cơ mặt và thiết bị nhiệt thiếu thông số an toàn.",
+   "khuyen_nghi": "Chỉ làm khi bỏ claim chữa bệnh, nói là máy massage cầm tay chườm nóng thư giãn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Thư cân hoạt lạc, nâng cơ mặt, cạo gió là claim y học cổ truyền và điều trị, vượt khả năng thiết bị."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu KUYOCO của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thiết bị chườm nóng, rung, tặng tinh dầu cần hợp quy điện, thông số trống, không rõ giấy phép."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim thư cân hoạt lạc, cạo gió trị liệu",
+    "rui_ro": "🔴",
+    "xu_ly": "Dùng massage thư giãn thay thế."
+   },
+   {
+    "van_de": "Giá gốc 998.202₫ giảm 88% bị xem là giá ảo",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhấn mạnh phần trăm giảm trên video."
+   },
+   {
+    "van_de": "Tinh dầu tặng kèm chưa rõ thành phần",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop nhãn phụ trước khi nhắc."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Cạo gió trị cảm, hoạt huyết, nâng cơ mặt",
+    "goi_y": "Nói chườm ấm, rung nhẹ, cầm tay dùng thư giãn."
+   },
+   {
+    "khong_nen": "Giảm đau cơ, cải thiện tuần hoàn",
+    "goi_y": "Không nhắc bệnh lý."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thông số kỹ thuật điện, chứng từ hợp quy, thành phần tinh dầu.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

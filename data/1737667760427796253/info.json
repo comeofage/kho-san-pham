@@ -35,5 +35,61 @@
   "poster_folder": 296,
   "duong_dan": "E:/oneshottramcanh/banphim - Copy 1737667760427796253/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T01:04:44+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Một số biến thể in nhân vật Sanrio/Shin có bản quyền, đồ chơi cho bé thiếu thông tin tổ chức chịu trách nhiệm.",
+   "khuyen_nghi": "Chỉ quay biến thể ngẫu nhiên không nhân vật, không nêu tên Cinnamoroll/Shin/Kuromi; không nói học chữ cái hay xả stress hiệu quả."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Xả stress, giúp bé làm quen bảng chữ cái' là claim công dụng chưa kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Tên biến thể dùng nhãn hiệu Cinnamoroll, Shin, Doraemon-kiểu nhân vật có chủ sở hữu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Hình hoạt hình in trên phím có khả năng là nhân vật bản quyền, shop không có giấy phép."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Biến thể có đèn dùng pin, thông tin tổ chức chịu trách nhiệm ghi 'Không có'."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Quà cho bé nhưng giá rất rẻ, thiếu cảnh báo tuổi và kiểm định an toàn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Biến thể in nhân vật có bản quyền (Cinamoroll, Shin...) có thể bị gỡ hoặc khiếu nại",
+    "rui_ro": "🟠",
+    "xu_ly": "Không đưa tên và hình nhân vật vào video, chỉ dùng biến thể ngẫu nhiên."
+   },
+   {
+    "van_de": "Thông tin tổ chức chịu trách nhiệm hàng hóa ghi 'Không có'",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp bé học bảng chữ cái, xả stress hiệu quả",
+    "goi_y": "Bàn phím mini màu sắc dễ thương, bấm lách cách vui tay."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Ảnh thực tế có nhân vật bản quyền hay không, độ tuổi, kiểm định an toàn, thông tin tổ chức chịu trách nhiệm.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

@@ -37,6 +37,57 @@
   "poster_folder": 176,
   "duong_dan": "F:\\2010\\sticker halo 2010 1732325861462542279\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Hình xăm dán dùng cho da mặt và trẻ em chưa có công bố an toàn, hàng gửi từ nước ngoài.",
+   "khuyen_nghi": "Chỉ làm khi bỏ nội dung dán lên mặt bé, tập trung người lớn hoặc dán đồ vật, kiểm tra giấy tờ an toàn da."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chống nước, dễ tẩy là claim cần kiểm chứng, không nói an toàn da."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi bật."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Họa tiết Halloween chung nhưng cần kiểm tra không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm dán lên da giống mỹ phẩm, thiếu công bố và thông số."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Ghi rõ dùng cho bé trên mặt, nhạy cảm về an toàn da trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Dán lên mặt và da của bé",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay hoặc nói dùng cho bé, chỉ nói người lớn và đồ vật"
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho da bé, không độc hại",
+    "goi_y": "Không nêu an toàn, nói chỉ dùng cho da nguyên vẹn"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thành phần keo/mực, chứng nhận an toàn da, độ tuổi.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

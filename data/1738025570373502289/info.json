@@ -35,5 +35,70 @@
   "poster_folder": 305,
   "duong_dan": "E:/oneshottramcanh/keonhac-1738025570373502289/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:42+07:00"
+ "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Kẹo mút có pin và mạch điện tử ngậm trong miệng, hướng tới trẻ em, nguy cơ nuốt pin/hóc và là thực phẩm nhập khẩu thiếu giấy tờ.",
+   "khuyen_nghi": "Không nên làm Affiliate vì rủi ro an toàn trẻ em và thực phẩm nhập khẩu chưa có công bố. Chỉ xem xét lại khi shop có giấy tờ an toàn đầy đủ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Các claim \"không đường\", \"Halal\", \"ăn chay\" là claim thực phẩm cần chứng nhận, trang chưa nêu giấy tờ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu SWOOT nước ngoài, kèm tên Heli, Lakutu có thể là dòng/nhân vật riêng, chưa rõ ủy quyền phân phối."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Ba bài hát tích hợp (Chúc mừng sinh nhật, Sao nhỏ lấp lánh, Bài ca niềm vui) thường là nhạc phổ biến; hộp bí ẩn dòng động vật có thể dùng hình nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🔴",
+    "nhan_xet": "Thực phẩm nhập khẩu từ Trung Quốc kèm pin cúc áo/mạch điện tử, cần công bố thực phẩm, nhãn phụ tiếng Việt và an toàn pin; có khả năng bị coi là hàng rủi ro."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Quà sinh nhật, tiệc cho trẻ em; pin và linh kiện điện tử trong miệng có nguy cơ nuốt, hóc, rò rỉ hóa chất."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Pin và mạch điện tử nằm trong kẹo ngậm miệng, nhắm tới trẻ em",
+    "rui_ro": "🔴",
+    "xu_ly": "Không nên quảng bá; nếu vẫn làm cần cảnh báo giám sát người lớn và không mô tả an toàn tuyệt đối."
+   },
+   {
+    "van_de": "Thực phẩm nhập khẩu chưa thấy giấy công bố, nhãn phụ tiếng Việt, hạn dùng",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp giấy tờ trước khi làm."
+   },
+   {
+    "van_de": "Claim Halal, ăn chay, không đường",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nhắc khi có chứng nhận."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho bé, nuốt/ngậm thoải mái, không đường tốt cho răng",
+    "goi_y": "Quà vui cho tiệc, người lớn giám sát khi sử dụng."
+   },
+   {
+    "khong_nen": "Halal, thuần chay, không đường (khi chưa có chứng nhận)",
+    "goi_y": "Chỉ đọc đúng thông tin trên trang sản phẩm và nhãn gốc."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Thiếu giấy công bố/kiểm nghiệm thực phẩm, chứng nhận an toàn pin, độ tuổi khuyến nghị, quyền phân phối nhãn SWOOT.",
+  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+ }
 }

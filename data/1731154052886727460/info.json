@@ -30,5 +30,50 @@
   "poster_folder": 86,
   "duong_dan": "E:\\Aff anh nhan\\review\\tui 1731154052886727460\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chủ yếu ở claim chất liệu và so sánh thương hiệu.",
+   "khuyen_nghi": "Làm được; dùng đúng thông số 20x9x15.5cm, da tổng hợp, không so sánh với hàng hiệu."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống xước, chống nước' cần nói đúng mức (hạn chế nước nhẹ), không cam kết tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Yuumy của chính shop, có hộ kinh doanh; tránh so sánh 'giống' các hãng cao cấp."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Mẫu túi vuông chần chỉ phổ biến, hình ảnh do shop sở hữu, chưa thấy dấu hiệu vi phạm."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Túi thời trang, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm dành cho nữ trưởng thành."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'da thật', 'chống nước hoàn toàn', 'giống túi hiệu'",
+    "goi_y": "Nói 'da tổng hợp, chống xước nhẹ, 3 ngăn, dây đeo chỉnh được'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

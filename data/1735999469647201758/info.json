@@ -30,5 +30,45 @@
   "poster_folder": 58,
   "duong_dan": "E:\\Aff anh nhan\\review\\hũ nice 1735999469647201758\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:48+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Hộp bút kèm bút Kunomi/Cub Pen có thể là thương hiệu hoặc hình nhân vật khác; giá khoảng rộng 16k-52k.",
+   "khuyen_nghi": "Có thể làm, ưu tiên bản hộp bút DIY đơn lẻ và chỉ nhắc tên bút nếu có xác nhận nguồn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Mô tả hộp bút DIY, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Bút Kunomi', 'Cub Pen' có thể là tên thương hiệu của bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình mèo con, chó con có thể dùng họa tiết bản quyền, cần xem ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ dùng học tập, không phải đồ chơi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Ảnh mô tả chưa kiểm tra, quan hệ thương hiệu Kunomi/Cub Pen, họa tiết có bản quyền không.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

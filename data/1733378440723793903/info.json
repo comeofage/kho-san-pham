@@ -36,5 +36,50 @@
   "so_video": 0,
   "luc": "2026-11-05T08:50:18+07:00"
  },
- "cap_nhat_luc": "2026-11-14T08:08:51+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Quần áo trẻ em, claim chống tĩnh điện và ấm có thể bị coi là cam kết quá mức.",
+   "khuyen_nghi": "Dùng đúng mô tả chất liệu fleece, không cam kết 'hết tĩnh điện'; ảnh trẻ em dùng đúng ảnh shop."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Cực chống tĩnh điện', 'ấm áp' nên nói nhẹ theo cảm nhận, không cam kết tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand balabala, shop balabala SEA, có vẻ gian hàng chính hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật hay hình ảnh bản quyền bên thứ ba trong thông tin."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Quần áo thường, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm cho trẻ từ 18 tháng; không quay trẻ em trực tiếp nếu không có sự đồng ý của phụ huynh."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết 'tuyệt đối không tĩnh điện'",
+    "goi_y": "Nói 'chất fleece mềm, mặc êm, ấm'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Không có mô tả chữ, cần đọc ảnh mô tả; chưa rõ tem nhãn tiếng Việt cho hàng nhập.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

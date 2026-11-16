@@ -38,5 +38,65 @@
   "poster_folder": 143,
   "duong_dan": "E:/oneshottramcanh/massagemini 1732073269932427662/output_poster"
  },
- "cap_nhat_luc": "2026-11-13T23:13:04+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Máy massage nâng cơ mặt, dễ vướng claim làm đẹp/y tế (nâng cơ, trẻ hóa) và thiết bị điện thiếu chứng nhận.",
+   "khuyen_nghi": "Chỉ nên làm nếu bỏ claim nâng cơ/chống lão hóa, chỉ nói thư giãn, massage nhẹ và cần kiểm tra chứng nhận thiết bị điện."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Tên sản phẩm có 'nâng cơ mặt', 'thư giãn cơ bắp' là claim hiệu quả chưa được kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand GOKOCO không giống thương hiệu nổi tiếng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Có số bằng sáng chế kiểu dáng nhưng cần kiểm tra thực tế."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện dùng pin sạc, đèn đỏ, nhiệt cần chứng nhận hợp quy/an toàn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm vào trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim nâng cơ mặt, thư giãn cơ bắp",
+    "rui_ro": "🟠",
+    "xu_ly": "Đổi sang mô tả cảm giác ấm nhẹ, massage thư giãn"
+   },
+   {
+    "van_de": "Đèn đỏ và nhiệt tác động lên da",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nói trị liệu hay cải thiện da"
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nâng cơ, săn chắc, xoá nhăn, trẻ hoá",
+    "goi_y": "Dùng 'massage nhẹ nhàng, tạo cảm giác thư giãn'"
+   },
+   {
+    "khong_nen": "Đèn đỏ làm đẹp da",
+    "goi_y": "Chỉ nói có đèn và 9 mức nhiệt ấm"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận hợp quy thiết bị điện, công bố tiêu chuẩn, mô tả đầy đủ trong ảnh.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

@@ -30,5 +30,51 @@
   "poster_folder": 34,
   "duong_dan": "E:/Aff anh nhan/review/xedap"
  },
- "cap_nhat_luc": "2026-10-20T15:25:47+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Móc khoá nam châm cỡ nhỏ có nguy cơ nuốt/hút cho trẻ em và mô tả sản phẩm trống, thông tin xuất xứ mâu thuẫn.",
+   "khuyen_nghi": "Làm được nếu xác nhận loại nam châm và cảnh báo để xa trẻ nhỏ; không quảng bá cho trẻ em."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ trang trí, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand QUAFF, chưa rõ nguồn gốc; xuất xứ Việt Nam nhưng địa chỉ yiwu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô hình xe đạp nhỏ, cần tránh dáng giống nhãn hàng xe đạp cụ thể."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm cấm rõ ràng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Nam châm nhỏ rất nguy hiểm khi trẻ nuốt, cần cảnh báo."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nam châm nhỏ",
+    "rui_ro": "🟠",
+    "xu_ly": "Ghi cảnh báo để xa trẻ dưới 14 tuổi, không quay có trẻ em."
+   }
+  ],
+  "claim_cam": [],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Mô tả chữ gần như trống, chưa rõ lực từ, tuổi khuyến nghị và xuất xứ thật.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

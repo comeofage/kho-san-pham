@@ -30,11 +30,62 @@
   "poster_folder": 201,
   "duong_dan": "E:/oneshottramcanh/atiso 1731748783809923005/output_poster"
  },
- "cap_nhat_luc": "2026-10-22T11:31:31+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
  "can_dang": true,
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-22T11:31:31+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Mô tả gọi là vị thuốc quý với nhiều công dụng sức khỏe, vi phạm claim thực phẩm.",
+   "khuyen_nghi": "Chỉ nói đây là đồ uống chua ngọt pha 1:4, ướp bánh; bỏ hết nội dung sức khỏe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả nêu vị thuốc quý và lợi ích sức khỏe, là claim y tế cho thực phẩm thường."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Berryland của chính shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có yếu tố bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm tự công bố, cần số công bố và hạn dùng rõ trên bao bì."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Mô tả hoa atiso đỏ là vị thuốc, công dụng cho sức khỏe",
+    "rui_ro": "🟠",
+    "xu_ly": "Không đọc hay hiển thị phần công dụng, chỉ nói hương vị và cách pha."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giải nhiệt, hạ mỡ máu, hạ huyết áp, tốt cho gan",
+    "goi_y": "Nói vị chua ngọt tự nhiên, pha lạnh, làm đồ uống hoặc ướp bánh."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
  }
 }

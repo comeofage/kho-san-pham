@@ -30,5 +30,50 @@
   "poster_folder": 92,
   "duong_dan": "E:\\oneshottramcanh\\gadient 1736181021338535510\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:50+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'thân thiện môi trường' và chất liệu PC cần có cơ sở khi quảng cáo.",
+   "khuyen_nghi": "Chỉ nói dung tích 800ml, ống hút, dây đeo, màu gradient; không hứa an toàn sức khỏe hay thân thiện môi trường."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Thân thiện với môi trường' là claim môi trường cần cơ sở."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Màu trơn, không có nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Bình đựng đồ uống tiếp xúc thực phẩm, nên có chứng nhận vật liệu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em riêng."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'thân thiện môi trường, không độc hại' khi chưa có giấy tờ",
+    "goi_y": "Nói 'bình 800ml có ống hút, dây đeo tay, màu gradient mờ'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa đọc ảnh mô tả và chưa có chứng nhận vật liệu.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

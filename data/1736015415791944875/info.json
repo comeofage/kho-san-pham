@@ -30,5 +30,45 @@
   "poster_folder": 100,
   "duong_dan": "E:\\oneshottramcanh\\donghoxe 1736015415791944875\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:48+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Đồng hồ điện tử dán xe có claim 'an toàn khi đi xe', 'chống mưa' mơ hồ; tổ chức chịu trách nhiệm ghi 'Updating'.",
+   "khuyen_nghi": "Có thể làm, chỉ demo xem giờ và độ bám dính, không hứa chống nước hay tăng an toàn lái xe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Cải thiện tầm nhìn ban đêm', 'thiết kế an toàn', 'chống mưa' là cam kết kỹ thuật cần kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand No brand, tên 'abrtedvn' lạ nhưng không phải thương hiệu rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy hình ảnh bản quyền; biến thể Phi hành gia/Cầu vồng cần xem ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị điện tử dùng pin, thông tin tổ chức chịu trách nhiệm ghi 'Updating' nên thiếu truy xuất."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Ảnh chưa kiểm tra, loại pin và chứng nhận, thông tin tổ chức chịu trách nhiệm hàng hóa.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

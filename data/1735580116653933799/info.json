@@ -30,5 +30,50 @@
   "poster_folder": 10,
   "duong_dan": "E:\\Aff anh nhan\\review\\cờ vua ống 1735580116653933799\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả có claim chữa chứng mất tập trung và lợi ích phát triển trẻ chưa có căn cứ.",
+   "khuyen_nghi": "Làm được; bỏ câu 'mắc chứng mất tập trung', chỉ nói trò chơi trí tuệ, chơi cùng gia đình."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Câu 'con mắc chứng mất tập trung hãy cho học cờ vua' là claim y tế/điều trị."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Foxi, có công ty chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Hướng tới trẻ em, cần ghi độ tuổi và quân cờ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cờ vua chữa mất tập trung, phát triển trí tuệ chắc chắn",
+    "goi_y": "Nói 'rèn tư duy, vui cùng gia đình'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Độ tuổi khuyến nghị, cảnh báo chi tiết nhỏ.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

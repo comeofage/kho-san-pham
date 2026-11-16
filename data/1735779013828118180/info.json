@@ -27,7 +27,7 @@
   "so_video": 25,
   "luc": "2026-10-29T14:26:25+07:00"
  },
- "cap_nhat_luc": "2026-10-29T14:26:25+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -37,5 +37,54 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-12T08:41:27+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm cho cả trẻ em, mô tả 'hương trái cây tự nhiên' cần khớp thành phần và nhãn thực tế.",
+   "khuyen_nghi": "Quay nhấn đóng gói, hương vị và độ dẻo, không nói tốt cho sức khỏe; hiển thị rõ giấy ATTP, HSD và thành phần."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Hương trái cây tự nhiên', 'sữa chua' cần khớp thành phần thực tế, không được nói có lợi ích sức khỏe/men tiêu hóa."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand THANHTHUYDONGTHAP của chính shop, không vi phạm nhãn hiệu rõ ràng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật hay hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm cần giấy ATTP; trang có giấy chứng nhận cơ sở, chưa thấy tự công bố sản phẩm, HSD, NSX."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả 'thích hợp cho cả trẻ em', kẹo dẻo có nguy cơ nghẹn với trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Tốt cho tiêu hóa vì có sữa chua",
+    "goi_y": "Nói 'kẹo vị sữa chua chua ngọt, ăn vặt xem phim'."
+   },
+   {
+    "khong_nen": "Hương trái cây hoàn toàn tự nhiên",
+    "goi_y": "Nói 'hương dâu, đào, xoài, nho'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thành phần, HSD, tự công bố sản phẩm, nhãn phụ tiếng Việt.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
  }
 }

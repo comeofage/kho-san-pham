@@ -30,5 +30,65 @@
   "poster_folder": 47,
   "duong_dan": "E:\\Aff anh nhan\\review\\1107-móc khóa thông tin 1735825778182490039\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:48+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Biến thể Tom và Jerry là nhân vật Tom & Jerry (Warner Bros) có bản quyền, rủi ro gỡ sản phẩm; xuất xứ ghi Việt Nam nhưng địa chỉ yiwu.",
+   "khuyen_nghi": "Chỉ quảng bá biến thể con trai/con gái ngồi scooter, không quay hay nhắc Tom, Jerry."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Móc khóa trang trí, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Tom', 'Jerry' là tên nhân vật/nhãn hiệu của bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Hình nhân vật Tom & Jerry là IP có bản quyền, khả năng cao là hàng không ủy quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Quảng cáo cho bé trai/bé gái; kim loại và chi tiết nhỏ cần cảnh báo, không dành cho trẻ nhỏ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Biến thể Tom, Jerry",
+    "rui_ro": "🔴",
+    "xu_ly": "Loại các biến thể này khỏi video và không hiển thị trong cảnh quay."
+   },
+   {
+    "van_de": "Xuất xứ mâu thuẫn Việt Nam và yiwu",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nói 'sản xuất tại Việt Nam' khi chưa có giấy tờ."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Móc khóa Tom và Jerry chính hãng",
+    "goi_y": "Chỉ nói 'móc khóa scooter hoạt hình dễ thương'."
+   },
+   {
+    "khong_nen": "Hàng sản xuất tại Việt Nam",
+    "goi_y": "Không nói xuất xứ nếu không xác minh được."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Ảnh biến thể, ủy quyền bản quyền nhân vật, xuất xứ thật.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

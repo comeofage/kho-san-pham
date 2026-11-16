@@ -35,5 +35,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-11T22:10:32+07:00"
+ "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tên listing có claim \"chống rạn nứt và mối mọt\" mang tính diệt/phòng côn trùng, cần giấy tờ chứng minh nếu quảng cáo.",
+   "khuyen_nghi": "Chỉ nói công dụng làm sạch, đánh bóng, dưỡng bề mặt gỗ; không hứa chống mối mọt hay rạn nứt. Tránh khẳng định tác dụng vĩnh viễn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Claim \"chống rạn nứt và mối mọt\" là công dụng như diệt côn trùng/bảo quản gỗ, không có bằng chứng trong thông tin trang."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu MỘC AN của chính shop, có tổ chức chịu trách nhiệm là Công Ty Proschem Việt Nam, không thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm không dùng nhân vật hay hình ảnh có bản quyền; chỉ cần dùng ảnh/clip tự quay."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Chất làm bóng dạng xịt chứa dầu thông, tinh dầu, dễ cháy nhẹ; trang ghi không phải hàng nguy hiểm nhưng nên kiểm tra nhãn và phiếu an toàn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không phải sản phẩm cho trẻ em, chỉ cần không quay cảnh trẻ em tiếp xúc hóa chất."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chống rạn nứt, mối mọt trong tên listing và nội dung video",
+    "rui_ro": "🟠",
+    "xu_ly": "Không đọc claim này trong video; chỉ nói làm sạch, đánh bóng, làm mới bề mặt gỗ."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống mối mọt, diệt mối, chống nứt gỗ vĩnh viễn",
+    "goi_y": "Giúp bề mặt gỗ sáng bóng, dễ lau chùi, gỗ trông như mới sau khi lau."
+   },
+   {
+    "khong_nen": "An toàn tuyệt đối, không độc hại",
+    "goi_y": "Dùng theo hướng dẫn trên nhãn, để xa tầm tay trẻ em."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa thấy thành phần chi tiết, giấy công bố sản phẩm tẩy rửa gia dụng, bằng chứng chống mối mọt.",
+  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+ }
 }

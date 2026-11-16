@@ -30,5 +30,56 @@
   "poster_folder": 1,
   "duong_dan": "E:\\Aff anh nhan\\review\\bo phao boi 1731678050221196617\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:40:10+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sản phẩm hỗ trợ bơi cho trẻ em có rủi ro hiểu nhầm là thiết bị an toàn cứu hộ.",
+   "khuyen_nghi": "Làm nếu nội dung luôn nhắc 'không phải thiết bị cứu hộ, cần người lớn giám sát' và tránh claim an toàn tuyệt đối."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả 'an toàn', 'giữ thăng bằng', 'tăng tự tin' cho đồ hỗ trợ nổi là claim an toàn dễ gây hiểu lầm có thể thay thế cứu hộ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand EduSport nhỏ, chưa rõ đăng ký nhãn hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Phao mút EVA thông thường, không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Dụng cụ hỗ trợ bơi, không phải thiết bị cứu hộ; xuất xứ Trung Quốc, cần kiểm định."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Dành cho trẻ em tập bơi, rủi ro đuối nước nếu hiểu nhầm là thiết bị cứu sinh; cần cảnh báo giám sát người lớn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Dễ bị hiểu là thiết bị cứu sinh cho trẻ em",
+    "rui_ro": "🟠",
+    "xu_ly": "Nói rõ không phải thiết bị cứu hộ, luôn có người lớn giám sát trong video."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'an toàn tuyệt đối', 'chống đuối nước', 'bé tự bơi một mình'",
+    "goi_y": "Nói 'phao hỗ trợ nổi cho người mới làm quen nước, dùng dưới giám sát người lớn'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chứng nhận kiểm định, độ tuổi/cân nặng tối đa.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

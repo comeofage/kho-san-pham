@@ -38,5 +38,50 @@
   "poster_folder": 246,
   "duong_dan": "E:/oneshottramcanh/binhden 1729647079859718809/output_poster"
  },
- "cap_nhat_luc": "2026-11-03T14:17:36+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'không chứa tạp chất độc hại' và 'inox 304' cần chứng nhận vật liệu tiếp xúc thực phẩm, thông tin tổ chức chịu trách nhiệm trên trang đang ghi '1'.",
+   "khuyen_nghi": "Làm được; không đảm bảo tuyệt đối về độc hại và thời gian giữ nhiệt, nên quay thử đo thực tế."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Giữ nhiệt 8-10h và 'không tạp chất độc hại' cần dẫn chứng, kết quả phụ thuộc điều kiện dùng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Trancy Home có thể dễ nhầm lẫn với các thương hiệu tương tự, chưa thấy đăng ký."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế bình thông dụng, không có hình bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ dùng tiếp xúc thực phẩm cần chứng nhận an toàn vật liệu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đối tượng trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Hoàn toàn không chứa chất độc hại, an toàn tuyệt đối cho sức khỏe",
+    "goi_y": "Nói 'inox 304, tiện mang đi, có hiển thị nhiệt độ'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Thông tin tổ chức chịu trách nhiệm hàng hóa ghi '1'; chưa có chứng nhận inox 304 tiếp xúc thực phẩm.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

@@ -39,5 +39,50 @@
   "poster_folder": 171,
   "duong_dan": "E:/oneshottramcanh/nhuanham 1731065831523911793/output_poster"
  },
- "cap_nhat_luc": "2026-10-26T22:21:22+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Hóa chất chăm sóc xe có claim bền màu 2 năm, chống nước, khi quay dễ bị coi là cam kết quá mức.",
+   "khuyen_nghi": "Có thể làm, nên quay trước/sau thật trên nhựa xe và bỏ con số '2 năm'. Nhắc dùng găng tay, tránh xa tầm tay trẻ em."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Bền màu đến 2 năm' và 'chống nước vượt trội' là claim tuyệt đối khó kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Sprayking là thương hiệu của công ty Việt Nam, shop chính chủ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Dung dịch hóa chất sơn/nhuộm nhựa, cần nhãn thành phần và cảnh báo an toàn, hồ sơ chưa nêu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Bền màu 2 năm, chống nước tuyệt đối",
+    "goi_y": "Phủ lại màu đen cho nhựa nhám bạc màu, hiệu ứng lá sen khi tiếp xúc nước"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thành phần, phiếu an toàn hóa chất (MSDS), cảnh báo sử dụng trên nhãn.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

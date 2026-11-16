@@ -40,6 +40,57 @@
   "poster_folder": 224,
   "duong_dan": "E:\\oneshottramcanh\\thobong 1736224785824908452\\output"
  },
- "cap_nhat_luc": "2026-10-31T09:57:09+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tên 'Thỏ Jelly tai dài' dễ bị coi là nhái kiểu dáng/ám chỉ thương hiệu Jellycat.",
+   "khuyen_nghi": "Đổi cách gọi thành 'thỏ bông tai dài lông nhung', không nhắc 'Jelly' hay so sánh với hãng; kiểm tra ảnh không có mác Jellycat."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả mềm, đàn hồi, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "Từ 'Jelly' và kiểu thỏ tai dài pastel gần với dòng Jellycat nổi tiếng, có nguy cơ bị báo hàng nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Cần xem ảnh có logo, mác hoặc kiểu dáng sao chép sản phẩm của hãng khác."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả hướng đến trẻ em và mọi lứa tuổi; cần cảnh báo chi tiết nhỏ như mắt mũi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Tên 'Jelly' có thể bị coi là nhái hoặc ám chỉ Jellycat",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ chữ 'Jelly' khi nói/caption; yêu cầu shop đổi tiêu đề và xác nhận không có mác hãng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'thỏ Jelly', 'giống Jellycat' hoặc 'hàng xịn như hãng'",
+    "goi_y": "Nói 'thỏ bông tai dài 40cm, lông nhung, 8 màu pastel'"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa đọc ảnh để kiểm tra mác/logo; mô tả có đoạn 'Dưới đây là mô tả...' do AI soạn cần shop sửa.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

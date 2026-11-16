@@ -36,8 +36,53 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:11:40+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh hứa hẹn phong thuỷ/may mắn tuyệt đối.",
+   "khuyen_nghi": "Làm được, nói theo hướng trang trí Tết/nhà mới và cách dán tĩnh điện bóc dán lại."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là decal trang trí, không có claim công dụng y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu bên thứ ba trong tên và USP."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hoạ tiết hồ lô, hoa sen, chữ Phúc Lộc là hình truyền thống, không thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Giấy PVC dán kính, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết mang lại tài lộc, may mắn chắc chắn",
+    "goi_y": "Nói là trang trí đón Tết, tân gia cho đẹp nhà."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Trang không có mô tả chữ, cần xem ảnh mô tả để chắc không có chữ hay hình nhạy cảm.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
+ }
 }

@@ -30,5 +30,50 @@
   "poster_folder": 118,
   "duong_dan": "E:\\oneshottramcanh\\mangboctopgia 1731685189869798486\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:51+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh nói quá về độ an toàn và khả năng giữ tươi.",
+   "khuyen_nghi": "Quay cảnh dùng thực tế (rút, bọc, treo tường) và chỉ nêu đặc điểm có trong thông số như chất liệu PE, 300 cái/túi."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chủ yếu là tiện ích (treo tường, co giãn), không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu TOP GIA là của chính shop TOPGIAHN."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng nhân vật hay hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Vật liệu tiếp xúc thực phẩm nên cần giấy công bố hợp quy, trang chưa hiển thị."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Màng bọc giữ thực phẩm tươi vĩnh viễn / diệt khuẩn",
+    "goi_y": "Nói giữ tươi lâu hơn khi bọc kín, hạn chế bay mùi."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa thấy giấy công bố hợp quy vật liệu tiếp xúc thực phẩm; hộp 100 cái và túi 300 cái dễ nhầm số lượng.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

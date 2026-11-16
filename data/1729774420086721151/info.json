@@ -29,7 +29,7 @@
   "poster_folder": 165,
   "duong_dan": "E:\\oneshottramcanh\\chiden 1729774420086721151\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:53:50+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -39,5 +39,50 @@
   "xong": true,
   "boi": "poster",
   "luc": "2026-10-20T13:35:33+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'siêu cứng', 'kim cương' và 'nhạy với máy chấm thi' mang tính tuyệt đối, có thể bị khiếu nại nếu không đúng thực tế.",
+   "khuyen_nghi": "Làm được vì là shop chính hãng Deli; nên demo tô trắc nghiệm thật và tránh cam kết điểm thi."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Siêu cứng', 'chì kim cương', 'nhạy máy chấm thi' cần chứng minh bằng demo."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shop Deli Vietnam là kênh chính thức của thương hiệu Deli/Nusign."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút chì thường, không có hình bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đối tượng học sinh, nên tránh quay trẻ nhỏ và không hứa hẹn kết quả thi."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Đảm bảo máy chấm thi nhận 100%, không bao giờ gãy ruột",
+    "goi_y": "Nói 'chì 2B đậm đều, tô trắc nghiệm rõ nét'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
  }
 }

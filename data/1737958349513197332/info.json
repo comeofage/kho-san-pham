@@ -35,5 +35,50 @@
   "poster_folder": 234,
   "duong_dan": "E:/oneshottramcanh/qua2010 1737958349513197332/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:36+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, chỉ cần tránh nói không đúng mô tả thực tế (hoa sáp thơm, hộp quà).",
+   "khuyen_nghi": "Quay đúng set bút + túi + thiệp như trang bán; bỏ các claim 'hoa sáp thơm vĩnh cửu' nếu sản phẩm không có."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "USP nhắc hoa sáp thơm, lưu hương dài lâu nhưng mô tả chỉ là bó bút bi hình hoa, dễ sai mô tả."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi tiếng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hoa/bút trang trí thông thường, không nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Quà cho thầy cô, không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Hoa sáp thơm vĩnh cửu, hộp quà sang trọng",
+    "goi_y": "Nói đúng 'bó hoa bút bi, túi xách, thiệp, quà 20/11'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ có hoa sáp/hộp quà thật hay chỉ túi giấy.",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

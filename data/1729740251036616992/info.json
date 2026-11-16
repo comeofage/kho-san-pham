@@ -37,6 +37,67 @@
   "poster_folder": 218,
   "duong_dan": "E:/oneshottramcanh/keo jelly 1729740251036616992/output_poster"
  },
- "cap_nhat_luc": "2026-10-28T19:55:22+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Mô tả mâu thuẫn và sai sự thật (sản xuất tại Đức nhưng xuất xứ Việt Nam; 'không đường, tốt cho sức khỏe, cung cấp dinh dưỡng' cho kẹo) và giấy công bố ghi '1'.",
+   "khuyen_nghi": "Chỉ làm nếu shop bổ sung giấy công bố hợp lệ và sửa mô tả; trong video chỉ nói kẹo ăn vặt nhiều màu, không nói lợi ích dinh dưỡng, không nhắc 'thương hiệu Đức'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🔴",
+    "nhan_xet": "Claim 'không đường, không chất bảo quản, giữ giá trị dinh dưỡng, cung cấp năng lượng' sai bản chất kẹo và có thể vi phạm quy định thực phẩm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Cụm 'thương hiệu Đức' không có thương hiệu cụ thể, dễ gây hiểu lầm nguồn gốc."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật bản quyền, trừ phần bao bì quà Thần Tài cần kiểm tra."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thực phẩm cần giấy tiếp nhận công bố hợp lệ, các trường nơi cấp/số đăng ký đang ghi '1'."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Kẹo thu hút trẻ em, không nên quay trẻ nhỏ ăn kẹo cứng/bi gây nghẹn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Xuất xứ mâu thuẫn (Việt Nam so với sản xuất tại Đức)",
+    "rui_ro": "🔴",
+    "xu_ly": "Yêu cầu shop làm rõ xuất xứ và hóa đơn nhập khẩu; không nói 'hàng Đức' trong video."
+   },
+   {
+    "van_de": "Giấy công bố sản phẩm điền '1'",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra số tiếp nhận công bố thật trước khi làm."
+   },
+   {
+    "van_de": "Claim dinh dưỡng và không đường sai thực tế",
+    "rui_ro": "🔴",
+    "xu_ly": "Bỏ hoàn toàn các câu về sức khỏe, dinh dưỡng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Không đường, không chất bảo quản, bổ sung năng lượng, hàng Đức chính gốc",
+    "goi_y": "Nói 'kẹo bi nhiều màu, chọn vị ngọt hoặc chua, đóng hũ làm quà'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có số tiếp nhận công bố sản phẩm, nơi sản xuất thật, thành phần và hạn sử dụng.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

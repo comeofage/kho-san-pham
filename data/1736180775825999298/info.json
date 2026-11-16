@@ -30,5 +30,50 @@
   "poster_folder": 60,
   "duong_dan": "E:\\Aff anh nhan\\review\\dép yassia 1736180775825999298\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:50+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Dép mang thương hiệu Yassia và claim tăng chiều cao, chống trượt cần thể hiện đúng thực tế.",
+   "khuyen_nghi": "Quay cảnh đi thực tế và nói đúng độ dày đế; tránh so sánh với hãng khác và không hứa chống trượt mọi mặt sàn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Tăng chiều cao', 'chống trượt' cần nói theo cảm nhận, không hứa tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Dép mang brand Yassia, cần kiểm tra không giống kiểu dáng hãng lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu đế dày giống dòng dép nổi tiếng, cần xem ảnh có logo hãng khác không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng đến người lớn."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'chống trượt tuyệt đối' hoặc so với hãng khác",
+    "goi_y": "Nói 'đế dày êm, nhẹ, đi trong nhà và ngoài trời'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa đọc ảnh mô tả; giá gốc giảm 50% cần kiểm tra không gây hiểu sai.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

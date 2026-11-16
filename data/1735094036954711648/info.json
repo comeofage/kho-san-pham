@@ -35,5 +35,45 @@
   "so_video": 0,
   "luc": "2026-11-05T08:49:57+07:00"
  },
- "cap_nhat_luc": "2026-11-14T08:09:17+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp; chỉ cần tránh dùng logo giải đấu/thương hiệu bóng rổ khi quay.",
+   "khuyen_nghi": "Làm được, nhấn mạnh độ bám tay, 3 size, quà kèm kim bơm và túi lưới."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ thể thao, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên \"SPORTS\" chung chung, cần kiểm tra bóng không in nhãn NBA/Spalding giả."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật/bản quyền được nêu."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Size 3 có thể cho trẻ nhỏ chơi, cần nói rõ tuổi gợi ý."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Tổ chức chịu trách nhiệm hàng hoá ghi \"Updating\"; chưa rõ logo in trên bóng.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

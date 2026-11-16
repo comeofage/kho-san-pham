@@ -35,5 +35,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T08:09:07+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi dạng dẻo dễ bị nhầm là đồ ăn và thiếu chứng từ an toàn đồ chơi.",
+   "khuyen_nghi": "Làm được nếu nhấn mạnh không phải đồ ăn, trên 7 tuổi, không quay trẻ nhỏ cho vào miệng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nói giảm căng thẳng, xả stress hiệu quả cần diễn đạt là giải trí, không phải hiệu quả trị liệu."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi tiếng, tên Vasaline chỉ mô tả kiểu dáng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu tuýt kem và ball hồng đá bào có thể bị nhầm với hình ảnh thương hiệu mỹ phẩm hay đồ ăn thật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số ghi CẢNH BÁO TUỔI là Không nhưng mô tả khuyến cáo trên 7 tuổi và dễ bị nhầm là đồ ăn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi có thể bị trẻ nhỏ cho vào miệng, cần chứng nhận hợp quy an toàn đồ chơi QCVN 3:2019/BKHCN."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thiếu chứng nhận an toàn đồ chơi trẻ em",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp công bố hợp quy trước khi làm."
+   },
+   {
+    "van_de": "Hình dáng giống đồ ăn, kem",
+    "rui_ro": "🟠",
+    "xu_ly": "Ghi rõ không ăn được trên video, không quay hành động ăn."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp trị căng thẳng, lo âu",
+    "goi_y": "Chỉ nói bóp cho vui tay, thư giãn."
+   },
+   {
+    "khong_nen": "Quay bé nhỏ ngậm hay cắn",
+    "goi_y": "Quay người lớn, học sinh lớn dùng, đúng độ tuổi."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy hợp quy đồ chơi.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

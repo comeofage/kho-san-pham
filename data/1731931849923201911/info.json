@@ -35,5 +35,50 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-04T21:06:18+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp nhưng cần làm rõ ống phụt là cơ chế cơ học, không phải pháo.",
+   "khuyen_nghi": "Quay xoắn đáy tạo hoa giấy ở khoảng cách an toàn, không dùng từ pháo hay bắn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là đồ trang trí, không có claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu bị trùng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hoa giấy hồng trơn, không nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Ống phụt dễ bị nhầm với pháo nên cần xác nhận cơ chế phụt, không thuốc nổ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Hay dùng ở tiệc có trẻ nhỏ, văng giấy gần mặt."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Pháo hoa giấy / nổ / bắn",
+    "goi_y": "Nói xoắn đáy ống để hoa giấy bung ra."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Cơ chế phụt thực tế (khí nén hay lò xo), có thuốc nổ hay không, độ tuổi sử dụng.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

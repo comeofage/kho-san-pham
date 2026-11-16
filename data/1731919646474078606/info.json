@@ -29,5 +29,61 @@
   "luc": "2026-10-22T14:25:16+07:00",
   "duong_dan": "E:\\oneshottramcanh\\tamnuoc 1731919646474078606\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:02:56+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Có claim nha khoa/kháng khuẩn và hồ sơ ghi bằng sáng chế thay vì giấy công bố.",
+   "khuyen_nghi": "Chỉ quay cảnh dùng và thông số cơ bản, bỏ các câu bác sĩ khuyên dùng và kháng khuẩn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả nêu chế độ kháng khuẩn, được bác sĩ nha khoa khuyên dùng, là claim y tế chưa chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand GOKOCO chưa xác minh, tên SuperClean có thể trùng nhãn khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Số đăng ký ZL 2023... là bằng sáng chế kiểu dáng, không phải giấy chứng nhận chất lượng."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thiết bị chăm sóc răng miệng có pin sạc, có thể bị xếp là thiết bị y tế hoặc cần hợp quy điện."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm tới trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim được bác sĩ nha khoa khuyên dùng và kháng khuẩn tự động",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ hoàn toàn các câu này và dùng thông số kỹ thuật thật."
+   },
+   {
+    "van_de": "Giấy phép đăng ký là bằng sáng chế, không phải công bố tiêu chuẩn",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung giấy hợp quy và công bố phù hợp."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chữa viêm nướu / diệt khuẩn / bác sĩ khuyên dùng",
+    "goi_y": "Nói làm sạch kẽ răng, 3 chế độ, có thể sạc lại."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Hợp quy điện, phân loại thiết bị y tế hay không, bằng chứng kháng khuẩn.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

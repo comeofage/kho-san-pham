@@ -35,6 +35,55 @@
   "poster_folder": 241,
   "duong_dan": "E:/oneshottramcanh/quatxit 1737635369156773564/output"
  },
- "cap_nhat_luc": "2026-11-11T10:27:34+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim giảm nhiệt 3-5 độ và an toàn không BPA chưa kiểm chứng, thiết bị có pin lithium và nước bên trong.",
+   "khuyen_nghi": "Có thể làm, nói 'cảm giác mát hơn' thay vì con số nhiệt độ; không khẳng định không BPA khi chưa có giấy tờ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Giảm nhiệt độ 3-5 độ C tức thì' là con số chưa có kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế phổ biến, không có hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Pin lithium polymer 7.4Wh tích hợp, đã khai báo, bình đựng nước dùng với thực phẩm nên cần giấy an toàn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng tới học sinh, người đi chơi, không nhắm riêng trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm nhiệt 3-5 độ tức thì, đảm bảo không chứa BPA",
+    "goi_y": "Bình nước kèm quạt và phun sương, tạo cảm giác mát khi ra ngoài trời nóng."
+   },
+   {
+    "khong_nen": "Mua 1 được 3",
+    "goi_y": "Chỉ nêu đúng nội dung combo theo trang bán, tránh gây hiểu nhầm số lượng."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy kiểm nghiệm vật liệu tiếp xúc thực phẩm, thông tin tổ chức chịu trách nhiệm tại Việt Nam, dung tích thực tế (500-1000ml hay 690ml).",
+  "danh_gia_luc": "2026-11-16T08:34:59+07:00"
+ }
 }

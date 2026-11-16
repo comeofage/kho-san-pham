@@ -40,6 +40,57 @@
   "poster_folder": 291,
   "duong_dan": "E:/oneshottramcanh/mkhoahoc-1732921249915045020/output"
  },
- "cap_nhat_luc": "2026-11-06T08:42:36+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Nhiều biến thể in nhân vật (Hello Kitty, Doraemon, Shin, Conan) và người nổi tiếng là vi phạm IPR.",
+   "khuyen_nghi": "Chỉ quảng bá mẫu Bảng tuần hoàn cơ bản/Tím, tránh quay các mẫu có nhân vật hoặc nghệ sĩ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Là đồ học tập, nội dung tra cứu, claim đúng chương trình cần dẫn nguồn cho chính xác."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Có tên XoBox Offica, chưa thấy dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Biến thể Hello Kitty, Shin, Doraemon, Conan cần ủy quyền; hieuthuhai, Rhyder, Dương Domic dùng hình ảnh/tên người nổi tiếng."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dành cho học sinh, không phải đồ chơi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Biến thể in nhân vật hoạt hình và người nổi tiếng",
+    "rui_ro": "🔴",
+    "xu_ly": "Không đưa các mẫu này vào video, chỉ dùng mẫu cơ bản/màu trơn."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Theo đúng chương trình mới của Bộ GD, đảm bảo điểm cao",
+    "goi_y": "Nói 'in nội dung tham khảo các bộ sách Cánh diều, Kết nối tri thức, Chân trời sáng tạo' và không hứa điểm số."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép sử dụng nhân vật và hình ảnh nghệ sĩ của các mẫu biến thể.",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

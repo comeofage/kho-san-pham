@@ -37,6 +37,61 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-31T09:56:48+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Dùng tên KingKong và tên iPhone kèm chữ 'chính hãng', dễ bị coi là gian lận nhãn hiệu/hàng nhái nếu không có ủy quyền.",
+   "khuyen_nghi": "Không dùng chữ 'chính hãng'; nói là kính tương thích iPhone và kiểm chứng giấy ủy quyền KingKong của shop trước khi làm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim chống nhìn trộm 2 chiều/4 chiều và độ cứng cần demo thật, không nên nói tuyệt đối không ai nhìn được."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟠",
+    "nhan_xet": "KingKong là thương hiệu phụ kiện có nhiều hàng nhái, kèm tên iPhone/ProMax dùng để mô tả tương thích."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình ảnh iPhone/logo Apple trong video có thể vướng IPR nếu hiện logo rõ."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Phụ kiện điện thoại không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Chữ 'chính hãng' và thương hiệu KingKong không có bằng chứng ủy quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp giấy ủy quyền hoặc bỏ chữ 'chính hãng' trong lời thoại."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chính hãng KingKong, Apple chứng nhận",
+    "goi_y": "Nói 'kính cường lực chống nhìn trộm cho iPhone'."
+   },
+   {
+    "khong_nen": "Người ngồi cạnh tuyệt đối không nhìn thấy gì",
+    "goi_y": "Nói 'nhìn nghiêng thấy màn tối, khó nhìn rõ'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy ủy quyền thương hiệu KingKong cho shop.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
+ }
 }

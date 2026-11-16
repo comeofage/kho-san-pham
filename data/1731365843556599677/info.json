@@ -38,6 +38,57 @@
   "poster_folder": 192,
   "duong_dan": "F:\\2010\\văn 6 2010 1731365843556599677\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Rủi ro bản quyền nội dung dựa trên SGK và xuất bản phẩm giáo dục chưa rõ giấy phép.",
+   "khuyen_nghi": "Làm nếu shop xác nhận giấy phép xuất bản/quyền nội dung; nói đây là sổ tay ghi chép theo chương trình, không cam kết điểm số."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chinh phục điểm A+' là cam kết kết quả học tập, cần tránh khẳng định."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng tên 'Kết Nối Tri Thức và Cuộc Sống' của bộ sách NXB Giáo dục, cần dùng đúng mục đích mô tả chương trình."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Nội dung tóm tắt dựa trên sách giáo khoa và có sticker/hình minh họa; cần xác minh quyền tác giả và giấy phép xuất bản."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Sổ tay kiến thức có tính chất xuất bản phẩm, có thể cần giấy phép xuất bản/liên kết."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Hướng tới học sinh lớp 6 (khoảng 11-12 tuổi), cần nội dung phù hợp và có phụ huynh mua."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nội dung biên soạn từ SGK, chưa có thông tin giấy phép xuất bản",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi shop về giấy phép xuất bản/ISBN và quyền sử dụng nội dung trước khi đăng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Hứa 'đạt A+', 'chắc chắn điểm cao'",
+    "goi_y": "Nói 'sổ tay sketchnote giúp ghi chép gọn, có mục lục chia Kỳ I, Kỳ II'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy phép xuất bản/ISBN, quyền sử dụng hình minh họa và nội dung.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

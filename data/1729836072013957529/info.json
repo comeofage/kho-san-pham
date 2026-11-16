@@ -28,7 +28,7 @@
   "poster_folder": 159,
   "duong_dan": "F:\\0810\\1008 (1)\\gôm to 0810 -  1729836072013957529"
  },
- "cap_nhat_luc": "2026-10-20T13:46:24+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
  "da_quay_oneshot": {
   "xong": true,
   "boi": "Nhân",
@@ -38,5 +38,56 @@
   "xong": true,
   "boi": "Thu",
   "luc": "2026-10-13T11:33:56+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Mẫu hoạt hình có thể giống nhân vật có bản quyền, và claim 'an toàn cho học sinh' không có chứng nhận.",
+   "khuyen_nghi": "Chỉ nêu kích thước 15x5cm và độ dễ tẩy, tránh nói 'an toàn tuyệt đối'; kiểm tra 4 mẫu có nhân vật có bản quyền không."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'An toàn cho học sinh' là claim chưa có chứng nhận."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhãn hiệu cụ thể."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "4 mẫu hoạt hình chưa rõ có phải nhân vật có bản quyền không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhắm học sinh nhưng là đồ dùng thông thường, không phải đồ chơi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hình hoạt hình có thể là nhân vật có bản quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Xem kỹ 4 mẫu và không gọi tên nhân vật."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối cho học sinh",
+    "goi_y": "Tẩy mềm, tẩy sạch vết chì."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Tên nhân vật trên 4 mẫu, giấy kiểm định chất liệu PVC.",
+  "danh_gia_luc": "2026-11-16T08:34:49+07:00"
  }
 }

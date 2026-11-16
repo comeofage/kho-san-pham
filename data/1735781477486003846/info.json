@@ -37,6 +37,46 @@
   "poster_folder": 219,
   "duong_dan": "E:/oneshottramcanh/coffeecup 1735781477486003846/output_poster"
  },
- "cap_nhat_luc": "2026-11-11T10:19:25+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'chống bỏng', 'giữ lạnh' không nêu thời gian dễ bị coi là phóng đại; shop gửi từ nước ngoài, điểm 3.1.",
+   "khuyen_nghi": "Có thể làm, chỉ demo giữ nhiệt/lạnh thực tế, không nêu số giờ nếu chưa kiểm chứng và lưu ý thời gian giao 5-8 ngày."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống bỏng', 'giữ lạnh' cần mô tả đúng, tránh cam kết số giờ giữ nhiệt chưa kiểm chứng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có brand, không thấy logo hãng khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế, lòng inox cần an toàn thực phẩm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Ảnh ghép chưa kiểm tra, chưa có chứng nhận inox 304/316, giữ nhiệt bao nhiêu giờ.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

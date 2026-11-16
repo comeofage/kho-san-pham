@@ -30,5 +30,54 @@
   "poster_folder": 75,
   "duong_dan": "E:\\Aff anh nhan\\review\\kinhdoimau 1735670634794616716\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:46+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim chống tia UV, bảo vệ mắt và 'kính đi đêm' có thể bị coi là cam kết công năng khi chưa có kiểm định.",
+   "khuyen_nghi": "Chỉ nói chắn gió bụi, giảm chói theo thông số trang; tránh khẳng định chống UV tuyệt đối hay lái xe đêm an toàn hơn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống tia cực tím', 'bảo vệ mắt', 'chống chói ngày đêm' cần kiểm định, không được cam kết bảo vệ thị lực."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand 'No brand' nhưng tên shop PNJ ERA dễ gây nhầm với thương hiệu PNJ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy nhân vật hay hình ảnh bản quyền trong thông tin trang."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Kính chống tia UV 100%, bảo vệ mắt tuyệt đối",
+    "goi_y": "Nói 'kính thể thao chắn gió bụi, đỡ chói khi đi đường'."
+   },
+   {
+    "khong_nen": "Kính đi đêm giúp lái xe an toàn hơn",
+    "goi_y": "Nói 'tròng kính vàng đi đêm dùng làm kính che bụi, không thay kính y tế'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Ảnh ghép chưa kiểm tra, chưa có kiểm định chống UV, chưa rõ liên hệ giữa shop PNJ ERA và thương hiệu PNJ.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

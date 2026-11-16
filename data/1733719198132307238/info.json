@@ -37,6 +37,57 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-10-28T19:55:22+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim sức khỏe và hữu cơ có thể vượt tài liệu công bố.",
+   "khuyen_nghi": "Chỉ mô tả hương vị, cách nấu và thành phần gạo lứt, không nói công dụng sức khỏe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm: dễ vi phạm khi nói healthy, eat clean mang nghĩa giảm cân hay chữa bệnh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu của chính shop, không dấu hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng hình ảnh hay nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm có công bố sản phẩm nhưng cần kiểm tra chữ hữu cơ có chứng nhận."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Ghi Hữu cơ: Có nhưng không rõ chứng nhận",
+    "rui_ro": "🟠",
+    "xu_ly": "Không dùng chữ hữu cơ nếu shop không đưa được chứng nhận."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm cân, tốt cho tiểu đường, ổn định đường huyết",
+    "goi_y": "Chỉ nói mì gạo lứt, luộc 1-2 phút, sợi dai."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có chứng nhận hữu cơ, chưa xem nhãn gói hàng.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

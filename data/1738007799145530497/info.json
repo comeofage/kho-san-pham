@@ -35,6 +35,51 @@
   "poster_folder": 295,
   "duong_dan": "E:/oneshottramcanh/chuot-1738007799145530497/output"
  },
- "cap_nhat_luc": "2026-11-15T00:18:53+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:35:00+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp đến trung bình: claim xả stress nhẹ, hình dán đồ ăn và pin đèn.",
+   "khuyen_nghi": "Quay thao tác bấm và đèn LED, nói như đồ chơi giải trí; không hứa giải tỏa áp lực hay chữa bồn chồn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Giải tỏa bồn chồn, áp lực học tập và làm việc tức thì' là claim quá mức."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi tiếng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Hình dán đồ ăn dễ thương có thể là hình có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có đèn LED chạy pin, cần tránh nói an toàn tuyệt đối."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi sưu tầm phi giới tính, học sinh dùng, chưa rõ chứng nhận."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giải tỏa áp lực, hết bồn chồn tức thì",
+    "goi_y": "Nói 'bấm vui tay, đèn LED, bỏ túi giải trí'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ chứng nhận đồ chơi/pin; mô tả có combo bàn phím nhưng phân loại chỉ có chuột.",
+  "danh_gia_luc": "2026-11-16T08:35:00+07:00"
+ }
 }

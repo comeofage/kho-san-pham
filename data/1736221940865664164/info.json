@@ -39,6 +39,51 @@
   "poster_folder": 236,
   "duong_dan": "E:/oneshottramcanh/teddy 1736221940865664164/output"
  },
- "cap_nhat_luc": "2026-10-31T17:35:09+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Gấu bông nhồi bông dùng cho cả trẻ em, giá gốc ghi cao có thể gây hiểu sai về mức giảm.",
+   "khuyen_nghi": "Nói đúng 2 size 50cm/85cm, lông nhung, làm quà; tránh nói 'an toàn cho trẻ sơ sinh' và 'giảm 69%' nếu không chắc."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả mềm, đàn hồi, không có claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không dùng thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Gấu Teddy kiểu chung, cần xem ảnh có mặc áo/nhân vật bản quyền hay không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả 'phù hợp mọi lứa tuổi'; cần cảnh báo cho bé nhỏ về mắt mũi/chi tiết rời."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'an toàn cho trẻ sơ sinh' hoặc 'giảm 69%' khi chưa rõ giá thật",
+    "goi_y": "Nói 'gấu teddy lông nhung mềm, ôm ngủ, tặng quà'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ tiêu chuẩn an toàn đồ chơi, độ tuổi và mô tả bị cắt cuối đoạn.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

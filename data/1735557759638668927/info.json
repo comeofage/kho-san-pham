@@ -37,5 +37,45 @@
   "poster_folder": 185,
   "duong_dan": "F:\\1410\\1013 (1)(1)\\màu nhũ 1410-1735557759638668927"
  },
- "cap_nhat_luc": "2026-10-20T13:46:25+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, hàng văn phòng phẩm của shop chính hãng Deli.",
+   "khuyen_nghi": "Làm được; chỉ nên quay đúng sản phẩm và không dùng nhân vật bản quyền ngoài khi demo vẽ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là công dụng viết vẽ, không có claim."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Deli do shop chính hãng bán."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng được cho học sinh, không có vấn đề đặc biệt."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

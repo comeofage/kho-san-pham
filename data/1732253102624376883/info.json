@@ -35,5 +35,50 @@
   "luc": "2026-10-22T13:36:34+07:00",
   "duong_dan": "E:\\oneshottramcanh\\snickers 1732253102624376883\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T09:02:56+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:51+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp: thực phẩm của hãng chính hãng, có giấy tiếp nhận công bố.",
+   "khuyen_nghi": "Có thể làm, chỉ cần tránh claim sức khỏe và nhắc đúng thành phần có đậu phộng, sữa, trứng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ mô tả vị và kết cấu, không có claim sức khỏe."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Shop MarsSnacking.VN là gian hàng chính hãng của Snickers."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng hình ảnh của chính thương hiệu."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Có giấy tiếp nhận đăng ký bản công bố sản phẩm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm vào trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Ăn no giữ năng lượng, bổ sung dinh dưỡng",
+    "goi_y": "Chỉ nói vị ngon, caramel dẻo, đậu phộng giòn"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:51+07:00"
+ }
 }

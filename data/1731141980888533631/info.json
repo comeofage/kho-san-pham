@@ -38,8 +38,48 @@
   "poster_folder": 255,
   "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T03:47:47+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Không có rủi ro đáng kể.",
+   "khuyen_nghi": "Có thể làm, quay combo 10 chậu xếp cạnh cây thật và không cam kết 'độ bền cao' quá mức."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là chậu trồng cây, claim độ bền chung chung không gây rủi ro."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu, hàng sản xuất trong nước."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Chậu trơn, không có hình ảnh có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ gia dụng và làm vườn thông thường."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

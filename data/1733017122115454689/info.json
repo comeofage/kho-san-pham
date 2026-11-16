@@ -30,5 +30,50 @@
   "poster_folder": 81,
   "duong_dan": "E:\\oneshottramcanh\\ly bottle 1733017122115454689\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:45+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Cốc giữ nhiệt cần tránh claim giữ nhiệt số giờ và an toàn thực phẩm không có kiểm nghiệm.",
+   "khuyen_nghi": "Nói đặc điểm: inox, nắp, tay cầm, 450ml. Không hứa số giờ giữ nhiệt nếu chưa có kiểm nghiệm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Giữ nhiệt lâu', 'an toàn' cần nêu theo thông số, không tuyệt đối."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand BOTTLED JOY đã đăng ký trên trang."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên mẫu 'Dun Dun' và các biến thể có họa tiết, cần kiểm tra không dính nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ tiếp xúc thực phẩm, cần chứng nhận vật liệu inox."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng đến văn phòng, không phải trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giữ nóng 24 giờ, an toàn tuyệt đối cho sức khỏe",
+    "goi_y": "Chỉ nói 'thép không gỉ, có nắp, chống rò rỉ' theo thông số."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Cấp độ inox (304/316), số giờ giữ nhiệt có kiểm nghiệm, nguồn gốc các họa tiết in.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

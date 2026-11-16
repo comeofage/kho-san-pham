@@ -35,5 +35,61 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-10T12:10:00+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Nhãn dán gấu trúc có thể là nhân vật meme có bản quyền, mô tả nhạy cảm kiểu bệnh xã hội.",
+   "khuyen_nghi": "Chỉ làm khi xác nhận gấu trúc không phải nhân vật có bản quyền; bỏ câu nhạy cảm trong nội dung."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả người bị bệnh xã hội dễ gây phản cảm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Gấu trúc meme biểu cảm có thể là nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Nhãn dán không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Khai chủ đề đồ chơi phát triển trẻ, cần tránh lệch đối tượng."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nhân vật gấu trúc biểu cảm",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra nguồn nhân vật, nếu là meme có chủ thì bỏ."
+   },
+   {
+    "van_de": "Câu bệnh xã hội trong mô tả",
+    "rui_ro": "🟠",
+    "xu_ly": "Không dùng trong nội dung quay."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Dành cho người bệnh xã hội",
+    "goi_y": "Nói là nhãn dán biểu cảm hài hước để dán đồ."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ nguồn gốc nhân vật gấu trúc.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

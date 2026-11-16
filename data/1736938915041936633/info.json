@@ -29,7 +29,7 @@
   "poster_folder": 206,
   "duong_dan": "E:/oneshottramcanh/kebut 1736938915041936633/output_poster"
  },
- "cap_nhat_luc": "2026-11-14T08:11:10+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:56+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -39,5 +39,50 @@
   "xong": true,
   "boi": "Nhân",
   "luc": "2026-11-14T08:11:10+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tên có ký tự lạ (đựnġ) giống né từ khoá, thông số vật liệu mâu thuẫn, claim giáo dục cho bé.",
+   "khuyen_nghi": "Không nói hộp giúp phát triển trí tuệ hay kỷ luật cho bé; chỉ nói tiện sắp xếp bàn học. Kiểm tra lại vật liệu thực tế trước khi quay."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên ghi Sản phẩm Giáo Dục và mô tả hướng đến hình thành thói quen cho bé, dễ thành claim quá mức."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên chứa ký tự biến thể (đựnġ), có thể bị coi là né kiểm duyệt từ khoá."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hộp cắm bút trơn, chưa thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Dùng cho trẻ em nhưng là đồ văn phòng phẩm, không phải đồ chơi; cần kiểm tra cạnh sắc và vật liệu."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp bé phát triển tư duy, trị lười dọn đồ",
+    "goi_y": "Nói là có nhiều ngăn, giúp bàn học gọn hơn."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Vật liệu ghi Bê tông, Nhôm không khớp với hình sản phẩm; cần xác nhận chất liệu thật.",
+  "danh_gia_luc": "2026-11-16T08:34:56+07:00"
  }
 }

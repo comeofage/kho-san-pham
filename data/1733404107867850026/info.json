@@ -39,6 +39,46 @@
   "luc": "2026-10-21T09:31:59+07:00",
   "duong_dan": "F:\\2010\\lịch cầu được ước thấy 2010 1733404107867850026\\output_poster"
  },
- "cap_nhat_luc": "2026-10-26T08:50:34+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Rủi ro thấp, sản phẩm văn phòng phẩm thông thường.",
+   "khuyen_nghi": "Có thể làm; chú ý hình con vật là hình minh họa của shop, không dùng nhân vật khác khi dựng video."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ là lịch để bàn, không có claim công dụng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu M.Y Calendar của shop, không thấy nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình thú dễ thương dạng minh họa riêng của shop, không thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa xem ảnh để loại trừ hình có nhân vật bản quyền.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

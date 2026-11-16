@@ -34,5 +34,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:09:30+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:58+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sữa tắm gội cho trẻ sơ sinh là mỹ phẩm cần công bố, claim da nhạy cảm và dưỡng ẩm dễ vượt phạm vi.",
+   "khuyen_nghi": "Chỉ nói công dụng làm sạch dịu nhẹ theo mô tả và cần số công bố mỹ phẩm trước khi làm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Làm dịu, dưỡng ẩm, cho da nhạy cảm' cần giữ ở mức mỹ phẩm, không nói trị da."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand Hegerbaby, cần kiểm tra ủy quyền phân phối."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật hay hình ảnh vi phạm rõ ràng."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Mỹ phẩm nhập khẩu Trung Quốc cần phiếu công bố, thông số ghi 'Baby organic: Không'."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Dùng cho trẻ sơ sinh 0+, yêu cầu cao về an toàn và nhãn phụ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Mỹ phẩm cho trẻ sơ sinh thiếu số công bố",
+    "rui_ro": "🟠",
+    "xu_ly": "Xin số công bố, nhãn phụ tiếng Việt trước khi làm."
+   },
+   {
+    "van_de": "Claim da nhạy cảm, mềm như da em bé",
+    "rui_ro": "🟠",
+    "xu_ly": "Dùng cách nói trung tính, không so sánh y tế."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn tuyệt đối, không kích ứng",
+    "goi_y": "Nói 'công thức dịu nhẹ theo nhà sản xuất'."
+   },
+   {
+    "khong_nen": "Trị hăm, cải thiện da bé",
+    "goi_y": "Không nói tác dụng chữa trị."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thiếu số công bố mỹ phẩm, bảng thành phần, ủy quyền thương hiệu.",
+  "danh_gia_luc": "2026-11-16T08:34:58+07:00"
+ }
 }

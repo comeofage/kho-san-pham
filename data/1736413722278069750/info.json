@@ -27,7 +27,7 @@
   "so_video": 29,
   "luc": "2026-10-23T14:48:24+07:00"
  },
- "cap_nhat_luc": "2026-10-23T14:48:24+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -37,5 +37,50 @@
   "xong": true,
   "boi": "poster",
   "luc": "2026-10-20T13:35:33+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm có chất bảo quản, cần tránh claim sức khỏe.",
+   "khuyen_nghi": "Có thể làm nếu chỉ nói mùi vị, cách dùng; nên xác nhận giấy tự công bố sản phẩm."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tránh nói khỏe mạnh hơn dù shop khai thuộc tính này."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Làng Chài Xưa, cần kiểm tra không nhái."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có nhân vật hay hình ảnh bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Gia vị không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Sốt khỏe mạnh, tốt cho sức khỏe",
+    "goi_y": "Chỉ nói vị mặn ngọt béo, ăn cùng mì, cơm."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chỉ có giấy HACCP cơ sở, chưa thấy giấy tự công bố sản phẩm.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
  }
 }

@@ -30,5 +30,50 @@
   "poster_folder": 22,
   "duong_dan": "E:\\Aff anh nhan\\review\\1407-bình gadient 1736021517987120726\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:50+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Bình nhựa PC có thể bị hỏi về BPA/an toàn thực phẩm và thông số ghi 'Mẫu: Nhân vật' nên cần kiểm hình in.",
+   "khuyen_nghi": "Chỉ nói dung tích, màu, ống hút; không hứa an toàn tuyệt đối hay chịu nhiệt khi chưa có giấy tờ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Ghi 'chịu nhiệt độ cao' dễ bị hiểu thành cam kết an toàn khi đựng nước nóng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu lớn trong tên, chỉ ghi shop Mozz Drinkware."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số 'Mẫu: Nhân vật' cần xem ảnh có in nhân vật bản quyền hay không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Bình đựng đồ uống là vật dụng tiếp xúc thực phẩm, nên có chứng nhận vật liệu."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Ghi hợp học sinh nhưng không phải sản phẩm dành riêng cho trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'không chứa BPA' hay 'an toàn tuyệt đối' khi đựng nước nóng",
+    "goi_y": "Mô tả dung tích, màu gradient, ống hút và nắp bật tiện mang đi"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa đọc ảnh mô tả; cần xác nhận hình in nhân vật và chứng nhận vật liệu tiếp xúc thực phẩm.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

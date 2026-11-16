@@ -37,6 +37,62 @@
   "poster_folder": 215,
   "duong_dan": "E:/oneshottramcanh/dauphong 1735611118574863648/output_poster"
  },
- "cap_nhat_luc": "2026-10-31T09:57:04+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Thực phẩm có số đăng ký công bố ghi '1', nghi không hợp lệ, và có biến thể 'QUÀ KO BÁN' giá 599k.",
+   "khuyen_nghi": "Chỉ làm khi shop bổ sung giấy công bố hợp lệ; không nói công dụng sức khỏe, không dẫn vào biến thể 'quà ko bán'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả chỉ tả hương vị, cần tránh 'tốt cho sức khỏe'."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Panda Pẻn của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy vấn đề hình ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Nơi cấp/ngày cấp/số đăng ký đều ghi '1', giấy công bố thực phẩm nghi không hợp lệ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Giấy công bố thực phẩm điền '1'",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop nộp số công bố thật trước khi làm."
+   },
+   {
+    "van_de": "Biến thể 'QUÀ KO BÁN' giá 599.403₫",
+    "rui_ro": "🟠",
+    "xu_ly": "Không dẫn người xem vào biến thể này."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Tốt cho sức khỏe, ăn không béo",
+    "goi_y": "Nói 'giòn, 4 vị trong 1 hũ'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Số tiếp nhận công bố thật, hạn sử dụng.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

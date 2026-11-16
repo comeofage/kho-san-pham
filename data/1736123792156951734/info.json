@@ -37,5 +37,56 @@
   "poster_folder": 181,
   "duong_dan": "F:\\1410\\1013 (1)(1)\\4 phím trong 1410-1736123792156951734"
  },
- "cap_nhat_luc": "2026-10-20T13:46:25+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Tiêu đề ghi 'Giao hàng nhanh từ Việt Nam' nhưng hàng gửi từ nước ngoài 9-10 ngày nên dễ gây hiểu sai.",
+   "khuyen_nghi": "Không nhắc giao nhanh trong video, chỉ nói số phím và đèn RGB; nhắc đã bán nhiều nhưng không nói quá."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Đồ chơi giảm căng thẳng' cần nói nhẹ, không hứa tác dụng; tiêu đề 'giao nhanh' không khớp thực tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Bàn phím mini có thể in kiểu phím hãng, cần xem ảnh có logo không."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Bản có đèn LED/pin cần lưu ý an toàn pin."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Hướng đến người lớn, không phải sản phẩm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Tiêu đề 'giao hàng nhanh từ Việt Nam' mâu thuẫn với kho nước ngoài 9-10 ngày",
+    "rui_ro": "🟠",
+    "xu_ly": "Không dùng cụm này trong video; nói thời gian giao theo trang sản phẩm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'giao nhanh từ Việt Nam' hoặc 'trị stress'",
+    "goi_y": "Nói 'móc khóa bàn phím bấm sướng tay, có đèn RGB'"
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa đọc ảnh để kiểm tra logo trên phím và thông tin pin.",
+  "danh_gia_luc": "2026-11-16T08:34:54+07:00"
+ }
 }

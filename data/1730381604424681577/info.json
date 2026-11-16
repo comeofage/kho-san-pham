@@ -30,5 +30,56 @@
   "poster_folder": 16,
   "duong_dan": "E:\\Aff anh nhan\\review\\0626 1730381604424681577\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Xe điều khiển có pin sạc, khai 'không có hàng nguy hiểm' trong khi có pin; đồ chơi trẻ 8+ thiếu thông tin hợp quy.",
+   "khuyen_nghi": "Nói đúng độ tuổi 8+ và thời gian sạc 2 giờ, tránh nói 'chống rơi tuyệt đối'; hỏi shop loại pin và hợp quy."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Quảng cáo 'chống rơi siêu tốt', '60m' cần nói đúng thông số."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand 'Toy Pin' chung chung."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có pin sạc nhưng khai không có hàng nguy hiểm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi 8+, cần hợp quy và cảnh báo pin."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Khai báo hàng nguy hiểm không khớp có pin",
+    "rui_ro": "🟠",
+    "xu_ly": "Hỏi loại pin và chứng nhận hợp quy trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống rơi tuyệt đối, đảm bảo 60m mọi nơi",
+    "goi_y": "Điều khiển tối đa khoảng 60m trong điều kiện thoáng."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Loại pin, chứng nhận hợp quy QCVN 3:2019.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

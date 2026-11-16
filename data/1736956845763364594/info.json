@@ -35,5 +35,56 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:09:28+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:57+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim kỹ thuật (IPX5, Bluetooth 6.0, khử tiếng ồn) và pin lithium; shop điểm thấp 3.4, nhiều biến thể giá lẫn lộn.",
+   "khuyen_nghi": "Chỉ nói đúng thông số có trong trang, không hứa khử ồn như tai nghe cao cấp. Kiểm tra hàng thật trước khi quay."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chống nước IPX5, âm thanh bao quanh 360, khử tiếng ồn có thể bị coi là phóng đại nếu không có kiểm định."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chưa thấy tên thương hiệu cụ thể trên trang."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh hay nhân vật bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thiết bị có pin lithium trong tai nghe và hộp sạc, cần khai báo hàng pin khi vận chuyển."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thông số công nghệ và chống nước chưa có kiểm định",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ dùng thông số shop cung cấp; không quay cảnh nhúng nước."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Khử ồn hoàn hảo, chống nước hoàn toàn, ngủ không hại tai",
+    "goi_y": "Nói chống nước IPX5 mức cơ bản, thiết kế nhỏ nằm ngủ ít cộm tai."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Thông số trang trống; chưa rõ giấy chứng nhận hợp quy, bảo hành, và biến thể Basic hay Cao cấp khác nhau thế nào.",
+  "danh_gia_luc": "2026-11-16T08:34:57+07:00"
+ }
 }

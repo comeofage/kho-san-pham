@@ -38,8 +38,53 @@
   "poster_folder": 324,
   "duong_dan": "E:/oneshottramcanh/tuirac-1735531145125398424/output"
  },
- "cap_nhat_luc": "2026-11-14T08:10:25+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
  "the": [
   "pemit89"
- ]
+ ],
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Claim môi trường 'có thể phân hủy', 'thân thiện môi trường' trên túi HDPE dễ bị coi là sai lệch.",
+   "khuyen_nghi": "Làm được; bỏ claim phân hủy/thân thiện môi trường, chỉ nói dày, có quai, size và số túi mỗi cuộn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số ghi 'có thể phân hủy' trong khi chất liệu HDPE, claim này cần chứng từ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu SBC của chính shop, có tổ chức chịu trách nhiệm."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có vấn đề hình ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Có thể phân hủy, thân thiện môi trường",
+    "goi_y": "Nói 'dày, chống rách, có quai buộc'."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

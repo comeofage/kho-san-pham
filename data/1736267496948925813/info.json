@@ -37,6 +37,57 @@
   "poster_folder": 293,
   "duong_dan": "E:/oneshottramcanh/kempolar-1736267496948925813/output"
  },
- "cap_nhat_luc": "2026-11-06T10:39:58+07:00",
- "can_dang": true
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Kem đánh răng đăng ký mỹ phẩm nhưng quảng cáo 'chống ê buốt/giảm ê buốt' là claim trị liệu y tế.",
+   "khuyen_nghi": "Chỉ quay theo công bố mỹ phẩm: làm sạch, thơm miệng, hỗ trợ làm trắng; bỏ mọi câu nói chữa/giảm ê buốt như điều trị."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "'Chống ê buốt', 'giảm ê buốt', 'bảo vệ men răng' vượt phạm vi mỹ phẩm, 'làm trắng hiệu quả' cần chứng minh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Dencare có Official Store, đơn vị chịu trách nhiệm rõ."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có vấn đề IPR."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Mỹ phẩm cần phiếu công bố; số 325905/26/CBMP-QLD cấp 29/5/2026 có trên trang, cần đối chiếu công bố có đúng công dụng làm trắng/nhạy cảm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim 'chống ê buốt/giảm ê buốt' mang tính điều trị, khác với phạm vi mỹ phẩm",
+    "rui_ro": "🟠",
+    "xu_ly": "Đổi thành 'dành cho người răng nhạy cảm, cảm giác dễ chịu khi dùng', không nói chữa hay hết ê buốt."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'hết ê buốt', 'chữa ê buốt', 'trắng răng sau 3 ngày'",
+    "goi_y": "Nói 'kem đánh răng hương bạc hà biển, làm sạch mảng bám, hơi thở thơm mát'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Nội dung đầy đủ trong phiếu công bố (công dụng được công bố) để đối chiếu claim.",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

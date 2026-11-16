@@ -30,5 +30,56 @@
   "poster_folder": 14,
   "duong_dan": "E:\\Aff anh nhan\\review\\diavel 1733103099447051843\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Dùng tên và kiểu dáng xe Ducati XDiavel khi chưa có ủy quyền, rủi ro vi phạm nhãn hiệu và kiểu dáng.",
+   "khuyen_nghi": "Không nên làm khi shop chưa chứng minh được giấy phép Ducati. Nếu có giấy phép, quay lại đánh giá."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có claim công dụng lớn."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🔴",
+    "nhan_xet": "Tên 'DUCATI XDIAVEL' là nhãn hiệu của Ducati, đồ chơi/mô hình dùng tên này cần license."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🔴",
+    "nhan_xet": "Kiểu dáng xe đặc trưng của Ducati, hashtag #ducatixdiavel, rủi ro IPR cao."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Ghi trên 13 tuổi nhưng 'sự phát triển của trẻ', mảnh nhỏ cần lưu ý."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Sử dụng tên và kiểu dáng Ducati XDiavel không có giấy phép",
+    "rui_ro": "🔴",
+    "xu_ly": "Không quảng bá sản phẩm khi chưa có ủy quyền của Ducati."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Mô hình Ducati chính hãng, y như thật",
+    "goi_y": "Không dùng tên Ducati nếu chưa có giấy phép."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Giấy phép/ủy quyền Ducati, độ tuổi và cảnh báo mảnh nhỏ.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

@@ -30,5 +30,61 @@
   "poster_folder": 96,
   "duong_dan": "E:\\oneshottramcanh\\vit_squisy 1736298157005702636\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:32:51+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em (trên 8 tuổi) từ shop điểm thấp 2.6, chất liệu PVC cần chứng nhận an toàn đồ chơi và hình vịt mặc áo có thể là nhân vật có bản quyền.",
+   "khuyen_nghi": "Chỉ làm khi shop có chứng nhận an toàn đồ chơi (QCVN 3:2019); không nhắm trẻ em, không nói 'giúp phát triển/giảm stress'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chủ đề 'sự phát triển của trẻ' dễ dẫn tới claim giáo dục/trị liệu, tránh hứa giảm căng thẳng hay phát triển trí tuệ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không gắn thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟠",
+    "nhan_xet": "Vịt mặc áo có thể sao chép nhân vật hoạt hình, cần xem ảnh để loại trừ."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi PVC cần hợp quy, ghi 'PVC miễn phí' mơ hồ và tổ chức chịu trách nhiệm là nhà bán Trung Quốc."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi trẻ em dưới quy định an toàn, shop đánh giá 2.6 và mô tả quảng cáo chung chung."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi trẻ em chưa thấy chứng nhận an toàn, chất liệu PVC",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp giấy hợp quy đồ chơi; không quay trẻ nhỏ chơi/ngậm cắn."
+   },
+   {
+    "van_de": "Vịt mặc áo có thể trùng nhân vật có bản quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Đọc ảnh, nếu giống nhân vật nổi tiếng thì không làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'giúp bé phát triển trí tuệ, giảm stress, an toàn cho bé'",
+    "goi_y": "Nói 'đồ chơi squishy mềm bóp vui tay, dành cho trên 8 tuổi'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy hợp quy đồ chơi, ảnh mô tả chưa đọc, độ tin cậy shop (điểm 2.6).",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

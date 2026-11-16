@@ -36,5 +36,61 @@
   "poster_folder": 309,
   "duong_dan": "E:/oneshottramcanh/rapxe-1735355624002782526/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:10+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "❌",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi súng/vũ khí chủ đề đặc nhiệm chống khủng bố dành cho bé trai dễ bị gỡ hoặc hạn chế hiển thị.",
+   "khuyen_nghi": "Không nên làm vì chủ đề vũ khí và khủng bố gắn với trẻ em; nếu vẫn làm thì chỉ nhấn vào xếp hình lắp ráp, bỏ hình ảnh súng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có claim y tế, nhưng quảng cáo 'giáo dục' cần có căn cứ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Không rõ thương hiệu, hình mô hình giống dòng xếp hình có sẵn trên thị trường."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhân vật/xe cảnh sát có thể mô phỏng sản phẩm xếp hình có bản quyền, cần kiểm tra."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🔴",
+    "nhan_xet": "Mô hình vũ khí, chủ đề chống khủng bố thuộc nhóm hạn chế trên TikTok Shop."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Đồ chơi trẻ em có chi tiết nhỏ (súng, mũ, tóc) nguy cơ nuốt phải, thiếu cảnh báo độ tuổi và chứng nhận an toàn."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Đồ chơi vũ khí/khủng bố hướng tới trẻ em",
+    "rui_ro": "🔴",
+    "xu_ly": "Không quay/nhấn cận cảnh súng, tránh từ 'chống khủng bố'."
+   },
+   {
+    "van_de": "Chi tiết nhỏ không có cảnh báo độ tuổi",
+    "rui_ro": "🟠",
+    "xu_ly": "Xác nhận độ tuổi và chứng nhận an toàn đồ chơi trước khi làm."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống khủng bố, súng, vũ khí, đồ chơi cho bé trai",
+    "goi_y": "Gọi là mô hình nhân vật cảnh sát lắp ráp, không nhấn vũ khí."
+   }
+  ],
+  "ket_luan_cuoi": "❌ Không nên làm Affiliate.",
+  "thieu_thong_tin": "Chưa có thông tin độ tuổi, chứng nhận an toàn đồ chơi, nguồn gốc nhà sản xuất.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

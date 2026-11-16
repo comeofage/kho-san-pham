@@ -35,5 +35,56 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-14T01:10:20+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ dùng em bé dễ vướng claim da liễu và chính hãng thiếu ủy quyền.",
+   "khuyen_nghi": "Làm được nếu chỉ nói cấu tạo, size, cách cởi, và dùng mô hình hay quay không lộ mặt bé."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Cần tránh nói không hăm, không dị ứng vì là claim y tế."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chữ chính hãng cần ủy quyền thương hiệu Bejoyle, thông số ghi nguồn gốc Trung Quốc."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bỉm có công bố hợp quy, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ dùng trẻ sơ sinh, không quay em bé nhận dạng được và cần đúng size cân nặng."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim chính hãng chưa có ủy quyền",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu giấy ủy quyền hoặc bỏ chữ chính hãng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Không hăm, hết rôm sảy, an toàn tuyệt đối cho da bé",
+    "goi_y": "Nói bề mặt mềm, thấm hút, tã quần xé một tay."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy ủy quyền thương hiệu, nhãn phụ tiếng Việt và hợp quy chi tiết từng size.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

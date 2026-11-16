@@ -39,5 +39,56 @@
   "poster_folder": 318,
   "duong_dan": "E:/oneshottramcanh/khobo-1734321102951122844/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:52+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Thực phẩm chế biến cần đủ công bố sản phẩm và tránh claim sức khỏe.",
+   "khuyen_nghi": "Làm được, chỉ nói vị, độ dai và cách dùng, hỏi shop bản công bố."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm: tránh claim tươi, tốt cho sức khỏe, tuyệt đối không khô bở quá mức."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Aladdin Food của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy hình ảnh hay nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có giấy cơ sở đủ điều kiện ATTP nhưng chưa thấy tự công bố sản phẩm, cần xem nhãn hạn dùng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm riêng trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Chưa thấy bản tự công bố sản phẩm",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop cung cấp trước khi đẩy mạnh."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Bồi bổ, tăng đề kháng",
+    "goi_y": "Chỉ nói ăn vặt, làm quà, vị mắc khén xuyên tiêu."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Bản tự công bố sản phẩm, hạn sử dụng, nhãn phụ tiếng Việt.",
+  "danh_gia_luc": "2026-11-16T08:34:52+07:00"
+ }
 }

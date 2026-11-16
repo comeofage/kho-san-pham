@@ -27,7 +27,7 @@
   "so_video": 19,
   "luc": "2026-10-10T16:11:17+07:00"
  },
- "cap_nhat_luc": "2026-10-22T09:43:12+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Nhân",
@@ -37,5 +37,61 @@
   "xong": true,
   "boi": "Linh",
   "luc": "2026-10-22T09:43:12+07:00"
+ },
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Thiếu giấy chứng nhận ATTP và có claim 'hữu cơ' chưa có chứng nhận.",
+   "khuyen_nghi": "Làm nếu shop cung cấp giấy ATTP/ngày hạn dùng; bỏ claim hữu cơ; chỉ nói về hương vị và cách ăn."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Thông số ghi 'Hữu cơ' là claim cần chứng nhận hữu cơ; 'chống ngán hiệu quả' cũng nên tránh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Mắm Huế Thu Đông của chính shop, chưa thấy vấn đề."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình ảnh món ăn, chưa thấy vi phạm."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Thực phẩm đóng hũ cần công bố/giấy chứng nhận ATTP, thông số chưa có số đăng ký, hạn dùng."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Thực phẩm người lớn, không liên quan trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim 'Hữu cơ' trong thông số chưa có chứng nhận",
+    "rui_ro": "🟠",
+    "xu_ly": "Bỏ claim hữu cơ hoặc yêu cầu chứng nhận hữu cơ."
+   },
+   {
+    "van_de": "Thực phẩm chưa thấy giấy chứng nhận ATTP và hạn dùng",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung giấy ATTP, thành phần, hạn sử dụng."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'hữu cơ', 'chống ngán hiệu quả', 'tốt cho tiêu hóa'",
+    "goi_y": "Nói 'mắm dưa đu đủ giòn, đậm vị Huế, ăn với cơm nóng, bún'."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Giấy chứng nhận ATTP, thành phần, hạn sử dụng, chứng nhận hữu cơ.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
  }
 }

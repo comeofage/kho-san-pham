@@ -37,5 +37,45 @@
   "poster_folder": 249,
   "duong_dan": "E:/oneshottramcanh/rubik 1734893557169030788/output"
  },
- "cap_nhat_luc": "2026-11-04T13:54:38+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Từ \"Rubik\" là nhãn hiệu được bảo hộ và sản phẩm nhắm trẻ em 7-14 tuổi, gửi từ nước ngoài.",
+   "khuyen_nghi": "Làm được nếu chỉ gọi là khối rubik 3x3 và nêu tuổi khuyến nghị, không dùng logo/tên hãng Rubik's."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ nói tư duy không gian, không có claim y tế; tránh hứa phát triển trí tuệ chắc chắn."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Từ \"Rubik\" thuộc nhãn hiệu Rubik's, cần không dùng logo hoặc nhãn hãng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế khối cổ điển, không có hình ảnh nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi 7-14 tuổi, cần ghi tuổi phù hợp và chứng nhận an toàn đồ chơi nếu shop có."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa rõ chứng nhận hợp quy đồ chơi; hàng gửi từ nước ngoài 9-10 ngày nên lưu ý khi hứa giao.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }

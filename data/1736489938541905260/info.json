@@ -37,5 +37,50 @@
   "poster_folder": 289,
   "duong_dan": "E:/oneshottramcanh/binhsua-1736489938541905260/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:29+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Móc khóa clicker in 3D, rủi ro thấp, chỉ cần tránh claim giảm stress như điều trị.",
+   "khuyen_nghi": "Có thể làm, nói là đồ chơi bấm cho vui, không hứa chữa stress."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Giảm stress chỉ dùng ở mức vui thư giãn."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Brand Trân3D của shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế bình sữa tự tạo, không nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em rõ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Giảm stress hiệu quả, trị lo âu",
+    "goi_y": "Nói bấm êm tay, bỏ túi."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

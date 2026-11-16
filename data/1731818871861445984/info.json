@@ -29,7 +29,7 @@
   "poster_folder": 197,
   "duong_dan": "F:\\2010\\bánh tráng bò tỏi 2010 1731818871861445984\\output_poster"
  },
- "cap_nhat_luc": "2026-10-21T11:25:31+07:00",
+ "cap_nhat_luc": "2026-11-16T08:34:50+07:00",
  "da_quay_review": {
   "xong": true,
   "boi": "Thu",
@@ -40,5 +40,50 @@
   "boi": "poster",
   "luc": "2026-10-20T13:35:34+07:00"
  },
- "can_dang": true
+ "can_dang": true,
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro thấp, ăn vặt cần chú ý ATTP và hạn dùng ngắn.",
+   "khuyen_nghi": "Quay cận cảnh độ dính và tỏi phi, nhắc hạn dùng, không nhấn mạnh trẻ nhỏ."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chỉ nên mô tả hương vị và độ dính, tránh nói bổ dưỡng hay tốt cho sức khỏe."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu Duy Best của chính shop."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có bản quyền hình ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Thực phẩm có khô bò, hạn 25 ngày, cần số công bố 02/BESTFOOD/2026 trên bao bì."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Món ăn vặt học sinh ưa thích nhưng vị cay, không nhắm vào trẻ nhỏ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Ăn không hại / bổ / tốt cho người ăn kiêng",
+    "goi_y": "Nói vị cay chua mặn ngọt, ăn dính chùm."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Giấy chứng nhận ATTP của cơ sở sản xuất.",
+  "danh_gia_luc": "2026-11-16T08:34:50+07:00"
+ }
 }

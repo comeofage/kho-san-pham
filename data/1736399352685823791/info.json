@@ -50,5 +50,50 @@
   "poster_folder": 287,
   "duong_dan": "E:/oneshottramcanh/banchaimini-1736399352685823791/output"
  },
- "cap_nhat_luc": "2026-11-14T08:09:47+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:55+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Có thể bị coi là claim chăm sóc răng miệng quá mức (làm sạch răng khôn, niềng, không tổn thương nướu).",
+   "khuyen_nghi": "Làm được nếu chỉ nói đầu chải nhỏ, lông mềm, tiện chải vị trí khó; tránh cam kết sức khỏe."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim không làm tổn thương nướu, làm sạch sâu kẽ răng cần tránh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Brand Heart Moon, nên kiểm tra không nhái nhãn hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Thiết kế đơn giản, không nhân vật."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bàn chải không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả có nhắc dùng cho trẻ em, không cần nhấn mạnh."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Không làm tổn thương nướu, làm sạch tuyệt đối răng khôn",
+    "goi_y": "Chỉ nói lông mềm, đầu nhỏ dễ chải góc khó."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-16T08:34:55+07:00"
+ }
 }

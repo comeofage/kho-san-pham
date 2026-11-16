@@ -30,5 +30,65 @@
   "poster_folder": 12,
   "duong_dan": "E:\\Aff anh nhan\\review\\phao nằm 1734680648656585980\\output_poster"
  },
- "cap_nhat_luc": "2026-11-03T08:39:52+07:00"
+ "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Sản phẩm dưới nước cho trẻ em thiếu độ tuổi, tải trọng và cảnh báo an toàn.",
+   "khuyen_nghi": "Chỉ làm khi có cảnh báo giám sát và quay người lớn hay trẻ lớn trong vùng nước nông."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Nên tránh nói an toàn tuyệt đối khi bé nằm phao."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có thương hiệu nổi tiếng."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Phao bơi không phải thiết bị cứu sinh, cần cảnh báo giám sát."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Nhóm tuổi trẻ em, rủi ro đuối nước và thông tin tải trọng, độ tuổi chưa rõ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Rủi ro đuối nước cho trẻ em",
+    "rui_ro": "🔴",
+    "xu_ly": "Ghi cảnh báo luôn có người lớn giám sát."
+   },
+   {
+    "van_de": "Thiếu độ tuổi và tải trọng",
+    "rui_ro": "🟠",
+    "xu_ly": "Yêu cầu shop bổ sung thông số."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Phao an toàn, chống lật, cứu hộ",
+    "goi_y": "Nói ghế lưới nằm chơi nước, cần người lớn giám sát."
+   },
+   {
+    "khong_nen": "Cho bé nằm một mình dưới nước",
+    "goi_y": "Quay cảnh có người lớn bên cạnh."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Tải trọng, độ tuổi, kích thước, vật liệu, chứng từ an toàn.",
+  "danh_gia_luc": "2026-11-16T08:34:53+07:00"
+ }
 }
