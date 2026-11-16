@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-16T19:12:37+07:00",
+ "cap_nhat_luc": "2026-11-16T19:18:56+07:00",
  "san_pham": [
   {
    "id": "1731293444546790853",
@@ -65,11 +65,11 @@
    "id": "1737468949257749573",
    "uid": "1737468949257749573",
    "link": "https://vt.tiktok.com/ZS9fGNF7dWNdS-987I3/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[DEAL TRI ÂN] TẶNG  DÂY + ỐNG HÚT -BÌNH GIỮ NHIỆT 600ML INOX 316 GIỮ NHIỆT LÂU DỄ THƯƠNG.",
+   "gia": "68.484₫",
+   "shop": "SHOP NHÀ MỘC 868",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -86,9 +86,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-15T15:04:39+07:00",
-   "cap_nhat_luc": "2026-11-16T19:01:49+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-16T19:18:33+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
