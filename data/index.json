@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-17T21:58:01+07:00",
+ "cap_nhat_luc": "2026-11-17T22:04:17+07:00",
  "san_pham": [
   {
    "id": "1731898847922259456",
    "uid": "1731898847922259456",
    "link": "https://shop.tiktok.com/vn/pdp/1731898847922259456?_t=ZS-9AQxgJycSQc",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[ ERAS ] Hộp 20 Chiếc Bút Bi Tam giác E176 - Bút bi trơn mượt, khô nhanh không nhòe. Mực xanh, đen phù hợp học sinh, sinh viên, nhân viên văn phòng. Ngòi 0.7mm",
+   "gia": "112.389₫",
+   "shop": "VPP Eras Việt Nam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-17T21:00:12+07:00",
-   "cap_nhat_luc": "2026-11-17T21:00:12+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-17T22:04:02+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
