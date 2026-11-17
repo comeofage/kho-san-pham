@@ -16,3 +16,8 @@ run_worker_first = ["/api/*"]
 GH_REPO = "comeofage/kho-san-pham"
 GH_BRANCH = "main"
 VIDEO_ORIGIN = "https://video.kutidak.com"  # máy nhà qua Cloudflare Tunnel (khoá VIDEO_KEY là secret)
+
+# Sổ "lời duyệt đã tiêu" + đếm sai mật khẩu (D9)
+[[kv_namespaces]]
+binding = "SO_DUYET"
+id = "31283948f3834148ad49c7181c92f452"

@@ -1,7 +1,8 @@
 // Test Worker với GitHub giả trong bộ nhớ — chạy: node --test cf/test/
 import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
-import worker, { bamMatKhau, kiemMatKhau, taoPhien, tachUid, chuoiKyRequest, kiemThamSoViec, kyRequest } from "../src/worker.js";
+import { createHash } from "node:crypto";
+import worker, { bamMatKhau, kiemMatKhau, taoPhien, tachUid, chuoiKyRequest, kiemThamSoViec, kyRequest, chuoiKyDuyet, datLaiDemSaiMatKhau, chuoiTieuDuyet, datLaiSoTieuBoNho } from "../src/worker.js";
 
 const UID = "1729706628656957720";
 // Cặp khoá Ed25519 chỉ dùng cho test (Web Crypto của Node 24): KY_RIENG = PKCS8 DER base64 như tao_khoa_ky.py in ra.
@@ -41,7 +42,8 @@ globalThis.fetch = async (url, opt = {}) => {
   if (u.pathname === "/repos/o/r/git/trees/main") return Response.json({ tree: Object.keys(files).map((path) => ({ path })) });
   throw new Error("fetch lạ: " + url);
 };
-globalThis.caches = { default: { match: async () => undefined, put: async () => {} } };
+const CACHE_RONG = { match: async () => undefined, put: async () => {} };
+globalThis.caches = { default: CACHE_RONG };
 
 const ctx = { waitUntil() {} };
 const call = (path, { body, cookie, method, origin, headers = {} } = {}) =>
@@ -57,6 +59,9 @@ async function dangNhap(user = "lan", pass = "matkhau-lan") {
 }
 
 beforeEach(async () => {
+  datLaiDemSaiMatKhau();
+  datLaiSoTieuBoNho();
+  globalThis.caches.default = CACHE_RONG;
   puts = [];
   mayGoi = [];
   mayTraLoi = async () => new Response("ok", { headers: { "content-type": "video/mp4" } });
@@ -70,6 +75,7 @@ beforeEach(async () => {
     USERS: JSON.stringify({
       lan: { ten: "Lan", hash: await bamMatKhau("matkhau-lan", undefined, 1000) },
       nhan: { ten: "Nhân", hash: await bamMatKhau("matkhau-nhan", undefined, 1000) },
+      comeofage: { ten: "Come", hash: await bamMatKhau("matkhau-come", undefined, 1000) },
     }),
     ASSETS: { fetch: async () => new Response("static") },
     VIDEO_ORIGIN: "https://may.test", VIDEO_KEY: "k",
@@ -536,7 +542,7 @@ test("viec: kiemThamSoViec theo danh mục đợt 3 (§5.1)", () => {
   ]) assert.deepEqual(kiemThamSoViec(b), mong, JSON.stringify(b));
   for (const b of [
     null, [], "x", {}, { loai: "" }, { loai: "Radar_ban_tin" }, { loai: "rm -rf" }, { loai: "x".repeat(31) }, { loai: "__proto__" }, { loai: "constructor" },
-    { loai: "muse_clip", tham_so: { uid: UID } }, { loai: "taovideo", tham_so: { uid: UID } }, { loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: ME } },
+    { loai: "muse_clip", tham_so: { uid: UID } }, { loai: "taovideo", tham_so: { uid: UID } }, { loai: "voice_genmax", tham_so: { uid: UID, du_an: D } },
     { loai: "radar_ban_tin", tham_so: [] }, { loai: "radar_ban_tin", tham_so: "x" }, { loai: "radar_ban_tin", tham_so: null },
     { loai: "radar_ban_tin", tham_so: { top_n: 4 } }, { loai: "radar_ban_tin", tham_so: { top_n: 31 } }, { loai: "radar_ban_tin", tham_so: { top_n: 10.5 } },
     { loai: "radar_ban_tin", tham_so: { top_n: "10" } }, { loai: "radar_ban_tin", tham_so: { chay_bu: "true" } }, { loai: "radar_ban_tin", tham_so: { chay_bu: 1 } },
@@ -573,6 +579,7 @@ test("viec: GET chuyển đúng path runner, lọc query; không ký GET", async
     ["/api/viec/danh-muc?x=1", "/r/danh-muc"],
     ["/api/viec/suc-khoe", "/r/suc-khoe"],
     ["/api/viec/poster-folders", "/r/poster/folders"],
+    ["/api/viec/poster/folders?x=1", "/r/poster/folders"],
     [`/api/viec/du-an/${UID}`, `/r/du-an/${UID}`],
     [`/api/viec/${JOB}?tu=1`, `/r/viec/${JOB}`],
     [`/api/viec/${JOB}/log?tu=4096&trang_thai=x`, `/r/viec/${JOB}/log?tu=4096`],
@@ -595,13 +602,14 @@ test("viec: id/uid/query sai, route lạ, sai phương thức, duyet đợt 3 �
     ["/api/viec/..%2F..%2Fsuc-khoe", 404], ["/api/viec/j123", 404], [`/api/viec/${JOB.toUpperCase()}`, 404],
     ["/api/viec/du-an/123", 404], ["/api/viec/du-an/..%2Fx", 404],
     ["/api/viec?trang_thai=cho%20x", 400], [`/api/viec?uid=${"1".repeat(41)}`, 400], [`/api/viec/${JOB}/log?tu=-1;x`, 400],
-    [`/api/viec/${JOB}/xoa`, 404], ["/api/viec/poster/folders", 404],
+    [`/api/viec/${JOB}/xoa`, 404], ["/api/viec/poster/folders/1", 404], ["/api/viec/poster", 404],
     [`/api/viec/${JOB}/huy`, 405], [`/api/viec/${JOB}/tra-loi`, 405],
   ]) assert.equal((await call(p, { cookie })).status, st, p);
   assert.equal((await postViec(cookie, "/api/viec/danh-muc", {})).status, 405);
   assert.equal((await postViec(cookie, `/api/viec/${JOB}`, {})).status, 405);
   assert.equal((await postViec(cookie, `/api/viec/${JOB}/log`, {})).status, 405);
-  assert.equal((await postViec(cookie, `/api/viec/${JOB}/duyet`, { loi_duyet: "ok", mat_khau: "matkhau-nhan" })).status, 404);
+  assert.equal((await call(`/api/viec/${JOB}/duyet`, { cookie })).status, 405);
+  assert.equal((await postViec(cookie, `/api/viec/${JOB.toUpperCase()}/duyet`, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 404);
   assert.equal(mayGoi.length, 0);
 });
 
@@ -711,4 +719,497 @@ test("viec: KY_RIENG hỏng → 503, không gửi request chưa ký", async () =
     console.error = goc;
   }
   assert.equal(mayGoi.length, 0);
+});
+
+// ---------- đợt 4 (W-4): danh mục tốn tiền, poster/folders, duyệt có mật khẩu + chữ ký kho-duyet-v1 ----------
+test("viec: kiemThamSoViec nhận 3 loại đợt 4 (§5.2), validate chặt", () => {
+  const D = "0123456789ab", ME = "20261117-a1";
+  const BAY_MAU = ["xoay_360", "cam_tay", "can_canh", "dung_that", "dat_ban", "mo_hop", "truoc_sau"];
+  for (const [b, mong] of [
+    [{ loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"] } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"] } }],
+    [{ loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: BAY_MAU, thoi_luong: 15, ti_le: "9:16" } },
+      { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: BAY_MAU, thoi_luong: 15, ti_le: "9:16" } }],
+    [{ loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["mo_hop"], thoi_luong: 10 } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["mo_hop"], thoi_luong: 10 } }],
+    [{ loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: ME } }, { loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: ME } }],
+    [{ loai: "poster_len_lich", tham_so: { folder_id: 12, so_video_ngay: 1 } }, { loai: "poster_len_lich", tham_so: { folder_id: 12, so_video_ngay: 1 } }],
+    [{ loai: "poster_len_lich", tham_so: { folder_id: 999999999, so_video_ngay: 5 } }, { loai: "poster_len_lich", tham_so: { folder_id: 999999999, so_video_ngay: 5 } }],
+    [{ loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 6 } }, { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 6 } }],
+    [{ loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 100 } }, { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 100 } }],
+  ]) assert.deepEqual(kiemThamSoViec(b), mong, JSON.stringify(b));
+  for (const b of [
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D } }, { loai: "muse_clip", tham_so: { du_an: D, mau: ["xoay_360"] } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: [] } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: "xoay_360" } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360", "xoay_360"] } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["la_lam"] } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["__proto__"] } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: [1] } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["Xoay_360"] } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: [...BAY_MAU, "xoay_360"] } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"], thoi_luong: 12 } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"], thoi_luong: "10" } },
+    { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"], ti_le: "16:9" } }, { loai: "muse_clip", tham_so: { uid: UID, du_an: D, mau: ["xoay_360"], prompt: "x" } },
+    { loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: ME, ma_ban: ["a"] } }, { loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: "20261117" } },
+    { loai: "voice_genmax", tham_so: { uid: UID, du_an: D, me: ME, dong_y: true } },
+    { loai: "poster_len_lich", tham_so: { folder_id: 12 } }, { loai: "poster_len_lich", tham_so: { so_video_ngay: 2 } },
+    { loai: "poster_len_lich", tham_so: { folder_id: "12", so_video_ngay: 2 } }, { loai: "poster_len_lich", tham_so: { folder_id: 0, so_video_ngay: 2 } },
+    { loai: "poster_len_lich", tham_so: { folder_id: -3, so_video_ngay: 2 } }, { loai: "poster_len_lich", tham_so: { folder_id: 1.5, so_video_ngay: 2 } },
+    { loai: "poster_len_lich", tham_so: { folder_id: 1e9, so_video_ngay: 2 } }, { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 0 } },
+    { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 101 } }, { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: true } },
+    { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 2.5 } }, { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: "50" } },
+    { loai: "poster_len_lich", tham_so: { folder_id: 3, so_video_ngay: 2, uid: UID } },
+    { loai: "taovideo", tham_so: {} },
+  ]) assert.equal(typeof kiemThamSoViec(b), "string", JSON.stringify(b));
+});
+
+const LOI_DUYET = "Duyệt, làm luôn — tối đa 20 video\nđã xem ước tính";
+// tham_so_chuan cố ý có khoảng trắng: Worker phải ký NGUYÊN CHUỖI runner trả, không stringify lại.
+const TS_CHUAN = "{\"du_an\":\"0123456789ab\", \"me\":\"20261117-a1\",\"uid\":\"1729706628656957720\"}";
+// [P2-2] sha256hex của tham_so_chuan người dùng đã xem (tính đồng bộ, không top-level await).
+const SHA_TS = createHash("sha256").update(Buffer.from(TS_CHUAN, "utf8")).digest("hex");
+function runnerDuyet({ trangThai = "cho_duyet", loai = "voice_genmax", thamSoChuan = TS_CHUAN, getStatus = 200, post = () => Response.json({ viec: { id: JOB, trang_thai: "cho" } }) } = {}) {
+  mayTraLoi = async (u, opt) => {
+    if ((opt.method || "GET") === "GET") {
+      if (getStatus !== 200) return Response.json({ loi: "x" }, { status: getStatus });
+      return Response.json({ viec: { id: JOB, loai, trang_thai: trangThai }, tra_loi: [], xem_truoc: null, ...(thamSoChuan === "THIEU" ? {} : { tham_so_chuan: thamSoChuan }) });
+    }
+    return post(u, opt);
+  };
+}
+const duongDuyet = `/api/viec/${JOB}/duyet`;
+const RE_ISO_TZ = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/;
+
+test("viec duyet: đúng mật khẩu → GET tham_so_chuan, ký duyệt + ký request, boi từ phiên, không chuyển mật khẩu", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  const r = await postViec(cookie, duongDuyet, { loi_duyet: LOI_DUYET, sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan", boi: "comeofage", duyet_luc: "2000-01-01T00:00:00+07:00", chu_ky_duyet: "x" });
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), { viec: { id: JOB, trang_thai: "cho" } });
+  assert.equal(mayGoi.length, 2);
+  const [g1, g2] = mayGoi;
+  assert.equal(g1.method, "GET");
+  assert.equal(g1.url.pathname + g1.url.search, `/r/viec/${JOB}`);
+  assert.equal(g2.method, "POST");
+  assert.equal(g2.url.pathname + g2.url.search, `/r/viec/${JOB}/duyet`);
+  assert.ok(await kiemChuKy(g2));
+  const b = JSON.parse(g2.body);
+  assert.deepEqual(Object.keys(b).sort(), ["boi", "chu_ky_duyet", "duyet_luc", "loi_duyet"]);
+  assert.equal(b.boi, "nhan");
+  assert.equal(b.loi_duyet, LOI_DUYET);
+  assert.match(b.duyet_luc, RE_ISO_TZ);
+  assert.ok(b.duyet_luc.length <= 40);
+  assert.ok(Math.abs(Date.parse(b.duyet_luc) - Date.now()) < 60000);
+  assert.match(b.chu_ky_duyet, /^[A-Za-z0-9_-]{86}$/);
+  const chuoi = await chuoiKyDuyet(JOB, "voice_genmax", TS_CHUAN, LOI_DUYET, b.duyet_luc, "nhan");
+  assert.ok(await crypto.subtle.verify({ name: "Ed25519" }, CAP_KHOA.publicKey, tuB64url(b.chu_ky_duyet), chuoi));
+  // stringify lại tham_so_chuan sẽ ra chuỗi khác → chữ ký không khớp (chứng minh ký nguyên chuỗi)
+  const chuoiLai = await chuoiKyDuyet(JOB, "voice_genmax", JSON.stringify(JSON.parse(TS_CHUAN)), LOI_DUYET, b.duyet_luc, "nhan");
+  assert.ok(!(await crypto.subtle.verify({ name: "Ed25519" }, CAP_KHOA.publicKey, tuB64url(b.chu_ky_duyet), chuoiLai)));
+  for (const g of mayGoi) {
+    const lo = JSON.stringify([g.url.href, g.headers, g.body || ""]);
+    assert.equal(lo.includes("matkhau-nhan"), false);
+    assert.equal(lo.includes("mat_khau"), false);
+  }
+});
+
+test("viec duyet: sai mật khẩu → 403 không gọi máy nhà; lần sai thứ 6 → 429 (kể cả mật khẩu đúng); hết 10 phút mở lại", async (t) => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  const goc = Date.now();
+  let bayGio = goc;
+  t.mock.method(Date, "now", () => bayGio);
+  for (let i = 1; i <= 5; i++) {
+    const r = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: `sai-${i}` });
+    assert.equal(r.status, 403, `lần ${i}`);
+    assert.deepEqual(await r.json(), { loi: "Sai mật khẩu" });
+  }
+  const r6 = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai-6" });
+  assert.equal(r6.status, 429);
+  assert.match((await r6.json()).loi, /10 phút/);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  assert.equal(mayGoi.length, 0);
+  // người duyệt khác không bị khoá theo
+  const come = await dangNhap("comeofage", "matkhau-come");
+  assert.equal((await postViec(come.cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-come" })).status, 200);
+  assert.equal(JSON.parse(goiCuoi().body).boi, "comeofage");
+  mayGoi = [];
+  bayGio = goc + 9 * 60e3;
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  bayGio = goc + 10 * 60e3 + 1000;
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+});
+
+test("viec duyet: mật khẩu đúng không xoá lần sai cũ; sai cũ quá 10 phút thì không tính", async (t) => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  const goc = Date.now();
+  let bayGio = goc;
+  t.mock.method(Date, "now", () => bayGio);
+  for (let i = 0; i < 4; i++) assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 403);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 403); // lần sai thứ 5
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  datLaiDemSaiMatKhau();
+  bayGio = goc + 20 * 60e3;
+  for (let i = 0; i < 4; i++) assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 403);
+  bayGio += 10 * 60e3 + 1000; // 4 lần cũ trôi khỏi cửa sổ
+  for (let i = 0; i < 5; i++) assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 403, `lần ${i}`);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 429);
+});
+
+test("viec duyet: 8 request sai mật khẩu song song → đúng 5 lần 403, còn lại 429", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  const ds = await Promise.all(Array.from({ length: 8 }, (_, i) => postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: `sai-${i}` })));
+  assert.deepEqual(ds.map((r) => r.status).sort(), [403, 403, 403, 403, 403, 429, 429, 429]);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("viec duyet: đếm sai lưu qua Cache API → isolate mới (mất bộ nhớ) vẫn khoá; cache hỏng không 500", async () => {
+  const kho = new Map();
+  const daPut = [];
+  const khoa = (req) => (typeof req === "string" ? req : req.url);
+  globalThis.caches.default = {
+    match: async (req) => { const r = kho.get(khoa(req)); return r ? r.clone() : undefined; },
+    put: async (req, res) => { daPut.push({ k: khoa(req), cc: res.headers.get("cache-control"), noiDung: await res.clone().text() }); kho.set(khoa(req), res.clone()); },
+  };
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  for (let i = 0; i < 5; i++) assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai-bi-mat" })).status, 403);
+  assert.ok(daPut.length >= 5);
+  assert.match(daPut[0].cc, /max-age=\d+/);
+  for (const p of daPut) assert.equal((p.k + p.noiDung).includes("sai-bi-mat"), false);
+  datLaiDemSaiMatKhau(); // như isolate mới
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  globalThis.caches.default = { match: async () => { throw new Error("cache hỏng"); }, put: async () => { throw new Error("cache hỏng"); } };
+  datLaiDemSaiMatKhau();
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai" })).status, 403);
+    assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+  } finally {
+    console.error = goc;
+  }
+});
+
+test("viec duyet: body sai → 400, không gọi máy nhà, không tính lần sai", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  for (const b of [
+    {}, { mat_khau: "matkhau-nhan" }, { loi_duyet: "", mat_khau: "matkhau-nhan" }, { loi_duyet: "   \n ", mat_khau: "matkhau-nhan" },
+    { loi_duyet: 1, mat_khau: "matkhau-nhan" }, { loi_duyet: ["ok"], mat_khau: "matkhau-nhan" }, { loi_duyet: "đ".repeat(2001), mat_khau: "matkhau-nhan" },
+    { loi_duyet: "ok" }, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "" }, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: 123 }, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "x".repeat(257) },
+  ]) assert.equal((await postViec(cookie, duongDuyet, b)).status, 400, JSON.stringify(b).slice(0, 60));
+  assert.equal(mayGoi.length, 0);
+  // 2000 ký tự (ký tự ngoài BMP đếm 1 như Python len) vẫn nhận; chưa bị khoá
+  const dai = "😀".repeat(2000);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: dai, sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+  assert.equal(JSON.parse(goiCuoi().body).loi_duyet, dai);
+});
+
+test("viec duyet: user không phải nhan/comeofage → 403; thiếu Origin → 403; không gọi máy nhà", async () => {
+  const { cookie } = await dangNhap();
+  runnerDuyet();
+  assert.deepEqual(await (await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-lan" })).json(), { loi: "Không có quyền" });
+  const nhan = await dangNhapNhan();
+  assert.equal((await call(duongDuyet, { cookie: nhan.cookie, body: { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" } })).status, 403);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("viec duyet: runner không ở cho_duyet → 409; 404 trả nguyên; dữ liệu lạ → 502; POST 429/400 trả nguyên; 401 → 502", async () => {
+  const { cookie } = await dangNhapNhan();
+  const gui = () => postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" });
+  for (const tt of ["cho", "dang_chay", "xong", "huy"]) {
+    runnerDuyet({ trangThai: tt });
+    assert.equal((await gui()).status, 409, tt);
+  }
+  runnerDuyet({ getStatus: 404 });
+  assert.equal((await gui()).status, 404);
+  for (const ts of ["THIEU", null, 5, { a: 1 }]) {
+    runnerDuyet({ thamSoChuan: ts });
+    assert.equal((await gui()).status, 502, JSON.stringify(ts));
+  }
+  runnerDuyet({ loai: "Loai la\nx" });
+  assert.equal((await gui()).status, 502);
+  assert.equal(mayGoi.filter((g) => g.method === "POST").length, 0);
+  runnerDuyet({ post: () => Response.json({ loi: "Vượt hạn mức" }, { status: 429 }) });
+  const r = await gui();
+  assert.equal(r.status, 429);
+  assert.deepEqual(await r.json(), { loi: "Vượt hạn mức" });
+  runnerDuyet({ post: () => Response.json({ loi: "duyet_luc lệch" }, { status: 400 }) });
+  assert.equal((await gui()).status, 400);
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    runnerDuyet({ post: () => Response.json({ loi: "chữ ký sai" }, { status: 401 }) });
+    assert.equal((await gui()).status, 502);
+  } finally {
+    console.error = goc;
+  }
+});
+
+test("viec duyet: chuoiKyDuyet từ chối xuống dòng ở trường không băm", async () => {
+  const LUC = "2026-11-17T21:05:00+07:00";
+  await assert.rejects(chuoiKyDuyet(`${JOB}\n`, "voice_genmax", "{}", "ok", LUC, "nhan"));
+  await assert.rejects(chuoiKyDuyet(JOB, "voice_genmax", "{}", "ok", `${LUC}\r`, "nhan"));
+  await assert.rejects(chuoiKyDuyet(JOB, "voice_genmax", "{}", "ok", LUC, "nhan\nx"));
+  await assert.rejects(chuoiKyDuyet(JOB, "voice_genmax", 5, "ok", LUC, "nhan"));
+  const ok = await chuoiKyDuyet(JOB, "voice_genmax", "{}", "a\nb", LUC, "nhan");
+  assert.equal(new TextDecoder().decode(ok).split("\n").length, 7);
+});
+
+// ---------- [P2-2] sha_tham_so: dữ liệu việc đổi giữa lúc xem và lúc duyệt ----------
+test("viec duyet: thiếu/sai dạng sha_tham_so → 400, không gọi máy nhà, không tính lần sai", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  for (const sha of [undefined, "", 5, SHA_TS.toUpperCase(), SHA_TS.slice(1), `${SHA_TS}0`, "g".repeat(64)]) {
+    const r = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: sha, mat_khau: "sai" });
+    assert.equal(r.status, 400, String(sha));
+  }
+  assert.equal(mayGoi.length, 0);
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+});
+
+test("viec duyet: sha_tham_so lệch tham_so_chuan runner → 409, KHÔNG ký, KHÔNG POST runner", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet({ thamSoChuan: TS_CHUAN.replace("20261117-a1", "20261117-b2") });
+  const r = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" });
+  assert.equal(r.status, 409);
+  assert.deepEqual(await r.json(), { loi: "Dữ liệu việc đã đổi — tải lại rồi duyệt" });
+  assert.equal(soPost(), 0);
+  assert.equal(mayGoi.length, 1);
+  assert.equal(mayGoi[0].method, "GET");
+});
+
+test("viec: POST /api/viec poster_len_lich so_video_ngay 1–100 qua, 101 → 400 không gọi máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  const r = await postViec(cookie, "/api/viec", { loai: "poster_len_lich", tham_so: { folder_id: 12, so_video_ngay: 100 } });
+  assert.equal(r.status, 201);
+  assert.deepEqual(JSON.parse(goiCuoi().body), { loai: "poster_len_lich", tham_so: { folder_id: 12, so_video_ngay: 100 }, boi: "nhan" });
+  mayGoi = [];
+  for (const n of [0, 101, 1000]) assert.equal((await postViec(cookie, "/api/viec", { loai: "poster_len_lich", tham_so: { folder_id: 12, so_video_ngay: n } })).status, 400, String(n));
+  assert.equal(mayGoi.length, 0);
+});
+
+// ---------- xin duyệt lại ----------
+test("viec xin-duyet-lai: POST {boi} ký đúng path, không cần mật khẩu; user lạ 403; GET 405", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ viec: { id: JOB, trang_thai: "cho_duyet" } });
+  const r = await postViec(cookie, `/api/viec/${JOB}/xin-duyet-lai`, { boi: "lan", mat_khau: "x" });
+  assert.equal(r.status, 200);
+  const g = goiCuoi();
+  assert.equal(g.url.pathname + g.url.search, `/r/viec/${JOB}/xin-duyet-lai`);
+  assert.equal(g.method, "POST");
+  assert.deepEqual(JSON.parse(g.body), { boi: "nhan" });
+  assert.ok(await kiemChuKy(g));
+  assert.equal(mayGoi.length, 1);
+  assert.equal((await call(`/api/viec/${JOB}/xin-duyet-lai`, { cookie })).status, 405);
+  const lan = await dangNhap();
+  assert.equal((await postViec(lan.cookie, `/api/viec/${JOB}/xin-duyet-lai`, {})).status, 403);
+  assert.equal((await call(`/api/viec/${JOB}/xin-duyet-lai`, { cookie, body: {} })).status, 403); // thiếu Origin
+  assert.equal(mayGoi.length, 1);
+});
+
+// ---------- D9: sổ duyệt KV ----------
+function taoKvGia() {
+  const kho = new Map();
+  const goi = [];
+  return {
+    kho, goi, hong: false,
+    async get(k, opt) {
+      goi.push(["get", k]);
+      if (this.hong) throw new Error("kv hỏng");
+      const v = kho.get(k);
+      if (v === undefined) return null;
+      const loai = typeof opt === "string" ? opt : opt && opt.type;
+      return loai === "json" ? JSON.parse(v.value) : v.value;
+    },
+    async put(k, value, opt = {}) {
+      goi.push(["put", k, opt]);
+      if (this.hong) throw new Error("kv hỏng");
+      assert.equal(typeof value, "string");
+      kho.set(k, { value, opt });
+    },
+  };
+}
+const CK_DUYET = "A".repeat(43) + "_-" + "b".repeat(40) + "Q"; // 86 ký tự base64url DẠNG CHUẨN (4 bit thừa cuối = 0)
+const B64URL_BANG = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+// Khoá sổ tiêu = "tieu:" + sha256hex(64 byte chữ ký đã giải) — không băm chuỗi.
+const khoaTieu = async (ck) => `tieu:${hex(await crypto.subtle.digest("SHA-256", tuB64url(ck)))}`;
+const NONCE = "0123456789abcdef0123456789abcdef";
+const tieu = (body, { key = "rk", headers = {}, method = "POST" } = {}) =>
+  worker.fetch(new Request(`${ORIGIN}/api/runner/tieu-duyet`, {
+    method,
+    headers: { "content-type": "application/json", ...(key === null ? {} : { "x-runner-key": key }), ...headers },
+    body: method === "GET" ? undefined : typeof body === "string" ? body : JSON.stringify(body),
+  }), env, ctx);
+
+test("chuoiTieuDuyet: đúng định dạng kho-tieu-v1 từng byte; từ chối xuống dòng", async () => {
+  const out = await chuoiTieuDuyet(JOB, CK_DUYET, NONCE);
+  assert.ok(out instanceof Uint8Array);
+  assert.equal(new TextDecoder().decode(out), `kho-tieu-v1\n${JOB}\n${await sha256Hex(CK_DUYET)}\n${NONCE}`);
+  await assert.rejects(chuoiTieuDuyet(`${JOB}\n`, CK_DUYET, NONCE));
+  await assert.rejects(chuoiTieuDuyet(JOB, CK_DUYET, `${NONCE}\n`));
+  await assert.rejects(chuoiTieuDuyet(JOB, 5, NONCE));
+});
+
+test("tieu-duyet: lần 1 → 200 + chữ ký kiểm được bằng khoá công khai; lần 2 → 409; không cần phiên/Origin", async () => {
+  env.SO_DUYET = taoKvGia();
+  const r = await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE });
+  assert.equal(r.status, 200);
+  const d = await r.json();
+  assert.deepEqual(Object.keys(d), ["ky"]);
+  assert.match(d.ky, /^[A-Za-z0-9_-]{86}$/);
+  assert.ok(await crypto.subtle.verify({ name: "Ed25519" }, CAP_KHOA.publicKey, tuB64url(d.ky), await chuoiTieuDuyet(JOB, CK_DUYET, NONCE)));
+  // nonce khác → chữ ký không khớp
+  assert.ok(!(await crypto.subtle.verify({ name: "Ed25519" }, CAP_KHOA.publicKey, tuB64url(d.ky), await chuoiTieuDuyet(JOB, CK_DUYET, "f".repeat(32)))));
+  const khoa = await khoaTieu(CK_DUYET);
+  assert.notEqual(khoa, `tieu:${await sha256Hex(CK_DUYET)}`);
+  assert.equal(env.SO_DUYET.kho.has(`tieu:${await sha256Hex(CK_DUYET)}`), false, "không được băm chuỗi base64url");
+  const muc = env.SO_DUYET.kho.get(khoa);
+  assert.ok(muc, "phải ghi khoá tieu:<sha256hex 64 byte>");
+  const giaTri = JSON.parse(muc.value);
+  assert.deepEqual(Object.keys(giaTri).sort(), ["id", "luc"]);
+  assert.equal(giaTri.id, JOB);
+  // §8.3: sổ tiêu KHÔNG đặt TTL
+  assert.equal(muc.opt.expirationTtl, undefined);
+  assert.equal(muc.opt.expiration, undefined);
+  // lần 2 (nonce khác) → 409 kèm luc = thời điểm tiêu đầu
+  const r2 = await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: "f".repeat(32) });
+  assert.equal(r2.status, 409);
+  assert.deepEqual(await r2.json(), { loi: "Lời duyệt đã dùng", luc: giaTri.luc });
+  // isolate mới (mất bộ nhớ) → KV vẫn chặn, luc lấy từ sổ KV
+  datLaiSoTieuBoNho();
+  const r3 = await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE });
+  assert.equal(r3.status, 409);
+  assert.deepEqual(await r3.json(), { loi: "Lời duyệt đã dùng", luc: giaTri.luc });
+  assert.equal(mayGoi.length, 0);
+});
+
+test("tieu-duyet [FX-17 P1-1]: 16 biến thể ký tự cuối (cùng 64 byte) → 400 trừ dạng chuẩn; dạng chuẩn tiêu 2 lần → 409", async () => {
+  env.SO_DUYET = taoKvGia();
+  const dau = CK_DUYET.slice(0, 85);
+  const viTri = B64URL_BANG.indexOf(CK_DUYET[85]);
+  assert.equal(viTri % 16, 0);
+  const bienThe = Array.from({ length: 16 }, (_, i) => dau + B64URL_BANG[viTri + i]);
+  // cùng 64 byte sau khi giải
+  for (const ck of bienThe) assert.deepEqual(tuB64url(ck), tuB64url(CK_DUYET));
+  for (const ck of bienThe) {
+    if (ck === CK_DUYET) continue;
+    const r = await tieu({ id: JOB, chu_ky_duyet: ck, nonce: NONCE });
+    assert.equal(r.status, 400, ck);
+    assert.equal((await r.json()).ky, undefined);
+  }
+  assert.equal(env.SO_DUYET.goi.length, 0, "dạng không chuẩn không được đụng KV");
+  assert.equal((await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE })).status, 200);
+  const r2 = await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: "f".repeat(32) });
+  assert.equal(r2.status, 409);
+  assert.equal(typeof (await r2.json()).luc, "string");
+  // isolate mới: các biến thể vẫn 400 (không lọt sang khoá KV mới)
+  datLaiSoTieuBoNho();
+  for (const ck of bienThe) if (ck !== CK_DUYET) assert.equal((await tieu({ id: JOB, chu_ky_duyet: ck, nonce: NONCE })).status, 400, ck);
+  assert.equal(env.SO_DUYET.goi.filter((g) => g[0] === "put").length, 1);
+});
+
+test("tieu-duyet: 5 request song song cùng chu_ky_duyet → đúng 1 lần 200", async () => {
+  env.SO_DUYET = taoKvGia();
+  const ds = await Promise.all(Array.from({ length: 5 }, () => tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE })));
+  assert.deepEqual(ds.map((r) => r.status).sort(), [200, 409, 409, 409, 409]);
+});
+
+test("tieu-duyet: runner key thiếu/sai → 401; thiếu cấu hình → 503; không đụng KV", async () => {
+  env.SO_DUYET = taoKvGia();
+  const b = { id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE };
+  for (const key of [null, "", "rk2", "r", "RK"]) assert.equal((await tieu(b, { key })).status, 401, String(key));
+  // cookie phiên hợp lệ không thay được runner key
+  const { cookie } = await dangNhapNhan();
+  assert.equal((await tieu(b, { key: null, headers: { cookie } })).status, 401);
+  for (const k of ["RUNNER_KEY", "KY_RIENG", "SO_DUYET"]) {
+    const giu = env[k];
+    delete env[k];
+    assert.equal((await tieu(b)).status, 503, k);
+    env[k] = giu;
+  }
+  assert.equal(env.SO_DUYET.goi.length, 0);
+  // Origin lạ vẫn bị chặn chung
+  assert.equal((await tieu(b, { headers: { origin: "https://evil.test" } })).status, 403);
+  assert.equal((await tieu(b, { method: "GET" })).status, 405);
+});
+
+test("tieu-duyet: body sai → 400, không ghi KV", async () => {
+  env.SO_DUYET = taoKvGia();
+  const tot = { id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE };
+  for (const sai of [
+    { id: undefined }, { id: JOB.toUpperCase() }, { id: "j123" }, { id: `${JOB}\n` }, { id: 5 }, { id: "1729706628656957720" },
+    { chu_ky_duyet: undefined }, { chu_ky_duyet: CK_DUYET.slice(1) }, { chu_ky_duyet: `${CK_DUYET}A` }, { chu_ky_duyet: CK_DUYET.slice(1) + "=" }, { chu_ky_duyet: CK_DUYET.slice(1) + "+" },
+    { nonce: undefined }, { nonce: NONCE.toUpperCase() }, { nonce: NONCE.slice(1) }, { nonce: `${NONCE}0` }, { nonce: 1 },
+  ]) assert.equal((await tieu({ ...tot, ...sai })).status, 400, JSON.stringify(sai));
+  for (const tho of ["{không phải json", "[]", "null", "\"x\""]) assert.equal((await tieu(tho)).status, 400, tho);
+  assert.equal(env.SO_DUYET.goi.filter((g) => g[0] === "put").length, 0);
+});
+
+test("tieu-duyet: KV lỗi → 503 (không trả chữ ký), lần sau KV lành vẫn tiêu được", async () => {
+  env.SO_DUYET = taoKvGia();
+  env.SO_DUYET.hong = true;
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    const r = await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE });
+    assert.equal(r.status, 503);
+    assert.equal((await r.json()).ky, undefined);
+  } finally {
+    console.error = goc;
+  }
+  env.SO_DUYET.hong = false;
+  assert.equal((await tieu({ id: JOB, chu_ky_duyet: CK_DUYET, nonce: NONCE })).status, 200);
+});
+
+test("viec duyet: có SO_DUYET → đếm sai lưu KV sai:<user> TTL 10 phút, isolate mới vẫn khoá; không dùng Cache API", async () => {
+  env.SO_DUYET = taoKvGia();
+  let dungCache = 0;
+  globalThis.caches.default = { match: async () => { dungCache++; }, put: async () => { dungCache++; } };
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  for (let i = 0; i < 5; i++) assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "sai-bi-mat" })).status, 403);
+  const muc = env.SO_DUYET.kho.get("sai:nhan");
+  assert.ok(muc, "phải ghi khoá sai:nhan");
+  assert.equal(muc.opt.expirationTtl, 600);
+  assert.equal(muc.value.includes("sai-bi-mat"), false);
+  assert.equal(dungCache, 0);
+  datLaiDemSaiMatKhau(); // như isolate mới
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  // user khác không bị khoá
+  const come = await dangNhap("comeofage", "matkhau-come");
+  assert.equal((await postViec(come.cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-come" })).status, 200);
+});
+
+test("viec duyet: có SO_DUYET → 8 request sai song song vẫn đúng 5 lần 403", async () => {
+  env.SO_DUYET = taoKvGia();
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  const ds = await Promise.all(Array.from({ length: 8 }, (_, i) => postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: `sai-${i}` })));
+  assert.deepEqual(ds.map((r) => r.status).sort(), [403, 403, 403, 403, 403, 429, 429, 429]);
+});
+
+test("viec duyet [FX-17 P2-2]: KV đọc lỗi → 503, KHÔNG kiểm mật khẩu (kể cả isolate mới, mật khẩu đúng/sai), không gọi runner", async () => {
+  env.SO_DUYET = taoKvGia();
+  const { cookie } = await dangNhapNhan();
+  runnerDuyet();
+  datLaiDemSaiMatKhau(); // isolate mới: bộ đếm bộ nhớ trống — trước đây lọt qua dò mật khẩu
+  env.SO_DUYET.hong = true;
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    for (let i = 0; i < 8; i++) {
+      const r = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: `sai-${i}` });
+      assert.equal(r.status, 503, `lần ${i}`);
+      assert.deepEqual(await r.json(), { loi: "Không kiểm được số lần sai — thử lại sau" });
+    }
+    const dung = await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" });
+    assert.equal(dung.status, 503, "mật khẩu đúng cũng không được kiểm khi KV đọc lỗi");
+  } finally {
+    console.error = goc;
+  }
+  assert.equal(mayGoi.length, 0);
+  assert.equal(env.SO_DUYET.goi.filter((g) => g[0] === "put").length, 0, "không kiểm mật khẩu → không ghi lần sai");
+  // KV lành lại → duyệt bình thường, các lần 503 không bị tính là sai
+  env.SO_DUYET.hong = false;
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
 });

@@ -1,6 +1,7 @@
-"""Spike S-1: đo hành vi claude.exe headless cho bộ chạy việc (docs/bo-chay-viec.md §6, §13 S-1).
+"""Spike S-1/S-2: đo hành vi claude.exe headless cho bộ chạy việc (docs/bo-chay-viec.md §6, §7, §13).
 
-Chỉ dùng thư viện chuẩn. Mặc định (không cờ) chỉ in trợ giúp. `--chay` mới gọi
+Kịch bản 'cu' (S-1, mặc định) chỉ dùng thư viện chuẩn; kịch bản 'nen' (S-2) dùng thêm psutil
+nếu có (import lười, thiếu thì các mục đo tiến trình ghi null). Mặc định (không cờ) chỉ in trợ giúp. `--chay` mới gọi
 claude.exe THẬT (tốn quota, tạo phiên trong C:\\Users\\Mi\\.claude\\projects\\).
 Kết quả: MỘT JSON trên stdout; tiến độ/hướng dẫn quan sát in ra stderr.
 Mọi chuỗi trong JSON đi qua bộ che bí mật theo GIÁ TRỊ (settings.json env,
@@ -22,7 +23,7 @@ import time
 import uuid
 from pathlib import Path
 
-PHIEN_BAN = 1
+PHIEN_BAN = 2
 
 CLAUDE_EXE_MAC_DINH = r"C:\Users\Mi\AppData\Roaming\npm\node_modules\@anthropic-ai\claude-code\bin\claude.exe"
 SETTINGS_NGUOI_DUNG = Path(r"C:\Users\Mi\.claude\settings.json")
@@ -622,26 +623,405 @@ def chay_spike(exe: str, giu_tam: bool, model: str | None, cho_quan_sat_s: int) 
     finally:
         if pid_nen and con_song(pid_nen):
             out["don_tien_trinh_nen"] = giet_cay(pid_nen)
-        out["thoi_gian_tong_s"] = round(time.time() - t_bat_dau, 1)
-        out["chi_phi_tong_usd"] = round(sum(x for x in (chi_phi(g) for g in out["lan_goi"])
-                                            if isinstance(x, (int, float))), 4)
-        for g in out["lan_goi"]:
-            g["argv"] = rut_argv(g["argv"])
-        # Thư mục phiên Claude sinh cho cwd tạm (chỉ liệt kê tên, không đọc nội dung)
-        ma_cwd = re.sub(r"[^A-Za-z0-9]", "-", str(lam_viec))
+        _dong_goi(out, tam, lam_viec, giu_tam, t_bat_dau)
+    return out
+
+
+def _dong_goi(out: dict, tam: Path, lam_viec: Path, giu_tam: bool, t_bat_dau: float) -> None:
+    """Phần cuối chung của mọi kịch bản: tổng thời gian/chi phí, rút argv, liệt kê phiên, dọn tạm."""
+    out["thoi_gian_tong_s"] = round(time.time() - t_bat_dau, 1)
+    out["chi_phi_tong_usd"] = round(sum(x for x in (chi_phi(g) for g in out["lan_goi"])
+                                        if isinstance(x, (int, float))), 4)
+    for g in out["lan_goi"]:
+        g["argv"] = rut_argv(g["argv"])
+    # Thư mục phiên Claude sinh cho cwd tạm (chỉ liệt kê tên, không đọc nội dung)
+    ma_cwd = re.sub(r"[^A-Za-z0-9]", "-", str(lam_viec))
+    try:
+        ds = [p for p in THU_MUC_PROJECTS.iterdir() if p.is_dir() and p.name.lower() == ma_cwd.lower()]
+        out["thu_muc_phien"] = [{"duong_dan": str(p), "so_file_jsonl": len(list(p.glob("*.jsonl")))} for p in ds]
+        if not ds:
+            out["thu_muc_phien"] = f"không thấy thư mục khớp {ma_cwd} trong {THU_MUC_PROJECTS}"
+    except OSError as ex:
+        out["thu_muc_phien"] = f"không liệt kê được: {type(ex).__name__}"
+    if giu_tam:
+        out["giu_thu_muc_tam"] = True
+    else:
+        shutil.rmtree(tam, ignore_errors=True)
+        out["giu_thu_muc_tam"] = False
+        out["thu_muc_tam_con"] = tam.exists()
+
+
+# ---------------------------------------------------------------- kịch bản nền (S-2)
+
+TEN_AGENT_NEN = "thu-runner-nen"
+CONG_CU_NEN = ["Agent", "SendMessage", "Bash"]  # --allowedTools đúng 3 công cụ này
+# Tên thăm dò thêm vào --tools (KHÔNG vào --allowedTools): cái nào có thật sẽ hiện trong init.tools;
+# agent gọi tới sẽ bị dontAsk từ chối và ghi vào permission_denials -> biết đợt 5 cần cho phép gì.
+CONG_CU_THAM_DO = ["Task", "TaskOutput", "TaskStop", "BashOutput", "KillShell", "KillBash"]
+NGU_NEN_S2 = 60
+FILE_NEN_XONG = "nen_xong.txt"
+LENH_NEN = ("python -c \"import time; time.sleep(%d); open('%s','w').write('x')\""
+            % (NGU_NEN_S2, FILE_NEN_XONG))
+DAU_CON_1 = "CON-S2-OK"
+DAU_CON_2 = "CON-S2-LAI"
+RE_ID_NEN = re.compile(r"(?i)\b(?:shell|bash|task|background)[ _-]*id\W{0,3}\s*([A-Za-z0-9_-]{4,})|with ID:\s*([A-Za-z0-9_-]{4,})")
+RE_ID_AGENT = re.compile(r"(?i)agent[ _-]?id\W{0,3}\s*([A-Za-z0-9_-]{4,})")
+# Dấu hiệu thông báo hoàn tất việc nền trong luồng sự kiện (không xuất hiện trong prompt của script)
+RE_THONG_BAO_NEN = re.compile(r"(?i)task[-_]notification|background (?:command|task|shell)[^\"]{0,80}(?:completed|finished|exited)|exit code")
+
+MO_TA_MUC_NEN = {
+    "n1_p_thoat_truoc_viec_nen": "lượt 1 (-p) thoát TRƯỚC khi Bash nền ngủ xong 60s (true) hay chờ xong mới thoát (false)",
+    "n2_nen_con_song_sau_p_thoat": "tiến trình Bash nền còn sống ~3s sau khi -p thoát (psutil, khớp cmdline chứa nen_xong.txt)",
+    "n3_file_nen_xong_xuat_hien": "file nen_xong.txt có xuất hiện (chờ tới mốc gọi Bash nền + 60s + 20s)",
+    "n4_luot2_nhan_thong_bao_nen": "lượt 2 (--resume) có nhận thông báo hoàn tất việc nền (sự kiện stream + agent tự khai)",
+    "n5_sendmessage_subagent_cu": "SendMessage tới subagent của lượt 1 sau --resume có chạy (tool_use + tool_result không lỗi, không bị từ chối)",
+    "n6_ten_cong_cu_init": "tên công cụ thật trong init.tools (Agent/Task? SendMessage? BashOutput/KillShell/TaskOutput/TaskStop?)",
+    "n7_subagent_luot1": "lượt 1 gọi được subagent general-purpose và nhận đúng dấu CON-S2-OK",
+    "n8_chi_phi": "total_cost_usd từng lượt và tổng",
+}
+
+
+def agents_json_nen() -> str:
+    return json.dumps({TEN_AGENT_NEN: {
+        "description": "Agent thử việc nền cho spike S-2; làm đúng chỉ dẫn, trả lời ngắn.",
+        "prompt": (f"Bạn là {TEN_AGENT_NEN}, agent kiểm thử việc nền. Làm đúng và chỉ đúng các bước được yêu cầu. "
+                   "Nếu một công cụ bị từ chối hoặc không có, KHÔNG tìm cách khác, chỉ báo lại."),
+    }}, ensure_ascii=False)
+
+
+def dung_argv_nen(exe: str, *, tools: list[str], session_id: str | None = None,
+                  resume: str | None = None, model: str | None = None) -> list[str]:
+    """argv kịch bản nen: --strict-mcp-config, dontAsk, --allowedTools đúng CONG_CU_NEN, cấm chung."""
+    a = [exe, "-p", "--strict-mcp-config", "--agents", agents_json_nen(), "--agent", TEN_AGENT_NEN,
+         "--tools", ",".join(tools),
+         "--permission-mode", "dontAsk",
+         "--allowedTools", *CONG_CU_NEN,
+         "--disallowedTools", *CONG_CU_CAM_CHUNG,
+         "--output-format", "stream-json", "--verbose"]
+    if model:
+        a += ["--model", model]
+    a += ["--resume", resume] if resume else ["--session-id", session_id or str(uuid.uuid4())]
+    return a
+
+
+def _chu_trong(x) -> str:
+    """Gom mọi chuỗi trong content tool_result (str hoặc list khối text) thành một chuỗi."""
+    if isinstance(x, str):
+        return x
+    if isinstance(x, list):
+        return "\n".join(_chu_trong(v) for v in x)
+    if isinstance(x, dict):
+        return _chu_trong(x.get("text") if "text" in x else x.get("content", ""))
+    return ""
+
+
+def cong_cu_chi_tiet(su_kien: list[dict]) -> list[dict]:
+    """Ghép tool_use với tool_result theo id (cả của subagent: parent_tool_use_id). Hàm thuần."""
+    ds: list[dict] = []
+    theo_id: dict[str, dict] = {}
+    for e in su_kien:
+        msg = e.get("message") if isinstance(e.get("message"), dict) else {}
+        for c in msg.get("content") or []:
+            if not isinstance(c, dict):
+                continue
+            if e.get("type") == "assistant" and c.get("type") == "tool_use":
+                inp = c.get("input") if isinstance(c.get("input"), dict) else {}
+                m = {"id": c.get("id"), "ten": c.get("name"), "t_s": e.get("__t"),
+                     "cha": e.get("parent_tool_use_id"),
+                     "khoa_input": sorted(inp.keys()),
+                     "input_dau": json.dumps(inp, ensure_ascii=False)[:300],
+                     "nen": inp.get("run_in_background"),
+                     "ket_qua_dau": None, "loi": None, "t_ket_qua_s": None}
+                ds.append(m)
+                if c.get("id"):
+                    theo_id[c["id"]] = m
+            elif e.get("type") == "user" and c.get("type") == "tool_result":
+                m = theo_id.get(c.get("tool_use_id"))
+                if m is not None:
+                    m["ket_qua_dau"] = _chu_trong(c.get("content"))[:600]
+                    m["loi"] = bool(c.get("is_error"))
+                    m["t_ket_qua_s"] = e.get("__t")
+    return ds
+
+
+def tim_thong_bao_nen(su_kien: list[dict], bo_qua: list[str] | None = None) -> list[dict]:
+    """Sự kiện có dấu hiệu thông báo hoàn tất việc nền (trừ tool_result của chính lệnh gọi). Hàm thuần."""
+    bo = set(bo_qua or [])
+    ra = []
+    for e in su_kien:
+        if e.get("type") == "assistant":
+            continue  # lời agent tự khai đo riêng
+        s = json.dumps({k: v for k, v in e.items() if k != "__t"}, ensure_ascii=False)
+        if any(b and b in s for b in bo) and e.get("type") == "user" and '"tool_result"' in s:
+            continue
+        m = RE_THONG_BAO_NEN.search(s)
+        if m:
+            ra.append({"t_s": e.get("__t"), "loai": f"{e.get('type')}/{e.get('subtype')}",
+                       "khop": m.group(0)[:120], "doan": s[max(0, m.start() - 150):m.end() + 150]})
+    return ra
+
+
+TEN_UNG_VIEN_NEN = re.compile(r"^(python\d*(\.\d+)*w?|py|bash|sh|cmd|pwsh|powershell)(\.exe)?$")
+
+
+def _cmd_khop_nen(cmd: list[str] | None) -> bool:
+    s = " ".join(cmd or [])
+    return FILE_NEN_XONG in s and "sleep" in s
+
+
+class TheoDoiNen:
+    """Thread quét psutil mỗi giây, ghi lại các tiến trình có cmdline chứa lệnh nền."""
+
+    def __init__(self, t0: float):
+        self.t0 = t0
+        self.thay: dict[int, dict] = {}
+        self.loi: str | None = None
+        self._dung = threading.Event()
+        self._th = threading.Thread(target=self._chay, daemon=True)
+        self.bo_qua: set[int] = set()
         try:
-            ds = [p for p in THU_MUC_PROJECTS.iterdir() if p.is_dir() and p.name.lower() == ma_cwd.lower()]
-            out["thu_muc_phien"] = [{"duong_dan": str(p), "so_file_jsonl": len(list(p.glob("*.jsonl")))} for p in ds]
-            if not ds:
-                out["thu_muc_phien"] = f"không thấy thư mục khớp {ma_cwd} trong {THU_MUC_PROJECTS}"
-        except OSError as ex:
-            out["thu_muc_phien"] = f"không liệt kê được: {type(ex).__name__}"
-        if giu_tam:
-            out["giu_thu_muc_tam"] = True
+            import psutil  # noqa: F401
+            self.psutil = psutil
+            # Không tính chính script này và tổ tiên (cmdline người gọi có thể chứa chuỗi lệnh nền)
+            self.bo_qua = {os.getpid()} | {p.pid for p in psutil.Process().parents()}
+        except ImportError:
+            self.psutil = None
+            self.loi = "không import được psutil"
+
+    def bat_dau(self) -> None:
+        if self.psutil:
+            self._th.start()
+
+    def dung(self) -> None:
+        self._dung.set()
+        if self._th.is_alive():
+            self._th.join(timeout=10)
+
+    def quet(self) -> None:
+        ps = self.psutil
+        # Lọc theo tên trước (rẻ); chỉ đọc cmdline của ứng viên: đọc cmdline mọi tiến trình
+        # trên Windows mất ~20s/lần quét (đã đo), làm hỏng mốc thời gian.
+        for p in ps.process_iter(["pid", "name"]):
+            try:
+                pid, ten = p.info["pid"], (p.info.get("name") or "").lower()
+                if pid in self.thay or pid in self.bo_qua or not TEN_UNG_VIEN_NEN.search(ten):
+                    continue
+                cmd = p.cmdline()
+                if not _cmd_khop_nen(cmd):
+                    continue
+                self.thay[pid] = {
+                    "pid": pid, "ppid": p.ppid(), "ten": ten, "create_time": p.create_time(),
+                    "cmd_dau": " ".join(cmd)[:200],
+                    "t_thay_s": round(time.monotonic() - self.t0, 1)}
+            except (ps.NoSuchProcess, ps.AccessDenied, ps.ZombieProcess):
+                continue
+
+    def _chay(self) -> None:
+        while not self._dung.is_set():
+            try:
+                self.quet()
+            except Exception as e:  # noqa: BLE001
+                self.loi = f"{type(e).__name__}: {e}"[:200]
+            self._dung.wait(1.0)
+
+    def con_song(self) -> list[int]:
+        """PID đã thấy mà vẫn sống và đúng là tiến trình đó (create_time khớp, chống tái dùng PID)."""
+        if not self.psutil:
+            return []
+        ps = self.psutil
+        song = []
+        for pid, tt in self.thay.items():
+            try:
+                p = ps.Process(pid)
+                if abs(p.create_time() - tt["create_time"]) < 1 and p.status() != ps.STATUS_ZOMBIE:
+                    song.append(pid)
+            except (ps.NoSuchProcess, ps.AccessDenied):
+                continue
+        return song
+
+
+def chay_spike_nen(exe: str, giu_tam: bool, model: str | None) -> dict:
+    """S-2: việc nền (subagent + Bash nền) qua ranh giới -p và --resume."""
+    out: dict = {
+        "phien_ban_script": PHIEN_BAN,
+        "kich_ban": "nen",
+        "claude_exe": exe,
+        "claude_exe_ton_tai": Path(exe).is_file(),
+        "lenh_nen": LENH_NEN,
+        "cong_cu_allowed": CONG_CU_NEN,
+        "cong_cu_tham_do_trong_tools": CONG_CU_THAM_DO,
+        "muc": {k: {"mo_ta": v, "dat": None, "ghi_chu": ""} for k, v in MO_TA_MUC_NEN.items()},
+        "lan_goi": [],
+    }
+    muc = out["muc"]
+    if not out["claude_exe_ton_tai"]:
+        out["loi"] = "không thấy claude.exe"
+        return out
+
+    tam = Path(tempfile.mkdtemp(prefix="spike_claude_nen_"))
+    out["thu_muc_tam"] = str(tam)
+    thu_muc_log = tam / "_log"
+    thu_muc_log.mkdir()
+    lam_viec = tam / "lam_viec"
+    lam_viec.mkdir()
+    file_xong = lam_viec / FILE_NEN_XONG
+    env = env_toi_thieu()
+    t_bat_dau = time.time()
+    t0 = time.monotonic()
+    theo_doi = TheoDoiNen(t0)  # khởi tạo TRƯỚC try: finally luôn dùng được
+    try:
+        theo_doi.bat_dau()
+        out["psutil"] = theo_doi.loi or "có"
+
+        # ---- lượt 1: subagent + Bash nền, rồi kết thúc lượt ----
+        sid = str(uuid.uuid4())
+        stdin_1 = (
+            "PHIẾU SPIKE-NEN lượt 1. Làm đúng hai việc sau, mỗi việc gọi công cụ ĐÚNG MỘT LẦN, rồi KẾT THÚC lượt ngay:\n"
+            "1) Gọi công cụ Agent (công cụ giao việc cho subagent) với subagent_type general-purpose, "
+            f"description \"S2 con\", prompt: \"Trả lời đúng một dòng: {DAU_CON_1}. Không dùng công cụ nào.\"\n"
+            "2) Gọi công cụ Bash với tham số run_in_background=true để chạy đúng lệnh:\n"
+            f"{LENH_NEN}\n"
+            "Sau đó KHÔNG chờ, KHÔNG kiểm output, KHÔNG gọi thêm công cụ nào. Trả lời ngắn: DA_GIAO_VIEC_NEN, "
+            "kèm id của subagent và id việc nền nếu công cụ có trả về.\n")
+        tools_1 = CONG_CU_NEN + CONG_CU_THAM_DO
+        argv_1 = dung_argv_nen(exe, tools=tools_1, session_id=sid, model=model)
+        log(f"NEN lượt 1: subagent + Bash nền ngủ {NGU_NEN_S2}s (--tools có thêm tên thăm dò)")
+        t_bd_1 = time.monotonic() - t0
+        k1 = chay_claude("N1_giao_viec_nen", argv_1, lam_viec, stdin_1, env, thu_muc_log)
+        if not any(e.get("type") == "system" and e.get("subtype") == "init" for e in k1.get("su_kien", [])):
+            # Có thể tên thăm dò không hợp lệ làm claude từ chối khởi động -> chạy lại đúng 3 công cụ
+            out["luot1_lan_dau_khong_init"] = {"ma_thoat": k1.get("ma_thoat"), "stderr_cuoi": k1.get("stderr_cuoi")}
+            out["lan_goi"].append(tom_tat(k1))
+            log("NEN lượt 1 không có init -> chạy lại với --tools đúng Agent,SendMessage,Bash")
+            sid = str(uuid.uuid4())
+            argv_1 = dung_argv_nen(exe, tools=CONG_CU_NEN, session_id=sid, model=model)
+            t_bd_1 = time.monotonic() - t0
+            k1 = chay_claude("N1b_giao_viec_nen", argv_1, lam_viec, stdin_1, env, thu_muc_log)
+        t_thoat_1 = t_bd_1 + (k1.get("thoi_gian_s") or 0)
+        file_luc_thoat = file_xong.exists()
+        cc1 = cong_cu_chi_tiet(k1.get("su_kien", []))
+        tb1 = tim_thong_bao_nen(k1.get("su_kien", []))
+        t1 = tom_tat(k1)
+        t1["cong_cu_chi_tiet"] = cc1
+        t1["thong_bao_nen_trong_luot"] = tb1
+        out["lan_goi"].append(t1)
+
+        time.sleep(3)
+        if theo_doi.psutil:
+            theo_doi.quet()
+        song_sau_3s = theo_doi.con_song()
+
+        bash_nen = next((c for c in cc1 if c["ten"] == "Bash" and c.get("nen")), None)
+        agent_goi = next((c for c in cc1 if c["ten"] in ("Agent", "Task") and not c.get("cha")), None)
+        t_goi_nen = (t_bd_1 + bash_nen["t_s"]) if bash_nen and bash_nen.get("t_s") is not None else None
+        id_nen = None
+        if bash_nen and bash_nen.get("ket_qua_dau"):
+            m = RE_ID_NEN.search(bash_nen["ket_qua_dau"])
+            id_nen = (m.group(1) or m.group(2)) if m else None
+        id_agent = None
+        if agent_goi and agent_goi.get("ket_qua_dau"):
+            m = RE_ID_AGENT.search(agent_goi["ket_qua_dau"])
+            id_agent = m.group(1) if m else None
+        out["id_tu_luot1"] = {"id_viec_nen": id_nen, "id_subagent": id_agent}
+
+        init1 = t1.get("init") or {}
+        tools_init = init1.get("tools")
+        muc["n6_ten_cong_cu_init"].update(
+            dat=True if isinstance(tools_init, list) else None,
+            ghi_chu=f"init.tools={tools_init}; tên thăm dò CÓ trong init: "
+                    f"{[x for x in CONG_CU_THAM_DO if isinstance(tools_init, list) and x in tools_init]}; "
+                    f"--tools lượt 1={argv_1[argv_1.index('--tools') + 1]}")
+        muc["n7_subagent_luot1"].update(
+            dat=(bool(agent_goi) and not agent_goi.get("loi") and DAU_CON_1 in (agent_goi.get("ket_qua_dau") or ""))
+            if t1.get("result") else None,
+            ghi_chu=f"tool_use Agent/Task: {agent_goi['ten'] if agent_goi else None}; "
+                    f"lỗi: {agent_goi.get('loi') if agent_goi else None}; id_subagent={id_agent}; "
+                    f"bị từ chối: {[d for d in ((t1.get('result') or {}).get('permission_denials') or [])]}")
+
+        # ---- chờ tới mốc việc nền đáng lẽ xong ----
+        moc = (t_goi_nen if t_goi_nen is not None else t_bd_1) + NGU_NEN_S2 + 20
+        t_file = (time.monotonic() - t0) if file_luc_thoat else None
+        log(f"NEN: chờ tới mốc gọi nền + {NGU_NEN_S2 + 20}s để xem {FILE_NEN_XONG}")
+        while t_file is None and time.monotonic() - t0 < moc:
+            time.sleep(2)
+            if file_xong.exists():
+                t_file = time.monotonic() - t0
+        song_sau_moc = theo_doi.con_song()
+
+        p_truoc = None
+        if bash_nen and t_goi_nen is not None and not k1.get("het_gio"):
+            p_truoc = (t_thoat_1 < t_goi_nen + NGU_NEN_S2) and not file_luc_thoat
+        muc["n1_p_thoat_truoc_viec_nen"].update(
+            dat=p_truoc,
+            ghi_chu=f"agent gọi Bash nền: {bool(bash_nen)}; gọi nền lúc {t_goi_nen and round(t_goi_nen, 1)}s, "
+                    f"-p thoát lúc {round(t_thoat_1, 1)}s (mã {k1.get('ma_thoat')}, hết giờ {k1.get('het_gio')}); "
+                    f"file có lúc thoát: {file_luc_thoat}")
+        muc["n2_nen_con_song_sau_p_thoat"].update(
+            dat=(bool(song_sau_3s) if theo_doi.thay else None) if theo_doi.psutil else None,
+            ghi_chu=f"psutil: {out['psutil']}; tiến trình nền thấy được: {list(theo_doi.thay.values())}; "
+                    f"còn sống 3s sau thoát: {song_sau_3s}; còn sống ở mốc +{NGU_NEN_S2 + 20}s: {song_sau_moc}"
+                    + ("" if theo_doi.thay else "; KHÔNG bắt được tiến trình nền nào (có thể chết trước lần quét đầu)"))
+        muc["n3_file_nen_xong_xuat_hien"].update(
+            dat=t_file is not None if bash_nen else None,
+            ghi_chu=f"xuất hiện lúc {t_file and round(t_file, 1)}s (mốc chờ {round(moc, 1)}s)")
+
+        # ---- lượt 2: --resume hỏi trạng thái + SendMessage tới subagent cũ ----
+        res1 = t1.get("result") or {}
+        sid_ok = init1.get("session_id") or sid
+        if res1:
+            goi_y_id = f" (id subagent lượt trước: {id_agent})" if id_agent else " (dùng id/tên subagent bạn nhớ từ lượt trước)"
+            stdin_2 = (
+                "PHIẾU SPIKE-NEN lượt 2 (tiếp phiên). Không chạy lệnh Bash nào.\n"
+                "1) Cho biết trạng thái việc Bash nền ở lượt trước: từ lượt trước tới giờ bạn có nhận được "
+                "thông báo hệ thống nào báo việc nền đã xong không? Nếu có, chép nguyên văn.\n"
+                f"2) Dùng công cụ SendMessage ĐÚNG MỘT LẦN gửi tới subagent ở lượt trước{goi_y_id} nội dung: "
+                f"\"Trả lời đúng một dòng: {DAU_CON_2}\". Nếu không có công cụ SendMessage hoặc bị từ chối, "
+                "KHÔNG thử cách khác.\n"
+                "3) Kết thúc bằng đúng hai dòng:\n"
+                "NHAN_THONG_BAO_NEN: co | khong\n"
+                "SENDMESSAGE: chay | loi | khong_co\n")
+            argv_2 = dung_argv_nen(exe, tools=argv_1[argv_1.index("--tools") + 1].split(","),
+                                   resume=sid_ok, model=model)
+            log("NEN lượt 2: --resume, hỏi trạng thái nền + SendMessage")
+            k2 = chay_claude("N2_resume_hoi_nen", argv_2, lam_viec, stdin_2, env, thu_muc_log)
+            cc2 = cong_cu_chi_tiet(k2.get("su_kien", []))
+            bo_qua = [x for x in (bash_nen.get("id") if bash_nen else None,) if x]
+            tb2 = tim_thong_bao_nen(k2.get("su_kien", []), bo_qua)
+            t2 = tom_tat(k2)
+            t2["cong_cu_chi_tiet"] = cc2
+            t2["thong_bao_nen_trong_luot"] = tb2
+            out["lan_goi"].append(t2)
+            txt2 = van_ban(t2)
+            m_tb = re.search(r"NHAN_THONG_BAO_NEN:\s*(\w+)", txt2)
+            m_sm = re.search(r"SENDMESSAGE:\s*(\w+)", txt2)
+            muc["n4_luot2_nhan_thong_bao_nen"].update(
+                dat=(bool(tb2) or bool(m_tb and m_tb.group(1).lower() == "co")) if t2.get("result") else None,
+                ghi_chu=f"sự kiện stream có dấu hiệu: {len(tb2)}; agent tự khai: {m_tb.group(1) if m_tb else None}; "
+                        f"lượt 1 cũng có dấu hiệu: {len(tb1)}")
+            sm = [c for c in cc2 if c["ten"] == "SendMessage"]
+            sm_tu_choi = bi_tu_choi(t2, "SendMessage")
+            muc["n5_sendmessage_subagent_cu"].update(
+                dat=(bool(sm) and not sm_tu_choi and not any(c.get("loi") for c in sm)) if t2.get("result") else None,
+                ghi_chu=f"số tool_use SendMessage: {len(sm)}; bị từ chối: {sm_tu_choi}; "
+                        f"kết quả: {[c.get('ket_qua_dau') for c in sm]}; có dấu {DAU_CON_2}: "
+                        f"{any(DAU_CON_2 in (c.get('ket_qua_dau') or '') for c in cc2) or DAU_CON_2 in txt2}; "
+                        f"agent tự khai: {m_sm.group(1) if m_sm else None}; "
+                        f"SendMessage trong init lượt 2: {'SendMessage' in ((t2.get('init') or {}).get('tools') or [])}")
         else:
-            shutil.rmtree(tam, ignore_errors=True)
-            out["giu_thu_muc_tam"] = False
-            out["thu_muc_tam_con"] = tam.exists()
+            for k in ("n4_luot2_nhan_thong_bao_nen", "n5_sendmessage_subagent_cu"):
+                muc[k]["ghi_chu"] = "bỏ qua: lượt 1 không có result"
+        out["file_nen_xong_cuoi"] = file_xong.exists()
+        out["nen_con_song_cuoi"] = theo_doi.con_song()
+    finally:
+        theo_doi.dung()
+        con = theo_doi.con_song()
+        if con:
+            out["don_tien_trinh_nen"] = {pid: giet_cay(pid) for pid in con}
+        out["tien_trinh_nen_da_thay"] = list(theo_doi.thay.values())
+        _dong_goi(out, tam, lam_viec, giu_tam, t_bat_dau)
+        muc["n8_chi_phi"].update(
+            dat=(out["chi_phi_tong_usd"] > 0) if out["lan_goi"] else None,
+            ghi_chu=f"từng lượt: {[(g['ten'], chi_phi(g)) for g in out['lan_goi']]}")
     return out
 
 
@@ -659,21 +1039,34 @@ def _stdio_utf8() -> None:
 def main(argv: list[str] | None = None) -> int:
     _stdio_utf8()
     ds_muc = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC.items())
+    ds_muc_nen = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC_NEN.items())
     ap = argparse.ArgumentParser(
         prog="spike_claude.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=(
-            "Spike S-1: đo hành vi claude.exe headless (-p, stream-json, dontAsk, --tools, --resume...)\n"
-            "cho bộ chạy việc Kho sản phẩm. KHÔNG cờ = chỉ in trợ giúp, không gọi gì.\n\n"
-            "Các mục đo (JSON in ra có dat = true | false | null(không kết luận) | QUAN_SAT_TAY):\n" + ds_muc),
+            "Spike S-1/S-2: đo hành vi claude.exe headless (-p, stream-json, dontAsk, --tools, --resume,\n"
+            "việc nền) cho bộ chạy việc Kho sản phẩm. KHÔNG cờ = chỉ in trợ giúp, không gọi gì.\n\n"
+            "Kịch bản 'cu' (mặc định, S-1). Các mục đo (dat = true | false | null(không kết luận) | QUAN_SAT_TAY):\n"
+            + ds_muc + "\n\n"
+            "Kịch bản 'nen' (S-2): agent nội tuyến có Agent, SendMessage, Bash (--strict-mcp-config,\n"
+            "dontAsk, --allowedTools đúng 3 công cụ; --tools thêm tên thăm dò "
+            + ",".join(CONG_CU_THAM_DO) + ").\n"
+            "Lượt 1 gọi 1 subagent general-purpose + 1 Bash nền ngủ 60s rồi kết thúc; lượt 2 --resume hỏi\n"
+            "trạng thái việc nền và thử SendMessage tới subagent cũ. Các mục đo:\n" + ds_muc_nen),
         epilog=(
-            "Tác động khi --chay: gọi claude.exe THẬT 6-8 lượt (A, B resume, C, [C2], D, E, F, [A2]),\n"
+            "Tác động khi --chay (cu): gọi claude.exe THẬT 6-8 lượt (A, B resume, C, [C2], D, E, F, [A2]),\n"
             "tốn quota; tạo 5-7 phiên trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
             "thư mục tạm %TEMP%\\spike_claude_* (xoá cuối lượt trừ khi --giu-tam).\n"
-            "Hoàn tác: xoá thư mục phiên in trong khoá thu_muc_phien và thư mục tạm (nếu --giu-tam).\n"
-            "Mục 9 cần người ngồi nhìn màn hình; script in hướng dẫn ra stderr và chờ trước bước D."),
+            "Mục 9 cần người ngồi nhìn màn hình; script in hướng dẫn ra stderr và chờ trước bước D.\n"
+            "Tác động khi --chay --kich-ban nen: 2 lượt claude.exe THẬT (+1 nếu lượt 1 không khởi động\n"
+            "được với tên thăm dò), 1 subagent, ~0,5 USD; chạy ~3-5 phút (chờ việc nền 60s + 20s);\n"
+            "1 phiên (kèm file subagent) trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
+            "thư mục tạm %TEMP%\\spike_claude_nen_*; tiến trình nền còn sót bị taskkill cuối lượt.\n"
+            "Hoàn tác: xoá thư mục phiên in trong khoá thu_muc_phien và thư mục tạm (nếu --giu-tam)."),
     )
     ap.add_argument("--chay", action="store_true", help="chạy các phép đo bằng claude.exe thật (cần duyệt)")
+    ap.add_argument("--kich-ban", choices=["cu", "nen"], default="cu",
+                    help="cu = 12 mục S-1 (mặc định, hành vi cũ); nen = việc nền S-2")
     ap.add_argument("--claude-exe", default=os.environ.get("KHO_CLAUDE_EXE", CLAUDE_EXE_MAC_DINH),
                     help="đường dẫn claude.exe (mặc định §6.1, ghi đè bằng env KHO_CLAUDE_EXE)")
     ap.add_argument("--model", default=None, help="tuỳ chọn --model truyền cho claude (mặc định: không truyền)")
@@ -691,7 +1084,10 @@ def main(argv: list[str] | None = None) -> int:
               "Sửa settings.json rồi chạy lại.", file=sys.stderr, flush=True)
         return 3
     che = dung_bo_che(settings)
-    out = chay_spike(ns.claude_exe, ns.giu_tam, ns.model, max(0, ns.cho_quan_sat))
+    if ns.kich_ban == "nen":
+        out = chay_spike_nen(ns.claude_exe, ns.giu_tam, ns.model)
+    else:
+        out = chay_spike(ns.claude_exe, ns.giu_tam, ns.model, max(0, ns.cho_quan_sat))
     print(json.dumps(che_de_quy(out, che), ensure_ascii=False, indent=2))
     return 0 if out.get("claude_exe_ton_tai") else 2
 

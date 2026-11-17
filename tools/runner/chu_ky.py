@@ -12,7 +12,9 @@ Quy ước chung
 - Không trường nào được chứa ``"\\n"`` hoặc ``"\\r"`` (hàm dựng chuỗi ném
   ``ValueError``), để không thể ghép trường làm lệch ranh giới.
 - Chữ ký Ed25519 (64 byte) viết bằng **base64url KHÔNG padding** (86 ký tự
-  ``[A-Za-z0-9_-]``). Có ``=`` ở cuối → bị từ chối.
+  ``[A-Za-z0-9_-]``). Có ``=`` ở cuối → bị từ chối. Phải ở **dạng chuẩn**: 4 bit thừa
+  của ký tự thứ 86 bằng 0 (mã hoá lại 64 byte phải ra đúng chuỗi); chuỗi khác
+  dạng chuẩn → bị từ chối, kể cả khi giải lỏng ra đúng chữ ký (``giai_chu_ky``).
 
 Chuỗi ký request (mọi POST tới runner)
 --------------------------------------
@@ -48,6 +50,19 @@ Chuỗi ký lời duyệt
   nhận từ ``GET /r/viec/<id>``.
 - ``LOI_DUYET``, ``BOI``, ``DUYET_LUC`` là chuỗi nguyên văn (không trim, không
   chuẩn hoá Unicode).
+
+Chuỗi tiêu lời duyệt (D9 — sổ trên Cloudflare)
+----------------------------------------------
+::
+
+    "kho-tieu-v1" "\\n" ID "\\n" sha256_hex(CHU_KY_DUYET) "\\n" NONCE
+
+Mỗi lần chạy pha tốn tiền, runner xin Worker "tiêu" lời duyệt; Worker giữ sổ KV, mỗi
+``chu_ky_duyet`` chỉ tiêu được MỘT lần và trả chữ ký Ed25519 trên chuỗi này.
+
+- ``ID``: id việc, đúng regex ``j\\d{14}[a-z0-9]{4}``.
+- ``CHU_KY_DUYET``: chuỗi base64url của lời duyệt, băm nguyên văn UTF-8 (khác rỗng).
+- ``NONCE``: 32 hex chữ thường do runner sinh cho lần tiêu này.
 """
 from __future__ import annotations
 
@@ -70,8 +85,10 @@ log = logging.getLogger(__name__)
 
 TIEN_TO_REQUEST = "kho-runner-v1"
 TIEN_TO_DUYET = "kho-duyet-v1"
+TIEN_TO_TIEU = "kho-tieu-v1"
 LECH_TOI_DA_MS = 120_000
 
+_RE_ID_VIEC = re.compile(r"j[0-9]{14}[a-z0-9]{4}")     # khớp api._RE_ID / vong_lap.RE_ID
 _RE_NONCE = re.compile(r"[0-9a-f]{32}")
 _RE_NGAY = re.compile(r"0|[1-9][0-9]{0,15}")
 _RE_CHU_KY = re.compile(r"[A-Za-z0-9_-]{86}")
@@ -135,6 +152,42 @@ def chuoi_ky_duyet(id: str, loai: str, tham_so_chuan: str, loi_duyet: str,  # no
     return "\n".join(phan).encode("utf-8")
 
 
+def chuoi_tieu_duyet(id: str, chu_ky_duyet: str, nonce: str) -> bytes:  # noqa: A002
+    """Dựng chuỗi tiêu lời duyệt (xem docstring module). Trả bytes UTF-8.
+
+    ValueError khi: id sai regex việc, chu_ky_duyet không phải chuỗi khác rỗng hoặc có xuống dòng, nonce
+    không phải 32 hex chữ thường (hoặc bất kỳ trường nào chứa xuống dòng)."""
+    _kiem_truong("id", id)
+    if not _RE_ID_VIEC.fullmatch(id):
+        raise ValueError("id việc sai định dạng")
+    _kiem_truong("chu_ky_duyet", chu_ky_duyet)
+    if not chu_ky_duyet:
+        raise ValueError("chu_ky_duyet rỗng")
+    _kiem_truong("nonce", nonce)
+    if not _RE_NONCE.fullmatch(nonce):
+        raise ValueError("nonce phải là 32 hex chữ thường")
+    phan = [TIEN_TO_TIEU, id, _sha256_hex(chu_ky_duyet.encode("utf-8")), nonce]
+    return "\n".join(phan).encode("utf-8")
+
+
+def kiem_tieu(khoa_cong_khai: Ed25519PublicKey, id: str, chu_ky_duyet: str, nonce: str,  # noqa: A002
+              ky: str) -> bool:
+    """Kiểm chữ ký TIÊU của Worker. True chỉ khi chữ ký đúng; mọi sai/hỏng → False (không ném)."""
+    chu_ky = _giai_chu_ky(ky)
+    if chu_ky is None:
+        log.warning("kiem_tieu %r: chữ ký tiêu thiếu hoặc sai định dạng", id)
+        return False
+    try:
+        chuoi = chuoi_tieu_duyet(id, chu_ky_duyet, nonce)
+    except ValueError as e:
+        log.warning("kiem_tieu %r: không dựng được chuỗi tiêu: %s", id, e)
+        return False
+    if not _xac_minh(khoa_cong_khai, chu_ky, chuoi):
+        log.warning("kiem_tieu %r: chữ ký tiêu KHÔNG khớp", id)
+        return False
+    return True
+
+
 def nap_khoa_cong_khai(pem: bytes) -> Ed25519PublicKey:
     """Nạp khoá công khai PEM (SubjectPublicKeyInfo). Không phải Ed25519 → ValueError."""
     khoa = serialization.load_pem_public_key(pem)
@@ -143,15 +196,27 @@ def nap_khoa_cong_khai(pem: bytes) -> Ed25519PublicKey:
     return khoa
 
 
-def _giai_chu_ky(s: str | None) -> bytes | None:
-    """base64url không padding → 64 byte; sai định dạng → None."""
+def giai_chu_ky(s: object) -> bytes | None:
+    """base64url CHUẨN không padding → 64 byte; sai định dạng hoặc không chuẩn → None.
+
+    86 ký tự mang 516 bit cho 512 bit dữ liệu: 4 bit thấp của ký tự cuối là bit thừa. Bộ giải của Python bỏ qua
+    chúng, nên 16 chuỗi khác nhau giải ra cùng 64 byte (R-15 P1-1). Chỉ nhận chuỗi mà mã hoá lại 64 byte vừa giải
+    cho ra ĐÚNG chuỗi gốc (bit thừa = 0) — mỗi chữ ký có đúng một dạng chuỗi.
+    """
     if not isinstance(s, str) or not _RE_CHU_KY.fullmatch(s):
         return None
     try:
         raw = base64.urlsafe_b64decode(s + "==")
     except (binascii.Error, ValueError):
         return None
-    return raw if len(raw) == 64 else None
+    if len(raw) != 64:
+        return None
+    if base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii") != s:
+        return None
+    return raw
+
+
+_giai_chu_ky = giai_chu_ky      # tên cũ (nội bộ) — giữ cho bên gọi hiện có
 
 
 def _xac_minh(kcc: Ed25519PublicKey, chu_ky: bytes, du_lieu: bytes) -> bool:

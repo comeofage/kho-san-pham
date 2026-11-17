@@ -1,11 +1,23 @@
-"""HTTP API của bộ chạy việc (docs/bo-chay-viec.md §8.1, §4.3, §8.3) — phiếu B-2, đợt 3.
+"""HTTP API của bộ chạy việc (docs/bo-chay-viec.md §8.1, §4.3, §8.3) — phiếu B-2 (đợt 3), B-3 (đợt 4).
 
 Hai lớp kiểm cho mọi request:
 - `x-runner-key` (so hằng thời gian bằng hmac.compare_digest) cho MỌI route, kể cả route lạ;
 - chữ ký Ed25519 của Worker (`chu_ky.kiem_request`) cho MỌI POST. `boi` chỉ được tin vì nằm trong body đã ký.
 
-Đợt 3: `/poster/folders` và `/viec/<id>/duyet` trả 404; `tra-loi` chỉ nhận giá trị nút
-(quy tắc khớp Worker: chuỗi 1–120 đơn vị UTF-16, không ký tự điều khiển [\\x00-\\x1f\\x7f] kể cả \\t).
+`tra-loi` chỉ nhận giá trị nút (quy tắc khớp Worker: chuỗi 1–120 đơn vị UTF-16, không ký tự điều khiển
+[\\x00-\\x1f\\x7f] kể cả \\t).
+
+Đợt 4 (chỉ khi dot_bat hiệu lực ≥ 4, ngược lại 404):
+- `GET /poster/folders` → `{"folders": [{"id": int, "ten": str}]}` (502 khi không đọc được Poster);
+- `POST /viec/<id>/duyet` body `{loi_duyet, duyet_luc, boi, chu_ky_duyet}`: chỉ việc `ton_tien` đang `cho_duyet`,
+  người duyệt ∈ NGUOI_DUYET (403), chữ ký `kho-duyet-v1` khớp dữ liệu ĐANG LƯU (401), hạn mức lúc duyệt (429)
+  → `cho` + `buoc='chay'` + lưu 4 trường duyệt.
+- D9 (FX-11): lời duyệt chỉ tiêu một lần (sổ trên Worker). `POST /viec/<id>/chay-tiep` với việc tốn tiền → 409
+  `{"loi": "Việc tốn tiền: cần duyệt lại"}`; `POST /viec/<id>/xin-duyet-lai` (chỉ tốn tiền, đang loi/can_tra_loi)
+  → `cho_duyet` + xoá 4 trường duyệt (genmax chưa có ước tính → `cho` + `buoc='uoc_tinh'`); trả `{viec}`.
+- FX-14: `POST /viec/<id>/tra-loi` với việc tốn tiền → 409 (A-D9b); `xin-duyet-lai` ghi `ket_qua.duyet_lai_tu`
+  + `ket_qua.ly_do_duyet_lai` (§5.2) cho lượt resume; `GET /suc-khoe` có `chan_ton_tien` (bool).
+- `GET /viec/<id>` trả `tham_so_chuan` (chuỗi JSON chuẩn) để Worker ký lời duyệt.
 
 Mọi lỗi bất ngờ trong handler → 500 JSON (không lộ chi tiết), log đủ traceback; server vẫn sống.
 """
@@ -19,13 +31,14 @@ import threading
 import time
 import uuid
 from collections.abc import Callable
+from datetime import datetime
 from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from . import chu_ky
-from .danh_muc import DANH_MUC, LoaiViec, lay_loai, tham_so_chuan
+from .danh_muc import DANH_MUC, LoaiViec, ds_folder_poster, lay_loai, tham_so_chuan
 from .du_an import ds_du_an
 from .han_muc import HAN_MUC_TRAN, kiem_han_muc
 from .kho_viec import KhoViec
@@ -44,14 +57,28 @@ BI_TU_CHOI_TOI_DA = 20             # số mục ket_qua.bi_tu_choi tối đa tr�
 BI_TU_CHOI_INPUT_TOI_DA = 200      # ký tự tối đa của mỗi `input`/`tool_name`
 
 # Khoá do runner tự gắn vào tham_so (không phải input web). Bỏ đi trước khi kiểm lại ở chay-lai (P3-2).
-KHOA_RUNNER_GAN = ("ngay_tao",)
+KHOA_RUNNER_GAN = ("ngay_tao", "ma_ban")
+# Đợt 4: người được duyệt việc tốn tiền (người dùng chốt Q2 = A: cả hai).
+NGUOI_DUYET = ("nhan", "comeofage")
+DOT_DUYET = 4
+LOI_DUYET_TOI_DA = 2000            # khớp phieu.TOI_DA_LOI_DUYET
+DUYET_LUC_TOI_DA = 40
+DUYET_LUC_LECH_TOI_DA_S = 600      # duyet_luc (Worker ký) lệch giờ runner tối đa 10 phút
 # Trường của §4.2 KHÔNG trả ra ngoài (§8.1).
 TRUONG_AN = ("pid", "pid_tao_luc", "session_id", "chu_ky_duyet")
 
 _RE_ID = r"j\d{14}[a-z0-9]{4}"
 _RE_ROUTE_ID = re.compile(rf"^/viec/({_RE_ID})$", re.ASCII)
 _RE_ROUTE_LOG = re.compile(rf"^/viec/({_RE_ID})/log$", re.ASCII)
-_RE_ROUTE_HANH_DONG = re.compile(rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai)$", re.ASCII)
+_RE_ROUTE_HANH_DONG = re.compile(
+    rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai)$", re.ASCII)
+LOI_CAN_DUYET_LAI = "Việc tốn tiền: cần duyệt lại"
+# D9/A-D9b (FX-14): việc tốn tiền ở can_tra_loi không được trả lời trực tiếp.
+LOI_TRA_LOI_TON_TIEN = "Việc tốn tiền: bấm Xin duyệt lại rồi duyệt bằng mật khẩu"
+CAU_HOI_LY_DO_TOI_DA = 500         # §5.2: cắt nội dung câu hỏi trong lý do duyệt lại
+LY_DO_LOI_KHONG_RO = "lỗi không rõ"
+# D9: việc tốn tiền ở trạng thái này được xin duyệt lại (→ cho_duyet, xoá lời duyệt cũ).
+TRANG_THAI_XIN_DUYET_LAI = ("loi", "can_tra_loi")
 _RE_ROUTE_DU_AN = re.compile(r"^/du-an/(\d{19})$", re.ASCII)
 _RE_UID = re.compile(r"^\d{19}$", re.ASCII)
 _RE_SO = re.compile(r"^\d{1,9}$", re.ASCII)
@@ -102,6 +129,31 @@ def kiem_tra_loi_dot3(cau_hoi: CanNguoiDung, tra_loi: object) -> str:
             raise ThamSoLoi(f"không rõ chỉ nhận {GIA_TRI_KHONG_RO!r}")
         return gt
     raise ThamSoLoi("câu hỏi này cần chữ tự do — chưa mở ở đợt 3 (chỉ trả lời bằng nút)")
+
+
+def kiem_body_duyet(body: dict, bay_gio: datetime) -> tuple[str, str, str]:
+    """(loi_duyet, duyet_luc, chu_ky_duyet) NGUYÊN VĂN (chữ ký tính trên đúng các chuỗi này; không trim/chuẩn hoá).
+    - loi_duyet: chuỗi 1–2000 ký tự, không chỉ toàn khoảng trắng (chèn vào phiếu sau khi lam_sach_chu);
+    - duyet_luc: ISO 8601 CÓ múi giờ, ≤40 ký tự, lệch giờ runner ≤ 10 phút;
+    - chu_ky_duyet: chuỗi (định dạng/độ đúng do chu_ky.kiem_duyet → 401)."""
+    loi = body.get("loi_duyet")
+    if not isinstance(loi, str) or not loi.strip() or len(loi) > LOI_DUYET_TOI_DA:
+        raise ThamSoLoi(f"loi_duyet phải là chữ 1–{LOI_DUYET_TOI_DA} ký tự")
+    luc = body.get("duyet_luc")
+    if not isinstance(luc, str) or not luc or len(luc) > DUYET_LUC_TOI_DA or _RE_DIEU_KHIEN.search(luc):
+        raise ThamSoLoi("duyet_luc sai định dạng")
+    try:
+        dt = datetime.fromisoformat(luc)
+    except ValueError as e:
+        raise ThamSoLoi("duyet_luc phải là ISO 8601 có múi giờ") from e
+    if dt.tzinfo is None:
+        raise ThamSoLoi("duyet_luc phải có múi giờ")
+    if abs((dt - gio_vn(bay_gio)).total_seconds()) > DUYET_LUC_LECH_TOI_DA_S:
+        raise ThamSoLoi(f"duyet_luc lệch giờ máy nhà quá {DUYET_LUC_LECH_TOI_DA_S // 60} phút")
+    ky = body.get("chu_ky_duyet")
+    if not isinstance(ky, str):
+        raise ThamSoLoi("chu_ky_duyet thiếu")
+    return loi, luc, ky
 
 
 def _khong_che(s: str) -> str:
@@ -183,9 +235,46 @@ def tien_trinh_cu_con_song(v: dict) -> bool:
     return isinstance(kq, dict) and kq.get("khong_giet_duoc") is True
 
 
+def la_ton_tien(v: dict) -> bool:
+    """Loại của việc là tốn tiền (theo danh mục trong code, không theo dữ liệu việc)."""
+    loai = DANH_MUC.get(v.get("loai")) if isinstance(v.get("loai"), str) else None
+    return loai is not None and loai.ton_tien
+
+
 def co_the_chay_tiep(v: dict) -> bool:
+    """D9: việc tốn tiền KHÔNG chạy tiếp bằng lời duyệt cũ — phải xin duyệt lại (POST …/xin-duyet-lai)."""
     return (v.get("trang_thai") == "loi" and int(v.get("phien_da_tao") or 0) == 1
-            and int(v.get("so_lan_claude") or 0) > 0 and not tien_trinh_cu_con_song(v))
+            and int(v.get("so_lan_claude") or 0) > 0 and not tien_trinh_cu_con_song(v) and not la_ton_tien(v))
+
+
+def _uoc_tinh_genmax_hop_le(v: dict) -> bool:
+    """genmax đã qua pha ước tính (có bản ước tính đã hiện cho người duyệt) và đang ở bước chạy."""
+    ut = v.get("uoc_tinh")
+    return v.get("buoc") == "chay" and isinstance(ut, str) and bool(ut.strip())
+
+
+def ly_do_duyet_lai(v: dict) -> str:
+    """§5.2: lý do cho lần chạy sau khi xin duyệt lại rồi duyệt lại.
+    - từ can_tra_loi → người dùng không trả lời câu hỏi (cắt 500 ký tự); không hỏi lại, chọn phương án an toàn;
+    - từ loi → nguyên văn `loi` cũ."""
+    if v.get("trang_thai") == "can_tra_loi":
+        ch = v.get("cau_hoi")
+        nd = ch.get("noi_dung") if isinstance(ch, dict) else None
+        nd = (nd if isinstance(nd, str) else "")[:CAU_HOI_LY_DO_TOI_DA]
+        return (f"Người dùng không trả lời câu hỏi trước ({nd}) mà duyệt lại để làm tiếp. "
+                "Không hỏi lại câu đó; chỗ nào cần quyết định thì chọn phương án an toàn nhất "
+                "(không tốn thêm tiền), không làm được thì dừng và báo")
+    loi = v.get("loi")
+    return loi if isinstance(loi, str) and loi else LY_DO_LOI_KHONG_RO
+
+
+def ket_qua_xin_duyet_lai(v: dict) -> dict:
+    """ket_qua mới khi xin duyệt lại: GIỮ mọi khoá cũ (so_codex, tom_tat… — B7) + `duyet_lai_tu`, `ly_do_duyet_lai`
+    để vòng chạy đưa vào stdin lượt resume sau khi duyệt lại. Không sửa dict gốc."""
+    kq = dict(v["ket_qua"]) if isinstance(v.get("ket_qua"), dict) else {}
+    kq["duyet_lai_tu"] = v.get("trang_thai")
+    kq["ly_do_duyet_lai"] = ly_do_duyet_lai(v)
+    return kq
 
 
 def dot_bat_hieu_luc(hm: dict) -> int:
@@ -284,6 +373,7 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             "han_muc": dict(hm),
             "tam_dung_claude_den": tl.get("tam_dung_claude_den"),
             "dot_bat": dot_bat_hieu_luc(hm),
+            "chan_ton_tien": bool(tl.get("chan_ton_tien")),   # D9: bản cài lệch TONG_KIEM
             "canh_bao": list(canh_bao),
         }
 
@@ -331,6 +421,18 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
     def g_du_an(uid: str, _q) -> tuple[int, dict]:
         return 200, {"du_an": ds_du_an(uid, mt.gocs)}
 
+    def _dot_4_mo() -> None:
+        if dot_bat_hieu_luc(hm) < DOT_DUYET:
+            raise LoiApi(404, "không có API này")
+
+    def g_poster_folders(_q) -> tuple[int, dict]:
+        _dot_4_mo()
+        try:
+            ds = ds_folder_poster(mt)
+        except ThamSoLoi as e:
+            raise LoiApi(502, str(e)) from e
+        return 200, {"folders": ds}
+
     # ----- POST -----
     def p_tao(body: dict) -> tuple[int, dict]:
         boi = _boi(body)
@@ -345,6 +447,9 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         boi = _boi(body)
         with khoa_ghi:
             v = _lay_viec(id_)
+            if la_ton_tien(v):
+                # A-D9b: trả lời rồi chạy tiếp = tiêu lại lời duyệt cũ → phải xin duyệt lại (mật khẩu).
+                raise LoiApi(409, LOI_TRA_LOI_TON_TIEN)
             if v["trang_thai"] != "can_tra_loi":
                 raise LoiApi(409, "việc không còn chờ trả lời")
             if not isinstance(v.get("cau_hoi"), dict):
@@ -382,15 +487,16 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         boi = _boi(body)
         with khoa_ghi:
             v = _lay_viec(id_)
+            if la_ton_tien(v):
+                # D9: lời duyệt chỉ tiêu được một lần; chạy tiếp việc tốn tiền phải duyệt lại (nhập mật khẩu).
+                raise LoiApi(409, LOI_CAN_DUYET_LAI)
             if tien_trinh_cu_con_song(v):
                 raise LoiApi(409, "không chạy tiếp được: tiến trình cũ của việc có thể còn sống (runner không giết "
                                   "được) — kiểm tay trên máy rồi dùng Chạy lại")
             if not co_the_chay_tiep(v):
                 raise LoiApi(409, "không chạy tiếp được: cần trạng thái lỗi và phiên Claude đã tạo")
             loai = lay_loai(v["loai"], dot_bat_hieu_luc(hm))
-            if loai.ton_tien and not chu_ky.kiem_duyet(khoa_cong_khai, v):
-                raise LoiApi(409, "chữ ký duyệt cũ không khớp dữ liệu đang lưu — tạo lại việc")
-            kiem_han_muc(kho, loai.ma, v.get("tham_so") or {}, hm, "nhan", boi)
+            kiem_han_muc(kho, loai.ma, v.get("tham_so") or {}, hm, "nhan", boi, viec_id=id_)
             moi = kho.chuyen(id_, ["loi"], "cho", boi, "chạy tiếp (resume phiên Claude)")
         return 200, {"viec": _ra(moi)}
 
@@ -403,11 +509,60 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         moi = _tao_viec(loai, tham_so_tho_tu_luu(v.get("tham_so") or {}), boi, chay_lai_tu=id_)
         return 201, {"viec": _ra(moi)}
 
-    def p_duyet(_id: str, _body: dict) -> tuple[int, dict]:
-        raise LoiApi(404, "duyệt chưa mở ở đợt 3")
+    def p_duyet(id_: str, body: dict) -> tuple[int, dict]:
+        """§4.3 cho_duyet → cho. Chữ ký kiểm trên dữ liệu ĐANG LƯU (id, loai, tham_so) + lời duyệt gửi kèm;
+        lưu cả 4 trường để vòng chạy kiểm lại mỗi lần nhận (sửa DB sau duyệt → chữ ký lệch → bị chặn)."""
+        _dot_4_mo()
+        boi = _boi(body)
+        loi_duyet, duyet_luc, ky = kiem_body_duyet(body, kho.bay_gio())
+        if boi not in NGUOI_DUYET:
+            raise LoiApi(403, "người này không được duyệt việc tốn tiền")
+        with khoa_ghi:
+            v = _lay_viec(id_)
+            loai = lay_loai(v["loai"], dot_bat_hieu_luc(hm))
+            if not loai.ton_tien:
+                raise LoiApi(409, "loại việc này không cần duyệt")
+            if v["trang_thai"] != "cho_duyet":
+                raise LoiApi(409, "việc không còn chờ duyệt")
+            ung_vien = {**v, "loi_duyet": loi_duyet, "duyet_luc": duyet_luc, "duyet_boi": boi, "chu_ky_duyet": ky}
+            if not chu_ky.kiem_duyet(khoa_cong_khai, ung_vien):
+                log.warning("từ chối duyệt %s: chữ ký duyệt không khớp (boi=%s)", id_, boi)
+                raise LoiApi(401, "chữ ký duyệt không hợp lệ")
+            kiem_han_muc(kho, loai.ma, v.get("tham_so") or {}, hm, "duyet", boi, viec_id=id_)
+            moi = kho.chuyen(id_, ["cho_duyet"], "cho", boi, "duyệt (chữ ký hợp lệ)", loi_duyet=loi_duyet,
+                             duyet_boi=boi, duyet_luc=duyet_luc, chu_ky_duyet=ky, buoc="chay")
+        return 200, {"viec": _ra(moi)}
+
+    def p_xin_duyet_lai(id_: str, body: dict) -> tuple[int, dict]:
+        """D9: việc tốn tiền đang loi/can_tra_loi → cho_duyet, xoá 4 trường duyệt cũ (lời duyệt cũ không dùng lại
+        được). genmax: giữ buoc 'chay' nếu đã có ước tính hợp lệ; chưa có → về cho + buoc 'uoc_tinh' (pha miễn
+        phí) để người duyệt luôn thấy ước tính trước khi duyệt. Không kiểm hạn mức ở đây (chưa tốn gì): hạn mức
+        kiểm lại lúc duyệt và lúc nhận."""
+        _dot_4_mo()
+        boi = _boi(body)
+        with khoa_ghi:
+            v = _lay_viec(id_)
+            loai = lay_loai(v["loai"], dot_bat_hieu_luc(hm))
+            if not loai.ton_tien:
+                raise LoiApi(409, "loại việc này không cần duyệt — dùng Chạy tiếp/Chạy lại")
+            if v["trang_thai"] not in TRANG_THAI_XIN_DUYET_LAI:
+                raise LoiApi(409, "chỉ xin duyệt lại được việc tốn tiền đang lỗi hoặc chờ trả lời")
+            if tien_trinh_cu_con_song(v):
+                raise LoiApi(409, "không xin duyệt lại được: tiến trình cũ của việc có thể còn sống (runner không "
+                                  "giết được) — kiểm tay trên máy rồi dùng Chạy lại")
+            xoa = {"loi_duyet": None, "duyet_boi": None, "duyet_luc": None, "chu_ky_duyet": None,
+                   "ket_qua": ket_qua_xin_duyet_lai(v)}
+            if loai.ma == "voice_genmax" and not _uoc_tinh_genmax_hop_le(v):
+                moi = kho.chuyen(id_, list(TRANG_THAI_XIN_DUYET_LAI), "cho", boi,
+                                 "xin duyệt lại: chưa có ước tính — chạy lại pha ước tính (không gọi API)",
+                                 buoc="uoc_tinh", uoc_tinh=None, **xoa)
+            else:
+                moi = kho.chuyen(id_, list(TRANG_THAI_XIN_DUYET_LAI), "cho_duyet", boi,
+                                 "xin duyệt lại (lời duyệt cũ đã huỷ)", buoc="chay", **xoa)
+        return 200, {"viec": _ra(moi)}
 
     HANH_DONG = {"tra-loi": p_tra_loi, "huy": p_huy, "tu-choi": p_tu_choi, "chay-tiep": p_chay_tiep,
-                 "chay-lai": p_chay_lai, "duyet": p_duyet}
+                 "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai}
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "kho-runner"
@@ -490,7 +645,9 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return g_log(m.group(1), q)
                 if m := _RE_ROUTE_DU_AN.fullmatch(p):
                     return g_du_an(m.group(1), q)
-                raise LoiApi(404, "không có API này")   # gồm /poster/folders (đợt 4)
+                if p == "/poster/folders":
+                    return g_poster_folders(q)
+                raise LoiApi(404, "không có API này")
             self._chay(lam)
 
         # ----- POST -----

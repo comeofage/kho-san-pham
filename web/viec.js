@@ -172,7 +172,8 @@ function idTrungViec(r) {
   return laIdViec(id) ? id : "";
 }
 
-const NHAN_XONG = { huy: "Đã huỷ", "tu-choi": "Đã từ chối", "chay-tiep": "▶ Đã cho chạy tiếp", "chay-lai": "↻ Đã tạo việc chạy lại", "tra-loi": "✓ Đã gửi trả lời" };
+const NHAN_XONG = { huy: "Đã huỷ", "tu-choi": "Đã từ chối", "chay-tiep": "▶ Đã cho chạy tiếp", "chay-lai": "↻ Đã tạo việc chạy lại", "tra-loi": "✓ Đã gửi trả lời", duyet: "✓ Đã duyệt — việc sẽ chạy trên máy nhà",
+  "xin-duyet-lai": "↻ Đã xin duyệt lại — kiểm tham số rồi duyệt bằng mật khẩu" };
 // Phản hồi của POST /viec/<id>/<act> → {toast, chuyen (id việc cần mở, "" = ở lại), canhBao (giữ trên trang)}.
 function ketQuaHanhDong(act, r, id) {
   const x = r || {};
@@ -188,6 +189,249 @@ function ketQuaHanhDong(act, r, id) {
     chuyen: act === "chay-lai" && laIdViec(moi) && moi !== id ? moi : "",
     canhBao,
   };
+}
+
+// ---------- đợt 4 (§5.2, §9 mục 4): duyệt việc tốn tiền + form tạo ----------
+const USER_DUYET = ["nhan", "comeofage"];
+const LOAI_TON_TIEN = ["muse_clip", "voice_genmax", "poster_len_lich", "taovideo"]; // ton_tien=True ở tools/runner/danh_muc.py
+const LOAI_CO_CLAUDE = ["muse_clip", "poster_len_lich", "taovideo"];                 // loại chạy bằng agent Claude
+const LOI_DUYET_TOI_DA_WEB = 2000; // code point — khớp Worker LOI_DUYET_TOI_DA
+// Mã mẫu Muse → nhãn. Mã + thứ tự phải trùng MA_MAU_MUSE (cf/src/worker.js) và TEN_MAU_MUSE (tools/runner/danh_muc.py).
+const TEN_MAU_MUSE = {
+  xoay_360: "Xoay 360° nền trơn", cam_tay: "Cầm tay xoay", can_canh: "Cận cảnh chất liệu",
+  dung_that: "Dùng thật tại nhà", dat_ban: "Đặt lên bàn", mo_hop: "Mở hộp", truoc_sau: "Trước / sau",
+};
+const MUSE_THOI_LUONG_WEB = [10, 15];
+const RE_DU_AN_VIEC = /^[0-9a-f]{12}$/;
+// Surrogate lẻ (Worker từ chối). Không dùng regex lookbehind: Safari iOS < 16.4 không parse được → cả file chết.
+const coSurrogateLe = (s) => {
+  for (let k = 0; k < s.length; k++) {
+    const c = s.charCodeAt(k);
+    if (c >= 0xd800 && c <= 0xdbff) { const n = s.charCodeAt(k + 1); if (n >= 0xdc00 && n <= 0xdfff) { k++; continue; } return true; }
+    if (c >= 0xdc00 && c <= 0xdfff) return true;
+  }
+  return false;
+};
+const coKhoa = (o, k) => !!o && typeof k === "string" && Object.prototype.hasOwnProperty.call(o, k);
+const catKyTu = (s, n) => [...String(s)].slice(0, n).join("");
+const thamSoObj = (x) => { const t = docJsonViec(x); return t && typeof t === "object" && !Array.isArray(t) ? t : {}; };
+const tenMau = (m) => (coKhoa(TEN_MAU_MUSE, m) ? TEN_MAU_MUSE[m] : String(m));
+const soNguyenWeb = (x) => (typeof x === "number" ? x : typeof x === "string" && /^\d{1,10}$/.test(x) ? Number(x) : NaN);
+
+// Người này có được duyệt việc này trên web không: chỉ chủ kho, việc đang cho_duyet, loại tốn tiền.
+function duocDuyet(viec, user) {
+  return !!viec && typeof viec === "object" && USER_DUYET.includes(user)
+    && viec.trang_thai === "cho_duyet" && LOAI_TON_TIEN.includes(viec.loai);
+}
+
+// D9: lời duyệt việc tốn tiền chỉ dùng 1 lần — việc đã chạy rồi lỗi/hỏi giữa chừng không "Chạy tiếp"/"Tiếp tục" được
+// (runner trả 409 "cần duyệt lại") → ẩn 2 nút đó, hiện "Xin duyệt lại" (POST xin-duyet-lai → về cho_duyet).
+// FX-13: đang can_tra_loi thì ẩn MỌI nút trả lời (anTraLoi) — mỗi lần chạy phải tiêu một lời duyệt mới.
+function nutChoViecTonTien(viec) {
+  const tonTien = !!viec && typeof viec === "object" && LOAI_TON_TIEN.includes(viec.loai);
+  const co = tonTien && (viec.trang_thai === "loi" || viec.trang_thai === "can_tra_loi");
+  return { xinDuyetLai: co, anChayTiep: co, anTraLoi: tonTien && viec.trang_thai === "can_tra_loi" };
+}
+
+// tham_so_chuan (GET /api/viec/<id>) — NGUYÊN chuỗi runner trả, phải là JSON object; sai/thiếu → "" (không cho duyệt).
+function thamSoChuanDuyet(d) {
+  const s = d && typeof d === "object" ? d.tham_so_chuan : null;
+  if (typeof s !== "string" || !s || s.length > 100000) return "";
+  try { const o = JSON.parse(s); return o && typeof o === "object" && !Array.isArray(o) ? s : ""; } catch { return ""; }
+}
+
+// sha256 hex chữ thường của chuỗi UTF-8 (crypto.subtle — chỉ có ở HTTPS/localhost; thiếu thì ném lỗi).
+async function sha256HexWeb(s) {
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(String(s)));
+  return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+// 409 của Worker khi sha_tham_so không khớp tham_so_chuan hiện tại → phải tải lại việc rồi duyệt lại.
+const duLieuViecDoi = (r) => !!r && r.status === 409 && typeof r.loi === "string" && r.loi.includes("Dữ liệu việc đã đổi");
+
+// Câu "Lời duyệt" gợi ý sẵn theo loại (người dùng sửa được).
+function loiDuyetMau(viec) {
+  const v = viec && typeof viec === "object" ? viec : {};
+  const ts = thamSoObj(v.tham_so);
+  const g = (k) => (ts[k] == null ? "?" : String(ts[k]));
+  let s;
+  if (v.loai === "muse_clip") {
+    const n = Array.isArray(ts.mau) ? ts.mau.length : 0;
+    s = `Đồng ý sinh ${n} clip B-roll AI (Muse) ${ts.thoi_luong == null ? 10 : g("thoi_luong")} giây, tỉ lệ ${ts.ti_le == null ? "9:16" : g("ti_le")}, cho dự án ${g("du_an")}.`;
+  } else if (v.loai === "voice_genmax") s = `Đồng ý sinh voice GenMax mẻ ${g("me")} của dự án ${g("du_an")} theo đúng ước tính ở trên.`;
+  else if (v.loai === "poster_len_lich") s = `Đồng ý lên lịch đăng Poster cho folder ${g("folder_id")}, ${g("so_video_ngay")} video/ngày.`;
+  else s = `Đồng ý chạy ${tenLoaiViec(v.loai)} với tham số ở trên.`;
+  return catKyTu(s, LOI_DUYET_TOI_DA_WEB);
+}
+
+// "" = hợp lệ; ngược lại là câu báo lỗi (khớp kiểm của Worker).
+function kiemLoiDuyet(s) {
+  if (typeof s !== "string" || !s.trim()) return "Lời duyệt không được để trống";
+  if ([...s].length > LOI_DUYET_TOI_DA_WEB) return `Lời duyệt tối đa ${LOI_DUYET_TOI_DA_WEB} ký tự`;
+  if (coSurrogateLe(s)) return "Lời duyệt có ký tự lỗi";
+  return "";
+}
+
+// Ước tính/chi phí từ ket_qua.uoc_tinh, viec.uoc_tinh, xem_truoc (object hoặc chuỗi/JSON) → dòng chữ (chưa esc).
+const NHAN_UOC_TINH = { so_ban: "Số bản", ky_tu: "Ký tự", credit: "Credit", so_clip: "Số clip", chi_phi_usd: "Chi phí (USD)", ghi_chu: "Ghi chú" };
+function dongUocTinh(d) {
+  const x = d && typeof d === "object" ? d : {};
+  const v = x.viec && typeof x.viec === "object" ? x.viec : {};
+  const kq = docJsonViec(v.ket_qua);
+  const ra = [];
+  const them = (s) => { const t = String(s).slice(0, 500); if (t.trim() && !ra.includes(t)) ra.push(t); };
+  for (const n of [kq && typeof kq === "object" ? kq.uoc_tinh : null, v.uoc_tinh, x.xem_truoc]) {
+    if (n == null || n === "") continue;
+    let o = n;
+    if (typeof n === "string") { try { o = JSON.parse(n); } catch { o = n; } }
+    if (o && typeof o === "object" && !Array.isArray(o)) {
+      for (const [k, val] of Object.entries(o)) {
+        if (val == null || (typeof val === "object" && !Array.isArray(val))) continue;
+        them(`${coKhoa(NHAN_UOC_TINH, k) ? NHAN_UOC_TINH[k] : k}: ${Array.isArray(val) ? val.join(", ") : val}`);
+      }
+    } else if (Array.isArray(o)) them(o.join(", "));
+    else them(o);
+  }
+  return ra.slice(0, 20);
+}
+
+// Tham số dễ hiểu cho người duyệt → [[nhãn, giá trị]] (chưa esc).
+function moTaThamSoDuyet(loai, tsTho) {
+  const ts = thamSoObj(tsTho);
+  const NHAN = { uid: "Sản phẩm (UID)", du_an: "Dự án", me: "Mẻ", mau: "Mẫu clip", thoi_luong: "Thời lượng", ti_le: "Tỉ lệ", folder_id: "Folder Poster", so_video_ngay: "Số video/ngày" };
+  const ra = Object.keys(ts).map((k) => {
+    const val = ts[k];
+    if (k === "mau") return [NHAN.mau, (Array.isArray(val) ? val : [val]).map(tenMau).join(", ")];
+    if (k === "thoi_luong") return [NHAN.thoi_luong, `${val} giây`];
+    if (k === "folder_id") return [NHAN.folder_id, `#${val}`];
+    if (k === "so_video_ngay") return [NHAN.so_video_ngay, `${val} video/ngày`];
+    return [coKhoa(NHAN, k) ? NHAN[k] : k, Array.isArray(val) ? val.join(", ") : String(val)];
+  });
+  if (loai === "muse_clip" && Array.isArray(ts.mau)) ra.push(["Tổng", `${ts.mau.length} clip × ${ts.thoi_luong == null ? 10 : ts.thoi_luong} giây`]);
+  return ra;
+}
+
+// Hạn mức liên quan tới loại, từ /api/viec/suc-khoe (trần trong han_muc; "còn lại" chỉ tính được cho Claude).
+const HAN_MUC_LOAI = {
+  muse_clip: [["muse_clip_moi_viec", "clip/việc"], ["muse_clip_ngay", "clip/ngày"]],
+  voice_genmax: [["genmax_ban_moi_viec", "bản/việc"], ["genmax_viec_ngay", "việc GenMax/ngày"]],
+  poster_len_lich: [["poster_len_lich_ngay", "việc/ngày"], ["poster_video_ngay_toi_da", "video/tài khoản/ngày"]],
+  taovideo: [["taovideo_ngay", "việc/ngày"]],
+};
+function hanMucHtml(loai, sk) {
+  if (!sk || typeof sk !== "object") return `<span class="muted">Đang hỏi hạn mức…</span>`;
+  const hm = sk.han_muc && typeof sk.han_muc === "object" ? sk.han_muc : {};
+  const tran = (coKhoa(HAN_MUC_LOAI, loai) ? HAN_MUC_LOAI[loai] : []).filter(([k]) => hm[k] != null).map(([k, dv]) => `${esc(hm[k])} ${esc(dv)}`);
+  const phan = [];
+  if (tran.length) phan.push(`Trần: ${tran.join(" · ")}`);
+  if (LOAI_CO_CLAUDE.includes(loai)) {
+    const conUsd = Number(hm.claude_usd_ngay) - Number(sk.chi_phi_hom_nay_usd);
+    const conViec = Number(hm.claude_viec_ngay) - Number(sk.viec_claude_hom_nay);
+    const c = [];
+    if (Number.isFinite(conUsd)) c.push(`$${esc(Math.max(0, conUsd).toFixed(2))}`);
+    if (Number.isFinite(conViec)) c.push(`${esc(Math.max(0, conViec))} việc`);
+    if (c.length) phan.push(`Claude hôm nay còn: ${c.join(" · ")}`);
+  }
+  return phan.length ? phan.join("<br>") : `<span class="muted">Không có số hạn mức.</span>`;
+}
+
+// Khung duyệt (vẽ MỘT lần vào #vj-duyet, không vẽ lại khi polling để giữ chữ đang gõ). opt: {sk, khoa}.
+// Ô mật khẩu KHÔNG BAO GIỜ có value. Tham số hiện từ tham_so_chuan (đúng chuỗi được băm gửi kèm sha_tham_so);
+// thiếu tham_so_chuan → nút Duyệt luôn khoá, báo tải lại.
+function khungDuyetHtml(d, opt = {}) {
+  const v = (d && d.viec) || {};
+  const dis = opt.khoa ? " disabled" : "";
+  const tsc = thamSoChuanDuyet(d);
+  const disDuyet = opt.khoa || !tsc ? " disabled" : "";
+  const ts = moTaThamSoDuyet(v.loai, tsc || v.tham_so);
+  const ut = dongUocTinh(d);
+  return `<form class="vd" id="vd-form">
+      <div class="vd-dau"><b>💳 Duyệt việc tốn tiền: ${esc(tenLoaiViec(v.loai))}</b></div>
+      ${ts.length ? `<dl class="kv vd-ts">${ts.map(([k, x]) => `<dt>${esc(k)}</dt><dd>${esc(x)}</dd>`).join("")}</dl>` : ""}
+      ${tsc ? "" : `<div class="vj-can-ban">⚠ Chưa nhận được tham số chuẩn của việc — tải lại rồi mới duyệt được. <button type="button" class="btn ghost sm" data-vd-act="tai-lai"${dis}>↻ Tải lại</button></div>`}
+      <div class="vd-uoc"><b>Ước tính / chi phí</b>${ut.length ? `<ul class="small">${ut.map((s) => `<li>${esc(s)}</li>`).join("")}</ul>` : `<div class="small muted">Máy nhà chưa gửi ước tính.</div>`}</div>
+      <div class="small vd-hm" id="vd-hm">${hanMucHtml(v.loai, opt.sk)}</div>
+      <label for="vd-loi">Lời duyệt <span class="small muted">(sửa được — lưu cùng chữ ký duyệt)</span>
+        <textarea id="vd-loi" class="vd-loi" rows="3" maxlength="${LOI_DUYET_TOI_DA_WEB}">${esc(loiDuyetMau(tsc ? { ...v, tham_so: tsc } : v))}</textarea></label>
+      <label for="vd-mk">Mật khẩu đăng nhập <span class="small muted">(nhập lại mỗi lần duyệt)</span>
+        <input type="password" id="vd-mk" class="vd-mk" autocomplete="current-password" maxlength="256"></label>
+      <div class="row vd-nut"><button type="button" class="btn sm" data-vd-act="duyet"${disDuyet}>✓ Duyệt &amp; chạy</button>
+        <button type="button" class="btn ghost sm" data-vd-act="tu-choi"${dis}>Từ chối</button></div>
+    </form>`;
+}
+
+// Tham số tạo muse_clip → {tham_so} | {loi}. mau giữ thứ tự danh mục.
+function thamSoMuse(uid, duAn, mau, thoiLuong) {
+  if (typeof uid !== "string" || !RE_UID_VIEC.test(uid)) return { loi: "UID sản phẩm không hợp lệ" };
+  if (typeof duAn !== "string" || !RE_DU_AN_VIEC.test(duAn)) return { loi: "Chưa chọn dự án" };
+  const ds = Array.isArray(mau) ? mau : [];
+  if (!ds.length) return { loi: "Chọn ít nhất 1 mẫu clip" };
+  if (new Set(ds).size !== ds.length || ds.some((m) => !coKhoa(TEN_MAU_MUSE, m))) return { loi: "Mẫu clip không hợp lệ" };
+  if (!MUSE_THOI_LUONG_WEB.includes(thoiLuong)) return { loi: "Thời lượng phải là 10 hoặc 15 giây" };
+  return { tham_so: { uid, du_an: duAn, mau: Object.keys(TEN_MAU_MUSE).filter((k) => ds.includes(k)), thoi_luong: thoiLuong, ti_le: "9:16" } };
+}
+
+const POSTER_VIDEO_NGAY_WEB = [1, 100]; // số video/ngày cho phép (phiếu FX-12 bổ sung)
+// Tham số tạo poster_len_lich (giá trị dropdown/ô số là chuỗi) → {tham_so} | {loi}.
+function thamSoPoster(folderId, soVideo) {
+  const f = soNguyenWeb(folderId), n = soNguyenWeb(soVideo);
+  const [nMin, nMax] = POSTER_VIDEO_NGAY_WEB;
+  if (!Number.isInteger(f) || f <= 0 || f >= 1e9) return { loi: "Chọn folder Poster" };
+  if (!Number.isInteger(n) || n < nMin || n > nMax) return { loi: `Số video/ngày phải từ ${nMin} đến ${nMax}` };
+  return { tham_so: { folder_id: f, so_video_ngay: n } };
+}
+
+// GET /api/viec/poster/folders → [{id, ten}] sạch (id nguyên dương < 1e9, không trùng).
+function locFolderPoster(r) {
+  const ds = r && Array.isArray(r.folders) ? r.folders : [];
+  const ra = [];
+  for (const x of ds) {
+    if (!x || typeof x !== "object" || !Number.isInteger(x.id) || x.id <= 0 || x.id >= 1e9 || ra.some((y) => y.id === x.id)) continue;
+    ra.push({ id: x.id, ten: typeof x.ten === "string" && x.ten.trim() ? x.ten.slice(0, 80) : `#${x.id}` });
+  }
+  return ra;
+}
+
+// Form tạo việc đợt 4 trong khối việc SP. form: {loai, ...giá trị đang chọn}; opt: {folders, loi, khoa}.
+function formViecSpHtml(form, opt = {}) {
+  if (!form || typeof form !== "object") return "";
+  const o = opt || {};
+  const dis = o.khoa ? " disabled" : "";
+  const dong = `<button type="button" class="btn ghost sm" data-vs-an="1">Đóng</button>`;
+  const luuY = `<p class="small muted">Việc tốn tiền: tạo xong sẽ chờ bạn duyệt (nhập lại mật khẩu) mới chạy.</p>`;
+  if (form.loai === "muse_clip") {
+    const chon = Array.isArray(form.mau) ? form.mau : [];
+    const tl = MUSE_THOI_LUONG_WEB.includes(form.thoi_luong) ? form.thoi_luong : MUSE_THOI_LUONG_WEB[0];
+    return `<div class="vs-form">
+      <div class="small"><b>${esc(tenLoaiViec("muse_clip"))}</b> · ${esc(form.nhan || "")}</div>
+      <fieldset class="vs-mau"><legend class="small muted">Chọn mẫu clip (mỗi mẫu 1 clip)</legend>
+        ${Object.keys(TEN_MAU_MUSE).map((k) => `<label class="vs-ck"><input type="checkbox" data-vs-mau="${k}"${chon.includes(k) ? " checked" : ""}> ${esc(TEN_MAU_MUSE[k])}</label>`).join("")}
+      </fieldset>
+      <div class="vs-tl small">Thời lượng: ${MUSE_THOI_LUONG_WEB.map((s) => `<label class="vs-ck"><input type="radio" name="vs-tl" data-vs-tl="${s}"${s === tl ? " checked" : ""}> ${s} giây</label>`).join("")}
+        <span class="muted">· tỉ lệ 9:16</span></div>
+      ${luuY}
+      <div class="row vs-nut"><button type="button" class="btn sm" data-vs-gui="muse_clip"${dis}>▶ Tạo việc</button>${dong}</div>
+    </div>`;
+  }
+  if (form.loai === "poster_len_lich") {
+    const dau = `<div class="small"><b>${esc(tenLoaiViec("poster_len_lich"))}</b></div>`;
+    if (o.loi) return `<div class="vs-form">${dau}<p class="small err">⚠ ${esc(o.loi)}</p><div class="row vs-nut"><button type="button" class="btn ghost sm" data-vs-folder-lai="1">↻ Thử lại</button>${dong}</div></div>`;
+    if (!Array.isArray(o.folders)) return `<div class="vs-form">${dau}<p class="small muted">Đang hỏi máy nhà danh sách folder Poster…</p></div>`;
+    if (!o.folders.length) return `<div class="vs-form">${dau}<p class="small muted">Poster chưa có folder nào.</p><div class="row vs-nut">${dong}</div></div>`;
+    const fId = soNguyenWeb(form.folder_id);
+    const nRaw = soNguyenWeb(form.so_video_ngay);
+    const [nMin, nMax] = POSTER_VIDEO_NGAY_WEB;
+    const n = Number.isInteger(nRaw) && nRaw >= nMin && nRaw <= nMax ? nRaw : nMin;
+    return `<div class="vs-form">${dau}
+      <label class="small">Folder Poster
+        <select class="vs-sel" data-vs-folder><option value="">— chọn folder —</option>${o.folders.map((f) => `<option value="${esc(f.id)}"${f.id === fId ? " selected" : ""}>${esc(f.ten)}</option>`).join("")}</select></label>
+      <label class="small">Số video/ngày (${nMin}–${nMax})
+        <input type="number" class="vs-sel" data-vs-so min="${nMin}" max="${nMax}" step="1" inputmode="numeric" value="${n}"></label>
+      ${luuY}
+      <div class="row vs-nut"><button type="button" class="btn sm" data-vs-gui="poster_len_lich"${dis}>▶ Tạo việc</button>${dong}</div>
+    </div>`;
+  }
+  return "";
 }
 
 // Một trang log {tu, den, noi_dung, het} → {tu mới, them, het, con (đọc tiếp ngay được)}. Không tiến → dừng.
@@ -238,21 +482,27 @@ function chiTietViecHtml(d, opt = {}) {
   if (v.loi) dong.push(`<div class="vj-loi">⚠ ${esc(v.loi)}</div>`);
 
   // Khung trả lời bằng nút.
+  const tonTien = nutChoViecTonTien(v);
   if (v.trang_thai === "can_tra_loi") {
-    const nut = nutTraLoi(ch, opt.dotBat);
+    // giữ chỉ số gốc của nutTraLoi (handler tra lại theo chỉ số); việc tốn tiền: không nút trả lời nào (D9, FX-13)
+    const nut = tonTien.anTraLoi ? [] : nutTraLoi(ch, opt.dotBat).map((n, k) => ({ ...n, k }));
     const loai = ch && ch.loai;
     const tieuDe = loai === "viec_tay" ? "👉 Việc của bạn" : loai === "khong_ro" ? "❓ Agent dừng mà không rõ lý do" : "❓ Cần bạn trả lời";
+    const huongDan = tonTien.anTraLoi
+      ? `<p class="small muted">Việc tốn tiền: trả lời xong phải duyệt lại bằng mật khẩu — bấm "↻ Xin duyệt lại" rồi duyệt, hoặc Huỷ.</p>`
+      : `<p class="small muted">Câu hỏi này cần trả lời bằng chữ — đợt 3 chỉ trả lời bằng nút, hãy làm trên máy nhà hoặc Huỷ.</p>`;
     dong.push(`<div class="vj-hoi">
         <div class="vj-hoi-dau"><b>${tieuDe}</b></div>
         ${ch && ch.noi_dung ? `<div class="vj-hoi-nd">${esc(ch.noi_dung)}</div>` : ""}
-        ${nut.length ? "" : `<p class="small muted">Câu hỏi này cần trả lời bằng chữ — đợt 3 chỉ trả lời bằng nút, hãy làm trên máy nhà hoặc Huỷ.</p>`}
-        <div class="row vj-hoi-nut">${nut.map((n, k) => `<button class="btn sm" data-vj-tl="${k}"${dis}>${esc(n.nhan)}</button>`).join("")}
+        ${nut.length ? "" : huongDan}
+        <div class="row vj-hoi-nut">${nut.map((n) => `<button class="btn sm" data-vj-tl="${n.k}"${dis}>${esc(n.nhan)}</button>`).join("")}
           <button class="btn ghost sm" data-vj-act="huy"${dis}>Huỷ việc</button></div>
       </div>`);
   }
-  if (v.trang_thai === "cho_duyet") {
+  // opt.khungDuyet: trang đang có khung duyệt riêng (#vj-duyet, khungDuyetHtml) → không vẽ khối cũ ở đây.
+  if (v.trang_thai === "cho_duyet" && !opt.khungDuyet) {
     dong.push(`<div class="vj-hoi"><b>⏳ Việc chờ duyệt</b>${v.uoc_tinh ? `<div class="vj-hoi-nd">${esc(v.uoc_tinh)}</div>` : ""}
-      <p class="small muted">Duyệt trên web mở ở đợt 4.</p>
+      <p class="small muted">Việc này không duyệt được trên web — duyệt trên máy nhà hoặc Từ chối.</p>
       <div class="row"><button class="btn ghost sm" data-vj-act="tu-choi"${dis}>Từ chối</button></div></div>`);
   }
 
@@ -273,7 +523,8 @@ function chiTietViecHtml(d, opt = {}) {
   // Nút điều khiển.
   const nut = [];
   if (mo && v.trang_thai !== "can_tra_loi") nut.push(`<button class="btn ghost sm" data-vj-act="huy"${dis}>Huỷ việc</button>`);
-  if (v.trang_thai === "loi" && v.co_the_chay_tiep) nut.push(`<button class="btn sm" data-vj-act="chay-tiep"${dis}>▶ Chạy tiếp</button>`);
+  if (tonTien.xinDuyetLai) nut.push(`<button class="btn sm" data-vj-act="xin-duyet-lai"${dis}>↻ Xin duyệt lại</button>`);
+  if (v.trang_thai === "loi" && v.co_the_chay_tiep && !tonTien.anChayTiep) nut.push(`<button class="btn sm" data-vj-act="chay-tiep"${dis}>▶ Chạy tiếp</button>`);
   if (v.trang_thai === "loi" || v.trang_thai === "huy") nut.push(`<button class="btn ghost sm" data-vj-act="chay-lai"${dis}>↻ Chạy lại</button>`);
   if (nut.length) dong.push(`<div class="row vj-nut">${nut.join("")}${opt.khoa ? `<span class="small muted">đang gửi…</span>` : ""}</div>`);
   if (v.loai === "voice_pv") dong.push(`<p class="small muted">Huỷ không dừng ngay GPU của PerfectVoice (app còn xử lý nốt vài phút). Việc này chưa kiểm Whisper.</p>`);
@@ -397,6 +648,7 @@ async function renderViecChiTiet(id) {
   $("#app").innerHTML = `<p><a href="#/viec" class="small">← Việc</a></p>
     <div class="vj">
       <div id="vj-nd"><p class="muted">Đang tải…</p></div>
+      <div id="vj-duyet"></div>
       <h3>Log <span class="small muted" id="vj-log-tt"></span></h3>
       <pre class="vj-log" id="vj-log"></pre>
       <div class="row"><button class="btn ghost sm" id="vj-log-them" hidden>⬇ Tải thêm log</button></div>
@@ -409,19 +661,75 @@ async function renderViecChiTiet(id) {
   const LOG_TRANG_CHAY = 5;  // trang 64 KB mỗi lượt khi việc đang chạy (polling lấy tiếp)
   const LOG_TRANG_XONG = 8;  // việc đã dừng: đọc đến het, tối đa 8 trang/lượt; còn nữa → nút "Tải thêm"
 
+  // Khung duyệt (#vj-duyet): vẽ MỘT lần khi việc vào cho_duyet, không vẽ lại theo polling (giữ chữ đang gõ);
+  // mật khẩu chỉ nằm trong ô input và body của đúng lần gửi — không lưu ở đâu khác.
+  let khungDuyetMo = false, skDuyet = null, skDangTai = false;
+  // khungTsc: tham_so_chuan chụp lúc vẽ khung = chuỗi người duyệt đang thấy → băm gửi sha_tham_so (không lấy d mới về sau).
+  // lanTaiViec/dLan/khungChoLan: sau 409 "Dữ liệu việc đã đổi" chỉ vẽ lại khung bằng dữ liệu của lần tải BẮT ĐẦU sau đó.
+  let khungTsc = "", lanTaiViec = 0, dLan = 0, khungChoLan = 0;
+  const khoaKhungDuyet = (khoa) => {
+    if (tk !== phienViec) return; // phản hồi muộn của trang cũ: không đụng DOM trang mới
+    const box = $("#vj-duyet");
+    if (!box || !khungDuyetMo) return;
+    box.querySelectorAll("button, textarea, input").forEach((el) => { el.disabled = khoa || (el.dataset.vdAct === "duyet" && !khungTsc); });
+  };
+  const boKhungDuyet = () => {
+    const box = $("#vj-duyet");
+    if (box) box.innerHTML = ""; // bỏ cả ô mật khẩu
+    khungDuyetMo = false; khungTsc = "";
+  };
+  const taiSkDuyet = async () => {
+    if (skDangTai || skDuyet || tk !== phienViec) return;
+    skDangTai = true; // khoá TRƯỚC await
+    try {
+      const sk = await api("viec/suc-khoe");
+      if (tk !== phienViec) return;
+      if (Number.isInteger(sk.dot_bat)) dotBatViec = sk.dot_bat;
+      skDuyet = sk;
+      const el = $("#vd-hm");
+      if (el && d && d.viec) el.innerHTML = hanMucHtml(d.viec.loai, sk);
+    } catch {
+      if (tk !== phienViec) return;
+      const el = $("#vd-hm");
+      if (el) el.innerHTML = `<span class="muted">Không lấy được hạn mức — máy nhà vẫn kiểm khi duyệt.</span>`;
+    } finally { skDangTai = false; }
+  };
+  const veDuyet = () => {
+    if (tk !== phienViec) return;
+    const box = $("#vj-duyet");
+    if (!box) return;
+    if (!d || !duocDuyet(d.viec, auth.user)) {
+      if (khungDuyetMo) boKhungDuyet(); // rời cho_duyet: bỏ khung (cả ô mật khẩu)
+      return;
+    }
+    const tsc = thamSoChuanDuyet(d);
+    if (khungDuyetMo && tsc !== khungTsc && !dangGuiViec.has(id)) boKhungDuyet(); // tham số đổi → vẽ lại cho đúng cái sẽ ký
+    if (!khungDuyetMo) {
+      if (dLan <= khungChoLan) return; // chờ dữ liệu mới sau 409 "Dữ liệu việc đã đổi"
+      box.innerHTML = khungDuyetHtml(d, { sk: skDuyet, khoa: dangGuiViec.has(id) });
+      khungDuyetMo = true;
+      khungTsc = tsc;
+      taiSkDuyet();
+    }
+    khoaKhungDuyet(dangGuiViec.has(id));
+  };
   const ve = () => {
+    if (tk !== phienViec) return;
     const nd = $("#vj-nd");
     if (!nd || !d) return;
-    nd.innerHTML = chiTietViecHtml(d, { dotBat: dotBatViec, khoa: dangGuiViec.has(id), md: mdSach, canhBao: canhBaoViec });
+    nd.innerHTML = chiTietViecHtml(d, { dotBat: dotBatViec, khoa: dangGuiViec.has(id), md: mdSach, canhBao: canhBaoViec, khungDuyet: duocDuyet(d.viec, auth.user) });
+    veDuyet();
   };
   const taiViec = async () => {
     if (viecDangTai || tk !== phienViec) return;
     viecDangTai = true;
+    const lan = ++lanTaiViec;
     try {
       const r = await api(`viec/${id}`);
       if (tk !== phienViec) return;
       const ttCu = d && d.viec && d.viec.trang_thai;
       d = r;
+      dLan = lan;
       ve();
       if (ttCu === "dang_chay" && r.viec && r.viec.trang_thai !== "dang_chay") taiLog(); // lấy nốt log cuối
     } catch (err) {
@@ -482,17 +790,25 @@ async function renderViecChiTiet(id) {
   };
   $("#vj-log-them").addEventListener("click", () => taiLog());
 
+  // body: object, hoặc hàm async trả object (gọi SAU khi đã khoá — vd. băm sha_tham_so khi duyệt).
   const hanhDong = async (act, body) => {
     if (dangGuiViec.has(id)) return;
     dangGuiViec.add(id); // khoá TRƯỚC await
     ve();
     let chuyen = false;
     try {
-      const r = await api(`viec/${id}/${act}`, body || {});
+      const b = typeof body === "function" ? await body() : body;
+      if (tk !== phienViec) return; // đã rời trang trong lúc chuẩn bị body: không gửi
+      const r = await api(`viec/${id}/${act}`, b || {});
       if (tk !== phienViec) return;
       const k = ketQuaHanhDong(act, r, id);
       if (r.status !== 409) canhBaoViec = k.canhBao;
-      toast(k.toast);
+      if (act === "duyet" && duLieuViecDoi(r)) {
+        // tham số trên máy nhà khác chuỗi đã hiển thị: bỏ khung, chỉ vẽ lại bằng dữ liệu tải SAU lúc này
+        khungChoLan = lanTaiViec;
+        boKhungDuyet();
+        toast("⚠ Dữ liệu việc đã đổi — đang tải lại, kiểm tham số rồi duyệt lại");
+      } else toast(k.toast);
       if (k.chuyen) { chuyen = true; location.hash = `#/viec/${k.chuyen}`; }
     } catch (err) { if (tk === phienViec) toast("⚠ " + err.message); }
     finally {
@@ -500,6 +816,33 @@ async function renderViecChiTiet(id) {
       if (tk === phienViec && !chuyen) { ve(); taiViec(); }
     }
   };
+
+  // Duyệt & chạy: kiểm lời duyệt + tham số chuẩn → lấy mật khẩu ra rồi xoá ô NGAY (thành công hay lỗi đều không còn) →
+  // khoá nút → gửi (hanhDong đặt dangGuiViec trước await, rồi mới băm sha_tham_so). Không await nào trước khi khoá.
+  // sha_tham_so băm khungTsc = đúng chuỗi tham_so_chuan đang hiển thị trong khung.
+  const guiDuyet = () => {
+    if (dangGuiViec.has(id) || tk !== phienViec || !d || !duocDuyet(d.viec, auth.user)) return;
+    const oLoi = $("#vd-loi"), oMk = $("#vd-mk");
+    if (!oLoi || !oMk) return;
+    const tsc = khungTsc;
+    if (!tsc) { toast("⚠ Chưa có tham số chuẩn của việc — tải lại rồi duyệt"); return; }
+    const loi_duyet = oLoi.value;
+    const sai = kiemLoiDuyet(loi_duyet);
+    if (sai) { toast("⚠ " + sai); oLoi.focus(); return; }
+    if (!oMk.value) { toast("⚠ Nhập mật khẩu để duyệt"); oMk.focus(); return; }
+    const mat_khau = oMk.value;
+    oMk.value = "";
+    khoaKhungDuyet(true);
+    hanhDong("duyet", async () => ({ loi_duyet, mat_khau, sha_tham_so: await sha256HexWeb(tsc) }));
+  };
+  $("#vj-duyet").addEventListener("submit", (e) => e.preventDefault()); // Enter trong form không tự gửi
+  $("#vj-duyet").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-vd-act]");
+    if (!b || b.disabled || !d || !d.viec) return;
+    if (b.dataset.vdAct === "duyet") guiDuyet();
+    else if (b.dataset.vdAct === "tai-lai") taiViec(); // tham_so_chuan mới về → veDuyet tự vẽ lại khung
+    else if (b.dataset.vdAct === "tu-choi" && confirm("Từ chối việc này?")) hanhDong("tu-choi");
+  });
 
   // Một listener ủy quyền cho cả khung (nội dung vẽ lại liên tục, không gắn lại mỗi lần).
   $("#vj-nd").addEventListener("click", async (e) => {
@@ -512,7 +855,7 @@ async function renderViecChiTiet(id) {
       hanhDong(act);
     } else if (b.dataset.vjTl !== undefined) {
       const n = nutTraLoi(d.viec.cau_hoi, dotBatViec)[Number(b.dataset.vjTl)];
-      if (n) hanhDong("tra-loi", { tra_loi: n.gia_tri });
+      if (n && !nutChoViecTonTien(d.viec).anTraLoi) hanhDong("tra-loi", { tra_loi: n.gia_tri });
     } else if (b.dataset.vjGoiY === "douyin_uid") {
       const uid = String((docJsonViec(d.viec.tham_so) || {}).uid || "");
       if (!RE_UID_VIEC.test(uid)) return;
@@ -542,7 +885,11 @@ async function renderViecChiTiet(id) {
 }
 
 // ---------- khối việc trong trang chi tiết SP (#viec-sp, dưới #buoc8) ----------
-const spViec = { phien: -1, i: null, ht: -1, ds: null, loi: "", duAn: null, duAnLoi: "", chon: "", luaChon: [], dangTaiDuAn: false };
+// form: form tạo việc đợt 4 đang mở ({loai:"muse_clip", du_an, nhan, mau, thoi_luong} | {loai:"poster_len_lich", folder_id, so_video_ngay});
+// folders: danh sách folder Poster (null = chưa tải), foldersLoi, dangTaiFolder: khoá tải.
+const SP_VIEC_MOI = () => ({ ds: null, loi: "", duAn: null, duAnLoi: "", chon: "", luaChon: [], dangTaiDuAn: false,
+  form: null, folders: null, foldersLoi: "", dangTaiFolder: false });
+const spViec = { phien: -1, i: null, ht: -1, ...SP_VIEC_MOI() };
 
 async function taiViecSp(phien, uid) {
   try {
@@ -581,17 +928,38 @@ function veKhoiViecSp() {
       : mo.length || ganDay.length ? `<div class="vt-ds">${mo.concat(ganDay).map(theViecHtml).join("")}</div>` : ""}
     ${g.nut.length ? `<div class="row vs-nut">${g.nut.map((n) => `<button class="btn sm" data-vs-loai="${esc(n.loai)}"${dangTao(n.loai) || mo.some((v) => v.loai === n.loai) ? " disabled" : ""}>▶ ${esc(n.nhan)}</button>`).join("")}</div>` : ""}
     ${g.ghi_chu ? `<p class="small muted">${esc(g.ghi_chu)}</p>` : ""}
-    ${chon}`;
+    ${spViec.form ? formViecSpHtml(spViec.form, { folders: spViec.folders, loi: spViec.foldersLoi, khoa: dangTao(spViec.form.loai) }) : chon}`;
+}
+
+// Danh sách folder Poster cho form poster_len_lich (tải 1 lần mỗi trang SP; lỗi → nút Thử lại).
+async function taiFolderPoster(phien) {
+  if (spViec.dangTaiFolder || spViec.folders || spViec.phien !== phien) return;
+  spViec.dangTaiFolder = true; // khoá TRƯỚC await
+  spViec.foldersLoi = "";
+  try {
+    const r = await api("viec/poster/folders");
+    if (phien !== phienCT || spViec.phien !== phien) return;
+    spViec.folders = locFolderPoster(r);
+  } catch (err) {
+    if (phien !== phienCT || spViec.phien !== phien) return;
+    spViec.foldersLoi = (err && err.message) || "lỗi";
+  } finally {
+    if (spViec.phien === phien) spViec.dangTaiFolder = false;
+  }
+  veKhoiViecSp();
 }
 
 async function chonDuAnSp(loai, phien) {
   spViec.chon = loai;
   spViec.luaChon = [];
+  spViec.form = null;
   const dung = () => {
     const ds = spViec.duAn || [];
-    spViec.luaChon = loai === "voice_pv"
+    spViec.luaChon = loai === "voice_pv" || loai === "voice_genmax"
       ? ds.flatMap((p) => (Array.isArray(p.me) ? p.me : []).map((me) => ({ loai, nhan: `${p.ten || p.ma} · mẻ ${me}`, tham_so: { uid: spViec.i.uid, du_an: p.ma, me } })))
-      : ds.map((p) => ({ loai, nhan: `${p.ten || p.ma}${p.co_captions === false ? " (chưa có captions)" : ""}`, tat: p.co_captions === false, tham_so: { uid: spViec.i.uid, du_an: p.ma } }));
+      : loai === "muse_clip" // chọn dự án → mở form chọn mẫu/thời lượng
+        ? ds.map((p) => ({ loai, nhan: String(p.ten || p.ma), mo_form: true, tham_so: { uid: spViec.i.uid, du_an: p.ma } }))
+        : ds.map((p) => ({ loai, nhan: `${p.ten || p.ma}${p.co_captions === false ? " (chưa có captions)" : ""}`, tat: p.co_captions === false, tham_so: { uid: spViec.i.uid, du_an: p.ma } }));
   };
   if (spViec.duAn) { dung(); veKhoiViecSp(); return; }
   veKhoiViecSp();
@@ -619,7 +987,22 @@ function veViecSp(i, ds, phien) {
   if (!box) return;
   const moi = spViec.phien !== phien;
   if (moi) {
-    Object.assign(spViec, { phien, ds: null, loi: "", duAn: null, duAnLoi: "", chon: "", luaChon: [], dangTaiDuAn: false });
+    Object.assign(spViec, { phien, ...SP_VIEC_MOI() });
+    // Giá trị form đổi → lưu vào spViec.form (khối vẽ lại khi danh sách việc về, không mất lựa chọn).
+    // Nghe cả "input": ô số video/ngày chỉ bắn "change" khi rời ô — vẽ lại giữa chừng sẽ mất số đang gõ.
+    const doiForm = (e) => {
+      const t = e.target, f = spViec.form;
+      if (!f || !t || !t.dataset || spViec.phien !== phien) return;
+      if (t.dataset.vsMau) {
+        const s = new Set(Array.isArray(f.mau) ? f.mau : []);
+        if (t.checked) s.add(t.dataset.vsMau); else s.delete(t.dataset.vsMau);
+        f.mau = [...s];
+      } else if (t.dataset.vsTl) { if (t.checked) f.thoi_luong = Number(t.dataset.vsTl); }
+      else if ("vsFolder" in t.dataset) f.folder_id = t.value;
+      else if ("vsSo" in t.dataset) f.so_video_ngay = t.value;
+    };
+    box.addEventListener("change", doiForm);
+    box.addEventListener("input", doiForm);
     box.addEventListener("click", async (e) => {
       const b = e.target.closest("button");
       if (!b || b.disabled || spViec.phien !== phien) return;
@@ -627,6 +1010,14 @@ function veViecSp(i, ds, phien) {
         const loai = b.dataset.vsLoai;
         const m = LOAI_VIEC_SP[loai];
         if (!m) return;
+        spViec.form = null;
+        if (loai === "poster_len_lich") { // không cần dự án: mở form folder + số video/ngày
+          spViec.chon = "";
+          spViec.form = { loai, folder_id: "", so_video_ngay: 1 };
+          veKhoiViecSp();
+          taiFolderPoster(phien);
+          return;
+        }
         if (m.can.includes("du_an")) { chonDuAnSp(loai, phien); return; }
         const id = await taoViec(loai, { uid: spViec.i.uid }, b);
         if (phien !== phienCT) return;
@@ -634,9 +1025,31 @@ function veViecSp(i, ds, phien) {
       } else if (b.dataset.vsTao !== undefined) {
         const x = spViec.luaChon[Number(b.dataset.vsTao)];
         if (!x || x.tat) return;
+        if (x.mo_form) {
+          spViec.form = { loai: x.loai, du_an: x.tham_so.du_an, nhan: x.nhan, mau: [], thoi_luong: 10 };
+          veKhoiViecSp();
+          return;
+        }
         const id = await taoViec(x.loai, x.tham_so, b);
         if (phien !== phienCT) return;
         if (id) location.hash = `#/viec/${id}`; else veKhoiViecSp();
+      } else if (b.dataset.vsGui) {
+        const f = spViec.form;
+        if (!f || f.loai !== b.dataset.vsGui) return;
+        const r = f.loai === "muse_clip" ? thamSoMuse(String(spViec.i.uid || ""), f.du_an, f.mau, f.thoi_luong)
+          : thamSoPoster(f.folder_id, f.so_video_ngay);
+        if (r.loi) { toast("⚠ " + r.loi); return; }
+        const id = await taoViec(f.loai, r.tham_so, b);
+        if (phien !== phienCT) return;
+        if (id) location.hash = `#/viec/${id}`; else veKhoiViecSp();
+      } else if (b.dataset.vsAn) {
+        spViec.form = null;
+        veKhoiViecSp();
+      } else if (b.dataset.vsFolderLai) {
+        spViec.folders = null;
+        spViec.foldersLoi = "";
+        veKhoiViecSp();
+        taiFolderPoster(phien);
       }
     });
   }

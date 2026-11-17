@@ -227,6 +227,55 @@ def test_khong_gan_duoc_job_object_dua_canh_bao_ra_suc_khoe(tmp_path, monkeypatc
     k.nha()
 
 
+def test_bochay_va_api_cung_mot_khoa_cong_khai_chan_ton_tien_va_worker_origin(tmp_path, monkeypatch):
+    """P3-1: BoChay và api.tao_handler nhận CÙNG đối tượng kcc (nạp một lần, không nạp lười).
+    P2-1 (D9): chạy từ mã nguồn (không có TONG_KIEM.json) → chan_ton_tien=True + cảnh báo trên /suc-khoe.
+    KHO_WORKER_ORIGIN ghi đè origin Worker; hàm tiêu dùng .runner_key + cùng kcc (không gọi mạng ở test này)."""
+    import chay_runner
+    from runner import api
+    du_lieu = tmp_path / "du_lieu"
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(du_lieu))
+    monkeypatch.setenv("KHO_WORKER_ORIGIN", "http://127.0.0.1:9")
+    for k in ("KHO_REPO", "KHO_THU_MUC_RADAR", "KHO_THU_MUC_SP", "KHO_THU_MUC_SCRIPTS"):
+        monkeypatch.setenv(k, str(tmp_path / k.lower()))
+    monkeypatch.setattr(tt, "tu_gan_job_object", lambda: True)
+    monkeypatch.setattr(chay_runner, "_cai_log", lambda thu_muc: None)
+    kcc = object()
+    monkeypatch.setattr(chay_runner, "_khoa_cong_khai", lambda: (kcc, tmp_path / "gia.pem"))
+    monkeypatch.setattr(vl.BoChay, "khoi_dong", lambda self: {})
+    bat = {}
+    goc_init = vl.BoChay.__init__
+
+    def init(self, *a, **kw):
+        bat["bo"] = kw
+        goc_init(self, *a, **kw)
+    monkeypatch.setattr(vl.BoChay, "__init__", init)
+    goi_tieu = []
+    monkeypatch.setattr(vl, "tao_ham_tieu", lambda origin, khoa, k: goi_tieu.append((origin, khoa, k)) or "TIEU")
+
+    def tao_handler(kho, mt, khoa, kcc_api, hm, canh_bao, *a, **kw):
+        bat["api"] = (khoa, kcc_api, canh_bao)
+        raise KeyboardInterrupt
+    monkeypatch.setattr(api, "tao_handler", tao_handler)
+    assert chay_runner.main(["--cong", "1"]) == 0
+    khoa_api, kcc_api, canh_bao = bat["api"]
+    assert bat["bo"]["khoa_cong_khai"] is kcc and kcc_api is kcc
+    assert bat["bo"]["chan_ton_tien"] is True and bat["bo"]["tieu"] == "TIEU"
+    assert goi_tieu == [("http://127.0.0.1:9", khoa_api, kcc)]
+    assert khoa_api == (du_lieu / ".runner_key").read_text(encoding="utf-8").strip()
+    assert any("TONG_KIEM" in c for c in canh_bao) and any("lệch tổng kiểm" in c for c in canh_bao)
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None
+    k.nha()
+
+
+def test_bochay_mac_dinh_khong_tu_nap_khoa():
+    """P3-1: bỏ nạp lười — BoChay không tự đọc PEM cạnh mã; không truyền khoá → None (việc tốn tiền đứng chờ)."""
+    import inspect
+    assert inspect.signature(vl.BoChay.__init__).parameters["khoa_cong_khai"].default is None
+    assert not hasattr(vl, "_TU_NAP")
+
+
 def test_khoa_runner_hong_thoat_6_truoc_khi_doi_viec(tmp_path, monkeypatch, caplog):
     """R-07 P3-7: .runner_key có mà quá ngắn → mã 6 + log, TRƯỚC khoi_dong (chưa mở DB, chưa đổi việc nào),
     không tự ghi đè file khoá, đã nhả khoá đơn instance."""
@@ -345,3 +394,87 @@ def test_cai_ban_cai_chay_duoc_help(tmp_path):
                         "import runner.vong_lap, runner.api, runner.danh_muc; print('ok')", str(dich)],
                        capture_output=True, timeout=60)
     assert r.stdout.strip() == b"ok", r.stderr
+
+
+# ---------------- FX-18 (R-15 P3-5): sao lưu runner.db trước khi cài ----------------
+
+def _db_wal(p: Path, n: int) -> sqlite3.Connection:
+    """DB chế độ WAL có `n` dòng; trả connection CÒN MỞ (dữ liệu mới nằm trong -wal, chưa checkpoint)."""
+    c = sqlite3.connect(p)
+    c.execute("PRAGMA journal_mode=WAL")
+    c.execute("PRAGMA wal_autocheckpoint=0")
+    c.execute("CREATE TABLE IF NOT EXISTS t(x INTEGER)")
+    c.executemany("INSERT INTO t VALUES (?)", [(i,) for i in range(n)])
+    c.commit()
+    return c
+
+
+def test_ban_sao_can_xoa_logic_thuan():
+    from datetime import datetime
+    assert cai_runner.ten_ban_sao(datetime(2026, 11, 17, 9, 5, 3)) == "runner.db.bak-20261117-090503"
+    ten = [f"runner.db.bak-2026111{i}-000000" for i in range(7)] + [
+        "runner.db.bak-20261116-000000-1", "runner.db", "runner.db-wal", "runner.db.bak-x", "khac.bak-20260101-000000",
+        "runner.db.bak-20261119-000000.tmp"]
+    xoa = cai_runner.ban_sao_can_xoa(ten, 5)
+    # 8 tên đúng mẫu (7 + bản -16-…-1), giữ 5 → xoá 3 cũ nhất; tên lệch mẫu / .tmp không bị đụng
+    assert xoa == ["runner.db.bak-20261110-000000", "runner.db.bak-20261111-000000", "runner.db.bak-20261112-000000"]
+    assert cai_runner.ban_sao_can_xoa(["runner.db.bak-20261116-000000-1", "runner.db.bak-20261116-000000"], 1) == [
+        "runner.db.bak-20261116-000000"]                               # -1 (cùng giây, lần sau) mới hơn
+    assert cai_runner.ban_sao_can_xoa(ten[:3], 5) == []
+    assert cai_runner.ban_sao_can_xoa(ten[:3], 0) == ten[:2]          # luôn giữ ít nhất bản mới nhất
+
+
+def test_sao_luu_db_wal_nhat_quan_va_giu_5_ban(tmp_path):
+    from datetime import datetime, timedelta
+    du_lieu = tmp_path / "du_lieu"
+    du_lieu.mkdir()
+    assert cai_runner.sao_luu_db(du_lieu) is None                     # chưa có DB → không làm gì, không tạo DB
+    assert not (du_lieu / "runner.db").exists()
+    c = _db_wal(du_lieu / "runner.db", 3)
+    try:
+        assert (du_lieu / "runner.db-wal").stat().st_size > 0          # dữ liệu đang nằm trong -wal
+        t0 = datetime(2026, 11, 17, 8, 0, 0)
+        ra = [cai_runner.sao_luu_db(du_lieu, t0 + timedelta(minutes=i)) for i in range(7)]
+    finally:
+        c.close()
+    con = sorted(p.name for p in du_lieu.iterdir() if ".bak-" in p.name)
+    assert con == [p.name for p in ra[2:]] and len(con) == 5, con     # giữ 5 bản mới nhất, không còn .tmp
+    b = sqlite3.connect(ra[-1])
+    try:
+        assert b.execute("SELECT COUNT(*) FROM t").fetchone()[0] == 3  # backup API đã đọc qua WAL
+        assert b.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+    finally:
+        b.close()
+    # cùng một giây → không ghi đè bản trước
+    t = datetime(2026, 11, 17, 9, 0, 0)
+    a1, a2 = cai_runner.sao_luu_db(du_lieu, t), cai_runner.sao_luu_db(du_lieu, t)
+    assert a1 != a2 and a2.name == a1.name + "-1" and a1.exists() and a2.exists()
+
+
+def test_sao_luu_db_loi_thi_khong_cai_va_van_nha_khoa(tmp_path, monkeypatch):
+    n = nguon_gia(tmp_path)
+    dich = tmp_path / "kho-runner" / "app"
+    dich.parent.mkdir(parents=True)
+    (dich.parent / "runner.db").write_bytes(b"khong phai sqlite" * 100)
+    with pytest.raises(sqlite3.DatabaseError):
+        cai_runner.cai(n, dich)
+    assert not dich.exists() and not (dich.parent / "app.moi").exists()
+    assert not [p for p in dich.parent.iterdir() if ".bak-" in p.name]  # không để lại bản dở (.tmp)
+    k = tt.gianh_don_instance(dich.parent, vl.ten_mutex(dich.parent))
+    assert k is not None
+    k.nha()
+
+
+def test_cai_sao_luu_db_truoc_khi_cai(tmp_path):
+    n = nguon_gia(tmp_path)
+    dich = tmp_path / "kho-runner" / "app"
+    dich.parent.mkdir(parents=True)
+    _db_wal(dich.parent / "runner.db", 4).close()
+    cai_runner.cai(n, dich)
+    bak = [p for p in dich.parent.iterdir() if p.name.startswith("runner.db.bak-")]
+    assert len(bak) == 1 and (dich / "chay_runner.py").is_file()
+    b = sqlite3.connect(bak[0])
+    try:
+        assert b.execute("SELECT COUNT(*) FROM t").fetchone()[0] == 4
+    finally:
+        b.close()

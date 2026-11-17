@@ -11,6 +11,9 @@ Dùng thật (trưởng phòng chạy MỘT lần, khoá riêng đi thẳng qua 
 Sinh lại vector test chéo (khoá TEST từ seed cố định, không bao giờ dùng thật)::
 
     python -B tools/runner/tao_khoa_ky.py --ghi-vector tools/runner/vector_ky.json
+
+Vector gồm ``request[]``, ``duyet[]`` và (D9) ``tieu[]``. Thêm mục mới chỉ được NỐI khoá mới; không đổi byte
+nào của các mục cũ (Worker đã test chéo theo chúng).
 """
 from __future__ import annotations
 
@@ -134,6 +137,23 @@ def lap_vector_ky() -> dict:
         "chu_ky_duyet": _b64url(khoa.sign(chuoi_d)),
     })
 
+    # D9: tiêu lời duyệt. Mục đầu tiêu đúng chữ ký duyệt của d (luồng thật); mục sau: chữ ký duyệt có ký tự
+    # ngoài ASCII (kiểm băm UTF-8 nguyên văn) + id khác.
+    mau_tieu = [
+        {"id": d["id"], "chu_ky_duyet": d["chu_ky_duyet"], "nonce": "0f1e2d3c4b5a69788796a5b4c3d2e1f0"},
+        {"id": "j20261118083015zz09", "chu_ky_duyet": "chữ-ký-thử_Việt", "nonce": "aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb"},
+    ]
+    tieu = []
+    for t in mau_tieu:
+        chuoi_t = chu_ky.chuoi_tieu_duyet(t["id"], t["chu_ky_duyet"], t["nonce"])
+        tieu.append({
+            **t,
+            "chu_ky_duyet_sha256_hex": hashlib.sha256(t["chu_ky_duyet"].encode("utf-8")).hexdigest(),
+            "chuoi_tieu_utf8": chuoi_t.decode("utf-8"),
+            "chuoi_tieu_hex": chuoi_t.hex(),
+            "ky": _b64url(khoa.sign(chuoi_t)),
+        })
+
     return {
         "canh_bao": "KHOÁ TEST — seed công khai, CHỈ dùng cho test chéo. "
                     "KHÔNG BAO GIỜ dùng làm KY_RIENG hay ky_cong_khai.pem thật.",
@@ -155,6 +175,13 @@ def lap_vector_ky() -> dict:
         "khoa_cong_khai_raw_hex": khoa.public_key().public_bytes_raw().hex(),
         "request": request,
         "duyet": [d],
+        "dinh_dang_tieu": {
+            "chuoi_tieu_duyet": "kho-tieu-v1\\nID\\nsha256_hex(CHU_KY_DUYET)\\nNONCE",
+            "id": "j + 14 chữ số + 4 [a-z0-9]",
+            "nonce": "32 hex chữ thường (runner sinh mỗi lần tiêu)",
+            "ky": "Ed25519 bằng KY_RIENG, base64url KHÔNG padding (86 ký tự)",
+        },
+        "tieu": tieu,
     }
 
 

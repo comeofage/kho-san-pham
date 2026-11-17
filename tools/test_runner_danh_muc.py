@@ -114,16 +114,19 @@ def test_ds_du_an_va_tim(mt):
 
 # ---------- danh mục, tham số ----------
 
+DOT3 = {m: l for m, l in dm.DANH_MUC.items() if l.dot == 3}
+
+
 def test_danh_muc_dot_3():
-    assert set(dm.DANH_MUC) == {"radar_ban_tin", "phan_tich_uid", "douyin_uid", "xu_ly_link_moi",
-                                "poster_day_folder", "voice_pv"}
-    for ma, l in dm.DANH_MUC.items():
+    assert set(DOT3) == {"radar_ban_tin", "phan_tich_uid", "douyin_uid", "xu_ly_link_moi",
+                         "poster_day_folder", "voice_pv"}
+    for ma, l in DOT3.items():
         assert l.ma == ma and l.dot == 3 and l.ton_tien is False and l.tu_chay_lai is True
     assert dm.DANH_MUC["voice_pv"].lan_chay == "gpu"
-    assert {m for m, l in dm.DANH_MUC.items() if "kho" in l.tai_nguyen} == {"phan_tich_uid", "douyin_uid",
-                                                                              "xu_ly_link_moi"}
+    assert {m for m, l in DOT3.items() if "kho" in l.tai_nguyen} == {"phan_tich_uid", "douyin_uid",
+                                                                       "xu_ly_link_moi"}
     assert dm.DANH_MUC["poster_day_folder"].tai_nguyen == frozenset({"poster"})
-    assert {m: l.het_gio_s for m, l in dm.DANH_MUC.items()} == {
+    assert {m: l.het_gio_s for m, l in DOT3.items()} == {
         "radar_ban_tin": 2700, "phan_tich_uid": 5400, "douyin_uid": 2400, "xu_ly_link_moi": 300,
         "poster_day_folder": 900, "voice_pv": 14400}
     assert dm.DANH_MUC["radar_ban_tin"].bo_cong_cu == ("Read", "Write", "Glob")
@@ -138,6 +141,12 @@ def test_lay_loai():
         dm.lay_loai("voice_pv", 2)
     with pytest.raises(ThamSoLoi):
         dm.lay_loai("rm_rf", 5)
+    for ma in ("muse_clip", "voice_genmax", "poster_len_lich"):
+        with pytest.raises(ThamSoLoi):
+            dm.lay_loai(ma, 3)
+        assert dm.lay_loai(ma, 4).ma == ma
+    with pytest.raises(ThamSoLoi):
+        dm.lay_loai("taovideo", 4)
 
 
 def test_tham_so_chuan():
@@ -192,7 +201,7 @@ def test_khoa_va_trang_thai_dau(mt):
     assert K["xu_ly_link_moi"]({}) == "kho"
     assert K["poster_day_folder"]({"uid": UID, "du_an": ma}) == ma
     assert K["voice_pv"]({"uid": UID, "du_an": ma, "me": ME}) == f"{ma}:{ME}"
-    for l in dm.DANH_MUC.values():
+    for l in DOT3.values():
         assert l.trang_thai_dau({}) == ("cho", "chay")
 
 
@@ -655,3 +664,346 @@ def test_con_tu_xu_ly_link():
     assert uids == [UID] + [f"17000000000000000{i:02d}" for i in range(4)]
     assert tam == ["tam-1731000000"]
     assert dm.con_tu_xu_ly_link("Không có link nào chờ.\n", 5) == ([], [])
+
+
+# ================================================================ đợt 4 (B-3, §5.2) + khung taovideo (§5.3)
+
+DOT4 = ("muse_clip", "voice_genmax", "poster_len_lich")
+DUYET = {"loi_duyet": "Duyệt", "duyet_boi": "nhan", "duyet_luc": "2026-11-17T09:00:00+07:00",
+         "chu_ky_duyet": "A" * 86}
+
+
+def _muse_ts(mt, **kw) -> dict:
+    ts = {"uid": UID, "du_an": du_an.ma_du_an(mt._p), "mau": ["xoay_360", "cam_tay"], "thoi_luong": 15,
+          "ti_le": "9:16"}
+    ts.update(kw)
+    return ts
+
+
+def _gm_ts(mt) -> dict:
+    return {"uid": UID, "du_an": du_an.ma_du_an(mt._p), "me": ME}
+
+
+def test_danh_muc_dot_4_va_khung_taovideo():
+    assert {m for m, l in dm.DANH_MUC.items() if l.dot == 4} == set(DOT4)
+    assert dm.DANH_MUC["taovideo"].dot == 5
+    for ma in (*DOT4, "taovideo"):
+        l = dm.DANH_MUC[ma]
+        assert l.ma == ma and l.ton_tien is True and l.tu_chay_lai is False, ma
+        assert dm.kiem_dau_ra_an_toan(l, {}, _viec(ma, {}), None) == "khong_ro"   # không tự đoán, không tự chạy lại
+        for kq in ("chua", "khong_ro"):
+            assert dm.quyet_dinh_sau_khoi_dong(_viec(ma, {}), kq, l)[0] == "loi", (ma, kq)
+    M, G, P, T = (dm.DANH_MUC[m] for m in (*DOT4, "taovideo"))
+    assert (M.lan_chay, G.lan_chay, P.lan_chay, T.lan_chay) == ("nhe", "gpu", "nhe", "gpu")
+    assert (M.tai_nguyen, G.tai_nguyen, P.tai_nguyen, T.tai_nguyen) == (
+        frozenset(), frozenset(), frozenset({"poster"}), frozenset({"kho"}))
+    assert (M.agent, G.agent, P.agent, T.agent) == ("aff-muse", None, "aff-poster", "aff-taovideo")
+    assert M.bo_cong_cu == P.bo_cong_cu == ("Read", "Write", "Edit", "Glob", "Grep", "Bash")
+    assert T.bo_cong_cu == ("Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill", "Agent", "SendMessage",
+                            "TodoWrite")
+    assert (M.tran_usd_moi_luot, P.tran_usd_moi_luot, T.tran_usd_moi_luot) == (3.0, 2.0, 40.0)
+    assert (M.tran_luot, P.tran_luot, T.tran_luot) == (120, 60, 1500)
+    assert M.trang_thai_dau({}) == P.trang_thai_dau({}) == T.trang_thai_dau({}) == ("cho_duyet", "chay")
+    assert G.trang_thai_dau({}) == ("cho", "uoc_tinh")
+
+
+def test_mau_prompt_muse_co_dinh():
+    M = dm.MAU_PROMPT_MUSE
+    assert 6 <= len(M) <= 8 and set(M) == set(dm.TEN_MAU_MUSE)
+    for k, v in M.items():
+        assert re.fullmatch(r"[a-z0-9_]{1,20}", k), k
+        assert isinstance(v, str) and 20 <= len(v) <= 1000 and "\n" not in v and "@SP" in v, k
+    mo_ta = {t["ten"]: t for t in dm.DANH_MUC["muse_clip"].tham_so}
+    assert [x["ma"] for x in mo_ta["mau"]["lua_chon"]] == list(M)
+    assert mo_ta["mau"]["max"] == 10 and mo_ta["thoi_luong"]["lua_chon"] == [10, 15]
+    assert mo_ta["ti_le"]["lua_chon"] == ["9:16"]
+
+
+def test_kiem_tham_so_muse(mt):
+    ma = du_an.ma_du_an(mt._p)
+    K = dm.DANH_MUC["muse_clip"].kiem_tham_so
+    assert K(_muse_ts(mt), mt) == {"uid": UID, "du_an": ma, "mau": ["xoay_360", "cam_tay"], "thoi_luong": 15,
+                                   "ti_le": "9:16"}
+    assert K({"uid": UID, "du_an": ma, "mau": ["xoay_360"]}, mt) == {
+        "uid": UID, "du_an": ma, "mau": ["xoay_360"], "thoi_luong": 10, "ti_le": "9:16"}
+    for sai in (dict(mau=[]), dict(mau="xoay_360"), dict(mau=["khong_co"]), dict(mau=["xoay_360", "xoay_360"]),
+                dict(mau=[1]), dict(thoi_luong=20), dict(thoi_luong="10"), dict(thoi_luong=True),
+                dict(ti_le="16:9"), dict(lenh="x"), dict(du_an="0" * 12), dict(prompt="tự do")):
+        with pytest.raises(ThamSoLoi):
+            K(_muse_ts(mt, **sai), mt)
+
+
+def test_kiem_tham_so_genmax_gan_ma_ban(mt):
+    K = dm.DANH_MUC["voice_genmax"].kiem_tham_so
+    assert K(_gm_ts(mt), mt) == {**_gm_ts(mt), "ma_ban": ["ab1", "ab2"]}
+    with pytest.raises(ThamSoLoi):                       # web không được tự gửi danh sách mã
+        K({**_gm_ts(mt), "ma_ban": ["ab1"]}, mt)
+    for ds in (None, [], ["ab1", "--gui-lai-ma"], ["ab1", "ab1"], ["../x"]):
+        mt._st["ma"] = ds
+        with pytest.raises(ThamSoLoi):
+            K(_gm_ts(mt), mt)
+    mt._st["ma"] = ["ab1"]
+    with pytest.raises(ThamSoLoi):
+        K({**_gm_ts(mt), "me": "20261119-z"}, mt)
+
+
+def test_ds_folder_poster_va_kiem_tham_so(mt):
+    mt.doc_folder_poster = lambda: [{"id": 7, "name": "Bình nước", "videos": 9}, {"id": "9", "ten": "Ví"},
+                                    {"id": True, "name": "x"}, {"name": "thiếu id"}, "rác", {"id": -1}]
+    assert dm.ds_folder_poster(mt) == [{"id": 7, "ten": "Bình nước"}, {"id": 9, "ten": "Ví"}]
+    K = dm.DANH_MUC["poster_len_lich"].kiem_tham_so
+    assert K({"folder_id": 7, "so_video_ngay": 3}, mt) == {"folder_id": 7, "so_video_ngay": 3}
+    assert K({"folder_id": 9, "so_video_ngay": 5}, mt) == {"folder_id": 9, "so_video_ngay": 5}
+    assert K({"folder_id": 9, "so_video_ngay": 100}, mt) == {"folder_id": 9, "so_video_ngay": 100}   # 1–100
+    assert dm.POSTER_VIDEO_NGAY == (1, 100)
+    mo_ta = {t["ten"]: t for t in dm.DANH_MUC["poster_len_lich"].tham_so}["so_video_ngay"]
+    assert (mo_ta["min"], mo_ta["max"]) == (1, 100)
+    for sai in ({"folder_id": 8, "so_video_ngay": 3}, {"folder_id": "7", "so_video_ngay": 3},
+                {"folder_id": 7, "so_video_ngay": 0}, {"folder_id": 7, "so_video_ngay": 101},
+                {"folder_id": 7, "so_video_ngay": True}, {"folder_id": 7}, {"folder_id": 7, "so_video_ngay": 3,
+                                                                              "account": "x"}):
+        with pytest.raises(ThamSoLoi):
+            K(sai, mt)
+
+    def hong():
+        raise RuntimeError("Poster tắt")
+    mt.doc_folder_poster = hong
+    with pytest.raises(ThamSoLoi, match="Poster"):
+        dm.ds_folder_poster(mt)
+    with pytest.raises(ThamSoLoi):
+        K({"folder_id": 7, "so_video_ngay": 3}, mt)
+    mt.doc_folder_poster = lambda: {"khong": "phai list"}
+    with pytest.raises(ThamSoLoi):
+        dm.ds_folder_poster(mt)
+
+
+def test_taovideo_chua_mo(mt):
+    T = dm.DANH_MUC["taovideo"]
+    with pytest.raises(ThamSoLoi):
+        T.kiem_tham_so({"uid": UID}, mt)
+    with pytest.raises(ThamSoLoi):
+        T.lap_buoc({"uid": UID}, _viec("taovideo", {"uid": UID}), mt)
+
+
+def test_khoa_dot_4(mt):
+    ma = du_an.ma_du_an(mt._p)
+    assert dm.DANH_MUC["muse_clip"].tinh_khoa(_muse_ts(mt)) == ma
+    assert dm.DANH_MUC["voice_genmax"].tinh_khoa({**_gm_ts(mt), "ma_ban": ["ab1"]}) == f"{ma}:{ME}"
+    assert dm.DANH_MUC["poster_len_lich"].tinh_khoa({"folder_id": 7, "so_video_ngay": 3}) == "folder:7"
+
+
+def test_dieu_kien_truoc_dot_4(mt):
+    M, G, P = (dm.DANH_MUC[m].dieu_kien_truoc for m in DOT4)
+    r = M(_muse_ts(mt), mt)
+    assert isinstance(r, CanNguoiDung) and r.loai == "viec_tay" and "Video Batch Local" in r.noi_dung
+    mt._cong[dm.CONG_VIDEO_BATCH] = True
+    assert M(_muse_ts(mt), mt) is None
+    assert G({**_gm_ts(mt), "ma_ban": ["ab1"]}, mt) is None
+    mt._st["ffmpeg"] = True
+    assert G({**_gm_ts(mt), "ma_ban": ["ab1"]}, mt) == "ban"
+    mt._st["ffmpeg"] = False
+    assert P({"folder_id": 7, "so_video_ngay": 3}, mt) is None
+    mt._cong[8023] = False
+    r = P({"folder_id": 7, "so_video_ngay": 3}, mt)
+    assert isinstance(r, CanNguoiDung) and "Poster" in r.noi_dung
+    mt._p.rename(mt._p.with_name("doi_ten"))
+    assert isinstance(M(_muse_ts(mt), mt), CanNguoiDung)
+    assert isinstance(G({**_gm_ts(mt), "ma_ban": ["ab1"]}, mt), CanNguoiDung)
+
+
+# ---------- voice_genmax 2 pha: KHÔNG đường nào sinh --gui-lai-ma; --dong-y chỉ sau duyệt ----------
+
+def _gm_viec(mt, buoc, **kw):
+    ts = {**_gm_ts(mt), "ma_ban": ["ab1", "ab2"]}
+    return ts, _viec("voice_genmax", ts, session_id=None, buoc=buoc, **kw)
+
+
+def test_lap_buoc_genmax_uoc_tinh_khong_goi_api(mt, monkeypatch):
+    monkeypatch.setenv("GENMAX_API_KEY", "khoa-genmax-thu-123456")
+    ts, v = _gm_viec(mt, "uoc_tinh")
+    b = dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)
+    assert len(b) == 1 and not b[0].la_claude
+    assert b[0].argv == ["python", (mt.thu_muc_scripts / "tao_voice.py").as_posix(), "--project", mt._p.as_posix(),
+                         "--batch", ME, "--ma", "ab1", "ab2"]
+    assert b[0].env_them == {} and b[0].cwd == str(mt._p)
+    assert b[0].het_gio_s == dm.DANH_MUC["voice_genmax"].het_gio_s
+
+
+def test_lap_buoc_genmax_chay_sau_duyet(mt, monkeypatch):
+    monkeypatch.setenv("GENMAX_API_KEY", "khoa-genmax-thu-123456")
+    ts, v = _gm_viec(mt, "chay", **DUYET)
+    b = dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)
+    assert len(b) == 1
+    a = b[0].argv
+    assert a[:6] == ["python", (mt.thu_muc_scripts / "tao_voice.py").as_posix(), "--project", mt._p.as_posix(),
+                     "--batch", ME]
+    assert a.count("--dong-y") == 1 and a[a.index("--ma") + 1:] == ["ab1", "ab2"]
+    assert a.index("--dong-y") < a.index("--ma")
+    assert b[0].env_them == {"GENMAX_API_KEY": "khoa-genmax-thu-123456"}
+    monkeypatch.delenv("GENMAX_API_KEY")
+    assert dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)[0].env_them == {}   # tao_voice tự đọc biến tài khoản
+
+
+@pytest.mark.parametrize("thieu", ["loi_duyet", "duyet_boi", "duyet_luc", "chu_ky_duyet"])
+def test_lap_buoc_genmax_chay_thieu_duyet_thi_tu_choi(mt, thieu):
+    ts, v = _gm_viec(mt, "chay", **{**DUYET, thieu: None})
+    with pytest.raises(ThamSoLoi):
+        dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)
+
+
+@pytest.mark.parametrize("buoc", [None, "", "CHAY", "chay ", "uoc_tinh", "khac"])
+def test_lap_buoc_genmax_buoc_la_thi_chi_uoc_tinh(mt, buoc):
+    ts, v = _gm_viec(mt, buoc, **DUYET)
+    assert "--dong-y" not in dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)[0].argv
+
+
+@pytest.mark.parametrize("ma_ban", [["--gui-lai-ma"], ["-x"], [], "ab1", [f"A{i}" for i in range(26)], ["ab1", 2],
+                                    ["ab1", "ab1"]])
+def test_lap_buoc_genmax_ma_ban_hong(mt, ma_ban):
+    ts, v = _gm_viec(mt, "chay", **DUYET)
+    ts["ma_ban"] = ma_ban
+    with pytest.raises(ThamSoLoi):
+        dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt)
+
+
+def test_khong_duong_nao_sinh_gui_lai_ma(mt):
+    """Mọi argv của genmax ở cả 2 pha không có `--gui-lai-ma`; trong mã nguồn danh_muc/api chuỗi này chỉ xuất hiện
+    trong mẫu CẤM `Bash(*--gui-lai-ma*)`."""
+    for buoc in ("uoc_tinh", "chay"):
+        ts, v = _gm_viec(mt, buoc, **DUYET)
+        for b in dm.DANH_MUC["voice_genmax"].lap_buoc(ts, v, mt):
+            assert not any("gui-lai" in x or "gui_lai" in x for x in b.argv), b.argv
+    import ast
+    goc = Path(__file__).parent / "runner"
+    for f in ("danh_muc.py", "api.py", "han_muc.py"):
+        cay = ast.parse((goc / f).read_text(encoding="utf-8"))
+        doc = {id(n.body[0].value) for n in ast.walk(cay)
+               if isinstance(n, (ast.Module, ast.FunctionDef, ast.ClassDef)) and n.body
+               and isinstance(n.body[0], ast.Expr) and isinstance(n.body[0].value, ast.Constant)}
+        chuoi = [n.value for n in ast.walk(cay) if isinstance(n, ast.Constant) and isinstance(n.value, str)
+                 and id(n) not in doc and ("gui-lai" in n.value or "gui_lai" in n.value)]
+        assert chuoi == (["Bash(*--gui-lai-ma*)"] if f == "danh_muc.py" else []), (f, chuoi)
+
+
+# ---------- muse_clip / poster_len_lich: lệnh Claude + nội dung phiếu ----------
+
+def test_lap_buoc_muse_va_poster_len_lich(mt):
+    ts = _muse_ts(mt)
+    v = _viec("muse_clip", ts, phien_da_tao=1, **DUYET)
+    b = dm.DANH_MUC["muse_clip"].lap_buoc(ts, v, mt)
+    assert len(b) == 1 and b[0].la_claude and b[0].cwd == str(mt._p)
+    assert b[0].argv == dm.lenh_claude(dm.DANH_MUC["muse_clip"], v, mt)
+    a = b[0].argv
+    assert a[a.index("--tools") + 1] == "Read,Write,Edit,Glob,Grep,Bash" and a[a.index("--agent") + 1] == "aff-muse"
+    j = a.index("--disallowedTools")
+    assert "Bash(*/api/accounts*)" in a[j:] and "Bash(*/api/settings*)" in a[j:]
+    tp = {"folder_id": 7, "so_video_ngay": 3}
+    vp = _viec("poster_len_lich", tp, phien_da_tao=1, **DUYET)
+    bp = dm.DANH_MUC["poster_len_lich"].lap_buoc(tp, vp, mt)
+    assert len(bp) == 1 and bp[0].la_claude and bp[0].cwd == str(mt.thu_muc_du_lieu)
+    ap = bp[0].argv
+    assert ap[ap.index("--agent") + 1] == "aff-poster" and "Bash(*post_now*)" in ap[ap.index("--disallowedTools"):]
+    for l in (dm.DANH_MUC["muse_clip"], dm.DANH_MUC["poster_len_lich"]):
+        assert l.them_thu_muc(ts, mt) == ()
+
+
+def _bash_bi_cam(cam: tuple[str, ...], lenh: str) -> bool:
+    """Khớp mẫu `Bash(<glob>)` kiểu Claude Code: `*` khớp mọi ký tự (kể cả `/` và khoảng trắng)."""
+    for m in cam:
+        if m.startswith("Bash(") and m.endswith(")"):
+            mau = "".join(".*" if c == "*" else re.escape(c) for c in m[5:-1])
+            if re.fullmatch(mau, lenh, re.S):
+                return True
+    return False
+
+
+PY_POSTER = "E:/tool/tiktok_poster_v2/.venv/Scripts/python.exe"
+API = "http://127.0.0.1:8023/api/v2"
+
+
+@pytest.mark.parametrize("lenh", [
+    # route ghi của routers/queue.py
+    f"curl -X POST {API}/queue/12/run",
+    f"curl -X POST {API}/queue/12/post",
+    f"curl -XPOST {API}/queue/reset-all",
+    f"curl -X DELETE {API}/queue/12",
+    f"curl -X DELETE '{API}/queue/pending/clear?folder_id=7'",
+    f"curl -X POST {API}/queue/batch -d '{{}}'",
+    f"curl -X POST {API}/queue/unstick",
+    f"curl -X POST {API}/queue/random_shuffle",
+    f"curl -X POST {API}/queue/12/retry",
+    # core/poster_api.py
+    f"curl -X POST {API}/post/direct -d @x.json",
+    # settings / accounts / folders / calendar ghi
+    f"curl -X PUT {API}/settings/autopost-enabled -d '{{}}'",
+    f"curl -X POST {API}/settings/autopost-on",
+    f"curl -X PATCH {API}/folders/7 -d '{{}}'",
+    f"curl --request DELETE {API}/folders/7",
+    f"curl -X POST {API}/folders/7/autogen-captions",
+    f"curl -X POST {API}/folders/7/reschedule-overdue",
+    f"curl -X POST {API}/accounts/3/cooldown",
+    f"curl -X POST {API}/accounts/login_and_capture",
+    f"curl -X POST {API}/calendar/plans -d '{{}}'",
+    # hàm ghi của ApiClient (aff-poster gọi qua python -c)
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().queue_reset_all()\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().add_to_queue({{}})\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().queue_batch([])\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().queue_retry(1)\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().set_autopost(True)\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().update_folder(7, {{}})\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().update_setting('k', 1)\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().create_calendar_plan({{}})\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().post_now(7)\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().queue_unstick()\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; A().archive_folder(7)\"",
+])
+def test_cam_poster_chan_route_ghi(lenh):
+    """[P2-3] aff-poster (poster_len_lich) không được gọi route/hàm ghi nào ngoài plan_folder/batch_schedule."""
+    cam = dm.DANH_MUC["poster_len_lich"].cong_cu_cam
+    assert _bash_bi_cam(cam, lenh), lenh
+
+
+@pytest.mark.parametrize("lenh", [
+    f"curl -X POST '{API}/folders/7/plan?count=3'",
+    f"curl -X POST {API}/folders/batch_schedule -d '{{\"folder_ids\":[7],\"per_day\":3}}'",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; print(A().plan_folder(7, 3))\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; print(A().batch_schedule([7], 3))\"",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; print(A().list_queue())\"",
+    f"curl {API}/queue?folder_id=7",
+    f"curl {API}/calendar/month?y=2026&m=11",
+    f"{PY_POSTER} -c \"from desktop.api_client import ApiClient as A; print(A().list_folders())\"",
+])
+def test_cam_poster_van_cho_plan_va_doc(lenh):
+    cam = dm.DANH_MUC["poster_len_lich"].cong_cu_cam
+    assert not _bash_bi_cam(cam, lenh), lenh
+
+
+def test_cam_poster_mau_phieu_yeu_cau_co_du():
+    cam = dm.DANH_MUC["poster_len_lich"].cong_cu_cam
+    for m in ("Bash(*/run*)", "Bash(*/post*)", "Bash(*reset-all*)", "Bash(*reset_all*)", "Bash(*autopost*)",
+              "Bash(*-X DELETE*)", "Bash(*pending/clear*)", "Bash(*post/direct*)"):
+        assert m in cam, m
+    # mẫu cũ giữ nguyên
+    for m in ("Bash(*post_now*)", "Bash(*post_video_direct*)", "Bash(*v2_data.db*)",
+              "Edit(//E:/tool/tiktok_poster_v2/**)", "Write(//E:/tool/tiktok_poster_v2/**)"):
+        assert m in cam, m
+
+
+def test_noi_dung_phieu_dot_4(mt):
+    ts = _muse_ts(mt)
+    nd = dm.noi_dung_phieu_dot4(dm.DANH_MUC["muse_clip"], _viec("muse_clip", ts), mt)
+    assert set(nd) == {"muc_tieu", "dau_vao", "duoc_ghi", "cam", "xong_khi", "them"}
+    assert "2 clip" in nd["muc_tieu"] and "15 giây" in nd["muc_tieu"] and "9:16" in nd["muc_tieu"]
+    for k in ("xoay_360", "cam_tay"):
+        assert dm.MAU_PROMPT_MUSE[k] in nd["them"]
+    for k in set(dm.MAU_PROMPT_MUSE) - {"xoay_360", "cam_tay"}:
+        assert dm.MAU_PROMPT_MUSE[k] not in nd["them"]
+    assert mt._p.as_posix() in nd["dau_vao"] and "/muse/" in nd["duoc_ghi"]
+    tp = {"folder_id": 7, "so_video_ngay": 3}
+    nd2 = dm.noi_dung_phieu_dot4(dm.DANH_MUC["poster_len_lich"], _viec("poster_len_lich", tp), mt)
+    assert "folder 7" in nd2["muc_tieu"] and "3 video/ngày" in nd2["muc_tieu"]
+    assert "post_now" in nd2["cam"]
+    with pytest.raises(ThamSoLoi):
+        dm.noi_dung_phieu_dot4(dm.DANH_MUC["voice_genmax"], _viec("voice_genmax", {}), mt)
+    with pytest.raises(ThamSoLoi):                       # mẫu lạ trong DB → không chèn chữ tuỳ ý vào phiếu
+        dm.noi_dung_phieu_dot4(dm.DANH_MUC["muse_clip"], _viec("muse_clip", dict(ts, mau=["la"])), mt)

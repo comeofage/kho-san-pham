@@ -7,6 +7,7 @@ Nguyên tắc:
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import secrets
@@ -18,11 +19,18 @@ from pathlib import Path
 from typing import Any, Callable, Iterator, Sequence
 from contextlib import contextmanager
 
+from .chu_ky import giai_chu_ky
 from .kieu import DANG_MO, LAN_CHAY, TRANG_THAI, CanNguoiDung, SaiTrangThai, ThamSoLoi, TrungViec, gio_vn
 
 log = logging.getLogger(__name__)
 
-PHIEN_BAN_SCHEMA = "1"
+PHIEN_BAN_SCHEMA = "2"
+# Nâng schema '1' → '2' (D9, §10): chạy trong CÙNG giao dịch BEGIN IMMEDIATE với việc đổi meta; lỗi → rollback cả cụm,
+# DB giữ nguyên schema '1'. KHÔNG bao giờ xoá/tạo lại DB cũ.
+NANG_1_LEN_2: tuple[str, ...] = (
+    "ALTER TABLE viec ADD COLUMN so_lan_tieu INTEGER NOT NULL DEFAULT 0",
+    "ALTER TABLE viec ADD COLUMN tieu_luc_dau TEXT",
+)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta(khoa TEXT PRIMARY KEY, gia_tri TEXT NOT NULL);
@@ -45,7 +53,8 @@ CREATE TABLE IF NOT EXISTS viec(
   loi_duyet TEXT, duyet_boi TEXT, duyet_luc TEXT, chu_ky_duyet TEXT,
   ket_qua TEXT,
   loi TEXT, ghi_chu TEXT,
-  chi_phi_usd REAL NOT NULL DEFAULT 0, so_luot_claude INTEGER NOT NULL DEFAULT 0, so_lan_claude INTEGER NOT NULL DEFAULT 0
+  chi_phi_usd REAL NOT NULL DEFAULT 0, so_luot_claude INTEGER NOT NULL DEFAULT 0, so_lan_claude INTEGER NOT NULL DEFAULT 0,
+  so_lan_tieu INTEGER NOT NULL DEFAULT 0, tieu_luc_dau TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS viec_dang_mo ON viec(loai, khoa)
   WHERE trang_thai IN ('cho','dang_chay','can_tra_loi','cho_duyet');
@@ -55,6 +64,7 @@ CREATE TABLE IF NOT EXISTS su_kien(id INTEGER PRIMARY KEY AUTOINCREMENT, viec_id
 CREATE TABLE IF NOT EXISTS tra_loi(id INTEGER PRIMARY KEY AUTOINCREMENT, viec_id TEXT NOT NULL REFERENCES viec(id),
   luc TEXT NOT NULL, boi TEXT NOT NULL, cau_hoi TEXT NOT NULL, noi_dung TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS nonce(gia_tri TEXT PRIMARY KEY, luc REAL NOT NULL);
+CREATE TABLE IF NOT EXISTS da_tieu(khoa TEXT PRIMARY KEY, viec_id TEXT NOT NULL, luc TEXT NOT NULL);
 """
 
 COT_JSON = ("tham_so", "cau_hoi", "ket_qua")
@@ -81,6 +91,31 @@ def _ma_hoa(cot: str, gia_tri: Any) -> Any:
             raise ThamSoLoi(f"cột {cot} cần dict/list")
         return _json_chuan(gia_tri)
     return gia_tri
+
+
+def khoa_tieu(chu_ky_duyet: str) -> str:
+    """Khoá sổ "đã tiêu" cục bộ = sha256_hex(64 BYTE chữ ký đã giải) — không lưu chữ ký thô.
+
+    Băm byte (không băm chuỗi) và chỉ nhận base64url CHUẨN (``chu_ky.giai_chu_ky``): biến thể bit thừa của cùng
+    chữ ký không thành khoá mới để tiêu lại (R-15 P1-1). Chuỗi không chuẩn/hỏng → ThamSoLoi.
+    Với chuỗi chuẩn, chuỗi ↔ byte là 1-1 nên khoá này tương đương khoá KV Worker (sha256 của chuỗi, §8.3)."""
+    raw = giai_chu_ky(chu_ky_duyet)
+    if raw is None:
+        raise ThamSoLoi("chu_ky_duyet không phải base64url chuẩn của chữ ký 64 byte")
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _khoa_tieu_cu(chu_ky_duyet: str) -> str:
+    """Khoá sổ trước R-15 (sha256 của CHUỖI). Chỉ dùng để nhận ra dòng da_tieu cũ — không ghi khoá này nữa."""
+    return hashlib.sha256(chu_ky_duyet.encode("utf-8")).hexdigest()
+
+
+def _cac_khoa_tieu(chu_ky_duyet: str) -> tuple[str, str]:
+    """(khoá mới, khoá cũ) — ném ThamSoLoi nếu chuỗi không chuẩn."""
+    return khoa_tieu(chu_ky_duyet), _khoa_tieu_cu(chu_ky_duyet)
+
+
+_SQL_THAM_SO_TOI_DA = 500       # số tham số mỗi câu IN (...) — dưới giới hạn 999 của SQLite cũ
 
 
 def _dong_thanh_dict(r: sqlite3.Row) -> dict:
@@ -135,6 +170,15 @@ class KhoViec:
             r = g.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()
             if r is None:
                 g.execute("INSERT INTO meta(khoa, gia_tri) VALUES('schema', ?)", (PHIEN_BAN_SCHEMA,))
+            elif r[0] == "1":
+                cot = {x[1] for x in g.execute("PRAGMA table_info(viec)")}
+                for cau in NANG_1_LEN_2:
+                    ten = cau.split("ADD COLUMN", 1)[1].split()[0] if "ADD COLUMN" in cau else None
+                    if ten is None or ten not in cot:
+                        g.execute(cau)
+                g.execute("UPDATE meta SET gia_tri=? WHERE khoa='schema'", (PHIEN_BAN_SCHEMA,))
+                log.warning("đã nâng runner.db schema '1' → %r tại chỗ (giữ nguyên dữ liệu): %s",
+                            PHIEN_BAN_SCHEMA, self.duong_dan_db)
             elif r[0] != PHIEN_BAN_SCHEMA:
                 raise RuntimeError(f"runner.db có schema {r[0]!r}, code cần {PHIEN_BAN_SCHEMA!r} — "
                                    f"KHÔNG tự xoá/tạo lại; kiểm tay {self.duong_dan_db}")
@@ -336,6 +380,55 @@ class KhoViec:
         with self._gd() as c:
             c.execute("INSERT INTO tra_loi(viec_id, luc, boi, cau_hoi, noi_dung) VALUES(?,?,?,?,?)",
                       (id, self._luc(), boi, cau_hoi, noi_dung))
+
+    # ---------- sổ "đã tiêu" cục bộ (D9, §10) ----------
+    @staticmethod
+    def _co_trong_so(c: sqlite3.Connection, cac_khoa: tuple[str, str]) -> bool:
+        return c.execute("SELECT 1 FROM da_tieu WHERE khoa IN (?,?) LIMIT 1", cac_khoa).fetchone() is not None
+
+    def da_tieu_cuc_bo(self, chu_ky_duyet: str) -> bool:
+        """Lời duyệt này đã tiêu trên máy này chưa (lớp chặn sớm; sổ thật nằm trên Worker KV).
+        Nhận ra cả dòng ghi theo khoá cũ. Chuỗi không chuẩn → ThamSoLoi (bên gọi KHÔNG được chạy)."""
+        return self._co_trong_so(self._ket_noi(), _cac_khoa_tieu(chu_ky_duyet))
+
+    def danh_dau_da_tieu(self, chu_ky_duyet: str, id: str) -> None:
+        """Ghi sổ cục bộ mà KHÔNG tăng so_lan_tieu (Worker báo 409: lời duyệt đã tiêu ở lần trước).
+        Đã có (khoá mới hoặc cũ) → không thêm dòng."""
+        cac_khoa = _cac_khoa_tieu(chu_ky_duyet)
+        with self._gd() as c:
+            if not self._co_trong_so(c, cac_khoa):
+                c.execute("INSERT INTO da_tieu(khoa, viec_id, luc) VALUES(?,?,?)", (cac_khoa[0], id, self._luc()))
+
+    def luc_tieu_theo_viec(self, ids: Sequence[str]) -> dict[str, list[str]]:
+        """{viec_id: [luc của từng dòng da_tieu, tăng dần]} cho các việc trong `ids` (việc không có dòng → vắng mặt).
+        Mỗi dòng = một lần lời duyệt của việc bị tiêu (ghi_tieu) hoặc được Worker báo đã tiêu (danh_dau_da_tieu)."""
+        kq: dict[str, list[str]] = {}
+        ds_id = list(dict.fromkeys(ids))
+        c = self._ket_noi()
+        for i in range(0, len(ds_id), _SQL_THAM_SO_TOI_DA):
+            phan = ds_id[i:i + _SQL_THAM_SO_TOI_DA]
+            for r in c.execute(f"SELECT viec_id, luc FROM da_tieu WHERE viec_id IN ({','.join('?' * len(phan))})"
+                               " ORDER BY luc, rowid", phan):
+                kq.setdefault(r[0], []).append(r[1])
+        return kq
+
+    def ghi_tieu(self, id: str, chu_ky_duyet: str) -> dict:
+        """Worker đã nhận tiêu (200 + chữ ký đúng): MỘT giao dịch ghi sổ cục bộ + so_lan_tieu += 1 + tieu_luc_dau (nếu
+        rỗng). Lời duyệt đã có trong sổ (khoá mới hoặc cũ) hoặc không có việc → SaiTrangThai, không ghi gì (bên gọi
+        KHÔNG được chạy). Chuỗi không chuẩn → ThamSoLoi, không ghi gì."""
+        k, k_cu = _cac_khoa_tieu(chu_ky_duyet)
+        luc = self._luc()
+        with self._gd() as c:
+            if self._co_trong_so(c, (k, k_cu)):
+                raise SaiTrangThai(f"việc {id}: lời duyệt đã có trong sổ đã tiêu")
+            cur = c.execute("INSERT OR IGNORE INTO da_tieu(khoa, viec_id, luc) VALUES(?,?,?)", (k, id, luc))
+            if cur.rowcount != 1:
+                raise SaiTrangThai(f"việc {id}: lời duyệt đã có trong sổ đã tiêu")
+            cur = c.execute("UPDATE viec SET so_lan_tieu=so_lan_tieu+1, tieu_luc_dau=COALESCE(tieu_luc_dau, ?),"
+                            " cap_nhat_luc=? WHERE id=?", (luc, luc, id))
+            if cur.rowcount != 1:
+                raise SaiTrangThai(f"không có việc {id}")
+            return self._lay(c, id)  # type: ignore[return-value]
 
     def dung_nonce(self, nonce: str, luc: float) -> bool:
         """Đánh dấu nonce đã dùng. False nếu đã dùng trước đó (phát lại).

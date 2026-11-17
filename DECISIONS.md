@@ -232,3 +232,54 @@ Trạng thái: Đã chốt (người dùng duyệt 17/11/2026: "Duyệt, làm lu
 - Mỗi lần nâng runner cần một bước cài (ghi ngoài thư mục dự án, có duyệt).
 - `PHIEN_BAN` hiện trên `/suc-khoe` để biết đang chạy bản nào.
 - Bản sao `GOCS` có thể lệch với video_server; test phát hiện được.
+
+## D9: Sổ "lời duyệt đã tiêu" trên Cloudflare KV; mỗi lời duyệt chỉ chạy được một lần pha tốn tiền  (2026-11-17)
+Trạng thái: Đã chốt (người dùng chọn "Sổ trên Cloudflare" ngày 17/11/2026, sửa lỗi review R-11 P1-1). Bổ sung D5 và D7, không thay hai quyết định này.
+
+**Bối cảnh.**
+- Review R-11 P1-1: chữ ký duyệt D7 chỉ chứng minh "việc này đã được duyệt", không chứng minh "lời duyệt này chưa dùng". Ai sửa được `runner.db` (đưa việc `xong`/`loi` về `cho`, giữ nguyên tham số và chữ ký) thì runner chạy lại pha tốn tiền: chữ ký vẫn khớp, nên Muse/GenMax/Poster bị gọi thêm lần nữa. Agent chạy cùng user Mi sửa được `runner.db` (D7 Bối cảnh).
+- Mọi thứ nằm trên máy nhà đều sửa được bởi user Mi. Muốn có "sổ tiêu một lần" thì sổ phải nằm ngoài máy, ở chỗ chỉ Worker ghi được.
+- Review R-11 còn nêu: P2-1 lệch `TONG_KIEM.json` mới chỉ cảnh báo, chưa chặn; P2-2 người duyệt có thể ký lên tham số khác với bản đã xem (tham số đổi giữa lúc xem và lúc bấm duyệt).
+- Đếm sai mật khẩu đang dùng Cache API (`cf/src/worker.js:441-465`): cache theo colo, không bền.
+
+**Quyết định.**
+- **KV `SO_DUYET`** (id `31283948f3834148ad49c7181c92f452`, binding đã có trong `cf/wrangler.toml`).
+- **Route Worker `POST /api/runner/tieu-duyet`.** Chỉ cần header `x-runner-key` (không cần phiên, không kiểm Origin). Body `{id, chu_ky_duyet, nonce}`.
+  - Khoá KV: `tieu:<sha256_hex(chu_ky_duyet)>`.
+  - Lần đầu: ghi KV rồi trả 200 `{ky}`, với `ky` = Ed25519(`KY_RIENG`) trên `"kho-tieu-v1\n" + id + "\n" + sha256_hex(chu_ky_duyet) + "\n" + nonce`.
+  - Các lần sau: 409.
+- **Runner gọi route này NGAY TRƯỚC mỗi lần chạy pha tốn tiền**, mỗi lần một nonce mới, rồi kiểm `ky` bằng khoá công khai trong bản cài.
+  - 200 và chữ ký đúng → chạy.
+  - 409 → `loi` "lời duyệt đã dùng".
+  - Lỗi mạng, hết giờ, 5xx, 401, chữ ký sai → đứng `cho` (hoãn), không chạy.
+- **Bỏ "Chạy tiếp" và "Tiếp tục" cho việc tốn tiền.** Thay bằng nút **"Xin duyệt lại"** (từ `loi` hoặc `can_tra_loi`): việc về `cho_duyet`, xoá 4 trường duyệt cũ, rồi duyệt lại bằng mật khẩu (sinh chữ ký duyệt mới, nên có khoá KV mới).
+- **Đếm sai mật khẩu chuyển sang KV** (`sai:<user>`), bỏ Cache API.
+- **`/duyet` kèm `sha_tham_so`** = sha256 của `tham_so_chuan` mà người duyệt đã xem. Worker so với bản lấy mới từ runner; lệch → 409 (R-11 P2-2).
+- **Lệch `TONG_KIEM` bản cài → chặn việc tốn tiền** (đứng `cho`, không tiêu lời duyệt) cho tới khi cài lại (R-11 P2-1).
+- **Hạn mức Poster** (người dùng đổi sau bản D9 đầu, phiếu A-D9b):
+  - mỗi việc `poster_len_lich` 1–100 video/ngày;
+  - tổng `so_video_ngay` ≤ 100 video **mỗi tài khoản** mỗi ngày;
+  - vẫn ≤ 2 việc/ngày.
+
+  Dữ liệu folder Poster chưa có trường tài khoản, nên tạm gom theo `folder_id` (`han_muc.khoa_tai_khoan_poster`).
+- **Việc tốn tiền đang ở `can_tra_loi`: trên web chỉ có nút "Xin duyệt lại"**, không trả lời trực tiếp.
+- **`voice_genmax` xin duyệt lại khi chưa có ước tính** → về `cho` với `buoc='uoc_tinh'` (pha miễn phí), chạy xong mới sang `cho_duyet`.
+
+**Phương án đã loại.**
+- Sổ tiêu trong `runner.db` hoặc file trên máy: user Mi sửa được, không chặn được đúng lỗi P1-1.
+- Durable Object làm sổ (đếm nguyên tử, nhất quán mạnh): đúng hơn về lý thuyết nhưng phải thêm class, migration và cấu hình. Runner chạy một instance và gọi tuần tự, nên KV đủ. Người dùng đã chọn KV.
+- Ghi sổ vào repo GitHub qua Worker: chậm, mỗi lần chạy thành một commit, và không có so-sánh-rồi-ghi.
+- Giữ "Chạy tiếp" bằng cách cho một lời duyệt tiêu N lần: lại mở đường chạy thêm mà không có người bấm duyệt.
+- Runner tự ký "đã tiêu": runner không giữ khoá riêng (D7).
+
+**Hệ quả.**
+- Một lời duyệt = đúng một lần chạy pha tốn tiền. Sửa `runner.db` để chạy lại sẽ nhận 409, không tốn tiền.
+- Việc tốn tiền phụ thuộc mạng tới Cloudflare lúc bắt đầu chạy. Mất mạng thì việc đứng chờ, không chạy.
+- Worker ghi KV xong mà runner không nhận được phản hồi (mạng đứt giữa chừng): lần thử sau nhận 409 và việc vào `loi`, phải xin duyệt lại. Kết quả là phải bấm thêm một lần chứ không tốn tiền.
+- Mỗi lần việc tốn tiền dừng lại (lỗi hoặc có câu hỏi) phải xin duyệt lại, thêm một bước nhập mật khẩu. Câu hỏi của agent không được trả lời trên web: người duyệt đọc câu hỏi và log rồi quyết định duyệt lại hay huỷ. Đợt 5 (`taovideo` hỏi nhiều lượt) sẽ thiết kế lại khi làm B-4/W-6.
+- Hạn mức ngày phải đếm theo số lần đã tiêu, không theo số việc (cột mới `so_lan_tieu`).
+- Thêm route Worker, KV, 4 phiếu sửa FX-9..FX-12 (`docs/bo-chay-viec.md` §13).
+- **Rủi ro còn lại:**
+  - KV chỉ nhất quán cuối cùng (eventual consistency), và đọc-rồi-ghi không nguyên tử. Hai lần gọi gần nhau ở hai colo khác nhau có thể cùng nhận 200. Runner luôn ở cùng một máy nên thường vào cùng colo và đọc thấy bản ghi vừa ghi. Runner gọi tuần tự.
+  - Ai có `.runner_key` (agent cùng user) gọi được route này để "tiêu" trước một lời duyệt. Như vậy chỉ chặn được việc (DoS), không chạy được gì tốn tiền: chữ ký trả về gắn nonce của người gọi, runner không dùng được. Spam khoá rác có thể làm cạn hạn mức ghi KV trong ngày.
+  - Agent có Bash cùng user vẫn có thể sửa code runner trong bản cài rồi chờ runner khởi động lại (đã ghi ở D7). D9 không đổi điều này. `TONG_KIEM` chỉ phát hiện nhầm lẫn.

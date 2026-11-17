@@ -322,6 +322,151 @@ def test_kiem_duyet_thieu_truong(khoa, kcc) -> None:
     assert chu_ky.kiem_duyet(kcc, viec) is False
 
 
+# ---------- tiêu lời duyệt (D9: sổ trên Cloudflare) ----------
+
+ID_TIEU = "j20261117210000ab12"
+KY_DUYET = "ob8h6j5Xfe7h_Lnuj3ykdYAtLGk_Rb1VKKT-7uDzV2eUXJIMEj8-kqYvGNV6PPnH8yjXK0uMz1AunJx2dM-WDg"
+
+
+def test_chuoi_tieu_duyet_dung_dinh_dang() -> None:
+    mong = ("kho-tieu-v1\n" + ID_TIEU + "\n" + hashlib.sha256(KY_DUYET.encode("utf-8")).hexdigest()
+            + "\n" + NONCE).encode("utf-8")
+    assert chu_ky.chuoi_tieu_duyet(ID_TIEU, KY_DUYET, NONCE) == mong
+
+
+def test_chuoi_tieu_duyet_bam_nguyen_van_utf8() -> None:
+    """chu_ky_duyet chỉ đi vào chuỗi dưới dạng sha256 UTF-8, không chuẩn hoá."""
+    a = chu_ky.chuoi_tieu_duyet(ID_TIEU, "Việt", NONCE)
+    assert a.split(b"\n")[2] == hashlib.sha256("Việt".encode("utf-8")).hexdigest().encode()
+
+
+@pytest.mark.parametrize("id_,ky,nonce", [
+    ("j1", KY_DUYET, NONCE),                                   # id sai regex việc
+    ("J20261117210000ab12", KY_DUYET, NONCE),
+    ("j20261117210000AB12", KY_DUYET, NONCE),
+    (ID_TIEU + "\n", KY_DUYET, NONCE),
+    (ID_TIEU, KY_DUYET + "\n", NONCE),                         # xuống dòng trong chu_ky_duyet
+    (ID_TIEU, "a\rb", NONCE),
+    (ID_TIEU, KY_DUYET, NONCE.upper()),                        # nonce chữ hoa
+    (ID_TIEU, KY_DUYET, NONCE[:-1]),
+    (ID_TIEU, KY_DUYET, NONCE + "\n"),
+    (ID_TIEU, None, NONCE),
+    (None, KY_DUYET, NONCE),
+    (ID_TIEU, KY_DUYET, None),
+    (ID_TIEU, "", NONCE),                                      # chu_ky_duyet rỗng: không có gì để tiêu
+])
+def test_chuoi_tieu_duyet_tu_choi_truong_hong(id_, ky, nonce) -> None:
+    with pytest.raises(ValueError):
+        chu_ky.chuoi_tieu_duyet(id_, ky, nonce)
+
+
+def _ky_tieu(khoa: Ed25519PrivateKey, id_: str = ID_TIEU, ky_duyet: str = KY_DUYET,
+             nonce: str = NONCE) -> str:
+    return _b64url(khoa.sign(chu_ky.chuoi_tieu_duyet(id_, ky_duyet, nonce)))
+
+
+def test_kiem_tieu_dung(khoa, kcc) -> None:
+    assert chu_ky.kiem_tieu(kcc, ID_TIEU, KY_DUYET, NONCE, _ky_tieu(khoa)) is True
+
+
+@pytest.mark.parametrize("sua", ["id", "ky_duyet", "nonce", "khoa_khac", "padding", "rac", "ngan",
+                                 "chuoi_duyet_khac"])
+def test_kiem_tieu_sai_tra_false(khoa, kcc, sua) -> None:
+    ky = _ky_tieu(khoa)
+    id_, ky_duyet, nonce = ID_TIEU, KY_DUYET, NONCE
+    if sua == "id":
+        id_ = "j20261117210000ab13"
+    elif sua == "ky_duyet":
+        ky_duyet = KY_DUYET[:-1] + "A"
+    elif sua == "nonce":
+        nonce = "f" * 32
+    elif sua == "khoa_khac":
+        ky = _ky_tieu(Ed25519PrivateKey.from_private_bytes(bytes(range(1, 33))))
+    elif sua == "padding":
+        ky = ky + "=="
+    elif sua == "rac":
+        ky = "!" * 86
+    elif sua == "ngan":
+        ky = ky[:-1]
+    elif sua == "chuoi_duyet_khac":
+        # chữ ký của chuỗi DUYỆT (khác tiền tố) không được dùng làm chữ ký TIÊU
+        ky = _b64url(khoa.sign(chu_ky.chuoi_ky_duyet(ID_TIEU, "voice_genmax", "{}", "x", "t", "nhan")))
+    assert chu_ky.kiem_tieu(kcc, id_, ky_duyet, nonce, ky) is False
+
+
+@pytest.mark.parametrize("id_,ky_duyet,nonce,ky", [
+    ("j1", KY_DUYET, NONCE, "A" * 86),
+    (ID_TIEU, KY_DUYET + "\n", NONCE, "A" * 86),
+    (ID_TIEU, KY_DUYET, "XYZ", "A" * 86),
+    (None, None, None, None),
+    (123, b"x", 4.5, ["k"]),
+])
+def test_kiem_tieu_dau_vao_hong_tra_false_khong_nem(kcc, id_, ky_duyet, nonce, ky) -> None:
+    assert chu_ky.kiem_tieu(kcc, id_, ky_duyet, nonce, ky) is False
+
+
+# ---------- base64url phải ở dạng CHUẨN (R-15 P1-1) ----------
+# 64 byte = 512 bit → 86 ký tự × 6 bit = 516 bit: 4 bit thấp của ký tự thứ 86 là bit thừa. Bộ giải lỏng bỏ qua
+# chúng → 16 chuỗi khác nhau giải ra cùng 64 byte. Chỉ dạng chuẩn (4 bit thừa = 0) được nhận.
+
+_BANG_B64URL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"
+
+
+def _bien_the_ky_tu_cuoi(s: str) -> list[str]:
+    """15 chuỗi khác `s` chỉ ở 4 bit thừa của ký tự cuối (cùng 64 byte nếu giải lỏng)."""
+    goc = _BANG_B64URL.index(s[-1]) & ~0b1111
+    ds = [s[:-1] + _BANG_B64URL[goc | k] for k in range(16)]
+    ds.remove(s)
+    assert len(ds) == 15
+    for b in ds:                         # chứng minh test có nghĩa: bộ giải lỏng coi chúng là một
+        assert base64.urlsafe_b64decode(b + "==") == base64.urlsafe_b64decode(s + "==")
+    return ds
+
+
+def test_giai_chu_ky_chuan_tra_64_byte(khoa) -> None:
+    raw = khoa.sign(b"x")
+    assert chu_ky.giai_chu_ky(_b64url(raw)) == raw
+    assert chu_ky._giai_chu_ky(_b64url(raw)) == raw
+
+
+def test_giai_chu_ky_tu_choi_bit_thua_khac_0(khoa) -> None:
+    s = _b64url(khoa.sign(b"x"))
+    for b in _bien_the_ky_tu_cuoi(s):
+        assert chu_ky.giai_chu_ky(b) is None, b
+
+
+def test_kiem_duyet_16_bien_the_ky_tu_cuoi_chi_ban_chuan_qua(khoa, kcc) -> None:
+    viec = _viec_da_duyet(khoa)
+    assert chu_ky.kiem_duyet(kcc, viec) is True
+    for b in _bien_the_ky_tu_cuoi(viec["chu_ky_duyet"]):
+        assert chu_ky.kiem_duyet(kcc, dict(viec, chu_ky_duyet=b)) is False, b
+
+
+def test_kiem_request_bien_the_x_ky_bi_tu_choi_khong_tieu_nonce(khoa, kcc) -> None:
+    body = b"{}"
+    h = _headers_ky(khoa, "POST", "/viec", body)
+    nonce = NonceGia()
+    for b in _bien_the_ky_tu_cuoi(h["x-ky"]):
+        ly_do = chu_ky.kiem_request(kcc, dict(h, **{"x-ky": b}), "POST", "/viec", body, NGAY, nonce)
+        assert ly_do is not None and "x-ky" in ly_do, b
+    assert nonce.da_dung == {}
+    assert chu_ky.kiem_request(kcc, h, "POST", "/viec", body, NGAY, nonce) is None
+
+
+def test_kiem_tieu_bien_the_ky_bi_tu_choi(khoa, kcc) -> None:
+    ky = _ky_tieu(khoa)
+    assert chu_ky.kiem_tieu(kcc, ID_TIEU, KY_DUYET, NONCE, ky) is True
+    for b in _bien_the_ky_tu_cuoi(ky):
+        assert chu_ky.kiem_tieu(kcc, ID_TIEU, KY_DUYET, NONCE, b) is False, b
+
+
+def test_vector_chu_ky_deu_o_dang_chuan() -> None:
+    v = json.loads((THU_MUC_RUNNER / "vector_ky.json").read_text(encoding="utf-8"))
+    for s in [r["x_ky"] for r in v["request"]] + [d["chu_ky_duyet"] for d in v["duyet"]] + \
+             [t["ky"] for t in v["tieu"]]:
+        assert chu_ky.giai_chu_ky(s) is not None, s
+
+
 # ---------- nap_khoa_cong_khai ----------
 
 def test_nap_khoa_cong_khai_tu_choi_khoa_khong_phai_ed25519() -> None:
@@ -453,3 +598,36 @@ def test_vector_noi_dung_kiem_duoc(kcc) -> None:
             "loi_duyet": d["loi_duyet"], "duyet_luc": d["duyet_luc"], "duyet_boi": d["boi"],
             "chu_ky_duyet": d["chu_ky_duyet"]}
     assert chu_ky.kiem_duyet(kcc_v, viec) is True
+
+
+def test_vector_tieu_kiem_duoc(kcc) -> None:
+    v = json.loads((THU_MUC_RUNNER / "vector_ky.json").read_text(encoding="utf-8"))
+    kcc_v = chu_ky.nap_khoa_cong_khai(v["khoa_cong_khai_pem"].encode("ascii"))
+    assert len(v["tieu"]) >= 2
+    # mục đầu tiêu đúng chữ ký duyệt của vector duyet[0] (luồng thật: duyệt rồi tiêu)
+    assert v["tieu"][0]["id"] == v["duyet"][0]["id"]
+    assert v["tieu"][0]["chu_ky_duyet"] == v["duyet"][0]["chu_ky_duyet"]
+    assert len({t["nonce"] for t in v["tieu"]}) == len(v["tieu"])
+    for t in v["tieu"]:
+        chuoi = chu_ky.chuoi_tieu_duyet(t["id"], t["chu_ky_duyet"], t["nonce"])
+        assert chuoi.hex() == t["chuoi_tieu_hex"]
+        assert chuoi.decode("utf-8") == t["chuoi_tieu_utf8"]
+        assert hashlib.sha256(t["chu_ky_duyet"].encode("utf-8")).hexdigest() == t["chu_ky_duyet_sha256_hex"]
+        assert chuoi.decode("utf-8").startswith("kho-tieu-v1\n")
+        assert len(t["ky"]) == 86 and "=" not in t["ky"]
+        assert chu_ky.kiem_tieu(kcc_v, t["id"], t["chu_ky_duyet"], t["nonce"], t["ky"]) is True
+        # tiêu lại cùng chu_ky_duyet với nonce khác: chữ ký cũ không dùng được
+        assert chu_ky.kiem_tieu(kcc_v, t["id"], t["chu_ky_duyet"], "0" * 32, t["ky"]) is False
+
+
+def test_vector_muc_cu_khong_doi() -> None:
+    """Thêm mục tieu[] không được đổi byte nào của các mục cũ (Worker đã test chéo theo chúng)."""
+    v = json.loads((THU_MUC_RUNNER / "vector_ky.json").read_text(encoding="utf-8"))
+    assert v["phien_ban"] == 1
+    assert v["request"][0]["x_ky"] == ("MMRGwbrfFcbUI0Ay0Sty97gVHfvex7vkAugyCSqGGjYh2G6afJrAkDboeH6a3Lqs1zYsE-eXeP_"
+                                       "qiQjCVZ6KDQ")
+    assert v["request"][1]["x_ky"] == ("iwcidd4SE2upQ0l5jTEE5sDWffYOwRQSGr2nqjd8Zf3tYxKGg1Igf2OKysJvcPWg4qdwemmbl_"
+                                       "pnLeHS7lyADA")
+    assert v["duyet"][0]["chu_ky_duyet"] == KY_DUYET
+    assert set(v["dinh_dang"]) == {"chuoi_ky_request", "chuoi_ky_duyet", "ma_hoa", "path", "nonce", "chu_ky",
+                                   "tham_so_chuan", "headers"}

@@ -222,3 +222,19 @@ textarea.dv-gy { min-height: 56px; }
 .vj-file, .vj-su-kien { padding-left: 18px; word-break: break-all; }
 .viec-sp:not(:empty) { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; margin-bottom: 10px; display: grid; gap: 6px; }
 .vs-dau { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+/* Đợt 4: khung duyệt việc tốn tiền (#vj-duyet) + form tạo việc trong khối SP */
+.vd { margin: 10px 0; padding: 10px; border: 2px solid var(--s-quay); border-radius: var(--r); display: grid; gap: 8px; }
+.vd-dau, .vd-ts dd, .vd-uoc li { word-break: break-word; }
+.vd-uoc ul { margin: 4px 0 0; padding-left: 18px; }
+.vd label { margin: 0; }
+textarea.vd-loi { min-height: 72px; }
+.vd-nut .btn, .vs-form .vs-nut .btn { min-height: 44px; }
+.vd-nut .btn[data-vd-act="duyet"] { flex: 1; }
+.vs-form { border: 1px dashed var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 6px; }
+.vs-mau { border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2px 10px; }
+.vs-mau legend { padding: 0; margin-bottom: 2px; }
+.vs-ck { display: inline-flex; align-items: center; gap: 6px; margin: 0; min-height: 40px; font-size: 14px; }
+.vs-ck input { margin: 0; padding: 0; flex: none; width: 20px; height: 20px; }
+.vs-tl { display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; }
+.vs-form label.small { margin: 0; }
+.vs-sel { display: block; width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--card); color: var(--text); font: inherit; font-size: 16px; }

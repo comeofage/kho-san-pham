@@ -2,6 +2,7 @@
 // Token GitHub chỉ nằm trong secret GITHUB_TOKEN của Worker; trình duyệt chỉ cầm cookie phiên.
 // Secret: GITHUB_TOKEN, SESSION_SECRET, USERS (JSON do cf/tools/tao-users.mjs sinh). Biến: GH_REPO, GH_BRANCH.
 // Máy nhà: VIDEO_ORIGIN, VIDEO_KEY; bộ chạy việc thêm RUNNER_KEY, KY_RIENG (xem docs/bo-chay-viec.md §8.3).
+// KV SO_DUYET (D9): sổ lời duyệt đã tiêu (tieu:<sha256hex 64 byte chu_ky_duyet dạng chuẩn>, không TTL) + đếm sai mật khẩu duyệt (sai:<user>).
 "use strict";
 
 const COOKIE = "kho_s";
@@ -233,15 +234,28 @@ const KIEM_THAM_SO = {
   me: (v) => typeof v === "string" && /^\d{8}-[a-z0-9]{1,12}$/.test(v),
   top_n: (v) => Number.isInteger(v) && v >= 5 && v <= 30,
   chay_bu: (v) => typeof v === "boolean",
+  // đợt 4 (§5.2) — khớp tools/runner/danh_muc.py: MAU_PROMPT_MUSE, MUSE_THOI_LUONG, MUSE_TI_LE, POSTER_VIDEO_NGAY
+  mau: (v) => Array.isArray(v) && v.length >= 1 && v.length <= MA_MAU_MUSE.length && new Set(v).size === v.length
+    && v.every((x) => typeof x === "string" && MA_MAU_MUSE.includes(x)),
+  thoi_luong: (v) => v === 10 || v === 15,
+  ti_le: (v) => v === "9:16",
+  folder_id: (v) => Number.isInteger(v) && v > 0 && v < 1e9,
+  so_video_ngay: (v) => Number.isInteger(v) && v >= 1 && v <= 100, // FX-9: người dùng nới 1–5 → 1–100
 };
-// Danh mục đợt 3 (§5.1): loại → [khoá bắt buộc, khoá tuỳ chọn]. Loại đợt 4–5 bị từ chối ở đây.
-const DANH_MUC_DOT3 = new Map([
+// Mã mẫu prompt Muse cố định (web chỉ gửi MÃ). Phải trùng khoá MAU_PROMPT_MUSE trong tools/runner/danh_muc.py.
+const MA_MAU_MUSE = ["xoay_360", "cam_tay", "can_canh", "dung_that", "dat_ban", "mo_hop", "truoc_sau"];
+// Danh mục đợt 3 (§5.1) + đợt 4 (§5.2): loại → [khoá bắt buộc, khoá tuỳ chọn]. Loại đợt 5 (taovideo) bị từ chối ở đây.
+// voice_genmax: web KHÔNG gửi được ma_ban (runner tự gắn); thoi_luong/ti_le của muse_clip tuỳ chọn (runner có mặc định).
+const DANH_MUC_VIEC = new Map([
   ["radar_ban_tin", [[], ["top_n", "chay_bu"]]],
   ["phan_tich_uid", [["uid"], []]],
   ["douyin_uid", [["uid"], []]],
   ["xu_ly_link_moi", [[], []]],
   ["poster_day_folder", [["uid", "du_an"], []]],
   ["voice_pv", [["uid", "du_an", "me"], []]],
+  ["muse_clip", [["uid", "du_an", "mau"], ["thoi_luong", "ti_le"]]],
+  ["voice_genmax", [["uid", "du_an", "me"], []]],
+  ["poster_len_lich", [["folder_id", "so_video_ngay"], []]],
 ]);
 // Đợt 3: trả lời chỉ bằng nút — giá trị hợp lệ theo loại câu hỏi (cau_hoi chữ tự do là đợt 5).
 const NUT_CO_DINH = { viec_tay: ["da_lam_xong"], khong_ro: ["tiep_tuc"] };
@@ -252,12 +266,12 @@ const hexOf = (buf) => [...new Uint8Array(buf)].map((x) => x.toString(16).padSta
 export function kiemThamSoViec(b) {
   if (!laObjectThuong(b)) return "Dữ liệu không hợp lệ";
   const { loai } = b;
-  if (typeof loai !== "string" || !RE_LOAI.test(loai) || !DANH_MUC_DOT3.has(loai)) return "Loại việc không có trong danh mục";
+  if (typeof loai !== "string" || !RE_LOAI.test(loai) || !DANH_MUC_VIEC.has(loai)) return "Loại việc không có trong danh mục";
   const ts = b.tham_so === undefined ? {} : b.tham_so;
   if (!laObjectThuong(ts)) return "Tham số không hợp lệ";
   const khoa = Object.keys(ts);
   if (khoa.length > THAM_SO_TOI_DA) return "Quá nhiều tham số";
-  const [batBuoc, tuyChon] = DANH_MUC_DOT3.get(loai);
+  const [batBuoc, tuyChon] = DANH_MUC_VIEC.get(loai);
   const tham_so = {};
   for (const k of khoa) {
     if (!batBuoc.includes(k) && !tuyChon.includes(k)) return "Tham số không thuộc loại việc này";
@@ -304,6 +318,114 @@ export async function kyRequest(env, method, path, bodyText = "") {
   return { "x-ky-ngay": String(ngay), "x-ky-nonce": nonce, "x-ky": b64url(ky) };
 }
 
+// Chuỗi ký lời duyệt §8.3 — phải khớp byte với tools/runner/chu_ky.py:chuoi_ky_duyet.
+// thamSoChuan là NGUYÊN CHUỖI runner trả ở GET /viec/<id> (không stringify lại); thamSoChuan + loiDuyet chỉ vào chuỗi
+// dưới dạng sha256 nên được chứa xuống dòng; các trường còn lại thì không.
+const truongKy = (ten, v) => {
+  if (typeof v !== "string") throw new TypeError(`${ten} phải là chuỗi`);
+  if (/[\r\n]/.test(v)) throw new TypeError(`${ten} chứa ký tự xuống dòng`);
+  return v;
+};
+const sha256HexText = async (s) => hexOf(await crypto.subtle.digest("SHA-256", te.encode(s)));
+export async function chuoiKyDuyet(id, loai, thamSoChuan, loiDuyet, duyetLuc, boi) {
+  for (const [ten, v] of [["tham_so_chuan", thamSoChuan], ["loi_duyet", loiDuyet]]) if (typeof v !== "string") throw new TypeError(`${ten} phải là chuỗi`);
+  const phan = [truongKy("id", id), truongKy("loai", loai), await sha256HexText(thamSoChuan), await sha256HexText(loiDuyet), truongKy("duyet_luc", duyetLuc), truongKy("boi", boi)];
+  return te.encode(["kho-duyet-v1", ...phan].join("\n"));
+}
+// chu_ky_duyet (base64url không padding, 86 ký tự) bằng KY_RIENG.
+export async function kyDuyet(env, id, loai, thamSoChuan, loiDuyet, duyetLuc, boi) {
+  const chuoi = await chuoiKyDuyet(id, loai, thamSoChuan, loiDuyet, duyetLuc, boi);
+  let khoa;
+  try {
+    khoa = await khoaKy(env);
+  } catch (e) {
+    console.error("viec: không nạp được KY_RIENG", e && e.name);
+    throw Object.assign(new Error("Khoá ký bộ chạy việc không hợp lệ (KY_RIENG)"), { status: 503 });
+  }
+  return b64url(await crypto.subtle.sign({ name: "Ed25519" }, khoa, chuoi));
+}
+
+// ---------- sổ "lời duyệt đã tiêu" (D9): runner → POST /api/runner/tieu-duyet, KV SO_DUYET ----------
+// Mỗi chu_ky_duyet chỉ tiêu được 1 lần; Worker ký xác nhận kho-tieu-v1 để runner biết lời duyệt chưa bị dùng.
+const RE_ID_VIEC = /^j\d{14}[a-z0-9]{4}$/; // cùng mẫu id việc ở tuyenViec
+const RE_CHU_KY_DUYET = /^[A-Za-z0-9_-]{86}$/;
+const RE_NONCE_TIEU = /^[0-9a-f]{32}$/;
+const TIEU_BO_NHO_TOI_DA = 5000;
+// Khoá tieu: đã/đang tiêu trong isolate này → luc — giữ chỗ ĐỒNG BỘ trước await KV (request song song cùng isolate không lọt).
+const soTieuBoNho = new Map();
+export function datLaiSoTieuBoNho() { soTieuBoNho.clear(); } // test: giả lập isolate mới
+// [FX-17 P1-1] chu_ky_duyet phải ở DẠNG CHUẨN: giải ra đúng 64 byte, mã hoá lại phải đúng chuỗi gốc
+// (86 ký tự chứa 4 bit thừa ở ký tự cuối → 16 chuỗi cùng 64 byte). Không chuẩn → null.
+function giaiChuKyChuan(s) {
+  if (typeof s !== "string" || !RE_CHU_KY_DUYET.test(s)) return null;
+  let byte;
+  try { byte = unb64url(s); } catch { return null; }
+  return byte.length === 64 && b64url(byte) === s ? byte : null;
+}
+function lucTrongSo(v) {
+  try {
+    const d = JSON.parse(v);
+    return laObjectThuong(d) && typeof d.luc === "string" ? d.luc : null;
+  } catch { return null; }
+}
+const loiDaDung = (luc) => json({ loi: "Lời duyệt đã dùng", luc: luc ?? null }, 409);
+
+// Chuỗi ký tiêu duyệt — UTF-8 "kho-tieu-v1\n"+id+"\n"+sha256hex(chu_ky_duyet)+"\n"+nonce.
+export async function chuoiTieuDuyet(id, chuKyDuyet, nonce) {
+  if (typeof chuKyDuyet !== "string") throw new TypeError("chu_ky_duyet phải là chuỗi");
+  return te.encode(`kho-tieu-v1\n${truongKy("id", id)}\n${await sha256HexText(chuKyDuyet)}\n${truongKy("nonce", nonce)}`);
+}
+export async function kyTieuDuyet(env, id, chuKyDuyet, nonce) {
+  const chuoi = await chuoiTieuDuyet(id, chuKyDuyet, nonce);
+  let khoa;
+  try {
+    khoa = await khoaKy(env);
+  } catch (e) {
+    console.error("tieu-duyet: không nạp được KY_RIENG", e && e.name);
+    throw Object.assign(new Error("Khoá ký bộ chạy việc không hợp lệ (KY_RIENG)"), { status: 503 });
+  }
+  return b64url(await crypto.subtle.sign({ name: "Ed25519" }, khoa, chuoi));
+}
+// So khoá hằng thời gian kể cả khi độ dài khác: so sha256 (cùng 64 ký tự).
+async function khoaKhop(a, b) {
+  const [x, y] = await Promise.all([sha256HexText(a), sha256HexText(b)]);
+  return bangNhau(x, y);
+}
+
+async function tieuDuyet(req, env) {
+  if (!env.RUNNER_KEY || !env.KY_RIENG || !env.SO_DUYET) return loi("Chưa cấu hình sổ duyệt", 503);
+  const khoaGui = req.headers.get("x-runner-key");
+  if (!khoaGui || !(await khoaKhop(khoaGui, String(env.RUNNER_KEY)))) return loi("Sai khoá bộ chạy việc", 401);
+  const b = await docBodyViec(req);
+  const { id, chu_ky_duyet, nonce } = laObjectThuong(b) ? b : {};
+  const byteKy = giaiChuKyChuan(chu_ky_duyet);
+  if (typeof id !== "string" || !RE_ID_VIEC.test(id) || !byteKy || typeof nonce !== "string" || !RE_NONCE_TIEU.test(nonce)) {
+    return loi("Dữ liệu tiêu duyệt không hợp lệ");
+  }
+  const khoa = `tieu:${hexOf(await crypto.subtle.digest("SHA-256", byteKy))}`; // băm 64 BYTE, không băm chuỗi
+  const ky = await kyTieuDuyet(env, id, chu_ky_duyet, nonce); // KY_RIENG hỏng → 503 TRƯỚC khi tiêu
+  // --- đoạn đồng bộ: kiểm + giữ chỗ trong isolate (không await ở giữa) ---
+  if (soTieuBoNho.has(khoa)) return loiDaDung(soTieuBoNho.get(khoa));
+  const luc = nowIso();
+  soTieuBoNho.set(khoa, luc);
+  if (soTieuBoNho.size > TIEU_BO_NHO_TOI_DA) soTieuBoNho.delete(soTieuBoNho.keys().next().value);
+  // --- hết đoạn đồng bộ ---
+  try {
+    const cu = await env.SO_DUYET.get(khoa);
+    if (cu !== null) {
+      const lucDau = lucTrongSo(cu);
+      if (soTieuBoNho.has(khoa)) soTieuBoNho.set(khoa, lucDau); // vẫn giữ chỗ, chỉ cập nhật luc thật từ sổ
+      return loiDaDung(lucDau);
+    }
+    await env.SO_DUYET.put(khoa, JSON.stringify({ id, luc })); // §8.3: sổ tiêu KHÔNG đặt TTL
+  } catch (e) {
+    soTieuBoNho.delete(khoa); // chưa tiêu được → nhả chỗ cho lần thử lại
+    console.error("tieu-duyet: KV SO_DUYET lỗi", e && e.name);
+    return loi("Sổ duyệt tạm lỗi — thử lại", 503);
+  }
+  return json({ ky });
+}
+
 // Gọi runner qua video_server. Luôn trả Response: của máy nhà, hoặc lỗi 502/504 đã đổi (401/403 → 502).
 async function goiMayNha(env, path, { method = "GET", body, timeoutMs = TIMEOUT_VIEC_MS } = {}) {
   const headers = { "x-key": env.VIDEO_KEY, "x-runner-key": env.RUNNER_KEY };
@@ -348,15 +470,15 @@ function tuyenViec(p) {
   if (s === "") return { GET: { dich: "/viec", query: ["trang_thai", "uid", "gioi_han", "tom_tat"] }, POST: { dich: "/viec", lam: "tao" } };
   if (s === "/danh-muc") return { GET: { dich: "/danh-muc" } };
   if (s === "/suc-khoe") return { GET: { dich: "/suc-khoe" } };
-  if (s === "/poster-folders") return { GET: { dich: "/poster/folders" } };
+  if (s === "/poster-folders" || s === "/poster/folders") return { GET: { dich: "/poster/folders" } };
   if ((k = s.match(/^\/du-an\/(\d{19})$/))) return { GET: { dich: `/du-an/${k[1]}` } };
-  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|tu-choi|huy|chay-tiep|chay-lai))?$/))) {
+  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai))?$/))) {
     const [, id, act] = k;
     if (!act) return { GET: { dich: `/viec/${id}` } };
     if (act === "log") return { GET: { dich: `/viec/${id}/log`, query: ["tu"] } };
-    return { POST: { dich: `/viec/${id}/${act}`, lam: act === "tra-loi" ? "tra_loi" : "boi", id } };
+    return { POST: { dich: `/viec/${id}/${act}`, lam: act === "tra-loi" ? "tra_loi" : act === "duyet" ? "duyet" : "boi", id } };
   }
-  return null; // gồm /duyet (đợt 4, W-4)
+  return null;
 }
 
 async function docBodyViec(req) {
@@ -392,6 +514,125 @@ async function traLoiBangNut(req, env, tuyen, phien) {
   return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { tra_loi, boi: phien.user } }));
 }
 
+// ---------- duyệt việc tốn tiền (đợt 4, §8.2, §8.3, §9 mục 4) ----------
+const LOI_DUYET_TOI_DA = 2000; // ký tự (code point, như len() Python) — khớp runner api.LOI_DUYET_TOI_DA
+const MAT_KHAU_TOI_DA = 256;
+const SAI_MK_TOI_DA = 5;
+const SAI_MK_CUA_SO_MS = 10 * 60e3;
+const RE_SURROGATE_LE = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+// Đếm sai mật khẩu theo user: bộ nhớ isolate (lớp đầu, chặn song song trong isolate) + lớp bền:
+// KV SO_DUYET khoá `sai:<user>` (D9, giữ qua isolate/colo) khi có binding; không có binding → Cache API (cùng colo) như cũ.
+// sai = mốc ms các lần sai đã xác nhận; dang_kiem = số lần đang kiểm (giữ chỗ ĐỒNG BỘ trước await); khoa_den = ms.
+const demSaiBoNho = new Map();
+export function datLaiDemSaiMatKhau() { demSaiBoNho.clear(); } // test: giả lập isolate mới
+const khoaCacheSai = (user) => `https://dem-sai-mat-khau.kho.invalid/${encodeURIComponent(user)}`;
+const khoaKvSai = (user) => `sai:${user}`;
+function chuanHoaDemSai(d) {
+  if (!laObjectThuong(d) || !Array.isArray(d.sai)) return null;
+  return { sai: d.sai.filter((x) => Number.isFinite(x)).slice(-50), khoa_den: Number.isFinite(d.khoa_den) ? d.khoa_den : 0 };
+}
+async function docDemSaiCache(user) {
+  try {
+    const r = await caches.default.match(khoaCacheSai(user));
+    if (!r) return null;
+    return chuanHoaDemSai(await r.json());
+  } catch (e) {
+    console.error("dem-sai-mat-khau: đọc Cache API lỗi", e && e.name);
+    return null;
+  }
+}
+async function ghiDemSaiCache(user, dem) {
+  try {
+    await caches.default.put(khoaCacheSai(user), new Response(JSON.stringify({ sai: dem.sai, khoa_den: dem.khoa_den }), {
+      headers: { "content-type": "application/json", "cache-control": `max-age=${SAI_MK_CUA_SO_MS / 1000}` },
+    }));
+  } catch (e) {
+    console.error("dem-sai-mat-khau: ghi Cache API lỗi", e && e.name);
+  }
+}
+// Có SO_DUYET mà KV đọc lỗi → NÉM (người gọi trả 503, không kiểm mật khẩu — §9.4).
+async function docDemSai(env, user) {
+  if (!env.SO_DUYET) return docDemSaiCache(user);
+  try {
+    return chuanHoaDemSai(await env.SO_DUYET.get(khoaKvSai(user), { type: "json" }));
+  } catch (e) {
+    console.error("dem-sai-mat-khau: đọc KV lỗi", e && e.name);
+    throw e;
+  }
+}
+async function ghiDemSai(env, user, dem) {
+  if (!env.SO_DUYET) return ghiDemSaiCache(user, dem);
+  try {
+    await env.SO_DUYET.put(khoaKvSai(user), JSON.stringify({ sai: dem.sai, khoa_den: dem.khoa_den }), { expirationTtl: SAI_MK_CUA_SO_MS / 1000 });
+  } catch (e) {
+    console.error("dem-sai-mat-khau: ghi KV lỗi", e && e.name);
+  }
+}
+
+const RE_SHA256_HEX = /^[0-9a-f]{64}$/;
+
+async function duyetViec(req, env, tuyen, phien) {
+  const b = await docBodyViec(req);
+  const { loi_duyet, mat_khau, sha_tham_so } = laObjectThuong(b) ? b : {};
+  if (typeof loi_duyet !== "string" || !loi_duyet.trim() || [...loi_duyet].length > LOI_DUYET_TOI_DA || RE_SURROGATE_LE.test(loi_duyet)) {
+    return loi(`Lời duyệt phải là chữ 1–${LOI_DUYET_TOI_DA} ký tự`);
+  }
+  // [P2-2] sha256hex của tham_so_chuan người dùng đã xem — kiểm dạng TRƯỚC mật khẩu (thiếu không tính lần sai).
+  if (typeof sha_tham_so !== "string" || !RE_SHA256_HEX.test(sha_tham_so)) return loi("Thiếu sha_tham_so — tải lại việc rồi duyệt");
+  if (typeof mat_khau !== "string" || !mat_khau || mat_khau.length > MAT_KHAU_TOI_DA) return loi("Thiếu mật khẩu");
+  const user = phien.user;
+  let cache;
+  try {
+    cache = await docDemSai(env, user);
+  } catch {
+    return loi("Không kiểm được số lần sai — thử lại sau", 503); // §9.4: coi như đang khoá, KHÔNG kiểm mật khẩu
+  }
+  // --- đoạn đồng bộ: hợp nhất + kiểm + giữ chỗ (không await ở giữa → request song song không lọt quá 5 lần) ---
+  let dem = demSaiBoNho.get(user);
+  if (!dem) demSaiBoNho.set(user, (dem = { sai: [], dang_kiem: 0, khoa_den: 0 }));
+  if (cache) {
+    if (cache.sai.length > dem.sai.length) dem.sai = cache.sai;
+    dem.khoa_den = Math.max(dem.khoa_den, cache.khoa_den);
+  }
+  const bayGio = Date.now();
+  dem.sai = dem.sai.filter((t) => bayGio - t < SAI_MK_CUA_SO_MS);
+  if (bayGio < dem.khoa_den || dem.sai.length + dem.dang_kiem >= SAI_MK_TOI_DA) {
+    return loi(`Sai mật khẩu ${SAI_MK_TOI_DA} lần — tạm khoá duyệt 10 phút`, 429);
+  }
+  dem.dang_kiem++;
+  // --- hết đoạn đồng bộ ---
+  let dung = false;
+  try {
+    const u = dsUser(env)[user];
+    dung = !!u && (await kiemMatKhau(mat_khau, u.hash));
+  } finally {
+    dem.dang_kiem--;
+  }
+  if (!dung) {
+    const luc = Date.now();
+    dem.sai.push(luc);
+    if (dem.sai.filter((t) => luc - t < SAI_MK_CUA_SO_MS).length >= SAI_MK_TOI_DA) dem.khoa_den = Math.max(dem.khoa_den, luc + SAI_MK_CUA_SO_MS);
+    await ghiDemSai(env, user, dem);
+    return loi("Sai mật khẩu", 403);
+  }
+
+  const r = await goiMayNha(env, `/viec/${tuyen.id}`);
+  if (!r.ok) return traVeMayNha(r);
+  let d;
+  try { d = await r.json(); } catch { return loi("Máy nhà trả dữ liệu lạ", 502); }
+  const viec = laObjectThuong(d) ? d.viec : null;
+  // tham_so_chuan: NGUYÊN CHUỖI runner trả (không stringify lại) — runner băm đúng chuỗi này khi kiểm chữ ký.
+  if (!laObjectThuong(viec) || typeof d.tham_so_chuan !== "string" || typeof viec.loai !== "string" || !RE_LOAI.test(viec.loai)
+    || (viec.id !== undefined && viec.id !== tuyen.id)) {
+    return loi("Máy nhà trả dữ liệu lạ", 502);
+  }
+  if (viec.trang_thai !== "cho_duyet") return loi("Việc không còn chờ duyệt", 409);
+  if (!bangNhau(await sha256HexText(d.tham_so_chuan), sha_tham_so)) return loi("Dữ liệu việc đã đổi — tải lại rồi duyệt", 409);
+  const duyet_luc = nowIso();
+  const chu_ky_duyet = await kyDuyet(env, tuyen.id, viec.loai, d.tham_so_chuan, loi_duyet, duyet_luc, user);
+  return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { loi_duyet, duyet_luc, boi: user, chu_ky_duyet } }));
+}
+
 async function apiViec(req, env, url, phien) {
   const m = req.method;
   if (!USER_MAY_NHA.includes(phien.user)) return loi("Không có quyền", 403);
@@ -408,6 +649,7 @@ async function apiViec(req, env, url, phien) {
     return traVeMayNha(await goiMayNha(env, tuyen.dich + q));
   }
   if (tuyen.lam === "tra_loi") return traLoiBangNut(req, env, tuyen, phien);
+  if (tuyen.lam === "duyet") return duyetViec(req, env, tuyen, phien);
   let body;
   if (tuyen.lam === "tao") {
     const b = kiemThamSoViec(await docBodyViec(req));
@@ -436,6 +678,8 @@ async function api(req, env, ctx, url) {
     return json({ user: key, ten: u.ten || key }, 200, { "set-cookie": cookiePhien(await taoPhien(env, key), PHIEN_GIAY) });
   }
   if (p === "/api/logout" && m === "POST") return json({ ok: true }, 200, { "set-cookie": cookiePhien("", 0) });
+  // Runner gọi (không có phiên, không có Origin) — xác thực bằng x-runner-key; đặt TRƯỚC kiểm phiên.
+  if (p === "/api/runner/tieu-duyet") return m === "POST" ? tieuDuyet(req, env) : loi("Sai phương thức", 405);
 
   const phien = await docPhien(env, req);
   if (!phien) return loi("Chưa đăng nhập", 401);

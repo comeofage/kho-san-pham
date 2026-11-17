@@ -6,6 +6,7 @@ Muốn nới phải sửa code và cài lại (có duyệt).
 from __future__ import annotations
 
 import math
+from collections.abc import Sequence
 from datetime import date, datetime
 from typing import TYPE_CHECKING, Any
 
@@ -15,12 +16,14 @@ if TYPE_CHECKING:
     from .kho_viec import KhoViec
 
 HAN_MUC_TRAN: dict[str, int | float] = {
-    "dot_bat": 3,                       # đợt cao nhất được mở; tăng = sửa code + cài lại (có duyệt)
+    "dot_bat": 4,                       # đợt cao nhất được mở; tăng = sửa code + cài lại (có duyệt). Đợt 4: B-3
     "claude_usd_ngay": 40, "claude_viec_ngay": 12,
     "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
     "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
     "genmax_ban_moi_viec": 25, "genmax_viec_ngay": 2,
-    "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 5,
+    # poster_video_ngay_toi_da: trần video/ngày của MỘT việc VÀ tổng so_video_ngay mỗi tài khoản mỗi ngày
+    # (người dùng chốt FX-11: 100 video/tài khoản/ngày; vẫn ≤ poster_len_lich_ngay việc/ngày).
+    "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,
     "taovideo_ngay": 1, "codex_luot_viec": 6,
 }
 TRAN_LUOT: dict[str, int] = {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
@@ -67,13 +70,223 @@ def _gia_tri(hm: dict, k: str) -> int | float:
     return min(v, tran) if _la_so_hop_le(v) else tran
 
 
-def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str, boi: str) -> None:
+# ---------- đợt 4–5: hạn mức riêng của loại tốn tiền (B-3) ----------
+# Hạn mức mỗi việc: (khoá tham số, khoá hạn mức, đơn vị, cách đo).
+_MOI_VIEC: dict[str, tuple[str, str, str]] = {
+    "muse_clip": ("mau", "muse_clip_moi_viec", "clip"),
+    "voice_genmax": ("ma_ban", "genmax_ban_moi_viec", "bản"),
+    "poster_len_lich": ("so_video_ngay", "poster_video_ngay_toi_da", "video/ngày"),
+}
+# Hạn mức mỗi ngày: (khoá hạn mức, đơn vị). muse tính theo số clip, còn lại theo số việc.
+_MOI_NGAY: dict[str, tuple[str, str]] = {
+    "muse_clip": ("muse_clip_ngay", "clip"),
+    "voice_genmax": ("genmax_viec_ngay", "việc"),
+    "poster_len_lich": ("poster_len_lich_ngay", "việc"),
+    "taovideo": ("taovideo_ngay", "việc"),
+}
+_TRANG_THAI_MO = ("cho", "dang_chay", "can_tra_loi", "cho_duyet")
+DS_VIEC_TOI_DA = 500        # số việc gần nhất xét khi đếm theo ngày (≤30 việc/ngày/người → dư hơn 8 ngày)
+
+
+def _do_moi_viec(ma_loai: str, tham_so: dict) -> int | None:
+    """Độ lớn của một việc theo hạn mức mỗi việc; None nếu thiếu khoá. Sai kiểu → ThamSoLoi."""
+    khoa, _, _ = _MOI_VIEC[ma_loai]
+    if not isinstance(tham_so, dict) or khoa not in tham_so:
+        return None
+    v = tham_so[khoa]
+    if khoa == "so_video_ngay":
+        if not isinstance(v, int) or isinstance(v, bool):
+            raise ThamSoLoi(f"{khoa} phải là số nguyên")
+        return v
+    if not isinstance(v, list):
+        raise ThamSoLoi(f"{khoa} phải là danh sách")
+    return len(v)
+
+
+def _so_lan_tieu(x: object) -> int:
+    return x if isinstance(x, int) and not isinstance(x, bool) and x > 0 else 0
+
+
+def so_luong_ngay(ma_loai: str, tham_so: object, so_lan_tieu: int = 0) -> int:
+    """Số đơn vị một việc ăn vào hạn mức ngày, × max(1, so_lan_tieu) (§10 D9: đếm theo số lần tiêu lời duyệt).
+    muse = số mẫu (hỏng → trần code mỗi việc, thiên về chặt); loại khác = 1 việc.
+    Đếm theo NGÀY dùng `da_dung_ngay` (mỗi lần tiêu vào ngày của nó) — không nhân so_lan_tieu vào một ngày."""
+    if ma_loai != "muse_clip":
+        mot = 1
+    else:
+        mau = tham_so.get("mau") if isinstance(tham_so, dict) else None
+        mot = len(mau) if isinstance(mau, list) and mau else int(HAN_MUC_TRAN["muse_clip_moi_viec"])
+    return mot * max(1, _so_lan_tieu(so_lan_tieu))
+
+
+def _ngay_iso(s: object) -> date | None:
+    if not isinstance(s, str) or not s:
+        return None
+    try:
+        return ngay_vn(datetime.fromisoformat(s))
+    except ValueError:
+        return None
+
+
+def ngay_tinh_han_muc(viec: dict) -> date | None:
+    """Ngày VN mà việc ăn hạn mức; None = không tính (§10 D9).
+    Tính khi: đã tiêu lời duyệt (so_lan_tieu > 0 — đã tốn tiền, kể cả khi xin duyệt lại đã xoá duyet_luc), hoặc đã
+    duyệt (có duyet_luc), hoặc còn mở (có thể sẽ tốn).
+    Ngày = tieu_luc_dau → duyet_luc → tao_luc (giá trị đầu tiên đọc được).
+    Hạn mức số việc/clip theo ngày của việc ĐÃ tiêu dùng `ngay_cac_lan_tieu` (từng lần); hàm này dùng cho việc chưa
+    tiêu lần nào và cho tổng video poster/tài khoản."""
+    tinh = (_so_lan_tieu(viec.get("so_lan_tieu")) > 0 or bool(viec.get("duyet_luc"))
+            or viec.get("trang_thai") in _TRANG_THAI_MO)
+    if not tinh:
+        return None
+    return (_ngay_iso(viec.get("tieu_luc_dau")) or _ngay_iso(viec.get("duyet_luc"))
+            or _ngay_iso(viec.get("tao_luc")))
+
+
+def ngay_cac_lan_tieu(viec: dict, luc_tieu: Sequence[str] = ()) -> list[date]:
+    """Ngày VN của TỪNG lần tiêu lời duyệt của việc (R-15 P2-1).
+
+    `luc_tieu` = cột `luc` các dòng sổ da_tieu của việc (`KhoViec.luc_tieu_theo_viec`). Mỗi dòng là một lần tiêu,
+    tính vào ngày của chính nó. Sổ thiếu dòng so với `so_lan_tieu` (sổ bị xoá/hỏng) → phần thiếu vẫn tính, vào ngày
+    dự phòng tieu_luc_dau → duyet_luc → tao_luc; `luc` hỏng cũng dùng ngày dự phòng (không "quên" lần tốn tiền)."""
+    du_phong = (_ngay_iso(viec.get("tieu_luc_dau")) or _ngay_iso(viec.get("duyet_luc"))
+                or _ngay_iso(viec.get("tao_luc")))
+    ds = [_ngay_iso(s) or du_phong for s in luc_tieu]
+    ds += [du_phong] * max(0, _so_lan_tieu(viec.get("so_lan_tieu")) - len(ds))
+    return [d for d in ds if d is not None]
+
+
+def _don_vi_viec_ngay(ma_loai: str, viec: dict, ngay: date, luc_tieu: Sequence[str]) -> int:
+    """Đơn vị hạn mức ngày `ngay` mà một việc (KHÁC việc đang xét) đã/đang chiếm.
+    Đã tiêu ≥ 1 lần: so_luong × số lần tiêu rơi vào `ngay`. Chưa tiêu lần nào: như cũ (ngay_tinh_han_muc)."""
+    mot = so_luong_ngay(ma_loai, viec.get("tham_so"))
+    cac_ngay = ngay_cac_lan_tieu(viec, luc_tieu)
+    if cac_ngay:
+        return mot * cac_ngay.count(ngay)
+    return mot if ngay_tinh_han_muc(viec) == ngay else 0
+
+
+def da_dung_ngay(kho: "KhoViec", ma_loai: str, ngay: date, tru_id: str | None = None) -> int:
+    """Tổng đơn vị hạn mức ngày `ngay` của loại, trừ việc `tru_id` — mỗi lần tiêu tính vào ngày của lần đó."""
+    ds = [v for v in kho.ds(None, gioi_han=DS_VIEC_TOI_DA) if v.get("loai") == ma_loai and v.get("id") != tru_id]
+    luc_tieu = kho.luc_tieu_theo_viec([v["id"] for v in ds])
+    return sum(_don_vi_viec_ngay(ma_loai, v, ngay, luc_tieu.get(v["id"], ())) for v in ds)
+
+
+def _so_lan_tieu_trong_ngay(kho: "KhoViec", viec: dict, ngay: date) -> int:
+    if not viec:
+        return 0
+    return ngay_cac_lan_tieu(viec, kho.luc_tieu_theo_viec([viec["id"]]).get(viec["id"], ())).count(ngay)
+
+
+# ---------- poster_len_lich: tổng video/ngày theo TÀI KHOẢN ----------
+
+def khoa_tai_khoan_poster(tham_so: object) -> str | None:
+    """Khoá gom hạn mức tổng video/ngày của poster_len_lich; None = không xác định (coi như trùng mọi tài khoản).
+
+    Dữ liệu folder Poster hiện chỉ có {id, ten} — chưa có trường tài khoản — nên một folder = một tài khoản
+    (gom theo folder_id). Khi tham_so có khoá tài khoản (vd. do runner gắn từ danh sách folder), chỉ cần sửa
+    hàm này để trả khoá tài khoản; phần đếm dùng nguyên khoá trả về."""
+    if not isinstance(tham_so, dict):
+        return None
+    fid = tham_so.get("folder_id")
+    if not isinstance(fid, int) or isinstance(fid, bool):
+        return None
+    return f"folder:{fid}"
+
+
+def _video_ngay_poster(tham_so: object) -> int:
+    """so_video_ngay của một việc poster; hỏng/thiếu → trần code (thiên về chặt)."""
+    n = tham_so.get("so_video_ngay") if isinstance(tham_so, dict) else None
+    if not isinstance(n, int) or isinstance(n, bool) or n < 0:
+        return int(HAN_MUC_TRAN["poster_video_ngay_toi_da"])
+    return n
+
+
+def video_poster_tai_khoan_ngay(kho: "KhoViec", khoa_tk: str | None, ngay: date, tru_id: str | None = None) -> int:
+    """Tổng so_video_ngay của các việc poster_len_lich tính vào `ngay` (theo ngay_tinh_han_muc) cùng tài khoản
+    `khoa_tk`, trừ việc `tru_id`. Việc có khoá None (hoặc khoa_tk None) bị tính vào mọi tài khoản."""
+    tong = 0
+    for v in kho.ds(None, gioi_han=DS_VIEC_TOI_DA):
+        if v.get("loai") != "poster_len_lich" or v.get("id") == tru_id or ngay_tinh_han_muc(v) != ngay:
+            continue
+        k = khoa_tai_khoan_poster(v.get("tham_so"))
+        if k is None or khoa_tk is None or k == khoa_tk:
+            tong += _video_ngay_poster(v.get("tham_so"))
+    return tong
+
+
+def _kiem_poster_tai_khoan(kho: "KhoViec", tham_so: dict, hm: dict, luc: str, viec_id: str | None,
+                           hom_nay: date) -> None:
+    tran = _gia_tri(hm, "poster_video_ngay_toi_da")
+    if luc in ("tao", "duyet"):
+        ts_viec: object = tham_so
+        them = _video_ngay_poster(tham_so)
+    elif viec_id is not None:                   # nhan có id: số liệu ĐANG LƯU của chính việc, nếu thuộc hôm nay
+        v = kho.lay(viec_id)
+        ts_viec = v.get("tham_so") if v else None
+        them = _video_ngay_poster(ts_viec) if v and ngay_tinh_han_muc(v) == hom_nay else 0
+    else:                                       # nhan kiểu cũ: mọi tài khoản hôm nay (đã gồm việc sắp nhận) ≤ trần
+        tk_hom_nay = {khoa_tai_khoan_poster(v.get("tham_so")) for v in kho.ds(None, gioi_han=DS_VIEC_TOI_DA)
+                      if v.get("loai") == "poster_len_lich" and ngay_tinh_han_muc(v) == hom_nay}
+        for k in tk_hom_nay:
+            da = video_poster_tai_khoan_ngay(kho, k, hom_nay)
+            if da > tran:
+                raise VuotHanMuc(f"poster_len_lich hôm nay tài khoản {k or 'không rõ'} đã {da} video > trần "
+                                 f"{tran} video/tài khoản/ngày")
+        return
+    k = khoa_tai_khoan_poster(ts_viec)
+    da = video_poster_tai_khoan_ngay(kho, k, hom_nay, viec_id)
+    if da + them > tran:
+        raise VuotHanMuc(f"poster_len_lich hôm nay tài khoản {k or 'không rõ'} đã lên lịch {da} video + {them} "
+                         f"video của việc này > trần {tran} video/tài khoản/ngày")
+
+
+def _kiem_ton_tien(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str,
+                   viec_id: str | None, hom_nay: date) -> None:
+    if ma_loai in _MOI_VIEC:
+        khoa_ts, khoa_hm, don_vi = _MOI_VIEC[ma_loai]
+        do = _do_moi_viec(ma_loai, tham_so)
+        if do is None and luc != "nhan":        # nhan kiểu cũ (vòng chạy truyền {}) chỉ kiểm hạn mức ngày
+            raise ThamSoLoi(f"thiếu tham số {khoa_ts} để kiểm hạn mức")
+        tran = _gia_tri(hm, khoa_hm)
+        if do is not None and do > tran:
+            raise VuotHanMuc(f"{ma_loai}: {do} {don_vi} một việc vượt trần {tran} {don_vi}")
+    if ma_loai not in _MOI_NGAY:
+        return
+    khoa_hm, don_vi = _MOI_NGAY[ma_loai]
+    tran = _gia_tri(hm, khoa_hm)
+    khac = da_dung_ngay(kho, ma_loai, hom_nay, viec_id)
+    # Việc đang xét lúc duyet/nhan (R-15 P2-1): so_luong × (số lần ĐÃ tiêu rơi vào HÔM NAY + 1 lần sắp tiêu hôm nay).
+    # Lần tiêu ở ngày khác thuộc hạn mức ngày đó, không cộng vào hôm nay. Lúc tao: so_luong (chưa tiêu lần nào).
+    if luc == "tao":
+        them = so_luong_ngay(ma_loai, tham_so)
+    elif viec_id is not None:
+        v = kho.lay(viec_id) or {}
+        ts_viec = tham_so if luc == "duyet" else v.get("tham_so")
+        them = so_luong_ngay(ma_loai, ts_viec) * (_so_lan_tieu_trong_ngay(kho, v, hom_nay) + 1)
+    elif luc == "duyet":
+        them = so_luong_ngay(ma_loai, tham_so)
+    else:                                       # nhan kiểu cũ: tổng hôm nay (đã gồm việc sắp nhận) ≤ trần
+        them = 0
+    if khac + them > tran:
+        raise VuotHanMuc(f"{ma_loai} hôm nay đã dùng {khac} {don_vi}"
+                         + (f" + {them} {don_vi} của việc này" if them else "") + f" > trần {tran} {don_vi}")
+    if ma_loai == "poster_len_lich":
+        _kiem_poster_tai_khoan(kho, tham_so, hm, luc, viec_id, hom_nay)
+
+
+def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str, boi: str,
+                 viec_id: str | None = None) -> None:
     """Raise VuotHanMuc nếu vượt. luc ∈ tao|duyet|nhan (nhan gồm cả chay-tiep).
 
-    Đợt 3 kiểm:
     - tao: số việc người `boi` tạo trong ngày VN < viec_tao_ngay_moi_nguoi.
     - duyet/nhan, loại dùng Claude: tổng USD hôm nay < claude_usd_ngay; số job Claude hôm nay < claude_viec_ngay.
-    Hạn mức riêng của đợt 4–5 (muse/genmax/poster_len_lich/taovideo) do phiếu B-3/B-4 bổ sung.
+    - Loại tốn tiền (đợt 4–5), cả 3 lúc: hạn mức mỗi việc (muse ≤10 clip, genmax ≤25 bản, poster ≤100 video/ngày)
+      và hạn mức mỗi ngày (muse 15 clip, genmax 2 việc, poster_len_lich 2 việc + tổng so_video_ngay ≤100 mỗi tài
+      khoản — khoa_tai_khoan_poster, taovideo 1 việc): mỗi lần tiêu tính vào ngày của lần đó, việc chưa tiêu theo
+      `ngay_tinh_han_muc`; việc đang xét cộng (số lần đã tiêu hôm nay + 1). `viec_id` (MỞ RỘNG ngoài chữ ký §13, mặc định None): việc đang duyệt/nhận — để không
+      đếm trùng chính nó. Lúc tao/duyet bắt buộc có tham số đo hạn mức mỗi việc (thiếu → ThamSoLoi).
     """
     if luc not in LUC_KIEM:
         raise ThamSoLoi(f"lúc kiểm hạn mức lạ: {luc!r}")
@@ -87,6 +300,9 @@ def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str
         n = kho.dem_trong_ngay(None, hom_nay, boi=boi)
         if n >= tran:
             raise VuotHanMuc(f"{boi} đã tạo {n} việc hôm nay (trần {tran})")
+    if loai.ton_tien:
+        _kiem_ton_tien(kho, ma_loai, tham_so, hm, luc, viec_id, hom_nay)
+    if luc == "tao":
         return
     if loai.agent is not None:
         tran_usd = _gia_tri(hm, "claude_usd_ngay")

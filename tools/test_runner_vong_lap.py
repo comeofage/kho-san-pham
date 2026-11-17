@@ -60,7 +60,8 @@ if lan.get("init", True):
         del init["tools"]
     out(init)
 for i in range(lan.get("so_msg", 1)):
-    tu = [{"type": "tool_use", "id": f"tu{n}_{i}_{j}", "name": t, "input": {}}
+    tu = [{"type": "tool_use", "id": f"tu{n}_{i}_{j}", "name": t["name"] if isinstance(t, dict) else t,
+           "input": t.get("input", {}) if isinstance(t, dict) else {}}
           for j, t in enumerate(lan.get("tool_use", []))]
     out({"type": "assistant", "parent_tool_use_id": None,
          "message": {"id": f"m{n}_{i}", "content": [{"type": "text", "text": "đang làm"}] + tu}})
@@ -1215,3 +1216,1045 @@ def test_canh_bao_gioi_han_50_va_bo_trung(tmp_path):
         bo._them_canh_bao(f"c{i}")
     assert len(canh_bao) == vl.CANH_BAO_TOI_DA
     assert canh_bao[0] == "khởi động: thiếu Job Object" and canh_bao[-1] == "c199"
+
+
+# ================ A-3: loại tốn tiền (§5.2, §10, §13 A-3) ================
+
+import base64  # noqa: E402
+import hashlib  # noqa: E402
+import sqlite3  # noqa: E402
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey  # noqa: E402
+
+from runner import chu_ky  # noqa: E402
+
+ME = "20261117-a"
+
+TAO_VOICE_GIA = r'''
+import json, os, sys
+goc = os.path.dirname(os.path.abspath(__file__))
+args = sys.argv[1:]
+with open(os.path.join(goc, "goi_tao_voice.jsonl"), "a", encoding="utf-8") as f:
+    f.write(json.dumps({"args": args, "co_key": "GENMAX_API_KEY" in os.environ}, ensure_ascii=False) + "\n")
+cfg = json.load(open(os.path.join(goc, "tao_voice_cfg.json"), encoding="utf-8"))
+if cfg.get("im_lang"):
+    print("không in kế hoạch"); sys.exit(0)
+ma = args[args.index("--ma") + 1:] if "--ma" in args else []
+bo = cfg.get("bo_qua", [])
+for m in bo:
+    print(f"  [bỏ qua] {m}: đã có voice")
+can = [m for m in ma if m not in bo]
+print(f"Kế hoạch: {len(can)} lượt GenMax, tổng {450 * len(can)} ký tự: {can} · model eleven_v4 · tăng tốc 1.1")
+if "--dong-y" not in args:
+    if can:
+        print("CHƯA gọi API. Hỏi người dùng đồng ý số lượt + ký tự ở trên, rồi chạy lại với --dong-y.")
+    sys.exit(0)
+print("KẾT LUẬN: ĐẠT — xong %d/%d" % (len(can), len(can)))
+'''
+
+
+def ky_duyet(khoa, v: dict, loi="Duyệt, làm đúng như ước tính", boi="nhan", luc=None) -> dict:
+    """4 trường duyệt như W-4 ký (chu_ky.chuoi_ky_duyet trên tham_so ĐANG LƯU)."""
+    luc = luc or datetime.now(MUI_GIO_VN).isoformat(timespec="seconds")
+    chuoi = chu_ky.chuoi_ky_duyet(v["id"], v["loai"], chu_ky.json_chuan(v["tham_so"]), loi, luc, boi)
+    ky = base64.urlsafe_b64encode(khoa.sign(chuoi)).rstrip(b"=").decode("ascii")
+    return {"loi_duyet": loi, "duyet_boi": boi, "duyet_luc": luc, "chu_ky_duyet": ky}
+
+
+def duyet(kho: KhoViec, khoa, id: str) -> None:
+    """Giống api.p_duyet: cho_duyet → cho, buoc='chay', lưu 4 trường duyệt."""
+    kho.chuyen(id, ["cho_duyet"], "cho", "nhan", "duyệt (chữ ký hợp lệ)", buoc="chay", **ky_duyet(khoa, kho.lay(id)))
+
+
+def sua_db(tmp: Path, id: str, **cot) -> None:
+    """Sửa thẳng runner.db (giả lập ai đó đổi DB sau khi duyệt)."""
+    c = sqlite3.connect(tmp / "data" / "runner.db")
+    try:
+        c.execute(f"UPDATE viec SET {', '.join(f'{k}=?' for k in cot)} WHERE id=?", (*cot.values(), id))
+        c.commit()
+    finally:
+        c.close()
+
+
+def du_an_genmax(tmp: Path, **cfg) -> Path:
+    p = tmp / "goc" / f"du_an_{UID}"
+    (p / "kich-ban").mkdir(parents=True, exist_ok=True)
+    (p / "kich-ban" / f"{ME}_kich-ban-da-cham.md").write_text("x", encoding="utf-8")
+    sc = tmp / "scripts"
+    sc.mkdir(exist_ok=True)
+    (sc / "tao_voice.py").write_text(TAO_VOICE_GIA, encoding="utf-8")
+    (sc / "tao_voice_cfg.json").write_text(json.dumps(cfg), encoding="utf-8")
+    return p
+
+
+def goi_tao_voice(tmp: Path) -> list[dict]:
+    f = tmp / "scripts" / "goi_tao_voice.jsonl"
+    return [json.loads(x) for x in f.read_text(encoding="utf-8").splitlines()] if f.exists() else []
+
+
+def loai_genmax() -> LoaiViec:
+    """voice_genmax THẬT (lap_buoc thật: --dong-y chỉ khi buoc=='chay' + đủ duyệt); chỉ đổi argv[0] 'python' → PY."""
+    goc = DANH_MUC["voice_genmax"]
+
+    def lap(ts, viec, mt):
+        return [dataclasses.replace(b, argv=[PY] + list(b.argv[1:])) for b in goc.lap_buoc(ts, viec, mt)]
+    return dataclasses.replace(goc, lap_buoc=lap)
+
+
+def tao_genmax(kho: KhoViec, p: Path, ma_ban=("a01", "a02"), khoa: str | None = None, **kw) -> dict:
+    ts = {"uid": UID, "du_an": ma_du_an(p), "me": ME, "ma_ban": list(ma_ban)}
+    return kho.tao("voice_genmax", khoa or f"{ts['du_an']}:{ME}", ts, "gpu", kw.pop("trang_thai", "cho"), "nhan",
+                   buoc=kw.pop("buoc", "uoc_tinh"), **kw)
+
+
+VECTOR = json.loads((TOOLS / "runner" / "vector_ky.json").read_text(encoding="utf-8"))
+
+
+def khoa_vector() -> Ed25519PrivateKey:
+    """Khoá TEST seed cố định trong vector_ky.json (cùng khoá ký duyệt và ký tiêu như Worker thật)."""
+    return Ed25519PrivateKey.from_private_bytes(bytes.fromhex(VECTOR["seed_test_hex"]))
+
+
+@pytest.fixture
+def khoa_ky():
+    return khoa_vector()
+
+
+class SoGia:
+    """Sổ tiêu giả trong bộ nhớ (giống KV Worker): lần đầu ký `ky`, các lần sau 409. Gọi qua vl.tieu_duyet thật."""
+
+    def __init__(self, khoa):
+        self.khoa = khoa
+        self.da = set()
+        self.goi: list[dict] = []
+
+    def http(self, url, headers, body, timeout_s):
+        d = json.loads(body)
+        self.goi.append(d)
+        k = hashlib.sha256(d["chu_ky_duyet"].encode("utf-8")).hexdigest()
+        if k in self.da:
+            return 409, json.dumps({"loi": "L\u1eddi duy\u1ec7t \u0111\u00e3 d\u00f9ng"}).encode()
+        self.da.add(k)
+        ky = base64.urlsafe_b64encode(self.khoa.sign(chu_ky.chuoi_tieu_duyet(d["id"], d["chu_ky_duyet"], d["nonce"])))
+        return 200, json.dumps({"ky": ky.rstrip(b"=").decode("ascii")}).encode()
+
+    def __call__(self, id, ckd):
+        return vl.tieu_duyet("https://worker.test", "K" * 64, self.khoa.public_key(), id, ckd, goi_http=self.http)
+
+
+# ---------- logic thuần ----------
+
+def test_doc_uoc_tinh_genmax_logic_thuan():
+    out = ("  [bỏ qua] a03: đã có voice\n"
+           "Kế hoạch: 2 lượt GenMax, tổng 900 ký tự: ['a01', 'a02'] · model eleven_v4 · tăng tốc 1.1\n"
+           "CHƯA gọi API. Hỏi người dùng đồng ý số lượt + ký tự ở trên, rồi chạy lại với --dong-y.")
+    u = vl.doc_uoc_tinh_genmax(out)
+    assert (u["so_ban"], u["ky_tu"], u["ma"], u["bo_qua"], u["chua_goi_api"]) == (2, 900, ["a01", "a02"], ["a03"], True)
+    assert u["dong"].startswith("Kế hoạch: 2 lượt GenMax")
+    assert vl.doc_uoc_tinh_genmax("không có dòng kế hoạch") is None
+    u0 = vl.doc_uoc_tinh_genmax("Kế hoạch: 0 lượt GenMax, tổng 0 ký tự: [] · model x")
+    assert u0["so_ban"] == 0 and u0["ma"] == [] and u0["chua_goi_api"] is False
+    assert vl.doc_uoc_tinh_genmax("Kế hoạch: 3 lượt GenMax, tổng 9 ký tự: ['a01']") is None   # lệch số mã → không tin
+    # dòng [!] (voice cũ quá dài) giữ làm cảnh báo
+    u2 = vl.doc_uoc_tinh_genmax("[!] voice Adam ≥ 45s — KHÔNG ghi voice xong cho: a09\n" + out)
+    assert u2["canh_bao"] and "a09" in u2["canh_bao"][0]
+
+
+def test_can_kiem_duyet_logic_thuan():
+    G = DANH_MUC["voice_genmax"]
+    assert vl.can_kiem_duyet(G, {"buoc": "chay"}) is True
+    assert vl.can_kiem_duyet(G, {"buoc": "uoc_tinh"}) is False      # pha ước tính không gọi API (danh_muc)
+    assert vl.can_kiem_duyet(DANH_MUC["muse_clip"], {"buoc": "uoc_tinh"}) is True
+    assert vl.can_kiem_duyet(DANH_MUC["poster_len_lich"], {"buoc": "chay"}) is True
+    assert vl.can_kiem_duyet(DANH_MUC["phan_tich_uid"], {"buoc": "chay"}) is False
+
+
+def test_dem_codex_va_tran_codex_logic_thuan():
+    def tu(ten, sub):
+        return {"type": "tool_use", "id": ten + str(sub), "name": ten, "input": {"subagent_type": sub}}
+    sk = {"type": "assistant", "message": {"id": "m", "content": [
+        tu("Agent", "codex:codex-rescue"), tu("Agent", "general-purpose"), tu("Bash", "codex"),
+        tu("Agent", "Codex-x"), tu("Agent", None), {"type": "text", "text": "codex"}]}}
+    assert vl.dem_codex(sk) == 2
+    assert vl.dem_codex({"type": "user", "message": {"content": [tu("Agent", "codex")]}}) == 0
+    assert vl.tran_codex(HAN_MUC_TRAN) == 6
+    assert vl.tran_codex({"codex_luot_viec": 99}) == 6            # file chỉ được hạ
+    assert vl.tran_codex({"codex_luot_viec": 2}) == 2
+    assert vl.tran_codex({"codex_luot_viec": "x"}) == 6
+
+
+def test_doc_folder_poster_tu_logic_thuan(tmp_path):
+    goi = []
+
+    def chay(kq):
+        def f(argv, het_gio_s):
+            goi.append((argv, het_gio_s))
+            if isinstance(kq, BaseException):
+                raise kq
+            return kq
+        return f
+    py, sc, po = tmp_path / "py.exe", tmp_path / "poster_ds_folder.py", tmp_path / "poster"
+    ds = vl.doc_folder_poster_tu(py, sc, po, chay=chay((0, 'canh bao\n[{"id": 3, "ten": "V\\u00ed"}]\n', "")))
+    assert ds == [{"id": 3, "ten": "Ví"}]
+    assert goi[0][0] == [str(py), "-B", "-I", str(sc), "--poster", str(po)] and goi[0][1] == vl.HET_GIO_DS_FOLDER_S
+    with pytest.raises(OSError, match="mã 3.*Connection refused"):
+        vl.doc_folder_poster_tu(py, sc, po, chay=chay((3, "", "[LỖI] ConnectionError: Connection refused")))
+    with pytest.raises(OSError, match="JSON"):
+        vl.doc_folder_poster_tu(py, sc, po, chay=chay((0, "không phải json", "")))
+    with pytest.raises(OSError, match="JSON"):
+        vl.doc_folder_poster_tu(py, sc, po, chay=chay((0, '{"id": 1}', "")))
+    with pytest.raises(OSError, match="quá giờ"):
+        vl.doc_folder_poster_tu(py, sc, po, chay=chay(subprocess.TimeoutExpired(["x"], 20)))
+
+
+# ---------- poster_ds_folder.py chạy thật với Poster GIẢ (tmp_path) ----------
+
+API_CLIENT_GIA = r'''
+import json, os
+_GOC = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+class ApiClient:
+    def __init__(self):
+        self._cfg = json.load(open(os.path.join(_GOC, "cfg.json"), encoding="utf-8"))
+    def _ghi(self, ten):
+        with open(os.path.join(_GOC, "goi.txt"), "a", encoding="utf-8") as f:
+            f.write(ten + "\n")
+    def list_folders(self):
+        self._ghi("list_folders")
+        if self._cfg.get("loi"):
+            raise ConnectionError("Connection refused (giả)")
+        return self._cfg["folders"]
+    def create_folder(self, data):
+        self._ghi("create_folder")
+    def delete_folder(self, fid):
+        self._ghi("delete_folder")
+'''
+
+
+def poster_gia(tmp: Path, **cfg) -> Path:
+    po = tmp / "poster"
+    (po / "src" / "desktop").mkdir(parents=True, exist_ok=True)
+    (po / "src" / "__init__.py").write_text("", encoding="utf-8")
+    (po / "src" / "desktop" / "__init__.py").write_text("", encoding="utf-8")
+    (po / "src" / "desktop" / "api_client.py").write_text(API_CLIENT_GIA, encoding="utf-8")
+    (po / "cfg.json").write_text(json.dumps(cfg, ensure_ascii=False), encoding="utf-8")
+    return po
+
+
+def test_poster_ds_folder_script_chi_goi_list_folders(tmp_path):
+    po = poster_gia(tmp_path, folders=[{"id": 3, "name": "Ví da nam", "path": "E:/x"}, {"id": "7", "name": "Đèn"},
+                                       {"id": "x", "name": "hỏng"}, {"id": True, "name": "bool"}, {"id": 9}, "rác"])
+    ds = vl.doc_folder_poster_tu(Path(PY), vl.POSTER_DS_FOLDER, po)
+    assert ds == [{"id": 3, "ten": "Ví da nam"}, {"id": 7, "ten": "Đèn"}, {"id": 9, "ten": ""}]
+    assert (po / "goi.txt").read_text(encoding="utf-8").split() == ["list_folders"]     # không gọi API ghi nào
+
+
+def test_poster_ds_folder_script_loi_thi_oserror_co_thong_diep(tmp_path):
+    po = poster_gia(tmp_path, loi=True)
+    with pytest.raises(OSError, match="Connection refused"):
+        vl.doc_folder_poster_tu(Path(PY), vl.POSTER_DS_FOLDER, po)
+    with pytest.raises(OSError, match="api_client"):
+        vl.doc_folder_poster_tu(Path(PY), vl.POSTER_DS_FOLDER, tmp_path / "khong_co")
+
+
+def test_tao_moi_truong_doc_folder_poster_goi_script(tmp_path, monkeypatch):
+    po = poster_gia(tmp_path, folders=[{"id": 4, "name": "Kệ"}])
+    monkeypatch.setenv("KHO_PYTHON_POSTER", PY)
+    monkeypatch.setenv("KHO_THU_MUC_POSTER", str(po))
+    mt = vl.tao_moi_truong()
+    assert mt.doc_folder_poster() == [{"id": 4, "ten": "Kệ"}]
+    monkeypatch.setenv("KHO_PYTHON_POSTER", str(tmp_path / "khong_co_python.exe"))
+    with pytest.raises(OSError, match="khong_co_python"):
+        vl.tao_moi_truong().doc_folder_poster()
+
+
+# ---------- voice_genmax 2 pha ----------
+
+def test_genmax_uoc_tinh_sang_cho_duyet_roi_duyet_moi_chay_dong_y(tmp_path, khoa_ky, monkeypatch):
+    monkeypatch.delenv("GENMAX_API_KEY", raising=False)
+    p = du_an_genmax(tmp_path, bo_qua=["a03"])
+    mt = lam_mt(tmp_path)
+    so = SoGia(khoa_ky)
+    bo, kho = lam_bo(tmp_path, mt, {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key(), tieu=so)
+    v = tao_genmax(kho, p, ma_ban=("a01", "a02", "a03"))
+    assert chay_lan(bo, "gpu")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho_duyet", s
+    ut = s["ket_qua"]["uoc_tinh"]
+    assert (ut["so_ban"], ut["ky_tu"], ut["ma"], ut["bo_qua"]) == (2, 900, ["a01", "a02"], ["a03"])
+    assert "2 bản" in s["uoc_tinh"] and "900 ký tự" in s["uoc_tinh"]          # cột uoc_tinh → api xem_truoc
+    g = goi_tao_voice(tmp_path)
+    assert len(g) == 1 and "--dong-y" not in g[0]["args"] and "--gui-lai-ma" not in g[0]["args"]
+    assert chay_lan(bo, "gpu") is None                                        # cho_duyet: không làn nào nhận
+    duyet(kho, khoa_ky, v["id"])
+    assert chay_lan(bo, "gpu")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s
+    g = goi_tao_voice(tmp_path)
+    assert len(g) == 2 and "--dong-y" in g[1]["args"] and "--gui-lai-ma" not in g[1]["args"]
+    assert g[1]["args"][g[1]["args"].index("--ma") + 1:] == ["a01", "a02", "a03"]
+    assert len(so.goi) == 1 and kho.lay(v["id"])["so_lan_tieu"] == 1     # pha ước tính KHÔNG tiêu; pha chạy tiêu 1
+
+
+def test_genmax_uoc_tinh_khong_co_ban_nao_thi_xong_khong_can_duyet(tmp_path, khoa_ky):
+    p = du_an_genmax(tmp_path, bo_qua=["a01", "a02"])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p)
+    chay_lan(bo, "gpu")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and s["ket_qua"]["uoc_tinh"]["so_ban"] == 0, s
+    assert len(goi_tao_voice(tmp_path)) == 1
+
+
+def test_genmax_uoc_tinh_khong_doc_duoc_thi_loi(tmp_path, khoa_ky):
+    p = du_an_genmax(tmp_path, im_lang=True)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p)
+    chay_lan(bo, "gpu")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "Kế hoạch" in s["loi"], s
+
+
+@pytest.mark.parametrize("sua", [
+    {"tham_so": None},                       # đổi tham_so (thêm mã bản) sau duyệt
+    {"duyet_boi": "ke_gian"},
+    {"loi_duyet": "Duyệt 25 bản"},
+    {"duyet_luc": "2026-11-17T00:00:01+07:00"},
+    {"chu_ky_duyet": None},
+])
+def test_genmax_sua_db_sau_duyet_bi_chan_luc_nhan(tmp_path, khoa_ky, sua):
+    p = du_an_genmax(tmp_path)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p)
+    chay_lan(bo, "gpu")
+    assert kho.lay(v["id"])["trang_thai"] == "cho_duyet"
+    duyet(kho, khoa_ky, v["id"])
+    if "tham_so" in sua:
+        ts = dict(kho.lay(v["id"])["tham_so"], ma_ban=["a01", "a02", "a99"])
+        sua = {"tham_so": chu_ky.json_chuan(ts)}
+    sua_db(tmp_path, v["id"], **sua)
+    chay_lan(bo, "gpu")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "chữ ký duyệt không hợp lệ" in s["loi"], s
+    g = goi_tao_voice(tmp_path)
+    assert len(g) == 1 and not any("--dong-y" in x["args"] for x in g)       # pha chay KHÔNG bao giờ chạy
+
+
+def test_genmax_db_bi_doi_trang_thai_bo_qua_duyet_thi_bi_chan(tmp_path, khoa_ky):
+    """Ai đó sửa DB: cho_duyet → cho + buoc='chay' mà không có lời duyệt → bị chặn lúc nhận, không --dong-y."""
+    p = du_an_genmax(tmp_path)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p, trang_thai="cho_duyet")
+    sua_db(tmp_path, v["id"], trang_thai="cho", buoc="chay")
+    chay_lan(bo, "gpu")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "chữ ký duyệt không hợp lệ" in s["loi"], s
+    assert goi_tao_voice(tmp_path) == []
+
+
+def test_genmax_chu_ky_cua_khoa_khac_bi_chan(tmp_path, khoa_ky):
+    p = du_an_genmax(tmp_path)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p, trang_thai="cho_duyet", buoc="chay")
+    duyet(kho, Ed25519PrivateKey.generate(), v["id"])
+    chay_lan(bo, "gpu")
+    assert kho.lay(v["id"])["trang_thai"] == "loi"
+    assert goi_tao_voice(tmp_path) == []
+
+
+def test_ton_tien_vuot_han_muc_luc_nhan_thi_dung_cho_co_ghi_chu(tmp_path, khoa_ky):
+    p = du_an_genmax(tmp_path)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=khoa_ky.public_key())
+    v = tao_genmax(kho, p, trang_thai="cho_duyet", buoc="chay")
+    duyet(kho, khoa_ky, v["id"])
+    hom_nay = datetime.now(MUI_GIO_VN).isoformat(timespec="seconds")
+    for i in range(2):          # 2 việc genmax khác đã duyệt hôm nay (trần genmax_viec_ngay = 2)
+        k = tao_genmax(kho, p, khoa=f"khac{i}")
+        kho.chuyen(k["id"], ["cho"], "xong", "he_thong", "giả lập đã chạy", duyet_luc=hom_nay)
+    assert chay_lan(bo, "gpu")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho", s
+    sk = kho.su_kien(v["id"])[-1]
+    assert sk["tu"] == "dang_chay" and sk["den"] == "cho" and "hạn mức" in sk["ghi_chu"]
+    assert sk["ghi_chu"].startswith(vl.TIEN_TO_HOAN)
+    assert goi_tao_voice(tmp_path) == []
+    assert "voice_genmax" in bo.trang_thai_lan()["tam_hoan"]
+    assert chay_lan(bo, "gpu") is None                                        # loại đang hoãn
+
+
+def test_ton_tien_khong_nap_duoc_khoa_cong_khai_thi_hoan_va_canh_bao(tmp_path, khoa_ky):
+    p = du_an_genmax(tmp_path)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()}, khoa_cong_khai=None)
+    v = tao_genmax(kho, p, trang_thai="cho_duyet", buoc="chay")
+    duyet(kho, khoa_ky, v["id"])
+    chay_lan(bo, "gpu")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho" and "khoá công khai" in kho.su_kien(v["id"])[-1]["ghi_chu"], s
+    assert any("khoá công khai" in c for c in bo.canh_bao)
+    assert goi_tao_voice(tmp_path) == []
+
+
+def test_khoa_cong_khai_mac_dinh_nap_canh_ma():
+    k = vl.nap_khoa_cong_khai_canh_ma()
+    assert k is not None and len(k.public_bytes_raw()) == 32     # repo có tools/runner/ky_cong_khai.pem
+
+
+# ---------- Claude tốn tiền: chữ ký trước khi gọi Claude ----------
+
+def loai_claude_ton_tien(tmp: Path, kich_ban: list[dict]) -> tuple[LoaiViec, Path]:
+    loai, kb = loai_claude(tmp, kich_ban, dau_ra="khong_ro")
+    return dataclasses.replace(loai, ma="muse_clip", dot=4, ton_tien=True, tu_chay_lai=False), kb
+
+
+def test_claude_ton_tien_duyet_hop_le_moi_goi_claude(tmp_path, khoa_ky):
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=SoGia(khoa_ky))
+    ts = {"uid": UID, "mau": ["m1", "m2"]}
+    sai = kho.tao("muse_clip", "a", ts, "nhe", "cho_duyet", "nhan", session_id=str(uuid.uuid4()))
+    duyet(kho, khoa_ky, sai["id"])
+    sua_db(tmp_path, sai["id"], tham_so=chu_ky.json_chuan(dict(ts, mau=["m1", "m2", "m3"])))
+    chay_lan(bo, "nhe")
+    assert kho.lay(sai["id"])["trang_thai"] == "loi" and cac_lan_goi(kb) == []      # Claude KHÔNG được gọi
+    dung = kho.tao("muse_clip", "b", ts, "nhe", "cho_duyet", "nhan", session_id=str(uuid.uuid4()))
+    duyet(kho, khoa_ky, dung["id"])
+    chay_lan(bo, "nhe")
+    assert kho.lay(dung["id"])["trang_thai"] == "xong"
+    assert len(cac_lan_goi(kb)) == 1
+
+
+def test_claude_ton_tien_chay_tiep_cung_kiem_lai_chu_ky(tmp_path, khoa_ky):
+    """loi → cho (chạy tiếp) với chữ ký cũ bị sửa → bị chặn lúc nhận dù đã chạy được lượt đầu."""
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": None, "ma": 1}, {"ket_qua": "TRẠNG THÁI: DONE"}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=SoGia(khoa_ky))
+    v = kho.tao("muse_clip", "a", {"uid": UID, "mau": ["m1"]}, "nhe", "cho_duyet", "nhan",
+                session_id=str(uuid.uuid4()))
+    duyet(kho, khoa_ky, v["id"])
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "loi" and len(cac_lan_goi(kb)) == 1
+    sua_db(tmp_path, v["id"], duyet_boi="ke_gian")
+    kho.chuyen(v["id"], ["loi"], "cho", "nhan", "chạy tiếp (resume phiên Claude)")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "chữ ký duyệt không hợp lệ" in s["loi"], s
+    assert len(cac_lan_goi(kb)) == 1
+
+
+# ---------- đếm subagent codex* (§5.3, trần codex_luot_viec) ----------
+
+def loai_claude_agent(tmp: Path, kich_ban: list[dict]) -> tuple[LoaiViec, Path]:
+    loai, kb = loai_claude(tmp, kich_ban)
+    return dataclasses.replace(loai, bo_cong_cu=tuple(loai.bo_cong_cu) + ("Agent",)), kb
+
+
+_TOOLS_AGENT = ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill", "Agent"]
+
+
+def _codex(sub="codex:codex-rescue"):
+    return {"name": "Agent", "input": {"subagent_type": sub, "prompt": "x"}}
+
+
+def test_claude_dem_codex_luu_so_codex(tmp_path):
+    loai, kb = loai_claude_agent(tmp_path, [{"tools": _TOOLS_AGENT, "ket_qua": "TRẠNG THÁI: DONE",
+                                             "tool_use": [_codex(), _codex(), _codex("general-purpose")]}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and s["ket_qua"]["so_codex"] == 2, s
+
+
+def test_claude_vuot_tran_codex_thi_giet_cay_va_can_tra_loi(tmp_path):
+    loai, kb = loai_claude_agent(tmp_path, [{"tools": _TOOLS_AGENT, "ngu": 30, "ket_qua": "TRẠNG THÁI: DONE",
+                                             "tool_use": [_codex(), _codex(), _codex()]}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"phan_tich_uid": loai}, hm=dict(HAN_MUC_TRAN, codex_luot_viec=2))
+    v = tao(kho, loai, {"uid": UID})
+    t0 = time.monotonic()
+    chay_lan(bo, "nhe")
+    assert time.monotonic() - t0 < 25
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["cau_hoi"]["loai"] == "khong_ro", s
+    assert "trần lượt Codex" in s["cau_hoi"]["noi_dung"] and s["ket_qua"]["so_codex"] == 3
+    assert not song(cac_lan_goi(kb)[0]["pid"])
+    assert bo.trang_thai_lan()["lan"]["nhe"] is None
+
+
+def test_claude_so_codex_cong_don_qua_cac_luot(tmp_path):
+    """Trần là MỖI VIỆC: lượt resume cộng tiếp số đã dùng ở lượt trước."""
+    loai, kb = loai_claude_agent(tmp_path, [
+        {"tools": _TOOLS_AGENT, "tool_use": [_codex()],
+         "ket_qua": "Cần chốt.\nCẦN_USER: Chọn?\nLOẠI: chon\nLỰA_CHỌN: A | B"},
+        {"tools": _TOOLS_AGENT, "tool_use": [_codex(), _codex()], "ngu": 30, "ket_qua": "TRẠNG THÁI: DONE"}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"phan_tich_uid": loai}, hm=dict(HAN_MUC_TRAN, codex_luot_viec=2))
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["ket_qua"]["so_codex"] == 1, s
+    tra_loi(kho, v["id"], "A")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and "trần lượt Codex" in s["cau_hoi"]["noi_dung"], s
+    assert s["ket_qua"]["so_codex"] == 3
+
+
+# ---------- D9 / FX-10: tiêu lời duyệt trên Worker trước mỗi lần chạy pha tốn tiền ----------
+# Worker giả = HTTP server thật trên 127.0.0.1 cổng ngẫu nhiên, ký phản hồi bằng khoá TEST seed (vector_ky.json).
+# Không gọi Worker thật, không đụng E:\kho-runner.
+
+import socket  # noqa: E402
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer  # noqa: E402
+
+KHOA_RUNNER_TEST = "khoa-runner-test-" + "a" * 40
+
+
+class WorkerGia:
+    """`che_do`: ok | loi500 | loi401 | json_hong | sai_ky (ký trên nonce khác) | khoa_khac | ngu (quá timeout)."""
+
+    def __init__(self, khoa, che_do: str = "ok"):
+        self.khoa = khoa
+        self.che_do = che_do
+        self.da: set[str] = set()
+        self.goi: list[dict] = []
+        ngoai = self
+
+        class H(BaseHTTPRequestHandler):
+            def log_message(self, *a):
+                pass
+
+            def do_POST(self):  # noqa: N802
+                n = int(self.headers.get("content-length") or 0)
+                d = json.loads(self.rfile.read(n))
+                ngoai.goi.append({"path": self.path, "key": self.headers.get("x-runner-key"), "body": d})
+                ma, tl = ngoai._tra_loi(d)
+                try:
+                    self.send_response(ma)
+                    self.send_header("content-type", "application/json")
+                    self.send_header("content-length", str(len(tl)))
+                    self.end_headers()
+                    self.wfile.write(tl)
+                except OSError:
+                    pass                                    # phía runner đã bỏ (hết giờ)
+
+        self.srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
+        self.srv.daemon_threads = True
+        threading.Thread(target=self.srv.serve_forever, daemon=True).start()
+        self.origin = f"http://127.0.0.1:{self.srv.server_address[1]}"
+
+    def _tra_loi(self, d: dict) -> tuple[int, bytes]:
+        cd = self.che_do
+        if cd == "loi500":
+            return 500, b'{"loi":"x"}'
+        if cd == "loi401":
+            return 401, b'{"loi":"khoa sai"}'
+        if cd == "json_hong":
+            return 200, b"khong phai json"
+        if cd == "ngu":
+            time.sleep(2)
+        k = hashlib.sha256(d["chu_ky_duyet"].encode("utf-8")).hexdigest()
+        if k in self.da:
+            return 409, json.dumps({"loi": "Lời duyệt đã dùng"}).encode()
+        self.da.add(k)
+        nonce = "0" * 32 if cd == "sai_ky" else d["nonce"]
+        khoa = Ed25519PrivateKey.generate() if cd == "khoa_khac" else self.khoa
+        ky = base64.urlsafe_b64encode(khoa.sign(chu_ky.chuoi_tieu_duyet(d["id"], d["chu_ky_duyet"], nonce)))
+        return 200, json.dumps({"ky": ky.rstrip(b"=").decode("ascii")}).encode()
+
+    def tieu(self, timeout_s: float = 5.0):
+        return vl.tao_ham_tieu(self.origin, KHOA_RUNNER_TEST, self.khoa.public_key(), timeout_s=timeout_s)
+
+    def dong(self):
+        self.srv.shutdown()
+        self.srv.server_close()
+
+
+@pytest.fixture
+def worker():
+    ds = []
+
+    def tao_worker(che_do="ok"):
+        w = WorkerGia(khoa_vector(), che_do)
+        ds.append(w)
+        return w
+    yield tao_worker
+    for w in ds:
+        w.dong()
+
+
+def cong_dong() -> str:
+    s = socket.socket()
+    s.bind(("127.0.0.1", 0))
+    cong = s.getsockname()[1]
+    s.close()
+    return f"http://127.0.0.1:{cong}"
+
+
+T0 = VECTOR["tieu"][0]
+
+
+def test_tieu_duyet_vector_co_dinh_khop_byte():
+    """sinh_nonce cố định = nonce vector → `ky` của vector kiểm đúng → da_tieu (khớp chữ ký Worker từng byte)."""
+    goi = []
+
+    def http(url, headers, body, timeout_s):
+        goi.append((url, headers, json.loads(body), timeout_s))
+        return 200, json.dumps({"ky": T0["ky"]}).encode()
+    kcc = khoa_vector().public_key()
+    kq = vl.tieu_duyet("https://kho.test", KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"],
+                       goi_http=http, sinh_nonce=lambda: T0["nonce"])
+    assert kq[0] == "da_tieu"
+    url, h, body, to = goi[0]
+    assert url == "https://kho.test/api/runner/tieu-duyet" and to == vl.HET_GIO_TIEU_S == 15.0
+    assert h["x-runner-key"] == KHOA_RUNNER_TEST and body == {"id": T0["id"], "chu_ky_duyet": T0["chu_ky_duyet"],
+                                                              "nonce": T0["nonce"]}
+    # cùng `ky` nhưng nonce khác (phát lại phản hồi cũ) → chua_ro
+    assert vl.tieu_duyet("https://kho.test", KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"],
+                         goi_http=http)[0] == "chua_ro"
+
+
+def test_tieu_duyet_qua_http_cac_nhanh(worker):
+    kcc = khoa_vector().public_key()
+    w = worker()
+    kq = vl.tieu_duyet(w.origin, KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"])
+    assert kq[0] == "da_tieu", kq
+    g = w.goi[0]
+    assert g["path"] == "/api/runner/tieu-duyet" and g["key"] == KHOA_RUNNER_TEST
+    assert set(g["body"]) == {"id", "chu_ky_duyet", "nonce"} and vl._RE_NONCE.fullmatch(g["body"]["nonce"])
+    kq2 = vl.tieu_duyet(w.origin, KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"])
+    assert kq2[0] == "da_dung" and w.goi[1]["body"]["nonce"] != g["body"]["nonce"]      # nonce mới mỗi lần
+    for che_do in ("loi500", "loi401", "json_hong", "sai_ky", "khoa_khac"):
+        w2 = worker(che_do)
+        kq = vl.tieu_duyet(w2.origin, KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"])
+        assert kq[0] == "chua_ro" and KHOA_RUNNER_TEST not in kq[1], (che_do, kq)
+    w3 = worker("ngu")
+    t = time.monotonic()
+    kq = vl.tieu_duyet(w3.origin, KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"], timeout_s=0.5)
+    assert kq[0] == "chua_ro" and time.monotonic() - t < 1.8, kq                         # hết giờ
+    kq = vl.tieu_duyet(cong_dong(), KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"], timeout_s=2)
+    assert kq[0] == "chua_ro" and "mạng" in kq[1], kq                                     # không kết nối được
+
+
+def test_tieu_duyet_tu_choi_truoc_khi_goi():
+    goi = []
+
+    def http(*a):
+        goi.append(a)
+        return 200, b"{}"
+    kcc = khoa_vector().public_key()
+    for origin in ("http://kho-san-pham.kutidak.workers.dev", "ftp://x.y", "https://x.y/duong", "", "https://u:p@x.y"):
+        assert vl.tieu_duyet(origin, KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"], goi_http=http)[0] \
+            == "chua_ro", origin
+    assert vl.tieu_duyet("https://x.y", KHOA_RUNNER_TEST, None, T0["id"], T0["chu_ky_duyet"], goi_http=http)[0] \
+        == "chua_ro"
+    assert vl.tieu_duyet("https://x.y", "", kcc, T0["id"], T0["chu_ky_duyet"], goi_http=http)[0] == "chua_ro"
+    assert vl.tieu_duyet("https://x.y", KHOA_RUNNER_TEST, kcc, T0["id"], T0["chu_ky_duyet"], goi_http=http,
+                         sinh_nonce=lambda: "ABC")[0] == "chua_ro"
+    assert goi == []
+
+
+def test_worker_origin_ghi_de_bang_bien_moi_truong(monkeypatch):
+    monkeypatch.delenv("KHO_WORKER_ORIGIN", raising=False)
+    assert vl.worker_origin() == vl.WORKER_ORIGIN == "https://kho-san-pham.kutidak.workers.dev"
+    monkeypatch.setenv("KHO_WORKER_ORIGIN", "http://127.0.0.1:9")
+    assert vl.worker_origin() == "http://127.0.0.1:9"
+
+
+def _muse_duyet(kho, khoa, k="a"):
+    v = kho.tao("muse_clip", k, {"uid": UID, "mau": ["m1"]}, "nhe", "cho_duyet", "nhan", session_id=str(uuid.uuid4()))
+    duyet(kho, khoa, v["id"])
+    return v
+
+
+def test_r11_replay_sua_db_xong_ve_cho_bi_chan_khong_goi_claude_lan_2(tmp_path, khoa_ky, worker):
+    """Kịch bản R-11 P1-1: việc tốn tiền đã chạy xong; sửa DB xong→cho (giữ chữ ký) → bị chặn, Claude không gọi lại."""
+    w = worker()
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=w.tieu())
+    v = _muse_duyet(kho, khoa_ky)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and len(cac_lan_goi(kb)) == 1 and len(w.goi) == 1, s
+    assert s["so_lan_tieu"] == 1 and s["tieu_luc_dau"]
+    # (1) sổ cục bộ chặn ngay, không cần mạng
+    sua_db(tmp_path, v["id"], trang_thai="cho")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and vl.LOI_DA_DUNG in s["loi"] and "Xin duyệt lại" in s["loi"], s
+    assert len(cac_lan_goi(kb)) == 1 and len(w.goi) == 1
+    # (2) xoá luôn sổ cục bộ (ai đó sửa runner.db) → Worker 409 → vẫn chặn
+    c = sqlite3.connect(tmp_path / "data" / "runner.db")
+    c.execute("DELETE FROM da_tieu")
+    c.commit()
+    c.close()
+    sua_db(tmp_path, v["id"], trang_thai="cho")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and vl.LOI_DA_DUNG in s["loi"], s
+    assert len(cac_lan_goi(kb)) == 1 and len(w.goi) == 2 and s["so_lan_tieu"] == 1
+    assert kho.da_tieu_cuc_bo(s["chu_ky_duyet"])                    # 409 → ghi lại sổ cục bộ
+
+
+@pytest.mark.parametrize("che_do", ["mang", "loi500", "sai_ky", "khoa_khac", "json_hong", "ngu"])
+def test_worker_loi_hoac_chu_ky_sai_thi_dung_cho_khong_chay(tmp_path, khoa_ky, worker, che_do):
+    if che_do == "mang":
+        tieu = vl.tao_ham_tieu(cong_dong(), KHOA_RUNNER_TEST, khoa_ky.public_key(), timeout_s=2)
+    else:
+        tieu = worker(che_do).tieu(timeout_s=0.5)
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=tieu)
+    v = _muse_duyet(kho, khoa_ky)
+    assert chay_lan(bo, "nhe")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho" and s["so_lan_tieu"] == 0 and not kho.da_tieu_cuc_bo(s["chu_ky_duyet"]), s
+    sk = kho.su_kien(v["id"])[-1]
+    assert sk["ghi_chu"].startswith(vl.TIEN_TO_HOAN) and "chưa tiêu được lời duyệt" in sk["ghi_chu"]
+    assert cac_lan_goi(kb) == []                                     # Claude KHÔNG được gọi
+    assert any("chưa tiêu được lời duyệt" in c for c in bo.canh_bao)
+    assert bo.trang_thai_lan()["tam_hoan"]["muse_clip"] > 500        # hoãn cả loại 10 phút
+    assert not any(KHOA_RUNNER_TEST in c for c in bo.canh_bao)
+    assert KHOA_RUNNER_TEST not in (tmp_path / "data" / "log" / f"{v['id']}.log").read_text(encoding="utf-8")
+
+
+def test_tieu_none_hoac_nem_loi_thi_dung_cho(tmp_path, khoa_ky):
+    def no(id, ckd):
+        raise RuntimeError("hỏng")
+    for i, tieu in enumerate((None, no)):
+        loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+        bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                         tieu=tieu)
+        v = _muse_duyet(kho, khoa_ky, k=f"k{i}")
+        chay_lan(bo, "nhe")
+        s = kho.lay(v["id"])
+        assert s["trang_thai"] == "cho" and s["so_lan_tieu"] == 0 and cac_lan_goi(kb) == [], s
+
+
+def test_chan_ton_tien_khong_goi_tieu_viec_mien_phi_van_chay(tmp_path, khoa_ky):
+    so = SoGia(khoa_ky)
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+    mien_phi = loai_script("voice_pv", "gpu", [PY, "-c", "print('ok')"])
+    cb: list[str] = []
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai, "voice_pv": mien_phi},
+                     khoa_cong_khai=khoa_ky.public_key(), tieu=so, chan_ton_tien=True, canh_bao=cb)
+    assert bo.trang_thai_lan()["chan_ton_tien"] is True
+    assert any("lệch tổng kiểm" in c for c in cb)                    # cùng list với /suc-khoe
+    v = _muse_duyet(kho, khoa_ky)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho" and "lệch tổng kiểm" in kho.su_kien(v["id"])[-1]["ghi_chu"], s
+    assert so.goi == [] and cac_lan_goi(kb) == [] and s["so_lan_tieu"] == 0
+    f = tao(kho, mien_phi, {"k": "free"})
+    chay_lan(bo, "gpu")
+    assert kho.lay(f["id"])["trang_thai"] == "xong"
+    # genmax pha ước tính (miễn phí) vẫn chạy khi bị chặn, và không tiêu
+    p = du_an_genmax(tmp_path)
+    bo2, kho2 = lam_bo(tmp_path, lam_mt(tmp_path), {"voice_genmax": loai_genmax()},
+                       kho=kho, khoa_cong_khai=khoa_ky.public_key(), tieu=so, chan_ton_tien=True)
+    g = tao_genmax(kho2, p)
+    chay_lan(bo2, "gpu")
+    assert kho2.lay(g["id"])["trang_thai"] == "cho_duyet" and so.goi == []
+    assert vl.BoChay(kho, lam_mt(tmp_path), dict(HAN_MUC_TRAN), tmp_path / "l2", str).trang_thai_lan()[
+        "chan_ton_tien"] is False
+
+
+GHI_SO_LAN_TIEU = r"""
+import sqlite3, sys
+c = sqlite3.connect(sys.argv[1])
+n = c.execute("SELECT so_lan_tieu FROM viec WHERE id=?", (sys.argv[2],)).fetchone()[0]
+open(sys.argv[3], "a", encoding="utf-8").write(f"{n}\n")
+"""
+
+
+def test_tieu_dung_mot_lan_moi_lan_chay_va_ghi_truoc_khi_sinh_tien_trinh(tmp_path, khoa_ky):
+    """Pha tốn tiền 2 bước: tiêu đúng 1 lần, và so_lan_tieu đã = 1 khi bước ĐẦU TIÊN bắt đầu chạy."""
+    so = SoGia(khoa_ky)
+    db = tmp_path / "data" / "runner.db"
+    ra = tmp_path / "so_lan.txt"
+    sc = tmp_path / "ghi.py"
+    sc.write_text(GHI_SO_LAN_TIEU, encoding="utf-8")
+    goc = loai_script("poster_len_lich", "nhe", [])
+
+    def lap(ts, viec, mt):
+        return [BuocChay(t, [PY, str(sc), str(db), viec["id"], str(ra)], str(tmp_path), None, {}, False, 60)
+                for t in ("b1", "b2")]
+    loai = dataclasses.replace(goc, ton_tien=True, dot=4, lap_buoc=lap)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"poster_len_lich": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=so)
+    v = kho.tao("poster_len_lich", "folder:1", {"folder_id": 1, "so_video_ngay": 1}, "nhe", "cho_duyet", "nhan")
+    duyet(kho, khoa_ky, v["id"])
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s
+    assert ra.read_text(encoding="utf-8").split() == ["1", "1"] and len(so.goi) == 1
+    # chạy lại bằng cách sửa DB → không bước nào chạy thêm
+    sua_db(tmp_path, v["id"], trang_thai="cho")
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "loi" and ra.read_text(encoding="utf-8").split() == ["1", "1"]
+
+
+def test_dieu_kien_truoc_ban_khong_lam_mat_loi_duyet(tmp_path, khoa_ky):
+    """Đứng chờ vì 'bận' xảy ra TRƯỚC bước tiêu → lời duyệt chưa tiêu, lần sau chạy được."""
+    so = SoGia(khoa_ky)
+    ban = {"v": "ban"}
+    goc = loai_script("poster_len_lich", "nhe", [PY, "-c", "print(1)"], dk=lambda ts, mt: ban["v"])
+    loai = dataclasses.replace(goc, ton_tien=True, dot=4)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"poster_len_lich": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=so, cho_lai_s=0.0)
+    v = kho.tao("poster_len_lich", "folder:1", {"folder_id": 1, "so_video_ngay": 1}, "nhe", "cho_duyet", "nhan")
+    duyet(kho, khoa_ky, v["id"])
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "cho" and so.goi == []
+    ban["v"] = None
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "xong" and len(so.goi) == 1
+
+
+# ---------- FX-15: lý do xin duyệt lại vào stdin lượt Claude kế tiếp, dùng đúng một lần ----------
+
+from runner import api as _api  # noqa: E402
+
+_CAN_USER = "Cần chốt.\nCẦN_USER: Tag nào?\nLOẠI: chon\nLỰA_CHỌN: A | B"
+
+
+def _xin_duyet_lai(kho: KhoViec, id: str) -> dict:
+    """Giống api xin-duyet-lai (loai ≠ genmax): loi/can_tra_loi → cho_duyet, xoá 4 trường duyệt, ket_qua từ api."""
+    v = kho.lay(id)
+    kho.chuyen(id, list(_api.TRANG_THAI_XIN_DUYET_LAI), "cho_duyet", "nhan", "xin duyệt lại",
+               loi_duyet=None, duyet_boi=None, duyet_luc=None, chu_ky_duyet=None,
+               ket_qua=_api.ket_qua_xin_duyet_lai(v))
+    return kho.lay(id)
+
+
+def _duyet_lan(kho: KhoViec, khoa, id: str, n: int) -> None:
+    """duyet() nhưng lời duyệt khác nhau mỗi lần (chữ ký khác → sổ tiêu giả không 409)."""
+    kho.chuyen(id, ["cho_duyet"], "cho", "nhan", "duyệt (chữ ký hợp lệ)", buoc="chay",
+               **ky_duyet(khoa, kho.lay(id), loi=f"Duyệt lần {n}"))
+
+
+def test_ly_do_duyet_lai_can_dung_logic_thuan():
+    M, P = DANH_MUC["muse_clip"], DANH_MUC["phan_tich_uid"]
+    sk_duyet = [{"tu": "can_tra_loi", "den": "cho_duyet", "ghi_chu": "xin duyệt lại"},
+                {"tu": "cho_duyet", "den": "cho", "ghi_chu": "duyệt"},
+                {"tu": "cho", "den": "dang_chay", "ghi_chu": ""}]
+    v = {"ket_qua": {"so_codex": 2, "duyet_lai_tu": "can_tra_loi", "ly_do_duyet_lai": "vì X"}}
+    assert vl.ly_do_duyet_lai_can_dung(M, v, sk_duyet) == "vì X"
+    assert vl.ly_do_duyet_lai_can_dung(P, v, sk_duyet) is None                  # không tốn tiền
+    sk_tra_loi = [{"tu": "can_tra_loi", "den": "cho", "ghi_chu": "trả lời: A"}]
+    assert vl.ly_do_duyet_lai_can_dung(M, v, sk_tra_loi) is None                # không đi từ duyệt
+    sk_hoan = sk_duyet + [{"tu": "dang_chay", "den": "cho", "ghi_chu": vl.TIEN_TO_HOAN + "bận"}]
+    assert vl.ly_do_duyet_lai_can_dung(M, v, sk_hoan) == "vì X"                  # tạm hoãn không làm mất
+    for kq in (None, {}, {"ly_do_duyet_lai": ""}, {"ly_do_duyet_lai": 5}, "chuỗi"):
+        assert vl.ly_do_duyet_lai_can_dung(M, {"ket_qua": kq}, sk_duyet) is None
+    goc = {"so_codex": 2, "tom_tat": "t", "duyet_lai_tu": "loi", "ly_do_duyet_lai": "x"}
+    assert vl.bo_khoa_duyet_lai(goc) == {"so_codex": 2, "tom_tat": "t"}
+    assert "ly_do_duyet_lai" in goc                                              # không sửa dict gốc
+    assert vl.bo_khoa_duyet_lai(None) == {}
+    vd = {"id": "v1", "loi_duyet": "Duyệt", "duyet_boi": "nhan", "duyet_luc": "2026-11-17T10:00:00+07:00"}
+    t = vl.lap_tin_sau_duyet_lai(vd, "vì X", None)
+    assert t.startswith("Phiên trước dừng vì: vì X.") and t.count("vì X") == 1 and "ĐÃ DUYỆT: nhan" in t
+    t = vl.lap_tin_sau_duyet_lai(vd, "vì X", "PHIẾU v1\nnội dung\n")
+    assert t.startswith("PHIẾU v1\nnội dung\n") and t.count("vì X") == 1
+
+
+def test_claude_ton_tien_duyet_lai_tu_can_tra_loi_resume_co_ly_do_mot_lan(tmp_path, khoa_ky):
+    """FX-15: can_tra_loi → xin duyệt lại → duyệt → lượt resume có lý do (đúng 1 lần) + khối ĐÃ DUYỆT;
+    ket_qua mất 2 khoá duyệt lại nhưng giữ so_codex; lượt sau (duyệt thường) không còn lý do."""
+    so = SoGia(khoa_ky)
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": _CAN_USER}, {"ket_qua": _CAN_USER},
+                                               {"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(), tieu=so)
+    v = _muse_duyet(kho, khoa_ky)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["phien_da_tao"] == 1, s
+    sua_db(tmp_path, v["id"], ket_qua=json.dumps(dict(s["ket_qua"], so_codex=2)))
+    s = _xin_duyet_lai(kho, v["id"])
+    ly = s["ket_qua"]["ly_do_duyet_lai"]
+    assert s["ket_qua"]["duyet_lai_tu"] == "can_tra_loi" and "Tag nào?" in ly
+    _duyet_lan(kho, khoa_ky, v["id"], 2)
+    chay_lan(bo, "nhe")
+    g = cac_lan_goi(kb)
+    assert len(g) == 2 and "--resume" in g[1]["args"]
+    st = g[1]["stdin"]
+    assert st.startswith("Phiên trước dừng vì: " + ly[:40]) and st.count(ly[:60]) == 1, st
+    assert "ĐÃ DUYỆT: nhan" in st and "Duyệt lần 2" in st
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi", s
+    assert "ly_do_duyet_lai" not in s["ket_qua"] and "duyet_lai_tu" not in s["ket_qua"], s["ket_qua"]
+    assert s["ket_qua"]["so_codex"] == 2
+    # lượt sau: duyệt lại KHÔNG qua xin-duyet-lai (giữ ket_qua đang lưu) → stdin không còn lý do cũ
+    kho.chuyen(v["id"], ["can_tra_loi"], "cho_duyet", "nhan", "về chờ duyệt", loi_duyet=None, duyet_boi=None,
+               duyet_luc=None, chu_ky_duyet=None)
+    _duyet_lan(kho, khoa_ky, v["id"], 3)
+    chay_lan(bo, "nhe")
+    g = cac_lan_goi(kb)
+    assert len(g) == 3 and "Tag nào?" not in g[2]["stdin"] and "Phiên trước dừng vì" not in g[2]["stdin"]
+    assert g[2]["stdin"].startswith("ĐÃ DUYỆT: nhan") and "Duyệt lần 3" in g[2]["stdin"]
+    assert kho.lay(v["id"])["trang_thai"] == "xong"
+
+
+def test_claude_ton_tien_duyet_lai_tu_loi_chua_co_phien_phieu_day_du_kem_ly_do_da_che(tmp_path, khoa_ky):
+    """FX-15: lượt đầu chết trước init (phien_da_tao=0) → loi; xin duyệt lại → phiếu đầy đủ + lý do (đã che bí mật).
+    Claude lượt đó lại chết → ket_qua vẫn không còn lý do (đã dùng)."""
+    so = SoGia(khoa_ky)
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"init": False, "ket_qua": None, "ma": 1},
+                                               {"init": False, "ket_qua": None, "ma": 1}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(), tieu=so)
+    v = _muse_duyet(kho, khoa_ky)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and s["phien_da_tao"] == 0, s
+    sua_db(tmp_path, v["id"], loi="mạng rớt token BIMAT123456789 hết hạn")
+    s = _xin_duyet_lai(kho, v["id"])
+    assert s["ket_qua"]["ly_do_duyet_lai"] == "mạng rớt token BIMAT123456789 hết hạn"
+    _duyet_lan(kho, khoa_ky, v["id"], 2)
+    chay_lan(bo, "nhe")
+    g = cac_lan_goi(kb)
+    assert len(g) == 2 and "--resume" not in g[1]["args"]
+    st = g[1]["stdin"]
+    assert st.startswith("PHIẾU " + v["id"]) and "Duyệt lần 2" in st
+    assert st.count("Phiên trước dừng vì: mạng rớt token *** hết hạn.") == 1, st
+    assert "BIMAT123456789" not in st
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi", s
+    assert not isinstance(s["ket_qua"], dict) or "ly_do_duyet_lai" not in s["ket_qua"], s["ket_qua"]
+
+
+def test_script_ton_tien_duyet_lai_bo_qua_ly_do(tmp_path, khoa_ky):
+    """FX-15: việc tốn tiền chạy script (genmax/poster) không dùng lý do: stdin bước script giữ nguyên."""
+    so = SoGia(khoa_ky)
+    ra = tmp_path / "stdin.txt"
+    goc = loai_script("poster_len_lich", "nhe", [PY, "-c",
+                      f"import sys; open({str(ra)!r}, 'w', encoding='utf-8').write(sys.stdin.read())"])
+    loai = dataclasses.replace(goc, ton_tien=True, dot=4)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"poster_len_lich": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=so)
+    v = kho.tao("poster_len_lich", "folder:1", {"folder_id": 1, "so_video_ngay": 1}, "nhe", "cho_duyet", "nhan")
+    sua_db(tmp_path, v["id"], ket_qua=json.dumps({"so_codex": 0, "duyet_lai_tu": "loi", "ly_do_duyet_lai": "vì X"}))
+    _duyet_lan(kho, khoa_ky, v["id"], 1)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and ra.read_text(encoding="utf-8") == "", s
+
+
+# ---------- FX-18 (R-15 P3-2): lỗi cấu hình phát hiện TRƯỚC khi tiêu lời duyệt ----------
+
+def test_loi_khong_sinh_duoc_logic_thuan(tmp_path):
+    def b(**kw):
+        g = dict(ten="x", argv=[PY, "-c", "1"], cwd=str(tmp_path), stdin=None, env_them={}, la_claude=False,
+                 het_gio_s=60)
+        g.update(kw)
+        return BuocChay(**g)
+    assert vl.loi_khong_sinh_duoc(b()) is None
+    assert vl.loi_khong_sinh_duoc(b(argv=["python", "-c", "1"], stdin="phiếu")) is None   # tên tương đối: không đoán PATH
+    assert vl.loi_khong_sinh_duoc(b(argv=[PY, ""])) is None                              # tham số rỗng là hợp lệ
+    assert "rỗng" in vl.loi_khong_sinh_duoc(b(argv=[]))
+    assert vl.loi_khong_sinh_duoc(b(argv=["", "-c"])) is not None
+    assert vl.loi_khong_sinh_duoc(b(argv=[PY, 5])) is not None
+    assert "thư mục chạy" in vl.loi_khong_sinh_duoc(b(cwd=str(tmp_path / "khong_co")))
+    assert "thư mục chạy" in vl.loi_khong_sinh_duoc(b(cwd=""))
+    assert "không thấy chương trình" in vl.loi_khong_sinh_duoc(b(argv=[str(tmp_path / "khong.exe")]))
+    assert vl.loi_khong_sinh_duoc(b(stdin=b"bytes")) is not None
+
+
+def _chua_tieu(kho: KhoViec, so: "SoGia", id: str) -> dict:
+    s = kho.lay(id)
+    assert so.goi == [] and s["so_lan_tieu"] == 0 and not kho.da_tieu_cuc_bo(s["chu_ky_duyet"]), s
+    return s
+
+
+@pytest.mark.parametrize("hong", ["thieu_resume", "thieu_stdin", "cwd_mat", "exe_mat"])
+def test_cau_hinh_claude_hong_khong_tieu_loi_duyet_sua_xong_chay_duoc(tmp_path, khoa_ky, hong):
+    """Cấu hình bước Claude hỏng → loi, Worker tiêu KHÔNG được gọi, Claude không chạy; sửa cấu hình + Chạy tiếp →
+    lời duyệt cũ vẫn dùng được (tiêu đúng 1 lần, Claude chạy 1 lần)."""
+    so = SoGia(khoa_ky)
+    loai0, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    con_hong = {"v": True}
+
+    def lap(ts, viec, mt):
+        b = loai0.lap_buoc(ts, viec, mt)[0]
+        if not con_hong["v"]:
+            return [b]
+        if hong == "thieu_resume":
+            return [dataclasses.replace(b, argv=[a for a in b.argv if a != "--resume"])]
+        if hong == "thieu_stdin":
+            return [dataclasses.replace(b, stdin=None)]
+        if hong == "cwd_mat":
+            return [dataclasses.replace(b, cwd=str(tmp_path / "khong_co"))]
+        return [dataclasses.replace(b, argv=[str(tmp_path / "khong_co.exe")] + b.argv[1:])]
+    loai = dataclasses.replace(loai0, lap_buoc=lap)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(), tieu=so)
+    v = _muse_duyet(kho, khoa_ky)
+    if hong == "thieu_resume":
+        sua_db(tmp_path, v["id"], phien_da_tao=1)
+    chay_lan(bo, "nhe")
+    s = _chua_tieu(kho, so, v["id"])
+    assert s["trang_thai"] == "loi" and cac_lan_goi(kb) == [], s
+    con_hong["v"] = False
+    kho.chuyen(v["id"], ["loi"], "cho", "nhan", "chạy tiếp (resume phiên Claude)")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and len(so.goi) == 1 and s["so_lan_tieu"] == 1, s
+    assert len(cac_lan_goi(kb)) == 1
+
+
+def test_resume_khong_lap_duoc_tin_tiep_khong_tieu_loi_duyet(tmp_path, khoa_ky):
+    """Đã có phiên, vừa 'trả lời' mà DB không có câu trả lời → lap_tin_resume ném ThamSoLoi → loi, chưa tiêu."""
+    so = SoGia(khoa_ky)
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(), tieu=so)
+    v = _muse_duyet(kho, khoa_ky)
+    sua_db(tmp_path, v["id"], phien_da_tao=1, trang_thai="can_tra_loi")
+    kho.chuyen(v["id"], ["can_tra_loi"], "cho", "nhan", "trả lời: A")       # không có dòng tra_loi
+    chay_lan(bo, "nhe")
+    s = _chua_tieu(kho, so, v["id"])
+    assert s["trang_thai"] == "loi" and "resume" in s["loi"] and cac_lan_goi(kb) == [], s
+
+
+@pytest.mark.parametrize("hong", ["cwd_mat", "log_phu_hong"])
+def test_cau_hinh_script_hong_khong_tieu_loi_duyet(tmp_path, khoa_ky, hong):
+    so = SoGia(khoa_ky)
+    ra = tmp_path / "da_chay.txt"
+    chan = tmp_path / "la_file"
+    chan.write_text("x", encoding="utf-8")
+    goc = loai_script("poster_len_lich", "nhe", [])
+
+    def lap(ts, viec, mt):
+        a = [PY, "-c", f"open({str(ra)!r}, 'w').write('1')"]
+        if hong == "cwd_mat":
+            return [BuocChay("s", a, str(tmp_path / "khong_co"), None, {}, False, 60)]
+        return [BuocChay("s", a, str(tmp_path), None, {}, False, 60, file_log_phu=str(chan / "con" / "phu.log"))]
+    loai = dataclasses.replace(goc, ton_tien=True, dot=4, lap_buoc=lap)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"poster_len_lich": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=so)
+    v = kho.tao("poster_len_lich", "folder:1", {"folder_id": 1, "so_video_ngay": 1}, "nhe", "cho_duyet", "nhan")
+    duyet(kho, khoa_ky, v["id"])
+    chay_lan(bo, "nhe")
+    s = _chua_tieu(kho, so, v["id"])
+    assert s["trang_thai"] == "loi" and not ra.exists(), s
+
+
+def test_tieu_chua_ro_giu_ly_do_duyet_lai_cho_luot_sau(tmp_path, khoa_ky):
+    """FX-18: tiêu đặt TRƯỚC khi xoá khoá duyệt lại → Worker chưa tiêu được (đứng chờ) thì lý do vẫn còn;
+    lần sau tiêu được → lý do vào stdin đúng 1 lần rồi mới bị xoá."""
+    so = SoGia(khoa_ky)
+    mo = {"v": False}
+
+    def tieu(id, ckd):
+        return so(id, ckd) if mo["v"] else ("chua_ro", "mạng rớt")
+    loai, kb = loai_claude_ton_tien(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"muse_clip": loai}, khoa_cong_khai=khoa_ky.public_key(),
+                     tieu=tieu, cho_lai_han_muc_s=0.0)
+    v = kho.tao("muse_clip", "a", {"uid": UID, "mau": ["m1"]}, "nhe", "cho_duyet", "nhan",
+                session_id=str(uuid.uuid4()))
+    sua_db(tmp_path, v["id"], ket_qua=json.dumps({"so_codex": 1, "duyet_lai_tu": "loi", "ly_do_duyet_lai": "vì X"}))
+    _duyet_lan(kho, khoa_ky, v["id"], 1)
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "cho" and s["ket_qua"]["ly_do_duyet_lai"] == "vì X" and cac_lan_goi(kb) == [], s
+    mo["v"] = True
+    chay_lan(bo, "nhe")
+    g = cac_lan_goi(kb)
+    assert len(g) == 1 and g[0]["stdin"].count("vì X") == 1, g
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong" and "ly_do_duyet_lai" not in s["ket_qua"] and len(so.goi) == 1, s

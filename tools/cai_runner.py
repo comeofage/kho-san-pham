@@ -10,7 +10,8 @@ Bố cục bản cài (giữ đúng cấu trúc import của repo):
     app\\PHIEN_BAN, app\\runner\\PHIEN_BAN
     app\\TONG_KIEM.json         (sha256 từng file, runner so lúc khởi động)
 
-Các bước: giành khoá đơn instance của thư mục dữ liệu (giành không được = runner đang chạy → mã 4) → chép vào
+Các bước: giành khoá đơn instance của thư mục dữ liệu (giành không được = runner đang chạy → mã 4) → sao lưu
+runner.db thành `runner.db.bak-<giờ>` (sqlite3 backup API, giữ 5 bản mới nhất; lỗi → dừng, không cài) → chép vào
 `app.moi` → ghi PHIEN_BAN + TONG_KIEM.json → xoá `app.cu` cũ → `app`→`app.cu` → `app.moi`→`app`. Khoá được
 giữ suốt quá trình (runner không thể bật giữa chừng) và luôn được nhả trong `finally`.
 Ghi ngoài thư mục dự án → mỗi lần cài thật là NEEDS_APPROVAL (trưởng phòng chạy).
@@ -20,9 +21,12 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import re
 import shutil
+import sqlite3
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
 
 TOOLS = Path(__file__).resolve().parent
@@ -80,6 +84,76 @@ def _xoa_cay(p: Path) -> None:
         shutil.rmtree(p)
 
 
+TEN_DB = "runner.db"
+GIU_BAN_SAO = 5
+_RE_BAN_SAO = re.compile(r"^runner\.db\.bak-\d{8}-\d{6}(?:-\d+)?$")
+
+
+def ten_ban_sao(luc: datetime) -> str:
+    """`runner.db.bak-YYYYmmdd-HHMMSS` — sắp theo tên = sắp theo thời gian. Logic thuần."""
+    return f"{TEN_DB}.bak-{luc:%Y%m%d-%H%M%S}"
+
+
+def ban_sao_can_xoa(ten: list[str], giu: int = GIU_BAN_SAO) -> list[str]:
+    """Trong các tên file, chọn bản sao runner.db cũ cần xoá để còn `giu` bản mới nhất. Tên khác mẫu → bỏ qua.
+    Logic thuần."""
+    ds = sorted((t for t in ten if _RE_BAN_SAO.match(t)), key=_khoa_ban_sao)
+    return ds[:max(len(ds) - max(giu, 1), 0)]           # luôn giữ ít nhất bản mới nhất
+
+
+def _khoa_ban_sao(ten: str) -> tuple[str, int]:
+    phan = ten.partition(".bak-")[2].split("-")
+    return "-".join(phan[:2]), int(phan[2]) if len(phan) > 2 else 0
+
+
+def sao_luu_db(du_lieu: Path, bay_gio: datetime | None = None, giu: int = GIU_BAN_SAO) -> Path | None:
+    """P3-5 (R-15): sao lưu `du_lieu/runner.db` thành `runner.db.bak-<giờ>` bằng sqlite3 backup API (đọc qua WAL →
+    một file tự đủ, nhất quán; không cần chép -wal/-shm). Ghi vào `.tmp` rồi đổi tên (không để bản dở dang lọt vào
+    danh sách giữ). Giữ tối đa `giu` bản. Không có runner.db → None. Lỗi sao lưu → ném (bên gọi dừng cài).
+    Bên gọi phải giữ khoá đơn instance (không ai ghi DB trong lúc sao)."""
+    db = du_lieu / TEN_DB
+    if not db.is_file():
+        return None
+    goc = ten_ban_sao(bay_gio or datetime.now())
+    dich = du_lieu / goc
+    n = 1
+    while dich.exists():                                  # 2 lần cài trong cùng một giây
+        dich = du_lieu / f"{goc}-{n}"
+        n += 1
+    tam = dich.with_name(dich.name + ".tmp")
+    if tam.exists():
+        tam.unlink()
+    # mode=rw: không bao giờ tự tạo DB rỗng; đọc được cả DB đang ở chế độ WAL
+    nguon = sqlite3.connect(f"file:{db.as_posix()}?mode=rw", uri=True, timeout=30)
+    try:
+        dong = sqlite3.connect(str(tam))
+        try:
+            nguon.backup(dong)
+            ok = dong.execute("PRAGMA integrity_check").fetchone()
+            if not ok or ok[0] != "ok":
+                raise sqlite3.DatabaseError(f"bản sao {tam.name} không qua integrity_check: {ok!r}")
+        finally:
+            dong.close()
+    except BaseException:
+        if tam.exists():
+            try:
+                tam.unlink()
+            except OSError as e:
+                log.error("không xoá được bản sao dở %s: %s", tam, e)
+        raise
+    finally:
+        nguon.close()
+    tam.replace(dich)
+    log.info("đã sao lưu %s → %s", db, dich.name)
+    for ten in ban_sao_can_xoa([p.name for p in du_lieu.iterdir() if p.is_file()], giu):
+        try:
+            (du_lieu / ten).unlink()
+        except OSError as e:                              # không chặn cài, nhưng không im lặng
+            log.error("không xoá được bản sao cũ %s: %s", ten, e)
+            print(f"[CẢNH BÁO] không xoá được bản sao cũ {ten}: {e}", file=sys.stderr)
+    return dich
+
+
 def cai(nguon: Path, dich: Path) -> str:
     """Cài từ `nguon` (thư mục tools/ của repo) vào `dich` (…\\kho-runner\\app). Trả PHIEN_BAN.
     SystemExit(4) nếu runner của thư mục dữ liệu `dich.parent` đang chạy."""
@@ -95,6 +169,9 @@ def cai(nguon: Path, dich: Path) -> str:
         moi = du_lieu / (dich.name + ".moi")
         cu = du_lieu / (dich.name + ".cu")
         ds = _ds_chep(nguon)
+        bak = sao_luu_db(du_lieu)                       # P3-5: lỗi sao lưu → ném, KHÔNG cài
+        if bak is not None:
+            print(f"Đã sao lưu runner.db → {bak}")
         _xoa_cay(moi)
         moi.mkdir(parents=True)
         for f, tuong_doi in ds:

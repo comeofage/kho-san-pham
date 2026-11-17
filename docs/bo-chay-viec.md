@@ -1,7 +1,7 @@
 # Bộ chạy việc cho web Kho sản phẩm (đợt 3–5)
 
 Phiếu A-01, sửa lại theo phiếu A-01b (phản biện) · Kiến trúc sư Culiapp · 2026-11-17
-Trạng thái: **ĐỀ XUẤT, chờ người dùng duyệt**. Quyết định D1–D8 ghi trong `DECISIONS.md`.
+Trạng thái: **ĐỀ XUẤT, chờ người dùng duyệt**. Quyết định D1–D9 ghi trong `DECISIONS.md` (D9: sổ lời duyệt đã tiêu trên Cloudflare KV, sửa review R-11; phiếu A-D9).
 
 Trước tài liệu này, dự án chưa có `CLAUDE.md`, `ARCHITECTURE.md`, `DECISIONS.md` hay `KNOWN_BUGS.md` (đã dò ở gốc repo và thư mục cha). Thiết kế dựa trên ba nguồn:
 - code thật, dẫn `file:dòng`;
@@ -126,7 +126,7 @@ Ranh giới:
 
 ### 3.2 Quy tắc chuyển tiếp trong video_server
 
-- Path phải khớp `^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep))?)?)$`. Không khớp thì 404, không gọi runner.
+- Path phải khớp `^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai))?)?)$` (`xin-duyet-lai` thêm theo D9, phiếu FX-12). Không khớp thì 404, không gọi runner.
 - Query: chỉ giữ khoá `tu`, `trang_thai`, `uid`, `gioi_han`, `tom_tat`; giá trị phải khớp `^[A-Za-z0-9_,-]{0,40}$`.
 - Method: GET, hoặc POST với `content-type: application/json` và body ≤ 16 KB (lớn hơn → 413).
 - Kiểm `x-key` trước mọi thứ (dùng `_vao`, `tools/video_server.py:181-191`).
@@ -228,11 +228,13 @@ CREATE TABLE IF NOT EXISTS nonce(gia_tri TEXT PRIMARY KEY, luc REAL NOT NULL);  
 | `cho` | `dang_chay` | làn rảnh, tài nguyên rảnh, hạn mức còn, chữ ký duyệt hợp lệ (nếu là loại tốn tiền) |
 | `dang_chay` | `cho` | **điều kiện trước hỏng hoặc tài nguyên bận ngay sau khi nhận** (vd git kho đang bận, GPU có ffmpeg ngoài); ghi chú lý do, thử lại sau 60 s |
 | `dang_chay` | `xong` / `loi` / `can_tra_loi` / `cho_duyet` | runner đọc kết quả (§6.5) |
-| `can_tra_loi` | `cho` | `POST /tra-loi` (đợt 3: chỉ giá trị nút) |
+| `can_tra_loi` | `cho` | `POST /tra-loi` (đợt 3: chỉ giá trị nút), loại **miễn phí** |
+| `loi` / `can_tra_loi` | `cho_duyet` | **`POST /xin-duyet-lai`** (D9), chỉ loại tốn tiền: xoá 4 trường duyệt, giữ `session_id`/`phien_da_tao`/`loi`/`cau_hoi` để lần chạy sau resume. Loại tốn tiền **không** nhận `POST /tra-loi` (409 "việc tốn tiền: dùng Xin duyệt lại") |
+| `loi` / `can_tra_loi` | `cho` + `buoc='uoc_tinh'` | **`POST /xin-duyet-lai`** của `voice_genmax` khi **chưa có ước tính** (`uoc_tinh` rỗng): chạy lại pha ước tính miễn phí, xong mới sang `cho_duyet` (A-D9b) |
 | `cho_duyet` | `cho` | `POST /duyet` có chữ ký duyệt hợp lệ, hạn mức còn |
 | `cho_duyet` | `huy` | `POST /tu-choi` |
 | trạng thái mở | `huy` | `POST /huy` (đang chạy → giết cây trước) |
-| `loi` | `cho` | **`POST /chay-tiep`**: chỉ khi `phien_da_tao=1` và `so_lan_claude>0`; loại tốn tiền kiểm lại hạn mức **và** chữ ký duyệt cũ còn khớp. Lần chạy kế là `--resume` với tin "Phiên trước dừng vì: <loi>. Kiểm trạng thái thật rồi làm tiếp" |
+| `loi` | `cho` | **`POST /chay-tiep`**: chỉ loại **miễn phí**, khi `phien_da_tao=1` và `so_lan_claude>0`. Loại tốn tiền → 409, dùng "Xin duyệt lại" (D9). Lần chạy kế là `--resume` với tin "Phiên trước dừng vì: <loi>. Kiểm trạng thái thật rồi làm tiếp" |
 | `loi` / `huy` | (job mới) | `POST /chay-lai`: tạo job mới có `chay_lai_tu`; loại tốn tiền vào `cho_duyet` lại |
 
 ### 4.4 Làn và tài nguyên
@@ -283,7 +285,7 @@ Mọi tiến trình con cháu sinh sau đó **đã nằm trong job ngay lúc t�
 | `chua` | `cho`, `lan_thu+1`; có `phien_da_tao=1` thì lần kế là resume | `loi` "Bị ngắt khi máy tắt — kiểm rồi bấm Chạy tiếp/Chạy lại" |
 | `khong_ro` | như ô Ngược lại | `loi` như trên |
 
-   Việc tốn tiền không bao giờ tự chạy lại.
+   Việc tốn tiền không bao giờ tự chạy lại. Lời báo của việc tốn tiền là "Bị ngắt khi máy tắt — kiểm log rồi bấm Xin duyệt lại/Chạy lại" (không có Chạy tiếp, D9).
 3. Xoá log và JSON radar cũ hơn 30 ngày; xoá dòng `nonce` cũ hơn 1 ngày.
 
 ### 4.7 Log, che bí mật, môi trường tối thiểu (P2-1)
@@ -342,9 +344,29 @@ Mẻ giọng creator (`day_poster.py`) **không** có trong đợt 3.
 |---|---|---|---|---|---|
 | `muse_clip` | Claude `aff-muse`, `--tools Read,Write,Edit,Glob,Grep,Bash`, cwd `<P>` | `uid`, `du_an`, `mau` (1–10 mã trong `MAU_PROMPT_MUSE` cố định), `thoi_luong` ∈ {10,15}, `ti_le` ∈ {`9:16`} | nhe / – | luôn `cho_duyet`; ≤10 clip/việc, ≤15 clip/ngày | `khong_ro` |
 | `voice_genmax` | script 2 pha: `tao_voice.py --project <P> --batch <me>` (ước tính, KHÔNG gọi API) → `cho_duyet` → cùng lệnh **thêm `--dong-y`** | `uid`, `du_an`, `me` | gpu / – | ≤25 bản/việc, ≤2 việc/ngày; không đường nào sinh `--gui-lai-ma` | `khong_ro` |
-| `poster_len_lich` | Claude `aff-poster`, `--tools Read,Write,Edit,Glob,Grep,Bash` | `folder_id` (từ `GET /poster/folders`), `so_video_ngay` 1–5 | nhe / `poster` | luôn `cho_duyet`; ≤2 việc/ngày; duyệt chỉ áp cho đúng job | `khong_ro` |
+| `poster_len_lich` | Claude `aff-poster`, `--tools Read,Write,Edit,Glob,Grep,Bash` | `folder_id` (từ `GET /poster/folders`), `so_video_ngay` 1–100 | nhe / `poster` | luôn `cho_duyet`; ≤2 việc/ngày; ≤100 video/ngày mỗi việc; **tổng `so_video_ngay` ≤100 video mỗi tài khoản mỗi ngày** (D9/A-D9b; tạm gom tài khoản theo `folder_id`, `han_muc.khoa_tai_khoan_poster`); duyệt chỉ áp cho đúng job | `khong_ro` |
 
-A-3 phải gọi `kiem_han_muc(…, luc='nhan')` ngay trước khi chạy (P2-10), cùng với kiểm chữ ký duyệt.
+**Cổng chạy pha tốn tiền** (`BoChay._cong_ton_tien`, `tools/runner/vong_lap.py:1055`). Chạy đúng thứ tự, ngay trước MỖI lần sinh tiến trình của pha tốn tiền, gồm: lượt đầu sau duyệt, lượt sau khi xin duyệt lại rồi duyệt lại, và từng bước kế của cùng một lần chạy (`_con_khop_duyet`, `:1074`, giữ kiểm như hiện có, không tiêu lại):
+1. Bản cài lệch `TONG_KIEM` (`BoChay.chan_ton_tien`) → hoãn, đứng `cho`, ghi chú "bản cài runner lệch tổng kiểm — cài lại runner" (R-11 P2-1).
+2. Chữ ký duyệt trên dữ liệu đang lưu (`chu_ky.kiem_duyet`), sai → `loi` (giữ như hiện có, `:1039-1053`).
+3. `kiem_han_muc(…, luc='nhan', viec_id=id)`.
+4. **Tiêu lời duyệt** (D9, §8.3): `so_duyet.tieu_duyet(...)`.
+   - `"da_tieu"` → `kho.ghi_tieu(id)`, rồi chạy.
+   - `"da_dung"` → `loi` "lời duyệt đã dùng — bấm Xin duyệt lại".
+   - `"chua_ro"` → hoãn, đứng `cho` với lý do, thử lại sau `cho_lai_han_muc_s`.
+
+Pha không tốn tiền (`voice_genmax` `buoc='uoc_tinh'`) bỏ qua cổng (giữ `can_kiem_duyet`, `:488`).
+
+**Không có "Chạy tiếp" và "Tiếp tục" cho loại tốn tiền** (D9):
+- `co_the_chay_tiep` (`tools/runner/api.py:224`) trả False cho loại tốn tiền.
+- Câu hỏi `khong_ro` của việc tốn tiền không có nút "Tiếp tục".
+- Runner không tự "Tiếp tục" việc tốn tiền.
+- Thay vào đó là `POST /xin-duyet-lai` (§4.3, §8.1).
+- Việc tốn tiền ở `can_tra_loi` **không được trả lời trực tiếp** (A-D9b). Web chỉ hiện câu hỏi (để đọc) và các nút "Xin duyệt lại" / "Huỷ"; `POST /tra-loi` của loại tốn tiền → 409.
+- Lần chạy sau khi duyệt lại dùng `--resume` (nếu `phien_da_tao=1`). Stdin là `lap_tin_chay_tiep(viec, ly_do)` nối thêm `lap_tin_duyet(viec)`, với `ly_do`:
+  - xin duyệt lại từ `loi` → `loi` cũ;
+  - xin duyệt lại từ `can_tra_loi` → "Người dùng không trả lời câu hỏi trước (<noi_dung câu hỏi, cắt 500 ký tự>) mà duyệt lại để làm tiếp. Không hỏi lại câu đó; chỗ nào cần quyết định thì chọn phương án an toàn nhất (không tốn thêm tiền), không làm được thì dừng và báo".
+- `voice_genmax` xin duyệt lại khi chưa có ước tính → `cho` + `buoc='uoc_tinh'` (pha miễn phí, không qua cổng, không tiêu), xong pha này mới sang `cho_duyet` như lần đầu.
 
 Việc miễn phí mà agent trả `NEEDS_APPROVAL` → `loi` "Agent xin làm việc ngoài danh mục: <trích> — làm tay trên máy". Không có nút Duyệt.
 
@@ -533,10 +555,11 @@ Mọi route đòi `x-runner-key`. Mọi **POST** còn đòi chữ ký request §
 | `POST /viec/<id>/tra-loi` | `{tra_loi, boi}` | Chỉ khi `can_tra_loi`. `chon`: đúng một lựa chọn; `viec_tay`: `"da_lam_xong"`; `khong_ro`: `"tiep_tuc"`; `cau_hoi`: chỉ đợt 5, 1–1000 ký tự |
 | `POST /viec/<id>/duyet` | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` | Chỉ khi `cho_duyet`; kiểm chữ ký duyệt + hạn mức |
 | `POST /viec/<id>/tu-choi` · `/huy` | `{boi}` | `{viec}` |
-| `POST /viec/<id>/chay-tiep` | `{boi}` | `loi→cho` theo §4.3; 409 nếu không đủ điều kiện |
+| `POST /viec/<id>/chay-tiep` | `{boi}` | `loi→cho` theo §4.3; 409 nếu không đủ điều kiện hoặc là loại tốn tiền (D9) |
+| `POST /viec/<id>/xin-duyet-lai` (D9) | `{boi}` | Chỉ loại tốn tiền ở `loi` hoặc `can_tra_loi`, tiến trình cũ không còn sống: xoá `loi_duyet, duyet_boi, duyet_luc, chu_ky_duyet` → `cho_duyet`. Riêng `voice_genmax` chưa có `uoc_tinh` → `cho` + `buoc='uoc_tinh'`. 409 nếu sai điều kiện hoặc trùng việc đang mở |
 | `POST /viec/<id>/chay-lai` | `{boi}` | 201 job mới |
 
-`viec` trả ra có các trường của §4.2, trừ `pid`, `pid_tao_luc`, `session_id`, `chu_ky_duyet`; thêm `co_session` và `co_the_chay_tiep` (bool).
+`viec` trả ra có các trường của §4.2, trừ `pid`, `pid_tao_luc`, `session_id`, `chu_ky_duyet`; thêm `co_session`, `co_the_chay_tiep` và `co_the_xin_duyet_lai` (bool). `/suc-khoe` thêm `chan_ton_tien` (bool, D9).
 
 ### 8.2 API Worker (chỉ `nhan`/`comeofage`)
 
@@ -548,8 +571,11 @@ Mọi route đòi `x-runner-key`. Mọi **POST** còn đòi chữ ký request §
 | `GET /api/viec/du-an/<uid>` | `/r/du-an/<uid>` | – |
 | `GET /api/viec/<id>`, `/api/viec/<id>/log?tu=` | tương ứng | – |
 | `POST /api/viec/<id>/tra-loi` | tương ứng | Đợt 3: `{tra_loi}` chỉ nhận chuỗi ≤120 ký tự (giá trị nút). Đợt 5: chữ tự do chỉ khi có `mat_khau` đúng (§9) |
-| `POST /api/viec/<id>/duyet` (đợt 4) | Worker GET `/r/viec/<id>` lấy `tham_so_chuan` + `loai` → kiểm `mat_khau` → ký duyệt (§8.3) → POST | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` |
-| `POST /api/viec/<id>/(tu-choi\|huy\|chay-tiep\|chay-lai)` | tương ứng | `{boi}` |
+| `POST /api/viec/<id>/duyet` (đợt 4) | Web gửi `{loi_duyet, mat_khau, sha_tham_so}`. Worker kiểm `mat_khau` (đếm sai bằng KV, §9) → GET `/r/viec/<id>` lấy `tham_so_chuan` + `loai` → `sha256_hex(tham_so_chuan) ≠ sha_tham_so` → 409 "Tham số việc đã đổi sau khi bạn mở trang — tải lại rồi duyệt" (D9, R-11 P2-2) → ký duyệt (§8.3) → POST | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` |
+| `POST /api/viec/<id>/(tu-choi\|huy\|chay-tiep\|chay-lai\|xin-duyet-lai)` | tương ứng | `{boi}` |
+| `POST /api/runner/tieu-duyet` (D9) | **không chuyển tiếp**; runner gọi thẳng Worker | §8.3 "Tiêu lời duyệt" |
+
+`sha_tham_so` do web tính bằng `crypto.subtle.digest("SHA-256", UTF-8(tham_so_chuan))` trên đúng `tham_so_chuan` của response `GET /api/viec/<id>` dùng để vẽ khung duyệt (hex thường, 64 ký tự).
 
 Lỗi: mạng → 502; hết giờ → 504; 401/403 → 502 "khoá/chữ ký lệch"; 4xx khác trả nguyên. Hàm chung `goiMayNha(env, path, {method, body, timeoutMs})`. W-1 không refactor route `/api/video` cũ.
 
@@ -571,11 +597,36 @@ Lỗi: mạng → 502; hết giờ → 504; 401/403 → 502 "khoá/chữ ký l�
 - **Ký lời duyệt** (lưu bền, kiểm lại lúc nhận việc). `chu_ky_duyet` = chữ ký trên
   `"kho-duyet-v1\n" + id + "\n" + loai + "\n" + sha256_hex(tham_so_chuan) + "\n" + sha256_hex(loi_duyet) + "\n" + duyet_luc + "\n" + boi`.
 
-  Runner kiểm khi nhận `/duyet` (so với `tham_so` đang lưu) và **mỗi lần `nhan_viec_ke` hoặc `chay-tiep`** cho loại `ton_tien`. Ai sửa `runner.db` (đổi trạng thái hay tham số) cũng không qua được bước này.
+  Runner kiểm khi nhận `/duyet` (so với `tham_so` đang lưu) và **mỗi lần nhận việc** cho loại `ton_tien`. Chữ ký duyệt chặn được việc sửa **nội dung** (tham số, lời duyệt, người duyệt, thời điểm), nhưng **không** chặn được việc chạy lại: sửa `runner.db` để đưa một việc đã duyệt về `cho` thì chữ ký vẫn khớp (review R-11 P1-1). Chặn chạy lại do sổ tiêu một lần dưới đây đảm nhận (D9).
+- **Tiêu lời duyệt (D9).** Một lời duyệt chỉ cho chạy pha tốn tiền đúng một lần. Sổ nằm trên Cloudflare KV `SO_DUYET`, chỉ Worker ghi được.
+  - **Route Worker** `POST /api/runner/tieu-duyet`:
+    - đầu vào: header `x-runner-key` so khớp `env.RUNNER_KEY` bằng so sánh hằng thời gian. Không cần phiên, không kiểm Origin (runner không phải trình duyệt). Body JSON ≤ 1 KB, đúng 3 khoá `{id, chu_ky_duyet, nonce}`: `id` khớp `^j\d{14}[a-z0-9]{4}$`; `chu_ky_duyet` khớp `^[A-Za-z0-9_-]{86}$`; `nonce` khớp `^[0-9a-f]{32}$`;
+    - sai khoá → 401; sai hình dạng → 400; thiếu `RUNNER_KEY`, `KY_RIENG` hoặc binding `SO_DUYET` → 503;
+    - `k = "tieu:" + sha256_hex(chu_ky_duyet)` (sha256 trên byte UTF-8 của chuỗi base64url);
+    - `await env.SO_DUYET.get(k)` khác null → 409 `{loi:"lời duyệt đã dùng", luc}`;
+    - ngược lại `await env.SO_DUYET.put(k, JSON.stringify({id, luc: ISO, nonce}))`, **không đặt TTL**. Ghi xong mới ký, rồi trả 200 `{ky}`;
+    - `ky` = base64url Ed25519(`KY_RIENG`) trên `"kho-tieu-v1\n" + id + "\n" + sha256_hex(chu_ky_duyet) + "\n" + nonce`;
+    - `put` lỗi → 503 và không ký.
+  - **Phía runner** (`tools/runner/so_duyet.py`, phiếu FX-10):
+    - mỗi lần gọi sinh `nonce = secrets.token_hex(16)`;
+    - `POST <WORKER_ORIGIN>/api/runner/tieu-duyet`, timeout 15 s, header `x-runner-key` lấy từ `.runner_key`;
+    - 200 → kiểm `ky` bằng `chu_ky.kiem_tieu(kcc, id, chu_ky_duyet, nonce, ky)` (khoá công khai trong bản cài) → `"da_tieu"`;
+    - 409 → `"da_dung"`;
+    - mọi trường hợp khác (mạng, hết giờ, 5xx, 401, 400, JSON hỏng, chữ ký sai) → `"chua_ro"`: không chạy, việc đứng `cho`, cảnh báo trên `/suc-khoe`.
+
+    Nonce do runner tự sinh và chỉ nằm trong bộ nhớ, nên chữ ký mà kẻ khác lấy được (với nonce của họ) không dùng được cho runner.
+  - **Ai sửa `runner.db` để chạy lại một việc đã duyệt** (đổi `xong`/`loi` → `cho`, chép chữ ký sang việc khác cùng id, …) nhận 409 ở bước tiêu, nên không tốn tiền. Muốn chạy lại phải "Xin duyệt lại" rồi nhập mật khẩu. Duyệt mới có `duyet_luc` mới, nên chữ ký mới và khoá KV mới.
+  - **Giới hạn của sổ:**
+    - KV chỉ nhất quán cuối cùng (eventual consistency), và get-rồi-put không nguyên tử. Hai lần gọi sát nhau ở hai colo khác nhau có thể cùng nhận 200. Runner chạy một instance, gọi tuần tự, luôn từ cùng một máy (thường cùng colo, đọc thấy bản ghi vừa ghi).
+    - Ai có `.runner_key` có thể tiêu trước một lời duyệt. Kết quả chỉ là việc bị chặn (DoS), không gây tốn tiền.
+    - Runner đã tiêu thành công mà tiến trình chết trước khi gọi API ngoài: lời duyệt vẫn mất, phải xin duyệt lại. Lệch về phía an toàn.
+    - `WORKER_ORIGIN` là hằng số trong `so_duyet.py`. Đổi sang máy chủ giả cũng không có tác dụng, vì máy chủ giả không ký được.
+- **Chặn khi lệch tổng kiểm (D9, R-11 P2-1).** Lúc khởi động, `kiem_tong(THU_MUC_APP)` (`tools/runner/vong_lap.py:146`, gọi ở `tools/chay_runner.py:156`) trả danh sách không rỗng → `BoChay(..., chan_ton_tien=True)`. Khi đó cổng §5.2 bước 1 hoãn mọi việc tốn tiền, và `/suc-khoe` trả `chan_ton_tien: true`. Hết chặn bằng cách cài lại runner (`cai_runner.py` ghi `TONG_KIEM.json` mới) rồi khởi động lại. Thiếu `TONG_KIEM.json` (chạy từ mã nguồn) cũng bị chặn.
 - **Vector test chéo:** B-1c sinh `tools/runner/vector_ky.json` từ khoá có seed cố định (chỉ dùng cho test). W-1b dùng vector đó kiểm chữ ký phía Worker khớp từng byte.
 - **Giới hạn còn lại (nói thẳng):** agent có Bash chạy dưới user Mi vẫn có thể **sửa chính code hoặc khoá công khai trong bản cài** rồi chờ runner khởi động lại. D7 chặn được kiểu lạm dụng thực tế (gọi API localhost bằng khoá đọc trộm, sửa DB, sửa `cau_hinh.json`), nhưng không chặn được một agent cố ý viết lại runner. Chặn hẳn cần tách user Windows riêng cho runner (cần admin/UAC, đã loại ở D7). Giảm nhẹ:
   - `CONG_CU_CAM_CHUNG` có thư mục `kho-runner` (không phải chốt chặn);
-  - lúc khởi động, runner so sha256 các file trong `app\` với `app\TONG_KIEM.json` do `cai_runner.py` ghi, lệch thì từ chối chạy việc tốn tiền và hiện cảnh báo trên `/suc-khoe`. Agent sửa được cả file tổng kiểm, nên đây chỉ là phát hiện nhầm lẫn.
+  - lúc khởi động, runner so sha256 các file trong `app\` với `app\TONG_KIEM.json` do `cai_runner.py` ghi, lệch thì từ chối chạy việc tốn tiền (`chan_ton_tien`, D9) và hiện cảnh báo trên `/suc-khoe`. Agent sửa được cả file tổng kiểm, nên đây chỉ là phát hiện nhầm lẫn;
+  - sổ tiêu D9 vẫn đứng vững khi chỉ `runner.db` bị sửa, nhưng code runner bị viết lại thì có thể bỏ qua bước tiêu. Giới hạn này giữ nguyên như đã ghi ở D7.
 
 ---
 
@@ -595,7 +646,10 @@ Lỗi: mạng → 502; hết giờ → 504; 401/403 → 502 "khoá/chữ ký l�
    ```
    `style-src 'unsafe-inline'` cần cho 6 thuộc tính `style="…"` có trong `web/app.js`; không có script inline (`web/index.html:8-11` đều là `src`). Kỹ sư phải kiểm bằng `wrangler dev` + `curl -sI http://127.0.0.1:8787/` thấy header. Nếu `_headers` không được áp dụng → phương án dự phòng: đổi `run_worker_first = true` và Worker gắn header cho `env.ASSETS.fetch` (sửa `cf/wrangler.toml` + `cf/src/worker.js:430`). Kỹ sư báo lại trước khi làm phương án này.
 3. **Đợt 3 chỉ có nút**: API runner và Worker chỉ nhận `tra_loi` là giá trị nút (§8.1–8.2). Phiếu đợt 3 không cho agent dùng `LOẠI: cau_hoi`.
-4. **Chữ tự do (đợt 4 lời duyệt, đợt 5 trả lời) bắt nhập lại mật khẩu mỗi lần gửi**: Worker kiểm `kiemMatKhau(mat_khau, dsUser(env)[phien.user].hash)` (`cf/src/worker.js:67-74`). Sai → 403 "Sai mật khẩu". Sai 5 lần trong 10 phút → khoá thao tác này 10 phút (đếm bằng Cache API theo user). XSS không biết mật khẩu nên không duyệt được và không đưa được chữ vào agent.
+4. **Chữ tự do (đợt 4 lời duyệt, đợt 5 trả lời) bắt nhập lại mật khẩu mỗi lần gửi**: Worker kiểm `kiemMatKhau(mat_khau, dsUser(env)[phien.user].hash)` (`cf/src/worker.js:67-74`). Sai → 403 "Sai mật khẩu". Sai 5 lần trong 10 phút → khoá thao tác này 10 phút. Đếm theo user bằng **KV `SO_DUYET`**, khoá `sai:<user>` (D9, thay Cache API ở `cf/src/worker.js:441-465`):
+   - giá trị `{"sai":[ms,...],"khoa_den":ms}`, `put` với `expirationTtl: 900`;
+   - giữ lớp đếm trong bộ nhớ isolate (`demSaiBoNho`) làm lớp chặn song song trong cùng isolate;
+   - KV đọc lỗi → coi như đang bị khoá (503 "Không kiểm được số lần sai — thử lại sau"), không kiểm mật khẩu. XSS không biết mật khẩu nên không duyệt được và không đưa được chữ vào agent.
 5. Mọi chuỗi từ runner hoặc agent (câu hỏi, lựa chọn, log, kết quả) đều qua `esc()` trước khi chèn HTML. Bản tin radar render bằng marked + DOMPurify (như tab hiện có).
 
 ---
@@ -611,14 +665,33 @@ HAN_MUC_TRAN = {
   "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
   "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
   "genmax_ban_moi_viec": 25, "genmax_viec_ngay": 2,
-  "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 5,
+  "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,   # A-D9b: trần mỗi việc VÀ tổng mỗi tài khoản/ngày
   "taovideo_ngay": 1, "codex_luot_viec": 6,
 }
 TRAN_LUOT = {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120, "poster_len_lich": 60, "taovideo": 1500}
 WM_CHO_PHEP: tuple[str, ...] = ()     # đợt 5 điền theo người dùng
 ```
 
-Kiểm ở 3 thời điểm: **tạo**, **duyệt**, **nhận** (cả `chay-tiep`).
+Kiểm ở 3 thời điểm: **tạo**, **duyệt** (cả duyệt lại), **nhận**. Từ D9, loại tốn tiền không còn `chay-tiep`; loại miễn phí vẫn kiểm hạn mức ở `chay-tiep`.
+
+**Đếm hạn mức ngày theo số lần tiêu (D9).** Một việc tốn tiền có thể chạy nhiều lần (mỗi lần xin duyệt lại), nên hạn mức ngày đếm theo số lần đã tiêu lời duyệt, không theo số việc:
+- Bảng `viec` thêm 2 cột (schema `'2'`, `ALTER TABLE … ADD COLUMN` khi mở DB phiên bản 1):
+  - `so_lan_tieu INTEGER NOT NULL DEFAULT 0`;
+  - `tieu_luc_dau TEXT`.
+
+  `KhoViec.ghi_tieu(id)` tăng `so_lan_tieu` và đặt `tieu_luc_dau` nếu đang rỗng.
+- `ngay_tinh_han_muc(viec)` (`tools/runner/han_muc.py:122`):
+  - ngày = `tieu_luc_dau` → `duyet_luc` → `tao_luc` (lấy giá trị đầu tiên có);
+  - được tính khi `so_lan_tieu > 0`, hoặc có `duyet_luc`, hoặc việc đang mở.
+- `so_luong_ngay` (`:103`) nhân với `max(1, so_lan_tieu)` khi đếm việc khác.
+- Việc đang xét, lúc `duyet` và `nhan`: cộng `so_luong_ngay × (so_lan_tieu + 1)`. Lúc `tao`: cộng `so_luong_ngay`.
+- **Poster (D9, A-D9b).** `poster_video_ngay_toi_da` = 100, dùng cho hai kiểm:
+  - **mỗi việc**: `so_video_ngay` 1–100;
+  - **mỗi tài khoản mỗi ngày**: Σ `so_video_ngay` của các việc `poster_len_lich` cùng tài khoản được tính trong ngày (`video_poster_tai_khoan_ngay`, `tools/runner/han_muc.py:169`; cùng tập `ngay_tinh_han_muc`; mỗi việc tính một lần dù tiêu nhiều lần, vì chạy lại cùng lịch không tăng số video/ngày), cộng việc đang xét, ≤ 100.
+
+  Khoá tài khoản là `khoa_tai_khoan_poster(tham_so)` (`:147`). Hàm này **tạm** trả `folder:<folder_id>`, vì danh sách folder Poster chưa có trường tài khoản. Khi có trường đó thì chỉ sửa hàm này. Khoá `None` (tham số hỏng) bị tính vào mọi tài khoản (thiên về chặt). `poster_len_lich_ngay` (2 việc/ngày, toàn bộ) vẫn giữ và đếm theo lần tiêu.
+
+  Giới hạn: kiểm này chỉ tính các việc lên lịch trong cùng ngày. Lịch đặt từ hôm trước vẫn chạy trên Poster V2 mà runner không thấy.
 
 ---
 
@@ -638,6 +711,7 @@ Kiểm ở 3 thời điểm: **tạo**, **duyệt**, **nhận** (cả `chay-tiep
 | R-J | Lộ bí mật trong log | Che theo giá trị + mẫu; env tối thiểu (§4.7) |
 | R-K | XSS điều khiển máy nhà | Tự host + CSP; đợt 3 chỉ nút; chữ tự do cần mật khẩu; ghi cần chữ ký Worker (§8.3, §9) |
 | R-L | Agent cùng user tự duyệt hoặc nới hạn mức | D7 chữ ký + kiểm lại lúc nhận; trần trong code; còn lại: agent cố ý sửa code bản cài (§8.3) |
+| R-Q | Sửa `runner.db` để chạy lại việc tốn tiền đã duyệt (R-11 P1-1) | D9: sổ tiêu một lần trên KV `SO_DUYET`, runner tiêu ngay trước mỗi lần chạy; còn lại: KV nhất quán cuối cùng, DoS bằng `.runner_key` (§8.3) |
 | R-M | Instance thứ hai giết job của instance đang chạy | Mutex + lock ở dòng đầu `main()` (§4.1); test trong A-2 |
 | R-N | Huỷ `voice_pv` để lại mp3 hỏng; PerfectVoice vẫn dùng GPU vài phút | Đối soát ffprobe + đổi tên `.hong-<id>`; web ghi rõ |
 | R-O | Workers Static Assets không áp `_headers` | Kiểm bằng `wrangler dev`; dự phòng `run_worker_first=true` (§9) |
@@ -1104,6 +1178,167 @@ def cai(nguon: Path, dich: Path) -> str          # trả PHIEN_BAN; dừng (Syst
 - Việc: `tra-loi` chữ tự do cần `mat_khau` (Worker kiểm, thêm `da_xac_nhan_mat_khau: true` vào body đã ký); form `taovideo`; câu hỏi `cau_hoi` có ô mật khẩu.
 - Xong khi: test Worker (thiếu hoặc sai mật khẩu → 403) và test thuần qua.
 
+### Sửa theo review R-11 (D9): FX-9..FX-12
+
+Chạy sau đợt 4 (B-3, A-3, W-4, W-5 đã có code), trước khi mở đợt 4 cho người dùng. Thứ tự: FX-9 → (FX-10 ∥ FX-11 ∥ FX-12) → tích hợp.
+
+**FX-9 · culiapp-backend · Chữ ký tiêu, schema 2, hạn mức theo lần tiêu, API xin duyệt lại**
+- ĐƯỢC SỬA: `tools/runner/chu_ky.py`, `tools/runner/vector_ky.json`, `tools/runner/kho_viec.py`, `tools/runner/han_muc.py`, `tools/runner/api.py`, `tools/test_runner_chu_ky.py`, `tools/test_runner_kho_viec.py`, `tools/test_runner_han_muc.py`, `tools/test_runner_api.py`
+- Phụ thuộc: không (B-3 đã xong).
+- Hiện trạng lúc viết phiếu: `tools/test_runner_chu_ky.py:368-405`, `:556-558` đã gọi `chu_ky.kiem_tieu`, nhưng `chu_ky.py` chưa có hàm này. Kỹ sư giữ tên và chữ ký mà test đang dùng.
+- Interface (đúng chữ ký):
+
+```python
+# chu_ky.py
+def chuoi_ky_tieu(id: str, chu_ky_duyet: str, nonce: str) -> bytes
+    # UTF-8 của "kho-tieu-v1\n" + id + "\n" + sha256_hex(chu_ky_duyet.encode()) + "\n" + nonce
+def kiem_tieu(kcc: Ed25519PublicKey, id: str, chu_ky_duyet: str, nonce: str, ky: str) -> bool
+    # ky: base64url không padding; sai định dạng → False, không ném
+
+# kho_viec.py
+SCHEMA = "2"   # mở DB '1' → ALTER TABLE viec ADD COLUMN so_lan_tieu INTEGER NOT NULL DEFAULT 0;
+               #               ALTER TABLE viec ADD COLUMN tieu_luc_dau TEXT; meta schema='2' (một transaction)
+class KhoViec:
+    def ghi_tieu(self, id: str) -> dict                 # so_lan_tieu += 1; tieu_luc_dau = bay_gio nếu rỗng; trả việc mới
+    def xin_duyet_lai(self, id: str, boi: str, ve_uoc_tinh: bool = False) -> dict
+        # CAS (loi|can_tra_loi) → cho_duyet; ve_uoc_tinh=True → cho + buoc='uoc_tinh' (genmax chưa có uoc_tinh);
+        # loi_duyet, duyet_boi, duyet_luc, chu_ky_duyet = NULL; giữ session_id, phien_da_tao, loi, cau_hoi;
+        # raise SaiTrangThai / TrungViec
+
+# han_muc.py — §10 "Đếm hạn mức ngày theo số lần tiêu" + poster theo tài khoản (đã có trong cây làm việc)
+def so_luong_ngay(ma_loai: str, tham_so: object, so_lan_tieu: int = 0) -> int   # × max(1, so_lan_tieu)
+def khoa_tai_khoan_poster(tham_so: object) -> str | None                        # đã có, han_muc.py:147
+def video_poster_tai_khoan_ngay(kho: KhoViec, khoa_tk: str | None, ngay: date, tru_id: str | None = None) -> int  # đã có, :169
+
+# api.py
+def co_the_chay_tiep(v: dict) -> bool        # thêm: loại tốn tiền (tra DANH_MUC theo v['loai']) → False
+def co_the_xin_duyet_lai(v: dict) -> bool    # loại tốn tiền, trang_thai ∈ {'loi','can_tra_loi'},
+                                             # không tien_trinh_cu_con_song
+```
+
+- Việc:
+  - route `POST /viec/<id>/xin-duyet-lai` (§8.1), thêm vào `_RE_ROUTE_HANH_DONG` (`tools/runner/api.py:67`) và `HANH_DONG` (`:480`);
+  - `p_chay_tiep` (`:431`): loại tốn tiền → 409 "việc tốn tiền không chạy tiếp được — dùng Xin duyệt lại";
+  - `p_tra_loi`: loại tốn tiền → 409 "việc tốn tiền: dùng Xin duyệt lại" (A-D9b);
+  - `p_xin_duyet_lai`: `voice_genmax` có `uoc_tinh` rỗng → `xin_duyet_lai(..., ve_uoc_tinh=True)`, còn lại → `cho_duyet`;
+  - `danh_muc.py` không nằm trong phiếu này: giới hạn `so_video_ngay` 1–100 đã có ở `tools/runner/danh_muc.py:63`;
+  - `_ra` thêm `co_the_xin_duyet_lai`;
+  - `/suc-khoe` thêm `chan_ton_tien = bool(trang_thai_lan().get("chan_ton_tien"))`;
+  - `vector_ky.json` thêm mục `tieu` (id, chu_ky_duyet của lời duyệt mẫu, nonce cố định, `chuoi_hex`, `ky`) sinh từ seed test sẵn có.
+- Lệnh kiểm chứng: `python -B -m pytest tools/test_runner_chu_ky.py tools/test_runner_kho_viec.py tools/test_runner_han_muc.py tools/test_runner_api.py -q`
+- Xong khi (mỗi mục ≥1 test):
+  - `kiem_tieu` đúng với vector; sai khi đổi 1 ký tự nonce, id hoặc chu_ky_duyet;
+  - DB schema 1 mở ra lên 2, dữ liệu cũ giữ nguyên;
+  - `ghi_tieu` hai lần → `so_lan_tieu=2`, `tieu_luc_dau` không đổi;
+  - `xin_duyet_lai` xoá đúng 4 trường; việc trùng đang mở → `TrungViec`;
+  - API: `chay-tiep` loại tốn tiền → 409; `xin-duyet-lai` loại miễn phí → 409; `tra-loi` loại tốn tiền → 409;
+  - `xin-duyet-lai` từ `can_tra_loi` → `cho_duyet`;
+  - genmax `loi` chưa có `uoc_tinh` → `cho` + `buoc='uoc_tinh'`; genmax có `uoc_tinh` → `cho_duyet`;
+  - muse 10 clip đã tiêu 1 lần + duyệt lại 10 clip → vượt `muse_clip_ngay` 15;
+  - poster cùng folder 60 + 50 video/ngày cùng ngày → việc thứ hai bị chặn ở `tao`, `duyet` và `nhan`; khác folder 60 + 50 → qua; một việc 101 → 400;
+  - test cũ vẫn qua.
+
+**FX-10 · culiapp-automation · Tiêu lời duyệt trước mỗi lần chạy, chặn khi lệch tổng kiểm**
+- ĐƯỢC SỬA: `tools/runner/so_duyet.py` (mới), `tools/runner/vong_lap.py`, `tools/chay_runner.py`, `tools/test_runner_so_duyet.py` (mới), `tools/test_runner_vong_lap.py`, `tools/test_runner_chay.py`
+- Phụ thuộc: FX-9.
+- Đầu vào trưởng phòng ghi vào phiếu: giá trị `WORKER_ORIGIN` (origin https của Worker `kho-san-pham` đang phục vụ web Kho). Phiếu không có giá trị này → kỹ sư trả `BLOCKED`.
+- Interface:
+
+```python
+# so_duyet.py
+WORKER_ORIGIN: str                       # hằng số, giá trị theo phiếu
+def tieu_duyet(origin: str, khoa_runner: str, kcc, id: str, chu_ky_duyet: str, *,
+               goi_http: Callable[[str, dict[str, str], bytes, float], tuple[int, bytes]] | None = None,
+               sinh_nonce: Callable[[], str] = lambda: secrets.token_hex(16),
+               timeout_s: float = 15.0) -> tuple[str, str]
+    # → ("da_tieu" | "da_dung" | "chua_ro", mô tả ngắn không chứa khoá). goi_http mặc định: urllib POST JSON.
+
+# vong_lap.py
+class BoChay:
+    def __init__(..., chan_ton_tien: bool = False,
+                 tieu: Callable[[str, str], tuple[str, str]] | None = None): ...
+    # tieu(id, chu_ky_duyet); None → mọi việc tốn tiền "chua_ro" (đứng cho, cảnh báo)
+LOI_DA_DUNG = "lời duyệt đã dùng"
+```
+
+- Việc:
+  - cổng §5.2 bước 1–4 trong `_cong_ton_tien` (`tools/runner/vong_lap.py:1055`). Bước tiêu chỉ chạy một lần mỗi lần chạy; các bước kế dùng `_con_khop_duyet` (`:1074`) như cũ, không tiêu lại;
+  - `"da_tieu"` → `kho.ghi_tieu(id)` trước khi sinh tiến trình;
+  - `ly_do_tiep_tuc` (`:328`) phân biệt duyệt lại sau trả lời và duyệt lại sau lỗi; stdin theo §5.2;
+  - `trang_thai_lan()` (`:756`) thêm `"chan_ton_tien"`;
+  - không bao giờ tự "Tiếp tục" loại tốn tiền;
+  - lời báo khởi động lại theo §4.6;
+  - `chay_runner.py` (`:153-160`): `chan_ton_tien = bool(kiem_tong(THU_MUC_APP))`; dựng `tieu` từ `so_duyet.tieu_duyet(WORKER_ORIGIN, <nội dung .runner_key>, <khoá công khai bản cài>, …)`.
+- Lệnh kiểm chứng: `python -B -m pytest tools/test_runner_so_duyet.py tools/test_runner_vong_lap.py tools/test_runner_chay.py -q && python -B tools/chay_runner.py --help`
+- Xong khi (mọi test dùng `goi_http`/`tieu` giả, **không gọi mạng thật**):
+  - `tieu_duyet`: 200 + chữ ký đúng (khoá từ seed vector) → `da_tieu`; 200 + chữ ký trên nonce khác → `chua_ro`; 409 → `da_dung`; 401/500/timeout/JSON hỏng → `chua_ro`;
+  - mỗi lần chạy gọi `tieu` đúng 1 lần, trước khi sinh tiến trình;
+  - **kịch bản R-11:** việc đã chạy xong, sửa DB `xong→cho` → sổ giả trả `da_dung` → `loi` `LOI_DA_DUNG`, chương trình giả không được sinh;
+  - `chua_ro` → `cho`, không sinh tiến trình;
+  - `chan_ton_tien=True` → không gọi `tieu`, việc đứng `cho`; việc miễn phí vẫn chạy;
+  - việc ở `can_tra_loi` → xin duyệt lại → duyệt lại → lượt 2 có `--resume`, stdin có lý do "không trả lời câu hỏi trước" (§5.2) và mục `ĐÃ DUYỆT`;
+  - genmax pha ước tính (cả khi về từ xin duyệt lại) không gọi `tieu`, xong thì sang `cho_duyet`;
+  - test cũ vẫn qua.
+
+**FX-11 · culiapp-web · Worker: route tiêu, sổ KV, sai mật khẩu bằng KV, `sha_tham_so`**
+- ĐƯỢC SỬA: `cf/src/worker.js`, `cf/test/worker.test.mjs`, `cf/test/chu-ky-cheo.test.mjs`
+- Phụ thuộc: FX-9 (mục `tieu` trong `vector_ky.json`).
+- **Hiện trạng lúc viết phiếu (A-D9 đã đọc):** cây làm việc đã có một phần FX-11, gồm:
+  - `chuoiTieuDuyet` / `kyTieuDuyet` (`cf/src/worker.js:360`, `:364`);
+  - `tieuDuyet` (`:381`), route ở `:655-656`;
+  - `sha_tham_so` trong `duyetViec` (`:553-604`);
+  - `xin-duyet-lai` trong regex `tuyenViec` (`:455`).
+
+  Đếm sai mật khẩu vẫn dùng Cache API (`:506-530`). Kỹ sư **đối chiếu và hoàn thiện** theo phiếu này, không viết lại phần đã khớp.
+- Interface (giữ tên đã có):
+  - `export async function chuoiTieuDuyet(id, chuKyDuyet, nonce) -> Uint8Array` (đúng byte §8.3);
+  - `export async function kyTieuDuyet(env, id, chuKyDuyet, nonce) -> string`;
+  - `async function tieuDuyet(req, env) -> Response`;
+  - `export async function demSaiDoc(env, user)` và `export async function demSaiGhi(env, user, dem)` (KV `sai:<user>`, TTL 900).
+- Việc:
+  - route `POST /api/runner/tieu-duyet` đứng **trước** kiểm phiên. Kiểm Origin chung (`:853-857`) chỉ chặn khi có Origin mà lệch, nên runner (không gửi Origin) đi qua được. Route khác dưới `/api/runner/` → 404;
+  - §8.3 "Tiêu lời duyệt" đúng từng nhánh;
+  - `duyetViec` kiểm `sha_tham_so` theo §8.2;
+  - thay Cache API bằng KV theo §9 mục 4;
+  - regex `tuyenViec` có `xin-duyet-lai` (lam `boi`).
+- Lệnh kiểm chứng: `node --test cf/test/`
+- Xong khi (KV giả bằng `Map`, có cờ để `put` ném lỗi):
+  - sai/thiếu `x-runner-key` → 401 và không đụng KV; body sai hình dạng → 400;
+  - lần 1 → 200, `ky` kiểm được bằng khoá công khai test; lần 2 cùng `chu_ky_duyet` (nonce khác) → 409;
+  - `put` ném → 503, không có `ky`; thiếu binding `SO_DUYET` → 503;
+  - `chuoiTieuDuyet` khớp vector `tieu`;
+  - `/duyet` thiếu hoặc lệch `sha_tham_so` → 409 và không POST máy nhà;
+  - sai mật khẩu lần 6 → 429 kể cả sau `datLaiDemSaiMatKhau()` (đọc lại từ KV giả);
+  - test cũ vẫn qua.
+
+**FX-12 · culiapp-web · Giao diện xin duyệt lại, `sha_tham_so`; video_server cho qua `xin-duyet-lai`**
+- ĐƯỢC SỬA: `web/viec.js`, `web/style.css`, `web/index.html` (chỉ tăng `viec.js?v=`), `cf/test/viec-web.test.mjs`, `tools/video_server.py`, `tools/test_video_server.py`
+- Phụ thuộc: FX-9 (tên trường `co_the_xin_duyet_lai`, `chan_ton_tien`). Chạy song song với FX-11 vì không trùng file.
+- Hiện trạng lúc viết phiếu: `web/viec.js:176`, `:228` đã có một phần nút "Xin duyệt lại". Kỹ sư đối chiếu và hoàn thiện, không viết lại.
+- Interface (hàm thuần giữa marker `viec-thuan`):
+  - `async function shaThamSo(thamSoChuan) -> string` (hex 64);
+  - `function nutHanhDong(viec, laTonTien) -> [{nhan, hanh_dong}]`, với `hanh_dong ∈ huy|chay-tiep|chay-lai|xin-duyet-lai`.
+- Việc:
+  - khung duyệt gửi `sha_tham_so` tính từ đúng `tham_so_chuan` đã vẽ;
+  - nút "Xin duyệt lại" khi `co_the_xin_duyet_lai`, kèm dòng "Lần chạy trước có thể đã tốn tiền — xem log trước khi duyệt lại";
+  - việc tốn tiền ở `can_tra_loi` (mọi loại câu hỏi): chỉ hiện nội dung câu hỏi để đọc, **không có nút trả lời**, chỉ có "Xin duyệt lại" (POST `xin-duyet-lai`) và "Huỷ" (A-D9b);
+  - form `poster_len_lich`: `so_video_ngay` 1–100, ghi chú "tối đa 100 video/ngày mỗi tài khoản (tạm tính theo folder)";
+  - dải đỏ khi `/suc-khoe.chan_ton_tien`: "Bản cài runner lệch tổng kiểm — việc tốn tiền đang bị chặn";
+  - video_server: regex §3.2 thêm `xin-duyet-lai`.
+- Lệnh kiểm chứng: `node --check web/viec.js && node --test cf/test/ && python -B -m pytest tools/test_video_server.py -q`
+- Xong khi:
+  - `nutHanhDong` của việc tốn tiền ở `loi` không có `chay-tiep`, có `xin-duyet-lai`; ở `can_tra_loi` chỉ có `xin-duyet-lai` và `huy`;
+  - `shaThamSo` khớp sha256 của Python với chuỗi tiếng Việt mẫu;
+  - video_server chuyển `/r/viec/<id>/xin-duyet-lai`;
+  - `grep -nE "on[a-z]+=\"" web/viec.js` → 0;
+  - test cũ vẫn qua.
+
+**Tích hợp FX (trưởng phòng chạy, NEEDS_APPROVAL từng bước):**
+1. `cd cf && npx wrangler deploy` (FX-11, FX-12 web). Worker phải lên **trước** runner. Nếu runner mới chạy trước, `tieu` trả `chua_ro` và việc tốn tiền chỉ đứng chờ (an toàn).
+2. Khởi động lại video_server (FX-12).
+3. Tắt runner → `python tools/cai_runner.py` → bật runner (FX-9, FX-10).
+4. Kiểm trên web: `/suc-khoe` có `chan_ton_tien: false`; một việc `poster_len_lich` 1 video được duyệt và chạy; `GET /api/viec/<id>` của việc đó có `so_lan_tieu=1`; bấm thử "Xin duyệt lại" trên một việc `loi` (nếu có).
+
 ### Bảng chồng file theo lượt
 
 | Lượt | Phiếu và file |
@@ -1113,6 +1348,8 @@ def cai(nguon: Path, dich: Path) -> str          # trả PHIEN_BAN; dừng (Syst
 | Đ4-L1 | B-3 |
 | Đ4-L2 | A-3 (`vong_lap`) · W-4 (`worker.js`) |
 | Đ4-L3 | W-5 (`viec.js`) |
+| FX-L1 | FX-9 (`chu_ky, vector_ky.json, kho_viec, han_muc, api` + 4 test) |
+| FX-L2 | FX-10 (`so_duyet, vong_lap, chay_runner` + 3 test) · FX-11 (`worker.js, worker.test.mjs, chu-ky-cheo.test.mjs`) · FX-12 (`viec.js, style.css, index.html, viec-web.test.mjs, video_server.py` + test) |
 | Đ5 | S-2 → K-1 ∥ B-4 → A-4 ∥ W-6 |
 
 `stream_json.py` thuộc A-1 ở L1 rồi A-2 ở L2 (cùng vị trí, tuần tự). `web/index.html` thuộc W-0 ở L1 rồi W-2 ở L2 (tuần tự).
@@ -1123,7 +1360,7 @@ Gợi ý cho trưởng phòng: thêm các `tools/test_runner_*.py` và `cf/test/
 
 ## 14. Câu hỏi mở cần người dùng chốt
 
-- **Q1. Hạn mức trần** (§10). Claude 40 USD-ước-tính và 12 việc mỗi ngày; Muse ≤10 clip/việc, 15 clip/ngày; GenMax ≤25 bản/việc, 2 việc/ngày; lên lịch Poster 2 lần/ngày, ≤5 video/ngày; taovideo 1/ngày; Codex 6 lượt/việc. Vì là trần trong code, muốn **nới** phải sửa code và cài lại; muốn **hạ** thì sửa `cau_hinh.json`. Đề xuất: giữ các số này.
+- **Q1. Hạn mức trần** (§10). Claude 40 USD-ước-tính và 12 việc mỗi ngày; Muse ≤10 clip/việc, 15 clip/ngày; GenMax ≤25 bản/việc, 2 việc/ngày; lên lịch Poster 2 lần/ngày, ≤100 video/ngày mỗi tài khoản (A-D9b; bản đầu là ≤5); taovideo 1/ngày; Codex 6 lượt/việc. Vì là trần trong code, muốn **nới** phải sửa code và cài lại; muốn **hạ** thì sửa `cau_hinh.json`. Đề xuất: giữ các số này.
 - **Q2. Ai được duyệt việc tốn tiền?**
   - (A, đề xuất) Cả `nhan` và `comeofage`; mỗi lần nhập lại mật khẩu của chính mình; tên người duyệt được ký vào phiếu.
   - (B) Chỉ `comeofage`.

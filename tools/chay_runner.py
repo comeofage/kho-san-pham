@@ -11,6 +11,10 @@ Thứ tự trong main() (bước 1 trước MỌI việc đụng job/tiến trì
   5. bật 2 làn.
 Trước bước 1 chỉ có phân tích tham số dòng lệnh (không I/O) để `--help` chạy được cả khi runner đang chạy.
 
+Khoá công khai (kcc) nạp MỘT lần ở bước 1 và truyền cùng đối tượng cho BoChay và API (P3-1, không nạp lười).
+D9 (FX-10): bản cài lệch TONG_KIEM → BoChay(chan_ton_tien=True): việc tốn tiền đứng chờ, việc miễn phí vẫn chạy;
+bước tiêu lời duyệt gọi Worker `vong_lap.worker_origin()` (KHO_WORKER_ORIGIN ghi đè, dùng cho test) bằng .runner_key.
+
 Mã thoát: 0 tắt bình thường · 3 đã có instance · 5 không mở được HTTP (bind lỗi / thiếu api.py) · 6 thiếu hoặc hỏng
 khoá công khai hoặc khoá runner (.runner_key).
 """
@@ -140,6 +144,16 @@ def main(argv: list[str] | None = None) -> int:
                 log.error("không đọc/sinh được khoá runner .runner_key (%s: %s) — không mở HTTP, thoát",
                           type(e).__name__, e)
                 return 6
+        else:
+            # --khong-http: không thoát vì khoá, nhưng thiếu khoá thì việc tốn tiền đứng chờ (không chạy mù)
+            try:
+                kcc, nguon_pem = _khoa_cong_khai()
+            except Exception as e:  # noqa: BLE001 — chẩn đoán: ghi lỗi, việc tốn tiền đứng chờ
+                log.error("ky_cong_khai.pem hỏng (%s: %s) — việc tốn tiền sẽ đứng chờ", type(e).__name__, e)
+            try:
+                khoa_runner = doc_hoac_tao_khoa_runner(thu_muc)
+            except (OSError, RuntimeError, ValueError) as e:
+                log.error("không đọc được .runner_key (%s: %s) — việc tốn tiền sẽ đứng chờ", type(e).__name__, e)
 
         # ---- BƯỚC 2: Job Object ----
         canh_bao_khoi: list[str] = []
@@ -150,10 +164,12 @@ def main(argv: list[str] | None = None) -> int:
 
         # ---- BƯỚC 3: DB, dọn mồ côi, đối soát ----
         from runner.kho_viec import KhoViec
-        from runner.vong_lap import BoChay, kiem_tong, tao_moi_truong
+        from runner.vong_lap import (WORKER_ORIGIN, BoChay, kiem_tong, tao_ham_tieu, tao_moi_truong,
+                                      worker_origin)
         mt = tao_moi_truong()
         hm, canh_bao = _doc_cau_hinh(thu_muc)
-        canh_bao = canh_bao_khoi + list(canh_bao) + kiem_tong(THU_MUC_APP)
+        lech_tong = kiem_tong(THU_MUC_APP)
+        canh_bao = canh_bao_khoi + list(canh_bao) + lech_tong
         for c in canh_bao:
             log.warning("cảnh báo: %s", c)
         kho = KhoViec(thu_muc / "runner.db", mt.bay_gio)
@@ -162,7 +178,13 @@ def main(argv: list[str] | None = None) -> int:
             file_khoa=[mt.repo_kho / "tools" / ".video_key", thu_muc / ".runner_key"],
             cau_hinh_radar=Path(mt.thu_muc_radar) / "cau-hinh.json",
             ten_bien_moi_truong=["GENMAX_API_KEY"]))
-        bo = BoChay(kho, mt, hm, thu_muc / "log", che, canh_bao=canh_bao)   # R-06 P3-5: cùng list với /suc-khoe
+        origin = worker_origin()
+        if origin != WORKER_ORIGIN:
+            log.warning("KHO_WORKER_ORIGIN ghi đè origin Worker tiêu lời duyệt: %s", origin)
+        tieu = tao_ham_tieu(origin, khoa_runner, kcc) if (kcc is not None and khoa_runner) else None
+        # R-06 P3-5: cùng list canh_bao với /suc-khoe; P3-1: CÙNG kcc với API; D9: lệch tổng kiểm → chặn tốn tiền
+        bo = BoChay(kho, mt, hm, thu_muc / "log", che, canh_bao=canh_bao, khoa_cong_khai=kcc,
+                    chan_ton_tien=bool(lech_tong), tieu=tieu)
         kq = bo.khoi_dong()
         log.info("khởi động lại: %s", json.dumps(kq, ensure_ascii=False))
         if kq.get("con_song"):

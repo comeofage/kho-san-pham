@@ -1,7 +1,12 @@
-"""Danh mục việc cố định (D3, docs/bo-chay-viec.md §5.1, §6.1, §4.6).
+"""Danh mục việc cố định (D3, docs/bo-chay-viec.md §5.1, §5.2, §6.1, §4.6).
 
 Web không gửi đường dẫn hay lệnh: mọi argv dựng ở đây từ tham số đã validate chặt.
 Đợt 3: radar_ban_tin, phan_tich_uid, douyin_uid, xu_ly_link_moi, poster_day_folder, voice_pv.
+Đợt 4 (tốn tiền, luôn cần duyệt có chữ ký): muse_clip, voice_genmax (2 pha), poster_len_lich.
+Đợt 5: khung taovideo (chưa mở — phiếu B-4).
+
+Loại tốn tiền KHÔNG BAO GIỜ tự chạy lại (tu_chay_lai=False, đối soát 'khong_ro'). voice_genmax chỉ thêm
+`--dong-y` khi việc ở bước 'chay' VÀ đã có đủ trường duyệt; không đường nào sinh `--gui-lai-ma`.
 """
 from __future__ import annotations
 
@@ -11,7 +16,7 @@ import os
 import re
 import sqlite3
 from contextlib import closing
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from datetime import datetime
 from pathlib import Path
 from typing import Callable
@@ -28,6 +33,63 @@ RADAR_XUAT = Path(__file__).with_name("radar_xuat.py")
 THU_MUC_SKILL_DOUYIN = "C:/Users/Mi/.gemini/config/skills/timvideodouyin"
 CONG_POSTER = 8023
 CONG_PERFECTVOICE = 7890
+CONG_VIDEO_BATCH = 3786          # app Video Batch Local (Muse), aff-muse.md
+TAO_VOICE = "tao_voice.py"       # script GenMax trong thư mục scripts skill tao-video-tu-canh-quay
+
+# ---------- đợt 4: mẫu prompt Muse cố định (web chỉ chọn MÃ, không gửi chữ) ----------
+# `@SP` = tag ảnh tham chiếu sản phẩm; agent aff-muse thay bằng tag thật (sp<6 số cuối UID>_<n>).
+MAU_PROMPT_MUSE: dict[str, str] = {
+    "xoay_360": ("Sản phẩm @SP đặt giữa nền trơn sáng, camera xoay chậm 360 độ quanh sản phẩm, ánh sáng studio "
+                 "mềm, giữ đúng hình dáng và màu sắc như ảnh, không chữ, không logo lạ"),
+    "cam_tay": ("Bàn tay người cầm sản phẩm @SP giơ lên trước ống kính rồi xoay nhẹ cho thấy các mặt, nền phòng "
+                "khách sáng tự nhiên, quay dọc cận cảnh, giữ đúng sản phẩm như ảnh"),
+    "can_canh": ("Cận cảnh macro chi tiết bề mặt và chất liệu của sản phẩm @SP, camera lia chậm từ trái sang phải, "
+                 "ánh sáng bên tạo khối, nét căng, không chữ"),
+    "dung_that": ("Người đang dùng sản phẩm @SP đúng công dụng trong bối cảnh đời thường tại nhà, chuyển động tự "
+                  "nhiên, góc quay ngang tầm mắt, sản phẩm giữ đúng như ảnh"),
+    "dat_ban": ("Sản phẩm @SP được đặt nhẹ xuống mặt bàn gỗ sáng, camera đẩy chậm vào gần, nắng sớm qua cửa sổ, "
+                "không khí gọn gàng, không chữ"),
+    "mo_hop": ("Đôi tay mở hộp giao hàng, lấy sản phẩm @SP ra và đặt lên bàn, góc quay từ trên xuống, ánh sáng "
+               "ấm, sản phẩm giữ đúng như ảnh"),
+    "truoc_sau": ("Khung hình chia đôi trước và sau khi dùng sản phẩm @SP, bên trái lộn xộn, bên phải gọn gàng "
+                  "sạch sẽ, chuyển cảnh mượt, không chữ"),
+}
+TEN_MAU_MUSE: dict[str, str] = {
+    "xoay_360": "Xoay 360° nền trơn", "cam_tay": "Cầm tay xoay", "can_canh": "Cận cảnh chất liệu",
+    "dung_that": "Dùng thật tại nhà", "dat_ban": "Đặt lên bàn", "mo_hop": "Mở hộp", "truoc_sau": "Trước / sau",
+}
+MUSE_THOI_LUONG = (10, 15)
+MUSE_TI_LE = ("9:16",)
+POSTER_VIDEO_NGAY = (1, 100)     # FX-11: người dùng chốt ≤100 video/tài khoản/ngày (han_muc kiểm tổng)
+_RE_MA_BAN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_]{0,19}$", re.ASCII)
+_TRUONG_DUYET = ("loi_duyet", "duyet_boi", "duyet_luc", "chu_ky_duyet")
+
+_CAM_MUSE: tuple[str, ...] = (
+    "Bash(*/api/accounts*)", "Bash(*/api/settings*)", "Bash(*/api/stop*)", "Bash(*/api/jobs/archive*)",
+    "Bash(*/api/refs/remove*)", "Bash(*Start.cmd*)", "Bash(*taskkill*)",
+)
+_CAM_POSTER: tuple[str, ...] = (
+    "Bash(*post_now*)", "Bash(*post_video_direct*)", "Bash(*post_queue_item*)", "Bash(*queue_reset_all*)",
+    "Bash(*queue_clear_pending*)", "Bash(*delete_*)", "Bash(*v2_data.db*)", "Bash(*uvicorn*)",
+    "Edit(//E:/tool/tiktok_poster_v2/**)", "Write(//E:/tool/tiktok_poster_v2/**)",
+    # [P2-3] route ghi HTTP (backend/routers/queue.py, core/poster_api.py, settings/accounts/folders/calendar).
+    # Chỉ plan_folder (/folders/<id>/plan) và batch_schedule (/folders/batch_schedule) được phép ghi.
+    "Bash(*/run*)", "Bash(*/post*)", "Bash(*reset-all*)", "Bash(*reset_all*)", "Bash(*autopost*)",
+    "Bash(*-X DELETE*)", "Bash(*-XDELETE*)", "Bash(*--request DELETE*)",
+    "Bash(*-X PUT*)", "Bash(*-XPUT*)", "Bash(*--request PUT*)",
+    "Bash(*-X PATCH*)", "Bash(*-XPATCH*)", "Bash(*--request PATCH*)",
+    "Bash(*pending/clear*)", "Bash(*post/direct*)", "Bash(*/queue/batch*)", "Bash(*unstick*)",
+    "Bash(*random_shuffle*)", "Bash(*/retry*)", "Bash(*reschedule-overdue*)", "Bash(*autogen-captions*)",
+    "Bash(*calendar/plans*)", "Bash(*cooldown*)", "Bash(*login_and_capture*)", "Bash(*cookies_from_json*)",
+    "Bash(*test-cookies*)", "Bash(*clean_profiles*)", "Bash(*clean-profile*)", "Bash(*drive-reauth*)",
+    "Bash(*backup-now*)",
+    # hàm ghi của desktop/api_client.py ApiClient (aff-poster gọi qua python -c)
+    "Bash(*add_to_queue*)", "Bash(*queue_batch*)", "Bash(*queue_unstick*)", "Bash(*queue_random_shuffle*)",
+    "Bash(*queue_retry*)", "Bash(*create_account*)", "Bash(*update_account*)", "Bash(*create_folder*)",
+    "Bash(*update_folder*)", "Bash(*archive_folder*)", "Bash(*update_setting*)", "Bash(*account_clean_profile*)",
+    "Bash(*account_login_capture*)", "Bash(*test_cookies*)", "Bash(*clean_all_profiles*)",
+    "Bash(*create_calendar_plan*)", "Bash(*update_calendar_plan*)", "Bash(*views_refresh*)",
+)
 
 _CONG_CU_CAM_CO_DINH: tuple[str, ...] = (
     "AskUserQuestion", "Bash(git push*)", "Bash(*wrangler*)", "Bash(*deploy_cloudflare*)", "Bash(*gui_telegram*)",
@@ -203,8 +265,113 @@ def _ts_voice(ts: dict, mt: MoiTruong) -> dict:
     return {**co_ban, "me": me}
 
 
+def _la_so_nguyen(x: object) -> bool:
+    return isinstance(x, int) and not isinstance(x, bool)
+
+
+def _ts_muse(ts: dict, mt: MoiTruong) -> dict:
+    _chi_khoa(_la_dict(ts), {"uid", "du_an", "mau", "thoi_luong", "ti_le"})
+    co_ban = _ts_poster({"uid": ts.get("uid"), "du_an": ts.get("du_an")}, mt)
+    mau = ts.get("mau")
+    if not isinstance(mau, list) or not 1 <= len(mau) <= len(MAU_PROMPT_MUSE):
+        raise ThamSoLoi(f"mau phải là danh sách 1–{len(MAU_PROMPT_MUSE)} mã mẫu")
+    if any(not isinstance(m, str) or m not in MAU_PROMPT_MUSE for m in mau):
+        raise ThamSoLoi(f"mau chỉ nhận mã trong danh mục: {sorted(MAU_PROMPT_MUSE)}")
+    if len(set(mau)) != len(mau):
+        raise ThamSoLoi("mau bị trùng mã")
+    thoi_luong = ts.get("thoi_luong", MUSE_THOI_LUONG[0])
+    if not _la_so_nguyen(thoi_luong) or thoi_luong not in MUSE_THOI_LUONG:
+        raise ThamSoLoi(f"thoi_luong phải là một trong {list(MUSE_THOI_LUONG)}")
+    ti_le = ts.get("ti_le", MUSE_TI_LE[0])
+    if ti_le not in MUSE_TI_LE:
+        raise ThamSoLoi(f"ti_le phải là một trong {list(MUSE_TI_LE)}")
+    return {**co_ban, "mau": list(mau), "thoi_luong": thoi_luong, "ti_le": ti_le}
+
+
+MA_BAN_TOI_DA_DOC = 200      # chỉ chặn dữ liệu vô lý lúc đọc; trần hạn mức (25) do kiem_han_muc → 429
+
+
+def _kiem_ma_ban(ma_ban: object, tran: int | None = None) -> list[str]:
+    """Danh sách mã bản GenMax: 1–`tran` (mặc định trần code genmax_ban_moi_viec), mỗi mã an toàn cho argv
+    (không bắt đầu bằng '-'), không trùng."""
+    if tran is None:
+        from .han_muc import HAN_MUC_TRAN
+        tran = int(HAN_MUC_TRAN["genmax_ban_moi_viec"])
+    if not isinstance(ma_ban, list) or not 1 <= len(ma_ban) <= tran:
+        raise ThamSoLoi(f"danh sách mã bản phải có 1–{tran} mã")
+    if any(not isinstance(m, str) or not _RE_MA_BAN.fullmatch(m) for m in ma_ban):
+        raise ThamSoLoi("mã bản sai định dạng")
+    if len(set(ma_ban)) != len(ma_ban):
+        raise ThamSoLoi("mã bản bị trùng")
+    return list(ma_ban)
+
+
+def _ts_genmax(ts: dict, mt: MoiTruong) -> dict:
+    """Như voice_pv + runner tự gắn `ma_ban` (trang_thai.py ma) để lời duyệt ký đúng danh sách bản sẽ gửi.
+    Web KHÔNG gửi được `ma_ban` (khoá lạ → 400)."""
+    co_ban = _ts_voice(ts, mt)
+    p = _du_an(co_ban, mt)
+    try:
+        ds = mt.ds_ma_voice(p, co_ban["me"])
+    except Exception as e:   # noqa: BLE001 — subprocess trang_thai.py (quá giờ, OSError…): báo rõ thay vì 500
+        log.warning("ds_ma_voice lỗi: %r", e)
+        ds = None
+    if ds is None:
+        raise ThamSoLoi("không lấy được danh sách mã bản của mẻ (trang_thai.py ma lỗi) — kiểm trên máy")
+    return {**co_ban, "ma_ban": _kiem_ma_ban(ds, MA_BAN_TOI_DA_DOC)}
+
+
+def ds_folder_poster(mt: MoiTruong) -> list[dict]:
+    """Danh sách folder Poster đã chuẩn hoá [{id:int, ten:str}] từ `mt.doc_folder_poster()`.
+    Mục hỏng bị bỏ. Không đọc được (Poster tắt, venv lỗi…) → ThamSoLoi."""
+    try:
+        tho = mt.doc_folder_poster()
+    except Exception as e:   # noqa: BLE001 — hàm do A-3 cấp (subprocess venv Poster): lỗi gì cũng phải thành thông báo
+        log.warning("không đọc được danh sách folder Poster: %r", e)
+        raise ThamSoLoi(f"không đọc được danh sách folder Poster ({type(e).__name__}) — Poster V2 đã mở chưa?") from e
+    if not isinstance(tho, list):
+        raise ThamSoLoi("danh sách folder Poster không đúng dạng")
+    ra: list[dict] = []
+    for f in tho:
+        if not isinstance(f, dict):
+            continue
+        fid = f.get("id")
+        if isinstance(fid, str) and fid.isascii() and fid.isdigit() and len(fid) <= 9:
+            fid = int(fid)
+        if not _la_so_nguyen(fid) or not 0 < fid < 10 ** 9:
+            continue
+        ten = f.get("ten", f.get("name"))
+        ra.append({"id": fid, "ten": ten[:120] if isinstance(ten, str) else ""})
+    return ra
+
+
+def _ts_poster_len_lich(ts: dict, mt: MoiTruong) -> dict:
+    _chi_khoa(_la_dict(ts), {"folder_id", "so_video_ngay"})
+    fid = ts.get("folder_id")
+    if not _la_so_nguyen(fid) or not 0 < fid < 10 ** 9:
+        raise ThamSoLoi("folder_id phải là số nguyên dương (lấy từ danh sách folder Poster)")
+    n = ts.get("so_video_ngay")
+    if not _la_so_nguyen(n) or not POSTER_VIDEO_NGAY[0] <= n <= POSTER_VIDEO_NGAY[1]:
+        raise ThamSoLoi(f"so_video_ngay phải là số nguyên {POSTER_VIDEO_NGAY[0]}–{POSTER_VIDEO_NGAY[1]}")
+    if fid not in {f["id"] for f in ds_folder_poster(mt)}:
+        raise ThamSoLoi(f"không có folder Poster id {fid}")
+    return {"folder_id": fid, "so_video_ngay": n}
+
+
+def _ts_taovideo(_ts: dict, _mt: MoiTruong) -> dict:
+    raise ThamSoLoi("taovideo chưa mở (đợt 5, phiếu B-4)")
+
+
 def _cho_chay(_ts: dict) -> tuple[str, str]:
     return ("cho", "chay")
+
+
+def _cho_duyet(_ts: dict) -> tuple[str, str]:
+    return ("cho_duyet", "chay")
+
+
+def _cho_uoc_tinh(_ts: dict) -> tuple[str, str]:
+    return ("cho", "uoc_tinh")
 
 
 # ---------- điều kiện trước ----------
@@ -242,6 +409,31 @@ def _dk_poster(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
         return _viec_tay(f"Mở Poster V2 trên máy (cổng {CONG_POSTER} chưa sống) rồi bấm Đã làm xong")
     if not (p / "kich-ban" / "poster_captions.txt").is_file():
         return _viec_tay(f"Dự án chưa có file caption {(p / 'kich-ban' / 'poster_captions.txt').as_posix()}")
+    return None
+
+
+def _dk_muse(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
+    p = _dk_du_an(ts, mt)
+    if isinstance(p, CanNguoiDung):
+        return p
+    if not mt.cong_song(CONG_VIDEO_BATCH):
+        return _viec_tay(f"Mở app Video Batch Local trên máy (Start.cmd; cổng {CONG_VIDEO_BATCH} chưa sống) rồi bấm "
+                         "Đã làm xong")
+    return None
+
+
+def _dk_genmax(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
+    p = _dk_du_an(ts, mt)
+    if isinstance(p, CanNguoiDung):
+        return p
+    if mt.ffmpeg_ngoai():
+        return "ban"
+    return None
+
+
+def _dk_poster_len_lich(_ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
+    if not mt.cong_song(CONG_POSTER):
+        return _viec_tay(f"Mở Poster V2 trên máy (cổng {CONG_POSTER} chưa sống) rồi bấm Đã làm xong")
     return None
 
 
@@ -365,6 +557,90 @@ def _buoc_voice(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
                                "--project", p.as_posix(), "--batch", me], p, DANH_MUC["voice_pv"].het_gio_s)]
 
 
+def _co_du_duyet(viec: dict) -> bool:
+    return all(isinstance(viec.get(k), str) and viec.get(k) for k in _TRUONG_DUYET)
+
+
+def _buoc_genmax(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    """§5.2 hai pha. Pha 'chay' (gọi API, TỐN TIỀN) chỉ khi viec['buoc'] == 'chay' ĐÚNG NGUYÊN VĂN và việc đã có đủ
+    trường duyệt; mọi giá trị khác → pha ước tính (không --dong-y, không gọi API).
+    Chữ ký duyệt do vòng chạy kiểm (chu_ky.kiem_duyet) ngay trước khi nhận — ở đây chỉ chặn thêm một lớp.
+    `--ma` ghim đúng danh sách bản đã ký duyệt; KHÔNG có đường nào thêm `--gui-lai-ma`."""
+    p = _du_an(ts, mt)
+    me = ts.get("me")
+    if not isinstance(me, str) or not RE_ME.fullmatch(me):
+        raise ThamSoLoi("me sai định dạng")
+    ma_ban = _kiem_ma_ban(ts.get("ma_ban"))
+    pha_chay = viec.get("buoc") == "chay"
+    if pha_chay and not _co_du_duyet(viec):
+        raise ThamSoLoi("voice_genmax chưa có lời duyệt đầy đủ — không chạy pha gọi API")
+    argv = [PYTHON, (Path(mt.thu_muc_scripts) / TAO_VOICE).as_posix(), "--project", p.as_posix(), "--batch", me]
+    if pha_chay:
+        argv.append("--dong-y")
+    argv += ["--ma", *ma_ban]
+    b = _buoc("genmax_chay" if pha_chay else "genmax_uoc_tinh", argv, p, DANH_MUC["voice_genmax"].het_gio_s)
+    khoa = os.environ.get("GENMAX_API_KEY", "").strip()
+    if pha_chay and khoa:      # §4.7: chỉ pha chay mới nhận key; không có thì tao_voice tự đọc biến tài khoản
+        b = replace(b, env_them={"GENMAX_API_KEY": khoa})
+    return [b]
+
+
+def _buoc_muse(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    return [_buoc_claude(DANH_MUC["muse_clip"], viec, mt, _du_an(ts, mt))]
+
+
+def _buoc_poster_len_lich(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    return [_buoc_claude(DANH_MUC["poster_len_lich"], viec, mt, Path(mt.thu_muc_du_lieu))]
+
+
+def _buoc_taovideo(_ts: dict, _viec: dict, _mt: MoiTruong) -> list[BuocChay]:
+    raise ThamSoLoi("taovideo chưa mở (đợt 5, phiếu B-4)")
+
+
+# ---------- nội dung phiếu đợt 4 (cho phieu.py dùng lại; khoá giống phieu._noi_dung_loai) ----------
+
+def noi_dung_phieu_dot4(loai: "LoaiViec", viec: dict, mt: MoiTruong) -> dict[str, str]:
+    """Mục tiêu/đầu vào/được ghi/cấm/xong khi cố định cho muse_clip, poster_len_lich. Chỉ chèn giá trị đã validate
+    và prompt CỐ ĐỊNH trong MAU_PROMPT_MUSE (mã lạ → ThamSoLoi, không chèn chữ tuỳ ý)."""
+    ts = viec.get("tham_so") or {}
+    if loai.ma == "muse_clip":
+        p = _du_an(ts, mt)
+        mau = ts.get("mau")
+        if not isinstance(mau, list) or not mau or any(m not in MAU_PROMPT_MUSE for m in mau):
+            raise ThamSoLoi("mau trong việc không hợp lệ")
+        tl, tile = ts.get("thoi_luong"), ts.get("ti_le")
+        if tl not in MUSE_THOI_LUONG or tile not in MUSE_TI_LE:
+            raise ThamSoLoi("thoi_luong/ti_le trong việc không hợp lệ")
+        P = p.as_posix()
+        ds = "\n".join(f"- {m}: {MAU_PROMPT_MUSE[m]}" for m in mau)
+        return {
+            "muc_tieu": (f"tạo {len(mau)} clip b-roll Muse, mỗi clip {tl} giây, tỉ lệ {tile}, cho sản phẩm UID "
+                         f"{kiem_uid(ts.get('uid'))}, mỗi clip đúng một mẫu prompt liệt kê bên dưới"),
+            "dau_vao": f"thư mục dự án {P} (ảnh sản phẩm trong {P}/anh/pdp/), app Video Batch Local 127.0.0.1:3786",
+            "duoc_ghi": f"{P}/muse/ (clip, nhật ký 00-muse-log.md, _ref/, _frames/) và thêm ảnh tag mới vào app",
+            "cam": ("tạo quá số clip ở trên, đổi prompt ngoài mẫu (chỉ được thay @SP bằng tag ảnh), /api/accounts*, "
+                    "/api/settings, /api/stop, /api/jobs/archive, /api/refs/remove, đụng job không phải của mình, "
+                    "bật/tắt app, sửa raw/ cuts/ takes/"),
+            "xong_khi": "mỗi clip có ffprobe + 3 frame đã đọc, ghi đạt/không đạt trong 00-muse-log.md",
+            "them": "Mẫu prompt (cố định, @SP = tag ảnh sản phẩm):\n" + ds,
+        }
+    if loai.ma == "poster_len_lich":
+        fid, n = ts.get("folder_id"), ts.get("so_video_ngay")
+        if not _la_so_nguyen(fid) or not _la_so_nguyen(n) or not POSTER_VIDEO_NGAY[0] <= n <= POSTER_VIDEO_NGAY[1]:
+            raise ThamSoLoi("folder_id/so_video_ngay trong việc không hợp lệ")
+        return {
+            "muc_tieu": (f"lên lịch đăng cho đúng folder {fid} trên Poster V2 với {n} video/ngày "
+                         "(plan_folder/batch_schedule theo file agent), không đổi gì khác"),
+            "dau_vao": f"folder Poster id {fid}; backend 127.0.0.1:{CONG_POSTER}",
+            "duoc_ghi": "chỉ lịch đăng của đúng folder trên; báo cáo trong thư mục làm việc hiện tại",
+            "cam": ("post_now, post_video_direct, post_queue_item, đổi account/caption/UID/path, xoá folder/video/"
+                    "hàng đợi, đụng folder khác, bật/tắt autopost, sửa file trong E:/tool/tiktok_poster_v2"),
+            "xong_khi": "list_queue/calendar của folder cho thấy đúng số video/ngày đã lên lịch, chép số liệu thật",
+            "them": "",
+        }
+    raise ThamSoLoi(f"loại {loai.ma} không có phiếu đợt 4")
+
+
 # ---------- đối soát đầu ra (§4.6, §5.1) ----------
 
 def _dau_ra_radar(ts: dict, viec: dict, mt: MoiTruong) -> str:
@@ -437,6 +713,11 @@ def _dau_ra_voice(ts: dict, viec: dict, mt: MoiTruong) -> str:
     return "xong"
 
 
+def _dau_ra_khong_ro(_ts: dict, _viec: dict, _mt: MoiTruong) -> str:
+    # Loại tốn tiền: không đoán đầu ra, không bao giờ tự chạy lại (CL21).
+    return "khong_ro"
+
+
 def kiem_dau_ra_an_toan(loai: "LoaiViec", tham_so: dict, viec: dict, mt: MoiTruong) -> str:
     """Bọc kiem_dau_ra cho bước khởi động lại: lỗi bất ngờ không được làm sập runner → 'khong_ro' + log."""
     try:
@@ -497,6 +778,49 @@ DANH_MUC: dict[str, LoaiViec] = {
         tham_so=_ts_mo_ta(_UID, _DU_AN, _ME), kiem_tham_so=_ts_voice,
         tinh_khoa=lambda ts: f"{ts['du_an']}:{ts['me']}",
         trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_voice, lap_buoc=_buoc_voice, kiem_dau_ra=_dau_ra_voice),
+    # ----- đợt 4: tốn tiền / rủi ro — luôn cần duyệt có chữ ký, không tự chạy lại -----
+    "muse_clip": LoaiViec(
+        ma="muse_clip", ten="Sinh clip AI (Muse)", dot=4, lan_chay="nhe", ton_tien=True, agent="aff-muse",
+        tu_chay_lai=False, het_gio_s=90 * 60, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta(_UID, _DU_AN,
+                          {"ten": "mau", "kieu": "chon_nhieu", "bat_buoc": True, "min": 1, "max": 10,
+                           "lua_chon": [{"ma": k, "ten": TEN_MAU_MUSE[k]} for k in MAU_PROMPT_MUSE]},
+                          {"ten": "thoi_luong", "kieu": "chon", "lua_chon": list(MUSE_THOI_LUONG),
+                           "mac_dinh": MUSE_THOI_LUONG[0]},
+                          {"ten": "ti_le", "kieu": "chon", "lua_chon": list(MUSE_TI_LE), "mac_dinh": MUSE_TI_LE[0]}),
+        kiem_tham_so=_ts_muse, tinh_khoa=lambda ts: str(ts["du_an"]), trang_thai_dau=_cho_duyet,
+        dieu_kien_truoc=_dk_muse, lap_buoc=_buoc_muse, kiem_dau_ra=_dau_ra_khong_ro,
+        bo_cong_cu=("Read", "Write", "Edit", "Glob", "Grep", "Bash"), cong_cu_cam=_CAM_MUSE, tran_usd_moi_luot=3.0),
+    "voice_genmax": LoaiViec(
+        ma="voice_genmax", ten="Voice GenMax (Adam)", dot=4, lan_chay="gpu", ton_tien=True, agent=None,
+        tu_chay_lai=False, het_gio_s=3 * 3600, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta(_UID, _DU_AN, _ME), kiem_tham_so=_ts_genmax,
+        tinh_khoa=lambda ts: f"{ts['du_an']}:{ts['me']}",
+        trang_thai_dau=_cho_uoc_tinh, dieu_kien_truoc=_dk_genmax, lap_buoc=_buoc_genmax,
+        kiem_dau_ra=_dau_ra_khong_ro),
+    "poster_len_lich": LoaiViec(
+        ma="poster_len_lich", ten="Lên lịch đăng Poster", dot=4, lan_chay="nhe", ton_tien=True, agent="aff-poster",
+        tu_chay_lai=False, het_gio_s=30 * 60, tai_nguyen=frozenset({"poster"}),
+        tham_so=_ts_mo_ta({"ten": "folder_id", "kieu": "folder_poster", "bat_buoc": True},
+                          {"ten": "so_video_ngay", "kieu": "int", "bat_buoc": True, "min": POSTER_VIDEO_NGAY[0],
+                           "max": POSTER_VIDEO_NGAY[1]}),
+        kiem_tham_so=_ts_poster_len_lich, tinh_khoa=lambda ts: f"folder:{ts['folder_id']}",
+        trang_thai_dau=_cho_duyet, dieu_kien_truoc=_dk_poster_len_lich, lap_buoc=_buoc_poster_len_lich,
+        kiem_dau_ra=_dau_ra_khong_ro,
+        bo_cong_cu=("Read", "Write", "Edit", "Glob", "Grep", "Bash"), cong_cu_cam=_CAM_POSTER,
+        tran_usd_moi_luot=2.0),
+    # ----- đợt 5: khung, CHƯA mở (B-4 hoàn thiện §5.3) -----
+    "taovideo": LoaiViec(
+        ma="taovideo", ten="Làm video affiliate hoàn chỉnh", dot=5, lan_chay="gpu", ton_tien=True,
+        agent="aff-taovideo", tu_chay_lai=False, het_gio_s=8 * 3600, tai_nguyen=frozenset({"kho"}),
+        tham_so=_ts_mo_ta(_UID, {"ten": "du_an_a", "kieu": "du_an", "bat_buoc": True},
+                          {"ten": "du_an_b", "kieu": "du_an_hoac_tu_tim", "bat_buoc": True},
+                          {"ten": "wm", "kieu": "chon", "lua_chon": [], "bat_buoc": True},
+                          {"ten": "gia", "kieu": "int", "min": 1000, "max": 10_000_000, "bat_buoc": False}),
+        kiem_tham_so=_ts_taovideo, tinh_khoa=lambda ts: str(ts["uid"]), trang_thai_dau=_cho_duyet,
+        dieu_kien_truoc=_dk_kho, lap_buoc=_buoc_taovideo, kiem_dau_ra=_dau_ra_khong_ro,
+        bo_cong_cu=("Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill", "Agent", "SendMessage", "TodoWrite"),
+        tran_usd_moi_luot=40.0),
 }
 
 
