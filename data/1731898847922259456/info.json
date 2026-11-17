@@ -36,5 +36,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-17T22:04:02+07:00"
+ "cap_nhat_luc": "2026-11-17T22:06:00+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟢",
+   "nguy_co": "Văn phòng phẩm thông dụng, claim toàn tính năng vật lý có thể chứng minh bằng demo nên rủi ro thấp.",
+   "khuyen_nghi": "Làm affiliate bình thường; chỉ cần quay demo thật cho các claim viết mượt/khô nhanh và tránh nói 'chính hãng'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Claim 'trơn mượt, khô nhanh không nhòe, ngòi 0.7mm, thân tam giác' là đặc tính vật lý chứng minh được bằng cảnh viết, không phải claim y tế hay phóng đại."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu riêng 'eras' (E176), không mạo danh hãng bút lớn; chỉ cần tránh gán nhãn 'chính hãng' hay so sánh trực tiếp thương hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút bi thân tam giác là kiểu dáng phổ thông, không dính kiểu dáng/bản quyền độc quyền ai; footage tự quay nên không đụng ảnh shop khác."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Văn phòng phẩm không nằm nhóm hàng hạn chế/cấm của TikTok Shop."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng cho học sinh nhưng là dụng cụ học tập thông thường, không phải đồ chơi chi tiết nhỏ nên không kích hoạt chính sách an toàn trẻ em đặc thù."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'bút chính hãng' hoặc 'hàng Việt Nam'",
+    "goi_y": "Chỉ mô tả thương hiệu ERAS E176, xuất xứ ghi theo trang (Trung Quốc) nếu khách hỏi."
+   },
+   {
+    "khong_nen": "Dùng '100% không nhòe', 'tốt nhất', 'rẻ nhất', 'cam kết'",
+    "goi_y": "Thay bằng demo thật: viết xong lướt tay qua chữ cho thấy không lem."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-17T22:06:00+07:00"
+ }
 }
