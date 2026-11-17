@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-17T22:06:18+07:00",
+ "cap_nhat_luc": "2026-11-18T06:24:51+07:00",
  "san_pham": [
   {
    "id": "1731898847922259456",
@@ -38,11 +38,11 @@
    "id": "1737876362988455565",
    "uid": "1737876362988455565",
    "link": "https://vt.tiktok.com/ZS9fTmwgDvQs2-Jn2py/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Pin sạc dự phòng VeryKing VK-PB211 10000mAh, sạc nhanh 22.5W, tích hợp 2 dây sạc, sạc đồng thời cho 4 thiết bị, nhỏ gọn tiện lợi - VK-PB211",
+   "gia": "819.574₫",
+   "shop": "VerykingGlobal",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -59,9 +59,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-17T12:26:57+07:00",
-   "cap_nhat_luc": "2026-11-17T21:57:45+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T06:24:30+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
