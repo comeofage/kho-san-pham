@@ -1,0 +1,75 @@
+{
+ "viec": "Bảng điều khiển (Bước 0 + 1a)",
+ "phieu": [
+  {
+   "ma": "P-01",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "tools/video_server.py",
+    "tools/test_video_server.py"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "fixture",
+   "chua_kiem": [
+    "qua tunnel thật: đã kiểm tay /suc-khoe"
+   ]
+  },
+  {
+   "ma": "P-02",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "cf/src/worker.js",
+    "cf/test/worker.test.mjs"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "unit",
+   "chua_kiem": [
+    "sec-fetch-site trên trình duyệt thật"
+   ]
+  },
+  {
+   "ma": "P-03",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "web/app.js",
+    "web/style.css",
+    "web/index.html"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "unit",
+   "chua_kiem": [
+    "giao diện thật sau đăng nhập"
+   ]
+  },
+  {
+   "ma": "P-02b",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "cf/src/worker.js",
+    "cf/test/worker.test.mjs",
+    "tools/video_server.py",
+    "tools/test_video_server.py"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "unit+fixture"
+  },
+  {
+   "ma": "P-03b",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "web/app.js"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "unit"
+  },
+  {
+   "ma": "P-03c",
+   "agent": "culiapp-web",
+   "duoc_sua": [
+    "web/app.js"
+   ],
+   "trang_thai": "xong",
+   "muc_kiem_chung": "compile (gioSua unit)"
+  }
+ ]
+}

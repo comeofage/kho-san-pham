@@ -41,6 +41,16 @@ function anhBia(i) {
     : `/api/anh/${encodeURIComponent(i.id)}/${encodeURIComponent(i.anh_bia)}?v=${encodeURIComponent(i.cap_nhat_luc || "")}`;
 }
 const gio = (s) => (s ? s.slice(0, 16).replace("T", " ") : "");
+const gioS = (s) => gio(typeof s === "string" ? s : ""); // dữ liệu máy nhà có thể không phải chuỗi
+// sua_luc của video là số giây epoch -> "dd/mm HH:MM" giờ VN; không hợp lệ -> "" (không bao giờ ném).
+const FMT_SUA = new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Ho_Chi_Minh", day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" });
+const gioSua = (s) => {
+  const n = typeof s === "number" ? s : typeof s === "string" && /^\d+(\.\d+)?$/.test(s.trim()) ? Number(s) : NaN;
+  if (!Number.isFinite(n) || n <= 0 || n > 8.64e9) return ""; // > 8.64e9 giây: Date ngoài khoảng hợp lệ
+  const p = Object.fromEntries(FMT_SUA.formatToParts(new Date(n * 1000)).map((x) => [x.type, x.value]));
+  return `${p.day}/${p.month} ${p.hour}:${p.minute}`;
+};
+const laChu = () => auth.user === "nhan" || auth.user === "comeofage";
 let toastT;
 function toast(msg) {
   const t = $("#toast"); t.textContent = msg; t.classList.add("on");
@@ -67,13 +77,14 @@ async function loadList() {
 function renderUser() {
   const u = $("#user");
   u.innerHTML = auth.on
-    ? `<span class="small muted">👤 ${esc(auth.ten)}</span> <button class="btn ghost sm" id="btn-out">Thoát</button>`
+    ? `${laChu() ? `<a href="#/viec" class="btn ghost sm" title="Việc chạy trên máy nhà">⚙ Việc<span class="huy-hieu" id="viec-hh" hidden></span></a> <a href="#/suc-khoe" class="btn ghost sm" title="Sức khoẻ máy nhà">🩺 Máy nhà</a> ` : ""}<span class="small muted">👤 ${esc(auth.ten)}</span> <button class="btn ghost sm" id="btn-out">Thoát</button>`
     : `<button class="btn sm" id="btn-in">Đăng nhập</button>`;
   $("#btn-out", u)?.addEventListener("click", async () => {
     await api("logout", {}).catch(() => {});
     auth.user = ""; state.list = []; renderUser(); route();
   });
   $("#btn-in", u)?.addEventListener("click", openLogin);
+  if (laChu()) capNhatHuyHieuViec(); // viec.js: huy hiệu = can_tra_loi + cho_duyet
 }
 
 function openLogin() {
@@ -162,7 +173,7 @@ function cardHtml(x, stt) {
     ${img ? `<img class="thumb" src="${esc(img)}" referrerpolicy="no-referrer" loading="lazy" alt="">` : `<div class="thumb"></div>`}
     <a class="body" href="#/sp/${encodeURIComponent(x.id)}">
       <div class="ten"><span class="stt">#${stt}</span> ${ruiRoIcon(x)} ${x.ngung_dang ? `<span class="ngung-tag" title="Có phản hồi tiêu cực — ngừng đăng video">⛔ NGỪNG ĐĂNG</span> ` : ""}${esc(x.ten || x.link)}</div>
-      <div class="small muted"><span class="badge b-${tt}">${NHAN[tt]}</span>${x.gia ? " <b>" + esc(x.gia) + "</b> ·" : ""} ${x.uid ? `<span class="uid-copy" role="button" title="Bấm để copy UID" data-copy="${esc(x.uid)}" data-copy-msg="Đã copy UID ${esc(x.uid)}">${esc(x.uid)} ⧉</span>` : "link rút gọn"}${theCua(x).map((t) => ` <span class="the-rieng">#${esc(t)}</span>`).join("")}</div>
+      <div class="small muted"><span class="badge b-${tt}">${NHAN[tt]}</span> <span class="buoc-nho bn-${tt}" title="Bước hiện tại (ước tính theo trạng thái)">${BUOC_DS[tt]}</span>${x.gia ? " <b>" + esc(x.gia) + "</b> ·" : ""} ${x.uid ? `<span class="uid-copy" role="button" title="Bấm để copy UID" data-copy="${esc(x.uid)}" data-copy-msg="Đã copy UID ${esc(x.uid)}">${esc(x.uid)} ⧉</span>` : "link rút gọn"}${theCua(x).map((t) => ` <span class="the-rieng">#${esc(t)}</span>`).join("")}</div>
     </a>
     ${tagHtml(x)}
     ${qrHtml(x)}
@@ -285,14 +296,151 @@ function doiTag(c) {
   return [c.replace(/#\S+/g, "").replace(/\s+/g, " ").trim(), ...giu, TAG_DOT.tag].join(" ");
 }
 
+// ---------- tiến độ 8 bước ----------
+// Nhãn bước trên trang danh sách: chỉ ước tính từ trang_thai (không hỏi máy nhà cho từng SP).
+const BUOC_DS = { cho: "B2 Bộ cảnh quay", da_phan_tich: "B3 Quay", da_quay: "B4–6 Sản xuất", da_lam_video: "B7–8 Duyệt/Đăng" };
+
+// --- tinhBuoc start ---
+// Hàm thuần (không đụng DOM/biến ngoài) để kiểm được bằng node.
+// info: /api/sp; tienDo: /api/video/<id>/tien-do hoặc null (máy nhà tắt); duyet: mảng duyệt; dsVideo: /api/video/<id>/ds hoặc null.
+function tinhBuoc(info, tienDo, duyet, dsVideo) {
+  const i = info || {};
+  const TAT = "máy nhà tắt";
+  const num = (x) => { const n = Number(x); return Number.isFinite(n) && n > 0 ? n : 0; };
+  const mk = (so, ten, trang_thai, ghi_chu = "") => ({ so, ten, trang_thai, ghi_chu });
+  const may = !!(tienDo && Array.isArray(tienDo.thu_muc));
+  const t = { raw: 0, takes: 0, muse: 0, voice: 0, output_poster: 0, output: 0 };
+  if (may) for (const th of tienDo.thu_muc) for (const k of Object.keys(t)) t[k] += num(th && th[k]);
+  const dlv = i.da_lam_video || {};
+  const daVideo = !!dlv.xong;
+  const daQuay = ["oneshot", "review"].some((l) => i[`da_quay_${l}`] && i[`da_quay_${l}`].xong) || !!(i.da_quay && i.da_quay.xong);
+
+  const b1 = mk(1, "Săn SP", "xong");
+  const b2 = mk(2, "Bộ cảnh quay", i.da_phan_tich ? "xong" : "chua");
+
+  let b3;
+  if (may && t.raw + t.takes > 0) b3 = mk(3, "Quay", "xong", `raw ${t.raw} · takes ${t.takes}`);
+  else if (daQuay) b3 = mk(3, "Quay", "xong", "đã gạt đã quay");
+  else if (daVideo) b3 = mk(3, "Quay", "xong", "đã làm video");
+  else b3 = mk(3, "Quay", "chua", may ? "" : TAT);
+
+  let b6;
+  const soVideo = dlv.so_video ? `${dlv.so_video} video` : "đã làm video";
+  if (may && t.output_poster > 0 && t.output > 0) b6 = mk(6, "Dựng 2 mẻ", "xong", `poster ${t.output_poster} · output ${t.output}`);
+  else if (daVideo) b6 = mk(6, "Dựng 2 mẻ", "xong", soVideo);
+  else if (may && (t.output_poster > 0 || t.output > 0)) b6 = mk(6, "Dựng 2 mẻ", "dang", "1/2 mẻ");
+  else b6 = mk(6, "Dựng 2 mẻ", "chua", may ? "" : TAT);
+
+  // Voice: mẻ autovideo dùng giọng creator trong takes (không có voice/) -> đã có video mà không voice thì bỏ qua.
+  let b5;
+  const coOutput = (may && (t.output_poster > 0 || t.output > 0)) || daVideo;
+  if (may && t.voice > 0) b5 = mk(5, "Voice", "xong", `${t.voice} file`);
+  else if (coOutput) b5 = mk(5, "Voice", "bo_qua", may ? "dùng giọng có sẵn trong takes" : `dùng giọng có sẵn trong takes · ${TAT}`);
+  else b5 = mk(5, "Voice", "chua", may ? "" : TAT);
+
+  let b4;
+  if (may && t.muse > 0) b4 = mk(4, "B-roll AI", "xong", `${t.muse} file`);
+  else if (b5.trang_thai === "xong" || b6.trang_thai !== "chua") b4 = mk(4, "B-roll AI", "bo_qua", may ? "không bắt buộc" : `không bắt buộc · ${TAT}`);
+  else b4 = mk(4, "B-roll AI", "chua", may ? "không bắt buộc" : TAT);
+
+  let b8;
+  const poster = Array.isArray(dlv.poster) ? dlv.poster : [];
+  if (poster.length) {
+    const fd = poster.map((p) => p && p.folder).filter((f) => f != null);
+    b8 = mk(8, "Đăng", "xong", fd.length ? `folder ${fd.join(", ")}` : `${poster.length} lượt`);
+  } else if (dlv.poster_folder != null) b8 = mk(8, "Đăng", "xong", `folder ${dlv.poster_folder}`);
+  else b8 = mk(8, "Đăng", "chua");
+
+  // Kiểm duyệt: video tải về điện thoại bị xoá khỏi máy nhà nên `tong` giảm dần.
+  let b7;
+  const dsDuyet = Array.isArray(duyet) ? duyet : [];
+  if (!dsVideo || !Array.isArray(dsVideo.nguon)) {
+    b7 = mk(7, "Kiểm duyệt", "chua", TAT);
+  } else {
+    const con = dsVideo.nguon.reduce((s, n) => s + num(n && n.tong), 0);
+    const khoa = (g, ten, sua) => JSON.stringify([g, ten, sua]);
+    const coThat = new Set();
+    for (const n of dsVideo.nguon) for (const c of (n && Array.isArray(n.chi_tiet) ? n.chi_tiet : [])) if (c) coThat.add(khoa(n.goc, c.ten, c.sua_luc));
+    const cuoi = new Map(); // khoá → ket_qua của mục SAU CÙNG (giống timDuyet: mục sau đè mục trước, kể cả bỏ duyệt)
+    for (const x of dsDuyet) if (x) cuoi.set(khoa(x.goc, x.ten, x.sua_luc), x.ket_qua);
+    const daChot = [...cuoi].filter(([, v]) => v === "dat" || v === "loai");
+    const conLai = daChot.filter(([k]) => coThat.has(k));
+    const da = conLai.length, dat = conLai.filter(([, v]) => v === "dat").length, loai = da - dat;
+    const daDuyetHet = daChot.length;
+    if (con > 0) {
+      if (da >= con) b7 = mk(7, "Kiểm duyệt", "xong", `${da}/${con} · Đạt ${dat} · Loại ${loai}`);
+      else if (da > 0) b7 = mk(7, "Kiểm duyệt", "dang", `${da}/${con} · Đạt ${dat} · Loại ${loai}`);
+      else b7 = mk(7, "Kiểm duyệt", "chua", `còn ${con} video chờ duyệt`);
+    } else if (daDuyetHet > 0) b7 = mk(7, "Kiểm duyệt", "xong", `đã duyệt ${daDuyetHet}`);
+    else if (b8.trang_thai === "xong" || daVideo) b7 = mk(7, "Kiểm duyệt", "bo_qua", "video đã tải hết, không duyệt trên web");
+    else b7 = mk(7, "Kiểm duyệt", "chua", "chưa có video");
+  }
+
+  return [b1, b2, b3, b4, b5, b6, b7, b8];
+}
+// Bước hiện tại = số của bước đầu tiên "chua"/"dang" (bỏ qua "xong" và "bo_qua"); 0 = Hoàn tất.
+function buocHienTai(buoc) {
+  const b = buoc.find((x) => x.trang_thai !== "xong" && x.trang_thai !== "bo_qua");
+  return b ? b.so : 0;
+}
+// --- tinhBuoc end ---
+
+// ---------- trang sức khoẻ máy nhà (chỉ đọc, không ghi gì lên máy nhà) ----------
+const GOI_Y_APP = { muse: "Mở E:\\viết bài wp\\VideoBatchLocal\\Start.cmd", perfectvoice: "Mở E:\\PerfectVoice\\Run.cmd", poster: "Mở app TikTok Poster V2" };
+function sucKhoeHtml(d) {
+  const apps = Array.isArray(d.apps) ? d.apps : [];
+  return `${d.may_nha ? `<div class="sk-banner ok">🟢 Máy nhà đang trả lời</div>` : `<div class="sk-banner">🔴 Máy nhà không trả lời${d.loi ? ": " + esc(d.loi) : ""}</div>`}
+    <p class="small muted">Giờ kiểm: ${esc(gioS(d.luc) || "—")}</p>
+    <div class="sk-ds">${apps.map((a) => {
+      const goiY = !a.song && GOI_Y_APP[String(a.ma || "").toLowerCase()];
+      return `<div class="sk-app ${a.song ? "song" : "chet"}">
+        <span class="cham" aria-hidden="true"></span>
+        <div class="sk-body"><b>${esc(a.ten || a.ma)}</b> <span class="small muted">cổng ${esc(a.cong ?? "?")}${a.luc ? " · " + esc(gioS(a.luc)) : ""}</span>
+          ${goiY ? `<div class="small sk-goi-y">👉 ${esc(goiY)}</div>` : ""}</div>
+        <span class="small sk-tt">${a.song ? "Sống" : "Tắt"}</span>
+      </div>`;
+    }).join("") || `<p class="muted">Không có thông tin app.</p>`}</div>`;
+}
+async function renderSucKhoe() {
+  if (!laChu()) { $("#app").innerHTML = `<p class="center muted">Trang này chỉ dành cho chủ kho. <a href="#/">← Về kho</a></p>`; return; }
+  $("#app").innerHTML = `<p><a href="#/" class="small">← Về kho</a></p>
+    <div class="sk">
+      <div class="row" style="justify-content:space-between"><h2 class="sk-tieu-de">🩺 Sức khoẻ máy nhà</h2><button class="btn sm" id="btn-sk">Kiểm lại</button></div>
+      <div id="sk-kq"><p class="muted">Đang kiểm…</p></div>
+    </div>`;
+  const btn = $("#btn-sk");
+  const kiem = async () => {
+    if (btn.disabled) return; // chặn bấm đúp: khoá nút trước khi await
+    btn.disabled = true; btn.textContent = "Đang kiểm…";
+    try {
+      const d = await api("suc-khoe");
+      const kq = $("#sk-kq"); if (kq) kq.innerHTML = sucKhoeHtml(d);
+    } catch (err) {
+      const kq = $("#sk-kq"); if (kq) kq.innerHTML = `<div class="sk-banner">⚠ Không kiểm được: ${esc(err.message)}</div>`;
+    } finally { btn.disabled = false; btn.textContent = "Kiểm lại"; }
+  };
+  btn.addEventListener("click", kiem);
+  await kiem();
+}
+
 // ---------- trang chi tiết ----------
+let phienCT = 0; // đánh số mỗi lần mở trang chi tiết: kết quả máy nhà về muộn của trang cũ thì bỏ
 async function renderDetail(id) {
+  const phien = ++phienCT;
   $("#app").innerHTML = `<p class="muted center">Đang tải…</p>`;
   let d;
   try { d = await api(`sp/${encodeURIComponent(id)}`); }
   catch (err) { $("#app").innerHTML = `<p class="center">${esc(err.message)}. <a href="#/">← Về kho</a></p>`; return; }
   const { info: i, md, caps, douyin } = d;
   let vtk = d.vtk || [];
+  let duyet = Array.isArray(d.duyet) ? d.duyet : [];
+  // Khoá chống bấm đúp theo video (goc|ten|sua_luc) đang POST /api/duyet — giữ ở cấp trang, không ở thẻ DOM,
+  // để panel Duyệt dựng lại (đổi tab rồi quay về) vẫn còn khoá.
+  const dangGui = new Set();
+  const khoaDv = (v) => JSON.stringify([v.goc, v.ten, v.sua_luc]);
+  const chu = laChu();
+  const may = { tai: chu, tienDo: null, ds: null }; // dữ liệu máy nhà, tải sau khi render
+  let vids = []; // video đang hiện ở tab Duyệt, theo chỉ số data-dv
   const tt = trangThai(i);
   const capList = (caps || "").split(/\r?\n/).map((s) => doiTag(s.trim())).filter(Boolean);
   const img = anhBia(i);
@@ -305,10 +453,11 @@ async function renderDetail(id) {
   $("#app").innerHTML = `
     <p><a href="#/" class="small">← Về kho</a></p>
     <div class="detail">
+      ${chu ? `<div class="buoc8" id="buoc8"></div><div class="viec-sp" id="viec-sp"></div>` : ""}
       <div class="head">
         ${img ? `<img src="${esc(img)}" referrerpolicy="no-referrer" alt="">` : ""}
         <div style="min-width:0">
-          <h1 title="Bấm để xem đủ tên" onclick="this.classList.toggle('full')">${esc(i.ten || "(chưa có tên — chờ máy nhà phân tích)")}</h1>
+          <h1 title="Bấm để xem đủ tên" id="sp-ten">${esc(i.ten || "(chưa có tên — chờ máy nhà phân tích)")}</h1>
           <span class="badge b-${tt}">${NHAN[tt]}</span>
           <dl class="kv">
             <dt>UID</dt><dd>${i.uid ? `${esc(i.uid)} <button class="btn ghost sm" data-copy="${esc(i.uid)}">Copy</button>` : "chưa có"}</dd>
@@ -334,10 +483,13 @@ async function renderDetail(id) {
         <button class="tab" data-tab="ruiro">${i.rui_ro && i.rui_ro.ket_luan ? i.rui_ro.ket_luan.muc_do : "⚪"} Rủi ro</button>
         <button class="tab" data-tab="vtk">🎬 Video tham khảo (<span id="vtk-dem">${vtk.length}</span>)</button>
         <button class="tab" data-tab="video">🎞 Làm video</button>
+        ${chu ? `<button class="tab" data-tab="duyet">✅ Duyệt</button>` : ""}
         <button class="tab" data-tab="note">📝 Ghi chú</button>
       </div>
       <div class="panel" id="panel"></div>
     </div>`;
+  // CSP script-src 'self' chặn onclick inline → gắn bằng addEventListener (bấm tên để xem đủ).
+  $("#sp-ten").addEventListener("click", (e) => e.currentTarget.classList.toggle("full"));
   bindVideo(i.id);
 
   const panels = {
@@ -369,6 +521,131 @@ async function renderDetail(id) {
        </form>
        <p class="small muted">Máy nhà sẽ tải video, tách từng cảnh theo giây kèm ảnh chụp, góc máy, cỡ cảnh, chuyển động máy.</p>
        ${vtk.length ? `<div class="vtk-list">${vtk.slice().reverse().map(vtkHtml).join("")}</div>` : `<p class="muted center">Chưa có video tham khảo.</p>`}`,
+  };
+  if (chu) panels.duyet = () => {
+    vids = [];
+    if (may.tai) return `<p class="muted">Đang hỏi máy nhà danh sách video…</p>`;
+    if (!may.ds) return `<p class="muted">⚠ Máy nhà tắt — không lấy được danh sách video để duyệt.</p>`;
+    const nguon = Array.isArray(may.ds.nguon) ? may.ds.nguon : [];
+    const html = nguon.map((n) => {
+      const ct = Array.isArray(n.chi_tiet) ? n.chi_tiet : [];
+      if (!ct.length) return "";
+      return `<h3 class="dv-nguon">📁 ${esc(n.goc)} <span class="small muted">(${ct.length} video)</span></h3>`
+        + ct.map((c) => { vids.push({ goc: n.goc, ten: c.ten, mb: c.mb, sua_luc: c.sua_luc }); return dvHtml(vids[vids.length - 1], vids.length - 1); }).join("");
+    }).join("");
+    return html ? `<p class="small muted">Bấm ▶ Xem mới tải video. Đạt / Loại / góp ý lưu ngay lên kho.</p>${html}`
+      : `<p class="muted">Chưa có video nào để duyệt${may.ds.co_folder === false ? " (máy nhà chưa có folder output_poster)" : ""}.</p>`;
+  };
+  // Mục duyệt hiện hành của 1 video: khớp đúng (goc, ten, sua_luc) — file bị dựng lại thì phải duyệt lại.
+  const timDuyet = (v) => duyet.filter((x) => x && x.goc === v.goc && x.ten === v.ten && x.sua_luc === v.sua_luc).pop();
+  const ttDuyetHtml = (v) => {
+    const r = timDuyet(v), kq = r && r.ket_qua;
+    return `${kq === "dat" ? `<span class="dv-kq dat">✓ Đạt</span>` : kq === "loai" ? `<span class="dv-kq loai">✕ Loại</span>` : `<span class="dv-kq">Chưa duyệt</span>`}`
+      + `${r && (r.boi || r.luc) ? ` <span class="small muted">${esc(r.boi)}${r.luc ? " · " + esc(gioS(r.luc)) : ""}</span>` : ""}`
+      + `${r && r.gop_y ? `<div class="small dv-gy-xem">💬 ${esc(r.gop_y)}</div>` : ""}`;
+  };
+  const dvHtml = (v, k) => {
+    const r = timDuyet(v), kq = r && r.ket_qua;
+    const dl = dangGui.has(khoaDv(v)), dis = dl ? " disabled" : "";
+    return `<div class="dv${kq === "dat" || kq === "loai" ? " " + kq : ""}" data-dv="${k}">
+      <div class="dv-ten"><b>${esc(v.ten)}</b> <span class="small muted">${esc(v.mb ?? "?")} MB${gioSua(v.sua_luc) ? " · sửa " + esc(gioSua(v.sua_luc)) : ""}</span></div>
+      <div class="dv-tt">${ttDuyetHtml(v)}</div>
+      <div class="row dv-nut">
+        <button class="btn ghost sm" data-dv-xem>▶ Xem</button>
+        <button class="btn sm dv-dat${kq === "dat" ? " on" : ""}" data-dv-kq="dat"${dis}>Đạt</button>
+        <button class="btn sm dv-loai${kq === "loai" ? " on" : ""}" data-dv-kq="loai"${dis}>Loại</button>
+        <button class="btn ghost sm" data-dv-bo${dis}>Bỏ duyệt</button>
+        <span class="small muted dv-luu">${dl ? "đang lưu…" : ""}</span>
+      </div>
+      <div class="dv-player"></div>
+      <textarea class="dv-gy" maxlength="500" rows="2" placeholder="Góp ý cho video này (không bắt buộc)…">${esc(r && r.gop_y)}</textarea>
+      <div class="row end"><button class="btn ghost sm" data-dv-gy${dis}>Lưu góp ý</button></div>
+    </div>`;
+  };
+  const capNhatDv = (el, v) => {
+    const r = timDuyet(v), kq = r && r.ket_qua;
+    $(".dv-tt", el).innerHTML = ttDuyetHtml(v);
+    $(".dv-dat", el).classList.toggle("on", kq === "dat");
+    $(".dv-loai", el).classList.toggle("on", kq === "loai");
+    el.classList.toggle("dat", kq === "dat"); el.classList.toggle("loai", kq === "loai");
+    $(".dv-gy", el).value = (r && r.gop_y) || "";
+  };
+  const dongVideo = (el) => {
+    const vd = $(".dv-player video", el);
+    if (!vd) return;
+    vd.pause(); vd.removeAttribute("src"); vd.load();
+    $(".dv-player", el).innerHTML = "";
+    $("[data-dv-xem]", el).textContent = "▶ Xem";
+  };
+  // Thẻ video đang hiện trong panel Duyệt theo khoá (null nếu panel đã đổi tab).
+  const theDv = (khoa) => [...document.querySelectorAll("#panel .dv")].find((o) => {
+    const x = vids[Number(o.dataset.dv)];
+    return x && khoaDv(x) === khoa;
+  }) || null;
+  const datDangLuu = (el, on) => {
+    el.querySelectorAll("[data-dv-kq], [data-dv-bo], [data-dv-gy]").forEach((b) => (b.disabled = on));
+    const s = $(".dv-luu", el); if (s) s.textContent = on ? "đang lưu…" : "";
+  };
+  const bindDuyet = () => {
+    document.querySelectorAll("#panel .dv").forEach((el) => {
+      const v = vids[Number(el.dataset.dv)];
+      if (!v) return;
+      $("[data-dv-xem]", el).addEventListener("click", (e) => {
+        if ($(".dv-player video", el)) { dongVideo(el); return; }
+        document.querySelectorAll("#panel .dv").forEach((o) => { if (o !== el) dongVideo(o); }); // chỉ phát 1 video một lúc
+        $(".dv-player", el).innerHTML = `<video controls playsinline preload="none"></video>`;
+        const vd = $(".dv-player video", el);
+        vd.addEventListener("error", () => { if (vd.getAttribute("src")) toast("⚠ Không phát được — máy nhà tắt hoặc file đã bị chuyển"); });
+        vd.src = `/api/video/${encodeURIComponent(i.id)}/xem?goc=${encodeURIComponent(v.goc)}&ten=${encodeURIComponent(v.ten)}`;
+        e.currentTarget.textContent = "■ Đóng";
+        vd.play().catch(() => {});
+      });
+      const khoa = khoaDv(v);
+      const gui = async (ket_qua, gop_y, msg) => {
+        if (dangGui.has(khoa)) return; // video này đang gửi (kể cả từ thẻ của lần dựng panel trước)
+        dangGui.add(khoa); datDangLuu(el, true); // khoá TRƯỚC mọi await để chặn bấm đúp
+        try {
+          const r = await api("duyet", { id: i.id, goc: v.goc, ten: v.ten, sua_luc: v.sua_luc, mb: v.mb, ket_qua, gop_y: gop_y.slice(0, 500) });
+          if (phien !== phienCT) return; // đã sang trang SP khác: không đụng DOM/dữ liệu trang mới
+          if (!Array.isArray(r.duyet)) throw new Error(r.loi || "Máy chủ không trả danh sách duyệt");
+          // Chỉ gộp mục của chính video vừa gửi vào mảng hiện tại, không bao giờ thay cả mảng.
+          const cuaVideo = (x) => x && x.goc === v.goc && x.ten === v.ten && x.sua_luc === v.sua_luc;
+          duyet = duyet.filter((x) => !cuaVideo(x)).concat(r.duyet.filter(cuaVideo));
+          const cur = theDv(khoa); // panel có thể đã dựng lại: cập nhật thẻ đang hiện
+          if (cur) capNhatDv(cur, v);
+          veBuoc(); toast(msg);
+        } catch (err) { if (phien === phienCT) toast("⚠ " + err.message); }
+        finally {
+          dangGui.delete(khoa);
+          if (phien === phienCT) { const cur = theDv(khoa); if (cur) datDangLuu(cur, false); }
+        }
+      };
+      el.querySelectorAll("[data-dv-kq]").forEach((b) => b.addEventListener("click", () =>
+        gui(b.dataset.dvKq, $(".dv-gy", el).value.trim(), b.dataset.dvKq === "dat" ? `✓ Đạt: ${v.ten}` : `✕ Loại: ${v.ten}`)));
+      $("[data-dv-gy]", el).addEventListener("click", () => {
+        const r = timDuyet(v);
+        gui((r && r.ket_qua) || "", $(".dv-gy", el).value.trim(), "✓ Đã lưu góp ý");
+      });
+      $("[data-dv-bo]", el).addEventListener("click", () => {
+        if (dangGui.has(khoa)) return;
+        if (!timDuyet(v)) { toast("Video này chưa duyệt"); return; }
+        if (!confirm(`Bỏ duyệt ${v.ten}?`)) return;
+        gui("", "", "Đã bỏ duyệt");
+      });
+    });
+  };
+  // Dải 8 bước đầu trang (chỉ chủ kho).
+  const veBuoc = () => {
+    if (phien !== phienCT) return; // trang này đã bị thay: #buoc8 hiện tại là của SP khác
+    const box = $("#buoc8");
+    if (!box) return;
+    const ds = tinhBuoc(i, may.tienDo, duyet, may.ds), ht = buocHienTai(ds);
+    const tat = !may.tai && (!may.tienDo || !may.ds);
+    const gc = (s) => (may.tai ? s.replace("máy nhà tắt", "đang tải…") : s);
+    box.innerHTML = `<div class="buoc8-dau"><b>Tiến độ 8 bước</b> <span class="small muted">${may.tai ? "đang hỏi máy nhà…" : tat ? "⚠ máy nhà tắt" : ht ? `đang ở bước ${ht}` : "✓ Hoàn tất"}</span></div>
+      <ol class="buoc8-ds">${ds.map((b) => `<li class="bc s-${b.trang_thai}${b.so === ht ? " hien-tai" : ""}" title="${esc(b.ten + (b.ghi_chu ? " — " + gc(b.ghi_chu) : ""))}">
+        <span class="bc-so">${b.trang_thai === "xong" ? "✓" : b.trang_thai === "bo_qua" ? "–" : b.so}</span><span class="bc-ten">${esc(b.ten)}</span><span class="bc-gc">${esc(gc(b.ghi_chu))}</span></li>`).join("")}</ol>`;
+    if (!may.tai) veViecSp({ ...i, co_douyin: !!douyin }, ds, phien); // viec.js: nút ▶ Chạy theo bước hiện tại
   };
   const vtkHtml = (v) => `<div class="vtk" data-vid="${esc(v.vid)}">
       <div class="vtk-head">
@@ -422,6 +699,7 @@ async function renderDetail(id) {
     }));
   };
   const show = (k) => {
+    if (!panels[k]) k = md ? "canh" : "cap"; // tab đã nhớ không còn (vd tab Duyệt với tài khoản khác)
     document.querySelectorAll(".tab").forEach((b) => b.classList.toggle("on", b.dataset.tab === k));
     $("#panel").innerHTML = panels[k]();
     sessionStorage.setItem("kho_tab", k);
@@ -432,6 +710,7 @@ async function renderDetail(id) {
     $("#panel [data-copy-all]")?.addEventListener("click", () => copy(capList.join("\n"), `Đã copy ${capList.length} caption`));
     bindVtk();
     if (k === "douyin") bindDouyin();
+    if (k === "duyet") bindDuyet();
     $("#btn-note")?.addEventListener("click", async () => {
       if (!needLogin()) return;
       const v = $("#in-note").value;
@@ -472,6 +751,18 @@ async function renderDetail(id) {
   document.querySelectorAll(".tab").forEach((b) => b.addEventListener("click", () => show(b.dataset.tab)));
   show(sessionStorage.getItem("kho_tab") || (md ? "canh" : "cap"));
   bindSwitches();
+  if (chu) {
+    veBuoc();
+    // Hỏi máy nhà song song; lỗi nào thì phần đó coi như máy nhà tắt, không làm vỡ trang.
+    Promise.allSettled([api(`video/${encodeURIComponent(i.id)}/tien-do`), api(`video/${encodeURIComponent(i.id)}/ds`)]).then(([a, b]) => {
+      if (phien !== phienCT || !$("#buoc8")) return; // đã rời trang này
+      may.tai = false;
+      may.tienDo = a.status === "fulfilled" ? { thu_muc: Array.isArray(a.value.thu_muc) ? a.value.thu_muc : [] } : null;
+      may.ds = b.status === "fulfilled" ? b.value : null;
+      veBuoc();
+      if ($(".tab.on")?.dataset.tab === "duyet") show("duyet");
+    });
+  }
 }
 
 document.addEventListener("click", (e) => {
@@ -483,10 +774,15 @@ document.addEventListener("click", (e) => {
 
 // ---------- router ----------
 async function route() {
+  dungViec(); // viec.js: dừng polling + bỏ phản hồi muộn của trang việc cũ (kể cả khi vừa đăng xuất)
   if (!auth.on) { $("#app").innerHTML = `<p class="muted center">Đăng nhập để xem kho.</p>`; openLogin(); return; }
   const m = location.hash.match(/^#\/sp\/(.+)$/);
+  const mv = location.hash.match(/^#\/viec\/([^/]+)$/);
   try {
     if (m) await renderDetail(decodeURIComponent(m[1]));
+    else if (location.hash === "#/suc-khoe") { phienCT++; await renderSucKhoe(); }
+    else if (location.hash === "#/viec") { phienCT++; await renderViec(); }
+    else if (mv) { phienCT++; await renderViecChiTiet(decodeURIComponent(mv[1])); }
     else { if (!state.list.length || route.reload) await loadList(); route.reload = false; renderList(); }
   } catch (err) {
     $("#app").innerHTML = `<p class="err">⚠ ${esc(err.message)}</p>`;

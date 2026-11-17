@@ -142,3 +142,83 @@ dialog h2 { margin: 0 0 6px; }
 .tagbtn.on[data-tag="ngung_dang"] { background: #d92d20; border-color: #d92d20; color: #fff; }
 .card.ngung { opacity: .6; border-color: #d92d20; }
 .ngung-tag { background: #d92d20; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+
+/* Header: link Sức khoẻ máy nhà + tên + Thoát */
+#user { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+#user a.btn { text-decoration: none; }
+
+/* Nhãn bước ước tính trên thẻ danh sách */
+.buoc-nho { display: inline-block; font-size: 11px; font-weight: 600; white-space: nowrap; padding: 0 6px; border-radius: 6px; border: 1px solid currentColor; line-height: 1.4; }
+.bn-cho { color: var(--s-cho); } .bn-da_phan_tich { color: var(--s-pt); } .bn-da_quay { color: var(--s-quay); } .bn-da_lam_video { color: var(--s-video); }
+
+/* Dải tiến độ 8 bước (trang chi tiết) */
+.buoc8 { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; margin-bottom: 10px; }
+.buoc8-dau { margin-bottom: 6px; }
+.buoc8-ds { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.bc { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1px; padding: 6px 2px; border-radius: 8px; border: 1px solid var(--line); min-width: 0; }
+.bc-so { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: var(--line); color: var(--muted); }
+.bc-ten { font-size: 12px; font-weight: 600; line-height: 1.2; word-break: break-word; }
+.bc-gc { font-size: 10px; color: var(--muted); line-height: 1.2; word-break: break-word; }
+.bc.s-xong .bc-so { background: var(--ok); color: #fff; }
+.bc.s-dang .bc-so { background: var(--s-quay); color: #fff; }
+.bc.s-bo_qua { opacity: .55; border-style: dashed; }
+.bc.hien-tai { border: 2px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, var(--card)); }
+.bc.hien-tai .bc-so { background: var(--accent); color: #fff; }
+@media (max-width: 640px) { .buoc8-ds { grid-template-columns: repeat(4, 1fr); } }
+
+/* Tab Duyệt video */
+.dv-nguon { font-size: 15px; margin: 14px 0 6px; word-break: break-all; }
+.dv { border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: var(--r); padding: 8px 10px; margin-bottom: 8px; display: grid; gap: 6px; }
+.dv.dat { border-left-color: var(--ok); } .dv.loai { border-left-color: #d92d20; }
+.dv-ten { word-break: break-all; }
+.dv-kq { font-weight: 700; font-size: 13px; color: var(--muted); }
+.dv-kq.dat { color: var(--ok); } .dv-kq.loai { color: #d92d20; }
+.dv-gy-xem { word-break: break-word; }
+.dv-nut .btn { min-height: 34px; }
+.dv-dat, .dv-loai { background: transparent; color: var(--text); border: 1px solid var(--line); }
+.dv-dat.on { background: var(--ok); border-color: var(--ok); color: #fff; }
+.dv-loai.on { background: #d92d20; border-color: #d92d20; color: #fff; }
+.dv-player:not(:empty) video { width: 100%; max-height: 70vh; background: #000; border-radius: 6px; display: block; }
+textarea.dv-gy { min-height: 56px; }
+
+/* Trang Sức khoẻ máy nhà */
+.sk { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; }
+.sk-tieu-de { font-size: 18px; margin: 0; }
+.sk-banner { margin: 10px 0 4px; padding: 10px 12px; border-radius: 10px; background: #d92d20; color: #fff; font-weight: 600; word-break: break-word; }
+.sk-banner.ok { background: var(--ok); }
+.sk-ds { display: grid; gap: 6px; margin-top: 8px; }
+.sk-app { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; }
+.sk-app .cham { width: 12px; height: 12px; border-radius: 50%; flex: none; background: #d92d20; }
+.sk-app.song .cham { background: var(--ok); }
+.sk-body { flex: 1; min-width: 0; word-break: break-word; }
+.sk-tt { font-weight: 700; } .sk-app.chet .sk-tt { color: #d92d20; } .sk-app.song .sk-tt { color: var(--ok); }
+.sk-goi-y { margin-top: 2px; }
+
+/* Bộ chạy việc (viec.js): huy hiệu đầu trang, #/viec, #/viec/<id>, khối việc trong chi tiết SP */
+.huy-hieu { display: inline-block; min-width: 18px; margin-left: 4px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; line-height: 18px; text-align: center; }
+.huy-hieu[hidden] { display: none; }
+.vt-khung, .vj { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; }
+.vt-tom { display: flex; flex-wrap: wrap; gap: 4px 12px; margin: 6px 0; }
+.vt-tom a { color: var(--s-pt); }
+.vt-giao { margin: 10px 0; }
+.vt-giao .btn, .vs-nut .btn, .vs-chon .btn, .vj-hoi-nut .btn, .vj-nut .btn { min-height: 40px; }
+.vt-nhom { font-size: 15px; margin: 14px 0 6px; }
+.vt-ds { display: grid; gap: 6px; }
+.vt { display: block; text-decoration: none; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--card); }
+.vt-dong1 { word-break: break-word; }
+.vt-ts, .vt-hoi { word-break: break-all; }
+.vt-can-ban { color: #9a6700; }
+.tt { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 1px 8px; color: #fff; background: var(--s-cho); white-space: nowrap; }
+.tt-dang_chay { background: var(--s-pt); } .tt-can_tra_loi, .tt-cho_duyet { background: var(--s-quay); }
+.tt-xong { background: var(--ok); } .tt-loi { background: #d92d20; } .tt-huy { background: var(--muted); }
+.vj-dau { margin-bottom: 6px; word-break: break-word; }
+.vj-can-ban { margin: 8px 0; padding: 8px 10px; border-radius: 10px; background: #fff4cc; color: #6b4e00; font-weight: 600; word-break: break-word; }
+.vj-loi { margin: 8px 0; padding: 8px 10px; border-radius: 10px; background: #fde8e7; color: #a01a10; word-break: break-word; white-space: pre-wrap; }
+.vj-hoi { margin: 10px 0; padding: 10px; border: 2px solid var(--s-quay); border-radius: var(--r); display: grid; gap: 8px; }
+.vj-hoi-nd { white-space: pre-wrap; word-break: break-word; }
+.vj-nut { margin: 10px 0; }
+.vj-pre, .vj-log { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px; white-space: pre-wrap; word-break: break-word; font-size: 12px; }
+.vj-log { max-height: 55vh; overflow: auto; min-height: 3em; }
+.vj-file, .vj-su-kien { padding-left: 18px; word-break: break-all; }
+.viec-sp:not(:empty) { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 10px; margin-bottom: 10px; display: grid; gap: 6px; }
+.vs-dau { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }

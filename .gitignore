@@ -1,3 +1,9 @@
 __pycache__/
 .pytest_cache/
 *.pyc
+
+.culiapp/snap-*.json
+.culiapp/test-*
+cf/.dev.vars
+tools/.video_key
+cf/.wrangler/

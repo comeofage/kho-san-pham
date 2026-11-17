@@ -1,0 +1,1217 @@
+"""Test vòng chạy việc (§4.3–4.7, §5.1, §6.1–6.3) — chạy:
+PYTHONIOENCODING=utf-8 python -B -m pytest tools/test_runner_vong_lap.py -q
+
+Mọi tiến trình con là chương trình giả `python` viết vào tmp_path (Claude giả, kho.py giả, agy giả).
+DB, log, dữ liệu đều ở tmp_path. Không gọi claude.exe/agy.exe thật, không đụng E:\\kho-runner (chỉ so chuỗi).
+"""
+import dataclasses
+import json
+import os
+import subprocess
+import sys
+import textwrap
+import threading
+import time
+import uuid
+from datetime import datetime, timedelta
+from pathlib import Path
+
+import psutil
+import pytest
+
+TOOLS = Path(__file__).parent
+sys.path.insert(0, str(TOOLS))
+from runner import vong_lap as vl  # noqa: E402
+from runner import thuc_thi as tt  # noqa: E402
+from runner.danh_muc import DANH_MUC, LoaiViec  # noqa: E402
+from runner.du_an import ma_du_an  # noqa: E402
+from runner.han_muc import HAN_MUC_TRAN  # noqa: E402
+from runner.kho_viec import KhoViec  # noqa: E402
+from runner.kieu import MUI_GIO_VN, BuocChay, CanNguoiDung, MoiTruong  # noqa: E402
+
+PY = sys.executable
+UID = "1729384756102938475"
+UID2 = "1729384756102938476"
+
+CLAUDE_GIA = r'''
+import json, os, sys, time
+kb_path = sys.argv[1]
+args = sys.argv[2:]
+stdin = sys.stdin.buffer.read().decode("utf-8")
+kb = json.load(open(kb_path, encoding="utf-8"))
+ghi = kb_path + ".goi.jsonl"
+n = sum(1 for _ in open(ghi, encoding="utf-8")) if os.path.exists(ghi) else 0
+with open(ghi, "a", encoding="utf-8") as f:
+    f.write(json.dumps({"args": args, "stdin": stdin, "pid": os.getpid()}, ensure_ascii=False) + "\n")
+lan = kb[min(n, len(kb) - 1)]
+sid = args[args.index("--resume") + 1] if "--resume" in args else args[args.index("--session-id") + 1]
+def out(o):
+    sys.stdout.write(json.dumps(o, ensure_ascii=False) + "\n"); sys.stdout.flush()
+if lan.get("asst_truoc_init"):
+    out({"type": "assistant", "parent_tool_use_id": None,
+         "message": {"id": f"m{n}_truoc", "content": [{"type": "text", "text": "chưa init"}]}})
+if lan.get("init", True):
+    init = {"type": "system", "subtype": "init", "session_id": sid, "model": "gia", "permissionMode": "dontAsk",
+            "apiKeySource": "none", "agents": [], "tools": lan.get("tools", ["Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill"]),
+            "mcp_servers": lan.get("mcp", [])}
+    if lan.get("khong_sid"):
+        del init["session_id"]
+    if lan.get("bo_tools"):
+        del init["tools"]
+    out(init)
+for i in range(lan.get("so_msg", 1)):
+    tu = [{"type": "tool_use", "id": f"tu{n}_{i}_{j}", "name": t, "input": {}}
+          for j, t in enumerate(lan.get("tool_use", []))]
+    out({"type": "assistant", "parent_tool_use_id": None,
+         "message": {"id": f"m{n}_{i}", "content": [{"type": "text", "text": "đang làm"}] + tu}})
+time.sleep(lan.get("ngu", 0))
+if lan.get("ket_qua") is not None:
+    out({"type": "result", "subtype": "success", "is_error": lan.get("is_error", False), "session_id": sid,
+         "total_cost_usd": lan.get("usd", 0.01), "num_turns": lan.get("so_msg", 1), "duration_ms": 5,
+         "result": lan["ket_qua"], "permission_denials": lan.get("tu_choi", [])})
+sys.exit(lan.get("ma", 0))
+'''
+
+
+# ---------------- tiện ích ----------------
+
+class Dong:
+    def __init__(self, t: datetime):
+        self.t = t
+
+    def __call__(self):
+        return self.t
+
+
+def lam_mt(tmp: Path, **kw) -> MoiTruong:
+    for d in ("goc", "repo", "scripts", "radar", "sp", "data"):
+        (tmp / d).mkdir(exist_ok=True)
+    gt = dict(gocs=[tmp / "goc"], repo_kho=tmp / "repo", thu_muc_scripts=tmp / "scripts", python_poster=Path(PY),
+              claude_exe=Path(PY), agy_exe=Path(PY), thu_muc_radar=tmp / "radar", thu_muc_sp=tmp / "sp",
+              thu_muc_du_lieu=tmp / "data", cong_song=lambda c: True, chan_doan_kho=lambda r: None,
+              ffmpeg_ngoai=lambda: False, thoi_luong_media=lambda p: 1.0,
+              bay_gio=lambda: datetime.now(MUI_GIO_VN))
+    gt.update(kw)
+    return MoiTruong(**gt)
+
+
+def loai_script(ma: str, lan: str, argv, *, tai_nguyen=(), het_gio=60, dk=None, dau_ra="xong",
+                tu_chay_lai=True) -> LoaiViec:
+    def lap(ts, viec, mt):
+        a = argv(ts, viec, mt) if callable(argv) else argv
+        return [BuocChay("s", list(a), str(mt.thu_muc_du_lieu), None, {}, False, het_gio)]
+    return LoaiViec(ma=ma, ten=ma, dot=3, lan_chay=lan, ton_tien=False, agent=None, tu_chay_lai=tu_chay_lai,
+                    het_gio_s=het_gio, tai_nguyen=frozenset(tai_nguyen), tham_so=(),
+                    kiem_tham_so=lambda ts, mt: ts, tinh_khoa=lambda ts: str(ts.get("k", "x")),
+                    trang_thai_dau=lambda ts: ("cho", "chay"), dieu_kien_truoc=dk or (lambda ts, mt: None),
+                    lap_buoc=lap, kiem_dau_ra=lambda ts, viec, mt: dau_ra)
+
+
+def loai_claude(tmp: Path, kich_ban: list[dict], dau_ra="xong") -> tuple[LoaiViec, Path]:
+    """phan_tich_uid thật (lệnh + phiếu thật), chỉ thay argv[0] bằng Claude giả chạy bằng python."""
+    fake = tmp / "claude_gia.py"
+    fake.write_text(CLAUDE_GIA, encoding="utf-8")
+    kb = tmp / f"kb_{uuid.uuid4().hex[:6]}.json"
+    kb.write_text(json.dumps(kich_ban, ensure_ascii=False), encoding="utf-8")
+    goc = DANH_MUC["phan_tich_uid"]
+
+    def lap(ts, viec, mt):
+        b = goc.lap_buoc(ts, viec, mt)[0]
+        assert b.argv[0] == str(mt.claude_exe) and b.la_claude
+        return [dataclasses.replace(b, argv=[PY, str(fake), str(kb)] + b.argv[1:], cwd=str(tmp))]
+    loai = dataclasses.replace(goc, dieu_kien_truoc=lambda ts, mt: None, lap_buoc=lap,
+                               kiem_dau_ra=lambda ts, viec, mt: dau_ra)
+    return loai, kb
+
+
+def cac_lan_goi(kb: Path) -> list[dict]:
+    p = Path(str(kb) + ".goi.jsonl")
+    return [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines()] if p.exists() else []
+
+
+def lam_bo(tmp: Path, mt: MoiTruong, dm: dict, hm=None, kho=None, **kw) -> tuple[vl.BoChay, KhoViec]:
+    kho = kho or KhoViec(tmp / "data" / "runner.db", mt.bay_gio)
+    bo = vl.BoChay(kho, mt, dict(hm or HAN_MUC_TRAN), tmp / "data" / "log", lambda s: s.replace("BIMAT123456789", "***"),
+                   danh_muc=dm, nghi_s=0.05, **kw)
+    return bo, kho
+
+
+def tao(kho: KhoViec, loai: LoaiViec, ts: dict, khoa: str | None = None) -> dict:
+    return kho.tao(loai.ma, khoa or str(ts.get("k") or ts.get("uid") or "x"), ts, loai.lan_chay, "cho", "nhan",
+                   session_id=str(uuid.uuid4()) if loai.agent else None)
+
+
+def chay_lan(bo: vl.BoChay, lan: str) -> dict | None:
+    v = bo.nhan_viec(lan)
+    if v is not None:
+        bo.chay_mot(v)
+    return v
+
+
+def tra_loi(kho: KhoViec, id: str, gia_tri: str) -> None:
+    """Giống api.p_tra_loi: thêm câu trả lời rồi can_tra_loi → cho."""
+    v = kho.lay(id)
+    kho.them_tra_loi(id, "nhan", v["cau_hoi"]["noi_dung"], gia_tri)
+    kho.chuyen(id, ["can_tra_loi"], "cho", "nhan", f"trả lời: {gia_tri}")
+
+
+def song(pid: int) -> bool:
+    try:
+        return psutil.Process(pid).status() != psutil.STATUS_ZOMBIE
+    except psutil.NoSuchProcess:
+        return False
+
+
+# ---------------- logic thuần ----------------
+
+def test_ly_do_tiep_tuc_bo_qua_tam_hoan():
+    sk = [{"tu": None, "den": "cho", "ghi_chu": "tạo"},
+          {"tu": "cho", "den": "dang_chay", "ghi_chu": ""},
+          {"tu": "dang_chay", "den": "can_tra_loi", "ghi_chu": ""},
+          {"tu": "can_tra_loi", "den": "cho", "ghi_chu": "trả lời: A"},
+          {"tu": "cho", "den": "dang_chay", "ghi_chu": ""},
+          {"tu": "dang_chay", "den": "cho", "ghi_chu": vl.TIEN_TO_HOAN + "git kho đang bận"},
+          {"tu": "cho", "den": "dang_chay", "ghi_chu": ""}]
+    assert vl.ly_do_tiep_tuc(sk) == ("tra_loi", "trả lời: A")
+    assert vl.ly_do_tiep_tuc(sk[:2]) == ("moi", "tạo")
+    assert vl.ly_do_tiep_tuc([{"tu": "loi", "den": "cho", "ghi_chu": "chạy tiếp"}])[0] == "chay_tiep"
+    assert vl.ly_do_tiep_tuc([{"tu": "dang_chay", "den": "cho", "ghi_chu": "bị ngắt"}]) == ("khoi_dong", "bị ngắt")
+    assert vl.ly_do_tiep_tuc([{"tu": "cho_duyet", "den": "cho", "ghi_chu": ""}])[0] == "duyet"
+    assert vl.ly_do_tiep_tuc([]) == ("moi", "")
+
+
+def test_cat_bien_utf8():
+    s = "aé漢😀".encode("utf-8")
+    for i in range(len(s) + 1):
+        c = vl.cat_bien_utf8(s[:i], False)
+        c.decode("utf-8")                         # không ném = không dở ký tự
+        assert s[:i].startswith(c) and len(s[:i]) - len(c) < 4
+    assert vl.cat_bien_utf8(b"dong1\ndong2 do", True) == b"dong1\n"
+
+
+def test_phan_loai_ket_thuc_claude():
+    def kq(**k):
+        g = dict(ma_thoat=0, het_gio=False, bi_huy=False, vuot_luot=False, ket_qua=None, van_ban_cuoi="",
+                 session_id=None, so_luot=0)
+        g.update(k)
+        return tt.KetQuaTienTrinh(**g)
+    ok = {"session_id": "s", "chi_phi_usd": 0.1, "so_luot": 1, "loi": False, "van_ban": "TRẠNG THÁI: DONE",
+          "bi_tu_choi": []}
+    assert vl.phan_loai_ket_thuc_claude(kq(ket_qua=ok), 250, 60) is None
+    assert vl.phan_loai_ket_thuc_claude(kq(bi_huy=True), 250, 60)[0] == "huy"
+    assert vl.phan_loai_ket_thuc_claude(kq(het_gio=True), 250, 5400)[1]["loi"].startswith("Quá giờ 90 phút")
+    den, tr, tam = vl.phan_loai_ket_thuc_claude(kq(vuot_luot=True), 250, 60)
+    assert den == "can_tra_loi" and tr["cau_hoi"].loai == "khong_ro" and "250" in tr["cau_hoi"].noi_dung
+    den, tr, tam = vl.phan_loai_ket_thuc_claude(
+        kq(ket_qua=dict(ok, loi=True, van_ban="Claude AI usage limit reached"), ma_thoat=1), 250, 60)
+    assert den == "loi" and tam is True
+    den, tr, tam = vl.phan_loai_ket_thuc_claude(kq(ket_qua=dict(ok, loi=True, van_ban="Invalid API key")), 250, 60)
+    assert den == "loi" and tam is False and "Invalid API key" in tr["loi"]
+    # báo cáo DONE có nhắc "rate limit" (dữ liệu sản phẩm) KHÔNG bị coi là lỗi
+    assert vl.phan_loai_ket_thuc_claude(kq(ket_qua=dict(ok, van_ban="TRẠNG THÁI: DONE\nDouyin rate limit")),
+                                        250, 60) is None
+    assert vl.phan_loai_ket_thuc_claude(kq(ma_thoat=1), 250, 60)[0] == "loi"
+
+
+def test_chan_doan_kho_4_nhanh(tmp_path):
+    repo = tmp_path / "repo"
+    (repo / ".git").mkdir(parents=True)
+    bay = time.time()
+
+    def git(nhanh="main", status="", rc_nhanh=0):
+        def chay(args):
+            if args[0] == "symbolic-ref":
+                return (rc_nhanh, nhanh + "\n", "fatal: ref HEAD is not a symbolic ref" if rc_nhanh else "")
+            assert args[:2] == ["status", "--porcelain"] and args[-2:] == ["--", "data"]
+            return (0, status, "")
+        return chay
+
+    kw = dict(git_dang_chay=lambda: False, chay_git=git(), bay_gio_ts=bay)
+    assert vl.chan_doan_kho_tu(repo, **kw) is None
+    lock = repo / ".git" / "index.lock"
+    lock.write_text("")
+    os.utime(lock, (bay - 60, bay - 60))
+    assert vl.chan_doan_kho_tu(repo, **kw) == "ban"                                # (1) khoá mới
+    os.utime(lock, (bay - 3600, bay - 3600))
+    assert vl.chan_doan_kho_tu(repo, **dict(kw, git_dang_chay=lambda: True)) == "ban"   # (1) git.exe đang chạy
+    c = vl.chan_doan_kho_tu(repo, **kw)                                            # (2) khoá cũ, không git
+    assert isinstance(c, CanNguoiDung) and c.loai == "viec_tay" and "index.lock" in c.noi_dung
+    lock.unlink()
+    c = vl.chan_doan_kho_tu(repo, **dict(kw, chay_git=git(nhanh="thu-nghiem")))   # (3) nhánh khác
+    assert c.loai == "viec_tay" and "`thu-nghiem`" in c.noi_dung
+    c = vl.chan_doan_kho_tu(repo, **dict(kw, chay_git=git(rc_nhanh=128)))           # HEAD tách rời
+    assert c.loai == "viec_tay" and "main" in c.noi_dung
+    ban_data = "".join(f" M data/{i}/info.json\n" for i in range(12))
+    c = vl.chan_doan_kho_tu(repo, **dict(kw, chay_git=git(status=ban_data)))           # (4) data bẩn
+    assert c.loai == "viec_tay" and "data/0/info.json" in c.noi_dung and "data/9/" in c.noi_dung
+    assert "data/10/" not in c.noi_dung and "(+2)" in c.noi_dung
+
+
+def test_ten_mutex_khong_dung_ten_that(tmp_path, monkeypatch):
+    # chỉ so chuỗi đường dẫn: ten_mutex không tạo/ghi thư mục
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "la"))
+    assert vl.ten_mutex(Path(r"E:\kho-runner")) == tt.TEN_MUTEX
+    assert vl.ten_mutex(Path("E:/kho-runner")) == tt.TEN_MUTEX
+    # thư mục cũ %LOCALAPPDATA%\kho-runner không còn là mặc định → không dùng tên mutex thật
+    assert vl.ten_mutex(tmp_path / "la" / "kho-runner") != tt.TEN_MUTEX
+    a, b = vl.ten_mutex(tmp_path / "x"), vl.ten_mutex(tmp_path / "y")
+    assert a != tt.TEN_MUTEX and a != b and a.startswith(tt.TEN_MUTEX + "-")
+
+
+def test_thu_muc_runner_mac_dinh_la_o_e(tmp_path, monkeypatch):
+    """FX-7: không đặt KHO_RUNNER_DIR → E:\\kho-runner (không rơi về %LOCALAPPDATA% bị MSIX chuyển hướng)."""
+    monkeypatch.delenv("KHO_RUNNER_DIR", raising=False)
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path / "la"))
+    assert vl.thu_muc_runner() == Path(r"E:\kho-runner")
+    assert vl.THU_MUC_RUNNER_MAC_DINH == Path(r"E:\kho-runner")
+    monkeypatch.setenv("KHO_RUNNER_DIR", "")            # rỗng = coi như không đặt
+    assert vl.thu_muc_runner() == Path(r"E:\kho-runner")
+    assert not (tmp_path / "la").exists()
+
+
+def test_thu_muc_runner_theo_bien_moi_truong(tmp_path, monkeypatch):
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "du_lieu"))
+    assert vl.thu_muc_runner() == tmp_path / "du_lieu"
+    assert vl.ten_mutex(vl.thu_muc_runner()) != tt.TEN_MUTEX
+    assert not (tmp_path / "du_lieu").exists()           # chỉ trả đường dẫn, không tạo thư mục
+
+
+# ---------------- Claude giả ----------------
+
+def test_claude_xong_danh_dau_phien_va_chi_phi(tmp_path):
+    mt = lam_mt(tmp_path)
+    # tool_use nằm trong bộ công cụ cho phép → KHÔNG bị chặn (R-05 P2-1, ca hợp lệ)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong.", "so_msg": 3, "usd": 0.25,
+                                       "tool_use": ["Read", "Bash", "Skill"]}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    assert chay_lan(bo, "nhe")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s
+    assert s["phien_da_tao"] == 1 and s["so_lan_claude"] == 1 and s["so_luot_claude"] == 3
+    assert abs(s["chi_phi_usd"] - 0.25) < 1e-9 and s["pid"] is None
+    goi = cac_lan_goi(kb)
+    assert len(goi) == 1
+    a = goi[0]["args"]
+    assert a[a.index("--session-id") + 1] == v["session_id"] and "--resume" not in a
+    assert "--tools" in a and goi[0]["stdin"].startswith("PHIẾU " + v["id"])
+    assert (tmp_path / "data" / "log" / f"{v['id']}.jsonl").is_file()
+    assert bo.trang_thai_lan()["lan"] == {"gpu": None, "nhe": None}
+
+
+def test_claude_can_user_chon_roi_resume(tmp_path):
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [
+        {"ket_qua": "Cần chốt.\nCẦN_USER: Chọn thư mục nào?\nLOẠI: chon\nLỰA_CHỌN: Thư mục A | Thư mục B"},
+        {"ket_qua": "TRẠNG THÁI: DONE\nĐã dùng B."}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi"
+    assert s["cau_hoi"] == {"loai": "chon", "noi_dung": "Chọn thư mục nào?", "lua_chon": ["Thư mục A", "Thư mục B"]}
+    tra_loi(kho, v["id"], "Thư mục B")
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "xong"
+    goi = cac_lan_goi(kb)
+    assert len(goi) == 2
+    a2 = goi[1]["args"]
+    assert a2[a2.index("--resume") + 1] == v["session_id"] and "--session-id" not in a2
+    st = goi[1]["stdin"]
+    assert st.startswith("TRẢ LỜI CỦA NGƯỜI DÙNG cho \"Chọn thư mục nào?\"")
+    assert "<<<\nThư mục B\n>>>" in st and "PHIẾU" not in st
+    assert kho.lay(v["id"])["so_lan_claude"] == 2
+
+
+def test_claude_chua_tao_phien_thi_lan_2_dung_session_id(tmp_path):
+    mt = lam_mt(tmp_path)
+    # so_msg 0: phiên không có init thì cũng không được có assistant (assistant trước init = vi phạm, R-05 P2-1)
+    loai, kb = loai_claude(tmp_path, [{"init": False, "so_msg": 0, "ket_qua": None, "ma": 1},
+                                      {"ket_qua": "TRẠNG THÁI: DONE"}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and s["phien_da_tao"] == 0 and "không có sự kiện kết quả" in s["loi"]
+    kho.chuyen(v["id"], ["loi"], "cho", "he_thong", "chạy lại thử")
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "xong"
+    a2 = cac_lan_goi(kb)[1]
+    assert "--resume" not in a2["args"] and a2["args"][a2["args"].index("--session-id") + 1] == v["session_id"]
+    assert a2["stdin"].startswith("PHIẾU ")
+
+
+def test_claude_vuot_tran_luot(tmp_path):
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"so_msg": 260, "ngu": 30, "ket_qua": "TRẠNG THÁI: DONE"}])
+    assert loai.tran_luot == 250
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    t0 = time.monotonic()
+    chay_lan(bo, "nhe")
+    assert time.monotonic() - t0 < 25
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["cau_hoi"]["loai"] == "khong_ro"
+    assert "trần 250 lượt" in s["cau_hoi"]["noi_dung"]
+    assert not song(cac_lan_goi(kb)[0]["pid"])
+
+
+@pytest.mark.parametrize("kich_ban, phai_co", [
+    ({"tools": ["Read", "mcp__engram__mem_save"]}, "mcp__engram__mem_save"),             # init lọt mcp
+    ({"bo_tools": True}, "tools"),                                                      # (a) init thiếu tools
+    ({"tools": "Read,Write"}, "tools"),                                                 # (a) tools sai dạng
+    ({"khong_sid": True, "tools": ["Read", "mcp__boardroom__x"]}, "mcp__boardroom__x"),  # init không session_id
+    ({"tool_use": ["Read", "mcp__engram__mem_save"]}, "mcp__engram__mem_save"),         # (b) assistant gọi mcp
+    ({"asst_truoc_init": True}, "init"),                                                # (c) assistant trước init
+])
+def test_claude_co_cong_cu_ngoai_danh_sach_thi_dung_ngay(tmp_path, kich_ban, phai_co):
+    """Không phụ thuộc argv thật của lệnh claude (cờ MCP do danh_muc quyết): Claude giả tự phát sự kiện
+    vi phạm, runner phải giết phiên và chuyển việc sang loi."""
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [dict(kich_ban, ngu=30, ket_qua="TRẠNG THÁI: DONE")])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    t0 = time.monotonic()
+    chay_lan(bo, "nhe")
+    assert time.monotonic() - t0 < 25
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "ngoài danh sách" in s["loi"] and phai_co in s["loi"], s
+    assert not song(cac_lan_goi(kb)[0]["pid"])
+    assert bo.trang_thai_lan()["lan"]["nhe"] is None
+
+
+def test_claude_che_cau_hoi_va_lua_chon(tmp_path):
+    """R-05 P2-2: cau_hoi.noi_dung và từng lua_chon đi ra web đã che bí mật."""
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "Cần chốt.\nCẦN_USER: Dùng khoá BIMAT123456789 không?\n"
+                                                  "LOẠI: chon\nLỰA_CHỌN: Dùng BIMAT123456789 | Bỏ"}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi"
+    assert s["cau_hoi"] == {"loai": "chon", "noi_dung": "Dùng khoá *** không?", "lua_chon": ["Dùng ***", "Bỏ"]}
+    assert "BIMAT123456789" not in json.dumps(s, ensure_ascii=False)
+
+
+def test_claude_needs_approval_che_loi_va_gon_bi_tu_choi(tmp_path):
+    """R-05 P2-2: loi (nhánh NEEDS_APPROVAL việc miễn phí) đã che; bi_tu_choi chỉ giữ {tool_name, input}
+    đã che, input ≤200 ký tự, tối đa 20 mục."""
+    mt = lam_mt(tmp_path)
+    tu_choi = [{"tool_name": "Bash", "tool_input": {"command": f"curl -H BIMAT123456789 {i} " + "x" * 500},
+                "tool_use_id": f"tu_{i}"} for i in range(25)]
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: NEEDS_APPROVAL\nCần gọi API với khoá BIMAT123456789",
+                                       "tu_choi": tu_choi}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "loi" and "***" in s["loi"], s
+    btc = s["ket_qua"]["bi_tu_choi"]
+    assert len(btc) == 20
+    for m in btc:
+        assert set(m) == {"tool_name", "input"} and m["tool_name"] == "Bash"
+        assert isinstance(m["input"], str) and len(m["input"]) <= 200 and "***" in m["input"]
+    assert "BIMAT123456789" not in json.dumps(s, ensure_ascii=False)
+
+
+def test_gon_bi_tu_choi_logic_thuan():
+    che = lambda s: s.replace("BIMAT", "***")                       # noqa: E731
+    ds = [{"tool_name": "Write", "tool_input": {"file_path": "BIMAT.txt"}}, "rác", {"tool_input": "y" * 999},
+          {"tool_name": "x" * 500, "tool_input": None}]
+    g = vl.gon_bi_tu_choi(ds, che)
+    assert g[0] == {"tool_name": "Write", "input": '{"file_path": "***.txt"}'}
+    assert g[1] == {"tool_name": "?", "input": '"rác"'}
+    assert g[2]["tool_name"] == "?" and len(g[2]["input"]) == 200
+    assert len(g[3]["tool_name"]) <= 100 and g[3]["input"] == "null"
+    assert len(vl.gon_bi_tu_choi([{}] * 50, che)) == 20
+    assert vl.gon_bi_tu_choi("khong-list", che) == []
+
+
+def test_cong_chi_phi_sai_trang_thai_thi_log_warning(tmp_path, caplog):
+    """R-05 P3-7: không ghi được chi phí lượt Claude → phải có log.warning (không mất dấu vết)."""
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE", "usd": 0.5}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    goc = kho.cong_chi_phi
+
+    def cong(id, usd, so_luot, bat_dau):
+        if not bat_dau:
+            raise vl.SaiTrangThai("đã bị huỷ từ web")
+        return goc(id, usd, so_luot, bat_dau)
+    kho.cong_chi_phi = cong
+    with caplog.at_level("WARNING", logger="kho_runner.vong_lap"):
+        chay_lan(bo, "nhe")
+    assert any(r.levelname == "WARNING" and v["id"] in r.getMessage() and "0.5" in r.getMessage()
+               for r in caplog.records), caplog.records
+
+
+def test_claude_het_quota_tam_dung_claude_nhung_script_van_chay(tmp_path):
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "Claude AI usage limit reached", "is_error": True, "ma": 1}])
+    s_loai = loai_script("s_nhe", "nhe", [PY, "-c", "print('ok')"])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai, "s_nhe": s_loai})
+    v1 = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    assert kho.lay(v1["id"])["trang_thai"] == "loi"
+    assert bo.trang_thai_lan()["tam_dung_claude_den"] is not None
+    v2 = tao(kho, loai, {"uid": UID2})
+    v3 = tao(kho, s_loai, {"k": "a"})
+    assert chay_lan(bo, "nhe")["id"] == v3["id"]                 # Claude đứng chờ, script vẫn chạy
+    assert kho.lay(v2["id"])["trang_thai"] == "cho"
+    assert chay_lan(bo, "nhe") is None
+
+
+def test_cham_claude_viec_ngay_thi_dung_cho(tmp_path):
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+    s_loai = loai_script("s_nhe", "nhe", [PY, "-c", "print('ok')"])
+    hm = dict(HAN_MUC_TRAN, claude_viec_ngay=1)
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai, "s_nhe": s_loai}, hm=hm)
+    v1 = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    assert kho.lay(v1["id"])["trang_thai"] == "xong"
+    v2 = tao(kho, loai, {"uid": UID2})
+    v3 = tao(kho, s_loai, {"k": "a"})
+    assert chay_lan(bo, "nhe")["id"] == v3["id"]
+    assert kho.lay(v2["id"])["trang_thai"] == "cho"
+    assert chay_lan(bo, "nhe") is None
+    assert len(cac_lan_goi(kb)) == 1
+
+
+def test_viec_resume_tu_hom_qua_khong_tu_dem_minh(tmp_path):
+    """P3-8: kiem_han_muc gọi TRƯỚC khi nhận → bat_dau_luc cũ (hôm qua) chưa bị đổi thành hôm nay."""
+    dong = Dong(datetime.now(MUI_GIO_VN) - timedelta(days=1))
+    mt = lam_mt(tmp_path, bay_gio=dong)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}])
+    hm = dict(HAN_MUC_TRAN, claude_viec_ngay=1)
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai}, hm=hm)
+    v = tao(kho, loai, {"uid": UID})
+    kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+    kho.cong_chi_phi(v["id"], 0.1, 2, True)
+    kho.danh_dau_phien(v["id"])
+    kho.chuyen(v["id"], ["dang_chay"], "loi", "he_thong", "lỗi", loi="mất mạng")
+    kho.chuyen(v["id"], ["loi"], "cho", "nhan", "chạy tiếp (resume phiên Claude)")
+    dong.t = datetime.now(MUI_GIO_VN)
+    assert chay_lan(bo, "nhe")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong"
+    st = cac_lan_goi(kb)[0]
+    assert "--resume" in st["args"] and st["stdin"].startswith("Phiên trước dừng vì: mất mạng.")
+
+
+# ---------------- script giả ----------------
+
+def test_qua_gio_giet_ca_cay(tmp_path):
+    mt = lam_mt(tmp_path)
+    s = loai_script("cham", "nhe", [PY, "-c", "import time; time.sleep(60)"], het_gio=1)
+    bo, kho = lam_bo(tmp_path, mt, {"cham": s})
+    v = tao(kho, s, {"k": "a"})
+    pid = {}
+    goc = kho.ghi_tien_trinh
+
+    def ghi(id, p, tl):
+        pid["p"] = p
+        goc(id, p, tl)
+    kho.ghi_tien_trinh = ghi
+    t0 = time.monotonic()
+    chay_lan(bo, "nhe")
+    assert time.monotonic() - t0 < 20
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "loi" and "Quá giờ" in st["loi"] and st["pid"] is None
+    assert not song(pid["p"])
+
+
+def test_dieu_kien_truoc_hong_luc_nhan_tra_ve_cho_va_khong_chan_lan(tmp_path):
+    """§4.3 dang_chay→cho + P3-3: việc đầu hàng bị hoãn không chặn việc sau trong làn."""
+    mt = lam_mt(tmp_path)
+    a = loai_script("loai_a", "nhe", [PY, "-c", "print(1)"], dk=lambda ts, mt: "ban", tai_nguyen=("kho",))
+    b = loai_script("loai_b", "nhe", [PY, "-c", "print(2)"])
+    bo, kho = lam_bo(tmp_path, mt, {"loai_a": a, "loai_b": b}, cho_lai_s=0.5)
+    va = tao(kho, a, {"k": "a"})
+    time.sleep(1.1)                                    # tao_luc khác giây → FIFO rõ ràng
+    vb = tao(kho, b, {"k": "b"})
+    assert chay_lan(bo, "nhe")["id"] == va["id"]
+    sa = kho.lay(va["id"])
+    assert sa["trang_thai"] == "cho"
+    ev = kho.su_kien(va["id"])[-1]
+    assert ev["tu"] == "dang_chay" and ev["den"] == "cho" and "git kho đang bận" in ev["ghi_chu"]
+    assert "loai_a" in bo.trang_thai_lan()["tam_hoan"]
+    assert bo.trang_thai_lan()["tai_nguyen"]["kho"] is None        # đã nhả kho
+    assert chay_lan(bo, "nhe")["id"] == vb["id"]                    # không bị chặn đầu hàng
+    assert kho.lay(vb["id"])["trang_thai"] == "xong"
+    assert chay_lan(bo, "nhe") is None                              # loai_a còn trong 0.5 s hoãn
+    time.sleep(0.6)
+    assert chay_lan(bo, "nhe")["id"] == va["id"]                    # hết hoãn → thử lại
+
+
+def test_dieu_kien_truoc_viec_tay(tmp_path):
+    mt = lam_mt(tmp_path)
+    a = loai_script("a", "nhe", [PY, "-c", "print(1)"], dk=lambda ts, mt: CanNguoiDung("viec_tay", "Mở Poster"))
+    bo, kho = lam_bo(tmp_path, mt, {"a": a})
+    v = tao(kho, a, {"k": "a"})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["cau_hoi"]["noi_dung"] == "Mở Poster"
+
+
+def test_mutex_kho_hai_lan_khong_chay_cung_luc(tmp_path):
+    mt = lam_mt(tmp_path)
+    vet = tmp_path / "vet.txt"
+    ma = ("import sys,time;f=open(sys.argv[1],'a');f.write(f'{sys.argv[2]} bd {time.time()}\\n');f.flush();"
+          "time.sleep(1.5);f.write(f'{sys.argv[2]} kt {time.time()}\\n');f.close()")
+    g = loai_script("k_gpu", "gpu", [PY, "-c", ma, str(vet), "gpu"], tai_nguyen=("kho",))
+    n = loai_script("k_nhe", "nhe", [PY, "-c", ma, str(vet), "nhe"], tai_nguyen=("kho",))
+    bo, kho = lam_bo(tmp_path, mt, {"k_gpu": g, "k_nhe": n})
+    vg = tao(kho, g, {"k": "g"})
+    vn = tao(kho, n, {"k": "n"})
+    # tất định: làn gpu giữ kho → làn nhe không nhận được
+    v = bo.nhan_viec("gpu")
+    assert v["id"] == vg["id"] and bo.trang_thai_lan()["tai_nguyen"]["kho"] == vg["id"]
+    assert bo.nhan_viec("nhe") is None
+    bo.chay_mot(v)
+    assert bo.trang_thai_lan()["tai_nguyen"]["kho"] is None
+    # chạy thật 2 làn song song với 2 việc kho mới
+    kho.tao("k_gpu", "g2", {"k": "g2"}, "gpu", "cho", "nhan")
+    kho.tao("k_nhe", "n2", {"k": "n2"}, "nhe", "cho", "nhan")
+    vet.write_text("")
+    bo.bat_lan()
+    try:
+        han = time.monotonic() + 30
+        while time.monotonic() < han and kho.dem()["xong"] < 4:
+            time.sleep(0.1)
+    finally:
+        bo.dung()
+    assert kho.dem()["xong"] == 4, kho.ds()
+    moc = {}
+    for d in vet.read_text().splitlines():
+        lan, loai_moc, t = d.split()
+        moc.setdefault(lan, {})[loai_moc] = float(t)
+    assert set(moc) == {"gpu", "nhe"}
+    a, b = sorted(moc.values(), key=lambda x: x["bd"])
+    assert a["kt"] <= b["bd"], moc                       # không chồng thời gian
+
+
+def test_khoa_chung_hai_luong_nhan_dong_thoi(tmp_path):
+    """P3-4: 2 luồng nhận cùng lúc 2 việc cùng tài nguyên → chỉ một luồng được."""
+    g = loai_script("k_gpu", "gpu", [PY, "-c", "1"], tai_nguyen=("kho",))
+    n = loai_script("k_nhe", "nhe", [PY, "-c", "1"], tai_nguyen=("kho",))
+    for vong in range(15):
+        thu = tmp_path / f"v{vong}"
+        thu.mkdir()
+        bo, kho = lam_bo(thu, lam_mt(thu), {"k_gpu": g, "k_nhe": n})
+        tao(kho, g, {"k": "g"})
+        tao(kho, n, {"k": "n"})
+        kq = {}
+        rao = threading.Barrier(2)
+
+        def lay(lan):
+            rao.wait()
+            kq[lan] = bo.nhan_viec(lan)
+        ts = [threading.Thread(target=lay, args=(l,)) for l in ("gpu", "nhe")]
+        [t.start() for t in ts]
+        [t.join() for t in ts]
+        assert sum(1 for v in kq.values() if v is not None) == 1, kq
+
+
+def test_huy_khi_dang_chay(tmp_path):
+    mt = lam_mt(tmp_path)
+    s = loai_script("cham", "nhe", [PY, "-c", "import time; time.sleep(60)"])
+    bo, kho = lam_bo(tmp_path, mt, {"cham": s})
+    v = tao(kho, s, {"k": "a"})
+    viec = bo.nhan_viec("nhe")
+    t = threading.Thread(target=bo.chay_mot, args=(viec,))
+    t.start()
+    han = time.monotonic() + 10
+    while time.monotonic() < han and not (kho.lay(v["id"]) or {}).get("pid"):
+        time.sleep(0.05)
+    pid = kho.lay(v["id"])["pid"]
+    kho.chuyen(v["id"], ["dang_chay"], "huy", "nhan", "huỷ từ web")     # như api.p_huy
+    bo.bao_huy(v["id"])
+    t.join(timeout=20)
+    assert not t.is_alive()
+    assert kho.lay(v["id"])["trang_thai"] == "huy" and not song(pid)
+    assert bo.trang_thai_lan()["lan"]["nhe"] is None
+
+
+@pytest.mark.parametrize("co_job", [True, False])
+def test_khoi_dong_lai_giet_cay_va_ve_cho_lan_thu_2(tmp_path, monkeypatch, co_job):
+    """R-07 P2-1: PID tái dùng (create_time lệch) = gốc cũ đã chết, giống NoSuchProcess. Có Job Object → về cho;
+    KHÔNG có Job Object → cháu mồ côi có thể sống → loi kiểm tay (trước đây về cho bất kể)."""
+    monkeypatch.setattr(tt, "_JOB_RUNNER", object() if co_job else None)
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    p1 = subprocess.Popen([PY, "-c", "import time; time.sleep(60)"])
+    p2 = subprocess.Popen([PY, "-c", "import time; time.sleep(60)"])
+    try:
+        v1 = tao(kho, s, {"k": "a"})
+        kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+        kho.ghi_tien_trinh(v1["id"], p1.pid, psutil.Process(p1.pid).create_time())
+        v2 = tao(kho, s, {"k": "b"})
+        kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+        kho.ghi_tien_trinh(v2["id"], p2.pid, psutil.Process(p2.pid).create_time() + 100)   # PID bị tái dùng
+        kq = bo.khoi_dong()
+        p1.wait(timeout=15)
+        assert p1.poll() is not None
+        assert p2.poll() is None                                    # không đụng PID đã bị tái dùng
+        assert kq["giet"] == [p1.pid]
+        st1 = kho.lay(v1["id"])
+        assert st1["trang_thai"] == "cho" and st1["lan_thu"] == 2 and st1["pid"] is None
+        st2 = kho.lay(v2["id"])
+        if co_job:
+            assert st2["trang_thai"] == "cho" and st2["lan_thu"] == 2 and st2["pid"] is None
+            assert kq["con_song"] == []
+        else:
+            assert st2["trang_thai"] == "loi" and "kiểm tay" in st2["loi"] and st2["lan_thu"] == 1, st2
+            assert kq["con_song"] == [p2.pid] and v2["id"] not in kq["doi_soat"]
+        assert chay_lan(bo, "nhe")["id"] in (v1["id"], v2["id"])
+    finally:
+        for p in (p1, p2):
+            if p.poll() is None:
+                p.kill()
+                p.wait(timeout=10)
+
+
+def test_khoi_dong_lai_giet_khong_duoc_thi_loi_khong_ve_cho(tmp_path, monkeypatch):
+    """R-05 P2-3: giet_cay trả False (tiến trình cũ còn sống) → việc sang loi, KHÔNG về cho (tránh chạy trùng)."""
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    p1 = subprocess.Popen([PY, "-c", "import time; time.sleep(60)"])
+    goi = []
+    monkeypatch.setattr(vl.tt, "giet_cay", lambda pid, tl: goi.append(pid) or False)
+    try:
+        v1 = tao(kho, s, {"k": "a"})
+        kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+        kho.ghi_tien_trinh(v1["id"], p1.pid, psutil.Process(p1.pid).create_time())
+        kq = bo.khoi_dong()
+        assert goi == [p1.pid]
+        st = kho.lay(v1["id"])
+        assert st["trang_thai"] == "loi" and "còn sống" in st["loi"] and str(p1.pid) in st["loi"], st
+        assert st["lan_thu"] == 1
+        assert kq["giet"] == [] and kq["con_song"] == [p1.pid]
+        assert v1["id"] not in kq["doi_soat"]
+        assert chay_lan(bo, "nhe") is None                          # không có gì để chạy lại tự động
+    finally:
+        if p1.poll() is None:
+            p1.kill()
+            p1.wait(timeout=10)
+
+
+def test_trang_thai_lan_tra_id_va_loai(tmp_path):
+    """R-05 P3-2: lan.gpu/lan.nhe là {id, loai} khi đang chạy, None khi rảnh."""
+    mt = lam_mt(tmp_path)
+    g = loai_script("k_gpu", "gpu", [PY, "-c", "1"])
+    bo, kho = lam_bo(tmp_path, mt, {"k_gpu": g})
+    v = tao(kho, g, {"k": "g"})
+    viec = bo.nhan_viec("gpu")
+    assert bo.trang_thai_lan()["lan"] == {"gpu": {"id": v["id"], "loai": "k_gpu"}, "nhe": None}
+    bo.chay_mot(viec)
+    assert bo.trang_thai_lan()["lan"] == {"gpu": None, "nhe": None}
+
+
+def test_khoi_dong_lai_claude_co_phien_thi_resume_voi_tin_bi_ngat(tmp_path):
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE"}], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+    kho.danh_dau_phien(v["id"])
+    bo.khoi_dong()
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "cho" and st["lan_thu"] == 2
+    chay_lan(bo, "nhe")
+    g = cac_lan_goi(kb)[0]
+    assert "--resume" in g["args"] and "bị ngắt khi máy tắt" in g["stdin"]
+
+
+def test_voice_pv_doi_ten_mp3_hong_khi_khoi_dong_lai(tmp_path):
+    me = "20261117-a"
+    p = tmp_path / "goc" / f"du_an_{UID}"
+    (p / "kich-ban").mkdir(parents=True)
+    (p / "kich-ban" / f"{me}_kich-ban-da-cham.md").write_text("x")
+    (p / "voice").mkdir()
+    tl = {"a01": None, "a02": 3.5, "a03": 0.0}
+    mt = lam_mt(tmp_path, thoi_luong_media=lambda f: tl[f.name.split("_")[1]],
+                ds_ma_voice=lambda pp, m: ["a01", "a02"])
+    loai = DANH_MUC["voice_pv"]
+    bo, kho = lam_bo(tmp_path, mt, {"voice_pv": loai})
+    ts = {"uid": UID, "du_an": ma_du_an(p), "me": me}
+    v = kho.tao("voice_pv", f"{ts['du_an']}:{me}", ts, "gpu", "cho", "nhan")
+    kho.nhan_viec_ke("gpu", set(), lambda m: frozenset())
+    bd = datetime.fromisoformat(kho.lay(v["id"])["bat_dau_luc"]).timestamp()
+    for ma, moc in (("a01", bd + 5), ("a02", bd + 5), ("a03", bd - 3600)):
+        f = p / "voice" / f"{me}_{ma}_adam.mp3"
+        f.write_bytes(b"x")
+        os.utime(f, (moc, moc))
+    bo.khoi_dong()
+    ten = sorted(f.name for f in (p / "voice").iterdir())
+    assert ten == sorted([f"{me}_a01_adam.mp3.hong-{v['id']}", f"{me}_a02_adam.mp3", f"{me}_a03_adam.mp3"])
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "cho" and st["lan_thu"] == 2           # a01 thiếu → 'chua' → tự chạy lại
+
+
+def test_xu_ly_link_moi_sinh_viec_con(tmp_path):
+    mt = lam_mt(tmp_path)
+    (tmp_path / "repo" / "tools").mkdir(parents=True)
+    dong = [f"{UID}\thttps://a\tx", f"{UID2}\thttps://b\ty", f"{UID}\thttps://a\tlap", "tam-123456789012\thttps://vt\tz",
+            "rác không khớp"]
+    (tmp_path / "repo" / "tools" / "kho.py").write_text(
+        "import sys\nprint(" + repr("\n".join(dong)) + ")\n", encoding="utf-8")
+    dm = {"xu_ly_link_moi": DANH_MUC["xu_ly_link_moi"], "phan_tich_uid": DANH_MUC["phan_tich_uid"]}
+    bo, kho = lam_bo(tmp_path, mt, dm)
+    co_san = kho.tao("phan_tich_uid", UID2, {"uid": UID2}, "nhe", "can_tra_loi", "comeofage",
+                     cau_hoi=CanNguoiDung("viec_tay", "x"), session_id=str(uuid.uuid4()))   # mở nhưng không nhận
+    v = kho.tao("xu_ly_link_moi", "kho", {}, "nhe", "cho", "nhan")
+    assert chay_lan(bo, "nhe")["id"] == v["id"]
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s
+    kq = s["ket_qua"]
+    assert kq["uid_trung"] == [UID2] and kq["link_tam"] == ["tam-123456789012"] and len(kq["viec_con"]) == 1
+    con = kho.lay(kq["viec_con"][0])
+    assert con["loai"] == "phan_tich_uid" and con["khoa"] == UID and con["cha_id"] == v["id"]
+    assert con["trang_thai"] == "cho" and con["tao_boi"] == "nhan" and con["session_id"]
+    assert kho.lay(co_san["id"])["cha_id"] is None
+
+
+def test_douyin_agy_loi_thi_viec_tay_va_bao_can_ban(tmp_path):
+    mt = lam_mt(tmp_path)
+    (tmp_path / "sp" / f"sp_{UID}").mkdir()
+    (tmp_path / "repo" / "data" / UID2).mkdir(parents=True)
+    (tmp_path / "repo" / "data" / UID2 / "douyin.md").write_text("mẫu", encoding="utf-8")
+    agy = tmp_path / "agy_gia.py"
+    agy.write_text("print('Douyin hiện 验证 captcha'); import sys; sys.exit(2)", encoding="utf-8")
+    goc = DANH_MUC["douyin_uid"]
+
+    def lap(ts, viec, mt_):
+        ds = goc.lap_buoc(ts, viec, mt_)
+        assert [b.ten for b in ds] == ["ghi_prompt", "agy", "kho_ghi"] and ds[1].hien_cua_so
+        return [ds[0], dataclasses.replace(ds[1], argv=[PY, str(agy)]), ds[2]]
+    loai = dataclasses.replace(goc, lap_buoc=lap)
+    bo, kho = lam_bo(tmp_path, mt, {"douyin_uid": loai})
+    v = kho.tao("douyin_uid", UID, {"uid": UID}, "nhe", "cho", "nhan")
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "can_tra_loi" and s["cau_hoi"]["loai"] == "viec_tay"
+    assert "captcha" in s["cau_hoi"]["noi_dung"]
+    assert s["can_ban"] and "captcha" in s["can_ban"]
+    d = tmp_path / "sp" / f"sp_{UID}" / "douyin"
+    assert (d / "_prompt_antigravity.txt").read_text(encoding="utf-8").startswith("Đây là VIỆC THỰC TẾ")
+    assert "验证" in (d / "_antigravity_log.txt").read_text(encoding="utf-8")
+
+
+def test_doc_log_offset_va_che(tmp_path):
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print('khoá BIMAT123456789 ở đây'); print('dòng 2')"])
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    chay_lan(bo, "nhe")
+    r = bo.doc_log(v["id"], 0)
+    assert "BIMAT123456789" not in r["noi_dung"] and "khoá *** ở đây" in r["noi_dung"]
+    assert r["het"] is True and r["den"] == (tmp_path / "data" / "log" / f"{v['id']}.log").stat().st_size
+    r2 = bo.doc_log(v["id"], r["den"])
+    assert r2["noi_dung"] == "" and r2["tu"] == r["den"]
+    assert bo.doc_log(v["id"], 10 ** 9)["tu"] == r["den"]
+    with pytest.raises(Exception):
+        bo.doc_log("../runner", 0)
+    # log > 64 KB: đọc theo khung, ghép lại đủ
+    lon = tmp_path / "data" / "log" / "j20261117000000abcd.log"
+    lon.write_bytes(("dòng tiếng Việt có dấu\n" * 6000).encode("utf-8"))
+    tu, gom = 0, []
+    while True:
+        r = bo.doc_log("j20261117000000abcd", tu)
+        gom.append(r["noi_dung"])
+        if r["den"] == tu:
+            break
+        tu = r["den"]
+    assert "".join(gom) == "dòng tiếng Việt có dấu\n" * 6000
+
+
+def test_tong_kiem(tmp_path):
+    (tmp_path / "runner").mkdir()
+    (tmp_path / "runner" / "a.py").write_text("x")
+    (tmp_path / "chay_runner.py").write_text("y")
+    assert vl.kiem_tong(tmp_path)[0].startswith("không có TONG_KIEM.json")
+    (tmp_path / "TONG_KIEM.json").write_text(json.dumps(vl.tinh_tong_kiem(tmp_path)))
+    assert vl.kiem_tong(tmp_path) == []
+    (tmp_path / "runner" / "a.py").write_text("bị sửa", encoding="utf-8")
+    assert "runner/a.py" in vl.kiem_tong(tmp_path)[0]
+
+
+# ---------------- FX-4 (R-06) ----------------
+
+BI_MAT_VL = "Pw" + "4hN" * 20 + "z9"        # 64 ký tự, không khớp mẫu → chỉ che theo giá trị
+
+
+def _che_vl(s: str) -> str:
+    return s.replace(BI_MAT_VL, "***")
+
+
+def lam_bo_che(tmp: Path, mt: MoiTruong, dm: dict, **kw) -> tuple[vl.BoChay, KhoViec]:
+    kho = KhoViec(tmp / "data" / "runner.db", mt.bay_gio)
+    return vl.BoChay(kho, mt, dict(HAN_MUC_TRAN), tmp / "data" / "log", _che_vl, danh_muc=dm, nghi_s=0.05,
+                     **kw), kho
+
+
+def test_doc_log_chua_het_khi_da_huy_ma_runner_con_giu(tmp_path):
+    """R-06 P2-1: api chuyển huy TRƯỚC rồi bao_huy; runner còn ghi đuôi log → het phải False tới khi runner nhả id."""
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "1"])
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    viec = bo.nhan_viec("nhe")
+    assert viec["id"] == v["id"]
+    bo._ghi_log(v["id"], "dòng 1")
+    kho.chuyen(v["id"], ["dang_chay"], "huy", "nhan", "huỷ từ web")     # như api.p_huy
+    r = bo.doc_log(v["id"], 0)
+    assert r["het"] is False and "dòng 1" in r["noi_dung"]
+    bo._ghi_log(v["id"], "kết thúc: mã 1 · bị huỷ")                      # đuôi ghi sau khi DB đã là huy
+    bo._nha(v["id"], "nhe")
+    r2 = bo.doc_log(v["id"], r["den"])
+    assert "bị huỷ" in r2["noi_dung"] and r2["het"] is True
+
+
+def test_doc_log_viec_mo_chua_chay_thi_chua_het(tmp_path):
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "1"])
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    assert bo.doc_log(v["id"], 0)["het"] is False                       # 'cho' = mở → log còn có thể ghi
+    kho.chuyen(v["id"], ["cho"], "huy", "nhan", "huỷ")
+    assert bo.doc_log(v["id"], 0)["het"] is True
+
+
+def test_doc_log_doc_trang_thai_truoc_roi_moi_stat(tmp_path, monkeypatch):
+    """Thứ tự đọc: trạng thái DB trước, cỡ file sau (đọc ngược sẽ het=True sớm khi đuôi ghi giữa 2 lần đọc)."""
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "1"])
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    bo._ghi_log(v["id"], "x")
+    thu_tu = []
+    lay_goc = kho.lay
+    monkeypatch.setattr(kho, "lay", lambda id: thu_tu.append("lay") or lay_goc(id))
+    stat_goc = Path.stat
+
+    def stat_ghi(self, *a, **k):
+        if self.suffix == ".log":
+            thu_tu.append("stat")
+        return stat_goc(self, *a, **k)
+    monkeypatch.setattr(Path, "stat", stat_ghi)
+    bo.doc_log(v["id"], 0)
+    assert thu_tu[:2] == ["lay", "stat"], thu_tu
+
+
+def test_script_loi_bi_mat_vat_qua_diem_cat_1200_khong_lo(tmp_path):
+    """R-06 P3-1: bí mật vắt qua điểm cắt -1200 của đuôi stdout → che bản đủ rồi mới cắt."""
+    mt = lam_mt(tmp_path)
+    # đuôi sau bí mật dài 1180 ký tự → điểm cắt -1200 rơi vào giữa bí mật
+    ma = f"import sys; print('{BI_MAT_VL}' + 'b' * 1180); sys.exit(3)"
+    s = loai_script("s", "nhe", [PY, "-c", ma])
+    bo, kho = lam_bo_che(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    chay_lan(bo, "nhe")
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "loi" and "thoát mã 3" in st["loi"]
+    assert BI_MAT_VL[-20:] not in st["loi"] and BI_MAT_VL[:20] not in st["loi"], st["loi"][:80]
+
+
+def test_script_xong_tom_tat_bi_mat_vat_qua_diem_cat_1500_khong_lo(tmp_path):
+    mt = lam_mt(tmp_path)
+    ma = f"print('{BI_MAT_VL}' + 'c' * 1470)"
+    s = loai_script("s", "nhe", [PY, "-c", ma])
+    bo, kho = lam_bo_che(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    chay_lan(bo, "nhe")
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "xong"
+    assert BI_MAT_VL[-20:] not in st["ket_qua"]["tom_tat"] and st["ket_qua"]["tom_tat"].startswith("***")
+
+
+def test_claude_tom_tat_bi_mat_o_vi_tri_1480_khong_lo(tmp_path):
+    """Đúng ví dụ reviewer: khoá 64 ký tự ở vị trí 1480 của tom_tat → trước đây lộ 20 ký tự."""
+    mt = lam_mt(tmp_path)
+    dau = "TRẠNG THÁI: DONE\n"
+    bao_cao = dau + "a" * (1480 - len(dau)) + BI_MAT_VL + " hết"
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": bao_cao}])
+    bo, kho = lam_bo_che(tmp_path, mt, {"phan_tich_uid": loai})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "xong", st
+    assert BI_MAT_VL[:12] not in st["ket_qua"]["tom_tat"] and st["ket_qua"]["tom_tat"].endswith("*** hết")
+
+
+def test_phan_loai_ket_thuc_claude_che_truoc_khi_cat():
+    def kq(**k):
+        g = dict(ma_thoat=1, het_gio=False, bi_huy=False, vuot_luot=False, ket_qua=None, van_ban_cuoi="",
+                 session_id=None, so_luot=0)
+        g.update(k)
+        return tt.KetQuaTienTrinh(**g)
+    vb = "x" * 780 + BI_MAT_VL                                          # cắt [:800] rơi giữa bí mật
+    ok = {"session_id": "s", "chi_phi_usd": 0.0, "so_luot": 1, "loi": True, "van_ban": vb, "bi_tu_choi": []}
+    assert BI_MAT_VL[:20] in vl.phan_loai_ket_thuc_claude(kq(ket_qua=ok), 250, 60)[1]["loi"]   # lỗi cũ
+    loi = vl.phan_loai_ket_thuc_claude(kq(ket_qua=ok), 250, 60, _che_vl)[1]["loi"]
+    assert BI_MAT_VL[:20] not in loi and loi.endswith("***")
+    vb2 = BI_MAT_VL + "y" * 480                                         # cắt [-500:] rơi giữa bí mật
+    loi2 = vl.phan_loai_ket_thuc_claude(kq(van_ban_cuoi=vb2), 250, 60, _che_vl)[1]["loi"]
+    assert BI_MAT_VL[-20:] not in loi2 and "***" in loi2
+
+
+def test_loi_bo_chay_viec_va_lap_buoc_duoc_che(tmp_path):
+    """Thông điệp lỗi ra web (lỗi bộ chạy việc, không lập được lệnh, không chạy được bước) đều đã che."""
+    from runner.kieu import ThamSoLoi
+
+    mt = lam_mt(tmp_path)
+
+    def lap_loi(ts, viec, mt_):
+        raise ThamSoLoi("tham số hỏng " + BI_MAT_VL)
+
+    def lap_no(ts, viec, mt_):
+        raise RuntimeError("x" * 790 + BI_MAT_VL)
+    a = dataclasses.replace(loai_script("a", "nhe", [PY]), lap_buoc=lap_loi)
+    b = dataclasses.replace(loai_script("b", "nhe", [PY]), lap_buoc=lap_no)
+    c = loai_script("c", "nhe", [str(tmp_path / ("khong_co_" + BI_MAT_VL + ".exe"))])
+    bo, kho = lam_bo_che(tmp_path, mt, {"a": a, "b": b, "c": c})
+    ids = [tao(kho, l, {"k": l.ma}, khoa=l.ma)["id"] for l in (a, b, c)]
+    for _ in ids:
+        chay_lan(bo, "nhe")
+    for id in ids:
+        st = kho.lay(id)
+        assert st["trang_thai"] == "loi", st
+        assert BI_MAT_VL[:20] not in json.dumps(st, ensure_ascii=False), st["loi"][-120:]
+        for e in kho.su_kien(id):
+            assert BI_MAT_VL[:20] not in (e.get("ghi_chu") or "")
+
+
+def test_huy_ma_khong_giet_duoc_dua_canh_bao_ra_suc_khoe(tmp_path, monkeypatch):
+    """R-06 P3-5: huỷ, giet_cay thất bại → thuc_thi bỏ chờ sau hạn, vong_lap đưa cảnh báo vào list canh_bao."""
+    monkeypatch.setattr(tt, "giet_cay", lambda pid, tl: False)
+    monkeypatch.setattr(tt, "_tao_job_rieng", lambda proc: None)
+    monkeypatch.setattr(tt, "CHO_SAU_GIET_S", 1.0)
+    mt = lam_mt(tmp_path)
+    s = loai_script("cham", "nhe", [PY, "-c", "import time; time.sleep(120)"])
+    canh_bao = ["có sẵn"]
+    bo, kho = lam_bo(tmp_path, mt, {"cham": s}, canh_bao=canh_bao)
+    v = tao(kho, s, {"k": "a"})
+    viec = bo.nhan_viec("nhe")
+    t = threading.Thread(target=bo.chay_mot, args=(viec,))
+    t.start()
+    han = time.monotonic() + 10
+    while time.monotonic() < han and not (kho.lay(v["id"]) or {}).get("pid"):
+        time.sleep(0.05)
+    pid = kho.lay(v["id"])["pid"]
+    try:
+        kho.chuyen(v["id"], ["dang_chay"], "huy", "nhan", "huỷ từ web")
+        bo.bao_huy(v["id"])
+        t.join(timeout=30)
+        assert not t.is_alive()                                          # không kẹt vô hạn
+        assert song(pid)                                                 # mô phỏng: thật sự chưa chết
+        assert canh_bao[0] == "có sẵn" and len(canh_bao) == 2
+        assert str(pid) in canh_bao[1] and v["id"] in canh_bao[1] and "không giết được" in canh_bao[1]
+        assert kho.lay(v["id"])["trang_thai"] == "huy"
+        r = bo.doc_log(v["id"], 0)
+        assert r["het"] is True and "CẢNH BÁO" in r["noi_dung"]
+    finally:
+        try:
+            psutil.Process(pid).kill()
+        except psutil.Error:
+            pass
+
+
+def _viec_dang_chay_pid_chet(kho, s):
+    p = subprocess.Popen([PY, "-c", "pass"])
+    tl = psutil.Process(p.pid).create_time()
+    p.wait(timeout=30)
+    v = tao(kho, s, {"k": "a"})
+    kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+    kho.ghi_tien_trinh(v["id"], p.pid, tl)
+    return v, p.pid
+
+
+def test_khoi_dong_lai_khong_job_object_goc_chet_thi_loi_kiem_tay(tmp_path, monkeypatch):
+    """R-06 P3-6: không có Job Object runner + gốc đã chết (NoSuchProcess) → cháu mồ côi có thể sống → loi."""
+    monkeypatch.setattr(tt, "_JOB_RUNNER", None)
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v, pid = _viec_dang_chay_pid_chet(kho, s)
+    kq = bo.khoi_dong()
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "loi" and "Job Object" in st["loi"] and "kiểm tay" in st["loi"], st
+    assert kq["con_song"] == [pid] and v["id"] not in kq["doi_soat"]
+    assert chay_lan(bo, "nhe") is None
+
+
+def test_khoi_dong_lai_co_job_object_goc_chet_thi_doi_soat_binh_thuong(tmp_path, monkeypatch):
+    monkeypatch.setattr(tt, "_JOB_RUNNER", object())                    # giả: runner đã nằm trong Job Object
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v, pid = _viec_dang_chay_pid_chet(kho, s)
+    kq = bo.khoi_dong()
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "cho" and st["lan_thu"] == 2 and kq["con_song"] == []
+
+
+def test_doc_log_dang_ghi_khong_tra_dong_do_bi_mat_khong_bi_cat_doi(tmp_path):
+    """R-06 P3-1: việc đang chạy, log dừng giữa dòng chứa nửa bí mật → không trả dòng dở; lượt sau đọc trọn rồi che."""
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "1"])
+    bo, kho = lam_bo_che(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    bo.nhan_viec("nhe")
+    f = tmp_path / "data" / "log" / f"{v['id']}.log"
+    f.write_bytes(("dòng 1\n" + BI_MAT_VL[:30]).encode("utf-8"))
+    r = bo.doc_log(v["id"], 0)
+    assert r["noi_dung"] == "dòng 1\n" and r["het"] is False
+    with open(f, "ab") as g:
+        g.write((BI_MAT_VL[30:] + " đuôi\n").encode("utf-8"))
+    r2 = bo.doc_log(v["id"], r["den"])
+    assert r2["noi_dung"] == "*** đuôi\n"
+    bo._nha(v["id"], "nhe")
+    kho.chuyen(v["id"], ["dang_chay"], "xong", "he_thong", "xong")
+    with open(f, "ab") as g:
+        g.write(b"khong xuong dong")
+    r3 = bo.doc_log(v["id"], r2["den"])
+    assert r3["noi_dung"] == "khong xuong dong" and r3["het"] is True      # đã dừng → trả cả dòng cuối dở
+
+
+# ---------------- FX-5 (R-07) ----------------
+
+def test_khoi_dong_lai_tien_trinh_sinh_truoc_lan_khoi_dong_may_thi_doi_soat_binh_thuong(tmp_path, monkeypatch):
+    """R-07 P3-5: sau reboot, tiến trình cũ (pid_tao_luc < boot_time) chắc chắn đã chết cả cây → đối soát bình
+    thường dù runner không có Job Object."""
+    monkeypatch.setattr(tt, "_JOB_RUNNER", None)
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    p = subprocess.Popen([PY, "-c", "pass"])
+    p.wait(timeout=30)
+    v = tao(kho, s, {"k": "a"})
+    kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+    kho.ghi_tien_trinh(v["id"], p.pid, psutil.boot_time() - 3600)          # sinh trước lần bật máy này
+    kq = bo.khoi_dong()
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "cho" and st["lan_thu"] == 2 and kq["con_song"] == [], st
+
+
+def test_khoi_dong_lai_pid_tai_dung_truoc_boot_va_khong_job_van_doi_soat(tmp_path, monkeypatch):
+    """PID đang sống nhưng là tiến trình khác (create_time lệch), pid_tao_luc trước boot → gốc cũ đã chết chắc."""
+    monkeypatch.setattr(tt, "_JOB_RUNNER", None)
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="chua")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    p = subprocess.Popen([PY, "-c", "import time; time.sleep(60)"])
+    try:
+        v = tao(kho, s, {"k": "a"})
+        kho.nhan_viec_ke("nhe", set(), lambda m: frozenset())
+        kho.ghi_tien_trinh(v["id"], p.pid, psutil.boot_time() - 3600)
+        bo.khoi_dong()
+        assert p.poll() is None                                            # không đụng tiến trình lạ
+        assert kho.lay(v["id"])["trang_thai"] == "cho"
+    finally:
+        p.kill()
+        p.wait(timeout=10)
+
+
+def _cho_pid(kho, id, han_s=10):
+    han = time.monotonic() + han_s
+    while time.monotonic() < han and not (kho.lay(id) or {}).get("pid"):
+        time.sleep(0.05)
+    return kho.lay(id)["pid"]
+
+
+def _gia_khong_giet(monkeypatch):
+    monkeypatch.setattr(tt, "giet_cay", lambda pid, tl: False)
+    monkeypatch.setattr(tt, "_tao_job_rieng", lambda proc: None)
+    monkeypatch.setattr(tt, "CHO_SAU_GIET_S", 1.0)
+    monkeypatch.setattr(tt, "CHO_DON_S", 1.0)
+
+
+def _giet_that(pid):
+    try:
+        p = psutil.Process(pid)
+        p.kill()
+        p.wait(timeout=15)
+    except psutil.Error:
+        pass
+
+
+def test_qua_gio_khong_giet_duoc_thi_loi_giu_lan_va_tai_nguyen_toi_khi_pid_chet(tmp_path, monkeypatch):
+    """R-07 P2-4: quá giờ, giết không được → loi "tiến trình còn sống — kiểm tay", ket_qua đánh dấu (chặn Chạy tiếp),
+    GIỮ làn + tài nguyên; pid chết thật → lần nhận kế nhả và chạy việc khác; cảnh báo của pid đó bị xoá."""
+    _gia_khong_giet(monkeypatch)
+    mt = lam_mt(tmp_path)
+    cham = loai_script("cham", "nhe", [PY, "-c", "import time; time.sleep(120)"], het_gio=1, tai_nguyen=("kho",))
+    nhanh = loai_script("nhanh", "nhe", [PY, "-c", "print(1)"])
+    kho_gpu = loai_script("kho_gpu", "gpu", [PY, "-c", "print(1)"], tai_nguyen=("kho",))
+    canh_bao = ["có sẵn"]
+    bo, kho = lam_bo(tmp_path, mt, {"cham": cham, "nhanh": nhanh, "kho_gpu": kho_gpu}, canh_bao=canh_bao,
+                     kiem_song_s=0)
+    v = tao(kho, cham, {"k": "a"})
+    viec = bo.nhan_viec("nhe")
+    t = threading.Thread(target=bo.chay_mot, args=(viec,))
+    t.start()
+    pid = _cho_pid(kho, v["id"])
+    try:
+        t.join(timeout=40)
+        assert not t.is_alive() and song(pid)
+        st = kho.lay(v["id"])
+        assert st["trang_thai"] == "loi" and "còn sống" in st["loi"] and "kiểm tay" in st["loi"], st
+        assert st["ket_qua"]["khong_giet_duoc"] is True and st["ket_qua"]["pid"] == pid
+        tl = bo.trang_thai_lan()
+        assert tl["lan"]["nhe"]["id"] == v["id"] and tl["tai_nguyen"]["kho"] == v["id"]   # còn giữ
+        assert tl["con_song"] == {v["id"]: pid}
+        assert sum(1 for c in canh_bao if str(pid) in c) == 1
+        v2 = tao(kho, nhanh, {"k": "b"})
+        v3 = tao(kho, kho_gpu, {"k": "c"})
+        assert chay_lan(bo, "nhe") is None and chay_lan(bo, "gpu") is None              # làn nhe + kho bị giữ
+        assert kho.lay(v2["id"])["trang_thai"] == "cho" and kho.lay(v3["id"])["trang_thai"] == "cho"
+        assert bo.doc_log(v["id"], 0)["het"] is True                                    # web không chờ log mãi
+        _giet_that(pid)
+        assert chay_lan(bo, "gpu")["id"] == v3["id"]                                    # đã nhả kho
+        assert chay_lan(bo, "nhe")["id"] == v2["id"]                                    # đã nhả làn
+        assert bo.trang_thai_lan()["con_song"] == {}
+        assert canh_bao == ["có sẵn"]                                                   # P3-6: xoá cảnh báo pid đã chết
+    finally:
+        _giet_that(pid)
+
+
+def test_claude_cong_cu_ngoai_ma_khong_giet_duoc_thi_loi_kiem_tay_va_giu_lan(tmp_path, monkeypatch):
+    """R-07 P3-1 + P2-4: đường ngoại lệ (CongCuNgoai) mà proc.wait hết giờ → cùng xử lý: loi kiểm tay, giữ làn."""
+    _gia_khong_giet(monkeypatch)
+    mt = lam_mt(tmp_path)
+    loai, kb = loai_claude(tmp_path, [{"tool_use": ["mcp__engram__mem_save"], "ngu": 120, "ket_qua": "x"}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai}, kiem_song_s=0)
+    v = tao(kho, loai, {"uid": UID})
+    t0 = time.monotonic()
+    chay_lan(bo, "nhe")
+    pid = cac_lan_goi(kb)[0]["pid"]
+    try:
+        assert time.monotonic() - t0 < 30 and song(pid)
+        st = kho.lay(v["id"])
+        assert st["trang_thai"] == "loi" and "còn sống" in st["loi"] and "kiểm tay" in st["loi"], st
+        assert st["ket_qua"]["khong_giet_duoc"] is True
+        assert bo.trang_thai_lan()["lan"]["nhe"]["id"] == v["id"]
+        _giet_that(pid)
+        assert chay_lan(bo, "nhe") is None                                   # không còn việc, nhưng làn đã nhả
+        assert bo.trang_thai_lan()["lan"]["nhe"] is None
+    finally:
+        _giet_that(pid)
+
+
+def test_canh_bao_gioi_han_50_va_bo_trung(tmp_path):
+    """R-07 P3-6: canh_bao không phình vô hạn; mục trùng không thêm lần hai; mục khởi động giữ nguyên."""
+    mt = lam_mt(tmp_path)
+    canh_bao = ["khởi động: thiếu Job Object"]
+    bo, kho = lam_bo(tmp_path, mt, {}, canh_bao=canh_bao)
+    bo._them_canh_bao("trùng")
+    bo._them_canh_bao("trùng")
+    assert canh_bao.count("trùng") == 1
+    for i in range(200):
+        bo._them_canh_bao(f"c{i}")
+    assert len(canh_bao) == vl.CANH_BAO_TOI_DA
+    assert canh_bao[0] == "khởi động: thiếu Job Object" and canh_bao[-1] == "c199"

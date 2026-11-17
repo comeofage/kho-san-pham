@@ -1,0 +1,62 @@
+{
+  "canh_bao": "KHOÁ TEST — seed công khai, CHỈ dùng cho test chéo. KHÔNG BAO GIỜ dùng làm KY_RIENG hay ky_cong_khai.pem thật.",
+  "phien_ban": 1,
+  "dinh_dang": {
+    "chuoi_ky_request": "kho-runner-v1\\nMETHOD\\nPATH\\nNGAY_MS\\nNONCE\\nsha256_hex(BODY)",
+    "chuoi_ky_duyet": "kho-duyet-v1\\nID\\nLOAI\\nsha256_hex(THAM_SO_CHUAN)\\nsha256_hex(LOI_DUYET)\\nDUYET_LUC\\nBOI",
+    "ma_hoa": "UTF-8; sha256_hex chữ thường; không xuống dòng cuối",
+    "path": "không tiền tố /r, không query",
+    "nonce": "32 hex chữ thường",
+    "chu_ky": "Ed25519, base64url KHÔNG padding (86 ký tự)",
+    "tham_so_chuan": "json.dumps(sort_keys=True, separators=(',',':'), ensure_ascii=False)",
+    "headers": "x-ky-ngay, x-ky-nonce, x-ky"
+  },
+  "seed_test_hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+  "khoa_rieng_test_pkcs8_der_b64": "MC4CAQAwBQYDK2VwBCIEIAABAgMEBQYHCAkKCwwNDg8QERITFBUWFxgZGhscHR4f",
+  "khoa_cong_khai_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAA6EHv/POEL4dcN0Y50vAmWfk1jCbpQ1fHdyGZBJVMbg=\n-----END PUBLIC KEY-----\n",
+  "khoa_cong_khai_raw_hex": "03a107bff3ce10be1d70dd18e74bc09967e4d6309ba50d5f1ddc8664125531b8",
+  "request": [
+    {
+      "method": "POST",
+      "path": "/viec",
+      "ngay_ms": 1763380800000,
+      "nonce": "00112233445566778899aabbccddeeff",
+      "body_utf8": "{\"boi\":\"nhan\",\"loai\":\"phan_tich_uid\",\"tham_so\":{\"ghi_chu\":\"Kênh bán đồ gia dụng – thử\",\"uid\":\"7000000000000000001\"}}",
+      "body_sha256_hex": "973169848ce93f6ecc89393334a0eda19bbfcc7c374eaca5070a0b9b301cab70",
+      "chuoi_ky_utf8": "kho-runner-v1\nPOST\n/viec\n1763380800000\n00112233445566778899aabbccddeeff\n973169848ce93f6ecc89393334a0eda19bbfcc7c374eaca5070a0b9b301cab70",
+      "chuoi_ky_hex": "6b686f2d72756e6e65722d76310a504f53540a2f766965630a313736333338303830303030300a30303131323233333434353536363737383839396161626263636464656566660a39373331363938343863653933663665636338393339333333346130656461313962626663633763333734656163613530373061306239623330316361623730",
+      "x_ky": "MMRGwbrfFcbUI0Ay0Sty97gVHfvex7vkAugyCSqGGjYh2G6afJrAkDboeH6a3Lqs1zYsE-eXeP_qiQjCVZ6KDQ"
+    },
+    {
+      "method": "POST",
+      "path": "/viec/j20261117210000ab12/tra-loi",
+      "ngay_ms": 1763380865432,
+      "nonce": "fedcba9876543210fedcba9876543210",
+      "body_utf8": "{\"tra_loi\":\"da_lam_xong\",\"boi\":\"comeofage\"}",
+      "body_sha256_hex": "cd8a33a7d705f771ef9e38c689262549739535f5a29542ad0591ea66b6e92425",
+      "chuoi_ky_utf8": "kho-runner-v1\nPOST\n/viec/j20261117210000ab12/tra-loi\n1763380865432\nfedcba9876543210fedcba9876543210\ncd8a33a7d705f771ef9e38c689262549739535f5a29542ad0591ea66b6e92425",
+      "chuoi_ky_hex": "6b686f2d72756e6e65722d76310a504f53540a2f766965632f6a3230323631313137323130303030616231322f7472612d6c6f690a313736333338303836353433320a66656463626139383736353433323130666564636261393837363534333231300a63643861333361376437303566373731656639653338633638393236323534393733393533356635613239353432616430353931656136366236653932343235",
+      "x_ky": "iwcidd4SE2upQ0l5jTEE5sDWffYOwRQSGr2nqjd8Zf3tYxKGg1Igf2OKysJvcPWg4qdwemmbl_pnLeHS7lyADA"
+    }
+  ],
+  "duyet": [
+    {
+      "id": "j20261117210000ab12",
+      "loai": "voice_genmax",
+      "tham_so": {
+        "uid": "7000000000000000001",
+        "giong": "Uyên Đan",
+        "so_video": 20
+      },
+      "tham_so_chuan": "{\"giong\":\"Uyên Đan\",\"so_video\":20,\"uid\":\"7000000000000000001\"}",
+      "loi_duyet": "Duyệt, làm luôn — tối đa 20 video",
+      "duyet_luc": "2026-11-17T21:05:00+07:00",
+      "boi": "nhan",
+      "tham_so_chuan_sha256_hex": "cac222b31c9927923c64b83d863d4b435517e2e7dd4eb4e076808bc238a7398a",
+      "loi_duyet_sha256_hex": "f349dd779597ab38c5143c7806f08a0868d374d208eb0cb5688eef17bf4ebf5c",
+      "chuoi_ky_utf8": "kho-duyet-v1\nj20261117210000ab12\nvoice_genmax\ncac222b31c9927923c64b83d863d4b435517e2e7dd4eb4e076808bc238a7398a\nf349dd779597ab38c5143c7806f08a0868d374d208eb0cb5688eef17bf4ebf5c\n2026-11-17T21:05:00+07:00\nnhan",
+      "chuoi_ky_hex": "6b686f2d64757965742d76310a6a3230323631313137323130303030616231320a766f6963655f67656e6d61780a636163323232623331633939323739323363363462383364383633643462343335353137653265376464346562346530373638303862633233386137333938610a663334396464373739353937616233386335313433633738303666303861303836386433373464323038656230636235363838656566313762663465626635630a323032362d31312d31375432313a30353a30302b30373a30300a6e68616e",
+      "chu_ky_duyet": "ob8h6j5Xfe7h_Lnuj3ykdYAtLGk_Rb1VKKT-7uDzV2eUXJIMEj8-kqYvGNV6PPnH8yjXK0uMz1AunJx2dM-WDg"
+    }
+  ]
+}
