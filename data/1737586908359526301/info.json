@@ -31,11 +31,19 @@
  "da_lam_video": {
   "xong": true,
   "so_video": 20,
-  "luc": "2026-11-05T15:25:39+07:00",
+  "luc": "2026-11-17T10:40:11+07:00",
+  "poster": [
+   {
+    "folder": 277,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/phimgame-1737586908359526301/output_poster",
+    "nhan": "Adam"
+   }
+  ],
   "poster_folder": 277,
   "duong_dan": "E:/oneshottramcanh/phimgame-1737586908359526301/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
+ "cap_nhat_luc": "2026-11-17T10:40:11+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
