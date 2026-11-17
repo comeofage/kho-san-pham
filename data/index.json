@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-17T09:53:38+07:00",
+ "cap_nhat_luc": "2026-11-17T10:39:18+07:00",
  "san_pham": [
   {
    "id": "1738100992145392775",
@@ -519,16 +519,16 @@
    "gia": "102.313₫",
    "shop": "Chăm sóc đồ gỗ Mộc An",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-17T10:39:04+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -536,7 +536,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T13:56:36+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:12+07:00",
+   "cap_nhat_luc": "2026-11-17T10:39:04+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
