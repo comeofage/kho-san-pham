@@ -32,12 +32,20 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 23,
-  "luc": "2026-11-15T17:18:36+07:00",
+  "so_video": 19,
+  "luc": "2026-11-17T09:40:13+07:00",
+  "poster": [
+   {
+    "folder": 259,
+    "so_video": 19,
+    "duong_dan": "E:/oneshottramcanh/banhpia-1729801684477119432/output_poster",
+    "nhan": "Adam"
+   }
+  ],
   "poster_folder": 259,
   "duong_dan": "E:/oneshottramcanh/banhpia-1729801684477119432/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:49+07:00",
+ "cap_nhat_luc": "2026-11-17T09:40:13+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
