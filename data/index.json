@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-18T11:07:15+07:00",
+ "cap_nhat_luc": "2026-11-18T11:17:31+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -125,11 +125,11 @@
    "id": "1729681704899676707",
    "uid": "1729681704899676707",
    "link": "https://vt.tiktok.com/ZS9kuJcjGubnT-LFWtI/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[DEAL QUÀ] Combo 100 Chiếc Khẩu Trang 6D Pro Mask Unicare Phù hợp Nam Nữ, Dây Đeo Co Giãn Chất Mềm Mại,  Chống bụi, Chống nước, Chống tia UV, Mix màu trendyPhụ Kiện",
+   "gia": "94.673₫",
+   "shop": "UNICARE By GG",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -146,9 +146,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:05+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T11:17:19+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
