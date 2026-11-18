@@ -37,5 +37,64 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-18T11:27:00+07:00"
+ "cap_nhat_luc": "2026-11-18T11:27:44+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Dễ bị thổi phồng công dụng chống nắng thành claim y tế (ngừa nám, chống UV tuyệt đối) nếu không kiểm soát lời nói và chữ trên video.",
+   "khuyen_nghi": "Chỉ nói đúng thông số nhà sản xuất công bố (UPF50+) và những gì quay được (logo/thẻ đổi màu, mát khi chạm, co giãn); tránh mọi lời hứa về da hay mức bảo vệ tuyệt đối."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "UPF50+ là chỉ số do nhà sản xuất công bố nên nêu được, nhưng cấm suy diễn thành chống nắng tuyệt đối hay ngừa nám/lão hóa/ung thư da."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Unicare là thương hiệu riêng có công ty chịu trách nhiệm (CÔNG TY TNHH UNIMASK, Bắc Ninh), không mạo danh thương hiệu khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Khẩu trang vải thông dụng, không thấy dấu hiệu xâm phạm kiểu dáng hay bản quyền của bên thứ ba."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Là khẩu trang vải thời trang chống nắng, không thuộc nhóm hạn chế; chỉ cần tránh gọi là khẩu trang y tế/kháng khuẩn hay thiết bị y tế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm cho người lớn, không nhắm trẻ em, không yếu tố nhạy cảm."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Caption/video dễ trượt sang claim y tế hoặc tuyệt đối hóa khả năng chống nắng",
+    "rui_ro": "🟠",
+    "xu_ly": "Giữ nguyên tắc chỉ mô tả hiện tượng quay được và thông số công bố; không dùng từ ngừa nám, chống ung thư, chống UV 100%."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nắng 100% / chống tia UV tuyệt đối",
+    "goi_y": "Chỉ số chống nắng UPF50+ theo công bố của nhà sản xuất"
+   },
+   {
+    "khong_nen": "Ngừa nám, chống lão hóa, chống ung thư da",
+    "goi_y": "Che phủ vùng gò má và quầng mắt khỏi nắng trực tiếp"
+   },
+   {
+    "khong_nen": "Khẩu trang y tế / kháng khuẩn / diệt khuẩn",
+    "goi_y": "Khẩu trang vải chống nắng, chắn bụi bề mặt, tái sử dụng"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có kết quả kiểm nghiệm UPF50+ độc lập; chỉ dựa trên thông số và giấy công bố tiêu chuẩn của nhà sản xuất.",
+  "danh_gia_luc": "2026-11-18T11:27:44+07:00"
+ }
 }
