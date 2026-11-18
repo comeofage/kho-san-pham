@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-18T11:27:56+07:00",
+ "cap_nhat_luc": "2026-11-18T11:37:31+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -65,11 +65,11 @@
    "id": "1732239217280189987",
    "uid": "1732239217280189987",
    "link": "https://vt.tiktok.com/ZS9UEX5SrTRR3-cCVMg/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[Hàng Mới Về] Khẩu trang chống nắng toàn mặt Full Face UNICARE, Khẩu trang UV- proof Full Face Mask chống tia UV 2 lớp chất liệu lụa mịn thoáng khí, quai đeo điều chỉnh phụ kiện che mặt",
+   "gia": "156.594₫",
+   "shop": "UNICARE By GG",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -86,9 +86,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:31+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T11:37:20+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
