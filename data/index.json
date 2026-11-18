@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-18T11:45:51+07:00",
+ "cap_nhat_luc": "2026-11-18T11:52:33+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
    "uid": "1737868324381558078",
    "link": "https://vt.tiktok.com/ZS9fobeteNN3U-GOl2X/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bộ xếp hình thuyền cao su quân sự rằn ri, kèm 6 mô hình nhân vật đội đặc nhiệm trang bị đầy đủ, đồ chơi quân sự cho bé trai.",
+   "gia": "141.532₫",
+   "shop": "Đồ chơi Hải Tử",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T11:06:43+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:59+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T11:52:21+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
