@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-18T11:38:09+07:00",
+ "cap_nhat_luc": "2026-11-18T11:44:38+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -35,11 +35,11 @@
    "id": "1735805352820967073",
    "uid": "1735805352820967073",
    "link": "https://vt.tiktok.com/ZS9foqvuVnTYV-vGyVs/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "SUMIKKO 50 tã em bé – siêu mỏng, mềm mại và thoáng khí; phù hợp với các kích cỡ NB/S/M/L/XL/XXL/XXXL.",
+   "gia": "111.301₫",
+   "shop": "BE LOVE baby shop",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T11:05:48+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:58+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T11:44:26+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
