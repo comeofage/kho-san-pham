@@ -1,9 +1,9 @@
 {
- "cap_nhat_luc": "2026-11-18T11:07:01+07:00",
+ "cap_nhat_luc": "2026-11-18T11:07:15+07:00",
  "san_pham": [
   {
-   "id": "tam-20261118110643655",
-   "uid": null,
+   "id": "1737868324381558078",
+   "uid": "1737868324381558078",
    "link": "https://vt.tiktok.com/ZS9fobeteNN3U-GOl2X/",
    "ten": "",
    "gia": "",
@@ -26,44 +26,14 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T11:06:43+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:43+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:59+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
   },
   {
-   "id": "tam-20261118110613149",
-   "uid": null,
-   "link": "https://vt.tiktok.com/ZS9fob1B5rj4w-PXTY4/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
-   "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
-   },
-   "yeu_thich": false,
-   "can_dang": false,
-   "ngung_dang": false,
-   "the": [],
-   "them_boi": "Nhân",
-   "them_luc": "2026-11-18T11:06:13+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:13+07:00",
-   "so_caption": 0,
-   "co_file01": false,
-   "rui_ro": null
-  },
-  {
-   "id": "tam-20261118110548437",
-   "uid": null,
+   "id": "1735805352820967073",
+   "uid": "1735805352820967073",
    "link": "https://vt.tiktok.com/ZS9foqvuVnTYV-vGyVs/",
    "ten": "",
    "gia": "",
@@ -86,14 +56,14 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T11:05:48+07:00",
-   "cap_nhat_luc": "2026-11-18T11:05:48+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:58+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
   },
   {
-   "id": "tam-20261118092831330",
-   "uid": null,
+   "id": "1732239217280189987",
+   "uid": "1732239217280189987",
    "link": "https://vt.tiktok.com/ZS9UEX5SrTRR3-cCVMg/",
    "ten": "",
    "gia": "",
@@ -116,14 +86,14 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:31+07:00",
-   "cap_nhat_luc": "2026-11-18T09:28:31+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
   },
   {
-   "id": "tam-20261118092824847",
-   "uid": null,
+   "id": "1730922303991548451",
+   "uid": "1730922303991548451",
    "link": "https://vt.tiktok.com/ZS9UEHsPYqpsj-g952G/",
    "ten": "",
    "gia": "",
@@ -146,14 +116,14 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:24+07:00",
-   "cap_nhat_luc": "2026-11-18T09:28:24+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
   },
   {
-   "id": "tam-20261118092805001",
-   "uid": null,
+   "id": "1729681704899676707",
+   "uid": "1729681704899676707",
    "link": "https://vt.tiktok.com/ZS9kuJcjGubnT-LFWtI/",
    "ten": "",
    "gia": "",
@@ -176,7 +146,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:05+07:00",
-   "cap_nhat_luc": "2026-11-18T09:28:05+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
@@ -545,7 +515,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:27:47+07:00",
-   "cap_nhat_luc": "2026-11-17T13:51:24+07:00",
+   "cap_nhat_luc": "2026-11-18T11:06:58+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
