@@ -36,5 +36,58 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-18T11:44:26+07:00"
+ "cap_nhat_luc": "2026-11-18T11:45:40+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tã trẻ em có nhiều claim công dụng gần y tế (giảm phát ban, ngăn dị ứng, chứng nhận SGS/Dermatest) và là sản phẩm liên quan trẻ sơ sinh.",
+   "khuyen_nghi": "Làm được Affiliate nhưng chỉ demo vật lý (thấm hút, chống tràn, độ mỏng); không lặp lại claim y tế và không quay hình trẻ em, dùng búp bê thay thế."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả shop có cụm 'giảm phát ban', 'ngăn dị ứng', 'hút gấp 6 lần', 'khô 12 giờ' — nếu lặp nguyên văn dễ bị xem là claim y tế/hiệu suất quá mức."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'Sumikko' gần với IP nhân vật Sumikko Gurashi (San-X) của Nhật; không được gợi liên kết hay dùng hình nhân vật đó trong video."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy logo/hình nhân vật bản quyền trên bao bì trong ảnh; chỉ quay sản phẩm thật nên rủi ro thấp."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Tã em bé là hàng tiêu dùng thông thường, không thuộc danh mục hạn chế của TikTok Shop."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm dùng cho trẻ sơ sinh; nội dung video không quay trẻ em (dùng búp bê/đạo cụ) nên tránh được rủi ro khai thác hình ảnh trẻ."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống hăm / hết hăm tã / ngăn ngừa dị ứng, phát ban",
+    "goi_y": "Nói 'bề mặt khô thoáng', 'thấm hút nhanh', 'vải mềm mịn' — tả cảm giác vật lý quan sát được."
+   },
+   {
+    "khong_nen": "Hút gấp 6 lần / khô ráo 12 giờ như con số cam kết",
+    "goi_y": "Demo đổ nước thật và để người xem tự thấy, dùng 'thấm cả cốc nước mà bề mặt vẫn khô'."
+   },
+   {
+    "khong_nen": "An toàn tuyệt đối / đạt chuẩn SGS, Dermatest",
+    "goi_y": "Không nhắc chứng nhận trong video; chỉ khoe chất liệu mềm và độ thoáng nhìn thấy."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ sản phẩm có giấy công bố/chứng nhận chất lượng kèm listing hay không; nên kiểm tra trước khi nhấn mạnh yếu tố an toàn.",
+  "danh_gia_luc": "2026-11-18T11:45:40+07:00"
+ }
 }
