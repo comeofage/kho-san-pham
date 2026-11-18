@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-18T11:18:41+07:00",
+ "cap_nhat_luc": "2026-11-18T11:27:12+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -95,11 +95,11 @@
    "id": "1730922303991548451",
    "uid": "1730922303991548451",
    "link": "https://vt.tiktok.com/ZS9UEHsPYqpsj-g952G/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Khẩu trang Anti UV Cool mask - UNICARE Combo 2, 3, 4 Chiếc Khẩu Trang Chống Nắng 1 lớp UPF50+ | Che phủ kín gò má | Mát lạnh, thoáng khí | Logo đổi màu UV",
+   "gia": "89.945₫",
+   "shop": "UNICARE By GG",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -116,9 +116,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:24+07:00",
-   "cap_nhat_luc": "2026-11-18T11:06:57+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-18T11:27:00+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
