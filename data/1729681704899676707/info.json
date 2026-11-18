@@ -35,5 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-18T11:17:19+07:00"
+ "cap_nhat_luc": "2026-11-18T11:18:19+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Khẩu trang vải thương hiệu có công bố tiêu chuẩn, bán tốt; rủi ro chính là nội dung dễ sa vào claim y tế (kháng khuẩn/phòng dịch) và chữ 'chính hãng/độc quyền'.",
+   "khuyen_nghi": "Làm được Affiliate nếu chỉ demo vật lý (chống nước, tách 3 lớp, dây co giãn) và tránh mọi claim y tế hay khẳng định thương hiệu."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Trang shop có claim kháng khuẩn/phòng dịch/chống tia UV/chống nước; khi làm video tránh lặp claim y tế, chỉ quay bằng chứng vật lý."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Unicare/Pro Mask là nhãn có giấy công bố tiêu chuẩn (UNIMASK, Bắc Ninh); không tự xưng 'chính hãng/độc quyền/đại diện thương hiệu' trong nội dung."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy dấu hiệu dùng hình ảnh/logo bên thứ ba; chỉ để lộ bao bì Unicare tự nhiên."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Khẩu trang vải không dệt theo công bố tiêu chuẩn, không phải thiết bị y tế; tránh định vị như khẩu trang y tế đạt chuẩn lọc khuẩn."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Thông số ghi 'Dành cho người lớn', không nhắm hay dùng hình ảnh trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Kháng khuẩn 99% / diệt khuẩn / chống virus / phòng chống dịch bệnh",
+    "goi_y": "Chỉ nói 'cản bụi, che chắn' và demo giọt nước lăn khỏi mặt vải, tách rời 3 lớp."
+   },
+   {
+    "khong_nen": "Chính hãng / độc quyền / cam kết / hàng thật 100%",
+    "goi_y": "Nói 'khẩu trang thương hiệu Unicare', khoe bao bì và logo một cách tự nhiên, không khẳng định tuyệt đối."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "",
+  "danh_gia_luc": "2026-11-18T11:18:19+07:00"
+ }
 }
