@@ -35,5 +35,60 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-18T11:37:20+07:00"
+ "cap_nhat_luc": "2026-11-18T11:37:57+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Rủi ro chính nằm ở cách nói công dụng chống UV và kháng khuẩn, dễ thành claim quá mức.",
+   "khuyen_nghi": "Làm được Affiliate; khi dựng voice/chữ chỉ mô tả 'giúp che nắng, UPF 50+ theo công bố', không khẳng định tuyệt đối hay claim y tế."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chống nắng/UV là claim được phép nhưng con số '98.3% UVA/UVB' và 'kháng khuẩn' cần tránh nói tuyệt đối, không hứa chống ung thư hay làm trắng da."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "UNICARE là thương hiệu của shop, có tổ chức chịu trách nhiệm (Công ty TNHH Thương Mại Unimask), không mạo danh nhãn khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Tự quay footage sản phẩm, không dùng hình/nhạc có bản quyền bên thứ ba nên rủi ro sở hữu trí tuệ thấp."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Khẩu trang vải thời trang chống nắng, không phải thiết bị/khẩu trang y tế nên không thuộc nhóm hàng hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm hướng tới người lớn đi nắng/đi xe máy, không nhắm hay quảng cáo cho trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Nói 'kháng khuẩn' và con số '98.3% UVA/UVB' như cam kết tuyệt đối",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ dùng cách nói 'giúp che chắn nắng', 'UPF 50+ theo công bố của shop'; không khẳng định diệt khuẩn hay chặn UV 100%."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nắng 100% / ngăn ung thư da / chống đen tuyệt đối",
+    "goi_y": "Giúp che nắng toàn mặt, hạn chế da bắt nắng khi ra đường"
+   },
+   {
+    "khong_nen": "Kháng khuẩn / diệt khuẩn 99%",
+    "goi_y": "Vải thoáng, không mùi, mềm mịn khi đeo"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có bản gốc giấy kiểm định UPF nên không tự quay lại ảnh chứng nhận của shop.",
+  "danh_gia_luc": "2026-11-18T11:37:57+07:00"
+ }
 }
