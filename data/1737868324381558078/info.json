@@ -36,5 +36,65 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-18T11:52:21+07:00"
+ "cap_nhat_luc": "2026-11-18T11:53:50+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ chơi lắp ráp chủ đề quân sự có phụ kiện vũ khí mini và dành cho trẻ em nên nội dung video dễ vướng quy định nếu không khéo.",
+   "khuyen_nghi": "Làm Affiliate được, nhưng quay và caption phải tránh cổ súy bạo lực, ghi cảnh báo độ tuổi, không gọi là Lego hay nhãn nổi tiếng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ chơi lắp ráp thông thường, không claim công dụng đặc biệt; tránh nói phát triển trí tuệ hay IQ."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Chỉ có mã J085G, không nhãn nổi tiếng; tránh gọi là Lego hoặc so sánh với thương hiệu xếp hình khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô hình lính và thuyền kiểu generic; tránh gắn tên hay hình nhân vật phim/game có bản quyền khi dựng video."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Có phụ kiện vũ khí đồ chơi mini; không cận cảnh súng như vũ khí thật, không cổ súy bạo lực trong nội dung."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi cho bé trai gồm nhiều mảnh nhỏ dễ hóc; nên ghi cảnh báo độ tuổi, tránh cho trẻ dưới 3 tuổi."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Chủ đề quân sự kèm phụ kiện vũ khí đồ chơi",
+    "rui_ro": "🟠",
+    "xu_ly": "Quay khoe tổng thể đội đặc nhiệm và quá trình lắp, không lấy súng mini làm điểm nhấn, lời/chữ dựng mô tả là đồ chơi mô hình."
+   },
+   {
+    "van_de": "Mảnh nhỏ, nguy cơ hóc với trẻ nhỏ",
+    "rui_ro": "🟠",
+    "xu_ly": "Thêm chữ dựng hoặc caption nhắc độ tuổi phù hợp và không để trẻ dưới 3 tuổi chơi một mình."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Lego / đồ chơi chính hãng thương hiệu",
+    "goi_y": "Gọi là bộ xếp hình thuyền quân sự lắp ráp, không mượn tên thương hiệu."
+   },
+   {
+    "khong_nen": "Phát triển trí tuệ / thông minh vượt trội",
+    "goi_y": "Nói giúp bé rèn tỉ mỉ, kiên nhẫn khi lắp từng bước."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có thông tin chứng nhận an toàn đồ chơi hay khuyến cáo độ tuổi chính thức từ trang sản phẩm.",
+  "danh_gia_luc": "2026-11-18T11:53:50+07:00"
+ }
 }
