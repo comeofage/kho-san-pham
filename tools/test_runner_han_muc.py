@@ -27,16 +27,20 @@ def kho(tmp_path):
 
 def test_hang_so_dung_tai_lieu():
     assert HAN_MUC_TRAN == {
-        "dot_bat": 4, "claude_usd_ngay": 40, "claude_viec_ngay": 12,
+        "dot_bat": 5, "claude_usd_ngay": 40, "claude_viec_ngay": 12,
         "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
         "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
         "genmax_ban_moi_viec": 25, "genmax_viec_ngay": 2,
         "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,
-        "taovideo_ngay": 1, "codex_luot_viec": 6,
+        "taovideo_ngay": 10, "codex_luot_viec": 6,
+        "taovideo_usd_viec": 60, "taovideo_mp3_viec": 25, "taovideo_lan_ngay": 10,
+        "sua_video_ngay": 60,
     }
     assert TRAN_LUOT == {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
                          "poster_len_lich": 60, "taovideo": 1500}
-    assert WM_CHO_PHEP == ()
+    assert WM_CHO_PHEP == ("nha.cua.mit",)          # người dùng chốt (D11): nha.cua.mit hoặc không watermark
+    assert han_muc.HET_GIO_TAOVIDEO == {"lam_s": 8 * 3600, "cho_s": 3 * 3600, "nen_s": 4 * 3600,
+                                        "tong_s": 24 * 3600}
 
 
 def test_hieu_luc_rong_bang_tran():
@@ -46,10 +50,10 @@ def test_hieu_luc_rong_bang_tran():
 
 
 def test_file_chi_duoc_ha_khong_duoc_noi():
-    hm, cb = han_muc_hieu_luc({"claude_usd_ngay": 10, "claude_viec_ngay": 99, "dot_bat": 5,
+    hm, cb = han_muc_hieu_luc({"claude_usd_ngay": 10, "claude_viec_ngay": 99, "dot_bat": 6,
                                "muse_clip_ngay": 15})
     assert hm["claude_usd_ngay"] == 10
-    assert hm["claude_viec_ngay"] == 12 and hm["dot_bat"] == 4 and hm["muse_clip_ngay"] == 15
+    assert hm["claude_viec_ngay"] == 12 and hm["dot_bat"] == 5 and hm["muse_clip_ngay"] == 15
     assert any("claude_viec_ngay" in c for c in cb) and any("dot_bat" in c for c in cb)
 
 
@@ -67,6 +71,163 @@ def test_khoa_la_bi_bo_va_canh_bao():
 def test_file_khong_phai_dict():
     hm, cb = han_muc_hieu_luc(["x"])  # type: ignore[arg-type]
     assert hm == HAN_MUC_TRAN and len(cb) == 1
+
+
+def test_dot_bat_5_mo_taovideo_va_ha_duoc_ve_4():
+    """B-4: người dùng ĐÃ đồng ý mở đợt 5 (D11 "Cho sửa + mở đợt 5") → trần code dot_bat = 5, mở taovideo.
+    sua_video/hoan_tac_sua vẫn dot=4. cau_hinh.json hạ dot_bat = 4 thì taovideo đóng lại."""
+    from runner.danh_muc import DANH_MUC, lay_loai
+    assert HAN_MUC_TRAN["dot_bat"] == 5
+    for ma in ("sua_video", "hoan_tac_sua"):
+        assert lay_loai(ma, int(HAN_MUC_TRAN["dot_bat"])).dot == 4
+    assert lay_loai("taovideo", int(HAN_MUC_TRAN["dot_bat"])).dot == 5
+    hm4, cb = han_muc_hieu_luc({"dot_bat": 4})
+    assert hm4["dot_bat"] == 4 and cb == []
+    with pytest.raises(ThamSoLoi):
+        lay_loai("taovideo", int(hm4["dot_bat"]))
+    assert DANH_MUC["taovideo"].dot == HAN_MUC_TRAN["dot_bat"]
+
+
+# ---------- đợt 5: taovideo (§7.5, §7.7) ----------
+
+def test_het_gio_taovideo_chi_duoc_ha():
+    f = han_muc.het_gio_taovideo
+    assert f({}) == han_muc.HET_GIO_TAOVIDEO and f({}) is not han_muc.HET_GIO_TAOVIDEO
+    assert f({"taovideo_cho_s": 60, "taovideo_lam_s": 10 ** 9})["cho_s"] == 60
+    assert f({"taovideo_lam_s": 10 ** 9})["lam_s"] == 8 * 3600                     # nới → bỏ
+    for hong in (True, "60", -1, float("nan"), 0, None):
+        assert f({"taovideo_nen_s": hong})["nen_s"] == 4 * 3600
+    assert f("rac") == han_muc.HET_GIO_TAOVIDEO                                     # type: ignore[arg-type]
+    # cau_hinh.json được hạ đồng hồ (khoá taovideo_<tên>), không được nới
+    hm, cb = han_muc_hieu_luc({"taovideo_cho_s": 1800, "taovideo_tong_s": 10 ** 6})
+    assert f(hm)["cho_s"] == 1800 and f(hm)["tong_s"] == 24 * 3600 and len(cb) == 1
+    assert han_muc_hieu_luc({"taovideo_usd_viec": 30})[0]["taovideo_usd_viec"] == 30
+    assert han_muc_hieu_luc({"taovideo_usd_viec": 61})[0]["taovideo_usd_viec"] == 60
+
+
+def test_tran_taovideo_hieu_luc():
+    """FX-28 (R-22 P3-1): trần của MỘT lần duyệt taovideo theo hiệu lực (cau_hinh chỉ hạ)."""
+    f = han_muc.tran_taovideo
+    assert f({}) == {"usd": 60, "mp3": 25, "codex": 6, "gio": 8}
+    hm, _ = han_muc_hieu_luc({"taovideo_usd_viec": 30, "taovideo_mp3_viec": 10, "codex_luot_viec": 2,
+                              "taovideo_lam_s": 2 * 3600 + 1800})
+    assert f(hm) == {"usd": 30, "mp3": 10, "codex": 2, "gio": 2.5}
+    # hm bị nới / hỏng → vẫn không vượt trần code
+    assert f({"taovideo_usd_viec": 999, "codex_luot_viec": True, "taovideo_mp3_viec": -1}) == f({})
+    assert f("rac") == f({})                                                       # type: ignore[arg-type]
+
+
+def test_han_muc_tu_thu_muc(tmp_path):
+    """Đọc cau_hinh.json của thư mục runner giống chay_runner (utf-8-sig, thiếu → trần, hỏng → trần + cảnh báo)."""
+    f = han_muc.han_muc_tu_thu_muc
+    hm, cb = f(tmp_path)
+    assert hm == HAN_MUC_TRAN and cb == []
+    (tmp_path / "cau_hinh.json").write_text('﻿{"codex_luot_viec": 3, "taovideo_usd_viec": 99}',
+                                            encoding="utf-8")
+    hm, cb = f(tmp_path)
+    assert hm["codex_luot_viec"] == 3 and hm["taovideo_usd_viec"] == 60 and len(cb) == 1
+    (tmp_path / "cau_hinh.json").write_text("{hỏng", encoding="utf-8")
+    hm, cb = f(tmp_path)
+    assert hm == HAN_MUC_TRAN and cb and "hỏng" in cb[0]
+
+
+TV = {"uid": "1" * 19, "du_an_a": "abcdef012345", "du_an_b": "fedcba543210", "wm": "khong"}
+
+
+def test_taovideo_viec_thu_2_cung_ngay_bi_chan_o_tao(kho):
+    """taovideo_ngay = 1 VIỆC/ngày (đếm việc, không đếm lần tiêu) khi cau_hinh hạ trần từ 10 xuống 1."""
+    hm, _ = han_muc_hieu_luc({"taovideo_ngay": 1})
+    kiem_han_muc(kho, "taovideo", TV, hm, "tao", "nhan")
+    kho.tao("taovideo", "1" * 19, TV, "gpu", "cho_duyet", "nhan")
+    with pytest.raises(VuotHanMuc, match="việc"):
+        kiem_han_muc(kho, "taovideo", dict(TV, uid="2" * 19), hm, "tao", "comeofage")
+    # việc bị từ chối khi chưa duyệt (chưa tốn gì) → không tính nữa
+    v = kho.ds()[0]
+    kho.chuyen(v["id"], ["cho_duyet"], "huy", "nhan", "từ chối duyệt")
+    kiem_han_muc(kho, "taovideo", dict(TV, uid="2" * 19), hm, "tao", "comeofage")
+
+
+def test_taovideo_duyet_lai_lan_2_qua_lan_4_bi_chan(kho):
+    """taovideo_lan_ngay = 3 lần tiêu/ngày (cau_hinh hạ từ 10); duyệt lại cùng việc KHÔNG bị taovideo_ngay chặn."""
+    hm, _ = han_muc_hieu_luc({"taovideo_ngay": 1, "taovideo_lan_ngay": 3})
+    a = kho.tao("taovideo", "1" * 19, TV, "gpu", "cho_duyet", "nhan")
+    kiem_han_muc(kho, "taovideo", TV, hm, "duyet", "nhan", viec_id=a["id"])
+    _duyet(kho, a["id"])
+    kiem_han_muc(kho, "taovideo", {}, hm, "nhan", "he_thong", viec_id=a["id"])
+    _tieu(kho, a["id"])                                                      # lần tiêu 1
+    for lan in (2, 3):
+        kho.chuyen(a["id"], ["cho"], "loi", "he_thong", loi="bị ngắt")
+        _xin_duyet_lai(kho, a["id"])
+        kiem_han_muc(kho, "taovideo", TV, hm, "duyet", "nhan", viec_id=a["id"])   # lần 2, 3: qua
+        _duyet(kho, a["id"])
+        kiem_han_muc(kho, "taovideo", {}, hm, "nhan", "he_thong", viec_id=a["id"])
+        _tieu(kho, a["id"], goc=f"L{lan}")
+    kho.chuyen(a["id"], ["cho"], "loi", "he_thong", loi="bị ngắt")
+    _xin_duyet_lai(kho, a["id"])
+    with pytest.raises(VuotHanMuc, match="lần"):                              # lần 4 cùng ngày: chặn
+        kiem_han_muc(kho, "taovideo", TV, hm, "duyet", "nhan", viec_id=a["id"])
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "taovideo", {}, hm, "nhan", "he_thong", viec_id=a["id"])
+    # hạ trần lần/ngày qua cau_hinh
+    hm1, _ = han_muc_hieu_luc({"taovideo_lan_ngay": 1})
+    b_kho = KhoViec(kho.duong_dan_db.with_name("r_b.db"), kho.bay_gio)
+    b = b_kho.tao("taovideo", "1" * 19, TV, "gpu", "cho_duyet", "nhan")
+    _duyet(b_kho, b["id"])
+    _tieu(b_kho, b["id"])
+    b_kho.chuyen(b["id"], ["cho"], "loi", "he_thong", loi="x")
+    _xin_duyet_lai(b_kho, b["id"])
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(b_kho, "taovideo", TV, hm1, "duyet", "nhan", viec_id=b["id"])
+
+
+def test_taovideo_ngay_moi_dat_lai_va_viec_hom_qua_khong_chan(tmp_path):
+    kho, luc = _kho_dong_ho(tmp_path, datetime(2026, 11, 17, 9, 0, 0))
+    hm, _ = han_muc_hieu_luc({"taovideo_ngay": 1})
+    a = kho.tao("taovideo", "1" * 19, TV, "gpu", "cho_duyet", "nhan")
+    _duyet(kho, a["id"])
+    _tieu(kho, a["id"])
+    kho.chuyen(a["id"], ["cho"], "xong", "he_thong")
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "taovideo", dict(TV, uid="2" * 19), hm, "tao", "nhan")
+    luc["t"] = datetime(2026, 11, 18, 9, 0, 0)
+    kiem_han_muc(kho, "taovideo", dict(TV, uid="2" * 19), hm, "tao", "nhan")
+
+
+def _sua(kho, loai, i, boi="nhan"):
+    return kho.tao(loai, f"{i:016x}", {"ma_video": f"{i:016x}"}, "gpu", "cho", boi)
+
+
+def test_sua_video_ngay_dem_ca_hai_loai(kho):
+    """§7.3: sua_video_ngay đếm việc sua_video + hoan_tac_sua TẠO trong ngày (mọi người, mọi trạng thái)."""
+    hm, _ = han_muc_hieu_luc({"sua_video_ngay": 3, "viec_tao_ngay_moi_nguoi": 30})
+    kiem_han_muc(kho, "sua_video", {}, hm, "tao", "nhan")
+    a = _sua(kho, "sua_video", 1)
+    _sua(kho, "hoan_tac_sua", 2, boi="comeofage")
+    kho.chuyen(a["id"], ["cho"], "huy", "nhan")           # huỷ vẫn tính (chặn bấm lặp)
+    kiem_han_muc(kho, "hoan_tac_sua", {}, hm, "tao", "nhan")
+    _sua(kho, "sua_video", 3)
+    for loai in ("sua_video", "hoan_tac_sua"):
+        with pytest.raises(VuotHanMuc):
+            kiem_han_muc(kho, loai, {}, hm, "tao", "nhan")
+    # việc khác không bị trần này chặn; lúc nhận không đếm lại (đã tính lúc tạo)
+    kiem_han_muc(kho, "voice_pv", {}, hm, "tao", "nhan")
+    kiem_han_muc(kho, "sua_video", {}, hm, "nhan", "nhan")
+
+
+def test_sua_video_ngay_sang_ngay_moi_dat_lai(tmp_path):
+    luc = {"t": datetime(2026, 11, 17, 23, 0, 0)}
+    kho = KhoViec(tmp_path / "r2.db", lambda: luc["t"])
+    hm, _ = han_muc_hieu_luc({"sua_video_ngay": 1})
+    _sua(kho, "sua_video", 1)
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "sua_video", {}, hm, "tao", "nhan")
+    luc["t"] = datetime(2026, 11, 18, 0, 30, 0)
+    kiem_han_muc(kho, "sua_video", {}, hm, "tao", "nhan")
+
+
+def test_sua_video_ngay_tran_code_khong_noi_duoc(kho):
+    hm, cb = han_muc_hieu_luc({"sua_video_ngay": 999})
+    assert hm["sua_video_ngay"] == 60 and cb
 
 
 def test_kiem_han_muc_chan_claude_viec_ngay(kho):

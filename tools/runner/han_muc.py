@@ -5,9 +5,11 @@ Muốn nới phải sửa code và cài lại (có duyệt).
 """
 from __future__ import annotations
 
+import json
 import math
 from collections.abc import Sequence
 from datetime import date, datetime
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 from .kieu import ThamSoLoi, VuotHanMuc, gio_vn
@@ -16,7 +18,9 @@ if TYPE_CHECKING:
     from .kho_viec import KhoViec
 
 HAN_MUC_TRAN: dict[str, int | float] = {
-    "dot_bat": 4,                       # đợt cao nhất được mở; tăng = sửa code + cài lại (có duyệt). Đợt 4: B-3
+    # đợt cao nhất được mở; tăng = sửa code + cài lại (có duyệt). Đợt 5: B-4 — người dùng đã đồng ý mở (D11,
+    # 17/11/2026 "Cho sửa + mở đợt 5"). cau_hinh.json hạ về 4 để đóng taovideo.
+    "dot_bat": 5,
     "claude_usd_ngay": 40, "claude_viec_ngay": 12,
     "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
     "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
@@ -24,11 +28,23 @@ HAN_MUC_TRAN: dict[str, int | float] = {
     # poster_video_ngay_toi_da: trần video/ngày của MỘT việc VÀ tổng so_video_ngay mỗi tài khoản mỗi ngày
     # (người dùng chốt FX-11: 100 video/tài khoản/ngày; vẫn ≤ poster_len_lich_ngay việc/ngày).
     "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,
-    "taovideo_ngay": 1, "codex_luot_viec": 6,
+    # taovideo (D11 §7.5): taovideo_ngay đếm VIỆC/ngày; taovideo_lan_ngay đếm LẦN TIÊU lời duyệt/ngày.
+    # Trần trong MỘT phiên sống: USD-ước-tính (Σ chênh lệch total_cost_usd), số voice *_adam.mp3 mới (file thật),
+    # codex_luot_viec lượt Codex (đặt lại khi tiêu lời duyệt mới). Vòng chạy (A-5) đo và giết cây khi vượt.
+    "taovideo_ngay": 10, "codex_luot_viec": 6,   # 19/11/2026: 1 → 10 để xếp nhiều SP vào hàng chờ (GPU vẫn 1 việc một lúc)
+    "taovideo_usd_viec": 60, "taovideo_mp3_viec": 25, "taovideo_lan_ngay": 10,
+    # D10 (docs/sua-video.md §7.3): số việc sua_video + hoan_tac_sua TẠO trong ngày VN (chặn bấm lặp làm bận GPU).
+    "sua_video_ngay": 60,
 }
+# Loại tính chung trần sua_video_ngay (miễn phí, làn gpu, dot=4 — không cần nâng dot_bat).
+LOAI_SUA_VIDEO: tuple[str, ...] = ("sua_video", "hoan_tac_sua")
 TRAN_LUOT: dict[str, int] = {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
                              "poster_len_lich": 60, "taovideo": 1500}
-WM_CHO_PHEP: tuple[str, ...] = ()     # đợt 5 điền theo người dùng
+# Watermark người dùng cho chọn ở taovideo (D11: "nha.cua.mit hoặc không"); "khong" luôn có, không nằm ở đây.
+WM_CHO_PHEP: tuple[str, ...] = ("nha.cua.mit",)
+# §7.7 đồng hồ của phiên sống taovideo (giây). cau_hinh.json chỉ được HẠ qua khoá "taovideo_<tên>" (vd taovideo_cho_s).
+HET_GIO_TAOVIDEO: dict[str, int] = {"lam_s": 8 * 3600, "cho_s": 3 * 3600, "nen_s": 4 * 3600, "tong_s": 24 * 3600}
+_TIEN_TO_HET_GIO = "taovideo_"
 
 LUC_KIEM = ("tao", "duyet", "nhan")
 _KHOA_SO_NGUYEN = frozenset(k for k, v in HAN_MUC_TRAN.items() if isinstance(v, int))
@@ -49,18 +65,38 @@ def han_muc_hieu_luc(cau_hinh_file: dict) -> tuple[dict, list[str]]:
     if not isinstance(cau_hinh_file, dict):
         return hm, ["cau_hinh.json không phải object — bỏ qua, dùng trần trong code"]
     for k, v in cau_hinh_file.items():
-        if k not in HAN_MUC_TRAN:
+        tran_het_gio = _tran_het_gio(k)
+        if k not in HAN_MUC_TRAN and tran_het_gio is None:
             canh_bao.append(f"cau_hinh.json: khoá lạ {k!r} — bỏ qua")
             continue
-        if not _la_so_hop_le(v):
-            canh_bao.append(f"cau_hinh.json: {k} = {v!r} không phải số ≥ 0 — bỏ qua")
+        if not _la_so_hop_le(v) or (tran_het_gio is not None and v <= 0):
+            canh_bao.append(f"cau_hinh.json: {k} = {v!r} không phải số hợp lệ — bỏ qua")
             continue
-        tran = HAN_MUC_TRAN[k]
+        tran = HAN_MUC_TRAN[k] if tran_het_gio is None else tran_het_gio
         if v > tran:
             canh_bao.append(f"cau_hinh.json: {k} = {v} vượt trần code {tran} — bỏ qua (file chỉ được hạ)")
             continue
-        hm[k] = int(v) if k in _KHOA_SO_NGUYEN else v
+        hm[k] = max(1, int(v)) if tran_het_gio is not None else (int(v) if k in _KHOA_SO_NGUYEN else v)
     return hm, canh_bao
+
+
+def _tran_het_gio(k: object) -> int | None:
+    """Trần code của khoá đồng hồ taovideo trong cau_hinh (`taovideo_lam_s`…); None nếu không phải khoá đó."""
+    if not isinstance(k, str) or not k.startswith(_TIEN_TO_HET_GIO):
+        return None
+    return HET_GIO_TAOVIDEO.get(k[len(_TIEN_TO_HET_GIO):])
+
+
+def het_gio_taovideo(hm: dict) -> dict[str, int]:
+    """§7.7: đồng hồ phiên sống = min(hằng số, hm["taovideo_<tên>"]). Chỉ được HẠ; giá trị hỏng/≤0/nới → hằng số."""
+    ra = dict(HET_GIO_TAOVIDEO)
+    if not isinstance(hm, dict):
+        return ra
+    for ten, tran in HET_GIO_TAOVIDEO.items():
+        v = hm.get(_TIEN_TO_HET_GIO + ten)
+        if _la_so_hop_le(v) and 0 < v < tran:
+            ra[ten] = max(1, int(v))
+    return ra
 
 
 def _gia_tri(hm: dict, k: str) -> int | float:
@@ -68,6 +104,27 @@ def _gia_tri(hm: dict, k: str) -> int | float:
     tran = HAN_MUC_TRAN[k]
     v = hm.get(k, tran) if isinstance(hm, dict) else tran
     return min(v, tran) if _la_so_hop_le(v) else tran
+
+
+def tran_taovideo(hm: dict) -> dict[str, int | float]:
+    """FX-28: trần HIỆU LỰC của MỘT lần duyệt taovideo (cau_hinh chỉ hạ): usd (USD-ước-tính), mp3 (voice mới),
+    codex (lượt), gio (đồng hồ làm lam_s, giờ). Cùng nguồn với vòng chạy (_gia_tri, het_gio_taovideo)."""
+    return {"usd": _gia_tri(hm, "taovideo_usd_viec"), "mp3": int(_gia_tri(hm, "taovideo_mp3_viec")),
+            "codex": int(_gia_tri(hm, "codex_luot_viec")), "gio": het_gio_taovideo(hm)["lam_s"] / 3600}
+
+
+def han_muc_tu_thu_muc(thu_muc: Path) -> tuple[dict, list[str]]:
+    """Hạn mức hiệu lực từ `<thu_muc>/cau_hinh.json` (utf-8-sig): thiếu file → trần code; hỏng → trần code + cảnh báo.
+    Cùng luật với chay_runner._doc_cau_hinh (nên gộp về đây khi được sửa chay_runner)."""
+    p = Path(thu_muc) / "cau_hinh.json"
+    try:
+        d = json.loads(p.read_text(encoding="utf-8-sig"))
+    except FileNotFoundError:
+        d = {}
+    except (OSError, ValueError) as e:
+        hm, cb = han_muc_hieu_luc({})
+        return hm, [f"cau_hinh.json hỏng ({e}) — dùng trần trong code"] + cb
+    return han_muc_hieu_luc(d)
 
 
 # ---------- đợt 4–5: hạn mức riêng của loại tốn tiền (B-3) ----------
@@ -82,7 +139,7 @@ _MOI_NGAY: dict[str, tuple[str, str]] = {
     "muse_clip": ("muse_clip_ngay", "clip"),
     "voice_genmax": ("genmax_viec_ngay", "việc"),
     "poster_len_lich": ("poster_len_lich_ngay", "việc"),
-    "taovideo": ("taovideo_ngay", "việc"),
+    # taovideo KHÔNG đi đường chung (đếm theo lần tiêu): xem _kiem_taovideo (§7.5).
 }
 _TRANG_THAI_MO = ("cho", "dang_chay", "can_tra_loi", "cho_duyet")
 DS_VIEC_TOI_DA = 500        # số việc gần nhất xét khi đếm theo ngày (≤30 việc/ngày/người → dư hơn 8 ngày)
@@ -242,8 +299,48 @@ def _kiem_poster_tai_khoan(kho: "KhoViec", tham_so: dict, hm: dict, luc: str, vi
                          f"video của việc này > trần {tran} video/tài khoản/ngày")
 
 
+def _viec_tinh_vao_ngay(kho: "KhoViec", viec: dict, ngay: date) -> tuple[bool, int]:
+    """(việc có chiếm hạn mức VIỆC của `ngay` không, số lần tiêu rơi vào `ngay`).
+    Đã tiêu ≥ 1 lần: chiếm ngày nào có lần tiêu. Chưa tiêu: theo ngay_tinh_han_muc (đã duyệt / còn mở)."""
+    cac_ngay = ngay_cac_lan_tieu(viec, kho.luc_tieu_theo_viec([viec["id"]]).get(viec["id"], ()))
+    if cac_ngay:
+        n = cac_ngay.count(ngay)
+        return n > 0, n
+    return ngay_tinh_han_muc(viec) == ngay, 0
+
+
+def _kiem_taovideo(kho: "KhoViec", hm: dict, luc: str, viec_id: str | None, hom_nay: date) -> None:
+    """§7.5: taovideo_ngay = số VIỆC/ngày (việc đang xét tính 1, duyệt lại cùng việc không tính thêm);
+    taovideo_lan_ngay = số LẦN TIÊU/ngày của mọi việc taovideo (lúc duyet/nhan cộng 1 lần sắp tiêu hôm nay)."""
+    viec_khac = 0
+    lan_khac = 0
+    for v in kho.ds(None, gioi_han=DS_VIEC_TOI_DA):
+        if v.get("loai") != "taovideo" or v.get("id") == viec_id:
+            continue
+        chiem, n = _viec_tinh_vao_ngay(kho, v, hom_nay)
+        viec_khac += int(chiem)
+        lan_khac += n
+    # nhan kiểu cũ (vòng chạy truyền {} và không id, trước khi nhận): việc sắp nhận đã nằm trong viec_khac.
+    kieu_cu = luc == "nhan" and viec_id is None
+    tran_viec = _gia_tri(hm, "taovideo_ngay")
+    if viec_khac + (0 if kieu_cu else 1) > tran_viec:
+        raise VuotHanMuc(f"taovideo hôm nay đã có {viec_khac} việc"
+                         + ("" if kieu_cu else " khác + việc này") + f" > trần {tran_viec} việc")
+    if luc == "tao":
+        return                                  # tạo chưa tiêu lời duyệt nào
+    lan_rieng = _so_lan_tieu_trong_ngay(kho, kho.lay(viec_id) or {}, hom_nay) if viec_id is not None else 0
+    tran_lan = _gia_tri(hm, "taovideo_lan_ngay")
+    tong = lan_khac + lan_rieng + 1             # + 1 lần sắp tiêu hôm nay
+    if tong > tran_lan:
+        raise VuotHanMuc(f"taovideo hôm nay đã tiêu {lan_khac + lan_rieng} lần duyệt; thêm lần này > trần "
+                         f"{tran_lan} lần/ngày")
+
+
 def _kiem_ton_tien(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str,
                    viec_id: str | None, hom_nay: date) -> None:
+    if ma_loai == "taovideo":
+        _kiem_taovideo(kho, hm, luc, viec_id, hom_nay)
+        return
     if ma_loai in _MOI_VIEC:
         khoa_ts, khoa_hm, don_vi = _MOI_VIEC[ma_loai]
         do = _do_moi_viec(ma_loai, tham_so)
@@ -280,11 +377,12 @@ def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str
                  viec_id: str | None = None) -> None:
     """Raise VuotHanMuc nếu vượt. luc ∈ tao|duyet|nhan (nhan gồm cả chay-tiep).
 
-    - tao: số việc người `boi` tạo trong ngày VN < viec_tao_ngay_moi_nguoi.
+    - tao: số việc người `boi` tạo trong ngày VN < viec_tao_ngay_moi_nguoi; loại sửa video (LOAI_SUA_VIDEO): tổng
+      việc sua_video + hoan_tac_sua tạo trong ngày (mọi người) < sua_video_ngay.
     - duyet/nhan, loại dùng Claude: tổng USD hôm nay < claude_usd_ngay; số job Claude hôm nay < claude_viec_ngay.
     - Loại tốn tiền (đợt 4–5), cả 3 lúc: hạn mức mỗi việc (muse ≤10 clip, genmax ≤25 bản, poster ≤100 video/ngày)
       và hạn mức mỗi ngày (muse 15 clip, genmax 2 việc, poster_len_lich 2 việc + tổng so_video_ngay ≤100 mỗi tài
-      khoản — khoa_tai_khoan_poster, taovideo 1 việc): mỗi lần tiêu tính vào ngày của lần đó, việc chưa tiêu theo
+      khoản — khoa_tai_khoan_poster; taovideo 1 VIỆC + 3 LẦN TIÊU — _kiem_taovideo): mỗi lần tiêu tính vào ngày của lần đó, việc chưa tiêu theo
       `ngay_tinh_han_muc`; việc đang xét cộng (số lần đã tiêu hôm nay + 1). `viec_id` (MỞ RỘNG ngoài chữ ký §13, mặc định None): việc đang duyệt/nhận — để không
       đếm trùng chính nó. Lúc tao/duyet bắt buộc có tham số đo hạn mức mỗi việc (thiếu → ThamSoLoi).
     """
@@ -300,6 +398,11 @@ def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str
         n = kho.dem_trong_ngay(None, hom_nay, boi=boi)
         if n >= tran:
             raise VuotHanMuc(f"{boi} đã tạo {n} việc hôm nay (trần {tran})")
+        if ma_loai in LOAI_SUA_VIDEO:
+            tran_sua = _gia_tri(hm, "sua_video_ngay")
+            n_sua = sum(kho.dem_trong_ngay(l, hom_nay) for l in LOAI_SUA_VIDEO)
+            if n_sua >= tran_sua:
+                raise VuotHanMuc(f"hôm nay đã tạo {n_sua} việc sửa/hoàn tác video (trần {tran_sua})")
     if loai.ton_tien:
         _kiem_ton_tien(kho, ma_loai, tham_so, hm, luc, viec_id, hom_nay)
     if luc == "tao":
