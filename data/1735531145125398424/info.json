@@ -33,12 +33,25 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 20,
-  "luc": "2026-11-11T14:28:06+07:00",
-  "poster_folder": 324,
-  "duong_dan": "E:/oneshottramcanh/tuirac-1735531145125398424/output"
+  "so_video": 40,
+  "luc": "2026-11-19T18:24:23+07:00",
+  "poster": [
+   {
+    "folder": 324,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/tuirac-1735531145125398424/output"
+   },
+   {
+    "folder": 323,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/tuirac-1735531145125398424/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 323,
+  "duong_dan": "E:/oneshottramcanh/tuirac-1735531145125398424/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:53+07:00",
+ "cap_nhat_luc": "2026-11-19T18:24:23+07:00",
  "the": [
   "pemit89"
  ],
