@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-19T10:10:53+07:00",
+ "cap_nhat_luc": "2026-11-19T10:42:30+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -1015,9 +1015,9 @@
     "luc": "2026-11-19T10:10:33+07:00"
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-19T10:10:38+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -1025,7 +1025,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T08:15:01+07:00",
-   "cap_nhat_luc": "2026-11-19T10:10:33+07:00",
+   "cap_nhat_luc": "2026-11-19T10:10:38+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
@@ -2200,7 +2200,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:34:03+07:00",
-   "cap_nhat_luc": "2026-11-16T08:34:54+07:00",
+   "cap_nhat_luc": "2026-11-19T10:42:09+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
