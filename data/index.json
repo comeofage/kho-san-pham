@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-21T06:17:44+07:00",
+ "cap_nhat_luc": "2026-11-21T06:20:33+07:00",
  "san_pham": [
   {
    "id": "1738496407898916706",
@@ -35,11 +35,11 @@
    "id": "1735038328948884768",
    "uid": "1735038328948884768",
    "link": "https://vt.tiktok.com/ZS9P2hTTm6GQX-TLegU/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bút Thử Nước Sạch Joymie JWT11 - Bút Đo TDS Cầm Tay, Kiểm Tra Độ Tinh Khiết Chính Xác",
+   "gia": "98.747₫",
+   "shop": "Joymie Brand Store",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-20T20:30:01+07:00",
-   "cap_nhat_luc": "2026-11-21T06:17:30+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-21T06:20:21+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
