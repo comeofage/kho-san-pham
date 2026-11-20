@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-20T14:03:20+07:00",
+ "cap_nhat_luc": "2026-11-20T14:45:24+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -975,7 +975,7 @@
    "gia": "75.840₫",
    "shop": "KoKoRin Store",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -992,7 +992,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T11:26:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:09+07:00",
+   "cap_nhat_luc": "2026-11-20T14:45:04+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
