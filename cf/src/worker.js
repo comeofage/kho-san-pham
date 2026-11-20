@@ -4,6 +4,7 @@
 // Máy nhà: VIDEO_ORIGIN, VIDEO_KEY; bộ chạy việc thêm RUNNER_KEY, KY_RIENG (xem docs/bo-chay-viec.md §8.3).
 // KV SO_DUYET (D9): sổ lời duyệt đã tiêu (tieu:<sha256hex 64 byte chu_ky_duyet dạng chuẩn>, không TTL) + đếm sai mật khẩu duyệt (sai:<user>).
 "use strict";
+import { apiPoster } from "./poster.js";
 
 const COOKIE = "kho_s";
 const PHIEN_GIAY = 30 * 24 * 3600;
@@ -178,17 +179,60 @@ const TAG_RIENG = ["yeu_thich", "can_dang", "ngung_dang"];
 
 // ---------- máy nhà (video_server qua tunnel) ----------
 const USER_MAY_NHA = ["nhan", "comeofage"];
+const laChuKho = (user) => USER_MAY_NHA.includes(user);
+// P-33: người không phải chủ kho không thấy trường nội bộ máy nhà (đường dẫn ổ đĩa) trong info trả về.
+// Hàm thuần: không sửa đối tượng gốc; chủ kho nhận nguyên đối tượng. Giữ xong/so_video/luc/nhan/folder để web hiện trạng thái.
+export function anTruongNoiBo(info, laChu) {
+  if (laChu || !laObjectThuong(info)) return info;
+  const { thu_muc_may, ...ra } = info; // eslint-disable-line no-unused-vars
+  const dlv = info.da_lam_video;
+  if (laObjectThuong(dlv)) {
+    const { duong_dan, poster_folder, ...gon } = dlv; // eslint-disable-line no-unused-vars
+    if (Array.isArray(dlv.poster)) {
+      gon.poster = dlv.poster.map((p) => {
+        if (!laObjectThuong(p)) return p;
+        const { duong_dan: _bo, ...q } = p; // eslint-disable-line no-unused-vars
+        return q;
+      });
+    }
+    ra.da_lam_video = gon;
+  }
+  // ghi_chu giữ nguyên: người thường sửa được ghi chú — che ở đây thì bấm Lưu sẽ ghi bản đã che đè lên bản gốc.
+  const daChe = cheSau(ra);
+  if (Object.prototype.hasOwnProperty.call(ra, "ghi_chu")) daChe.ghi_chu = ra.ghi_chu;
+  return daChe;
+}
+// P-33b: che đường dẫn tuyệt đối máy nhà trong chữ cho người thường. Ổ đĩa Windows "X:\…"/"X:/…" (chữ ổ không đứng sau
+// chữ/số/"/" → không bắt "https://", "…/c:d") và UNC "\\máy\…"; dừng ở khoảng trắng, ngoặc, backtick, nháy, "|" (bảng markdown
+// không vỡ); dấu câu cuối (.,;:!?) trả lại sau chỗ che. Chỉ thay đoạn đường dẫn, giữ phần chữ còn lại của dòng.
+const CHE_DUONG_DAN = "[đường dẫn máy nhà]";
+// "file:///X:/…" (link markdown trong douyin.md) che cả tiền tố.
+const RE_DUONG_DAN = /(?:\bfile:\/{2,3}|(?<![A-Za-z0-9/\\]))[A-Za-z]:[\\/][^\s()[\]{}<>`"'|]*|(?<![\\\w])\\\\[^\s\\()[\]{}<>`"'|]+\\[^\s()[\]{}<>`"'|]*/g;
+export function cheDuongDan(text) {
+  if (typeof text !== "string" || !text) return text;
+  return text.replace(RE_DUONG_DAN, (m) => CHE_DUONG_DAN + (m.match(/[.,;:!?]+$/) || [""])[0]);
+}
+// Che trong mọi chuỗi của giá trị JSON (lồng nhau); trả bản mới, không sửa gốc.
+function cheSau(o) {
+  if (typeof o === "string") return cheDuongDan(o);
+  if (Array.isArray(o)) return o.map(cheSau);
+  if (laObjectThuong(o)) return Object.fromEntries(Object.entries(o).map(([k, v]) => [k, cheSau(v)]));
+  return o;
+}
 const GOI_Y_MAY_NHA = "(đã bật video_server và tunnel chưa?)";
 const LOI_MAY_NHA = `Máy nhà không trả lời ${GOI_Y_MAY_NHA}`;
 // Máy nhà trả 401/403 khi x-key lệch: KHÔNG chuyển nguyên về trình duyệt (web hiểu 401 = hết phiên đăng nhập).
 const LOI_KHOA_MAY_NHA = "Máy nhà từ chối khoá (VIDEO_KEY lệch với tools/.video_key)";
 const LOI_CHAM_MAY_NHA = "Máy nhà phản hồi quá chậm";
-// act trả JSON nhỏ → có timeout; file/xem/dyfile/xoa là stream dài → không đặt.
-const ACT_CO_TIMEOUT = ["ds", "dy", "tien-do"];
+// act trả JSON/ảnh nhỏ → có timeout; file/xem/dyfile/xoa/clip là stream dài → không đặt.
+const ACT_CO_TIMEOUT = ["ds", "dy", "tien-do", "anh"];
 const TIMEOUT_VIDEO_MS = 15000;
 const laHetGio = (e) => !!e && (e.name === "TimeoutError" || e.name === "AbortError");
-// Khoá query được chuyển sang máy nhà theo act; mọi khoá khác bị bỏ.
-const QUERY_VIDEO = { ds: [], dy: [], "tien-do": [], file: ["ten", "goc", "xoa"], xem: ["ten", "goc"], dyfile: ["ten"], xoa: ["ten", "goc"] };
+// Khoá query được chuyển sang máy nhà theo act; mọi khoá khác bị bỏ. anh/clip: ảnh khung + xem thử clip (docs/sua-video.md §8.2–§8.3).
+const QUERY_VIDEO = {
+  ds: [], dy: [], "tien-do": [], file: ["ten", "goc", "xoa"], xem: ["ten", "goc"], dyfile: ["ten"], xoa: ["ten", "goc"],
+  anh: ["du_an", "ten", "k"], clip: ["du_an", "ten"],
+};
 // xoa=1 (tải xong thì xoá ở máy nhà) chỉ nhận khi trình duyệt báo request đến từ chính trang này:
 // cookie SameSite=Lax vẫn đi theo điều hướng GET từ trang khác, nên không có header này → chỉ tải, không xoá.
 function queryVideo(act, src, secFetchSite) {
@@ -241,10 +285,22 @@ const KIEM_THAM_SO = {
   ti_le: (v) => v === "9:16",
   folder_id: (v) => Number.isInteger(v) && v > 0 && v < 1e9,
   so_video_ngay: (v) => Number.isInteger(v) && v >= 1 && v <= 100, // FX-9: người dùng nới 1–5 → 1–100
+  // đợt 6 (docs/sua-video.md §7.1): hoan_tac_sua
+  ma_video: (v) => typeof v === "string" && RE_MA_VIDEO.test(v),
+  viec_goc: (v) => typeof v === "string" && RE_ID_VIEC.test(v),
+  // đợt 5 (§7.10): taovideo — runner kiểm lại đầy đủ (raw/, takes/, chốt B khi tu_tim)
+  du_an_a: (v) => typeof v === "string" && /^[0-9a-f]{12}$/.test(v),
+  du_an_b: (v) => typeof v === "string" && (v === "tu_tim" || /^[0-9a-f]{12}$/.test(v)),
+  wm: (v) => typeof v === "string" && WM_TAOVIDEO.includes(v),
+  gia: (v) => Number.isInteger(v) && v >= 1000 && v <= 10_000_000,
 };
+// Watermark cho phép (phiếu W-6; khớp ("khong", *WM_CHO_PHEP) của tools/runner/han_muc.py).
+const WM_TAOVIDEO = ["khong", "nha.cua.mit"];
+const RE_MA_VIDEO = /^[0-9a-f]{16}$/;
 // Mã mẫu prompt Muse cố định (web chỉ gửi MÃ). Phải trùng khoá MAU_PROMPT_MUSE trong tools/runner/danh_muc.py.
 const MA_MAU_MUSE = ["xoay_360", "cam_tay", "can_canh", "dung_that", "dat_ban", "mo_hop", "truoc_sau"];
-// Danh mục đợt 3 (§5.1) + đợt 4 (§5.2): loại → [khoá bắt buộc, khoá tuỳ chọn]. Loại đợt 5 (taovideo) bị từ chối ở đây.
+// Danh mục đợt 3 (§5.1) + đợt 4 (§5.2) + đợt 5 taovideo (§7.10): loại → [khoá bắt buộc, khoá tuỳ chọn].
+// Runner vẫn chặn theo dot_bat — Worker chỉ kiểm hình dạng.
 // voice_genmax: web KHÔNG gửi được ma_ban (runner tự gắn); thoi_luong/ti_le của muse_clip tuỳ chọn (runner có mặc định).
 const DANH_MUC_VIEC = new Map([
   ["radar_ban_tin", [[], ["top_n", "chay_bu"]]],
@@ -252,10 +308,14 @@ const DANH_MUC_VIEC = new Map([
   ["douyin_uid", [["uid"], []]],
   ["xu_ly_link_moi", [[], []]],
   ["poster_day_folder", [["uid", "du_an"], []]],
+  ["poster_bo_loai", [["uid"], []]],
   ["voice_pv", [["uid", "du_an", "me"], []]],
   ["muse_clip", [["uid", "du_an", "mau"], ["thoi_luong", "ti_le"]]],
   ["voice_genmax", [["uid", "du_an", "me"], []]],
   ["poster_len_lich", [["folder_id", "so_video_ngay"], []]],
+  // sua_video KHÔNG có ở đây: chỉ tạo qua POST /api/viec/sua-video/<uid>/<ma>/luu (kiểm bản sửa + mật khẩu Q3).
+  ["hoan_tac_sua", [["uid", "du_an", "ma_video", "viec_goc"], []]],
+  ["taovideo", [["uid", "du_an_a", "du_an_b", "wm"], ["gia"]]],
 ]);
 // Đợt 3: trả lời chỉ bằng nút — giá trị hợp lệ theo loại câu hỏi (cau_hoi chữ tự do là đợt 5).
 const NUT_CO_DINH = { viec_tay: ["da_lam_xong"], khong_ro: ["tiep_tuc"] };
@@ -451,12 +511,12 @@ async function goiMayNha(env, path, { method = "GET", body, timeoutMs = TIMEOUT_
 const traVeMayNha = (r) =>
   new Response(r.body, { status: r.status, headers: { "content-type": r.headers.get("content-type") || "application/json; charset=utf-8", "cache-control": "no-store" } });
 
-function queryViec(src, khoaChoPhep) {
+function queryViec(src, khoaChoPhep, mauRieng = {}) {
   const q = new URLSearchParams();
   for (const k of khoaChoPhep) {
     if (!src.has(k)) continue;
     const v = src.get(k);
-    if (!RE_GIA_TRI_QUERY.test(v)) return null;
+    if (!(mauRieng[k] || RE_GIA_TRI_QUERY).test(v)) return null;
     q.set(k, v);
   }
   const s = q.toString();
@@ -472,6 +532,14 @@ function tuyenViec(p) {
   if (s === "/suc-khoe") return { GET: { dich: "/suc-khoe" } };
   if (s === "/poster-folders" || s === "/poster/folders") return { GET: { dich: "/poster/folders" } };
   if ((k = s.match(/^\/du-an\/(\d{19})$/))) return { GET: { dich: `/du-an/${k[1]}` } };
+  // Sửa video (docs/sua-video.md §8.3): đọc qua GET; ghi chỉ qua /luu (ban-sua của runner không mở thẳng ra web).
+  if ((k = s.match(/^\/sua-video\/(\d{19})(?:\/([0-9a-f]{16})(?:\/(ung-vien|luu))?)?$/))) {
+    const [, uid, ma, act] = k;
+    if (!ma) return { GET: { dich: `/sua-video/${uid}` } };
+    if (!act) return { GET: { dich: `/sua-video/${uid}/${ma}` } };
+    if (act === "ung-vien") return { GET: { dich: `/sua-video/${uid}/${ma}/ung-vien`, query: ["seg"], mau: { seg: /^\d{1,3}$/ } } };
+    return { POST: { dich: `/sua-video/${uid}/${ma}/ban-sua`, lam: "sua_video", uid, ma } };
+  }
   if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai))?$/))) {
     const [, id, act] = k;
     if (!act) return { GET: { dich: `/viec/${id}` } };
@@ -496,22 +564,54 @@ function giaTriNut(cauHoi) {
   return NUT_CO_DINH[cauHoi.loai] || null;
 }
 
-async function traLoiBangNut(req, env, tuyen, phien) {
-  const { tra_loi } = (await docBodyViec(req)) || {};
-  if (typeof tra_loi !== "string" || !tra_loi || tra_loi.length > TRA_LOI_TOI_DA || RE_KY_TU_DIEU_KHIEN.test(tra_loi)) return loi("Câu trả lời không hợp lệ");
+// Trả lời câu hỏi đang chờ (§7.6, §8.2, §9 mục 4). Body web {tra_loi, ma_cau_hoi?, mat_khau?}; body tới runner {tra_loi, boi, da_xac_nhan_mat_khau, ma_cau_hoi?}.
+// - ma_cau_hoi (FX-25): tuỳ chọn; có thì phải khớp RE_MA_CAU_HOI (sai → 400 trước mọi bước khác, không gọi máy nhà), chuyển nguyên sang runner (runner so với cau_hoi.ma, lệch → 409).
+// - Không mật khẩu: chỉ giá trị nút (≤120 ký tự, không ký tự điều khiển).
+// - Có mật khẩu: kiểm + đếm sai (KV sai:<user>) TRƯỚC khi gọi máy nhà; chữ 1–1000 code point (cho phép xuống dòng).
+// - Phiên sống (viec.phien_song === true): chon/cau_hoi bắt buộc mật khẩu; viec_tay/khong_ro chỉ nút.
+// - cau_hoi (chữ tự do) chỉ khi có phiên sống. Cờ da_xac_nhan_mat_khau do Worker đặt, không lấy từ client.
+const TRA_LOI_CHU_TOI_DA = 1000; // code point — khớp runner kiem_tra_loi_dot5 (§7.6)
+const RE_DIEU_KHIEN_TRU_XUONG_DONG = /[\u0000-\u0009\u000b-\u001f\u007f]/;
+const RE_MA_CAU_HOI = /^q[0-9a-f]{12}$/; // khớp runner kieu.RE_MA_CAU_HOI (§7.6)
+async function traLoiViec(req, env, tuyen, phien) {
+  const b = await docBodyViec(req);
+  const { tra_loi, mat_khau, ma_cau_hoi } = laObjectThuong(b) ? b : {};
+  const coMa = ma_cau_hoi !== undefined;
+  if (coMa && (typeof ma_cau_hoi !== "string" || !RE_MA_CAU_HOI.test(ma_cau_hoi))) return loi("Mã câu hỏi không hợp lệ");
+  const coMk = mat_khau !== undefined;
+  if (coMk && (typeof mat_khau !== "string" || !mat_khau || mat_khau.length > MAT_KHAU_TOI_DA)) return loi("Mật khẩu không hợp lệ");
+  if (typeof tra_loi !== "string" || !tra_loi.trim() || RE_SURROGATE_LE.test(tra_loi)) return loi("Câu trả lời không hợp lệ");
+  if (coMk) {
+    if ([...tra_loi].length > TRA_LOI_CHU_TOI_DA || RE_DIEU_KHIEN_TRU_XUONG_DONG.test(tra_loi)) return loi(`Câu trả lời phải dài 1–${TRA_LOI_CHU_TOI_DA} ký tự, không có ký tự điều khiển`);
+  } else if (tra_loi.length > TRA_LOI_TOI_DA || RE_KY_TU_DIEU_KHIEN.test(tra_loi)) {
+    return loi("Câu trả lời không hợp lệ");
+  }
+  let daXacNhan = false;
+  if (coMk) {
+    const loiMk = await kiemMatKhauCoDem(env, phien.user, mat_khau);
+    if (loiMk) return loiMk;
+    daXacNhan = true;
+  }
   const r = await goiMayNha(env, `/viec/${tuyen.id}`);
   if (!r.ok) return traVeMayNha(r);
   let d;
   try { d = await r.json(); } catch { return loi("Máy nhà trả dữ liệu lạ", 502); }
-  const viec = d && d.viec;
-  if (!viec || viec.trang_thai !== "can_tra_loi") return loi("Việc không còn chờ trả lời", 409);
+  const viec = laObjectThuong(d) ? d.viec : null;
+  if (!laObjectThuong(viec) || viec.trang_thai !== "can_tra_loi") return loi("Việc không còn chờ trả lời", 409);
   let cauHoi = viec.cau_hoi;
   if (typeof cauHoi === "string") { try { cauHoi = JSON.parse(cauHoi); } catch { cauHoi = null; } }
-  if (!cauHoi) return loi("Việc không còn chờ trả lời", 409);
-  const nut = giaTriNut(cauHoi);
-  if (!nut) return loi("Câu hỏi này chưa trả lời được trên web (đợt 3 chỉ trả lời bằng nút)");
-  if (!nut.includes(tra_loi)) return loi("Câu trả lời không khớp nút nào của câu hỏi");
-  return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { tra_loi, boi: phien.user } }));
+  if (!laObjectThuong(cauHoi)) return loi("Việc không còn chờ trả lời", 409);
+  const phienSong = viec.phien_song === true;
+  if (cauHoi.loai === "cau_hoi") {
+    if (!phienSong) return loi("Câu hỏi này chưa trả lời được trên web (chỉ trả lời chữ khi việc có phiên sống)");
+    if (!daXacNhan) return loi("Trả lời bằng chữ cần nhập mật khẩu", 403);
+  } else {
+    const nut = giaTriNut(cauHoi);
+    if (!nut) return loi("Câu hỏi này chưa trả lời được trên web");
+    if (!nut.includes(tra_loi)) return loi("Câu trả lời không khớp nút nào của câu hỏi");
+    if (phienSong && cauHoi.loai === "chon" && !daXacNhan) return loi("Chọn trong phiên đang chạy cần nhập mật khẩu", 403);
+  }
+  return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { tra_loi, boi: phien.user, da_xac_nhan_mat_khau: daXacNhan, ...(coMa ? { ma_cau_hoi } : {}) } }));
 }
 
 // ---------- duyệt việc tốn tiền (đợt 4, §8.2, §8.3, §9 mục 4) ----------
@@ -571,16 +671,9 @@ async function ghiDemSai(env, user, dem) {
 
 const RE_SHA256_HEX = /^[0-9a-f]{64}$/;
 
-async function duyetViec(req, env, tuyen, phien) {
-  const b = await docBodyViec(req);
-  const { loi_duyet, mat_khau, sha_tham_so } = laObjectThuong(b) ? b : {};
-  if (typeof loi_duyet !== "string" || !loi_duyet.trim() || [...loi_duyet].length > LOI_DUYET_TOI_DA || RE_SURROGATE_LE.test(loi_duyet)) {
-    return loi(`Lời duyệt phải là chữ 1–${LOI_DUYET_TOI_DA} ký tự`);
-  }
-  // [P2-2] sha256hex của tham_so_chuan người dùng đã xem — kiểm dạng TRƯỚC mật khẩu (thiếu không tính lần sai).
-  if (typeof sha_tham_so !== "string" || !RE_SHA256_HEX.test(sha_tham_so)) return loi("Thiếu sha_tham_so — tải lại việc rồi duyệt");
-  if (typeof mat_khau !== "string" || !mat_khau || mat_khau.length > MAT_KHAU_TOI_DA) return loi("Thiếu mật khẩu");
-  const user = phien.user;
+// Kiểm mật khẩu của user đang đăng nhập, có đếm sai (dùng chung cho duyệt việc tốn tiền và lưu bản sửa có chữ, Q3).
+// Trả null khi đúng; sai/khoá/KV lỗi → Response lỗi (403/429/503).
+async function kiemMatKhauCoDem(env, user, mat_khau) {
   let cache;
   try {
     cache = await docDemSai(env, user);
@@ -615,6 +708,21 @@ async function duyetViec(req, env, tuyen, phien) {
     await ghiDemSai(env, user, dem);
     return loi("Sai mật khẩu", 403);
   }
+  return null;
+}
+
+async function duyetViec(req, env, tuyen, phien) {
+  const b = await docBodyViec(req);
+  const { loi_duyet, mat_khau, sha_tham_so } = laObjectThuong(b) ? b : {};
+  if (typeof loi_duyet !== "string" || !loi_duyet.trim() || [...loi_duyet].length > LOI_DUYET_TOI_DA || RE_SURROGATE_LE.test(loi_duyet)) {
+    return loi(`Lời duyệt phải là chữ 1–${LOI_DUYET_TOI_DA} ký tự`);
+  }
+  // [P2-2] sha256hex của tham_so_chuan người dùng đã xem — kiểm dạng TRƯỚC mật khẩu (thiếu không tính lần sai).
+  if (typeof sha_tham_so !== "string" || !RE_SHA256_HEX.test(sha_tham_so)) return loi("Thiếu sha_tham_so — tải lại việc rồi duyệt");
+  if (typeof mat_khau !== "string" || !mat_khau || mat_khau.length > MAT_KHAU_TOI_DA) return loi("Thiếu mật khẩu");
+  const user = phien.user;
+  const loiMk = await kiemMatKhauCoDem(env, user, mat_khau);
+  if (loiMk) return loiMk;
 
   const r = await goiMayNha(env, `/viec/${tuyen.id}`);
   if (!r.ok) return traVeMayNha(r);
@@ -633,6 +741,101 @@ async function duyetViec(req, env, tuyen, phien) {
   return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { loi_duyet, duyet_luc, boi: user, chu_ky_duyet } }));
 }
 
+// ---------- sửa video (đợt 6, docs/sua-video.md §4.2, §8.3) ----------
+// Worker chỉ kiểm HÌNH DẠNG; runner (kiem_ban_sua) kiểm đầy đủ với dữ liệu thật (chỉ số câu, vai clip, chữ trùng bản cũ…).
+const SUA_PHU_DE_TOI_DA = 30;
+const SUA_CHU_TOI_DA = 200; // code point, sau NFC
+const SUA_DOI_CLIP_TOI_DA = 10;
+const SUA_DOI_CHO_TOI_DA = 3;
+const SUA_SEG_TOI_DA = 199; // khớp seg 0–199 của runner (§8.1)
+const SUA_CAU_TOI_DA = 9999;
+// Chữ phụ đề đi vào .sua.srt rồi .ass: cấm điều khiển C0/C1, xuống dòng (kể cả U+2028/2029), thẻ ASS { } \, < > và "-->" (phá SRT).
+const RE_CHU_PHU_DE_CAM = /[\u0000-\u001f\u007f-\u009f\u2028\u2029{}\\<>]|-->/;
+const RE_TEN_CLIP = /^[0-9A-Za-z][0-9A-Za-z_.()\- ]{0,150}\.mp4$/; // §3.1
+const RE_BAN_SUA = /^b[0-9a-f]{16}$/;
+const RE_DU_AN = /^[0-9a-f]{12}$/;
+const laSoNguyenTrong = (v, max) => Number.isInteger(v) && v >= 0 && v <= max;
+const laObjectDungKhoa = (o, khoa) => laObjectThuong(o) && Object.keys(o).length === khoa.length && khoa.every((k) => k in o);
+
+// Trả bản sửa đã dựng lại (chỉ khoá cho phép, chữ đã NFC) hoặc chuỗi lỗi. Không đụng mat_khau.
+export function kiemBanSua(b) {
+  if (!laObjectThuong(b)) return "Dữ liệu không hợp lệ";
+  const { sua_luc, phu_de_sha, phu_de = [], doi_clip = [], doi_cho = [] } = b;
+  if (!Number.isSafeInteger(sua_luc) || sua_luc < 0) return "Thời điểm sửa không hợp lệ — tải lại video";
+  if (phu_de_sha !== undefined && (typeof phu_de_sha !== "string" || !RE_SHA256_HEX.test(phu_de_sha))) return "Mã phụ đề không hợp lệ — tải lại video";
+  if (!Array.isArray(phu_de) || phu_de.length > SUA_PHU_DE_TOI_DA) return `Sửa tối đa ${SUA_PHU_DE_TOI_DA} câu mỗi lần`;
+  if (!Array.isArray(doi_clip) || doi_clip.length > SUA_DOI_CLIP_TOI_DA) return `Đổi tối đa ${SUA_DOI_CLIP_TOI_DA} clip mỗi lần`;
+  if (!Array.isArray(doi_cho) || doi_cho.length > SUA_DOI_CHO_TOI_DA) return `Đổi chỗ tối đa ${SUA_DOI_CHO_TOI_DA} cặp mỗi lần`;
+  if (phu_de.length + doi_clip.length + doi_cho.length === 0) return "Chưa có thay đổi nào";
+  if (phu_de.length && phu_de_sha === undefined) return "Thiếu mã phụ đề — tải lại video";
+  const ra = { sua_luc, ...(phu_de_sha === undefined ? {} : { phu_de_sha }), phu_de: [], doi_clip: [], doi_cho: [] };
+  const daCau = new Set();
+  for (const c of phu_de) {
+    if (!laObjectDungKhoa(c, ["i", "text"]) || !laSoNguyenTrong(c.i, SUA_CAU_TOI_DA)) return "Câu phụ đề không hợp lệ";
+    if (daCau.has(c.i)) return "Một câu bị sửa hai lần";
+    daCau.add(c.i);
+    if (typeof c.text !== "string" || RE_SURROGATE_LE.test(c.text)) return `Câu ${c.i}: chữ không hợp lệ`;
+    const text = c.text.normalize("NFC");
+    const dai = [...text].length;
+    if (!text.trim() || dai > SUA_CHU_TOI_DA) return `Câu ${c.i}: chữ phải dài 1–${SUA_CHU_TOI_DA} ký tự`;
+    if (RE_CHU_PHU_DE_CAM.test(text)) return `Câu ${c.i}: không dùng xuống dòng, ký tự điều khiển, { } \\ < > hay -->`;
+    ra.phu_de.push({ i: c.i, text });
+  }
+  const daSeg = new Set();
+  for (const c of doi_clip) {
+    if (!laObjectDungKhoa(c, ["seg", "clip"]) || !laSoNguyenTrong(c.seg, SUA_SEG_TOI_DA)) return "Đoạn cần đổi clip không hợp lệ";
+    if (daSeg.has(c.seg)) return "Một đoạn bị đổi clip hai lần";
+    daSeg.add(c.seg);
+    if (typeof c.clip !== "string" || !RE_TEN_CLIP.test(c.clip)) return "Tên clip không hợp lệ";
+    ra.doi_clip.push({ seg: c.seg, clip: c.clip });
+  }
+  for (const c of doi_cho) {
+    if (!Array.isArray(c) || c.length !== 2 || !c.every((x) => laSoNguyenTrong(x, SUA_SEG_TOI_DA)) || c[0] === c[1]) return "Cặp đổi chỗ không hợp lệ";
+    ra.doi_cho.push([c[0], c[1]]);
+  }
+  return ra;
+}
+
+// POST /api/viec/sua-video/<uid>/<ma>/luu → (1) POST /r/sua-video/<uid>/<ma>/ban-sua → (2) POST /r/viec {loai:"sua_video"}.
+// Có sửa chữ phụ đề → bắt mật khẩu (Q3=A), đếm sai chung bộ đếm với duyệt; chỉ đổi clip/đổi chỗ → không cần.
+async function luuSuaVideo(req, env, tuyen, phien) {
+  const b = await docBodyViec(req);
+  const ban = kiemBanSua(b);
+  if (typeof ban === "string") return loi(ban);
+  const user = phien.user;
+  if (ban.phu_de.length) {
+    const { mat_khau } = b;
+    if (typeof mat_khau !== "string" || !mat_khau) return loi("Sửa chữ phụ đề cần nhập mật khẩu", 403);
+    if (mat_khau.length > MAT_KHAU_TOI_DA) return loi("Sai mật khẩu", 403); // không băm chuỗi dài bất thường; không tính lượt
+    const loiMk = await kiemMatKhauCoDem(env, user, mat_khau);
+    if (loiMk) return loiMk;
+  }
+  const r1 = await goiMayNha(env, tuyen.dich, { method: "POST", body: { ...ban, boi: user } });
+  if (!r1.ok) return traVeMayNha(r1); // lỗi ở (1) → KHÔNG tạo việc
+  let d1;
+  try { d1 = await r1.json(); } catch { return loi("Máy nhà trả dữ liệu lạ", 502); }
+  const ban_sua = laObjectThuong(d1) ? d1.ban_sua : null;
+  const du_an = laObjectThuong(d1) ? d1.du_an : null;
+  if (typeof ban_sua !== "string" || !RE_BAN_SUA.test(ban_sua) || typeof du_an !== "string" || !RE_DU_AN.test(du_an)) {
+    return loi("Máy nhà trả dữ liệu lạ", 502);
+  }
+  const tham_so = { uid: tuyen.uid, du_an, ma_video: tuyen.ma, ban_sua };
+  const r2 = await goiMayNha(env, "/viec", { method: "POST", body: { loai: "sua_video", tham_so, boi: user } });
+  if (r2.status === 409) {
+    let d2 = null;
+    try { d2 = await r2.json(); } catch { /* giữ null */ }
+    const t = laObjectThuong(d2) ? d2.trung : null;
+    const id = typeof t === "string" ? t : laObjectThuong(t) ? t.id : null;
+    if (typeof id === "string" && RE_ID_VIEC.test(id)) return json({ loi: "Video này đang được dựng lại", trung: id, ban_sua }, 409);
+    return json({ loi: (laObjectThuong(d2) && typeof d2.loi === "string" && d2.loi) || "Không tạo được việc", ban_sua }, 409);
+  }
+  if (!r2.ok) return traVeMayNha(r2);
+  let d2;
+  try { d2 = await r2.json(); } catch { return loi("Máy nhà trả dữ liệu lạ", 502); }
+  if (!laObjectThuong(d2) || !laObjectThuong(d2.viec)) return loi("Máy nhà trả dữ liệu lạ", 502);
+  return json({ viec: d2.viec, ban_sua }, r2.status);
+}
+
 async function apiViec(req, env, url, phien) {
   const m = req.method;
   if (!USER_MAY_NHA.includes(phien.user)) return loi("Không có quyền", 403);
@@ -644,12 +847,13 @@ async function apiViec(req, env, url, phien) {
   const tuyen = bang[m];
   if (!tuyen) return loi("Sai phương thức", 405);
   if (m === "GET") {
-    const q = queryViec(url.searchParams, tuyen.query || []);
+    const q = queryViec(url.searchParams, tuyen.query || [], tuyen.mau);
     if (q === null) return loi("Tham số truy vấn không hợp lệ");
     return traVeMayNha(await goiMayNha(env, tuyen.dich + q));
   }
-  if (tuyen.lam === "tra_loi") return traLoiBangNut(req, env, tuyen, phien);
+  if (tuyen.lam === "tra_loi") return traLoiViec(req, env, tuyen, phien);
   if (tuyen.lam === "duyet") return duyetViec(req, env, tuyen, phien);
+  if (tuyen.lam === "sua_video") return luuSuaVideo(req, env, tuyen, phien);
   let body;
   if (tuyen.lam === "tao") {
     const b = kiemThamSoViec(await docBodyViec(req));
@@ -659,6 +863,50 @@ async function apiViec(req, env, url, phien) {
     body = { boi: phien.user };
   }
   return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body }));
+}
+
+// Dán link xong tự giao máy nhà phân tích (không phải bấm "📥 Xử lý link mới"). Ai dán cũng được: Worker tự ký như
+// giaoDongBoLoai, chạy dưới tên người dán. Link có UID → phan_tich_uid {uid} (khoá theo UID, không đụng việc khác).
+// Link rút gọn (chưa có UID) → xu_ly_link_moi (kho.py cho tự tìm UID rồi tạo việc con).
+// Không bao giờ ném: máy nhà tắt/lỗi thì link vẫn đã lưu, vẫn bấm tay được.
+// → "tao" (máy nhà nhận) | "trung" (409: đã có việc cùng khoá đang mở) | "chua" (thiếu cấu hình / máy nhà tắt, lỗi, từ chối).
+export async function giaoPhanTichLinkMoi(env, uid, phien) {
+  try {
+    if (!env.VIDEO_ORIGIN || !env.VIDEO_KEY || !env.RUNNER_KEY || !env.KY_RIENG) return "chua";
+    const v = kiemThamSoViec(/^\d{19}$/.test(String(uid || ""))
+      ? { loai: "phan_tich_uid", tham_so: { uid: String(uid) } }
+      : { loai: "xu_ly_link_moi", tham_so: {} });
+    if (typeof v === "string") return "chua";
+    const r = await goiMayNha(env, "/viec", { method: "POST", body: { loai: v.loai, tham_so: v.tham_so, boi: phien.user } });
+    if (r.body) r.body.cancel().catch(() => {});
+    if (r.status === 409) return "trung";
+    if (!r.ok) console.error(`them: máy nhà trả ${r.status} khi giao ${v.loai}`);
+    return r.ok ? "tao" : "chua";
+  } catch (e) {
+    console.error("them: không giao được việc phân tích", e && e.name);
+    return "chua";
+  }
+}
+
+// FX-W8: giao việc miễn phí poster_bo_loai {uid} sau khi lưu chấm dính Loại — cùng đường POST /api/viec (kiemThamSoViec +
+// goiMayNha: ký Ed25519 §8.3, timeout TIMEOUT_VIEC_MS). Không bao giờ ném: lỗi máy nhà không làm hỏng việc lưu chấm.
+// → "tao" (máy nhà nhận) | "trung" (409: việc cùng uid đang mở) | "chua" (thiếu cấu hình / UID sai / máy nhà tắt, lỗi, từ chối).
+async function giaoDongBoLoai(env, infoT, phien) {
+  try {
+    if (!env.VIDEO_ORIGIN || !env.VIDEO_KEY || !env.RUNNER_KEY || !env.KY_RIENG) return "chua";
+    let uid = "";
+    try { uid = String(JSON.parse(infoT).uid || ""); } catch { uid = ""; }
+    const v = kiemThamSoViec({ loai: "poster_bo_loai", tham_so: { uid } });
+    if (typeof v === "string") return "chua";
+    const r = await goiMayNha(env, "/viec", { method: "POST", body: { loai: v.loai, tham_so: v.tham_so, boi: phien.user } });
+    if (r.body) r.body.cancel().catch(() => {});
+    if (r.status === 409) return "trung";
+    if (!r.ok) console.error(`duyet: máy nhà trả ${r.status} khi giao poster_bo_loai`);
+    return r.ok ? "tao" : "chua";
+  } catch (e) {
+    console.error("duyet: không giao được poster_bo_loai", e && e.name);
+    return "chua";
+  }
 }
 
 // ---------- API ----------
@@ -685,9 +933,10 @@ async function api(req, env, ctx, url) {
   if (!phien) return loi("Chưa đăng nhập", 401);
   if (p === "/api/me") return json(phien);
   if (p === "/api/viec" || p.startsWith("/api/viec/")) return apiViec(req, env, url, phien);
+  if (p === "/api/poster" || p.startsWith("/api/poster/")) return apiPoster(req, env, url, { user: phien.user, chu: laChuKho(phien.user) });
 
   let v;
-  if ((v = p.match(/^\/api\/video\/([^/]+)\/(ds|file|xoa|dy|dyfile|xem|tien-do)$/))) {
+  if ((v = p.match(/^\/api\/video\/([^/]+)\/(ds|file|xoa|dy|dyfile|xem|tien-do|anh|clip)$/))) {
     if (!USER_MAY_NHA.includes(phien.user)) return loi("Không có quyền", 403);
     const id = decodeURIComponent(v[1]), act = v[2];
     if (!RE_ID.test(id)) return loi("ID không hợp lệ");
@@ -736,37 +985,61 @@ async function api(req, env, ctx, url) {
     return json({ ...d, may_nha: true });
   }
 
+  // Bật/tắt từng app trên máy nhà (video_server.py LENH_BAT — mã cố định, không gửi lệnh).
+  const mApp = p.match(/^\/api\/may-nha\/app\/(muse|perfectvoice|poster|runner)\/(bat|tat)$/);
+  if (mApp && m === "POST") {
+    if (!USER_MAY_NHA.includes(phien.user)) return loi("Không có quyền", 403);
+    if (!env.VIDEO_ORIGIN || !env.VIDEO_KEY) return loi("Chưa cấu hình máy phát video", 503);
+    let r;
+    try {
+      r = await fetch(`${env.VIDEO_ORIGIN}/app/${mApp[1]}/${mApp[2]}`, { method: "POST", headers: { "x-key": env.VIDEO_KEY }, signal: AbortSignal.timeout(30000) });
+    } catch (e) {
+      return loi(laHetGio(e) ? "Hết thời gian chờ máy nhà" : LOI_MAY_NHA, 502);
+    }
+    if (r.status === 401 || r.status === 403) return loi(LOI_KHOA_MAY_NHA, 502);
+    const d = await r.json().catch(() => null);
+    if (!d || typeof d !== "object") return loi(`Máy nhà trả mã ${r.status}`, 502);
+    console.log(`may-nha ${phien.user} ${mApp[2]} ${mApp[1]}: ${r.status} ${d.tin || d.loi || ""}`);
+    return r.ok ? json(d) : loi(d.tin || d.loi || `Máy nhà trả mã ${r.status}`, r.status === 404 ? 404 : 502);
+  }
+
   if (p === "/api/duyet" && m === "POST") {
     if (!USER_MAY_NHA.includes(phien.user)) return loi("Không có quyền", 403);
     const b = kiemDuyet(await docBody(req));
     if (typeof b === "string") return loi(b);
-    if (!(await getText(env, `data/${b.id}/info.json`))) return loi("Không tìm thấy sản phẩm", 404);
+    const infoT = await getText(env, `data/${b.id}/info.json`);
+    if (!infoT) return loi("Không tìm thấy sản phẩm", 404);
     const cungKhoa = (o) => o.goc === b.goc && o.ten === b.ten && o.sua_luc === b.sua_luc;
+    let cu = ""; // ket_qua cũ của mục cùng khoá (lượt mutate cuối = lượt đã ghi)
     const d = await suaJson(env, `data/${b.id}/duyet.json`, (x) => {
       x.videos = x.videos || [];
       const vt = x.videos.findIndex(cungKhoa);
-      if (b.ket_qua === "" && b.gop_y === "") { // bỏ chấm + bỏ góp ý → xoá mục
-        x.videos = x.videos.filter((o) => !cungKhoa(o));
-        return;
-      }
+      cu = vt >= 0 && x.videos[vt] ? x.videos[vt].ket_qua : "";
+      // FX-W6: bỏ chấm + bỏ góp ý → GIỮ mục cũ (ket_qua "", gop_y ""): runner bo_loai.py chỉ trả video từ _loai/ khi có mục
+      // khớp đúng (goc, ten, sua_luc) mà mục cuối khác "loai". Chưa có mục cùng khoá → không thêm gì (không tạo rác).
+      if (b.ket_qua === "" && b.gop_y === "" && vt < 0) return;
       const muc = { goc: b.goc, ten: b.ten, sua_luc: b.sua_luc, mb: b.mb, ket_qua: b.ket_qua, gop_y: b.gop_y, boi: phien.ten, luc: nowIso() };
       if (vt >= 0) x.videos[vt] = muc; // cập nhật tại chỗ, giữ thứ tự
       else x.videos.push(muc);
     }, `Duyệt video ${b.ten} ${b.id} — ${phien.ten}`, DUYET_RONG);
-    return json({ duyet: d.videos });
+    // FX-W8: chấm dính Loại (cũ hoặc mới là "loai") → Worker tự giao poster_bo_loai, không phụ thuộc trang web còn mở.
+    const dong_bo = cu === "loai" || b.ket_qua === "loai" ? await giaoDongBoLoai(env, infoT, phien) : null;
+    return json({ duyet: d.videos, dong_bo });
   }
 
-  if (p === "/api/ds" && m === "GET") return json({ san_pham: await danhSach(env) });
+  const chu = laChuKho(phien.user);
+  if (p === "/api/ds" && m === "GET") return json({ san_pham: (await danhSach(env)).map((x) => anTruongNoiBo(x, chu)) });
 
   let k;
   if ((k = p.match(/^\/api\/sp\/([^/]+)$/)) && m === "GET") {
     const id = decodeURIComponent(k[1]);
     if (!RE_ID.test(id)) return loi("ID không hợp lệ");
     // duyet.json chứa đường dẫn ổ máy nhà (goc) → chỉ đọc/trả cho user máy nhà; user khác nhận [].
-    const xemDuyet = USER_MAY_NHA.includes(phien.user);
+    const xemDuyet = chu;
     const [infoT, md, caps, vtkT, douyin, duyetT] = await Promise.all(["info.json", "bo-canh-quay.md", "captions.txt", "video_tk.json", "douyin.md", ...(xemDuyet ? ["duyet.json"] : [])].map((f) => getText(env, `data/${id}/${f}`)));
     if (!infoT) return loi("Không tìm thấy sản phẩm", 404);
-    return json({ info: JSON.parse(infoT), md, caps, douyin, vtk: vtkT ? JSON.parse(vtkT).videos || [] : [], duyet: duyetT ? JSON.parse(duyetT).videos || [] : [] });
+    const che = (t) => (chu ? t : cheDuongDan(t)); // P-33b: md/caps/douyin của người thường không lộ đường dẫn máy nhà
+    return json({ info: anTruongNoiBo(JSON.parse(infoT), chu), md: che(md), caps: che(caps), douyin: che(douyin), vtk: vtkT ? JSON.parse(vtkT).videos || [] : [], duyet: duyetT ? JSON.parse(duyetT).videos || [] : [] });
   }
 
   if ((k = p.match(/^\/api\/vtk\/([^/]+)\/([^/]+)$/)) && m === "GET") {
@@ -838,7 +1111,8 @@ async function api(req, env, ctx, url) {
     };
     const r = await putFile(env, `data/${id}/info.json`, JSON.stringify(info, null, 1) + "\n", null, `Thêm ${id} — ${phien.ten}`);
     if (r.conflict) return json({ trung: true, id }, 409);
-    return json({ info: { ...info, trang_thai: "cho" } });
+    const may = await giaoPhanTichLinkMoi(env, uid, phien);
+    return json({ info: anTruongNoiBo({ ...info, trang_thai: "cho" }, chu), may });
   }
 
   if (p === "/api/quay" && m === "POST") {
@@ -851,14 +1125,14 @@ async function api(req, env, ctx, url) {
         delete i.da_quay;
       }
     }, `${xong ? "Đã quay" : "Bỏ đã quay"} ${loai} ${id} — ${phien.ten}`);
-    return json({ info: { ...info, trang_thai: trangThai(info) } });
+    return json({ info: anTruongNoiBo({ ...info, trang_thai: trangThai(info) }, chu) });
   }
 
   if (p === "/api/tag" && m === "POST") { // thẻ riêng: yêu thích / cần đăng
     const { id, tag, bat } = await docBody(req);
     if (!RE_ID.test(String(id)) || !TAG_RIENG.includes(tag)) return loi("Dữ liệu không hợp lệ");
     const info = await updateInfo(env, id, (i) => { if (bat) i[tag] = true; else delete i[tag]; }, `${bat ? "Gắn" : "Bỏ"} thẻ ${tag} ${id} — ${phien.ten}`);
-    return json({ info: { ...info, trang_thai: trangThai(info) } });
+    return json({ info: anTruongNoiBo({ ...info, trang_thai: trangThai(info) }, chu) });
   }
 
   if (p === "/api/ghichu" && m === "POST") {
@@ -866,7 +1140,7 @@ async function api(req, env, ctx, url) {
     if (!RE_ID.test(String(id))) return loi("ID không hợp lệ");
     if (String(ghi_chu).length > 20000) return loi("Ghi chú quá dài");
     const info = await updateInfo(env, id, (i) => { i.ghi_chu = String(ghi_chu); }, `Ghi chú ${id} — ${phien.ten}`);
-    return json({ info });
+    return json({ info: anTruongNoiBo(info, chu) });
   }
 
   return loi("Không có API này", 404);

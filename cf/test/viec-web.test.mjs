@@ -15,7 +15,9 @@ const m = VIEC.match(/\/\/ --- viec-thuan start ---\n([\s\S]*?)\/\/ --- viec-thu
 assert.ok(m, "thiếu marker viec-thuan trong viec.js");
 const F = new Function("esc", `"use strict";\n${m[1]}\nreturn { goiYViec, nhomViec, nhanTrangThai, nutTraLoi, theViecHtml, chiTietViecHtml, tomTatHtml, dsNhomHtml, laIdViec, dongThamSo, idTrungViec, ketQuaHanhDong, buocLog, demCanBan, canDocLaiLog, LOG_DOC_LAI_TOI_DA,
   duocDuyet, khungDuyetHtml, loiDuyetMau, kiemLoiDuyet, dongUocTinh, thamSoMuse, thamSoPoster, locFolderPoster, formViecSpHtml, TEN_MAU_MUSE, LOI_DUYET_TOI_DA_WEB,
-  nutChoViecTonTien, thamSoChuanDuyet, sha256HexWeb, duLieuViecDoi, hanMucHtml };`)(esc);
+  nutChoViecTonTien, thamSoChuanDuyet, sha256HexWeb, duLieuViecDoi, hanMucHtml,
+  nutHanhDong, khungTraLoiHtml, kiemChuTraLoi, khoaCauHoi, dangChoNen, logDangSong, thamSoTaovideo, wmTaovideo, TRA_LOI_CHU_TOI_DA_WEB,
+  maCauHoi, nutChayLaiTiep, linkLuuLaiSua, TEN_LOAI_VIEC, LOAI_VIEC_SP, loaiDuyetHtml, khoaLoaiDuyet };`)(esc);
 const WORKER = readFileSync(new URL("../src/worker.js", import.meta.url), "utf8");
 
 const UID = "1729706628656957720";
@@ -32,8 +34,9 @@ test("goiYViec: bảng §12 ở đợt 3", () => {
   assert.deepEqual(loaiCua(F.goiYViec(5, coDy, 3)), ["voice_pv"]); // voice_genmax là đợt 4
   assert.deepEqual(loaiCua(F.goiYViec(6, coDy, 3)), []);          // taovideo là đợt 5
   assert.deepEqual(loaiCua(F.goiYViec(7, coDy, 3)), []);
-  assert.match(F.goiYViec(7, coDy, 3).ghi_chu, /Duyệt/);
-  assert.deepEqual(loaiCua(F.goiYViec(8, coDy, 3)), ["poster_day_folder"]);
+  assert.ok(!/Duyệt video|Đăng bài/.test(F.goiYViec(7, coDy, 3).ghi_chu || "")); // 2026-11-19: trang Duyệt video đã gỡ
+  // W-M3: đăng chỉ ở trang Đăng bài → bước 8 không còn nút poster_*
+  assert.deepEqual(loaiCua(F.goiYViec(8, coDy, 3)), []);
   assert.deepEqual(loaiCua(F.goiYViec(0, coDy, 3)), []);
 });
 
@@ -41,9 +44,12 @@ test("goiYViec: đợt 4/5 mở thêm nút", () => {
   const coDy = { uid: UID, co_douyin: true };
   assert.deepEqual(loaiCua(F.goiYViec(4, coDy, 4)), ["muse_clip"]);
   assert.deepEqual(loaiCua(F.goiYViec(5, coDy, 4)), ["voice_pv", "voice_genmax"]);
-  assert.deepEqual(loaiCua(F.goiYViec(8, coDy, 4)), ["poster_day_folder", "poster_len_lich"]);
+  assert.deepEqual(loaiCua(F.goiYViec(8, coDy, 4)), []); // W-M3: đăng ở trang Đăng bài
   assert.deepEqual(loaiCua(F.goiYViec(6, coDy, 4)), []);
   assert.deepEqual(loaiCua(F.goiYViec(6, coDy, 5)), ["taovideo"]);
+  // Đã quay: "Làm video" đứng đầu cả ở bước 4/5 (clip AI, voice lẻ chỉ là nút phụ)
+  assert.deepEqual(loaiCua(F.goiYViec(4, coDy, 5)), ["taovideo", "muse_clip"]);
+  assert.deepEqual(loaiCua(F.goiYViec(5, coDy, 5)), ["taovideo", "voice_pv", "voice_genmax"]);
 });
 
 test("goiYViec: qua bước 2 mà chưa có Douyin → luôn có nút phụ douyin_uid", () => {
@@ -60,23 +66,100 @@ test("goiYViec: không UID hợp lệ → không nút; tham số cần chọn đ
   assert.deepEqual(F.goiYViec(2, null, 3).nut, []);
   const v = F.goiYViec(5, { uid: UID, co_douyin: true }, 3).nut[0];
   assert.deepEqual(v.can, ["uid", "du_an", "me"]);
-  assert.deepEqual(F.goiYViec(8, { uid: UID, co_douyin: true }, 3).nut[0].can, ["uid", "du_an"]);
+  assert.deepEqual(F.goiYViec(2, { uid: UID, co_douyin: true }, 3).nut[0].can, ["uid"]); // W-M3: bước 8 không còn nút poster_*
 });
 
-test("nutTraLoi: cau_hoi ở đợt 3 → mảng rỗng; nút cố định đúng giá trị Worker nhận", () => {
-  assert.deepEqual(F.nutTraLoi({ loai: "cau_hoi", noi_dung: "Gõ tên?" }, 3), []);
-  assert.deepEqual(F.nutTraLoi({ loai: "viec_tay", noi_dung: "Mở Poster" }, 3), [{ nhan: "✓ Tôi đã làm xong", gia_tri: "da_lam_xong" }]);
-  assert.deepEqual(F.nutTraLoi({ loai: "khong_ro" }, 3), [{ nhan: "▶ Tiếp tục", gia_tri: "tiep_tuc" }]);
-  assert.deepEqual(F.nutTraLoi(null, 3), []);
-  assert.deepEqual(F.nutTraLoi("không phải json", 3), []);
-  assert.deepEqual(F.nutTraLoi({ loai: "la" }, 3), []);
+test("W-M3 goiYViec: bước 7/8 không còn poster_*, ghi chú bước 8 trỏ Poster V2; vẫn còn nút Douyin khi chưa có", () => {
+  for (const dot of [3, 4, 5]) {
+    for (const ht of [7, 8]) {
+      const g = F.goiYViec(ht, { uid: UID }, dot);
+      assert.ok(!g.nut.some((x) => x.loai.startsWith("poster_")), `ht ${ht} đợt ${dot}`);
+      assert.deepEqual(loaiCua(g), ["douyin_uid"], "còn nút phụ Douyin");
+      assert.ok(!/tab ✅/.test(g.ghi_chu), "không còn chữ tab ✅ Duyệt");
+    }
+  }
+  // 2026-11-19: gỡ trang Duyệt video + Đăng bài — bước 7 bỏ qua (duyệt lúc tạo), bước 8 trỏ Poster V2.
+  assert.ok(!/Duyệt video|Đăng bài/.test(F.goiYViec(7, { uid: UID }, 4).ghi_chu || ""));
+  assert.match(F.goiYViec(8, { uid: UID }, 4).ghi_chu, /Poster V2/);
+  assert.ok(!/tab ✅ Duyệt/.test(VIEC), "viec.js còn chữ tab ✅ Duyệt");
+});
+
+test("W-M4: poster_bo_loai có tên lời thường + đợt/tham số; Worker có loại này", () => {
+  assert.equal(F.TEN_LOAI_VIEC.poster_bo_loai, "Gỡ video bị Loại khỏi folder đăng");
+  assert.deepEqual(F.LOAI_VIEC_SP.poster_bo_loai, { dot: 3, can: ["uid"] });
+  assert.match(WORKER, /\["poster_bo_loai", \[\["uid"\], \[\]\]\]/);
+  // bước nào cũng không tự thêm nút Gỡ Loại vào khối việc (nút này chỉ ở trang Đăng bài)
+  for (let ht = 0; ht <= 8; ht++) assert.ok(!loaiCua(F.goiYViec(ht, { uid: UID }, 5)).includes("poster_bo_loai"));
+});
+
+test("W-M3 §4.8 khungDuyetHtml opt.loai: co_loai/ngung_dang/dang_kiem → nút Duyệt khoá + câu; khong_biet → cảnh báo, nút bật; sach → không thêm gì", () => {
+  const d = { viec: VD({ loai: "poster_len_lich", tham_so: { folder_id: 221, so_video_ngay: 2 } }), tham_so_chuan: '{"folder_id":221,"so_video_ngay":2}' };
+  const nutDuyet = (h) => h.match(/<button[^>]*data-vd-act="duyet"[^>]*>/)[0];
+  let h = F.khungDuyetHtml(d, { loai: { kq: "co_loai", so: 2, cau: "Folder còn 2 video bị Loại, Poster sẽ đăng cả chúng." } });
+  assert.match(nutDuyet(h), /disabled/);
+  assert.match(h, /Folder còn 2 video bị Loại/);
+  assert.match(h, /data-vd-act="kiem-loai"/, "có nút kiểm lại");
+  h = F.khungDuyetHtml(d, { loai: { kq: "ngung_dang", so: 0, cau: "Sản phẩm đang gắn ⛔ Ngừng đăng: bỏ thẻ ở trang Sản phẩm nếu muốn đăng lại." } });
+  assert.match(nutDuyet(h), /disabled/);
+  assert.match(h, /Sản phẩm đang gắn ⛔ Ngừng đăng/);
+  h = F.khungDuyetHtml(d, { loai: { kq: "khong_biet", so: 0, cau: "Không kiểm được video Loại của folder này: mở Đăng bài của sản phẩm để kiểm" } });
+  assert.ok(!/disabled/.test(nutDuyet(h)), "khong_biet không khoá");
+  assert.match(h, /Không kiểm được video Loại của folder này/);
+  h = F.khungDuyetHtml(d, { loai: { kq: "sach", so: 0, cau: "" } });
+  assert.ok(!/disabled/.test(nutDuyet(h)));
+  assert.ok(!/id="vd-loai"/.test(h), "sach → không thêm khối");
+  assert.equal(h, F.khungDuyetHtml(d, {}), "sach giống như không có opt.loai");
+  // kq lạ → coi như chưa kiểm xong: khoá (thiên về chặt)
+  assert.ok(F.khoaLoaiDuyet({ kq: "dang_kiem" }) && F.khoaLoaiDuyet({ kq: "co_loai" }) && F.khoaLoaiDuyet({ kq: "ngung_dang" }) && F.khoaLoaiDuyet({ kq: "?" }));
+  assert.ok(!F.khoaLoaiDuyet({ kq: "khong_biet" }) && !F.khoaLoaiDuyet({ kq: "sach" }) && !F.khoaLoaiDuyet(null));
+  // XSS ở câu
+  h = F.khungDuyetHtml(d, { loai: { kq: "co_loai", so: 1, cau: BAN } });
+  assert.ok(!h.includes(BAN) && h.includes(esc(BAN)));
+  // đang gửi → nút kiểm lại cũng khoá
+  h = F.khungDuyetHtml(d, { khoa: true, loai: { kq: "khong_biet", cau: "x" } });
+  for (const b of h.match(/<button[^>]*>/g)) assert.match(b, /disabled/);
+});
+
+const RONG_TL = { nut: [], o_chu: false, can_mat_khau: false };
+test("nutTraLoi: cau_hoi không phiên sống → rỗng; nút cố định đúng giá trị Worker nhận", () => {
+  assert.deepEqual(F.nutTraLoi({ loai: "cau_hoi", noi_dung: "Gõ tên?" }, 3), RONG_TL);
+  assert.deepEqual(F.nutTraLoi({ loai: "cau_hoi", noi_dung: "Gõ tên?" }, 5, false, false), RONG_TL);
+  assert.deepEqual(F.nutTraLoi({ loai: "viec_tay", noi_dung: "Mở Poster" }, 3), { nut: [{ nhan: "✓ Tôi đã làm xong", gia_tri: "da_lam_xong" }], o_chu: false, can_mat_khau: false });
+  assert.deepEqual(F.nutTraLoi({ loai: "khong_ro" }, 3), { nut: [{ nhan: "▶ Tiếp tục", gia_tri: "tiep_tuc" }], o_chu: false, can_mat_khau: false });
+  assert.deepEqual(F.nutTraLoi(null, 3), RONG_TL);
+  assert.deepEqual(F.nutTraLoi("không phải json", 3), RONG_TL);
+  assert.deepEqual(F.nutTraLoi({ loai: "la" }, 3), RONG_TL);
+  assert.deepEqual(F.nutTraLoi({ loai: "la" }, 5, true, true), RONG_TL);
 });
 
 test("nutTraLoi: chon — mỗi lựa chọn 1 nút; bỏ giá trị Worker sẽ từ chối", () => {
   const ch = { loai: "chon", lua_chon: ["A", "B", "A", "", 5, "x".repeat(121), "dòng\nmới", "x".repeat(120)] };
-  assert.deepEqual(F.nutTraLoi(ch, 3).map((n) => n.gia_tri), ["A", "B", "x".repeat(120)]);
-  assert.deepEqual(F.nutTraLoi(JSON.stringify({ loai: "chon", lua_chon: ["Có", "Không"] }), 3).map((n) => n.nhan), ["Có", "Không"]);
-  assert.equal(F.nutTraLoi({ loai: "chon", lua_chon: ["1", "2", "3", "4", "5", "6", "7"] }, 3).length, 6);
+  assert.deepEqual(F.nutTraLoi(ch, 3).nut.map((n) => n.gia_tri), ["A", "B", "x".repeat(120)]);
+  assert.deepEqual(F.nutTraLoi(JSON.stringify({ loai: "chon", lua_chon: ["Có", "Không"] }), 3).nut.map((n) => n.nhan), ["Có", "Không"]);
+  assert.equal(F.nutTraLoi({ loai: "chon", lua_chon: ["1", "2", "3", "4", "5", "6", "7"] }, 3).nut.length, 6);
+});
+
+// W-6: 4 loại × có/không phien_song (việc tốn tiền + việc thường)
+test("nutTraLoi W-6: 4 loại × phien_song × tốn tiền", () => {
+  const chon = { loai: "chon", lua_chon: ["Anh duyệt", "Dừng"] };
+  const nutChon = [{ nhan: "Anh duyệt", gia_tri: "Anh duyệt" }, { nhan: "Dừng", gia_tri: "Dừng" }];
+  const nutTay = [{ nhan: "✓ Tôi đã làm xong", gia_tri: "da_lam_xong" }];
+  const nutTiep = [{ nhan: "▶ Tiếp tục", gia_tri: "tiep_tuc" }];
+  const CH = { loai: "cau_hoi", noi_dung: "Giá?" };
+  // tốn tiền + phiên sống: chon/cau_hoi có mật khẩu; viec_tay/khong_ro chỉ nút
+  assert.deepEqual(F.nutTraLoi(chon, 5, true, true), { nut: nutChon, o_chu: false, can_mat_khau: true });
+  assert.deepEqual(F.nutTraLoi(CH, 5, true, true), { nut: [], o_chu: true, can_mat_khau: true });
+  assert.deepEqual(F.nutTraLoi({ loai: "viec_tay" }, 5, true, true), { nut: nutTay, o_chu: false, can_mat_khau: false });
+  assert.deepEqual(F.nutTraLoi({ loai: "khong_ro" }, 5, true, true), { nut: nutTiep, o_chu: false, can_mat_khau: false });
+  // tốn tiền KHÔNG phiên sống (FX-12/13): không trả lời gì trên web
+  for (const ch of [chon, CH, { loai: "viec_tay" }, { loai: "khong_ro" }]) assert.deepEqual(F.nutTraLoi(ch, 5, true, false), RONG_TL, ch.loai);
+  // việc thường: như đợt 3 (nút không mật khẩu), cau_hoi chỉ khi có phiên sống
+  assert.deepEqual(F.nutTraLoi(chon, 5, false, false), { nut: nutChon, o_chu: false, can_mat_khau: false });
+  assert.deepEqual(F.nutTraLoi(CH, 5, false, false), RONG_TL);
+  assert.deepEqual(F.nutTraLoi({ loai: "viec_tay" }, 5, false, false), { nut: nutTay, o_chu: false, can_mat_khau: false });
+  assert.deepEqual(F.nutTraLoi({ loai: "khong_ro" }, 5, false, false), { nut: nutTiep, o_chu: false, can_mat_khau: false });
+  // phiên sống mà phien_song không phải true thật → coi như không
+  assert.deepEqual(F.nutTraLoi(CH, 5, true, "true"), RONG_TL);
 });
 
 test("nhomViec: chia 4 nhóm, gần đây mới nhất trước", () => {
@@ -284,7 +367,7 @@ test("CSP: không script inline, không on…= trong viec.js/app.js/index.html",
   assert.equal((APP.match(/\son[a-z]+="/g) || []).length, 0);
   const html = doc("index.html");
   assert.ok(!/<script(?![^>]*\ssrc=)[^>]*>/i.test(html), "có <script> không src");
-  assert.match(html, /<script src="viec\.js\?v=\d+" defer><\/script>\s*<script src="app\.js\?v=\d+" defer>/);
+  assert.match(html, /<script src="viec\.js\?v=\d+" defer><\/script>[\s\S]*?<script src="app\.js\?v=\d+" defer>/);
 });
 
 // ---------- đợt 4 (W-5): duyệt + form tạo việc tốn tiền ----------
@@ -643,4 +726,329 @@ test("trang chi tiết: gửi duyệt kèm sha_tham_so của chuỗi đã hiển
 test("index.html: viec.js?v= đã tăng (FX-13)", () => {
   const v = Number(doc("index.html").match(/viec\.js\?v=(\d+)/)[1]);
   assert.ok(v >= 6, `viec.js?v=${v}`);
+});
+
+// ---------- W-6 (đợt 5, §7.6): trả lời trong phiên sống, form taovideo, khung duyệt trần phiên ----------
+const VS = (x = {}) => ({ id: ID, loai: "taovideo", trang_thai: "can_tra_loi", phien_song: true, tham_so: { uid: UID, du_an_a: "abcdef012345", du_an_b: "tu_tim", wm: "khong" }, ...x });
+const BAN6 = `<img src=x onerror=alert(1)>"'&`;
+
+test("nutHanhDong: phien_song → không Xin duyệt lại, không ẩn trả lời; không phiên → như FX-12/13", () => {
+  assert.deepEqual(F.nutHanhDong(VS(), true), { xinDuyetLai: false, anChayTiep: true, anTraLoi: false });
+  assert.deepEqual(F.nutHanhDong(VS({ phien_song: false }), true), { xinDuyetLai: true, anChayTiep: true, anTraLoi: true });
+  assert.deepEqual(F.nutHanhDong(VS({ trang_thai: "loi", phien_song: false }), true), { xinDuyetLai: true, anChayTiep: true, anTraLoi: false });
+  assert.deepEqual(F.nutHanhDong(VS({ trang_thai: "dang_chay" }), true), { xinDuyetLai: false, anChayTiep: false, anTraLoi: false });
+  assert.deepEqual(F.nutHanhDong({ loai: "voice_pv", trang_thai: "can_tra_loi" }, false), { xinDuyetLai: false, anChayTiep: false, anTraLoi: false });
+  // laTonTien bỏ trống → tự suy theo loại
+  assert.deepEqual(F.nutHanhDong(VS({ phien_song: false })), F.nutChoViecTonTien(VS({ phien_song: false })));
+  assert.deepEqual(F.nutHanhDong(null), { xinDuyetLai: false, anChayTiep: false, anTraLoi: false });
+});
+
+test("khungTraLoiHtml: chon/cau_hoi có ô mật khẩu current-password (không value); viec_tay/khong_ro chỉ nút; esc mọi chuỗi", () => {
+  let h = F.khungTraLoiHtml(VS({ cau_hoi: { loai: "chon", noi_dung: BAN6, lua_chon: [BAN6, "Dừng"] } }), {});
+  assert.match(h, /data-vtl-nut="0"/); assert.match(h, /data-vtl-nut="1"[^>]*>Dừng</);
+  const mk = h.match(/<input[^>]*type="password"[^>]*>/);
+  assert.ok(mk, "thiếu ô mật khẩu");
+  assert.match(mk[0], /autocomplete="current-password"/);
+  assert.ok(!/value=/.test(mk[0]), "ô mật khẩu không được có value");
+  assert.ok(!h.includes("<img") && h.includes(esc(BAN6)));
+  assert.ok(!/<textarea/.test(h));
+  h = F.khungTraLoiHtml(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: BAN6 } }), {});
+  assert.match(h, /<textarea[^>]*maxlength="1000"/);
+  assert.match(h, /<input[^>]*type="password"[^>]*autocomplete="current-password"/);
+  assert.match(h, /data-vtl-act="gui"/);
+  assert.ok(!h.includes("<img"));
+  for (const ch of [{ loai: "viec_tay", noi_dung: "Mở app Poster V2" }, { loai: "khong_ro" }]) {
+    h = F.khungTraLoiHtml(VS({ cau_hoi: ch }), {});
+    assert.ok(!/type="password"/.test(h), `${ch.loai} không cần mật khẩu`);
+    assert.ok(!/<textarea/.test(h));
+    assert.match(h, /data-vtl-nut="0"/);
+  }
+  // khoá khi đang gửi
+  h = F.khungTraLoiHtml(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: "x" } }), { khoa: true });
+  for (const el of h.match(/<(button|textarea|input)[^>]*>/g)) assert.match(el, /disabled/, el);
+  // không phiên sống / không can_tra_loi / việc thường → không có khung
+  assert.equal(F.khungTraLoiHtml(VS({ phien_song: false, cau_hoi: { loai: "cau_hoi" } }), {}), "");
+  assert.equal(F.khungTraLoiHtml(VS({ trang_thai: "dang_chay", cau_hoi: { loai: "cau_hoi" } }), {}), "");
+  assert.equal(F.khungTraLoiHtml(null, {}), "");
+  for (const x of [F.khungTraLoiHtml(VS({ cau_hoi: { loai: "chon", lua_chon: [BAN6] } }), {}), F.khungTraLoiHtml(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: BAN6 } }), {})]) {
+    assert.ok(!/<[^>]*\son[a-z]+=/i.test(x), "có on…=");
+  }
+});
+
+test("kiemChuTraLoi: 1–1000 code point, cho xuống dòng, cấm ký tự điều khiển/surrogate lẻ (khớp Worker)", () => {
+  assert.equal(F.TRA_LOI_CHU_TOI_DA_WEB, 1000);
+  assert.equal(F.kiemChuTraLoi("Giá 199k\nDeal 10%"), "");
+  assert.equal(F.kiemChuTraLoi("😀".repeat(1000)), "");
+  for (const s of ["", "   \n", "😀".repeat(1001), "a\u0000b", "a\u001bb", "a\ud800b", null, 5]) assert.notEqual(F.kiemChuTraLoi(s), "", JSON.stringify(s));
+});
+
+test("khoaCauHoi: đổi câu hỏi → đổi khoá; cùng câu hỏi (chuỗi hay object) → cùng khoá", () => {
+  const a = F.khoaCauHoi(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: "A" } }));
+  assert.equal(a, F.khoaCauHoi(VS({ cau_hoi: JSON.stringify({ loai: "cau_hoi", noi_dung: "A" }) })));
+  assert.notEqual(a, F.khoaCauHoi(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: "B" } })));
+  assert.notEqual(a, F.khoaCauHoi(VS({ id: ID2, cau_hoi: { loai: "cau_hoi", noi_dung: "A" } })));
+  assert.equal(F.khoaCauHoi(null), "");
+});
+
+test("chiTietViecHtml phiên sống: không Xin duyệt lại, không hướng dẫn FX-13, trỏ khung trả lời; vẫn có Huỷ", () => {
+  for (const ch of [{ loai: "chon", lua_chon: ["A"], noi_dung: BAN6 }, { loai: "cau_hoi", noi_dung: BAN6 }, { loai: "viec_tay", noi_dung: BAN6 }, { loai: "khong_ro", noi_dung: BAN6 }]) {
+    const h = F.chiTietViecHtml({ viec: VS({ cau_hoi: ch }) }, { dotBat: 5 });
+    assert.ok(!h.includes("xin-duyet-lai"), ch.loai);
+    assert.ok(!h.includes("Việc tốn tiền: trả lời xong phải duyệt lại"), ch.loai);
+    assert.ok(!h.includes("data-vj-tl"), `nút trả lời nằm ở khung riêng ${ch.loai}`);
+    assert.match(h, /phiên đang chạy/i);
+    assert.match(h, /data-vj-act="huy"/);
+    assert.ok(h.includes(esc(BAN6)) && !h.includes("<img"));
+  }
+});
+
+test("dangChoNen + logDangSong: dải 'đang chờ việc nền' và log trực tiếp cả lúc phiên sống đang hỏi", () => {
+  const v = VS({ trang_thai: "dang_chay", can_ban: "Agent đang chờ 2 việc nền (render/voice) — không cần bạn" });
+  assert.equal(F.dangChoNen(v), true);
+  assert.equal(F.dangChoNen({ ...v, can_ban: "Claude bản khác 2.1.169" }), false);
+  assert.equal(F.dangChoNen({ ...v, trang_thai: "xong" }), false);
+  assert.equal(F.dangChoNen(null), false);
+  const h = F.chiTietViecHtml({ viec: v }, {});
+  assert.match(h, /class="vj-cho-nen"/);
+  assert.ok(!h.includes(`<div class="vj-can-ban">⚠ Agent đang chờ`), "không hiện như cảnh báo");
+  assert.match(F.theViecHtml(v), /vt-cho-nen/);
+  assert.equal(F.logDangSong({ trang_thai: "dang_chay" }), true);
+  assert.equal(F.logDangSong(VS()), true);
+  assert.equal(F.logDangSong(VS({ phien_song: false })), false);
+  assert.equal(F.logDangSong({ trang_thai: "xong" }), false);
+  assert.equal(F.logDangSong(null), false);
+});
+
+test("thamSoTaovideo + wmTaovideo: tham số đúng §7.10, giá tuỳ chọn", () => {
+  const A = "abcdef012345", B = "0123456789ab";
+  assert.deepEqual(F.thamSoTaovideo(UID, A, "tu_tim", "khong", ""), { tham_so: { uid: UID, du_an_a: A, du_an_b: "tu_tim", wm: "khong" } });
+  assert.deepEqual(F.thamSoTaovideo(UID, A, B, "nha.cua.mit", "199000"), { tham_so: { uid: UID, du_an_a: A, du_an_b: B, wm: "nha.cua.mit", gia: 199000 } });
+  for (const [a, b, wm, gia] of [["", "tu_tim", "khong", ""], [A, "", "khong", ""], [A, "x", "khong", ""], [A, "tu_tim", "", ""], [A, "tu_tim", "abc", ""],
+    [A, "tu_tim", "khong", "999"], [A, "tu_tim", "khong", "10000001"], [A, "tu_tim", "khong", "1.5"], [A, "tu_tim", "khong", "abc"], [A, A, "khong", ""]]) {
+    assert.ok(F.thamSoTaovideo(UID, a, b, wm, gia).loi, JSON.stringify([a, b, wm, gia]));
+  }
+  assert.ok(F.thamSoTaovideo("123", A, "tu_tim", "khong", "").loi);
+  const dm = { loai: [{ ma: "taovideo", tham_so: [{ ten: "wm", kieu: "chon", lua_chon: ["nha.cua.mit", "la_lam", "khong"] }] }] };
+  assert.deepEqual(F.wmTaovideo(dm), ["khong", "nha.cua.mit"]);
+  assert.deepEqual(F.wmTaovideo(null), ["khong", "nha.cua.mit"]);
+  assert.deepEqual(F.wmTaovideo({ loai: [{ ma: "taovideo", tham_so: [{ ten: "wm", lua_chon: [] }] }] }), ["khong", "nha.cua.mit"]);
+  assert.deepEqual(F.wmTaovideo({ loai: [{ ma: "taovideo", tham_so: [{ ten: "wm", lua_chon: ["khong"] }] }] }), ["khong"]);
+});
+
+test("formViecSpHtml taovideo: chọn A, B (tự tìm hoặc chọn), watermark, giá; báo lỗi chốt B; esc; không on…=", () => {
+  const duAn = [{ ma: "abcdef012345", ten: BAN6 }, { ma: "0123456789ab", ten: "Dự án B" }];
+  let h = F.formViecSpHtml({ loai: "taovideo", du_an_a: "abcdef012345", du_an_b: "tu_tim", wm: "khong", gia: "" }, { duAn, wm: ["khong", "nha.cua.mit"] });
+  assert.match(h, /<select[^>]*data-vs-a/);
+  assert.match(h, /<select[^>]*data-vs-b/);
+  assert.match(h, /<option value="tu_tim" selected>/);
+  assert.match(h, /<select[^>]*data-vs-wm/);
+  assert.match(h, /<option value="nha.cua.mit"/);
+  assert.match(h, /<input[^>]*data-vs-gia[^>]*type="number"|<input[^>]*type="number"[^>]*data-vs-gia/);
+  assert.match(h, /data-vs-gui="taovideo"/);
+  assert.ok(!h.includes("<img") && h.includes(esc(BAN6)));
+  assert.ok(!/<[^>]*\son[a-z]+=/i.test(h));
+  h = F.formViecSpHtml({ loai: "taovideo", du_an_a: "", du_an_b: "", wm: "khong", loi_b: `Có 2 dự án có takes ${BAN6}` }, { duAn, wm: ["khong"] });
+  assert.match(h, /Có 2 dự án có takes/);
+  assert.ok(!h.includes("<img"));
+  assert.match(F.formViecSpHtml({ loai: "taovideo" }, { duAn: null }), /Đang hỏi/);
+  assert.match(F.formViecSpHtml({ loai: "taovideo" }, { duAn: [], wm: ["khong"] }), /chưa có dự án/i);
+});
+
+test("khung duyệt taovideo: hiện trần phiên (60 USD, 25 voice, 6 Codex, 8 giờ) + uoc_tinh nguyên văn", () => {
+  const ut = "1 lời duyệt = 1 phiên chạy. Trong phiên: ≤25 voice GenMax (đếm file thật), ≤6 lượt Codex, ≤60 USD-ước-tính Claude, ≤8 giờ làm, mỗi câu hỏi chờ ≤3 giờ.";
+  let h = F.khungDuyetHtml({ viec: VS({ trang_thai: "cho_duyet", uoc_tinh: ut }), tham_so_chuan: JSON.stringify(VS().tham_so) }, {});
+  assert.ok(h.includes(esc(ut)));
+  assert.match(h, /Dự án A/); assert.match(h, /Watermark/);
+  h = F.khungDuyetHtml({ viec: VS({ trang_thai: "cho_duyet" }), tham_so_chuan: JSON.stringify(VS().tham_so) }, {});
+  for (const s of ["60 USD", "25 voice", "6 lượt Codex", "8 giờ"]) assert.ok(h.includes(s), s);
+  const hm = F.hanMucHtml("taovideo", { han_muc: { taovideo_ngay: 1, taovideo_lan_ngay: 3, taovideo_usd_viec: 60, taovideo_mp3_viec: 25, codex_luot_viec: 6 } });
+  for (const s of ["60 USD/phiên", "25 voice/phiên", "6 Codex/phiên", "3 lần duyệt/ngày"]) assert.ok(hm.includes(s), s);
+});
+
+test("trang chi tiết W-6: gửi trả lời — xoá ô mật khẩu trước khi gửi, khoá trước await, kiểm câu hỏi đổi, log phiên sống", () => {
+  const r = VIEC.slice(VIEC.indexOf("async function renderViecChiTiet("), VIEC.indexOf("// ---------- khối việc trong trang chi tiết SP"));
+  const i0 = r.indexOf("const guiTraLoi");
+  assert.ok(i0 > 0, "thiếu guiTraLoi");
+  const g = r.slice(i0, r.indexOf('hanhDong("tra-loi"', i0) + 40);
+  const iXoa = g.search(/oMk\.value = ""/);
+  const iGui = g.indexOf('hanhDong("tra-loi"');
+  assert.ok(iXoa > 0 && iXoa < iGui, "xoá ô mật khẩu trước khi gửi");
+  assert.ok(g.indexOf("khoaKhungTraLoi(true)") > 0 && g.indexOf("khoaKhungTraLoi(true)") < iGui, "khoá trước khi gửi");
+  assert.ok(!/await/.test(g.slice(0, iGui)), "không await trước khi khoá + gửi");
+  assert.match(g, /khoaCauHoi\(/);          // câu hỏi đổi so với lúc vẽ khung → không gửi
+  assert.match(g, /tk !== phienViec/);
+  assert.match(r, /const khoaKhungTraLoi[\s\S]{0,120}tk !== phienViec/);
+  assert.match(r, /logDangSong\(/);
+  assert.ok(!/(localStorage|sessionStorage)/.test(VIEC), "viec.js không dùng storage");
+  assert.ok(!/on[a-z]+="/.test(VIEC), "viec.js có on…=\"");
+});
+
+test("index.html: viec.js?v= đã tăng (W-6)", () => {
+  const v = Number(doc("index.html").match(/viec\.js\?v=(\d+)/)[1]);
+  assert.ok(v >= 7, `viec.js?v=${v}`);
+});
+
+// ---------- FX-25 (§7.6 mã câu hỏi; hợp đồng runner FX-22: cờ chạy lại/chạy tiếp/lưu lại, ket_qua sửa video) ----------
+const MA = "q0123456789ab";
+
+test("maCauHoi: chỉ nhận cau_hoi.ma đúng ^q[0-9a-f]{12}$ (object hoặc chuỗi JSON); sai/thiếu → ''", () => {
+  assert.equal(F.maCauHoi(VS({ cau_hoi: { loai: "cau_hoi", noi_dung: "A", ma: MA } })), MA);
+  assert.equal(F.maCauHoi(VS({ cau_hoi: JSON.stringify({ loai: "chon", lua_chon: ["A"], ma: MA }) })), MA);
+  for (const ma of [undefined, "", "q0123456789a", "Q0123456789ab", "q0123456789AB", "q0123456789ab ", 5, null, [MA]]) {
+    assert.equal(F.maCauHoi(VS({ cau_hoi: { loai: "cau_hoi", ma } })), "", JSON.stringify(ma));
+  }
+  assert.equal(F.maCauHoi(VS({ cau_hoi: null })), "");
+  assert.equal(F.maCauHoi(null), "");
+});
+
+test("khoaCauHoi: cùng nội dung mà đổi ma → đổi khoá (khung trả lời vẽ lại)", () => {
+  const ch = { loai: "cau_hoi", noi_dung: "Giá bao nhiêu?" };
+  const a = F.khoaCauHoi(VS({ cau_hoi: { ...ch, ma: MA } }));
+  assert.notEqual(a, F.khoaCauHoi(VS({ cau_hoi: { ...ch, ma: "qabcdefabcdef" } })));
+  assert.notEqual(a, F.khoaCauHoi(VS({ cau_hoi: ch })));
+  assert.equal(a, F.khoaCauHoi(VS({ cau_hoi: JSON.stringify({ ...ch, ma: MA }) })));
+  assert.ok(a.includes(MA), "khoá chứa ma");
+});
+
+test("trang chi tiết FX-25: gửi ma_cau_hoi của câu hỏi đang hiện; 409 tra-loi → bỏ khung + chỉ vẽ lại bằng dữ liệu tải sau", () => {
+  const r = VIEC.slice(VIEC.indexOf("async function renderViecChiTiet("), VIEC.indexOf("// ---------- khối việc trong trang chi tiết SP"));
+  const i0 = r.indexOf("const guiTraLoi");
+  const g = r.slice(i0, r.indexOf('hanhDong("tra-loi"', i0) + 40);
+  assert.match(g, /maCauHoi\(v\)/);
+  assert.match(g, /ma_cau_hoi/);
+  // kiểm câu hỏi đổi (khoaCauHoi gồm ma) đứng TRƯỚC khi lấy mã → mã gửi đi là mã của khung đang hiện
+  assert.ok(g.indexOf("khoaCauHoi(") < g.indexOf("maCauHoi(v)"));
+  // nút trả lời việc thường (#vj-nd) cũng gửi mã khi có
+  const nd = r.slice(r.indexOf('$("#vj-nd").addEventListener'));
+  assert.match(nd.slice(0, nd.indexOf("vjGoiY")), /ma_cau_hoi/);
+  const h = r.slice(r.indexOf("const hanhDong"), r.indexOf("const guiDuyet"));
+  assert.match(h, /act === "tra-loi" && r\.status === 409/);
+  assert.match(h, /khungTlChoLan = lanTaiViec/);
+  assert.match(h, /boKhungTraLoi\(\)/);
+  const ve = r.slice(r.indexOf("const veTraLoi"), r.indexOf("const ve = "));
+  assert.match(ve, /dLan <= khungTlChoLan/);
+});
+
+const SV = (x = {}) => ({ id: ID, loai: "sua_video", trang_thai: "loi", loi: "Bước sua_video thoát mã 5:\nTRACE thô", tham_so: { uid: UID, du_an: "abcdef012345", ma_video: "0123456789abcdef", ban_sua: "b1" }, ...x });
+
+test("nutChayLaiTiep: theo cờ runner; thiếu cờ (máy nhà bản cũ) → hành vi cũ; can_luu_lai_mat_khau → ẩn cả hai", () => {
+  assert.deepEqual(F.nutChayLaiTiep(SV({ co_the_chay_lai: true, co_the_chay_tiep: true, can_luu_lai_mat_khau: false })), { chayLai: true, chayTiep: true, luuLai: false });
+  assert.deepEqual(F.nutChayLaiTiep(SV({ co_the_chay_lai: false, co_the_chay_tiep: false, can_luu_lai_mat_khau: false })), { chayLai: false, chayTiep: false, luuLai: false });
+  // cờ mới thắng trạng thái
+  assert.equal(F.nutChayLaiTiep(SV({ trang_thai: "xong", co_the_chay_lai: true })).chayLai, true);
+  assert.equal(F.nutChayLaiTiep(SV({ co_the_chay_lai: false })).chayLai, false);
+  assert.deepEqual(F.nutChayLaiTiep(SV({ co_the_chay_lai: true, co_the_chay_tiep: true, can_luu_lai_mat_khau: true })), { chayLai: false, chayTiep: false, luuLai: true });
+  // thiếu cờ → cũ: chạy lại khi loi/huy; chạy tiếp khi loi + co_the_chay_tiep
+  assert.equal(F.nutChayLaiTiep(SV()).chayLai, true);
+  assert.equal(F.nutChayLaiTiep(SV({ trang_thai: "huy" })).chayLai, true);
+  assert.equal(F.nutChayLaiTiep(SV({ trang_thai: "xong" })).chayLai, false);
+  assert.equal(F.nutChayLaiTiep(SV()).chayTiep, false);
+  // việc tốn tiền (D9): không bao giờ Chạy tiếp, kể cả runner lỡ trả true
+  assert.equal(F.nutChayLaiTiep(VD({ trang_thai: "loi", co_the_chay_tiep: true })).chayTiep, false);
+  assert.deepEqual(F.nutChayLaiTiep(null), { chayLai: false, chayTiep: false, luuLai: false });
+});
+
+test("linkLuuLaiSua: #/sua/<uid>/<ma_video> từ tham_so; thiếu ma_video → trang SP; thiếu uid → về kho", () => {
+  assert.equal(F.linkLuuLaiSua(SV()).href, `#/sua/${UID}/0123456789abcdef`);
+  assert.equal(F.linkLuuLaiSua(SV({ tham_so: JSON.stringify(SV().tham_so) })).href, `#/sua/${UID}/0123456789abcdef`);
+  assert.equal(F.linkLuuLaiSua(SV({ tham_so: { uid: UID, ma_video: "../x" } })).href, `#/sp/${UID}`);
+  assert.equal(F.linkLuuLaiSua(SV({ tham_so: { uid: UID } })).href, `#/sp/${UID}`);
+  // W-7: danh sách kho chuyển từ #/ sang #/kho (#/ giờ là trang Hôm nay)
+  assert.equal(F.linkLuuLaiSua(SV({ tham_so: { uid: "1/../2", ma_video: "0123456789abcdef" } })).href, "#/kho");
+  assert.equal(F.linkLuuLaiSua(null).href, "#/kho");
+});
+
+test("chiTietViecHtml: Chạy lại/Chạy tiếp theo cờ; can_luu_lai_mat_khau → link màn Sửa video, không nút", () => {
+  let h = F.chiTietViecHtml({ viec: SV({ co_the_chay_lai: false, co_the_chay_tiep: false, can_luu_lai_mat_khau: false }) }, {});
+  assert.ok(!h.includes('data-vj-act="chay-lai"') && !h.includes('data-vj-act="chay-tiep"'));
+  h = F.chiTietViecHtml({ viec: SV({ co_the_chay_lai: true, co_the_chay_tiep: true }) }, {});
+  assert.match(h, /data-vj-act="chay-lai"/); assert.match(h, /data-vj-act="chay-tiep"/);
+  h = F.chiTietViecHtml({ viec: SV({ co_the_chay_lai: true, co_the_chay_tiep: true, can_luu_lai_mat_khau: true }) }, {});
+  assert.ok(!h.includes('data-vj-act="chay-lai"') && !h.includes('data-vj-act="chay-tiep"'));
+  assert.match(h, new RegExp(`<a[^>]*href="#/sua/${UID}/0123456789abcdef"[^>]*>[^<]*Mở màn Sửa video để lưu lại`));
+  // thiếu cờ: giữ hành vi cũ (loi → Chạy lại)
+  h = F.chiTietViecHtml({ viec: { id: ID, loai: "voice_pv", trang_thai: "loi" } }, {});
+  assert.match(h, /data-vj-act="chay-lai"/);
+  assert.ok(!h.includes("Mở màn Sửa video"));
+});
+
+test("chiTietViecHtml: ket_qua.kiem_tay → nhãn 'Cần kiểm tay' + thong_diep thay loi thô + bo_qua; esc mọi chữ; có nút xem log", () => {
+  const kq = { ma_thoat: 5, kiem_tay: true, do_dang: false, chua_doi_gi: false, bo_qua: [BAN6, "b.srt"], ly_do_sua: "x", canh_bao_sua: [], thong_diep: `Cần kiểm tay: ${BAN6}` };
+  let h = F.chiTietViecHtml({ viec: SV({ ket_qua: kq, co_the_chay_lai: true, co_the_chay_tiep: false }) }, {});
+  assert.match(h, /Cần kiểm tay/);
+  assert.ok(h.includes(esc(kq.thong_diep)));
+  assert.ok(!h.includes("TRACE thô"), "không hiện loi thô khi có thong_diep");
+  assert.ok(h.includes(`<li>${esc(BAN6)}</li>`) && h.includes("<li>b.srt</li>"));
+  assert.ok(!h.includes("<img"));
+  assert.match(h, /data-vj-xem-log/);
+  assert.ok(!/<[^>]*\son[a-z]+=/i.test(h));
+  // ket_qua dạng chuỗi JSON cũng đọc được
+  h = F.chiTietViecHtml({ viec: SV({ ket_qua: JSON.stringify(kq) }) }, {});
+  assert.match(h, /Cần kiểm tay/);
+  // thong_diep không kiem_tay (mã 2 chua_doi_gi): thay loi thô, không nhãn
+  h = F.chiTietViecHtml({ viec: SV({ ket_qua: { ma_thoat: 2, kiem_tay: false, chua_doi_gi: true, bo_qua: [], thong_diep: "Chưa đổi gì: abc" } }) }, {});
+  assert.match(h, /Chưa đổi gì: abc/);
+  assert.ok(!h.includes("TRACE thô"));
+  assert.ok(!h.includes("Cần kiểm tay"));
+  // không có thong_diep → loi thô như cũ
+  h = F.chiTietViecHtml({ viec: SV() }, {});
+  assert.ok(h.includes(esc("Bước sua_video thoát mã 5:\nTRACE thô")));
+  assert.ok(!h.includes("data-vj-xem-log"));
+});
+
+test("trang chi tiết FX-25: nút xem log cuộn tới #vj-log (không đổi hash)", () => {
+  const r = VIEC.slice(VIEC.indexOf("async function renderViecChiTiet("), VIEC.indexOf("// ---------- khối việc trong trang chi tiết SP"));
+  assert.match(r, /vjXemLog[\s\S]{0,160}scrollIntoView/);
+});
+
+test("index.html: viec.js?v= đã tăng (FX-25)", () => {
+  const v = Number(doc("index.html").match(/viec\.js\?v=(\d+)/)[1]);
+  assert.ok(v >= 8, `viec.js?v=${v}`);
+});
+
+// ---------- FX-W3 (P3b): "↻ Kiểm lại" khi lượt kiểm trước đang chạy → chỉ nhận kết quả lượt mới nhất ----------
+// Chạy NGUYÊN mã kiemLoaiDuyet + nhánh kiem-loai của renderViecChiTiet với biến bao quanh giả.
+test("FX-W3 Kiểm lại 2 lần: lượt mới không bị bỏ; kết quả lượt cũ về sau không ghi đè", async () => {
+  const r = VIEC.slice(VIEC.indexOf("async function renderViecChiTiet("), VIEC.indexOf("// ---------- khối việc trong trang chi tiết SP"));
+  const kiem = r.slice(r.indexOf("const kiemLoaiDuyet"), r.indexOf("const taiSkDuyet"));
+  const nhanh = /vdAct === "kiem-loai"\) \{[^\n]*\n([\s\S]*?)\n    \}/.exec(r);
+  assert.ok(kiem.startsWith("const kiemLoaiDuyet") && nhanh, "không thấy kiemLoaiDuyet / nhánh kiem-loai");
+  const cho = [];
+  const S = new Function("dgKiemLoaiFolder", `"use strict";
+    let tk = 1; const phienViec = 1; const id = "x"; const dangGuiViec = new Set();
+    let loaiDuyet = null, loaiDangKiem = false, choLoai = false;
+    ${/let luotKiem\b/.test(r) ? "let luotKiem = 0;" : ""}
+    const boKhungDuyet = () => { choLoai = false; };
+    let veDuyet;
+    ${kiem}
+    veDuyet = () => { if (!loaiDuyet) kiemLoaiDuyet("7"); };
+    const kiemLai = () => {
+${nhanh[1]}
+    };
+    return { kiemLai, batDau: () => kiemLoaiDuyet("7"), kq: () => loaiDuyet };`)((fid) => new Promise((res) => cho.push(res)));
+  S.batDau();                         // lượt 1 (polling) đang chạy
+  S.kiemLai();                        // người dùng bấm Kiểm lại khi lượt 1 chưa xong
+  assert.equal(cho.length, 2, "lượt mới phải được chạy, không bị bỏ vì lượt cũ đang chạy");
+  cho[1]({ kq: "sach", cau: "mới" });  // lượt mới về trước
+  await new Promise((x) => setTimeout(x, 0));
+  cho[0]({ kq: "co_loai", cau: "cũ" }); // lượt cũ về sau
+  await new Promise((x) => setTimeout(x, 0));
+  assert.equal(S.kq().cau, "mới", "kết quả lượt cũ không được ghi đè");
+  // lượt cũ về TRƯỚC lượt mới cũng không được ghi
+  S.kiemLai();
+  assert.equal(cho.length, 3);
+  S.kiemLai();
+  assert.equal(cho.length, 4);
+  cho[2]({ kq: "co_loai", cau: "cũ2" });
+  await new Promise((x) => setTimeout(x, 0));
+  assert.equal(S.kq(), null, "lượt cũ về trước: không nhận");
+  cho[3]({ kq: "sach", cau: "mới2" });
+  await new Promise((x) => setTimeout(x, 0));
+  assert.equal(S.kq().cau, "mới2");
+});
+
+test("index.html: viec.js?v= đã tăng (FX-W3); duyet.js đã gỡ 2026-11-19", () => {
+  const h = doc("index.html");
+  assert.ok(Number(h.match(/viec\.js\?v=(\d+)/)[1]) >= 13);
+  assert.ok(!/duyet\.js|dang\.js/.test(h));
 });

@@ -1,0 +1,34 @@
+/* Khung menu trái (đợt 8, W-M1) — docs/giao-dien-menu-trai.md §6. Nạp sau style.css.
+   Mọi quy tắc chỉ áp cho chủ kho (body[data-vai="chu"], app.js renderUser) hoặc màn sửa (body[data-trang="sua"]):
+   người thường giữ nguyên giao diện P-33. Không sửa style.css. */
+:root { --mn-dau: 52px; --mn-rong: 200px; --mn-day: 58px; }
+body[data-vai="chu"] .top { min-height: var(--mn-dau); box-sizing: border-box; }
+body[data-vai="chu"] .nav a { position: relative; min-width: 0; }
+body[data-vai="chu"] .nav .mn-chu { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+body[data-vai="chu"] .nav .mn-ic { flex: none; }
+body[data-vai="chu"] .nav .mn-ngan { display: none; }
+
+@media (min-width: 900px) {
+  body[data-vai="chu"] { padding-left: var(--mn-rong); }
+  body[data-vai="chu"] .nav { position: fixed; top: 0; left: 0; bottom: 0; z-index: 6; width: var(--mn-rong); max-width: none; margin: 0;
+    flex-direction: column; gap: 2px; padding: calc(var(--mn-dau) + 8px) 8px 10px; overflow-y: auto; overflow-x: hidden;
+    border-right: 1px solid var(--line); background: var(--card); box-sizing: border-box; }
+  body[data-vai="chu"] .nav a { border: 0; border-radius: 8px; padding: 10px 12px; gap: 10px; justify-content: flex-start; }
+  body[data-vai="chu"] .sua-thanh { left: var(--mn-rong); }
+}
+
+@media (max-width: 899.98px) {
+  body[data-vai="chu"] .nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 9; max-width: none; margin: 0;
+    display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+    padding: 4px 2px calc(4px + env(safe-area-inset-bottom)); gap: 0; overflow: hidden;
+    background: var(--card); border-top: 1px solid var(--line); }
+  body[data-vai="chu"] .nav a { flex-direction: column; justify-content: center; gap: 2px; border: 0; border-radius: 8px;
+    padding: 4px 0; font-size: 11px; min-height: 48px; }
+  body[data-vai="chu"] .nav .mn-du { display: none; }
+  body[data-vai="chu"] .nav .mn-ngan { display: inline; }
+  body[data-vai="chu"] .nav .mn-chu { max-width: 100%; }
+  body[data-vai="chu"] .nav .huy-hieu { position: absolute; top: 2px; left: 55%; margin-left: 0; }
+  body[data-vai="chu"] main { padding-bottom: calc(var(--mn-day) + 24px + env(safe-area-inset-bottom)); }
+  body[data-vai="chu"] #toast { bottom: calc(var(--mn-day) + 16px + env(safe-area-inset-bottom)); }
+  body[data-trang="sua"] .nav { display: none; }
+}

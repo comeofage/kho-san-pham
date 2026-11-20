@@ -3,6 +3,7 @@ import { test, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import worker, { bamMatKhau, kiemMatKhau, taoPhien, tachUid, chuoiKyRequest, kiemThamSoViec, kyRequest, chuoiKyDuyet, datLaiDemSaiMatKhau, chuoiTieuDuyet, datLaiSoTieuBoNho } from "../src/worker.js";
+import * as W from "../src/worker.js";
 
 const UID = "1729706628656957720";
 // Cặp khoá Ed25519 chỉ dùng cho test (Web Crypto của Node 24): KY_RIENG = PKCS8 DER base64 như tao_khoa_ky.py in ra.
@@ -354,7 +355,7 @@ test("video: ds/dy/tien-do có timeout, hết giờ → 504; file/xem/dyfile/xoa
 const PATH_DUYET = `data/${UID}/duyet.json`;
 const docDuyet = () => JSON.parse(files[PATH_DUYET].text).videos;
 
-test("duyet: thêm, cập nhật cùng khoá không nhân đôi, xoá bằng ket_qua+gop_y rỗng", async () => {
+test("duyet: thêm, cập nhật cùng khoá không nhân đôi, ket_qua+gop_y rỗng giữ mục (FX-W6)", async () => {
   const { cookie } = await dangNhapNhan();
   let r = await call("/api/duyet", { cookie, body: { id: UID, goc: "output_poster", ten: "a.mp4", sua_luc: 100, mb: 3.2, ket_qua: "dat", gop_y: "đẹp" } });
   assert.equal(r.status, 200);
@@ -383,11 +384,35 @@ test("duyet: thêm, cập nhật cùng khoá không nhân đôi, xoá bằng ket
   r = await call("/api/duyet", { cookie, body: { id: UID, goc: "output_poster", ten: "a.mp4", sua_luc: 100, ket_qua: "", gop_y: "xem lại" } });
   assert.equal((await r.json()).duyet.length, 2);
 
-  // xoá
+  // bỏ chấm + bỏ góp ý → GIỮ mục, ket_qua/gop_y rỗng, giữ thứ tự (FX-W6: runner cần mục khớp khoá để trả video từ _loai/)
   r = await call("/api/duyet", { cookie, body: { id: UID, goc: "output_poster", ten: "a.mp4", sua_luc: 100, ket_qua: "", gop_y: "" } });
   d = (await r.json()).duyet;
-  assert.deepEqual(d.map((x) => x.sua_luc), [200]);
-  assert.deepEqual(docDuyet().map((x) => x.sua_luc), [200]);
+  assert.deepEqual(d.map((x) => [x.sua_luc, x.ket_qua, x.gop_y]), [[100, "", ""], [200, "loai", ""]]);
+  assert.deepEqual(docDuyet().map((x) => [x.sua_luc, x.ket_qua]), [[100, ""], [200, "loai"]]);
+});
+
+test("FX-W6 duyet: Bỏ Loại không góp ý → mục loai còn với ket_qua \"\" (cập nhật boi/luc); khoá chưa có → không thêm mục", async () => {
+  const { cookie } = await dangNhapNhan();
+  const khoa = { id: UID, goc: "E:/g", ten: "c.mp4", sua_luc: 300 };
+  let r = await call("/api/duyet", { cookie, body: { ...khoa, mb: 4.5, ket_qua: "loai" } });
+  assert.equal(r.status, 200);
+  const truoc = (await r.json()).duyet[0];
+  r = await call("/api/duyet", { cookie, body: { ...khoa, mb: 4.5, ket_qua: "", gop_y: "" } });
+  assert.equal(r.status, 200);
+  let d = (await r.json()).duyet;
+  assert.equal(d.length, 1);
+  assert.deepEqual({ ...d[0], luc: undefined }, { goc: "E:/g", ten: "c.mp4", sua_luc: 300, mb: 4.5, ket_qua: "", gop_y: "", boi: "Nhân", luc: undefined });
+  assert.match(d[0].luc, /\+07:00$/);
+  assert.ok(d[0].luc >= truoc.luc);
+  assert.equal(docDuyet().length, 1);
+  assert.equal(docDuyet()[0].ket_qua, "");
+
+  // khoá chưa có mục (sua_luc khác) → không thêm gì
+  r = await call("/api/duyet", { cookie, body: { ...khoa, sua_luc: 301, ket_qua: "", gop_y: "" } });
+  assert.equal(r.status, 200);
+  d = (await r.json()).duyet;
+  assert.deepEqual(d.map((x) => x.sua_luc), [300]);
+  assert.deepEqual(docDuyet().map((x) => x.sua_luc), [300]);
 });
 
 test("duyet: validate → 400, SP không tồn tại → 404", async () => {
@@ -560,6 +585,13 @@ test("viec: kiemThamSoViec theo danh mục đợt 3 (§5.1)", () => {
   ]) assert.equal(typeof kiemThamSoViec(b), "string", JSON.stringify(b));
 });
 
+test("viec: poster_bo_loai (B-L1, §4.9) nhận đúng {uid}, từ chối tham số khác", () => {
+  assert.deepEqual(kiemThamSoViec({ loai: "poster_bo_loai", tham_so: { uid: UID } }), { loai: "poster_bo_loai", tham_so: { uid: UID } });
+  for (const ts of [undefined, {}, { uid: "123" }, { uid: UID, goc: "E:/x" }, { uid: UID, du_an: "0123456789ab" }, { uid: UID, xem: true }]) {
+    assert.equal(typeof kiemThamSoViec({ loai: "poster_bo_loai", tham_so: ts }), "string", JSON.stringify(ts));
+  }
+});
+
 test("viec: POST /api/viec mẫu sai → 400, body hỏng → 400, quá lớn → 413, không gọi máy nhà", async () => {
   const { cookie } = await dangNhapNhan();
   for (const b of [{ loai: "muse_clip", tham_so: { uid: UID } }, { loai: "phan_tich_uid", tham_so: { uid: "1" } }, { loai: "xu_ly_link_moi", tham_so: { lenh: "x" } }]) {
@@ -637,15 +669,16 @@ function runnerCauHoi(cauHoi, trangThai = "can_tra_loi", dangChuoi = false) {
 }
 const soPost = () => mayGoi.filter((g) => g.method === "POST").length;
 
-test("viec tra-loi: chỉ nhận giá trị nút đúng câu hỏi; ký và gửi {tra_loi, boi}", async () => {
+test("viec tra-loi: chỉ nhận giá trị nút đúng câu hỏi; ký và gửi {tra_loi, boi, da_xac_nhan_mat_khau:false}", async () => {
   const { cookie } = await dangNhapNhan();
   const duong = `/api/viec/${JOB}/tra-loi`;
   runnerCauHoi({ loai: "chon", noi_dung: "Chọn thư mục", lua_chon: ["E:/a/sp_1", "Bỏ qua"] }, "can_tra_loi", true);
-  const r = await postViec(cookie, duong, { tra_loi: "Bỏ qua", boi: "lan", mat_khau: "x" });
+  const r = await postViec(cookie, duong, { tra_loi: "Bỏ qua", boi: "lan", da_xac_nhan_mat_khau: true });
   assert.equal(r.status, 200);
   const g = goiCuoi();
   assert.equal(g.url.pathname, `/r/viec/${JOB}/tra-loi`);
-  assert.deepEqual(JSON.parse(g.body), { tra_loi: "Bỏ qua", boi: "nhan" });
+  // W-6: cờ do Worker tự đặt (client gửi true cũng bị bỏ), boi lấy từ phiên
+  assert.deepEqual(JSON.parse(g.body), { tra_loi: "Bỏ qua", boi: "nhan", da_xac_nhan_mat_khau: false });
   assert.ok(await kiemChuKy(g));
   assert.equal(mayGoi[mayGoi.length - 2].url.pathname, `/r/viec/${JOB}`);
 
@@ -1212,4 +1245,832 @@ test("viec duyet [FX-17 P2-2]: KV đọc lỗi → 503, KHÔNG kiểm mật kh�
   // KV lành lại → duyệt bình thường, các lần 503 không bị tính là sai
   env.SO_DUYET.hong = false;
   assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 200);
+});
+
+// ---------- W-8: sửa video (docs/sua-video.md §8.3, §4.2) ----------
+const MA_VIDEO = "0123456789abcdef";
+const DU_AN = "0123456789ab";
+const BAN_SUA = "bfedcba9876543210";
+const PHU_DE_SHA = "a".repeat(64);
+const duongLuu = `/api/viec/sua-video/${UID}/${MA_VIDEO}/luu`;
+const CLIP = "raw-12_000_proof_xe-chay-qua-hang-xe.mp4";
+const banChiClip = () => ({ sua_luc: 1790585841123, phu_de_sha: PHU_DE_SHA, doi_clip: [{ seg: 5, clip: CLIP }], doi_cho: [[4, 7]] });
+const banCoChu = (mk) => ({ sua_luc: 1790585841123, phu_de_sha: PHU_DE_SHA, phu_de: [{ i: 3, text: "Trời ơi, chạy trớn nha!" }], ...(mk === undefined ? {} : { mat_khau: mk }) });
+// Runner giả: (1) ban-sua → 201 {ban_sua, du_an, tom_tat}; (2) /viec → 201 {viec}.
+function runnerSua({ banSua = () => Response.json({ ban_sua: BAN_SUA, du_an: DU_AN, tom_tat: { so_cau: 1, so_clip: 1, so_doi_cho: 1 } }, { status: 201 }), viec = () => Response.json({ viec: { id: JOB, loai: "sua_video", trang_thai: "cho" } }, { status: 201 }) } = {}) {
+  mayTraLoi = async (u, opt) => {
+    if (u.pathname === `/r/sua-video/${UID}/${MA_VIDEO}/ban-sua`) return banSua(u, opt);
+    if (u.pathname === "/r/viec") return viec(u, opt);
+    return Response.json({ loi: "lạ" }, { status: 404 });
+  };
+}
+
+test("sua-video: GET danh sách / chi tiết / ung-vien chuyển đúng path runner, seg ^\\d{1,3}$, không ký", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ ok: 1 });
+  for (const [vao, ra] of [
+    [`/api/viec/sua-video/${UID}?x=1`, `/r/sua-video/${UID}`],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}?seg=3`, `/r/sua-video/${UID}/${MA_VIDEO}`],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=12&x=1`, `/r/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=12`],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=199`, `/r/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=199`],
+  ]) {
+    const r = await call(vao, { cookie });
+    assert.equal(r.status, 200, vao);
+    const g = goiCuoi();
+    assert.equal(g.url.pathname + g.url.search, ra, vao);
+    assert.equal(g.method, "GET");
+    assert.equal(g.headers["x-ky"], undefined);
+    assert.ok(g.signal instanceof AbortSignal);
+  }
+  mayGoi = [];
+  for (const [p, st] of [
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=1000`, 400], [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=-1`, 400],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=a`, 400], [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ung-vien?seg=`, 400],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO.toUpperCase()}`, 404], [`/api/viec/sua-video/${UID}/${MA_VIDEO}0`, 404],
+    ["/api/viec/sua-video/123", 404], [`/api/viec/sua-video/${UID}/..%2F..%2Fviec`, 404], [`/api/viec/sua-video/${UID}/${MA_VIDEO}/ban-sua`, 404],
+    [`/api/viec/sua-video/${UID}/${MA_VIDEO}/luu`, 405],
+  ]) assert.equal((await call(p, { cookie })).status, st, p);
+  assert.equal((await postViec(cookie, `/api/viec/sua-video/${UID}/${MA_VIDEO}`, {})).status, 405);
+  assert.equal((await postViec(cookie, `/api/viec/sua-video/${UID}/${MA_VIDEO}/ban-sua`, banChiClip())).status, 404);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("sua-video luu: chỉ đổi clip/đổi chỗ → không cần mật khẩu; 2 POST tuần tự đều ký; trả {viec, ban_sua}", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const r = await postViec(cookie, duongLuu, { ...banChiClip(), boi: "comeofage", lenh: "rm -rf", duong_dan: "E:/x" });
+  assert.equal(r.status, 201);
+  assert.deepEqual(await r.json(), { viec: { id: JOB, loai: "sua_video", trang_thai: "cho" }, ban_sua: BAN_SUA });
+  assert.equal(mayGoi.length, 2);
+  const [g1, g2] = mayGoi;
+  assert.equal(g1.method, "POST");
+  assert.equal(g1.url.pathname + g1.url.search, `/r/sua-video/${UID}/${MA_VIDEO}/ban-sua`);
+  assert.ok(await kiemChuKy(g1));
+  assert.deepEqual(JSON.parse(g1.body), { sua_luc: 1790585841123, phu_de_sha: PHU_DE_SHA, phu_de: [], doi_clip: [{ seg: 5, clip: CLIP }], doi_cho: [[4, 7]], boi: "nhan" });
+  assert.equal(g2.method, "POST");
+  assert.equal(g2.url.pathname + g2.url.search, "/r/viec");
+  assert.ok(await kiemChuKy(g2));
+  assert.deepEqual(JSON.parse(g2.body), { loai: "sua_video", tham_so: { uid: UID, du_an: DU_AN, ma_video: MA_VIDEO, ban_sua: BAN_SUA }, boi: "nhan" });
+  for (const g of mayGoi) assert.equal(g.headers["x-runner-key"], "rk");
+  // chỉ đổi chỗ, gửi kèm mật khẩu (thừa) → không kiểm, không chuyển mật khẩu
+  mayGoi = [];
+  assert.equal((await postViec(cookie, duongLuu, { sua_luc: 1, doi_cho: [[1, 2]], mat_khau: "sai-bet" })).status, 201);
+  for (const g of mayGoi) assert.equal(JSON.stringify([g.url.href, g.body]).includes("mat_khau"), false);
+});
+
+test("sua-video luu: có phu_de + mật khẩu đúng → 201; mật khẩu không đi ra máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const r = await postViec(cookie, duongLuu, { ...banCoChu("matkhau-nhan"), doi_clip: [{ seg: 2, clip: CLIP }] });
+  assert.equal(r.status, 201);
+  assert.equal((await r.json()).ban_sua, BAN_SUA);
+  assert.equal(mayGoi.length, 2);
+  const b1 = JSON.parse(mayGoi[0].body);
+  assert.deepEqual(b1.phu_de, [{ i: 3, text: "Trời ơi, chạy trớn nha!" }]);
+  for (const g of mayGoi) {
+    const lo = JSON.stringify([g.url.href, g.headers, g.body || ""]);
+    assert.equal(lo.includes("matkhau-nhan"), false);
+    assert.equal(lo.includes("mat_khau"), false);
+  }
+});
+
+test("sua-video luu: có phu_de mà thiếu/sai mật khẩu → 403, không gọi máy nhà; sai được đếm chung với duyệt (KV sai:<user>), lần 6 → 429", async () => {
+  env.SO_DUYET = taoKvGia();
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  for (const mk of [undefined, "", 123]) {
+    const r = await postViec(cookie, duongLuu, banCoChu(mk));
+    assert.equal(r.status, 403, String(mk));
+    assert.match((await r.json()).loi, /mật khẩu/);
+  }
+  assert.equal(env.SO_DUYET.kho.has("sai:nhan"), false, "thiếu mật khẩu không tính là một lần đoán sai");
+  for (let i = 1; i <= 5; i++) {
+    const r = await postViec(cookie, duongLuu, banCoChu(`sai-${i}`));
+    assert.equal(r.status, 403, `lần ${i}`);
+    assert.deepEqual(await r.json(), { loi: "Sai mật khẩu" });
+  }
+  const muc = env.SO_DUYET.kho.get("sai:nhan");
+  assert.ok(muc);
+  assert.equal(JSON.parse(muc.value).sai.length, 5);
+  assert.equal(muc.value.includes("sai-"), false);
+  assert.equal((await postViec(cookie, duongLuu, banCoChu("matkhau-nhan"))).status, 429);
+  // đã khoá thì duyệt việc tốn tiền cũng khoá (cùng bộ đếm)
+  assert.equal((await postViec(cookie, duongDuyet, { loi_duyet: "ok", sha_tham_so: SHA_TS, mat_khau: "matkhau-nhan" })).status, 429);
+  assert.equal(mayGoi.length, 0);
+  // chỉ đổi clip vẫn làm được khi đang khoá mật khẩu (không cần mật khẩu)
+  assert.equal((await postViec(cookie, duongLuu, banChiClip())).status, 201);
+});
+
+test("sua-video luu: 8 request sai mật khẩu song song → đúng 5 lần 403", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const ds = await Promise.all(Array.from({ length: 8 }, (_, i) => postViec(cookie, duongLuu, banCoChu(`sai-${i}`))));
+  assert.deepEqual(ds.map((r) => r.status).sort(), [403, 403, 403, 403, 403, 429, 429, 429]);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("sua-video luu: KV đếm sai đọc lỗi → 503, không kiểm mật khẩu, không gọi runner", async () => {
+  env.SO_DUYET = taoKvGia();
+  env.SO_DUYET.hong = true;
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    assert.equal((await postViec(cookie, duongLuu, banCoChu("matkhau-nhan"))).status, 503);
+  } finally {
+    console.error = goc;
+  }
+  assert.equal(mayGoi.length, 0);
+});
+
+test("sua-video luu: bản sửa sai hình dạng §4.2 → 400, không gọi máy nhà, không tính lần sai", async () => {
+  env.SO_DUYET = taoKvGia();
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const mk = "matkhau-nhan";
+  const cau = (text, i = 0) => ({ sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: [{ i, text }], mat_khau: mk });
+  const thoNull = await worker.fetch(new Request(`${ORIGIN}${duongLuu}`, { method: "POST", headers: { cookie, origin: ORIGIN, "content-type": "application/json" }, body: "null" }), env, ctx);
+  assert.equal(thoNull.status, 400);
+  const xau = [
+    [], "x", {},
+    { doi_clip: [{ seg: 1, clip: CLIP }] }, // thiếu sua_luc
+    { sua_luc: -1, doi_cho: [[1, 2]] }, { sua_luc: 1.5, doi_cho: [[1, 2]] }, { sua_luc: "1", doi_cho: [[1, 2]] },
+    { sua_luc: 1 }, { sua_luc: 1, phu_de: [], doi_clip: [], doi_cho: [] }, // không có thay đổi nào
+    { sua_luc: 1, phu_de: [{ i: 0, text: "a" }], mat_khau: mk }, // có phu_de mà thiếu phu_de_sha
+    { sua_luc: 1, phu_de_sha: "A".repeat(64), phu_de: [{ i: 0, text: "a" }], mat_khau: mk },
+    { sua_luc: 1, phu_de_sha: "a".repeat(63), doi_cho: [[1, 2]] },
+    { sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: "x", mat_khau: mk },
+    { sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: Array.from({ length: 31 }, (_, i) => ({ i, text: "a" })), mat_khau: mk },
+    { sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: [{ i: 1, text: "a" }, { i: 1, text: "b" }], mat_khau: mk },
+    cau("a", -1), cau("a", 1.5), cau("a", "1"), cau(1), cau(""), cau("   "), cau("a".repeat(201)),
+    cau("dòng 1\ndòng 2"), cau("tab\tx"), cau("x\u0000"), cau("x\u007f"), cau("x\u2028y"), cau("x\u0085"),
+    cau("{\\b1}đậm"), cau("a{b"), cau("a}b"), cau("a\\Nb"), cau("<script>x</script>"), cau("a>b"), cau("a-->b"), cau("x\uD800"),
+    { sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: [{ i: 0, text: "a", them: 1 }], mat_khau: mk },
+    { sua_luc: 1, phu_de_sha: PHU_DE_SHA, phu_de: [null], mat_khau: mk },
+    { sua_luc: 1, doi_clip: "x" }, { sua_luc: 1, doi_clip: [{ seg: 1 }] }, { sua_luc: 1, doi_clip: [{ clip: CLIP }] },
+    { sua_luc: 1, doi_clip: [{ seg: 200, clip: CLIP }] }, { sua_luc: 1, doi_clip: [{ seg: -1, clip: CLIP }] }, { sua_luc: 1, doi_clip: [{ seg: "1", clip: CLIP }] },
+    { sua_luc: 1, doi_clip: [{ seg: 1, clip: "../x.mp4" }] }, { sua_luc: 1, doi_clip: [{ seg: 1, clip: "a/b.mp4" }] }, { sua_luc: 1, doi_clip: [{ seg: 1, clip: "a\\b.mp4" }] },
+    { sua_luc: 1, doi_clip: [{ seg: 1, clip: "E:\\cuts\\a.mp4" }] }, { sua_luc: 1, doi_clip: [{ seg: 1, clip: "a.mov" }] }, { sua_luc: 1, doi_clip: [{ seg: 1, clip: "_a.mp4" }] },
+    { sua_luc: 1, doi_clip: [{ seg: 1, clip: "a".repeat(152) + ".mp4" }] },
+    { sua_luc: 1, doi_clip: [{ seg: 1, clip: CLIP }, { seg: 1, clip: "b.mp4" }] },
+    { sua_luc: 1, doi_clip: Array.from({ length: 11 }, (_, i) => ({ seg: i, clip: CLIP })) },
+    { sua_luc: 1, doi_cho: [[1]] }, { sua_luc: 1, doi_cho: [[1, 1]] }, { sua_luc: 1, doi_cho: [[1, 2, 3]] }, { sua_luc: 1, doi_cho: [["1", 2]] },
+    { sua_luc: 1, doi_cho: [[1, 200]] }, { sua_luc: 1, doi_cho: [1, 2] }, { sua_luc: 1, doi_cho: [[1, 2], [3, 4], [5, 6], [7, 8]] },
+  ];
+  for (const b of xau) assert.equal((await postViec(cookie, duongLuu, b)).status, 400, JSON.stringify(b).slice(0, 80));
+  assert.equal(mayGoi.length, 0);
+  assert.equal(env.SO_DUYET.goi.length, 0, "lỗi hình dạng xảy ra trước kiểm mật khẩu");
+  // biên hợp lệ: 30 câu, 200 code point (ký tự ngoài BMP đếm 1), 10 clip, 3 cặp, clip tên có ( ) . - khoảng trắng
+  const dai = "😀".repeat(200);
+  const ok = {
+    sua_luc: 0, phu_de_sha: PHU_DE_SHA, mat_khau: mk,
+    phu_de: Array.from({ length: 30 }, (_, i) => ({ i, text: i ? `Câu ${i}, ổn nha!` : dai })),
+    doi_clip: Array.from({ length: 10 }, (_, i) => ({ seg: i, clip: i ? `clip (${i}) a-b.c.mp4` : "a.mp4" })),
+    doi_cho: [[0, 199], [3, 4], [5, 6]],
+  };
+  assert.equal((await postViec(cookie, duongLuu, ok)).status, 201);
+  assert.equal(JSON.parse(mayGoi[0].body).phu_de[0].text, dai);
+});
+
+test("sua-video luu: chữ được chuẩn hoá NFC trước khi kiểm độ dài và gửi đi", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const nfd = "Trời ơi".normalize("NFD");
+  assert.notEqual(nfd, nfd.normalize("NFC"));
+  assert.equal((await postViec(cookie, duongLuu, { ...banCoChu("matkhau-nhan"), phu_de: [{ i: 0, text: nfd }] })).status, 201);
+  assert.equal(JSON.parse(mayGoi[0].body).phu_de[0].text, "Trời ơi".normalize("NFC"));
+  // 150 chữ "ệ" dạng NFD = 450 code unit nhưng NFC = 150 code point → hợp lệ
+  mayGoi = [];
+  assert.equal((await postViec(cookie, duongLuu, { ...banCoChu("matkhau-nhan"), phu_de: [{ i: 0, text: "ệ".repeat(150).normalize("NFD") }] })).status, 201);
+});
+
+test("sua-video luu: body > 16 KB → 413; không phải JSON → 400; không gọi máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSua();
+  const tho = (body) => worker.fetch(new Request(`${ORIGIN}${duongLuu}`, { method: "POST", headers: { cookie, origin: ORIGIN, "content-type": "application/json" }, body }), env, ctx);
+  const r = await tho(JSON.stringify({ ...banChiClip(), rac: "x".repeat(17000) }));
+  assert.equal(r.status, 413);
+  assert.equal((await tho("{x")).status, 400);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("sua-video luu: (1) ban-sua lỗi → trả nguyên/đổi mã, KHÔNG gọi (2)", async () => {
+  const { cookie } = await dangNhapNhan();
+  const goc = console.error;
+  console.error = () => {};
+  try {
+    for (const [banSua, st] of [
+      [() => Response.json({ loi: "Phụ đề đã đổi từ lúc bạn mở — tải lại" }, { status: 409 }), 409],
+      [() => Response.json({ loi: "Video này dùng biến thể phụ đề" }, { status: 400 }), 400],
+      [() => Response.json({ loi: "Sửa ít câu hơn mỗi lần" }, { status: 413 }), 413],
+      [() => Response.json({ loi: "x" }, { status: 401 }), 502],
+      [() => Response.json({ loi: "x" }, { status: 500 }), 500],
+      [() => Response.json({ ban_sua: "../x", du_an: DU_AN }, { status: 201 }), 502],
+      [() => Response.json({ ban_sua: BAN_SUA, du_an: "E:/x" }, { status: 201 }), 502],
+      [() => Response.json({ ban_sua: BAN_SUA }, { status: 201 }), 502],
+      [() => new Response("không phải json", { status: 201 }), 502],
+      [() => { throw new TypeError("mạng đứt"); }, 502],
+    ]) {
+      mayGoi = [];
+      runnerSua({ banSua });
+      const r = await postViec(cookie, duongLuu, banChiClip());
+      assert.equal(r.status, st, String(banSua));
+      assert.equal(mayGoi.length, 1, String(banSua));
+      assert.equal(mayGoi[0].url.pathname, `/r/sua-video/${UID}/${MA_VIDEO}/ban-sua`);
+    }
+  } finally {
+    console.error = goc;
+  }
+});
+
+test("sua-video luu: (2) trùng việc → 409 {trung: id, ban_sua}; lỗi khác trả nguyên", async () => {
+  const { cookie } = await dangNhapNhan();
+  const J2 = "j20261117160000cd34";
+  runnerSua({ viec: () => Response.json({ loi: "đã có việc đang mở cùng loại và khoá", trung: { id: J2, loai: "sua_video", trang_thai: "dang_chay" } }, { status: 409 }) });
+  const r = await postViec(cookie, duongLuu, banChiClip());
+  assert.equal(r.status, 409);
+  const d = await r.json();
+  assert.equal(d.trung, J2);
+  assert.equal(d.ban_sua, BAN_SUA);
+  assert.equal(typeof d.loi, "string");
+  for (const [viec, st] of [
+    [() => Response.json({ loi: "vượt hạn mức: sua_video_ngay" }, { status: 429 }), 429],
+    [() => Response.json({ loi: "x" }, { status: 403 }), 502],
+  ]) {
+    runnerSua({ viec });
+    assert.equal((await postViec(cookie, duongLuu, banChiClip())).status, st);
+  }
+});
+
+test("sua-video: user không phải nhan/comeofage → 403; POST thiếu/lạ Origin → 403; không gọi máy nhà", async () => {
+  const { cookie } = await dangNhap();
+  runnerSua();
+  assert.equal((await call(`/api/viec/sua-video/${UID}`, { cookie })).status, 403);
+  assert.equal((await postViec(cookie, duongLuu, banChiClip())).status, 403);
+  assert.equal((await postViec(cookie, duongLuu, banCoChu("matkhau-lan"))).status, 403);
+  const nhan = await dangNhapNhan();
+  assert.equal((await call(duongLuu, { cookie: nhan.cookie, body: banChiClip() })).status, 403);
+  assert.equal((await postViec(nhan.cookie, duongLuu, banChiClip(), { origin: "https://evil.test" })).status, 403);
+  assert.equal(mayGoi.length, 0);
+  // comeofage dùng được
+  const come = await dangNhap("comeofage", "matkhau-come");
+  assert.equal((await postViec(come.cookie, duongLuu, banCoChu("matkhau-come"))).status, 201);
+  assert.equal(JSON.parse(mayGoi[0].body).boi, "comeofage");
+});
+
+test("sua-video: POST /api/viec nhận hoan_tac_sua (validate chặt), từ chối tạo sua_video trực tiếp", async () => {
+  const ts = { uid: UID, du_an: DU_AN, ma_video: MA_VIDEO, viec_goc: JOB };
+  assert.deepEqual(kiemThamSoViec({ loai: "hoan_tac_sua", tham_so: ts }), { loai: "hoan_tac_sua", tham_so: ts });
+  for (const b of [
+    { loai: "hoan_tac_sua", tham_so: { uid: UID, du_an: DU_AN, ma_video: MA_VIDEO } },
+    { loai: "hoan_tac_sua", tham_so: { ...ts, ma_video: MA_VIDEO.toUpperCase() } },
+    { loai: "hoan_tac_sua", tham_so: { ...ts, ma_video: "0123" } },
+    { loai: "hoan_tac_sua", tham_so: { ...ts, viec_goc: "j123" } },
+    { loai: "hoan_tac_sua", tham_so: { ...ts, viec_goc: JOB.toUpperCase() } },
+    { loai: "hoan_tac_sua", tham_so: { ...ts, ban_sua: BAN_SUA } },
+    { loai: "sua_video", tham_so: { uid: UID, du_an: DU_AN, ma_video: MA_VIDEO, ban_sua: BAN_SUA } },
+  ]) assert.equal(typeof kiemThamSoViec(b), "string", JSON.stringify(b));
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  assert.equal((await postViec(cookie, "/api/viec", { loai: "hoan_tac_sua", tham_so: ts })).status, 201);
+  assert.deepEqual(JSON.parse(goiCuoi().body), { loai: "hoan_tac_sua", tham_so: ts, boi: "nhan" });
+  assert.ok(await kiemChuKy(goiCuoi()));
+});
+
+test("video anh/clip: chỉ chuyển đúng khoá query; anh có timeout, clip là stream; chỉ GET; user lạ 403", async () => {
+  const { cookie } = await dangNhapNhan();
+  const so = { cookie, headers: { "sec-fetch-site": "same-origin" } };
+  await call(`/api/video/${UID}/anh?du_an=${DU_AN}&ten=a.mp4&k=cs&goc=x&xoa=1&z=2`, so);
+  assert.equal(goiCuoi().url.pathname, `/v/${UID}/anh`);
+  assert.equal(goiCuoi().url.search, `?du_an=${DU_AN}&ten=a.mp4&k=cs`);
+  assert.ok(goiCuoi().signal instanceof AbortSignal);
+  const r = await call(`/api/video/${UID}/clip?du_an=${DU_AN}&ten=a.mp4&k=3&goc=x&xoa=1`, { ...so, headers: { ...so.headers, range: "bytes=0-99" } });
+  assert.equal(r.status, 200);
+  assert.equal(goiCuoi().url.pathname, `/v/${UID}/clip`);
+  assert.equal(goiCuoi().url.search, `?du_an=${DU_AN}&ten=a.mp4`);
+  assert.equal(goiCuoi().signal, undefined);
+  assert.equal(goiCuoi().headers.range, "bytes=0-99");
+  const truoc = mayGoi.length;
+  assert.equal((await call(`/api/video/${UID}/anh?ten=a.mp4`, { cookie, method: "POST" })).status, 405);
+  assert.equal((await call(`/api/video/${UID}/clip?ten=a.mp4`, { cookie, method: "POST" })).status, 405);
+  const lan = await dangNhap();
+  for (const act of ["anh", "clip"]) assert.equal((await call(`/api/video/${UID}/${act}?ten=a.mp4`, { cookie: lan.cookie })).status, 403);
+  assert.equal(mayGoi.length, truoc);
+});
+
+// ---------- W-6 (đợt 5, §7.6, §8.1–8.2, §9 mục 4): trả lời trong phiên sống, chữ tự do có mật khẩu ----------
+// Runner giả: việc taovideo đang can_tra_loi, phien_song theo tham số.
+function runnerSong(cauHoi, { phienSong = true, loai = "taovideo", trangThai = "can_tra_loi" } = {}) {
+  mayTraLoi = async (u, opt) => {
+    if ((opt.method || "GET") === "GET") return Response.json({ viec: { id: JOB, loai, trang_thai: trangThai, phien_song: phienSong, cau_hoi: cauHoi }, tra_loi: [] });
+    return Response.json({ viec: { id: JOB, trang_thai: "dang_chay" } });
+  };
+}
+const duongTl = `/api/viec/${JOB}/tra-loi`;
+const CH_TU_DO = { loai: "cau_hoi", noi_dung: "Giá bán và deal hiện tại là bao nhiêu?" };
+
+test("W-6 tra-loi cau_hoi phiên sống: mật khẩu đúng → body đã ký có da_xac_nhan_mat_khau:true, không chuyển mật khẩu", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong(CH_TU_DO);
+  const chu = "Giá 199k, deal 10% tới hết tháng.\nKhông nhắc quà tặng.";
+  const r = await postViec(cookie, duongTl, { tra_loi: chu, mat_khau: "matkhau-nhan", boi: "comeofage" });
+  assert.equal(r.status, 200);
+  const g = goiCuoi();
+  assert.equal(g.method, "POST");
+  assert.equal(g.url.pathname, `/r/viec/${JOB}/tra-loi`);
+  assert.deepEqual(JSON.parse(g.body), { tra_loi: chu, boi: "nhan", da_xac_nhan_mat_khau: true });
+  assert.ok(await kiemChuKy(g));
+  assert.ok(!g.body.includes("matkhau-nhan"));
+  // đúng 1000 ký tự (code point) vẫn qua
+  runnerSong(CH_TU_DO);
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "đ".repeat(1000), mat_khau: "matkhau-nhan" })).status, 200);
+});
+
+test("W-6 tra-loi cau_hoi: thiếu mật khẩu → 403; sai mật khẩu → 403 không gọi máy nhà; 1001 ký tự → 400 không gọi máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong(CH_TU_DO);
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k" })).status, 403);
+  assert.equal(soPost(), 0);
+  mayGoi = [];
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "sai-roi" })).status, 403);
+  assert.equal(mayGoi.length, 0, "sai mật khẩu không được gọi máy nhà");
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "đ".repeat(1001), mat_khau: "matkhau-nhan" })).status, 400);
+  assert.equal(mayGoi.length, 0);
+  // chữ dài > 120 mà không có mật khẩu → 400 trước khi gọi máy nhà
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "x".repeat(121) })).status, 400);
+  // ký tự điều khiển (trừ xuống dòng), surrogate lẻ, chỉ khoảng trắng, mật khẩu sai kiểu → 400, không gọi máy nhà
+  for (const b of [{ tra_loi: "a\u0000b", mat_khau: "matkhau-nhan" }, { tra_loi: "a\u001bb", mat_khau: "matkhau-nhan" }, { tra_loi: "a\ud800b", mat_khau: "matkhau-nhan" },
+    { tra_loi: "   \n ", mat_khau: "matkhau-nhan" }, { tra_loi: "ok", mat_khau: 123 }, { tra_loi: "ok", mat_khau: "" }, { tra_loi: "ok", mat_khau: "x".repeat(257) }]) {
+    assert.equal((await postViec(cookie, duongTl, b)).status, 400, JSON.stringify(b).slice(0, 60));
+  }
+  assert.equal(mayGoi.length, 0);
+});
+
+test("W-6 tra-loi: cau_hoi khi KHÔNG có phiên sống → 400, không POST (kể cả mật khẩu đúng)", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong(CH_TU_DO, { phienSong: false });
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan" })).status, 400);
+  runnerSong(CH_TU_DO, { phienSong: false, loai: "voice_pv" });
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan" })).status, 400);
+  assert.equal(soPost(), 0);
+});
+
+test("W-6 tra-loi chon phiên sống: cần mật khẩu; đúng → cờ true; viec_tay/khong_ro chỉ nút, không mật khẩu → cờ false", async () => {
+  const { cookie } = await dangNhapNhan();
+  const chon = { loai: "chon", noi_dung: "Tạo lại 2 voice hỏng?", lua_chon: ["Anh duyệt", "Dừng"] };
+  runnerSong(chon);
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Anh duyệt" })).status, 403);
+  assert.equal(soPost(), 0);
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Không có nút này", mat_khau: "matkhau-nhan" })).status, 400);
+  assert.equal(soPost(), 0);
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Anh duyệt", mat_khau: "matkhau-nhan" })).status, 200);
+  assert.deepEqual(JSON.parse(goiCuoi().body), { tra_loi: "Anh duyệt", boi: "nhan", da_xac_nhan_mat_khau: true });
+  for (const [ch, gt] of [[{ loai: "viec_tay", noi_dung: "Mở app Poster V2" }, "da_lam_xong"], [{ loai: "khong_ro", noi_dung: "?" }, "tiep_tuc"]]) {
+    runnerSong(ch);
+    assert.equal((await postViec(cookie, duongTl, { tra_loi: gt })).status, 200, gt);
+    assert.deepEqual(JSON.parse(goiCuoi().body), { tra_loi: gt, boi: "nhan", da_xac_nhan_mat_khau: false });
+    assert.ok(await kiemChuKy(goiCuoi()));
+    // chữ tự do vào câu hỏi chỉ-nút → 400 kể cả có mật khẩu
+    assert.equal((await postViec(cookie, duongTl, { tra_loi: "làm thêm việc khác", mat_khau: "matkhau-nhan" })).status, 400);
+  }
+  // việc thường (không phiên sống) chọn bằng nút: không cần mật khẩu như đợt 3
+  runnerSong(chon, { phienSong: false, loai: "voice_pv" });
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Dừng" })).status, 200);
+  assert.deepEqual(JSON.parse(goiCuoi().body), { tra_loi: "Dừng", boi: "nhan", da_xac_nhan_mat_khau: false });
+});
+
+test("W-6 tra-loi: sai mật khẩu đếm chung KV sai:<user> với duyệt — lần 6 → 429 kể cả đúng; KV đọc lỗi → 503 không gọi máy nhà", async () => {
+  env.SO_DUYET = taoKvGia();
+  const { cookie } = await dangNhapNhan();
+  runnerSong(CH_TU_DO);
+  for (let k = 0; k < 5; k++) assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "sai" })).status, 403, `lần ${k + 1}`);
+  const muc = env.SO_DUYET.kho.get("sai:nhan");
+  assert.ok(muc, "phải ghi KV sai:nhan");
+  assert.equal(muc.opt.expirationTtl, 600);
+  datLaiDemSaiMatKhau(); // isolate mới vẫn khoá theo KV
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan" })).status, 429);
+  assert.equal(mayGoi.length, 0);
+  env.SO_DUYET = taoKvGia();
+  env.SO_DUYET.hong = true;
+  datLaiDemSaiMatKhau();
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan" })).status, 503);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("W-6 tra-loi: user không phải nhan/comeofage → 403; thiếu Origin → 403; runner không can_tra_loi → 409", async () => {
+  const lan = await dangNhap();
+  assert.equal((await postViec(lan.cookie, duongTl, { tra_loi: "ok", mat_khau: "matkhau-lan" })).status, 403);
+  const { cookie } = await dangNhapNhan();
+  assert.equal((await call(duongTl, { cookie, body: { tra_loi: "ok", mat_khau: "matkhau-nhan" } })).status, 403);
+  assert.equal(mayGoi.length, 0);
+  runnerSong(CH_TU_DO, { trangThai: "dang_chay" });
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan" })).status, 409);
+  assert.equal(soPost(), 0);
+});
+
+test("W-6 kiemThamSoViec: taovideo (§7.10) — uid, du_an_a, du_an_b (mã|tu_tim), wm ∈ {khong, nha.cua.mit}, gia tuỳ chọn", () => {
+  const A = "0123456789ab", B = "abcdef012345";
+  for (const ts of [
+    { uid: UID, du_an_a: A, du_an_b: "tu_tim", wm: "khong" },
+    { uid: UID, du_an_a: A, du_an_b: B, wm: "nha.cua.mit", gia: 199000 },
+    { uid: UID, du_an_a: A, du_an_b: B, wm: "khong", gia: 1000 },
+    { uid: UID, du_an_a: A, du_an_b: B, wm: "khong", gia: 10_000_000 },
+  ]) assert.deepEqual(kiemThamSoViec({ loai: "taovideo", tham_so: ts }), { loai: "taovideo", tham_so: ts }, JSON.stringify(ts));
+  const dung = { uid: UID, du_an_a: A, du_an_b: "tu_tim", wm: "khong" };
+  for (const ts of [
+    { ...dung, wm: "abc" }, { ...dung, wm: "Khong" }, { ...dung, wm: ["khong"] }, { uid: UID, du_an_a: A, du_an_b: "tu_tim" },
+    { ...dung, du_an_b: "TU_TIM" }, { ...dung, du_an_b: "E:/x" }, { ...dung, du_an_a: "tu_tim" }, { ...dung, du_an_a: "0123456789AB" },
+    { ...dung, gia: 999 }, { ...dung, gia: 10_000_001 }, { ...dung, gia: 1.5 }, { ...dung, gia: "199000" }, { ...dung, gia: null },
+    { ...dung, du_an: A }, { ...dung, lenh: "x" }, { ...dung, uid: "123" },
+  ]) assert.equal(typeof kiemThamSoViec({ loai: "taovideo", tham_so: ts }), "string", JSON.stringify(ts));
+});
+
+// ---------- FX-25 (§7.6): mã câu hỏi khi trả lời phiên sống ----------
+test("FX-25 tra-loi: ma_cau_hoi đúng dạng → chuyển nguyên trong body đã ký cạnh tra_loi/boi/da_xac_nhan_mat_khau", async () => {
+  const { cookie } = await dangNhapNhan();
+  const ma = "q0123456789ab";
+  runnerSong({ ...CH_TU_DO, ma });
+  const r = await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan", ma_cau_hoi: ma });
+  assert.equal(r.status, 200);
+  const g = goiCuoi();
+  assert.equal(g.url.pathname, `/r/viec/${JOB}/tra-loi`);
+  assert.deepEqual(JSON.parse(g.body), { tra_loi: "Giá 199k", boi: "nhan", da_xac_nhan_mat_khau: true, ma_cau_hoi: ma });
+  assert.ok(await kiemChuKy(g));
+  // nút viec_tay không mật khẩu vẫn chuyển mã
+  runnerSong({ loai: "viec_tay", noi_dung: "Mở app", ma: "qabcdefabcdef" });
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "da_lam_xong", ma_cau_hoi: "qabcdefabcdef" })).status, 200);
+  assert.deepEqual(JSON.parse(goiCuoi().body), { tra_loi: "da_lam_xong", boi: "nhan", da_xac_nhan_mat_khau: false, ma_cau_hoi: "qabcdefabcdef" });
+  // runner 409 (câu hỏi đã đổi) → trả nguyên cho web
+  mayTraLoi = async (u, opt) => (opt.method || "GET") === "GET"
+    ? Response.json({ viec: { id: JOB, loai: "taovideo", trang_thai: "can_tra_loi", phien_song: true, cau_hoi: { ...CH_TU_DO, ma: "q111111111111" } }, tra_loi: [] })
+    : Response.json({ loi: "Câu hỏi đã đổi — tải lại để xem câu mới" }, { status: 409 });
+  const r409 = await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan", ma_cau_hoi: ma });
+  assert.equal(r409.status, 409);
+  assert.match((await r409.json()).loi, /Câu hỏi đã đổi/);
+});
+
+test("FX-25 tra-loi: ma_cau_hoi sai dạng → 400, KHÔNG gọi máy nhà, không tính lần sai mật khẩu", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong({ ...CH_TU_DO, ma: "q0123456789ab" });
+  for (const ma of ["", "q0123456789a", "q0123456789abc", "Q0123456789ab", "q0123456789AB", "x0123456789ab", "q0123456789ag",
+    "q0123456789ab\n", " q0123456789ab", 123, null, ["q0123456789ab"], { a: 1 }, true]) {
+    const r = await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "sai-roi", ma_cau_hoi: ma });
+    assert.equal(r.status, 400, JSON.stringify(ma));
+  }
+  assert.equal(mayGoi.length, 0, "sai dạng không được gọi máy nhà");
+  // mật khẩu đúng sau đó vẫn qua (các lần trên không bị đếm sai)
+  assert.equal((await postViec(cookie, duongTl, { tra_loi: "Giá 199k", mat_khau: "matkhau-nhan", ma_cau_hoi: "q0123456789ab" })).status, 200);
+});
+
+test("FX-25 GET viec: trường mới của runner (co_the_chay_lai, can_luu_lai_mat_khau, co_the_chay_tiep, ket_qua) đi qua nguyên", async () => {
+  const { cookie } = await dangNhapNhan();
+  const viec = { id: JOB, loai: "sua_video", trang_thai: "loi", co_the_chay_lai: false, can_luu_lai_mat_khau: true, co_the_chay_tiep: false,
+    ket_qua: { ma_thoat: 5, kiem_tay: true, do_dang: false, chua_doi_gi: true, bo_qua: ["a.mp4"], ly_do_sua: "x", canh_bao_sua: ["c"], thong_diep: "Cần kiểm tay" } };
+  mayTraLoi = async () => Response.json({ viec, tra_loi: [] });
+  const r = await call(`/api/viec/${JOB}`, { cookie });
+  assert.equal(r.status, 200);
+  assert.deepEqual((await r.json()).viec, viec);
+  mayTraLoi = async () => Response.json({ viec: [viec] });
+  const r2 = await call(`/api/viec?uid=${UID}`, { cookie });
+  assert.deepEqual((await r2.json()).viec, [viec]);
+});
+
+// ---------- P-33: chỉ chủ kho (USER_MAY_NHA) thấy dữ liệu nội bộ máy nhà ----------
+const DLV_DU = {
+  xong: true, so_video: 20, luc: "2026-11-18T10:00:00+07:00", duong_dan: "E:/oneshot/output_poster", poster_folder: 77,
+  poster: [{ folder: 77, nhan: "Mẻ A", so_video: 10, duong_dan: "E:/oneshot/output_poster/a" }, { folder: 78, nhan: "Mẻ B", so_video: 10, duong_dan: "F:/b" }],
+};
+const INFO_DU = { id: UID, uid: UID, ten: "Gel", da_phan_tich: true, ghi_chu: "", thu_muc_may: "E:/oneshottramcanh/gel", da_lam_video: DLV_DU };
+const NOI_BO = ["thu_muc_may", "duong_dan", "poster_folder", "oneshottramcanh", "output_poster", "F:/b"];
+function datInfoDu() {
+  files[`data/${UID}/info.json`] = { text: JSON.stringify(INFO_DU), sha: "a2" };
+  files["data/index.json"] = { text: JSON.stringify({ san_pham: [{ ...INFO_DU, trang_thai: "da_lam_video" }] }), sha: "i2" };
+}
+const khongLoNoiBo = (t, ngu) => { for (const k of NOI_BO) assert.equal(t.includes(k), false, `${ngu}: lộ "${k}"`); };
+const kiemDlvGon = (d) => {
+  assert.equal(d.xong, true); assert.equal(d.so_video, 20); assert.equal(d.luc, DLV_DU.luc);
+  assert.deepEqual(d.poster, [{ folder: 77, nhan: "Mẻ A", so_video: 10 }, { folder: 78, nhan: "Mẻ B", so_video: 10 }]);
+};
+
+test("P-33 anTruongNoiBo: người thường bỏ thu_muc_may + duong_dan/poster_folder/poster[].duong_dan; chủ giữ nguyên; không sửa đối tượng gốc", () => {
+  assert.equal(typeof W.anTruongNoiBo, "function", "worker.js phải export anTruongNoiBo");
+  const goc = structuredClone(INFO_DU);
+  const ra = W.anTruongNoiBo(goc, false);
+  assert.deepEqual(goc, INFO_DU, "không được sửa đối tượng gốc");
+  assert.notEqual(ra, goc);
+  assert.equal("thu_muc_may" in ra, false);
+  assert.equal("duong_dan" in ra.da_lam_video, false);
+  assert.equal("poster_folder" in ra.da_lam_video, false);
+  kiemDlvGon(ra.da_lam_video);
+  assert.equal(ra.ten, "Gel");
+  khongLoNoiBo(JSON.stringify(ra), "hàm");
+  assert.equal(W.anTruongNoiBo(goc, true), goc, "chủ nhận nguyên vẹn");
+  // dữ liệu thiếu / lạ không ném
+  assert.deepEqual(W.anTruongNoiBo({ id: "x" }, false), { id: "x" });
+  assert.deepEqual(W.anTruongNoiBo({ id: "x", da_lam_video: { xong: false, so_video: 0, luc: "" } }, false), { id: "x", da_lam_video: { xong: false, so_video: 0, luc: "" } });
+  assert.deepEqual(W.anTruongNoiBo({ da_lam_video: { poster: [null, 3, { duong_dan: "E:/x", folder: 1 }] } }, false), { da_lam_video: { poster: [null, 3, { folder: 1 }] } });
+  assert.equal(W.anTruongNoiBo(null, false), null);
+});
+
+test("P-33 /api/ds + /api/sp: người thường không thấy trường nội bộ máy nhà; vẫn thấy trạng thái video", async () => {
+  datInfoDu();
+  const { cookie } = await dangNhap();
+  const tDs = await (await call("/api/ds", { cookie })).text();
+  khongLoNoiBo(tDs, "/api/ds");
+  const ds = JSON.parse(tDs).san_pham;
+  assert.equal(ds.length, 1);
+  kiemDlvGon(ds[0].da_lam_video);
+  assert.equal(ds[0].trang_thai, "da_lam_video");
+  // SP mới chưa vào index (đọc thẳng info.json) cũng bị lọc
+  files["data/1730000000000000001/info.json"] = { text: JSON.stringify({ id: "1730000000000000001", uid: "1730000000000000001", thu_muc_may: "E:/oneshottramcanh/moi" }), sha: "n" };
+  khongLoNoiBo(await (await call("/api/ds", { cookie })).text(), "/api/ds (SP mới)");
+  const tSp = await (await call(`/api/sp/${UID}`, { cookie })).text();
+  khongLoNoiBo(tSp, "/api/sp");
+  const sp = JSON.parse(tSp);
+  kiemDlvGon(sp.info.da_lam_video);
+  assert.equal(sp.info.ten, "Gel");
+  assert.equal(sp.md, "# Bộ cảnh");
+});
+
+test("P-33 them/quay/tag/ghichu: người thường nhận info đã lọc; file trong kho vẫn giữ đủ trường", async () => {
+  datInfoDu();
+  const { cookie } = await dangNhap();
+  const rThem = await call("/api/them", { cookie, body: { link: "1731111111111111111" } });
+  assert.equal(rThem.status, 200);
+  const tThem = await rThem.text();
+  assert.equal(tThem.includes("thu_muc_may"), false, "/api/them lộ thu_muc_may");
+  assert.equal(JSON.parse(tThem).info.trang_thai, "cho");
+  assert.equal("thu_muc_may" in JSON.parse(files["data/1731111111111111111/info.json"].text), true, "file mới vẫn có thu_muc_may");
+  for (const [p, body] of [["/api/quay", { id: UID, loai: "oneshot", xong: true }], ["/api/tag", { id: UID, tag: "yeu_thich", bat: true }], ["/api/ghichu", { id: UID, ghi_chu: "mai quay" }]]) {
+    const r = await call(p, { cookie, body });
+    assert.equal(r.status, 200, p);
+    const t = await r.text();
+    khongLoNoiBo(t, p);
+    kiemDlvGon(JSON.parse(t).info.da_lam_video);
+  }
+  const luu = JSON.parse(files[`data/${UID}/info.json`].text);
+  assert.equal(luu.thu_muc_may, INFO_DU.thu_muc_may, "không xoá trường khỏi kho");
+  assert.deepEqual(luu.da_lam_video, DLV_DU);
+  assert.equal(luu.ghi_chu, "mai quay");
+  assert.equal(luu.yeu_thich, true);
+});
+
+test("P-33 chủ kho (nhan, comeofage) vẫn nhận nguyên trường nội bộ; người thường vẫn 403 ở viec/suc-khoe/video", async () => {
+  for (const [u, pw] of [["nhan", "matkhau-nhan"], ["comeofage", "matkhau-come"]]) {
+    datInfoDu();
+    const { cookie } = await dangNhap(u, pw);
+    const ds = (await (await call("/api/ds", { cookie })).json()).san_pham;
+    assert.equal(ds[0].thu_muc_may, INFO_DU.thu_muc_may, u);
+    assert.deepEqual(ds[0].da_lam_video, DLV_DU, u);
+    const sp = (await (await call(`/api/sp/${UID}`, { cookie })).json()).info;
+    assert.deepEqual(sp, INFO_DU, u);
+    const q = (await (await call("/api/ghichu", { cookie, body: { id: UID, ghi_chu: "x" } })).json()).info;
+    assert.equal(q.thu_muc_may, INFO_DU.thu_muc_may, u);
+    assert.deepEqual(q.da_lam_video, DLV_DU, u);
+  }
+  const { cookie } = await dangNhap();
+  for (const p of ["/api/viec", `/api/viec/${JOB}`, "/api/suc-khoe", `/api/video/${UID}/tien-do`, `/api/video/${UID}/ds`]) {
+    assert.equal((await call(p, { cookie })).status, 403, p);
+  }
+  assert.equal(mayGoi.length, 0, "người thường không chạm máy nhà");
+});
+
+// ---------- P-33b: che đường dẫn ổ đĩa máy nhà trong chữ (tom_tat, md, douyin…) cho người thường ----------
+const CHE = "[đường dẫn máy nhà]";
+const TOM_TAT_THAT = "## Ảnh\n- E:/oneshottramcanh/aokhoacbala/anh/_ghep-sp-1.jpg\n| Cột | `E:\\phantichcanhquay\\sp_1\\footage\\` |\nXem https://shop.tiktok.com:8080/vn/pdp/1 và http://a.b/c:d";
+const DOUYIN_THAT = "Profile: C:/Users/Mi/.gemini/antigravity/x.json, (E:\\timsanpham\\.douyin_profile) UNC \\\\may-nha\\chia_se\\a.mp4 xong";
+const MD_THAT = "# Bộ cảnh\nFootage: E:\\phantichcanhquay\\sp_1729\\footage\\\n| a | E:/x/y.mp4 | b |";
+const DUONG_DAN_LO = ["oneshottramcanh", "phantichcanhquay", ".gemini", "timsanpham", "douyin_profile", "may-nha", "E:/", "E:\\", "C:/"];
+const khongLoDuongDan = (t, ngu) => { for (const k of DUONG_DAN_LO) assert.equal(t.includes(k), false, `${ngu}: lộ "${k}"`); };
+
+test("P-33b cheDuongDan: thay đường dẫn ổ đĩa / UNC, giữ chữ còn lại + cấu trúc bảng; không đụng URL", () => {
+  assert.equal(typeof W.cheDuongDan, "function", "worker.js phải export cheDuongDan");
+  assert.equal(W.cheDuongDan("- E:/oneshottramcanh/aokhoacbala/anh/_ghep-sp-1.jpg"), `- ${CHE}`);
+  assert.equal(W.cheDuongDan("Profile C:/Users/Mi/.gemini/x.json, tiếp"), `Profile ${CHE}, tiếp`);
+  assert.equal(W.cheDuongDan("(E:\\timsanpham\\.douyin_profile)"), `(${CHE})`);
+  assert.equal(W.cheDuongDan("Footage: `E:\\phantichcanhquay\\sp_1\\footage\\` ok"), `Footage: \`${CHE}\` ok`);
+  assert.equal(W.cheDuongDan("| a | E:/x/y.mp4 | b |"), `| a | ${CHE} | b |`);
+  assert.equal(W.cheDuongDan("chép vào \\\\may-nha\\chia_se\\a.mp4 nhé"), `chép vào ${CHE} nhé`);
+  assert.equal(W.cheDuongDan("e:\\a\nF:/b"), `${CHE}\n${CHE}`);
+  // link markdown file:/// (thật trong douyin.md) → che cả "file:///X:/…", giữ chữ link + ngoặc
+  assert.equal(W.cheDuongDan("[canh.md](file:///E:/phantichcanhquay/sp_1/douyin/canh.md) (`1`)"), `[canh.md](${CHE}) (\`1\`)`);
+  assert.equal(W.cheDuongDan("[SP](file:///e:/phantichcanhquay/kho-san-pham/data/1)"), `[SP](${CHE})`);
+  for (const url of ["https://shop.tiktok.com:8080/vn/pdp/1", "http://a.b/c:d/e", "https://x.y/s:/z", "Giờ 10:30/ngày", "tỉ lệ 9:16", "ftp://h/a:b"]) {
+    assert.equal(W.cheDuongDan(url), url, url);
+  }
+  assert.equal(W.cheDuongDan(""), "");
+  assert.equal(W.cheDuongDan(null), null);
+  assert.equal(W.cheDuongDan(5), 5);
+  const t = W.cheDuongDan(TOM_TAT_THAT);
+  khongLoDuongDan(t, "tom_tat");
+  assert.match(t, /https:\/\/shop\.tiktok\.com:8080\/vn\/pdp\/1 và http:\/\/a\.b\/c:d$/);
+  assert.equal(t.split("\n").length, 4, "không xoá dòng");
+});
+
+test("P-33b anTruongNoiBo: che đường dẫn trong mọi chuỗi info (lồng nhau) cho người thường; chủ nguyên văn; không sửa gốc", () => {
+  const goc = { ...INFO_DU, tom_tat: TOM_TAT_THAT, rui_ro: { ket_luan: { nguy_co: "xem E:/oneshottramcanh/a.jpg" }, luu_y: [{ van_de: "C:/Users/Mi/x" }] } };
+  const banSao = structuredClone(goc);
+  const ra = W.anTruongNoiBo(goc, false);
+  assert.deepEqual(goc, banSao, "không sửa gốc");
+  khongLoDuongDan(JSON.stringify(ra), "info");
+  assert.equal(ra.rui_ro.ket_luan.nguy_co, `xem ${CHE}`);
+  assert.equal(ra.rui_ro.luu_y[0].van_de, CHE);
+  assert.equal(ra.ten, "Gel");
+  assert.equal(ra.da_lam_video.so_video, 20);
+  assert.equal(W.anTruongNoiBo(goc, true), goc);
+});
+
+function datInfoDuongDan() {
+  const info = { ...INFO_DU, tom_tat: TOM_TAT_THAT };
+  files[`data/${UID}/info.json`] = { text: JSON.stringify(info), sha: "a3" };
+  files["data/index.json"] = { text: JSON.stringify({ san_pham: [{ ...info, trang_thai: "da_lam_video" }] }), sha: "i3" };
+  files[`data/${UID}/bo-canh-quay.md`] = { text: MD_THAT, sha: "m3" };
+  files[`data/${UID}/douyin.md`] = { text: DOUYIN_THAT, sha: "d3" };
+  files[`data/${UID}/captions.txt`] = { text: "cap E:/x/y.txt #a", sha: "c3" };
+  return info;
+}
+
+test("P-33b /api/sp, /api/ds, quay/tag/ghichu: người thường không thấy đường dẫn ổ đĩa trong tom_tat/md/douyin/caps; chủ nguyên văn", async () => {
+  datInfoDuongDan();
+  let { cookie } = await dangNhap();
+  const tSp = await (await call(`/api/sp/${UID}`, { cookie })).text();
+  khongLoDuongDan(tSp, "/api/sp");
+  const sp = JSON.parse(tSp);
+  assert.equal(sp.md, `# Bộ cảnh\nFootage: ${CHE}\n| a | ${CHE} | b |`);
+  assert.match(sp.douyin, /^Profile: \[đường dẫn máy nhà\], \(\[đường dẫn máy nhà\]\) UNC \[đường dẫn máy nhà\] xong$/);
+  assert.equal(sp.caps, `cap ${CHE} #a`);
+  assert.match(sp.info.tom_tat, /https:\/\/shop\.tiktok\.com:8080\/vn\/pdp\/1/);
+  khongLoDuongDan(await (await call("/api/ds", { cookie })).text(), "/api/ds");
+  for (const [p, body] of [["/api/quay", { id: UID, loai: "oneshot", xong: true }], ["/api/tag", { id: UID, tag: "can_dang", bat: true }], ["/api/ghichu", { id: UID, ghi_chu: "mai" }]]) {
+    const r = await call(p, { cookie, body });
+    assert.equal(r.status, 200, p);
+    khongLoDuongDan(await r.text(), p);
+  }
+  assert.equal(JSON.parse(files[`data/${UID}/info.json`].text).tom_tat, TOM_TAT_THAT, "kho giữ nguyên văn");
+  // chủ: nguyên văn
+  datInfoDuongDan();
+  ({ cookie } = await dangNhap("nhan", "matkhau-nhan"));
+  const c = await (await call(`/api/sp/${UID}`, { cookie })).json();
+  assert.equal(c.info.tom_tat, TOM_TAT_THAT);
+  assert.equal(c.md, MD_THAT);
+  assert.equal(c.douyin, DOUYIN_THAT);
+  assert.equal(c.caps, "cap E:/x/y.txt #a");
+  assert.equal((await (await call("/api/ds", { cookie })).json()).san_pham[0].tom_tat, TOM_TAT_THAT);
+  assert.equal((await (await call("/api/ghichu", { cookie, body: { id: UID, ghi_chu: "x" } })).json()).info.tom_tat, TOM_TAT_THAT);
+});
+
+// ---------- FX-W8: POST /api/duyet dính Loại → Worker tự giao poster_bo_loai {uid} (không phụ thuộc trang web) ----------
+const KHOA_W8 = { id: UID, goc: "E:/g", ten: "w8.mp4", sua_luc: 800, mb: 1 };
+const goiViecMay = () => mayGoi.filter((g) => g.url.pathname === "/r/viec" && g.method === "POST");
+const chamW8 = (cookie, ket_qua, gop_y = "") => call("/api/duyet", { cookie, body: { ...KHOA_W8, ket_qua, gop_y } });
+
+test("FX-W8 duyet: chấm Loại → POST /r/viec {loai:poster_bo_loai, tham_so:{uid từ info.json}, boi} có chữ ký, timeout; dong_bo 'tao'", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  const r = await chamW8(cookie, "loai");
+  assert.equal(r.status, 200);
+  const j = await r.json();
+  assert.equal(j.dong_bo, "tao");
+  assert.equal(j.duyet[0].ket_qua, "loai");
+  const g = goiViecMay();
+  assert.equal(g.length, 1);
+  assert.deepEqual(JSON.parse(g[0].body), { loai: "poster_bo_loai", tham_so: { uid: UID }, boi: "nhan" });
+  assert.ok(await kiemChuKy(g[0]));
+  assert.ok(g[0].signal instanceof AbortSignal);
+  assert.equal(puts.length, 1, "lưu chấm trước");
+});
+
+test("FX-W8 duyet: Đạt→Đạt, chưa có→Đạt, chỉ góp ý, bỏ chấm khoá chưa có → KHÔNG gọi máy nhà; dong_bo null", async () => {
+  const { cookie } = await dangNhapNhan();
+  for (const [kq, gy] of [["dat", ""], ["dat", "ok"], ["", "xem lại"], ["", ""]]) {
+    const r = await chamW8(cookie, kq, gy);
+    assert.equal(r.status, 200);
+    assert.equal((await r.json()).dong_bo, null, `${kq}/${gy}`);
+  }
+  const r = await call("/api/duyet", { cookie, body: { ...KHOA_W8, sua_luc: 801, ket_qua: "", gop_y: "" } });
+  assert.equal((await r.json()).dong_bo, null);
+  assert.equal(mayGoi.length, 0);
+});
+
+test("FX-W8 duyet: Loại→Đạt và Loại→bỏ chấm đều gọi máy nhà (kết quả cũ là loai)", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  await chamW8(cookie, "loai");
+  let r = await chamW8(cookie, "dat");
+  assert.equal((await r.json()).dong_bo, "tao");
+  assert.equal(goiViecMay().length, 2);
+  await chamW8(cookie, "loai");
+  r = await chamW8(cookie, "", "");
+  const j = await r.json();
+  assert.equal(j.dong_bo, "tao");
+  assert.equal(j.duyet[0].ket_qua, "");
+  assert.equal(goiViecMay().length, 4);
+});
+
+test("FX-W8 duyet: máy nhà 409 → 'trung'; máy nhà lỗi / sập / 401 / thiếu cấu hình / UID sai → vẫn lưu chấm, dong_bo 'chua'", async () => {
+  const { cookie } = await dangNhapNhan();
+  const goc = console.error; console.error = () => {};
+  try {
+    mayTraLoi = async () => Response.json({ loi: "trùng", trung: { id: JOB } }, { status: 409 });
+    assert.equal((await (await chamW8(cookie, "loai")).json()).dong_bo, "trung");
+    for (const tra of [
+      async () => Response.json({ loi: "x" }, { status: 500 }),
+      async () => { throw new TypeError("fetch failed"); },
+      async () => new Response("", { status: 401 }),
+      async () => Response.json({ loi: "loại việc lạ" }, { status: 400 }),
+    ]) {
+      mayTraLoi = tra;
+      const n = puts.length;
+      const r = await chamW8(cookie, "loai", "g" + n);
+      assert.equal(r.status, 200);
+      const j = await r.json();
+      assert.equal(j.dong_bo, "chua");
+      assert.equal(puts.length, n + 1, "chấm vẫn được lưu");
+      assert.equal(j.duyet[0].gop_y, "g" + n);
+    }
+    // thiếu cấu hình → không gọi máy nhà
+    delete env.KY_RIENG;
+    let truoc = mayGoi.length;
+    assert.equal((await (await chamW8(cookie, "dat")).json()).dong_bo, "chua");
+    assert.equal(mayGoi.length, truoc);
+    env.KY_RIENG = KY_RIENG_TEST;
+    // UID trong info.json sai mẫu → không gọi máy nhà
+    files[`data/${UID}/info.json`].text = JSON.stringify({ id: UID, uid: "123", ten: "Gel" });
+    truoc = mayGoi.length;
+    assert.equal((await (await chamW8(cookie, "loai")).json()).dong_bo, "chua");
+    assert.equal(mayGoi.length, truoc);
+  } finally { console.error = goc; }
+});
+
+// ---------- Dán link → Worker tự giao máy nhà phân tích (không phải bấm "Xử lý link mới") ----------
+test("them: link có UID → POST /r/viec {phan_tich_uid, uid, boi người dán} có chữ ký; may 'tao'; nhân viên dán cũng được", async () => {
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  for (const [user, pass, uid] of [["nhan", "matkhau-nhan", "1731111111111111111"], ["lan", "matkhau-lan", "1731111111111111112"]]) {
+    mayGoi = [];
+    const { cookie } = await dangNhap(user, pass);
+    const r = await call("/api/them", { cookie, body: { link: `https://shop.tiktok.com/vn/pdp/${uid}?a=b` } });
+    assert.equal(r.status, 200);
+    assert.equal((await r.json()).may, "tao");
+    const g = goiViecMay();
+    assert.equal(g.length, 1);
+    assert.deepEqual(JSON.parse(g[0].body), { loai: "phan_tich_uid", tham_so: { uid }, boi: user });
+    assert.ok(await kiemChuKy(g[0]));
+  }
+});
+
+test("them: link rút gọn (chưa có UID) → xu_ly_link_moi {}", async () => {
+  mayTraLoi = async () => Response.json({ viec: { id: JOB } }, { status: 201 });
+  const { cookie } = await dangNhapNhan();
+  const r = await call("/api/them", { cookie, body: { link: "https://vt.tiktok.com/ZSabc123/" } });
+  assert.equal(r.status, 200);
+  assert.equal((await r.json()).may, "tao");
+  assert.deepEqual(JSON.parse(goiViecMay()[0].body), { loai: "xu_ly_link_moi", tham_so: {}, boi: "nhan" });
+});
+
+test("them: link trùng → 409, KHÔNG gọi máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  const r = await call("/api/them", { cookie, body: { link: UID } });
+  assert.equal(r.status, 409);
+  assert.equal(goiViecMay().length, 0);
+});
+
+test("them: máy nhà 409 → may 'trung'; máy nhà lỗi / sập → link VẪN lưu, may 'chua'", async () => {
+  const { cookie } = await dangNhapNhan();
+  const goc = console.error; console.error = () => {};
+  try {
+    mayTraLoi = async () => Response.json({ loi: "trùng" }, { status: 409 });
+    let r = await call("/api/them", { cookie, body: { link: "1731111111111111121" } });
+    assert.equal((await r.json()).may, "trung");
+    let n = 2;
+    for (const tra of [async () => Response.json({ loi: "x" }, { status: 500 }), async () => { throw new TypeError("fetch failed"); }]) {
+      mayTraLoi = tra;
+      const uid = `17311111111111111${String(20 + n++)}`;
+      r = await call("/api/them", { cookie, body: { link: uid } });
+      assert.equal(r.status, 200);
+      assert.equal((await r.json()).may, "chua");
+      assert.ok(files[`data/${uid}/info.json`], "link vẫn được lưu");
+    }
+  } finally { console.error = goc; }
+});
+
+// ---------- bật/tắt app máy nhà ----------
+test("may-nha app: chủ kho POST → chuyển tới /app/<ma>/<lam> kèm x-key; người thường 403; mã lạ / GET không chuyển", async () => {
+  const { cookie } = await dangNhapNhan();
+  mayTraLoi = async () => Response.json({ ma: "muse", ok: true, tin: "Đang bật", song: false });
+  let r = await call("/api/may-nha/app/muse/bat", { cookie, body: {} });
+  assert.equal(r.status, 200);
+  assert.equal((await r.json()).tin, "Đang bật");
+  assert.equal(goiCuoi().url.href, "https://may.test/app/muse/bat");
+  assert.equal(goiCuoi().headers["x-key"], "k");
+  mayTraLoi = async () => Response.json({ ma: "runner", ok: false, tin: "Đã gửi lệnh tắt nhưng cổng vẫn mở" }, { status: 500 });
+  r = await call("/api/may-nha/app/runner/tat", { cookie, body: {} });
+  assert.equal(r.status, 502);
+  assert.equal((await r.json()).loi, "Đã gửi lệnh tắt nhưng cổng vẫn mở");
+  const truoc = mayGoi.length;
+  assert.equal((await call("/api/may-nha/app/video_server/tat", { cookie, body: {} })).status, 404);
+  assert.equal((await call("/api/may-nha/app/muse/bat", { cookie })).status, 404);
+  const thuong = await dangNhap();
+  assert.equal((await call("/api/may-nha/app/muse/bat", { cookie: thuong.cookie, body: {} })).status, 403);
+  assert.equal(mayGoi.length, truoc);
 });
