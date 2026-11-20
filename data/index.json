@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-21T06:20:33+07:00",
+ "cap_nhat_luc": "2026-11-21T06:22:41+07:00",
  "san_pham": [
   {
    "id": "1738496407898916706",
    "uid": "1738496407898916706",
    "link": "https://vt.tiktok.com/ZS9P2kBGWV6CC-P3OJY/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【Dép bánh mì êm chân POSE】Dép P623103 RELAX-BOUCE PRO chống trượt, khử mùi, đàn hồi êm ái, dùng tốt cho phòng tắm. Đế bằng, phù hợp gia đình.",
+   "gia": "198.176₫",
+   "shop": "POSE sandals",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-20T20:32:18+07:00",
-   "cap_nhat_luc": "2026-11-21T06:17:30+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-21T06:22:29+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
