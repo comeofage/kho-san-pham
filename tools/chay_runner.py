@@ -217,7 +217,8 @@ def main(argv: list[str] | None = None) -> int:
             # A-5 (§7.6): trả lời trong phiên sống taovideo đi thẳng vào stdin qua BoChay
             handler = api.tao_handler(kho, mt, khoa_runner, kcc, hm, canh_bao,
                                       bo.bao_huy, bo.doc_log, bo.trang_thai_lan, che=che,
-                                      tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song)
+                                      tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song,
+                                      nhan_tin_song=bo.nhan_tin_song)
             try:
                 srv = ThreadingHTTPServer(("127.0.0.1", ts.cong), handler)
             except OSError as e:

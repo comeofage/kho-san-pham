@@ -1869,6 +1869,12 @@ class PhienGia:
     def co_phien_song(self, id_):
         return id_ in self.song
 
+    def nhan_tin_song(self, id_, boi, noi_dung, ngat):
+        self.goi.append((id_, boi, noi_dung, ngat))
+        if self.loi is not None:
+            raise self.loi
+        return self.kho.lay(id_)
+
 
 @pytest.fixture
 def mt5(mt):
@@ -1884,7 +1890,8 @@ def mt5(mt):
 @pytest.fixture
 def may5(tmp_path, mt5, dong):
     pg = PhienGia(None)
-    m = May(tmp_path, mt5, dong, tra_loi_song=pg.tra_loi_song, co_phien_song=pg.co_phien_song)
+    m = May(tmp_path, mt5, dong, tra_loi_song=pg.tra_loi_song, co_phien_song=pg.co_phien_song,
+            nhan_tin_song=pg.nhan_tin_song)
     pg.kho = m.kho
     m.pg = pg  # type: ignore[attr-defined]
     yield m
@@ -2176,3 +2183,76 @@ def test_chay_tiep_sua_video_kiem_tay_409_kem_thong_diep(ms):
     assert s == 409 and r["loi"] == v["ket_qua"]["thong_diep"] and r["kiem_tay"] is True
     assert "Chạy tiếp không giúp được" in r["loi"]
     assert ms.kho.lay(id_)["trang_thai"] == "loi"
+
+
+# ---------- nhan-tin: chỉ đạo việc phiên sống ----------
+
+def _taovideo_dang_chay(may, dong):
+    s, d = _tao(may, "taovideo", _tv_ts(may.mt))
+    assert s == 201, d
+    id_ = d["viec"]["id"]
+    assert _duyet(may, dong, id_, loi="Duyệt cả phiên")[0] == 200
+    may.kho.chuyen(id_, ["cho"], "dang_chay", "he_thong")
+    may.pg.song.add(id_)
+    return id_
+
+
+def test_nhan_tin_can_mat_khau_va_kiem_body(may5, dong):
+    id_ = _taovideo_dang_chay(may5, dong)
+    url = f"/viec/{id_}/nhan-tin"
+    assert may5.goi("POST", url, {"noi_dung": "Không nói giá", "boi": "nhan"})[0] == 403
+    for sai in ({"noi_dung": "", "da_xac_nhan_mat_khau": True}, {"noi_dung": " \n ", "da_xac_nhan_mat_khau": True},
+                {"noi_dung": "x" * 1001, "da_xac_nhan_mat_khau": True},
+                {"noi_dung": "a\tb", "da_xac_nhan_mat_khau": True},
+                {"noi_dung": "ok", "ngat": "true", "da_xac_nhan_mat_khau": True},
+                {"noi_dung": "ok", "da_xac_nhan_mat_khau": "true"}, {"noi_dung": 5, "da_xac_nhan_mat_khau": True}):
+        assert may5.goi("POST", url, dict(sai, boi="nhan"))[0] == 400, sai
+    assert may5.pg.goi == []
+    s, r = may5.goi("POST", url, {"noi_dung": "Không nói giá\n<<<x>>>", "boi": "comeofage",
+                                  "da_xac_nhan_mat_khau": True})
+    assert s == 200 and r["viec"]["phien_song"] is True, r
+    s, r = may5.goi("POST", url, {"noi_dung": "Ngắt đi", "ngat": True, "boi": "nhan", "da_xac_nhan_mat_khau": True})
+    assert s == 200
+    assert may5.pg.goi == [(id_, "comeofage", "Không nói giá\n‹‹‹x›››", False), (id_, "nhan", "Ngắt đi", True)]
+
+
+def test_nhan_tin_409_khong_phien_dang_hoi_va_loai_khac(may5, dong):
+    id_ = _taovideo_dang_chay(may5, dong)
+    body = {"noi_dung": "Không nói giá", "boi": "nhan", "da_xac_nhan_mat_khau": True}
+    may5.pg.song.discard(id_)
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", body) == (409, {"loi": api.LOI_PHIEN_DA_DONG})
+    may5.pg.song.add(id_)
+    may5.pg.loi = KhongCoPhien("đóng")
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", body) == (409, {"loi": api.LOI_PHIEN_DA_DONG})
+    may5.pg.loi = SaiTrangThai("cas")
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", body)[0] == 409
+    may5.pg.loi = None
+    may5.pg.goi.clear()
+    may5.kho.chuyen(id_, ["dang_chay"], "huy", "nhan")
+    id2 = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "?", ("A", "B")))
+    assert may5.goi("POST", f"/viec/{id2}/nhan-tin", body) == (409, {"loi": api.LOI_CHI_DAO_DANG_HOI})
+    assert may5.goi("POST", f"/viec/{id2}/nhan-tin", dict(body, ngat=True))[0] == 200     # ngắt được khi đang hỏi
+    s, d = _tao(may5, "phan_tich_uid")
+    assert may5.goi("POST", f"/viec/{d['viec']['id']}/nhan-tin", body)[0] == 409
+    assert may5.pg.goi == [(id2, "nhan", "Không nói giá", True)]
+
+
+def test_nhan_tin_viec_loi_hoac_cho_duyet_chi_luu_cho_lan_chay_tiep(may5, dong):
+    from runner.phieu import CAU_CHI_DAO
+    id_ = _taovideo_dang_chay(may5, dong)
+    may5.pg.song.discard(id_)
+    kt = "2026-11-17T09:00:00+07:00"
+    may5.kho.chuyen(id_, ["dang_chay"], "loi", "he_thong", loi="Phiên Claude tự thoát", ket_thuc_luc=kt)
+    body = {"noi_dung": "Kịch bản không được nói giá", "boi": "nhan", "da_xac_nhan_mat_khau": True}
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", dict(body, da_xac_nhan_mat_khau=False))[0] == 403
+    s, r = may5.goi("POST", f"/viec/{id_}/nhan-tin", body)
+    assert s == 200 and r["luu_cho_lan_sau"] is True and r["viec"]["trang_thai"] == "loi", r
+    v = may5.kho.lay(id_)
+    assert v["ket_thuc_luc"] == kt and v["loi"] == "Phiên Claude tự thoát"
+    assert [(t["cau_hoi"], t["noi_dung"]) for t in may5.kho.tra_loi_cua(id_)] == [(CAU_CHI_DAO, body["noi_dung"])]
+    assert may5.pg.goi == []
+    assert may5.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})[0] == 200
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", dict(body, noi_dung="Thêm: giữ giọng Adam"))[0] == 200
+    assert len(may5.kho.tra_loi_cua(id_)) == 2 and may5.kho.lay(id_)["trang_thai"] == "cho_duyet"
+    may5.kho.chuyen(id_, ["cho_duyet"], "huy", "nhan")
+    assert may5.goi("POST", f"/viec/{id_}/nhan-tin", body) == (409, {"loi": api.LOI_PHIEN_DA_DONG})

@@ -959,3 +959,92 @@ def test_fx27_p2_2_co_phien_song_dung_toi_khi_chot_trang_thai_cuoi(tmp_path):
     assert bo.co_phien_song(id) is False
     assert s["trang_thai"] == "loi" and s["pid"] is None and s["ket_qua"]["cau_hoi_treo"] == "Tạo lại voice hỏng?"
     assert "chi_phi_usd_phien" in s["ket_qua"] and "doi_soat" in s["ket_qua"]
+
+
+# ================================================================ chỉ đạo của chủ shop (nhan_tin_song)
+
+CHI_DAO = "Kịch bản KHÔNG được nói giá. Làm lại voice."
+
+
+def test_chi_dao_luc_dang_lam_toi_sau_ket_luot_va_khong_de_phien_dong(tmp_path):
+    """Chỉ đạo gửi giữa lượt → chờ hàng đợi; agent báo DONE ở cuối lượt đó nhưng runner KHÔNG đóng stdin mà ghi chỉ
+    đạo; lượt sau DONE mới xong."""
+    from runner.phieu import CAU_CHI_DAO
+    bo, kho, v, kb, _, _, _ = lam_tv(tmp_path, [{"luot": [
+        {"viec": [_asst(), {"k": "moc", "ten": "dang_lam"}, {"k": "ngu", "s": 1.5}, _ket(DONE, 0.1)]},
+        {"viec": [_asst("làm lại voice"), _ket(DONE, 0.2)]}]}])
+    id = v["id"]
+    _, t = chay_nen(bo)
+    cho(lambda: any(d["loai"] == "moc" for d in nhat_ky(kb)))
+    time.sleep(0.3)
+    moi = bo.nhan_tin_song(id, "nhan", CHI_DAO, False)
+    assert moi["trang_thai"] == "dang_chay" and moi["pid"]
+    assert len(tin_nhan(kb)) == 1                                       # chưa ghi giữa lượt
+    xong_luong(t)
+    s = kho.lay(id)
+    assert s["trang_thai"] == "xong", s
+    msg = tin_nhan(kb)
+    assert len(msg) == 2 and msg[1].startswith(CAU_CHI_DAO) and CHI_DAO in msg[1], msg
+    assert [(r["cau_hoi"], r["noi_dung"]) for r in kho.tra_loi_cua(id)] == [(CAU_CHI_DAO, CHI_DAO)]
+    assert any("chỉ đạo" in g for g in ghi_chu_su_kien(kho, id))
+    assert "gửi chỉ đạo của chủ shop trước" in log_viec(tmp_path, id)
+
+
+def test_chi_dao_luc_cho_viec_nen_toi_ngay(tmp_path):
+    """Agent đã kết lượt, đang chờ việc nền (cho_nen) → chỉ đạo ghi stdin ngay, không đợi việc nền xong."""
+    bo, kho, v, kb, _, _, _ = lam_tv(tmp_path, [{"luot": [
+        {"viec": [{"k": "nen_bat", "id": "t1"}, _ket("Đã chạy voice nền, chờ thông báo.", 0.1)]},
+        {"viec": [_asst("nhận chỉ đạo"), {"k": "nen_xong", "id": "t1"}, _ket(DONE, 0.2)]}]}])
+    id = v["id"]
+    _, t = chay_nen(bo)
+    cho(lambda: (lambda x: x if x["can_ban"] and "việc nền" in x["can_ban"] else None)(kho.lay(id)))
+    t0 = time.monotonic()
+    bo.nhan_tin_song(id, "nhan", CHI_DAO, False)
+    cho(lambda: len(tin_nhan(kb)) == 2, 5)
+    assert time.monotonic() - t0 < 3
+    xong_luong(t)
+    assert kho.lay(id)["trang_thai"] == "xong"
+
+
+def test_chi_dao_ngat_giet_cay_roi_duyet_lai_phieu_mang_chi_dao(tmp_path):
+    from runner.phieu import CAU_CHI_DAO
+    bo, kho, v, kb, so, khoa, _ = lam_tv(tmp_path, [{"luot": [{"viec": [{"k": "con"}, _asst(), {"k": "ngu", "s": 60}]}]},
+                                                    {"luot": [{"viec": [_ket(DONE)]}]}])
+    id = v["id"]
+    _, t = chay_nen(bo)
+    cho(lambda: any(d["loai"] == "con" for d in nhat_ky(kb)))
+    cho(lambda: trang(kho, id, "dang_chay") and kho.lay(id)["pid"])
+    bo.nhan_tin_song(id, "nhan", CHI_DAO, True)
+    xong_luong(t)
+    s = kho.lay(id)
+    assert s["trang_thai"] == "loi" and "Chủ shop ngắt" in s["loi"] and "Xin duyệt lại" in s["loi"], s
+    nk = nhat_ky(kb)
+    con = [d["pid"] for d in nk if d["loai"] == "con"][0]
+    assert not song(nk[0]["pid"]) and cho(lambda: not song(con), 10)
+    assert len(tin_nhan(kb)) == 1                                       # ngắt không ghi gì vào stdin
+    kho.chuyen(id, ["loi"], "cho_duyet", "nhan", "xin duyệt lại", loi_duyet=None, duyet_boi=None, duyet_luc=None,
+               chu_ky_duyet=None, ket_qua=_api.ket_qua_xin_duyet_lai(s))
+    duyet_lan(kho, khoa, id, 2)
+    _, t = chay_nen(bo)
+    xong_luong(t)
+    assert kho.lay(id)["trang_thai"] == "xong"
+    p2 = tin_nhan(kb, 1)[0]
+    assert "LẦN CHẠY TIẾP" in p2 and "Chủ shop ngắt" in p2
+    khoi = p2.split(CAU_CHI_DAO, 1)[1]
+    assert CHI_DAO in khoi and "làm lại đúng phần đó" in khoi
+
+
+def test_chi_dao_loi_trang_thai_va_khong_co_phien(tmp_path):
+    bo, kho, v, kb, _, _, _ = lam_tv(tmp_path, [{"luot": [{"viec": [_ket(CAN_CHON)]}, {"viec": [_ket(DONE)]}]}],
+                                     taovideo_cho_s=30)
+    id = v["id"]
+    with pytest.raises(KhongCoPhien):
+        bo.nhan_tin_song(id, "nhan", CHI_DAO, False)
+    _, t = chay_nen(bo)
+    s = cho(lambda: trang(kho, id, "can_tra_loi"))
+    with pytest.raises(SaiTrangThai):                                   # đang hỏi → phải trả lời hoặc ngắt
+        bo.nhan_tin_song(id, "nhan", CHI_DAO, False)
+    assert kho.tra_loi_cua(id) == []
+    bo.tra_loi_song(id, "nhan", "Tạo lại", s["cau_hoi"]["ma"])
+    xong_luong(t)
+    assert kho.lay(id)["trang_thai"] == "xong"

@@ -2074,3 +2074,38 @@ test("may-nha app: chủ kho POST → chuyển tới /app/<ma>/<lam> kèm x-key;
   assert.equal((await call("/api/may-nha/app/muse/bat", { cookie: thuong.cookie, body: {} })).status, 403);
   assert.equal(mayGoi.length, truoc);
 });
+
+// ---------- nhan-tin: chỉ đạo việc phiên sống ----------
+const duongNt = `/api/viec/${JOB}/nhan-tin`;
+
+test("nhan-tin: mật khẩu đúng → POST thẳng runner (không GET trước), body đã ký {noi_dung, ngat, boi, da_xac_nhan_mat_khau:true}", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong(null, { trangThai: "dang_chay" });
+  const chu = "Kịch bản KHÔNG được nói giá.\nLàm lại voice.";
+  const r = await postViec(cookie, duongNt, { noi_dung: chu, mat_khau: "matkhau-nhan", boi: "comeofage", da_xac_nhan_mat_khau: false });
+  assert.equal(r.status, 200);
+  const g = goiCuoi();
+  assert.equal(g.method, "POST");
+  assert.equal(g.url.pathname, `/r/viec/${JOB}/nhan-tin`);
+  assert.deepEqual(JSON.parse(g.body), { noi_dung: chu, ngat: false, boi: "nhan", da_xac_nhan_mat_khau: true });
+  assert.ok(await kiemChuKy(g));
+  assert.ok(!g.body.includes("matkhau-nhan"));
+  assert.equal((await postViec(cookie, duongNt, { noi_dung: "Dừng", ngat: true, mat_khau: "matkhau-nhan" })).status, 200);
+  assert.equal(JSON.parse(goiCuoi().body).ngat, true);
+});
+
+test("nhan-tin: thiếu/sai mật khẩu, chữ sai, ngat sai kiểu → bị chặn trước máy nhà", async () => {
+  const { cookie } = await dangNhapNhan();
+  runnerSong(null, { trangThai: "dang_chay" });
+  mayGoi = [];
+  assert.equal((await postViec(cookie, duongNt, { noi_dung: "Không nói giá" })).status, 400);
+  assert.equal((await postViec(cookie, duongNt, { noi_dung: "Không nói giá", mat_khau: "sai-roi" })).status, 403);
+  for (const b of [{ noi_dung: "" }, { noi_dung: "  \n " }, { noi_dung: "đ".repeat(1001) }, { noi_dung: "a\u0000b" },
+    { noi_dung: "a\ud800b" }, { noi_dung: 5 }, { noi_dung: "ok", ngat: "true" }]) {
+    assert.equal((await postViec(cookie, duongNt, { ...b, mat_khau: "matkhau-nhan" })).status, 400, JSON.stringify(b).slice(0, 60));
+  }
+  assert.equal(mayGoi.length, 0);
+  const lan = await dangNhap();
+  assert.equal((await postViec(lan.cookie, duongNt, { noi_dung: "ok", mat_khau: "matkhau-lan" })).status, 403);
+  assert.equal(mayGoi.length, 0);
+});

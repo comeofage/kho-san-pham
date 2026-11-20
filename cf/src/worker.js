@@ -540,11 +540,12 @@ function tuyenViec(p) {
     if (act === "ung-vien") return { GET: { dich: `/sua-video/${uid}/${ma}/ung-vien`, query: ["seg"], mau: { seg: /^\d{1,3}$/ } } };
     return { POST: { dich: `/sua-video/${uid}/${ma}/ban-sua`, lam: "sua_video", uid, ma } };
   }
-  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai))?$/))) {
+  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin))?$/))) {
     const [, id, act] = k;
     if (!act) return { GET: { dich: `/viec/${id}` } };
     if (act === "log") return { GET: { dich: `/viec/${id}/log`, query: ["tu"] } };
-    return { POST: { dich: `/viec/${id}/${act}`, lam: act === "tra-loi" ? "tra_loi" : act === "duyet" ? "duyet" : "boi", id } };
+    const lam = { "tra-loi": "tra_loi", duyet: "duyet", "nhan-tin": "nhan_tin" }[act] || "boi";
+    return { POST: { dich: `/viec/${id}/${act}`, lam, id } };
   }
   return null;
 }
@@ -612,6 +613,23 @@ async function traLoiViec(req, env, tuyen, phien) {
     if (phienSong && cauHoi.loai === "chon" && !daXacNhan) return loi("Chọn trong phiên đang chạy cần nhập mật khẩu", 403);
   }
   return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { tra_loi, boi: phien.user, da_xac_nhan_mat_khau: daXacNhan, ...(coMa ? { ma_cau_hoi } : {}) } }));
+}
+
+// Chỉ đạo việc phiên sống đang chạy. Body web {noi_dung, ngat?, mat_khau}; body tới runner {noi_dung, ngat, boi,
+// da_xac_nhan_mat_khau: true}. Luôn cần mật khẩu (chỉ đạo có thể khiến agent tiêu thêm tiền trong trần); kiểm
+// hình dạng TRƯỚC mật khẩu để body sai không tính lần sai. Runner kiểm trạng thái/phiên sống.
+async function nhanTinViec(req, env, tuyen, phien) {
+  const b = await docBodyViec(req);
+  const { noi_dung, ngat = false, mat_khau } = laObjectThuong(b) ? b : {};
+  if (typeof noi_dung !== "string" || !noi_dung.trim() || [...noi_dung].length > TRA_LOI_CHU_TOI_DA
+    || RE_DIEU_KHIEN_TRU_XUONG_DONG.test(noi_dung) || RE_SURROGATE_LE.test(noi_dung)) {
+    return loi(`Chỉ đạo phải dài 1–${TRA_LOI_CHU_TOI_DA} ký tự, không có ký tự điều khiển`);
+  }
+  if (typeof ngat !== "boolean") return loi("ngat phải là true/false");
+  if (typeof mat_khau !== "string" || !mat_khau || mat_khau.length > MAT_KHAU_TOI_DA) return loi("Thiếu mật khẩu");
+  const loiMk = await kiemMatKhauCoDem(env, phien.user, mat_khau);
+  if (loiMk) return loiMk;
+  return traVeMayNha(await goiMayNha(env, tuyen.dich, { method: "POST", body: { noi_dung, ngat, boi: phien.user, da_xac_nhan_mat_khau: true } }));
 }
 
 // ---------- duyệt việc tốn tiền (đợt 4, §8.2, §8.3, §9 mục 4) ----------
@@ -852,6 +870,7 @@ async function apiViec(req, env, url, phien) {
     return traVeMayNha(await goiMayNha(env, tuyen.dich + q));
   }
   if (tuyen.lam === "tra_loi") return traLoiViec(req, env, tuyen, phien);
+  if (tuyen.lam === "nhan_tin") return nhanTinViec(req, env, tuyen, phien);
   if (tuyen.lam === "duyet") return duyetViec(req, env, tuyen, phien);
   if (tuyen.lam === "sua_video") return luuSuaVideo(req, env, tuyen, phien);
   let body;

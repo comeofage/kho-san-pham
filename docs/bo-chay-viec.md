@@ -725,6 +725,20 @@ Các điểm hỏi dự kiến của quy trình:
 
 Chốt thư mục Bước B (`taomevideo\SKILL.md:42`) **không còn là câu hỏi**: runner chốt lúc tạo việc (§7.10).
 
+### 7.6a Chỉ đạo của chủ shop khi việc đang chạy (`nhan-tin`)
+
+Web: khung "💬 Chỉ đạo agent" trên trang việc phiên sống (`dang_chay` / `can_tra_loi`), luôn kèm mật khẩu.
+`POST /api/viec/<id>/nhan-tin` `{noi_dung, ngat, mat_khau}` → Worker kiểm chữ 1–1000 ký tự + mật khẩu (đếm sai chung
+KV) → runner `{noi_dung, ngat, boi, da_xac_nhan_mat_khau: true}` → `BoChay.nhan_tin_song`. Mọi chỉ đạo lưu thành dòng
+`tra_loi` với câu `CAU_CHI_DAO` (`phieu.py`).
+
+- **Nhắn** (`ngat=false`, chỉ `dang_chay`): `lap_tin_chi_dao` vào hàng đợi stdin, không mã. Theo S-4 #4 agent chỉ nhận
+  khi kết lượt; đang chờ việc nền (`cho_nen`) thì nhận ngay. Khi còn chỉ đạo chưa ghi, `khi_nhip` bỏ qua hành động của
+  lượt đó (không `dong`/`hoi`/`nhac`) để tin được ghi trước. Đang hỏi → 409 (trả lời câu hỏi, hoặc Ngắt).
+- **Ngắt & nhắn** (`ngat=true`): gọi `dung()` của phiên → giết cả cây → `loi` "Chủ shop ngắt để chỉ đạo lại: …".
+  Chạy tiếp vẫn theo D9: Xin duyệt lại → Duyệt (một lời duyệt mới). Phiếu LẦN CHẠY TIẾP tách các dòng chỉ đạo (≤5 mới
+  nhất) ra khối riêng, được phép làm lại phần đã xong (vd voice), vẫn trong trần và phạm vi phiếu.
+
 ### 7.7 Quá giờ và huỷ
 
 | Đồng hồ | Đề xuất | Hết giờ thì |

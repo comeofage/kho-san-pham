@@ -192,7 +192,8 @@ function idTrungViec(r) {
 }
 
 const NHAN_XONG = { huy: "Đã huỷ", "tu-choi": "Đã từ chối", "chay-tiep": "▶ Đã cho chạy tiếp", "chay-lai": "↻ Đã tạo việc chạy lại", "tra-loi": "✓ Đã gửi trả lời", duyet: "✓ Đã duyệt — việc sẽ chạy trên máy nhà",
-  "xin-duyet-lai": "↻ Đã xin duyệt lại — kiểm tham số rồi duyệt bằng mật khẩu" };
+  "xin-duyet-lai": "↻ Đã xin duyệt lại — kiểm tham số rồi duyệt bằng mật khẩu",
+  "nhan-tin": "✓ Đã gửi chỉ đạo — agent nhận khi xong bước đang làm" };
 // Phản hồi của POST /viec/<id>/<act> → {toast, chuyen (id việc cần mở, "" = ở lại), canhBao (giữ trên trang)}.
 function ketQuaHanhDong(act, r, id) {
   const x = r || {};
@@ -299,6 +300,38 @@ function khungTraLoiHtml(viec, opt = {}) {
         <input type="password" id="vtl-mk" class="vtl-mk" autocomplete="current-password" maxlength="256"${dis}></label>` : ""}
       <div class="row vtl-nut">${k.nut.map((n, i) => `<button type="button" class="btn sm" data-vtl-nut="${i}"${dis}>${esc(n.nhan)}</button>`).join("")}
         ${k.o_chu ? `<button type="button" class="btn sm" data-vtl-act="gui"${dis}>➤ Gửi trả lời</button>` : ""}</div>
+    </form>`;
+}
+
+// Khung chỉ đạo agent (#vj-chi-dao): việc phiên sống đang chạy/đang hỏi. "Nhắn" xếp hàng (agent nhận khi xong bước đang
+// làm; khoá khi agent đang hỏi — trả lời ở khung trên); "Ngắt & nhắn" giết phiên ngay, chỉ đạo đi vào phiếu lần chạy
+// tiếp sau Xin duyệt lại. Ô mật khẩu KHÔNG BAO GIỜ có value. opt: {khoa}.
+// Việc taovideo KHÔNG còn phiên ở loi/cho_duyet: chỉ "Ghi chỉ đạo" (lưu cho lần chạy tiếp sau Xin duyệt lại → Duyệt).
+function khungChiDaoHtml(viec, opt = {}) {
+  const v = viec && typeof viec === "object" ? viec : null;
+  if (!v) return "";
+  const song = v.phien_song === true && ["dang_chay", "can_tra_loi"].includes(v.trang_thai);
+  const ghi = !song && v.loai === "taovideo" && ["loi", "cho_duyet"].includes(v.trang_thai);
+  if (!song && !ghi) return "";
+  const dis = opt && opt.khoa ? " disabled" : "";
+  const dangHoi = v.trang_thai === "can_tra_loi";
+  const huongDan = song
+    ? `Nhắn: agent nhận khi xong bước đang làm (đang chờ render/voice nền thì nhận ngay).
+        Ngắt &amp; nhắn: dừng ngay cả render/voice, rồi bấm Xin duyệt lại → Duyệt để chạy lại theo chỉ đạo.`
+    : `Việc không còn chạy: chỉ đạo được lưu và đưa vào phiếu lần chạy tiếp${v.trang_thai === "loi" ? " — sau đó bấm ↻ Xin duyệt lại rồi Duyệt" : " — sau đó Duyệt"}.`;
+  const nut = song
+    ? `<button type="button" class="btn sm" data-vcd-act="nhan"${dangHoi ? " disabled title=\"Agent đang hỏi — trả lời ở khung trên, hoặc Ngắt & nhắn\"" : dis}>➤ Nhắn</button>
+        <button type="button" class="btn ghost sm" data-vcd-act="ngat"${dis}>⏹ Ngắt &amp; nhắn</button>`
+    : `<button type="button" class="btn sm" data-vcd-act="ghi"${dis}>💾 Ghi chỉ đạo</button>`;
+  return `<form class="vtl vcd" id="vcd-form">
+      <h3>💬 Chỉ đạo agent</h3>
+      <div class="small muted">${huongDan}</div>
+      <label for="vcd-chu">Chỉ đạo <span class="small muted">(1–${TRA_LOI_CHU_TOI_DA_WEB} ký tự)</span>
+        <textarea id="vcd-chu" class="vtl-chu" rows="3" maxlength="${TRA_LOI_CHU_TOI_DA_WEB}" placeholder="vd: Kịch bản không được nói giá, làm lại voice"${dis}></textarea></label>
+      <label for="vcd-mk">Mật khẩu đăng nhập
+        <input type="password" id="vcd-mk" class="vtl-mk" autocomplete="current-password" maxlength="256"${dis}></label>
+      <div class="row vtl-nut">
+        ${nut}</div>
     </form>`;
 }
 
@@ -942,6 +975,7 @@ async function renderViecChiTiet(id) {
     <div class="vj">
       <div id="vj-nd"><p class="muted">Đang tải…</p></div>
       <div id="vj-tra-loi"></div>
+      <div id="vj-chi-dao"></div>
       <div id="vj-duyet"></div>
       <h3>Log <span class="small muted" id="vj-log-tt"></span></h3>
       <pre class="vj-log" id="vj-log"></pre>
@@ -1078,12 +1112,34 @@ async function renderViecChiTiet(id) {
     }
     khoaKhungTraLoi(dangGuiViec.has(id));
   };
+  // Khung chỉ đạo (#vj-chi-dao): vẽ lại chỉ khi đổi trạng thái (dang_chay ↔ can_tra_loi) để giữ chữ đang gõ.
+  let khungCdKhoa = "";
+  const veChiDao = () => {
+    if (tk !== phienViec) return;
+    const box = $("#vj-chi-dao");
+    if (!box) return;
+    const v = d && d.viec;
+    const html = v ? khungChiDaoHtml(v) : "";
+    const khoa = html ? `${v.id}|${v.trang_thai}` : "";
+    if (khoa !== khungCdKhoa && !dangGuiViec.has(id)) {
+      const chu = $("#vcd-chu");
+      const giu = chu ? chu.value : "";
+      box.innerHTML = html;
+      khungCdKhoa = khoa;
+      const moi = $("#vcd-chu");
+      if (moi && giu) moi.value = giu;
+    }
+    if (khungCdKhoa) box.querySelectorAll("button, textarea, input").forEach((el) => {
+      el.disabled = dangGuiViec.has(id) || (el.dataset.vcdAct === "nhan" && v && v.trang_thai === "can_tra_loi");
+    });
+  };
   const ve = () => {
     if (tk !== phienViec) return;
     const nd = $("#vj-nd");
     if (!nd || !d) return;
     nd.innerHTML = chiTietViecHtml(d, { dotBat: dotBatViec, khoa: dangGuiViec.has(id), md: mdSach, canhBao: canhBaoViec, khungDuyet: duocDuyet(d.viec, auth.user) });
     veTraLoi();
+    veChiDao();
     veDuyet();
   };
   const taiViec = async () => {
@@ -1157,15 +1213,16 @@ async function renderViecChiTiet(id) {
   $("#vj-log-them").addEventListener("click", () => taiLog());
 
   // body: object, hoặc hàm async trả object (gọi SAU khi đã khoá — vd. băm sha_tham_so khi duyệt).
+  // Trả phản hồi của runner (kể cả 409) hoặc null khi không gửi được / lỗi.
   const hanhDong = async (act, body) => {
-    if (dangGuiViec.has(id)) return;
+    if (dangGuiViec.has(id)) return null;
     dangGuiViec.add(id); // khoá TRƯỚC await
     ve();
-    let chuyen = false;
+    let chuyen = false, r = null;
     try {
       const b = typeof body === "function" ? await body() : body;
-      if (tk !== phienViec) return; // đã rời trang trong lúc chuẩn bị body: không gửi
-      const r = await api(`viec/${id}/${act}`, b || {});
+      if (tk !== phienViec) return null; // đã rời trang trong lúc chuẩn bị body: không gửi
+      r = await api(`viec/${id}/${act}`, b || {});
       if (tk !== phienViec) return;
       const k = ketQuaHanhDong(act, r, id);
       if (r.status !== 409) canhBaoViec = k.canhBao;
@@ -1181,11 +1238,12 @@ async function renderViecChiTiet(id) {
         toast("⚠ " + (typeof r.loi === "string" && r.loi ? r.loi : "Câu hỏi đã đổi — tải lại để xem câu mới"));
       } else toast(k.toast);
       if (k.chuyen) { chuyen = true; location.hash = `#/viec/${k.chuyen}`; }
-    } catch (err) { if (tk === phienViec) toast("⚠ " + err.message); }
+    } catch (err) { r = null; if (tk === phienViec) toast("⚠ " + err.message); }
     finally {
       dangGuiViec.delete(id);
       if (tk === phienViec && !chuyen) { ve(); taiViec(); }
     }
+    return r;
   };
 
   // Duyệt & chạy: kiểm lời duyệt + tham số chuẩn → lấy mật khẩu ra rồi xoá ô NGAY (thành công hay lỗi đều không còn) →
@@ -1260,6 +1318,33 @@ async function renderViecChiTiet(id) {
     if (!b || b.disabled) return;
     if (b.dataset.vtlNut !== undefined) guiTraLoi(Number(b.dataset.vtlNut));
     else if (b.dataset.vtlAct === "gui") guiTraLoi(null);
+  });
+
+  // Chỉ đạo: kiểm chữ + mật khẩu → lấy mật khẩu ra rồi xoá ô NGAY → gửi. Chữ chỉ xoá khi gửi thành công.
+  const guiChiDao = (ngat) => {
+    if (dangGuiViec.has(id) || tk !== phienViec || !d || !d.viec) return;
+    const oChu = $("#vcd-chu"), oMk = $("#vcd-mk");
+    if (!oChu || !oMk) return;
+    const noi_dung = oChu.value;
+    const sai = kiemChuTraLoi(noi_dung);
+    if (sai) { toast("⚠ " + sai.replace("Câu trả lời", "Chỉ đạo")); oChu.focus(); return; }
+    if (!oMk.value) { toast("⚠ Nhập mật khẩu để gửi chỉ đạo"); oMk.focus(); return; }
+    if (ngat && !confirm("Ngắt ngay phiên đang chạy (dừng cả render/voice)? Sau đó bấm Xin duyệt lại → Duyệt để chạy lại theo chỉ đạo.")) return;
+    const mat_khau = oMk.value;
+    oMk.value = "";
+    hanhDong("nhan-tin", { noi_dung, ngat, mat_khau }).then((r) => {
+      if (tk !== phienViec || !r || r.status === 409) return;
+      const o = $("#vcd-chu");
+      if (o) o.value = "";
+      if (ngat) toast("⏹ Đã ngắt — bấm ↻ Xin duyệt lại rồi duyệt để chạy lại theo chỉ đạo");
+      else if (r.luu_cho_lan_sau) toast("💾 Đã ghi chỉ đạo — lần chạy tiếp sẽ làm theo");
+    });
+  };
+  $("#vj-chi-dao").addEventListener("submit", (e) => e.preventDefault());
+  $("#vj-chi-dao").addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-vcd-act]");
+    if (!b || b.disabled) return;
+    guiChiDao(b.dataset.vcdAct === "ngat");
   });
 
   // Một listener ủy quyền cho cả khung (nội dung vẽ lại liên tục, không gắn lại mỗi lần).

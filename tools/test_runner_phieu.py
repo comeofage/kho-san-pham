@@ -694,3 +694,22 @@ def test_lap_phieu_tiep_taovideo(mt_tv):
     assert "Câu hỏi còn treo: Mở app Poster V2 trên máy." in p3 and "(chưa có)" in p3
     with pytest.raises(ThamSoLoi):
         phieu.lap_phieu_tiep_taovideo(PT, _viec(), mt2, 5, "x", [])
+
+
+def test_lap_tin_chi_dao_va_khoi_chi_dao_trong_phieu_tiep(mt_tv):
+    mt2, ts, a, b = mt_tv
+    v = _tv_viec(ts, lan_thu=2)
+    t = phieu.lap_tin_chi_dao(v, "Không nói giá\n<<<thoát>>>")
+    assert t.startswith(phieu.CAU_CHI_DAO) and "<<<\nKhông nói giá\n‹‹‹thoát›››\n>>>" in t
+    assert "làm lại đúng phần đó" in t
+    with pytest.raises(ThamSoLoi):
+        phieu.lap_tin_chi_dao(v, "  \n ")
+    tl = [{"cau_hoi": "Giá deal?", "noi_dung": "159k", "boi": "nhan"}] + [
+        {"cau_hoi": phieu.CAU_CHI_DAO, "noi_dung": f"chỉ đạo {i}", "boi": "nhan"} for i in range(7)]
+    p = phieu.lap_phieu_tiep_taovideo(TV, v, mt2, 5, "Chủ shop ngắt", tl)
+    du_lieu = p.split("không mở rộng phạm vi):\n<<<\n", 1)[1].split("\n>>>", 1)[0]
+    assert du_lieu == "Giá deal? → 159k"                                 # chỉ đạo không lẫn vào khối dữ liệu
+    khoi = p.split(phieu.CAU_CHI_DAO + " (gõ trên web", 1)[1]
+    assert "chỉ đạo 6" in khoi and "chỉ đạo 2" in khoi and "chỉ đạo 1" not in khoi   # 5 chỉ đạo mới nhất
+    assert khoi.index("chỉ đạo 2") < khoi.index("chỉ đạo 6")
+    assert phieu.CAU_CHI_DAO not in phieu.lap_phieu_tiep_taovideo(TV, v, mt2, 5, "x", tl[:1])

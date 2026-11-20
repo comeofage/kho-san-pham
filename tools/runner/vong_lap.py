@@ -50,8 +50,9 @@ from .han_muc import HAN_MUC_TRAN, _gia_tri as _tran_hieu_luc, het_gio_taovideo,
 from .kho_viec import KhoViec
 from .kieu import (DANG_MO, MUI_GIO_VN, RE_MA_CAU_HOI, BuocChay, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai,
                    ThamSoLoi, TrungViec, VuotHanMuc, gio_vn)
-from .phieu import (TIN_NHAC, TIN_TRAN_CODEX, anh_xa_ket_luot_song, anh_xa_ket_qua, lap_phieu_tiep_taovideo,
-                    lap_tin_chay_tiep, lap_tin_duyet, lap_tin_tiep, phan_tich_ket_qua)
+from .phieu import (CAU_CHI_DAO, TIN_NHAC, TIN_TRAN_CODEX, anh_xa_ket_luot_song, anh_xa_ket_qua,
+                    lap_phieu_tiep_taovideo, lap_tin_chay_tiep, lap_tin_chi_dao, lap_tin_duyet, lap_tin_tiep,
+                    phan_tich_ket_qua)
 from .theo_doi_phien import TheoDoiPhien, TinhTrang
 
 log = logging.getLogger("kho_runner.vong_lap")
@@ -754,6 +755,8 @@ class _TrangPhien:
         self.da_nhac = False                        # đã gửi TIN_NHAC kể từ lần hỏi/trả lời cuối
         self.bao_codex_cho = False                  # chạm trần Codex, TIN_TRAN_CODEX chưa gửi
         self.da_bao_codex = False
+        self.chi_dao_cho = False                    # có chỉ đạo của chủ shop trong hàng đợi chưa ghi stdin
+        self.ngat: Callable[[str], None] | None = None   # giết phiên với lý do (luồng làn gán khi sinh phiên)
 
     def ket_thuc_cho(self, luc: float) -> None:
         if self.cho_tu is not None:
@@ -1050,6 +1053,41 @@ class BoChay:
                 tp.phien.gui(TIN_TRAN_CODEX.format(n=tran_codex(self.hm)))
                 tp.bao_codex_cho, tp.da_bao_codex = False, True
             self._ghi_log(id, f"người dùng ({boi}) trả lời — xếp tin vào stdin phiên sống")
+            return moi
+
+    def nhan_tin_song(self, id: str, boi: str, noi_dung: str, ngat: bool) -> dict:
+        """Chủ shop chỉ đạo việc phiên sống (API đã kiểm mật khẩu + làm sạch chữ). Chỉ đạo luôn lưu thành dòng
+        tra_loi (câu CAU_CHI_DAO) để phiếu LẦN CHẠY TIẾP mang theo.
+        - ngat=False: việc phải dang_chay; xếp tin vào hàng đợi stdin — agent nhận khi kết lượt (kể cả đang chờ việc
+          nền). Khi còn chỉ đạo chưa ghi, khi_nhip không đóng/hỏi/nhắc.
+        - ngat=True: dang_chay hoặc can_tra_loi; giết cả cây → việc về loi, chờ Xin duyệt lại.
+        Không có phiên → KhongCoPhien; sai trạng thái → SaiTrangThai."""
+        with self._khoa_song:
+            tp = self._phien.get(id)
+            if tp is None or not tp.phien.con_song():
+                raise KhongCoPhien(f"việc {id} không còn phiên Claude sống")
+            v = self.kho.lay(id)
+            duoc = ("dang_chay", "can_tra_loi") if ngat else ("dang_chay",)
+            if v is None or v["trang_thai"] not in duoc:
+                raise SaiTrangThai(f"việc {id} không ở {'/'.join(duoc)}")
+            tin = lap_tin_chi_dao(v, noi_dung)                  # ThamSoLoi nếu rỗng
+            if ngat and tp.ngat is None:
+                raise KhongCoPhien(f"việc {id}: phiên chưa sẵn sàng để ngắt")
+            self.kho.them_tra_loi(id, boi, CAU_CHI_DAO, noi_dung)
+            tom = self.che(noi_dung)[:200]
+            if ngat:
+                self._ghi_log(id, f"chủ shop ({boi}) ngắt phiên để chỉ đạo lại: {tom}")
+                tp.ngat(f"Chủ shop ngắt để chỉ đạo lại: {tom}")
+                ghi = f"ngắt để chỉ đạo: {tom}"
+            else:
+                if not tp.phien.gui(tin):
+                    raise KhongCoPhien(f"việc {id}: phiên vừa đóng")
+                tp.chi_dao_cho = True
+                tp.da_nhac = False
+                self._ghi_log(id, f"chủ shop ({boi}) chỉ đạo — xếp tin vào stdin, agent nhận khi xong bước đang làm")
+                ghi = f"chỉ đạo: {tom}"
+            moi = self.kho.chuyen(id, [v["trang_thai"]], v["trang_thai"], boi, ghi[:300],
+                                  bat_dau_luc=v.get("bat_dau_luc"))
             return moi
 
     def doc_log(self, id: str, tu: int) -> dict:
@@ -2132,6 +2170,13 @@ class BoChay:
             kqa = tinh.ket_qua
             hd = anh_xa_ket_luot_song(kqa, tinh.so_viec_nen, tp.da_nhac)
             with self._khoa_song:
+                if tp.chi_dao_cho:
+                    if phien.so_tin_cho > 0:
+                        # chỉ đạo của chủ shop chưa ghi: không đóng/hỏi/nhắc — PhienSong ghi nó ngay sau nhịp này
+                        self._ghi_log(id, f"agent kết lượt ({getattr(kqa, 'trang_thai', '?')}) — gửi chỉ đạo của chủ "
+                                          "shop trước")
+                        return
+                    tp.chi_dao_cho = False
                 if tp.cau_hoi is not None:
                     n = phien.bo_hang_doi() if tp.tra_loi_cho else 0
                     if hd.loai != "hoi":
@@ -2183,6 +2228,7 @@ class BoChay:
                 dat_can_ban(hd.ghi_chu)
 
         phien.gui(stdin)
+        tp.ngat = dung
         with self._khoa_song:
             self._phien[id] = tp
         self._ghi_log(id, f"sinh phiên sống (trần: {tran_usd:g} USD, {tran_mp3} mp3, {tran_cx} Codex, làm "

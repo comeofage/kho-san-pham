@@ -39,6 +39,11 @@ LUA_CHON_DUYET_TRONG_PHIEN = ("Đồng ý", "Không đồng ý")
 TIN_NHAC = "Tiếp tục. Chỉ dừng ở điểm CẦN_USER, hoặc khi xong thì báo cáo theo mẫu (dòng đầu TRẠNG THÁI)."
 TIN_TRAN_CODEX = ("Đã dùng hết {n} lượt Codex của lần duyệt này. Không gọi Codex nữa; mẻ chưa qua Codex thì "
                   "CẦN_USER (LOẠI: chon, LỰA_CHỌN: Anh duyệt | Dừng).")
+# Chỉ đạo chủ shop gõ trên web lúc việc phiên sống đang chạy (đã qua mật khẩu). Lưu như một dòng tra_loi với câu hỏi
+# cố định này để phiếu LẦN CHẠY TIẾP tách riêng thành khối chỉ đạo.
+CAU_CHI_DAO = "CHỈ ĐẠO CỦA CHỦ SHOP"
+TOI_DA_CHI_DAO = 1000
+TOI_DA_CHI_DAO_TRONG_PHIEU = 5
 # K-1 aff-san-pham: phiếu có dòng này → agent bỏ Bước 7 Douyin (agy chạy nền sẽ chết khi -p thoát); runner chạy
 # douyin_uid riêng (nút "Chạy Douyin" — gợi ý goi_y_viec khi đối soát thiếu douyin.md).
 DONG_DOUYIN_RIENG = ("Douyin do runner chạy riêng (việc douyin_uid): KHÔNG làm Bước 7, không chạy agy.exe; báo cáo "
@@ -325,6 +330,21 @@ def lap_tin_tiep(viec: dict, cau_hoi: CanNguoiDung, tra_loi: str) -> str:
             "Làm tiếp từ chỗ dừng. Quy ước CẦN_USER và mẫu báo cáo giữ nguyên.\n")
 
 
+_LUAT_CHI_DAO = ("Làm theo chỉ đạo này trong phạm vi sản phẩm và trần của phiếu (không nới trần, không thêm công cụ). "
+                 "Nếu chỉ đạo yêu cầu làm lại phần đã xong (vd kịch bản, voice) thì làm lại đúng phần đó, kể cả khi "
+                 "luật khác bảo không tạo lại. Không làm được hoặc vượt phạm vi → CẦN_USER.")
+
+
+def lap_tin_chi_dao(viec: dict, noi_dung: str) -> str:
+    """Tin stdin khi chủ shop gõ chỉ đạo lúc phiên sống đang chạy."""
+    than = lam_sach_chu(noi_dung if isinstance(noi_dung, str) else "", TOI_DA_CHI_DAO)
+    if not than:
+        raise ThamSoLoi("chỉ đạo rỗng")
+    return (f"{CAU_CHI_DAO} (gõ trên web lúc việc {_mot_dong(viec.get('id'), 40)} đang chạy, đã xác nhận mật khẩu):\n"
+            f"<<<\n{than}\n>>>\n{_LUAT_CHI_DAO}\n"
+            "Sau đó làm tiếp quy trình. Quy ước CẦN_USER và mẫu báo cáo giữ nguyên.\n")
+
+
 def lap_tin_duyet(viec: dict) -> str:
     return (_khoi_da_duyet(viec) + "\n"
             "Làm tiếp từ chỗ dừng trong phạm vi đã duyệt. Quy ước CẦN_USER và mẫu báo cáo giữ nguyên.\n")
@@ -526,8 +546,15 @@ def lap_phieu_tiep_taovideo(loai: "LoaiViec", viec: dict, mt: MoiTruong, dot_bat
         so = viec.get("so_lan_tieu")
         lan = (so if isinstance(so, int) and not isinstance(so, bool) and so > 0 else 0) + 1
     ly = _mot_dong(che_roi_lam_sach(ly_do if isinstance(ly_do, str) else "", _che_mau_bi_mat), TOI_DA_LY_DO_TIEP)
+    hop_le = [x for x in (tra_loi_truoc or []) if isinstance(x, dict)]
+    dong_cd: list[str] = []
+    for t in [x for x in hop_le if x.get("cau_hoi") == CAU_CHI_DAO][-TOI_DA_CHI_DAO_TRONG_PHIEU:]:
+        nd = t.get("noi_dung")
+        d = lam_sach_chu(che_roi_lam_sach(nd if isinstance(nd, str) else "", _che_mau_bi_mat), TOI_DA_CHI_DAO)
+        if d:
+            dong_cd.append(d)
     dong_tl: list[str] = []
-    for t in [x for x in (tra_loi_truoc or []) if isinstance(x, dict)][-TOI_DA_TRA_LOI_TRUOC:]:
+    for t in [x for x in hop_le if x.get("cau_hoi") != CAU_CHI_DAO][-TOI_DA_TRA_LOI_TRUOC:]:
         ch, tl = t.get("cau_hoi"), t.get("noi_dung")
         tho = f"{ch if isinstance(ch, str) else ''} → {tl if isinstance(tl, str) else ''}"
         d = _mot_dong(che_roi_lam_sach(tho, _che_mau_bi_mat), TOI_DA_DONG_TRA_LOI)
@@ -543,6 +570,9 @@ def lap_phieu_tiep_taovideo(loai: "LoaiViec", viec: dict, mt: MoiTruong, dot_bat
         "\n".join(dong_tl) if dong_tl else "(chưa có)",
         ">>>",
     ]
+    if dong_cd:
+        khoi += [f"{CAU_CHI_DAO} (gõ trên web, đã xác nhận mật khẩu; mới nhất ở cuối, mâu thuẫn thì theo cái mới):",
+                 "<<<", "\n---\n".join(dong_cd), ">>>", _LUAT_CHI_DAO]
     treo = _cau_hoi_treo(viec, tra_loi_truoc or [])
     if treo:
         khoi.append(f"Câu hỏi còn treo: {_mot_dong(che_roi_lam_sach(treo, _che_mau_bi_mat), TOI_DA_CAU_HOI)}. "

@@ -42,6 +42,8 @@ FX-22 (§7.2a): sua_video mà ban_sua có `phu_de` → `chay-lai`/`chay-tiep` 40
 FX-24: `kiem_tay` = true → `co_the_chay_tiep` = false và `chay-tiep` 409 `{loi: thong_diep, kiem_tay: true}`.
 `tra-loi` phiên sống cần `ma_cau_hoi` (^q[0-9a-f]{12}$) bằng `cau_hoi.ma` đang lưu; thiếu/sai/lệch → 409
 LOI_CAU_HOI_DA_DOI; đúng → `tra_loi_song(id, boi, gia_tri, ma_cau_hoi)`. Việc khác bỏ qua `ma_cau_hoi`.
+`POST /viec/<id>/nhan-tin` {noi_dung, ngat, boi, da_xac_nhan_mat_khau} (docs §7.6a): chỉ đạo việc phiên sống →
+`nhan_tin_song(id, boi, noi_dung, ngat)`; thiếu cờ mật khẩu 403, không có phiên 409, nhắn khi đang hỏi 409.
 
 Mọi lỗi bất ngờ trong handler → 500 JSON (không lộ chi tiết), log đủ traceback; server vẫn sống.
 """
@@ -70,7 +72,7 @@ from .kho_viec import RE_BAN_SUA, KhoViec
 from .danh_muc import KHOA_ANH_CHUP_KHO, LOAI_PHIEN_SONG, anh_chup_kho_taovideo
 from .kieu import (DANG_MO, RE_MA_CAU_HOI, TRANG_THAI, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai, ThamSoLoi,
                    TrungViec, VuotHanMuc, gio_vn)
-from .phieu import GIA_TRI_KHONG_RO, GIA_TRI_VIEC_TAY, lam_sach_chu
+from .phieu import CAU_CHI_DAO, GIA_TRI_KHONG_RO, GIA_TRI_VIEC_TAY, lam_sach_chu
 
 log = logging.getLogger(__name__)
 
@@ -97,7 +99,7 @@ _RE_ID = r"j\d{14}[a-z0-9]{4}"
 _RE_ROUTE_ID = re.compile(rf"^/viec/({_RE_ID})$", re.ASCII)
 _RE_ROUTE_LOG = re.compile(rf"^/viec/({_RE_ID})/log$", re.ASCII)
 _RE_ROUTE_HANH_DONG = re.compile(
-    rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai)$", re.ASCII)
+    rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin)$", re.ASCII)
 LOI_CAN_DUYET_LAI = "Việc tốn tiền: cần duyệt lại"
 # D9/A-D9b (FX-14): việc tốn tiền ở can_tra_loi không được trả lời trực tiếp.
 LOI_TRA_LOI_TON_TIEN = "Việc tốn tiền: bấm Xin duyệt lại rồi duyệt bằng mật khẩu"
@@ -130,6 +132,10 @@ LOI_CAN_MAT_KHAU_CHON = "Chọn trong phiên đang chạy cần nhập mật kh�
 LOI_XIN_DUYET_LAI_KHI_SONG = "Việc đang có phiên sống — trả lời câu hỏi hoặc Huỷ trước khi xin duyệt lại"
 # FX-24 (§7.6, S-4 #4): trả lời phiên sống thiếu / sai dạng / lệch mã câu hỏi đang lưu.
 LOI_CAU_HOI_DA_DOI = "Câu hỏi đã đổi — tải lại để xem câu mới"
+LOI_CHI_DAO_CAN_MAT_KHAU = "Chỉ đạo cần nhập mật khẩu"
+LOI_CHI_DAO_DANG_HOI = "Agent đang hỏi — trả lời câu hỏi, hoặc dùng Ngắt & nhắn"
+# Việc phiên sống KHÔNG còn phiên ở các trạng thái này: chỉ đạo chỉ được lưu cho lần chạy tiếp.
+TRANG_THAI_GHI_CHI_DAO = ("loi", "cho_duyet")
 
 
 class LoiApi(Exception):
@@ -175,6 +181,29 @@ def kiem_tra_loi_dot3(cau_hoi: CanNguoiDung, tra_loi: object) -> str:
             raise ThamSoLoi(f"không rõ chỉ nhận {GIA_TRI_KHONG_RO!r}")
         return gt
     raise ThamSoLoi("câu hỏi này cần chữ tự do — chưa mở ở đợt 3 (chỉ trả lời bằng nút)")
+
+
+def kiem_chi_dao(noi_dung: object, ngat: object, da_xac_nhan: object) -> tuple[str, bool]:
+    """Body `nhan-tin`: chữ 1–1000 ký tự (cho xuống dòng, không ký tự điều khiển khác), `ngat` bool, luôn cần
+    `da_xac_nhan_mat_khau` = true (chỉ đạo có thể khiến agent tiêu thêm tiền trong trần). Trả (chữ đã làm sạch, ngat)."""
+    if not isinstance(da_xac_nhan, bool):
+        raise ThamSoLoi("da_xac_nhan_mat_khau phải là true/false")
+    if not isinstance(ngat, bool):
+        raise ThamSoLoi("ngat phải là true/false")
+    if not isinstance(noi_dung, str) or len(noi_dung) > TRA_LOI_CHU_TOI_DA:
+        raise ThamSoLoi(f"noi_dung phải là chữ 1–{TRA_LOI_CHU_TOI_DA} ký tự")
+    if _RE_DIEU_KHIEN_TRU_XUONG_DONG.search(noi_dung):
+        raise ThamSoLoi("noi_dung chứa ký tự điều khiển")
+    try:
+        noi_dung.encode("utf-8")
+    except UnicodeEncodeError as e:
+        raise ThamSoLoi("noi_dung có ký tự Unicode hỏng") from e
+    sach = lam_sach_chu(noi_dung, TRA_LOI_CHU_TOI_DA)
+    if not sach:
+        raise ThamSoLoi("noi_dung rỗng")
+    if not da_xac_nhan:
+        raise LoiApi(403, LOI_CHI_DAO_CAN_MAT_KHAU)
+    return sach, ngat
 
 
 def kiem_tra_loi_dot5(cau_hoi: CanNguoiDung, tra_loi: object, da_xac_nhan: bool, ton_tien: bool) -> str:
@@ -473,7 +502,8 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                 trang_thai_lan: Callable[[], dict],
                 che: Callable[[str], str] | None = None, *,
                 tra_loi_song: Callable[[str, str, str, str], dict] | None = None,
-                co_phien_song: Callable[[str], bool] = lambda _id: False) -> type[BaseHTTPRequestHandler]:
+                co_phien_song: Callable[[str], bool] = lambda _id: False,
+                nhan_tin_song: Callable[[str, str, str, bool], dict] | None = None) -> type[BaseHTTPRequestHandler]:
     """Tạo lớp handler gắn sẵn phụ thuộc. Dùng với ThreadingHTTPServer(("127.0.0.1", cong), H).
 
     `che` (R-06 P3-3): hàm che bí mật áp lên mọi văn bản việc trả ra web (viec_ra, su_kien, tra_loi).
@@ -931,8 +961,39 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                                  "xin duyệt lại (lời duyệt cũ đã huỷ)", buoc="chay", **xoa)
         return 200, {"viec": _ra(moi)}
 
+    def p_nhan_tin(id_: str, body: dict) -> tuple[int, dict]:
+        """Chỉ đạo việc phiên sống đang chạy. body {noi_dung, ngat, boi, da_xac_nhan_mat_khau}."""
+        boi = _boi(body)
+        nd, ngat = kiem_chi_dao(body.get("noi_dung"), body.get("ngat", False),
+                                body.get("da_xac_nhan_mat_khau", False))
+        with khoa_ghi:
+            v = _lay_viec(id_)
+            if v.get("loai") not in LOAI_PHIEN_SONG:
+                raise LoiApi(409, "loại việc này không nhận chỉ đạo khi đang chạy")
+            if not _phien_song(v) and v["trang_thai"] in TRANG_THAI_GHI_CHI_DAO:
+                # Không còn phiên: chỉ lưu, phiếu LẦN CHẠY TIẾP (sau Xin duyệt lại → Duyệt) mang theo.
+                kho.them_tra_loi(id_, boi, CAU_CHI_DAO, nd)
+                giu = {"ket_thuc_luc": v.get("ket_thuc_luc")} if v["trang_thai"] == "loi" else {}
+                moi = kho.chuyen(id_, [v["trang_thai"]], v["trang_thai"], boi,
+                                 f"ghi chỉ đạo cho lần chạy tiếp: {nd}"[:300], **giu)
+                return 200, {"viec": _ra(moi), "luu_cho_lan_sau": True}
+            if nhan_tin_song is None or not _phien_song(v):
+                raise LoiApi(409, LOI_PHIEN_DA_DONG)
+            if not ngat and v["trang_thai"] == "can_tra_loi":
+                raise LoiApi(409, LOI_CHI_DAO_DANG_HOI)
+            try:
+                moi = nhan_tin_song(id_, boi, nd, ngat)
+            except KhongCoPhien as e:
+                log.info("chỉ đạo %s: phiên sống đã đóng (%s)", id_, e)
+                raise LoiApi(409, LOI_PHIEN_DA_DONG) from e
+            except SaiTrangThai as e:
+                log.info("chỉ đạo %s: vòng chạy từ chối (%s)", id_, e)
+                raise LoiApi(409, "việc vừa đổi trạng thái — tải lại") from e
+        return 200, {"viec": _ra(moi if isinstance(moi, dict) else _lay_viec(id_))}
+
     HANH_DONG = {"tra-loi": p_tra_loi, "huy": p_huy, "tu-choi": p_tu_choi, "chay-tiep": p_chay_tiep,
-                 "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai}
+                 "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai,
+                 "nhan-tin": p_nhan_tin}
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "kho-runner"

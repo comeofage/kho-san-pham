@@ -16,7 +16,7 @@ assert.ok(m, "thiếu marker viec-thuan trong viec.js");
 const F = new Function("esc", `"use strict";\n${m[1]}\nreturn { goiYViec, nhomViec, nhanTrangThai, nutTraLoi, theViecHtml, chiTietViecHtml, tomTatHtml, dsNhomHtml, laIdViec, dongThamSo, idTrungViec, ketQuaHanhDong, buocLog, demCanBan, canDocLaiLog, LOG_DOC_LAI_TOI_DA,
   duocDuyet, khungDuyetHtml, loiDuyetMau, kiemLoiDuyet, dongUocTinh, thamSoMuse, thamSoPoster, locFolderPoster, formViecSpHtml, TEN_MAU_MUSE, LOI_DUYET_TOI_DA_WEB,
   nutChoViecTonTien, thamSoChuanDuyet, sha256HexWeb, duLieuViecDoi, hanMucHtml,
-  nutHanhDong, khungTraLoiHtml, kiemChuTraLoi, khoaCauHoi, dangChoNen, logDangSong, thamSoTaovideo, wmTaovideo, TRA_LOI_CHU_TOI_DA_WEB,
+  nutHanhDong, khungTraLoiHtml, khungChiDaoHtml, kiemChuTraLoi, khoaCauHoi, dangChoNen, logDangSong, thamSoTaovideo, wmTaovideo, TRA_LOI_CHU_TOI_DA_WEB,
   maCauHoi, nutChayLaiTiep, linkLuuLaiSua, TEN_LOAI_VIEC, LOAI_VIEC_SP, loaiDuyetHtml, khoaLoaiDuyet };`)(esc);
 const WORKER = readFileSync(new URL("../src/worker.js", import.meta.url), "utf8");
 
@@ -1051,4 +1051,32 @@ test("index.html: viec.js?v= đã tăng (FX-W3); duyet.js đã gỡ 2026-11-19",
   const h = doc("index.html");
   assert.ok(Number(h.match(/viec\.js\?v=(\d+)/)[1]) >= 13);
   assert.ok(!/duyet\.js|dang\.js/.test(h));
+});
+
+
+test("khungChiDaoHtml: chỉ khi phiên sống dang_chay/can_tra_loi; ô mật khẩu không value; Nhắn khoá khi agent đang hỏi", () => {
+  const v = (x) => ({ id: "j20261120130953qxwa", loai: "taovideo", phien_song: true, trang_thai: "dang_chay", ...x });
+  let h = F.khungChiDaoHtml(v({}), {});
+  assert.match(h, /id="vcd-chu"/);
+  assert.match(h, /type="password" id="vcd-mk"[^>]*autocomplete="current-password"/);
+  assert.ok(!/value=/.test(h));
+  assert.match(h, /data-vcd-act="nhan">/);
+  assert.match(h, /data-vcd-act="ngat">/);
+  h = F.khungChiDaoHtml(v({ trang_thai: "can_tra_loi" }), {});
+  assert.match(h, /data-vcd-act="nhan" disabled/);
+  assert.match(h, /data-vcd-act="ngat">/);
+  assert.match(F.khungChiDaoHtml(v({}), { khoa: true }), /data-vcd-act="ngat" disabled/);
+  for (const x of [{ phien_song: false }, { trang_thai: "xong" }, { trang_thai: "huy" }, { trang_thai: "loi", loai: "voice_pv" }]) {
+    assert.equal(F.khungChiDaoHtml(v(x), {}), "", JSON.stringify(x));
+  }
+  // taovideo không còn phiên ở loi/cho_duyet → chỉ nút Ghi chỉ đạo (lưu cho lần chạy tiếp)
+  for (const tt of ["loi", "cho_duyet"]) {
+    h = F.khungChiDaoHtml(v({ trang_thai: tt, phien_song: false }), {});
+    assert.match(h, /data-vcd-act="ghi">/);
+    assert.ok(!/data-vcd-act="(nhan|ngat)"/.test(h));
+    assert.ok(!/value=/.test(h));
+  }
+  assert.match(F.khungChiDaoHtml(v({ trang_thai: "loi", phien_song: false }), {}), /Xin duyệt lại/);
+  assert.equal(F.khungChiDaoHtml(null), "");
+  assert.equal(F.ketQuaHanhDong("nhan-tin", { status: 200, viec: { id: "x" } }, "x").toast, "✓ Đã gửi chỉ đạo — agent nhận khi xong bước đang làm");
 });
