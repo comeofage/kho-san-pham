@@ -17,6 +17,7 @@ Nguyên tắc:
 """
 from __future__ import annotations
 
+import dataclasses
 import hashlib
 import json
 import logging
@@ -38,16 +39,20 @@ from urllib.parse import urlsplit
 import psutil
 
 from . import chu_ky
+from . import phien_song as ps
 from . import stream_json as sj
 from . import thuc_thi as tt
-from .danh_muc import (DANH_MUC, LoaiViec, can_ban_douyin, con_tu_xu_ly_link, kiem_dau_ra_an_toan,
-                       kiem_truoc_buoc, mp3_hong, phan_tich_poster, quyet_dinh_sau_khoi_dong)
+from .danh_muc import (DANH_MUC, LOAI_PHIEN_SONG, LoaiViec, can_ban_douyin, con_tu_xu_ly_link, doi_soat_taovideo,
+                       kiem_dau_ra_an_toan, lap_buoc_hieu_luc, kiem_truoc_buoc, mp3_adam_moi, mp3_hong, phan_tich_poster,
+                       quyet_dinh_sau_khoi_dong)
 from .du_an import RE_ME, gocs_tu_moi_truong, tim_du_an
-from .han_muc import HAN_MUC_TRAN, kiem_han_muc
+from .han_muc import HAN_MUC_TRAN, _gia_tri as _tran_hieu_luc, het_gio_taovideo, kiem_han_muc
 from .kho_viec import KhoViec
-from .kieu import (DANG_MO, MUI_GIO_VN, BuocChay, CanNguoiDung, MoiTruong, SaiTrangThai, ThamSoLoi, TrungViec,
-                   VuotHanMuc, gio_vn)
-from .phieu import (anh_xa_ket_qua, lap_tin_chay_tiep, lap_tin_duyet, lap_tin_tiep, phan_tich_ket_qua)
+from .kieu import (DANG_MO, MUI_GIO_VN, RE_MA_CAU_HOI, BuocChay, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai,
+                   ThamSoLoi, TrungViec, VuotHanMuc, gio_vn)
+from .phieu import (TIN_NHAC, TIN_TRAN_CODEX, anh_xa_ket_luot_song, anh_xa_ket_qua, lap_phieu_tiep_taovideo,
+                    lap_tin_chay_tiep, lap_tin_duyet, lap_tin_tiep, phan_tich_ket_qua)
+from .theo_doi_phien import TheoDoiPhien, TinhTrang
 
 log = logging.getLogger("kho_runner.vong_lap")
 
@@ -64,7 +69,8 @@ CANH_BAO_TOI_DA = 50               # R-07 P3-6: số mục tối đa của list 
 KIEM_SONG_S = 5.0                  # R-07 P2-4: chu kỳ kiểm pid không giết được đã chết chưa (để nhả làn/tài nguyên)
 BUOC_BO_QUA_MA_THOAT = frozenset({"agy"})   # §5.1 douyin: agy thoát (kể cả mã ≠ 0) → bước kế tự kiểm file
 LOAI_KHONG_DOI_SOAT_SCRIPT = frozenset({"xu_ly_link_moi", "poster_day_folder"})
-RE_QUOTA = re.compile(r"(?i)usage limit|rate limit|\b429\b|overloaded")
+# "session limit": chữ thật S-4 đo khi hết hạn mức gói ("You've hit your session limit · resets …")
+RE_QUOTA = re.compile(r"(?i)usage limit|rate limit|session limit|\b429\b|overloaded")
 RE_ID = re.compile(r"^j\d{14}[a-z0-9]{4}$", re.ASCII)
 # A-3 (§5.2, P2-10): loại tốn tiền
 HOAN_HAN_MUC_S = 600               # vượt hạn mức lúc nhận / thiếu khoá công khai → hoãn loại 10 phút
@@ -80,6 +86,11 @@ LOI_DA_DUNG_DAY_DU = LOI_DA_DUNG + " — bấm Xin duyệt lại"
 LY_DO_LECH_TONG_KIEM = "bản cài runner lệch tổng kiểm — cài lại runner"
 CANH_BAO_LECH_TONG_KIEM = LY_DO_LECH_TONG_KIEM + ": mọi việc tốn tiền đang bị chặn (việc miễn phí vẫn chạy)"
 _RE_NONCE = re.compile(r"^[0-9a-f]{32}$", re.ASCII)
+# Đợt 5 (D11, A-5): phiên sống taovideo
+PHIEN_BAN_CLAUDE_DA_DO = "2.1.169"  # §7.3: S-3/S-4 đo trên bản này; khác → can_ban cảnh báo (không chặn)
+IM_LANG_SONG_S = 10.0              # §7.3 im_lang_s
+QUET_MP3_S = 30.0                  # §7.5 quét *_adam.mp3 mới
+TOI_DA_STDERR_LOI = 1200           # §7.8 ký tự stderr cuối (đã che) ghi vào loi khi phiên tự chết
 HET_GIO_DS_FOLDER_S = 20           # GET /poster/folders: subprocess venv Poster
 POSTER_DS_FOLDER = Path(__file__).resolve().parent / "poster_ds_folder.py"
 
@@ -596,7 +607,7 @@ def gon_bi_tu_choi(ds, che: Callable[[str], str]) -> list[dict]:
 
 def che_truong_ket_thuc(truong: dict, che: Callable[[str], str]) -> dict:
     """R-05 P2-2: che bí mật các trường đi ra web khi kết thúc bước Claude: `loi`, `cau_hoi.noi_dung`,
-    từng `cau_hoi.lua_chon`. Trả dict mới (không sửa đầu vào)."""
+    từng `cau_hoi.lua_chon`. GIỮ `cau_hoi.ma` (mã câu hỏi phiên sống, FX-26). Trả dict mới (không sửa đầu vào)."""
     ra = dict(truong)
     if isinstance(ra.get("loi"), str):
         ra["loi"] = che(ra["loi"])
@@ -604,7 +615,7 @@ def che_truong_ket_thuc(truong: dict, che: Callable[[str], str]) -> dict:
     if isinstance(ch, dict):
         ch = CanNguoiDung.tu_dict(ch)
     if isinstance(ch, CanNguoiDung):
-        ra["cau_hoi"] = CanNguoiDung(ch.loai, che(ch.noi_dung), tuple(che(x) for x in ch.lua_chon))
+        ra["cau_hoi"] = CanNguoiDung(ch.loai, che(ch.noi_dung), tuple(che(x) for x in ch.lua_chon), ch.ma)
     return ra
 
 
@@ -701,6 +712,55 @@ def _so_nguyen_khong_am(x: object) -> int:
     return x if isinstance(x, int) and not isinstance(x, bool) and x >= 0 else 0
 
 
+# ---------------------------------------------------------------- đợt 5: phiên sống (logic thuần)
+
+def dat_max_budget(argv: list[str], tran_usd: float) -> list[str]:
+    """A-5 c) + S-4 mục 2: `--max-budget-usd` CỘNG DỒN cả phiên → đặt bằng trần phiên HIỆU LỰC (cau_hinh chỉ hạ).
+    Trả bản sao argv. Thiếu cờ / trần ≤ 0 → ThamSoLoi (không chạy)."""
+    a = list(argv)
+    if (isinstance(tran_usd, bool) or not isinstance(tran_usd, (int, float)) or tran_usd != tran_usd
+            or tran_usd <= 0):
+        raise ThamSoLoi(f"trần USD phiên sống không hợp lệ ({tran_usd!r}) — taovideo bị khoá bằng cau_hinh")
+    try:
+        i = a.index("--max-budget-usd")
+    except ValueError:
+        raise ThamSoLoi("lệnh phiên sống thiếu --max-budget-usd") from None
+    if i + 1 >= len(a):
+        raise ThamSoLoi("lệnh phiên sống: --max-budget-usd thiếu giá trị")
+    a[i + 1] = f"{float(tran_usd):g}"
+    return a
+
+
+def gio_doc(giay: float) -> str:
+    """Thời lượng cho người đọc: '8 giờ', '45 phút', '30 giây'."""
+    g = float(giay)
+    if g >= 3600:
+        return f"{g / 3600:g} giờ"
+    if g >= 60:
+        return f"{g / 60:g} phút"
+    return f"{g:g} giây"
+
+
+class _TrangPhien:
+    """Trạng thái DÙNG CHUNG giữa luồng làn (khi_nhip) và luồng API (tra_loi_song) — chỉ đọc/ghi dưới
+    `BoChay._khoa_song`."""
+
+    def __init__(self, phien: ps.PhienSong):
+        self.phien = phien
+        self.cau_hoi: CanNguoiDung | None = None    # câu đang hỏi (kể cả đã trả lời mà tin chưa ghi vào stdin)
+        self.tra_loi_cho = False                    # đã trả lời, tin trả lời còn trong hàng đợi
+        self.cho_tu: float | None = None            # monotonic: bắt đầu lần chờ trả lời hiện tại
+        self.tong_cho = 0.0                         # tổng giây đã chờ người dùng (không tính vào lam_s)
+        self.da_nhac = False                        # đã gửi TIN_NHAC kể từ lần hỏi/trả lời cuối
+        self.bao_codex_cho = False                  # chạm trần Codex, TIN_TRAN_CODEX chưa gửi
+        self.da_bao_codex = False
+
+    def ket_thuc_cho(self, luc: float) -> None:
+        if self.cho_tu is not None:
+            self.tong_cho += max(0.0, luc - self.cho_tu)
+            self.cho_tu = None
+
+
 # ================================================================ BoChay
 
 class BoChay:
@@ -710,7 +770,8 @@ class BoChay:
                  canh_bao: list[str] | None = None, kiem_song_s: float = KIEM_SONG_S,
                  khoa_cong_khai=None, cho_lai_han_muc_s: float = HOAN_HAN_MUC_S,
                  chan_ton_tien: bool = False,
-                 tieu: Callable[[str, str], tuple[str, str]] | None = None):
+                 tieu: Callable[[str, str], tuple[str, str]] | None = None,
+                 im_lang_song_s: float = IM_LANG_SONG_S, quet_mp3_s: float = QUET_MP3_S):
         """`khoa_cong_khai` (A-3, P3-1): khoá Ed25519 kiểm chữ ký duyệt lúc nhận việc tốn tiền — chay_runner truyền
         CÙNG đối tượng đã nạp cho API (không nạp lười). None = không có khoá → việc tốn tiền đứng chờ.
         `chan_ton_tien` (D9, R-11 P2-1): bản cài lệch TONG_KIEM → mọi việc tốn tiền đứng chờ, việc miễn phí vẫn chạy.
@@ -759,6 +820,12 @@ class BoChay:
         self._kcc = khoa_cong_khai
         self.cho_lai_han_muc_s = cho_lai_han_muc_s
         self._tieu = tieu
+        # Đợt 5 (A-5): phiên sống đang giữ, theo id việc. Khoá riêng (KHÔNG lồng trong self._khoa): API giữ
+        # khoa_ghi của api rồi mới lấy khoá này; luồng làn chỉ lấy khoá này.
+        self.im_lang_song_s = float(im_lang_song_s)
+        self.quet_mp3_s = float(quet_mp3_s)
+        self._khoa_song = threading.RLock()
+        self._phien: dict[str, _TrangPhien] = {}
 
     # ---------------------------------------------------------------- tiện ích
     def _loai(self, ma: str) -> LoaiViec:
@@ -772,18 +839,20 @@ class BoChay:
     def _bay_gio(self) -> datetime:
         return gio_vn(self.mt.bay_gio())
 
-    def _ket_thuc(self, id: str, den: str, ghi_chu: str, **truong) -> dict | None:
+    def _ket_thuc(self, id: str, den: str, ghi_chu: str, *, tu: tuple[str, ...] | list[str] = ("dang_chay",),
+                  **truong) -> dict | None:
         """dang_chay → den (CAS). Việc đã bị đổi ngoài (vd huỷ từ web) → log, trả None.
         R-06 P3-1: lưới cuối — che `ghi_chu`, `loi`, `cau_hoi` (mọi chuỗi đi ra web). Bên gọi cắt chuỗi thì
-        PHẢI che bản đầy đủ trước khi cắt (che ở đây không cứu được bí mật đã bị cắt dở)."""
+        PHẢI che bản đầy đủ trước khi cắt (che ở đây không cứu được bí mật đã bị cắt dở).
+        `tu` (A-5, mặc định dang_chay): phiên sống kết thúc được cả từ can_tra_loi (§7.4)."""
         ghi_chu = self.che(ghi_chu)
         truong = che_truong_ket_thuc(truong, self.che)
         truong.setdefault("pid", None)
         truong.setdefault("pid_tao_luc", None)
         try:
-            return self.kho.chuyen(id, ["dang_chay"], den, "he_thong", ghi_chu, **truong)
+            return self.kho.chuyen(id, list(tu), den, "he_thong", ghi_chu, **truong)
         except SaiTrangThai as e:
-            log.info("việc %s không còn dang_chay khi định chuyển sang %s: %s", id, den, e)
+            log.info("việc %s không còn %s khi định chuyển sang %s: %s", id, "/".join(tu), den, e)
             return None
 
     def _ghi_log(self, id: str, s: str) -> None:
@@ -923,7 +992,10 @@ class BoChay:
                 ev.set()
 
     def trang_thai_lan(self) -> dict:
-        """`lan`: {gpu|nhe: {id, loai} khi đang chạy, None khi rảnh} (R-05 P3-2)."""
+        """`lan`: {gpu|nhe: {id, loai} khi đang chạy, None khi rảnh} (R-05 P3-2). `phien_song`: id việc đang giữ
+        phiên Claude sống (A-5)."""
+        with self._khoa_song:
+            phien_song = sorted(self._phien)
         with self._khoa:
             bay = time.monotonic()
             return {"lan": {l: ({"id": self._lan_dang[l], "loai": self._lan_loai[l]}
@@ -935,7 +1007,50 @@ class BoChay:
                     "tam_hoan": {k: round(v - bay) for k, v in self._hoan.items() if v > bay},
                     # R-07 P2-4: việc → pid không giết được (làn/tài nguyên của việc đó đang bị giữ)
                     "con_song": {k: v[0] for k, v in self._con_song.items()},
-                    "chan_ton_tien": self.chan_ton_tien}
+                    "chan_ton_tien": self.chan_ton_tien,
+                    "phien_song": phien_song}
+
+    def co_phien_song(self, id: str) -> bool:
+        """§7.6: vòng chạy đang giữ phiên Claude sống của việc `id` — tính từ lúc đăng ký phiên tới khi luồng làn đã
+        GHI XONG trạng thái cuối (FX-27 P2-2: cả khoảng tiến trình đang thoát/đổi tên mp3/đối soát, để api không mở
+        Xin duyệt lại giữa chừng). Nhận trả lời thì còn đòi stdin mở (tra_loi_song kiểm con_song riêng)."""
+        with self._khoa_song:
+            return id in self._phien
+
+    def tra_loi_song(self, id: str, boi: str, gia_tri: str, ma_cau_hoi: str) -> dict:
+        """§7.6 bước 4 (API gọi khi đã kiểm giá trị bằng kiem_tra_loi_dot5): (1) còn phiên sống + việc can_tra_loi;
+        (2) CAS can_tra_loi → dang_chay (xoá cau_hoi, GIỮ pid); (3) them_tra_loi; (4) xếp lap_tin_tiep vào hàng đợi
+        stdin, GẮN `ma_cau_hoi` (PhienSong bỏ tin nếu câu hỏi đã đổi trước khi ghi). KHÔNG tiêu lời duyệt, không sinh
+        tiến trình. Không có phiên → KhongCoPhien; sai trạng thái hoặc `ma_cau_hoi` ≠ `cau_hoi.ma` đang treo →
+        SaiTrangThai; giá trị không hợp lệ với câu hỏi → ThamSoLoi."""
+        with self._khoa_song:
+            tp = self._phien.get(id)
+            if tp is None or not tp.phien.con_song():
+                raise KhongCoPhien(f"việc {id} không còn phiên Claude sống")
+            v = self.kho.lay(id)
+            if v is None or v["trang_thai"] != "can_tra_loi" or not isinstance(v.get("cau_hoi"), dict):
+                raise SaiTrangThai(f"việc {id} không ở can_tra_loi có câu hỏi")
+            ch = CanNguoiDung.tu_dict(v["cau_hoi"])
+            if (not isinstance(ma_cau_hoi, str) or not RE_MA_CAU_HOI.fullmatch(ma_cau_hoi) or ma_cau_hoi != ch.ma
+                    or tp.cau_hoi is None or tp.cau_hoi.ma != ma_cau_hoi):
+                raise SaiTrangThai(f"việc {id}: mã câu hỏi {str(ma_cau_hoi)[:40]!r} không phải câu đang treo — câu "
+                                   "hỏi đã đổi")
+            tin = lap_tin_tiep(v, ch, gia_tri)                  # ThamSoLoi nếu giá trị sai loại câu hỏi
+            moi = self.kho.chuyen(id, ["can_tra_loi"], "dang_chay", boi,
+                                  self.che(f"trả lời trong phiên sống: {gia_tri}")[:300], cau_hoi=None,
+                                  bat_dau_luc=v.get("bat_dau_luc"))
+            self.kho.them_tra_loi(id, boi, ch.noi_dung, gia_tri)
+            if not tp.phien.gui(tin, ma_cau_hoi):
+                log.warning("việc %s: phiên vừa đóng — tin trả lời không vào được hàng đợi", id)
+                self._ghi_log(id, "cảnh báo: phiên vừa đóng, tin trả lời không gửi được")
+            tp.tra_loi_cho = True
+            tp.ket_thuc_cho(time.monotonic())
+            tp.da_nhac = False
+            if tp.bao_codex_cho:
+                tp.phien.gui(TIN_TRAN_CODEX.format(n=tran_codex(self.hm)))
+                tp.bao_codex_cho, tp.da_bao_codex = False, True
+            self._ghi_log(id, f"người dùng ({boi}) trả lời — xếp tin vào stdin phiên sống")
+            return moi
 
     def doc_log(self, id: str, tu: int) -> dict:
         """§4.7/§8.1: ≤64 KB từ offset byte `tu`, đã che bí mật."""
@@ -978,8 +1093,12 @@ class BoChay:
     def khoi_dong(self) -> dict:
         """Bước 4 của main(): chỉ gọi khi ĐÃ giành được khoá đơn instance."""
         kq: dict = {"giet": [], "con_song": [], "doi_soat": {}, "loai_la": [], "xoa_file": 0}
-        for v in self.kho.ds(["dang_chay"], gioi_han=500):
+        # §7.8 (A-5): phiên sống bị ngắt = taovideo ở dang_chay HOẶC can_tra_loi mà pid khác rỗng
+        ds_mo = self.kho.ds(["dang_chay"], gioi_han=500) + [
+            v for v in self.kho.ds(["can_tra_loi"], gioi_han=500) if v.get("loai") in LOAI_PHIEN_SONG and v.get("pid")]
+        for v in ds_mo:
             id = v["id"]
+            tu = (v["trang_thai"],)
             pid, tl = v.get("pid"), v.get("pid_tao_luc")
             con_song: str | None = None          # R-05 P2-3: khác None = tiến trình cũ có thể còn sống
             if pid and tl is not None and sinh_truoc_lan_bat_may(float(tl), _boot_time()):
@@ -1013,7 +1132,7 @@ class BoChay:
                 kq["con_song"].append(int(pid))
                 log.error("việc %s: %s — chuyển loi, không tự chạy lại", id, con_song)
                 self._ghi_log(id, f"khởi động lại: {con_song} — chuyển loi, kiểm tay")
-                self._ket_thuc(id, "loi", "khởi động lại: tiến trình cũ còn sống", loi=(
+                self._ket_thuc(id, "loi", "khởi động lại: tiến trình cũ còn sống", tu=tu, loi=(
                     f"{con_song} — tiến trình cũ còn sống, kiểm tay trên máy (Task Manager) rồi mới "
                     "Chạy tiếp/Chạy lại"))
                 continue
@@ -1021,7 +1140,10 @@ class BoChay:
                 loai = self._loai(v["loai"])
             except ThamSoLoi as e:
                 kq["loai_la"].append(id)
-                self._ket_thuc(id, "loi", "khởi động lại: loại không chạy được", loi=str(e))
+                self._ket_thuc(id, "loi", "khởi động lại: loại không chạy được", tu=tu, loi=str(e))
+                continue
+            if loai.ma in LOAI_PHIEN_SONG and pid:
+                kq["doi_soat"][id] = self._khoi_dong_phien_song(loai, v)
                 continue
             self._doi_ten_mp3_hong(loai, v)
             dau_ra = kiem_dau_ra_an_toan(loai, v.get("tham_so") or {}, v, self.mt)
@@ -1032,8 +1154,11 @@ class BoChay:
             elif den == "loi":
                 truong["loi"] = ghi
             elif den == "xong":
-                truong["ket_qua"] = {"trang_thai_agent": None, "co_lo_ngai": dau_ra == "xong_lo_ngai",
-                                     "tom_tat": ghi, "file_ra": [], "goi_y_viec": []}
+                # FX-29 (B7): GỘP vào ket_qua cũ — giữ kho_luc_tao, so_codex… (không thay cả dict)
+                kq_cu = dict(v["ket_qua"]) if isinstance(v.get("ket_qua"), dict) else {}
+                kq_cu.update({"trang_thai_agent": None, "co_lo_ngai": dau_ra == "xong_lo_ngai",
+                              "tom_tat": ghi, "file_ra": [], "goi_y_viec": []})
+                truong["ket_qua"] = kq_cu
             self._ket_thuc(id, den, ghi, **truong)
             kq["doi_soat"][id] = [dau_ra, den]
         for v in self.kho.ds(["cho"], gioi_han=500):
@@ -1066,6 +1191,66 @@ class BoChay:
                     except OSError as e:
                         log.warning("không xoá được file cũ %s: %s", f, e)
         return n
+
+    def _khoi_dong_phien_song(self, loai: LoaiViec, v: dict) -> list[str]:
+        """§7.8 bước 2–4 cho phiên sống bị ngắt (cây đã giết/đã chết ở bước 1): đổi tên mp3 hỏng, đối soát CHỈ ĐỌC
+        FILE, xong → xong; chua → loi "Bị ngắt …" (+ ket_qua.cau_hoi_treo nếu đang hỏi). Không tự chạy lại (D5)."""
+        id = v["id"]
+        self._doi_ten_mp3_taovideo(v, None)
+        ket, tom = self._doi_soat_song(v)
+        kq = dict(v["ket_qua"]) if isinstance(v.get("ket_qua"), dict) else {}
+        ch = v.get("cau_hoi")
+        if v["trang_thai"] == "can_tra_loi" and isinstance(ch, dict) and str(ch.get("noi_dung") or "").strip():
+            kq["cau_hoi_treo"] = str(ch["noi_dung"])
+        self._ghi_log(id, f"khởi động lại: phiên sống bị ngắt — đối soát: {ket} · {tom}")
+        tu = (v["trang_thai"],)
+        if ket == "xong":
+            kq.update({"trang_thai_agent": None, "co_lo_ngai": False, "tom_tat": tom, "doi_soat": tom})
+            kq.pop("cau_hoi_treo", None)
+            self._ket_thuc(id, "xong", "đối soát sau khởi động lại", tu=tu, ket_qua=kq, cau_hoi=None, can_ban=None)
+            return [ket, "xong"]
+        kq["doi_soat"] = tom
+        self._ket_thuc(id, "loi", "khởi động lại: phiên sống bị ngắt", tu=tu, ket_qua=kq, cau_hoi=None, can_ban=None,
+                       loi=(f"Bị ngắt (máy tắt/runner dừng) — {tom}. Mọi việc nền đã dừng. Kiểm log rồi bấm Xin "
+                            "duyệt lại để làm tiếp"))
+        return [ket, "loi"]
+
+    def _doi_soat_song(self, v: dict) -> tuple[str, str]:
+        """doi_soat_taovideo, lỗi bất ngờ → ('chua', mô tả) (không làm sập runner)."""
+        try:
+            ket, tom = doi_soat_taovideo(v.get("tham_so") or {}, v, self.mt)
+        except Exception as e:  # noqa: BLE001 — đối soát hỏng thì coi là chưa xong, có log
+            log.exception("đối soát taovideo %s lỗi", v.get("id"))
+            return "chua", self.che(f"không đối soát được ({type(e).__name__}: {e})")[:800]
+        return (ket if ket in ("xong", "chua") else "chua"), self.che(str(tom))[:800]
+
+    def _doi_ten_mp3_taovideo(self, viec: dict, tu: datetime | None) -> list[Path]:
+        """§7.7: mp3 Adam mới (mtime ≥ lúc sinh phiên / bat_dau_luc) của dự án A mà ffprobe lỗi hoặc thời lượng ≤ 0 →
+        đổi tên `<tên>.hong-<id>` (hoàn tác được)."""
+        ts = viec.get("tham_so") or {}
+        try:
+            if tu is None:
+                tu = datetime.fromisoformat(viec["bat_dau_luc"])
+            a = tim_du_an(ts.get("du_an_a"), ts.get("uid"), self.mt.gocs)
+        except (KeyError, TypeError, ValueError, ThamSoLoi) as e:
+            log.warning("việc %s: không dò được mp3 hỏng: %s", viec.get("id"), e)
+            return []
+        if a is None:
+            return []
+        da_doi = []
+        for ten in sorted(mp3_adam_moi(a, tu)):
+            f = a / ten
+            tl = self.mt.thoi_luong_media(f)
+            if tl is not None and tl > 0:
+                continue
+            moi = f.with_name(f"{f.name}.hong-{viec['id']}")
+            try:
+                f.rename(moi)
+                da_doi.append(moi)
+                self._ghi_log(viec["id"], f"đổi tên mp3 hỏng {ten} → {moi.name}")
+            except OSError as e:
+                log.error("không đổi tên được %s: %s", f, e)
+        return da_doi
 
     def _doi_ten_mp3_hong(self, loai: LoaiViec, viec: dict) -> list[Path]:
         """P2-7: voice_pv bị ngắt → đổi tên mp3 hỏng sinh trong lần chạy thành <tên>.hong-<id> (hoàn tác được)."""
@@ -1371,8 +1556,19 @@ class BoChay:
             self._ket_thuc(id, "loi", "điều kiện trước trả giá trị lạ", loi=f"điều kiện trước lạ: {dk!r}")
             return
 
+        if loai.ma in LOAI_PHIEN_SONG:
+            # §7.4 (A-5): mỗi lần sinh phiên sống dùng session_id uuid4 MỚI, phien_da_tao=0 (không bao giờ --resume)
+            try:
+                viec = self.kho.chuyen(id, ["dang_chay"], "dang_chay", "he_thong", "phiên sống: session_id mới",
+                                       session_id=str(uuid.uuid4()), phien_da_tao=0,
+                                       bat_dau_luc=viec.get("bat_dau_luc"))
+            except SaiTrangThai as e:
+                log.info("việc %s không còn dang_chay trước khi lập phiên sống: %s", id, e)
+                return
+            ts = viec.get("tham_so") or {}
+
         try:
-            ds_buoc = loai.lap_buoc(ts, viec, self.mt)
+            ds_buoc = lap_buoc_hieu_luc(loai, ts, viec, self.mt, self.hm)   # FX-29: phiếu theo hm đang giữ
         except ThamSoLoi as e:
             self._ket_thuc(id, "loi", "không lập được các bước", loi=f"Không lập được lệnh: {e}")
             return
@@ -1401,6 +1597,9 @@ class BoChay:
             # _buoc_claude/_buoc_script sau mọi kiểm cấu hình (lệnh, cwd, resume, stdin/phiếu, file log phụ).
             def truoc_sinh(h: dict = ht) -> bool:
                 return self._tieu_truoc_sinh(id, loai, h, trang_tieu)
+            if b.song:
+                self._buoc_claude_song(loai, ht, b, huy, truoc_sinh)    # tự chuyển trạng thái cuối
+                return
             if b.la_claude:
                 kq_claude = self._buoc_claude(loai, ht, b, huy, la_cuoi, truoc_sinh)
                 if kq_claude is None:
@@ -1691,8 +1890,408 @@ class BoChay:
         ket_qua["so_codex"] = codex["n"]                     # §5.3: cộng dồn cả việc (A-3)
         if k.get("bi_tu_choi"):
             ket_qua["bi_tu_choi"] = gon_bi_tu_choi(k["bi_tu_choi"], self.che)
+        if loai.ma == "phan_tich_uid" and den == "xong" and dau_ra == "xong_lo_ngai":
+            ket_qua.update(self._tao_con_douyin(viec, ket_qua))      # A-5 b): thiếu douyin.md → việc con douyin_uid
         truong["ket_qua"] = ket_qua
         if den == "xong" and not la_cuoi:
             return ket_qua
         self._ket_thuc(id, den, f"agent: {kqa.trang_thai}", **truong)
         return None
+
+    def _tao_con_douyin(self, viec: dict, ket_qua: dict) -> dict:
+        """A-5 b): phan_tich_uid xong mà đối soát thiếu douyin.md (phiếu đã ghi DONG_DOUYIN_RIENG) → runner tự tạo việc
+        con douyin_uid (miễn phí) cho cùng UID, như _tao_con_link. Đã có douyin_uid mở cho UID đó → không tạo trùng
+        (khoá việc = uid, KhoViec.tao ném TrungViec). Tạo được / đã có → bỏ nút gợi ý "Chạy Douyin"."""
+        ra: dict = {}
+        uid = (viec.get("tham_so") or {}).get("uid")
+        try:
+            loai_con = self._loai("douyin_uid")
+            ts = loai_con.kiem_tham_so({"uid": uid}, self.mt)
+            tt0, buoc = loai_con.trang_thai_dau(ts)
+            kiem_han_muc(self.kho, loai_con.ma, ts, self.hm, "tao", viec["tao_boi"])
+            con = self.kho.tao(loai_con.ma, loai_con.tinh_khoa(ts), ts, loai_con.lan_chay, tt0, viec["tao_boi"],
+                               buoc=buoc, session_id=None, cha_id=viec["id"])
+            ra["viec_con_douyin"] = con["id"]
+            ghi = f"Douyin do runner chạy riêng: đã tạo việc douyin_uid {con['id']}"
+        except TrungViec as e:
+            ra["viec_con_douyin"] = e.viec.get("id")
+            ra["douyin_trung"] = True
+            ghi = f"Douyin do runner chạy riêng: đã có việc douyin_uid {e.viec.get('id')} đang mở"
+        except (VuotHanMuc, ThamSoLoi) as e:
+            ra["loi_con_douyin"] = self.che(str(e))[:300]
+            self._ghi_log(viec["id"], f"không tạo được việc con douyin_uid: {e}")
+            return ra
+        self._ghi_log(viec["id"], ghi)
+        ra["goi_y_viec"] = [g for g in ket_qua.get("goi_y_viec") or [] if g != "douyin_uid"]
+        ra["lo_ngai"] = ghi
+        return ra
+
+    # ---------------------------------------------------------------- bước Claude SỐNG (đợt 5, A-5, §7.2–7.8)
+    def _ket_thuc_song(self, id: str, den: str, ghi_chu: str, **truong) -> dict | None:
+        """Kết thúc phiên sống: dang_chay|can_tra_loi → den; xoá pid, câu hỏi, can_ban (§7.4)."""
+        truong.setdefault("cau_hoi", None)
+        truong.setdefault("can_ban", None)
+        return self._ket_thuc(id, den, ghi_chu, tu=("dang_chay", "can_tra_loi"), **truong)
+
+    def _chuyen_song(self, id: str, tu: list[str], den: str, ghi_chu: str, bat_dau_luc: str | None,
+                     **truong) -> dict | None:
+        """Chuyển trong phiên (giữ pid, giữ bat_dau_luc). Việc đã đổi ngoài (huỷ) → log, None."""
+        if den == "dang_chay":
+            truong["bat_dau_luc"] = bat_dau_luc
+        try:
+            return self.kho.chuyen(id, tu, den, "he_thong", self.che(ghi_chu),
+                                   **che_truong_ket_thuc(truong, self.che))
+        except SaiTrangThai as e:
+            log.info("việc %s: bỏ qua chuyển %s → %s trong phiên sống: %s", id, tu, den, e)
+            return None
+
+    def _buoc_claude_song(self, loai: LoaiViec, viec: dict, b: BuocChay, huy: threading.Event,
+                          truoc_sinh: Callable[[], bool]) -> None:
+        """§7.2–7.8: MỘT phiên Claude sống cho cả việc. Luôn tự chuyển trạng thái cuối (hoặc để nguyên khi runner tắt
+        để lần khởi động sau đối soát). Mọi kiểm cấu hình chạy TRƯỚC `truoc_sinh` (tiêu lời duyệt, FX-18)."""
+        id = viec["id"]
+        ts = viec.get("tham_so") or {}
+        loi_cau_hinh = loi_khong_sinh_duoc(b)
+        if loi_cau_hinh is not None:
+            self._ket_thuc(id, "loi", "lệnh Claude sai",
+                           loi=self.che(f"Không chạy được Claude: {loi_cau_hinh} (chưa tiêu lời duyệt)"))
+            return
+        hg = het_gio_taovideo(self.hm)
+        lam_s = min(int(b.het_gio_s), hg["lam_s"]) if b.het_gio_s and b.het_gio_s > 0 else hg["lam_s"]
+        tran_usd = float(_tran_hieu_luc(self.hm, "taovideo_usd_viec"))
+        tran_mp3 = int(_tran_hieu_luc(self.hm, "taovideo_mp3_viec"))
+        tran_cx = tran_codex(self.hm)
+        tran_luot = loai.tran_luot
+        ly_dl = ly_do_duyet_lai_can_dung(loai, viec, self.kho.su_kien(id))
+        so_lan_truoc = _so_nguyen_khong_am(viec.get("so_lan_tieu"))
+        try:
+            argv = dat_max_budget(b.argv, tran_usd)
+            a = tim_du_an(ts.get("du_an_a"), ts.get("uid"), self.mt.gocs)
+            if a is None:
+                raise ThamSoLoi("không còn thấy dự án A")
+            if ly_dl is not None or so_lan_truoc > 0:
+                # §7.10: lần chạy tiếp (sau xin duyệt lại) — phiên MỚI, phiếu "LẦN CHẠY TIẾP"
+                ly = ly_dl if ly_dl is not None else (viec.get("loi") or "phiên trước đã dừng")
+                stdin = lap_phieu_tiep_taovideo(loai, dict(viec, lan_thu=so_lan_truoc + 1), self.mt, self._dot_bat,
+                                                self.che(ly), self.kho.tra_loi_cua(id), hm=self.hm)
+            else:
+                stdin = b.stdin
+            if not isinstance(stdin, str) or not stdin.strip():
+                raise ThamSoLoi("bước phiên sống không có phiếu")
+        except ThamSoLoi as e:
+            self._ket_thuc(id, "loi", "không lập được phiên sống",
+                           loi=self.che(f"Không lập được phiên sống: {e} (chưa tiêu lời duyệt)"))
+            return
+        if not truoc_sinh():                                   # tiêu lời duyệt — việc cuối trước khi sinh
+            return
+        # §7.5: lời duyệt mới → Codex đếm lại từ 0; bỏ khoá duyệt lại + câu hỏi treo đã đưa vào phiếu
+        kq_goc = {k: v for k, v in bo_khoa_duyet_lai(viec.get("ket_qua")).items() if k != "cau_hoi_treo"}
+        kq_goc["so_codex"] = 0
+        bat_dau_luc = viec.get("bat_dau_luc")
+        if self._chuyen_song(id, ["dang_chay"], "dang_chay", "bắt đầu phiên sống (đã tiêu lời duyệt)", bat_dau_luc,
+                             ket_qua=kq_goc, cau_hoi=None, can_ban=None) is None:
+            self._ghi_log(id, "dừng: việc không còn dang_chay ngay sau khi tiêu lời duyệt — không sinh phiên")
+            return
+
+        td = TheoDoiPhien(self._dot_bat, self.che)
+        ch = ps.CauHinhPhien(argv=argv, cwd=b.cwd, env=tt.env_toi_thieu(dict(b.env_them)),
+                             file_log=self.thu_muc_log / f"{id}.log", file_jsonl=self.thu_muc_log / f"{id}.jsonl",
+                             im_lang_s=self.im_lang_song_s)
+        phien = ps.PhienSong(ch, td, self.che)
+        tp = _TrangPhien(phien)
+        soat = sj.SoatCongCu(set(loai.bo_cong_cu) | {"Agent", "Task"})   # S-4 mục 3: init báo Task, tool_use Agent
+        sid_cho = viec.get("session_id")
+        st: dict = {"loi": None, "cau_hoi_treo": None, "loi_luot": None, "dong": None, "bat_dau": None,
+                    "moc_mp3": None, "mp3": set(), "lan_quet": float("-inf"), "cho_nen_tu": None, "kl": 0,
+                    "luot_ghi": 0, "da_danh_dau": False, "bao_ver": False, "can_ban": None}
+
+        def dung(ly: str) -> None:
+            if st["loi"] is None:
+                st["loi"] = ly
+                self._ghi_log(id, f"DỪNG phiên sống: {ly}")
+                log.warning("việc %s: dừng phiên sống — %s", id, ly)
+            phien.giet(ly)
+
+        def dat_can_ban(s: str | None) -> None:
+            if st["can_ban"] == s:
+                return
+            st["can_ban"] = s
+            self._chuyen_song(id, ["dang_chay"], "dang_chay", s or "hết chờ việc nền", bat_dau_luc, can_ban=s)
+
+        def khi_bat_dau(pid: int, tl: float) -> None:
+            st["bat_dau"] = time.monotonic()
+            st["moc_mp3"] = datetime.fromtimestamp(float(tl), MUI_GIO_VN)
+            self.kho.ghi_tien_trinh(id, pid, tl)
+            self.kho.cong_chi_phi(id, 0.0, 0, True)          # §6.3: đếm lần gọi ngay khi bắt đầu
+
+        def khi_su_kien(sk: dict, luc: float, d: float) -> None:
+            ngoai = soat.xet(sk)
+            if ngoai:
+                dung("Phiên Claude có công cụ ngoài danh sách cho phép (" + self.che(", ".join(ngoai))[:300]
+                     + ") — kiểm cấu hình MCP/agent của Claude trên máy trước khi chạy lại")
+                return
+            sid = sj.la_khoi_tao(sk)
+            if sid is not None and not st["da_danh_dau"]:
+                st["da_danh_dau"] = True
+                if sid != sid_cho:
+                    log.warning("việc %s: phiên sống đổi id %s → %s", id, sid_cho, sid)
+                    self._chuyen_song(id, ["dang_chay", "can_tra_loi"], "dang_chay", "phiên Claude đổi id",
+                                      bat_dau_luc, session_id=sid)
+                self.kho.danh_dau_phien(id)
+            ver = sj.phien_ban_claude(sk)
+            if ver is not None and ver != PHIEN_BAN_CLAUDE_DA_DO and not st["bao_ver"]:
+                st["bao_ver"] = True
+                c = (f"Claude CLI bản {ver} khác bản đã đo {PHIEN_BAN_CLAUDE_DA_DO} — phiên sống có thể chạy khác "
+                     "(không chặn)")
+                self._ghi_log(id, "CẢNH BÁO: " + c)
+                log.warning("việc %s: %s", id, c)
+                # FX-27 P3-2: giữ cảnh báo trong ket_qua.canh_bao (can_ban bị nhánh 'hoi' xoá)
+                kq_goc.setdefault("canh_bao", []).append(c)
+                st["can_ban"] = c
+                self._chuyen_song(id, ["dang_chay"], "dang_chay", c, bat_dau_luc, can_ban=c, ket_qua=dict(kq_goc))
+            if sk.get("type") == "result" and sj.la_cap_cao(sk):
+                so_moi = max(0, td.so_luot - st["luot_ghi"])
+                st["luot_ghi"] = td.so_luot
+                try:
+                    self.kho.cong_chi_phi(id, d, so_moi, False)
+                except SaiTrangThai as e:
+                    log.warning("việc %s: KHÔNG ghi được chi phí phiên sống (%.4f USD): %s", id, d, e)
+                    self._ghi_log(id, f"cảnh báo: không ghi được chi phí ({d:.4f} USD): {e}")
+                if sk.get("subtype") == "error_max_budget_usd":
+                    # §7.2 (S-4 #5): CLI đã chặn mọi lượt sau → đóng stdin (thoát gọn), loi; mã 1 không phải tự chết
+                    if st["loi"] is None:
+                        st["loi"] = (f"Chạm trần USD của phiên (--max-budget-usd {tran_usd:g} USD-ước-tính, Claude "
+                                     "báo error_max_budget_usd)")
+                        self._ghi_log(id, f"DỪNG phiên sống: {st['loi']} — đóng stdin")
+                    phien.dong()
+                    return
+            if td.chi_phi_usd > tran_usd:
+                dung(f"Vượt trần {tran_usd:g} USD-ước-tính của phiên (đã {td.chi_phi_usd:.2f} USD)")
+            elif td.so_codex > tran_cx:
+                dung(f"Vượt trần Codex: {td.so_codex} lần gọi Codex > trần {tran_cx} của lần duyệt này")
+            elif tran_luot is not None and td.so_luot > tran_luot:
+                dung(f"Vượt trần {tran_luot} lượt assistant của phiên")
+            elif td.so_codex >= tran_cx:
+                with self._khoa_song:
+                    if not tp.da_bao_codex and not tp.bao_codex_cho:
+                        tp.bao_codex_cho = True
+
+        def khi_nhip(tinh: TinhTrang, luc: float) -> None:
+            if st["loi"] is not None or st["dong"] is not None or st["loi_luot"] is not None:
+                return
+            if st["bat_dau"] is None:
+                return
+            if luc - st["lan_quet"] >= self.quet_mp3_s and st["moc_mp3"] is not None:
+                st["lan_quet"] = luc
+                st["mp3"] |= mp3_adam_moi(a, st["moc_mp3"])
+                if len(st["mp3"]) > tran_mp3:
+                    dung(f"vượt trần voice GenMax (đếm file thật): {len(st['mp3'])} file *_adam.mp3 mới > trần "
+                         f"{tran_mp3}")
+                    return
+            with self._khoa_song:
+                if tp.tra_loi_cho and tp.cau_hoi is not None and phien.da_ghi_tra_loi(tp.cau_hoi.ma):
+                    # FX-27 P2-1: chính tin trả lời đã ghi stdin (không dựa so_tin_cho — tin hệ thống có thể còn chờ)
+                    tp.tra_loi_cho = False
+                    tp.cau_hoi = None
+                cho_hien = (luc - tp.cho_tu) if tp.cho_tu is not None else 0.0
+                lam = luc - st["bat_dau"] - tp.tong_cho - cho_hien
+                cau_treo = tp.cau_hoi.noi_dung if (tp.cau_hoi is not None and not tp.tra_loi_cho) else None
+            if luc - st["bat_dau"] > hg["tong_s"]:
+                dung(f"Quá trần tuyệt đối {gio_doc(hg['tong_s'])} của phiên")
+                return
+            if lam > lam_s:
+                dung(f"Quá giờ làm {gio_doc(lam_s)} — Claude bị dừng cả cây")
+                return
+            if st["cho_nen_tu"] is not None and luc - st["cho_nen_tu"] > hg["nen_s"]:
+                dung(f"Việc nền chạy quá {gio_doc(hg['nen_s'])}")
+                return
+            if cau_treo is not None and cho_hien > hg["cho_s"]:
+                st["loi"] = f"Hết giờ chờ trả lời câu hỏi: {cau_treo}"
+                st["cau_hoi_treo"] = cau_treo
+                if tinh.so_viec_nen == 0:
+                    self._ghi_log(id, f"hết giờ chờ trả lời ({gio_doc(hg['cho_s'])}), không còn việc nền — đóng stdin")
+                    phien.dong()
+                else:
+                    self._ghi_log(id, f"hết giờ chờ trả lời ({gio_doc(hg['cho_s'])}), còn {tinh.so_viec_nen} việc "
+                                      "nền — giết cả cây")
+                    phien.giet("hết giờ chờ trả lời khi còn việc nền")
+                return
+            if tinh.loai == "dang_lam":
+                if st["cho_nen_tu"] is not None:
+                    st["cho_nen_tu"] = None
+                    dat_can_ban(None)
+                return
+            if tinh.so_ket_luot <= st["kl"]:
+                return
+            st["kl"] = tinh.so_ket_luot
+            if tinh.loai == "loi_luot":
+                st["loi_luot"] = tinh.van_ban
+                self._ghi_log(id, "lượt Claude báo lỗi — đóng phiên")
+                phien.dong()
+                return
+            kqa = tinh.ket_qua
+            hd = anh_xa_ket_luot_song(kqa, tinh.so_viec_nen, tp.da_nhac)
+            with self._khoa_song:
+                if tp.cau_hoi is not None:
+                    n = phien.bo_hang_doi() if tp.tra_loi_cho else 0
+                    if hd.loai != "hoi":
+                        # §7.3: ket_luot mới không có CẦN_USER → câu cũ bị agent rút lại; tin trả lời xếp hàng bị huỷ
+                        self._ghi_log(id, f"agent rút lại câu hỏi \"{tp.cau_hoi.noi_dung[:120]}\" — huỷ {n} tin trả "
+                                          "lời chưa gửi")
+                        tp.cau_hoi, tp.tra_loi_cho = None, False
+                        tp.ket_thuc_cho(luc)
+                        self._chuyen_song(id, ["can_tra_loi"], "dang_chay", "agent rút lại câu hỏi", bat_dau_luc,
+                                          cau_hoi=None)
+                    elif n:
+                        self._ghi_log(id, f"agent hỏi câu mới — huỷ {n} tin trả lời cho câu cũ chưa gửi")
+                elif phien.so_tin_cho > 0 and hd.loai != "dong":
+                    return                         # tin đang chờ (vd TIN_TRAN_CODEX) sẽ thức agent; xét lượt sau
+                if hd.loai == "dong":
+                    st["dong"] = (kqa, hd.ghi_chu)
+                    self._ghi_log(id, f"agent báo cáo cuối ({kqa.trang_thai}) — đóng stdin")
+                    phien.dong()
+                    return
+                if hd.loai == "hoi":
+                    # §7.6 (FX-26): mã câu hỏi mới, gắn với result sinh ra câu hỏi (PhienSong bỏ trả lời mã cũ)
+                    ma = "q" + secrets.token_hex(6)
+                    ch_ = che_truong_ket_thuc({"cau_hoi": dataclasses.replace(hd.cau_hoi, ma=ma)},
+                                              self.che)["cau_hoi"]
+                    phien.dat_cau_hoi(ma, tinh.so_ket_luot)
+                    tp.ket_thuc_cho(luc)
+                    tp.cau_hoi, tp.tra_loi_cho, tp.cho_tu, tp.da_nhac = ch_, False, luc, False
+                    st["cho_nen_tu"] = None
+                    st["can_ban"] = None
+                    self._chuyen_song(id, ["dang_chay", "can_tra_loi"], "can_tra_loi", "agent hỏi (phiên sống)",
+                                      bat_dau_luc, cau_hoi=ch_, can_ban=None)
+                    self._ghi_log(id, f"agent hỏi ({ch_.loai}, mã {ma}): {ch_.noi_dung[:200]} — chờ trả lời ≤ "
+                                      f"{gio_doc(hg['cho_s'])}")
+                    return
+                if tp.bao_codex_cho:
+                    phien.gui(TIN_TRAN_CODEX.format(n=tran_cx))
+                    tp.bao_codex_cho, tp.da_bao_codex = False, True
+                    self._ghi_log(id, f"đã dùng hết {tran_cx} lượt Codex — gửi TIN_TRAN_CODEX")
+                    if hd.loai == "nhac":
+                        return
+                if hd.loai == "nhac":
+                    phien.gui(hd.tin_gui or TIN_NHAC)
+                    tp.da_nhac = True
+                    self._ghi_log(id, "agent kết lượt không rõ trạng thái, không còn việc nền — nhắc 1 lần")
+                    return
+            if hd.loai == "cho_nen":
+                if st["cho_nen_tu"] is None:
+                    st["cho_nen_tu"] = luc
+                dat_can_ban(hd.ghi_chu)
+
+        phien.gui(stdin)
+        with self._khoa_song:
+            self._phien[id] = tp
+        self._ghi_log(id, f"sinh phiên sống (trần: {tran_usd:g} USD, {tran_mp3} mp3, {tran_cx} Codex, làm "
+                          f"{gio_doc(lam_s)}, chờ {gio_doc(hg['cho_s'])}, nền {gio_doc(hg['nen_s'])}, "
+                          f"tổng {gio_doc(hg['tong_s'])})")
+        kq: ps.KetQuaPhien | None = None
+        loi_chay: BaseException | None = None
+        try:
+            try:
+                kq = phien.chay(khi_bat_dau, khi_su_kien, khi_nhip, huy)
+            except Exception as e:  # noqa: BLE001 — chốt trạng thái ở dưới (kể cả can_tra_loi), không để kẹt
+                loi_chay = e
+            self._ket_thuc_phien(loai, viec, kq, loi_chay, st, td, tp, huy, kq_goc)
+        finally:
+            # FX-27 P2-2: chỉ bỏ đăng ký SAU khi đã chốt trạng thái cuối → co_phien_song True suốt khoảng này
+            with self._khoa_song:
+                self._phien.pop(id, None)
+
+    def _ket_thuc_phien(self, loai: LoaiViec, viec: dict, kq: "ps.KetQuaPhien | None", loi_chay: BaseException | None,
+                        st: dict, td: TheoDoiPhien, tp: _TrangPhien, huy: threading.Event,
+                        kq_goc: dict) -> None:
+        """Chốt trạng thái sau khi phiên sống kết thúc (§7.4, §7.7, §7.8)."""
+        id = viec["id"]
+        ket_qua = dict(kq_goc)
+        ket_qua.update({"so_codex": td.so_codex, "chi_phi_usd_phien": round(td.chi_phi_usd, 6),
+                        "so_luot_phien": td.so_luot})
+        tu_moc = st["moc_mp3"]
+        # a) câu hỏi còn treo khi phiên đóng (hết giờ chờ, hoặc dừng vì lý do khác lúc đang hỏi) → phiếu LẦN CHẠY TIẾP
+        with self._khoa_song:
+            treo = st["cau_hoi_treo"] or (tp.cau_hoi.noi_dung if tp.cau_hoi is not None and not tp.tra_loi_cho
+                                          else None)
+        if loi_chay is not None:
+            v = tt.khong_giet_tu_loi(loi_chay)
+            if v is not None:
+                self._chuyen_song(id, ["can_tra_loi"], "dang_chay", "phiên sống: không giết được",
+                                  viec.get("bat_dau_luc"))
+                self._khong_giet(id, v[0], v[1], f"khi dọn phiên sống sau lỗi {type(loi_chay).__name__}")
+                return
+            log.error("việc %s: lỗi phiên sống: %r", id, loi_chay)
+            if isinstance(loi_chay, OSError) and st["bat_dau"] is None:
+                ly = f"Không chạy được Claude: {loi_chay}"
+            else:
+                ly = f"Lỗi bộ chạy phiên sống: {type(loi_chay).__name__}: {loi_chay}"
+            self._ghi_log(id, ly)
+            if tu_moc is not None:
+                self._doi_ten_mp3_taovideo(viec, tu_moc)
+            if treo:
+                ket_qua["cau_hoi_treo"] = treo
+            self._ket_thuc_song(id, "loi", "lỗi phiên sống", loi=self.che(ly)[:800], ket_qua=ket_qua)
+            return
+        if kq.khong_giet_duoc:
+            self._chuyen_song(id, ["can_tra_loi"], "dang_chay", "phiên sống: không giết được", viec.get("bat_dau_luc"))
+            self._khong_giet(id, kq.pid, kq.pid_tao_luc, f"sau khi dừng phiên sống ({kq.ly_do_dung})")
+            return
+        if tu_moc is not None and kq.ly_do_dung != "dong_stdin":
+            self._doi_ten_mp3_taovideo(viec, tu_moc)
+        if st["loi"] is None and st["dong"] is None and st["loi_luot"] is None and huy.is_set():
+            with self._khoa:
+                huy_that = id in self._huy_that
+            if huy_that or not self._dung.is_set():
+                self._ket_thuc_song(id, "huy", "huỷ khi phiên sống đang chạy", ket_qua=ket_qua)
+            else:
+                self._ghi_log(id, "runner tắt giữa chừng — để nguyên trạng thái (giữ pid) cho lần khởi động sau "
+                                  "đối soát (§7.8)")
+            return
+        ket, tom = self._doi_soat_song(self.kho.lay(id) or viec)
+        ket_qua["doi_soat"] = tom
+        if st["loi"] is not None:
+            if treo:
+                ket_qua["cau_hoi_treo"] = treo
+            self._ket_thuc_song(id, "loi", "phiên sống bị dừng", ket_qua=ket_qua, loi=(
+                f"{st['loi']}. Đối soát: {tom}. Mọi việc nền đã dừng — kiểm log rồi bấm Xin duyệt lại để làm tiếp"))
+            return
+        if st["loi_luot"] is not None:
+            vb = st["loi_luot"]
+            tam = bool(RE_QUOTA.search(vb))
+            if tam:
+                self._tam_dung_claude()
+            tien_to = "Hết quota/quá tải — tạm dừng việc Claude 30 phút. " if tam else ""
+            if treo:
+                ket_qua["cau_hoi_treo"] = treo
+            self._ket_thuc_song(id, "loi", "lượt Claude báo lỗi", ket_qua=ket_qua, loi=(
+                f"{tien_to}Claude báo lỗi lượt: {self.che(vb)[:600]}. Đối soát: {tom}. Bấm Xin duyệt lại để làm tiếp"))
+            return
+        if st["dong"] is not None:
+            kqa, ghi_chu = st["dong"]
+            den, truong = anh_xa_ket_qua(loai, kqa, "xong" if ket == "xong" else "chua")
+            kq_ag = dict(truong.get("ket_qua") or {})
+            ket_qua.update(kq_ag)
+            ket_qua["tom_tat"] = self.che(ket_qua.get("tom_tat") or "")
+            ket_qua["doi_soat"] = tom
+            if ghi_chu:
+                ket_qua["co_lo_ngai"] = True
+                ket_qua["lo_ngai"] = "; ".join(filter(None, [ket_qua.get("lo_ngai"), ghi_chu]))
+            if kq.ly_do_dung != "dong_stdin":
+                ket_qua["co_lo_ngai"] = True
+                ket_qua["lo_ngai"] = "; ".join(filter(None, [ket_qua.get("lo_ngai"),
+                                                              f"phiên kết thúc kiểu {kq.ly_do_dung}"]))
+            self._ket_thuc_song(id, den, f"agent: {kqa.trang_thai}", ket_qua=ket_qua)
+            return
+        # tự chết giữa chừng (mã ≠ 0 hoặc thoát khi chưa báo cáo cuối) → đối soát (§7.8)
+        if ket == "xong":
+            ket_qua.update({"trang_thai_agent": None, "co_lo_ngai": True, "tom_tat": tom,
+                            "lo_ngai": f"phiên tự thoát (mã {kq.ma_thoat}) nhưng đối soát đủ"})
+            self._ket_thuc_song(id, "xong", "đối soát sau khi phiên tự thoát", ket_qua=ket_qua)
+            return
+        duoi = self.che(kq.duoi_stderr or "")[-TOI_DA_STDERR_LOI:]
+        if treo:
+            ket_qua["cau_hoi_treo"] = treo
+        self._ket_thuc_song(id, "loi", "phiên sống tự thoát", ket_qua=ket_qua, loi=(
+            f"Phiên Claude tự thoát (mã {kq.ma_thoat}) khi chưa báo cáo cuối — {tom}. Mọi việc nền đã dừng. Kiểm log "
+            f"rồi bấm Xin duyệt lại để làm tiếp." + (f"\nstderr cuối:\n{duoi}" if duoi else "")))

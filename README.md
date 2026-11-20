@@ -9,7 +9,9 @@ Dữ liệu vẫn nằm trong repo này (`data/`), nên `tools/kho.py` trên má
 
 1. **Dán link** lên web (hoặc gửi link cho Claude trên máy nhà) → sản phẩm vào trạng thái **Chờ xử lý**.
    UID đã có trong kho thì web báo trùng.
-2. Trên máy nhà, nói với Claude **"xử lý link mới trong kho"** → Claude chạy `kho.py cho`, rồi với từng link:
+2. Dán xong, Worker **tự giao máy nhà phân tích** (link có UID → việc `phan_tich_uid`, link rút gọn → `xu_ly_link_moi`).
+   Máy nhà tắt thì link vẫn lưu; bật máy rồi bấm **📥 Xử lý link mới** ở trang Việc, hoặc nói với Claude
+   **"xử lý link mới trong kho"** → Claude chạy `kho.py cho`, rồi với từng link:
    `/phantichcanhquay` → file 01 + dữ liệu SP + USP + 100 caption → `kho.py ghi` → **Đã phân tích**.
 3. Nhân viên mở web, đọc **Bộ cảnh quay** để quay. Quay xong thì gạt **"Oneshot"** hoặc **"Review"** (web ghi tên + giờ) → **Đã quay**.
 4. Làm video: tab **🎞 Làm video** → bấm **Copy cho Claude** và dán vào Claude trên máy nhà. `/tao-video-tu-canh-quay`

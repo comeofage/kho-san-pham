@@ -1,4 +1,5 @@
-"""In danh sách folder Poster V2 dạng JSON [{"id": int, "ten": str}] (docs/bo-chay-viec.md §5.2, §13 A-3).
+"""In danh sách folder Poster V2 dạng JSON [{"id": int, "ten": str[, "duong_dan": str]}] (docs/bo-chay-viec.md §5.2,
+§13 A-3; duong_dan thêm ở B-L1, docs/giao-dien-menu-trai.md §4.9 — runner dùng nội bộ, api không trả ra web).
 
 Chạy bằng python của venv Poster V2 (vòng chạy gọi qua `MoiTruong.doc_folder_poster`):
     E:/tool/tiktok_poster_v2/.venv/Scripts/python.exe -B -I poster_ds_folder.py --poster E:/tool/tiktok_poster_v2
@@ -16,11 +17,13 @@ import sys
 from pathlib import Path
 
 TEN_TOI_DA = 120
+DUONG_DAN_TOI_DA = 1000       # dài hơn → bỏ khoá (không cắt: đường dẫn bị cắt là đường dẫn sai)
 LOI_TOI_DA = 300
 
 
 def chuan_hoa(ds: object) -> list[dict]:
-    """Danh sách folder thô của Poster → [{id:int, ten:str}]. Mục hỏng (id không phải số nguyên dương) bị bỏ."""
+    """Danh sách folder thô của Poster → [{id:int, ten:str[, duong_dan:str]}]. Mục hỏng (id không phải số nguyên
+    dương) bị bỏ. `duong_dan` = trường `path` của folder, CHỈ có khi path là chuỗi khác rỗng, dài ≤ DUONG_DAN_TOI_DA."""
     if not isinstance(ds, list):
         raise ValueError(f"list_folders trả {type(ds).__name__}, cần list")
     ra: list[dict] = []
@@ -33,7 +36,11 @@ def chuan_hoa(ds: object) -> list[dict]:
         if isinstance(fid, bool) or not isinstance(fid, int) or not 0 < fid < 10 ** 9:
             continue
         ten = f.get("name")
-        ra.append({"id": fid, "ten": ten[:TEN_TOI_DA] if isinstance(ten, str) else ""})
+        muc = {"id": fid, "ten": ten[:TEN_TOI_DA] if isinstance(ten, str) else ""}
+        dd = f.get("path")
+        if isinstance(dd, str) and dd and len(dd) <= DUONG_DAN_TOI_DA:
+            muc["duong_dan"] = dd     # thiếu khoá = không biết (danh_muc.ds_folder_poster chuẩn hoá về "")
+        ra.append(muc)
     return ra
 
 

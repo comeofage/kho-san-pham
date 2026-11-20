@@ -26,6 +26,8 @@ khử trùng theo `ma_message`.
 from __future__ import annotations
 
 import json
+import math
+import re
 from typing import Callable
 
 _CAT_INPUT = 300      # ký tự tối đa khi in input công cụ
@@ -227,6 +229,136 @@ def van_ban_assistant(sk: dict) -> str | None:
     phan = [k["text"] for k in _noi_dung(sk) if k.get("type") == "text" and isinstance(k.get("text"), str)]
     s = "\n".join(phan).strip()
     return s or None
+
+
+# ---------------- B-5 (§7.3): phiên sống ----------------
+# Tên trường theo spike S-3 (`.culiapp/test-spike-s3.json`, `lan_goi[0].loai_su_kien_va_truong`):
+# system/task_started{task_id,tool_use_id,task_type…}, system/task_notification{task_id,status,output_file…},
+# system/task_updated{task_id,patch}, system/init{claude_code_version…}, result không có parent_tool_use_id.
+# Chỉ đọc trường quy ước ở cấp sự kiện — KHÔNG dò chữ trong văn bản agent / kết quả công cụ.
+
+KET_THUC_NEN: frozenset[str] = frozenset({"completed", "failed", "killed", "stopped", "error", "cancelled"})
+
+
+def la_cap_cao(sk: dict) -> bool:
+    """Sự kiện của phiên chính: `parent_tool_use_id` thiếu, None hoặc chuỗi rỗng.
+    Giá trị dạng lạ (không phải chuỗi) → coi là KHÔNG cấp cao (không được dùng để kết luận lượt)."""
+    p = sk.get("parent_tool_use_id")
+    return p is None or p == ""
+
+
+def _la_system(sk: dict, subtype: str) -> bool:
+    return sk.get("type") == "system" and sk.get("subtype") == subtype
+
+
+def viec_nen_bat_dau(sk: dict) -> str | None:
+    """system/task_started → task_id."""
+    return _chuoi(sk.get("task_id")) if _la_system(sk, "task_started") else None
+
+
+def viec_nen_ket_thuc(sk: dict) -> str | None:
+    """system/task_notification (mọi status) | system/task_updated có patch.status ∈ KET_THUC_NEN → task_id."""
+    if _la_system(sk, "task_notification"):
+        return _chuoi(sk.get("task_id"))
+    if _la_system(sk, "task_updated"):
+        patch = sk.get("patch")
+        st = patch.get("status") if isinstance(patch, dict) else None
+        if isinstance(st, str) and st.strip().lower() in KET_THUC_NEN:
+            return _chuoi(sk.get("task_id"))
+    return None
+
+
+def phien_ban_claude(sk: dict) -> str | None:
+    """init.claude_code_version."""
+    return _chuoi(sk.get("claude_code_version")) if _la_init(sk) else None
+
+
+def tin_user(text: str) -> bytes:
+    """Một dòng stream-json gửi vào stdin (dạng đã đo ở S-3 `dinh_dang_tin_user`), UTF-8, kết thúc bằng '\\n'.
+
+    json.dumps luôn thoát \\n, \\r; thêm thoát U+2028/U+2029 để bên đọc tách dòng kiểu Unicode cũng thấy 1 dòng."""
+    if not isinstance(text, str):
+        raise TypeError(f"tin_user cần str, nhận {type(text).__name__}")
+    s = json.dumps({"type": "user", "message": {"role": "user", "content": text}, "parent_tool_use_id": None},
+                   ensure_ascii=False)
+    s = s.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
+    return (s + "\n").encode("utf-8")
+
+
+def tong_chi_phi(sk: dict) -> float | None:
+    """`total_cost_usd` của sự kiện result (CỘNG DỒN trong phiên sống, S-3 n8).
+    None nếu không phải result hoặc trường thiếu/sai dạng/âm/không hữu hạn — khác `la_ket_qua` (trả 0.0),
+    để bên tính chênh lệch không nhầm "thiếu trường" thành "phiên đếm lại từ 0"."""
+    if sk.get("type") != "result":
+        return None
+    v = sk.get("total_cost_usd")
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return None
+    v = float(v)
+    return v if math.isfinite(v) and v >= 0 else None
+
+
+# FX-28 (R-22 P2-3): lệnh Bash gọi Codex. Mẫu CHẶT theo tên chương trình, không theo chữ "codex" bất kỳ — skill
+# tao-video-tu-canh-quay có lệnh mang chữ codex mà không gọi Codex (`c2_kiem.py --codex`, `<B>_codex-review.md`).
+# codex-companion (plugin openai-codex): lệnh con chỉ đọc trạng thái không gọi model; lệnh con khác/thiếu → tính.
+_RE_COMPANION = re.compile(r"codex-companion(?:\.m?js)?[\"']?(?:[ \t]+[\"']?([A-Za-z][\w-]*))?", re.I)
+_COMPANION_CHI_DOC = frozenset({"status", "result", "cancel", "task-resume-candidate", "setup"})
+# `codex` là MỘT từ lệnh (đầu lệnh, sau dấu cách/;&|()`'"=, hoặc cuối một đường dẫn /…/codex) kể cả .exe/.cmd/.ps1/.bat.
+# Hướng an toàn: `echo codex`, `grep codex f` cũng tính (không phân tích shell được đầy đủ).
+_RE_TU_CODEX = re.compile(r"(?:^|(?<=[\s;&|()`'\"=/\\@]))codex(?:\.(?:exe|cmd|bat|ps1))?(?=$|[\s;&|()`'\"])", re.I)
+# script/chương trình có "codex" trong tên file (run_codex.py, codex-cli.js…)
+_RE_SCRIPT_CODEX = re.compile(r"[\w.-]*codex[\w.-]*\.(?:m?js|cjs|exe|cmd|bat|ps1|sh|py)(?![\w-])", re.I)
+
+
+def lenh_goi_codex(lenh: object) -> bool:
+    """Chuỗi lệnh Bash có gọi Codex (codex CLI, codex-companion lệnh con gọi model, script tên có codex) không.
+
+    Giới hạn: không phát hiện được lệnh bị che (biến môi trường, ghép chuỗi, script viết ra rồi chạy) — xem §7.9."""
+    if not isinstance(lenh, str) or not lenh:
+        return False
+    for m in _RE_COMPANION.finditer(lenh):
+        con = (m.group(1) or "").lower()
+        if con not in _COMPANION_CHI_DOC:
+            return True
+    con_lai = _RE_COMPANION.sub(" ", lenh)
+    return bool(_RE_TU_CODEX.search(con_lai) or _RE_SCRIPT_CODEX.search(con_lai))
+
+
+def cac_goi_codex(sk: dict) -> list[str | None]:
+    """§7.5: các khối tool_use gọi Codex trong MỘT sự kiện assistant (mọi cấp) → id tool_use (None nếu thiếu id).
+
+    Khớp: tên `Agent`/`Task` có input.subagent_type bắt đầu bằng 'codex' (như `vong_lap.dem_codex`, thêm `Task`
+    vì init gọi công cụ Agent là Task), tên `Skill` có input.skill bắt đầu bằng 'codex:', hoặc (FX-28) tên `Bash` có
+    input.command gọi Codex (`lenh_goi_codex`).
+    Bash codex-companion chạy TRONG subagent (parent_tool_use_id) trả id CHA: agent codex-rescue gọi đúng 1 Bash
+    companion — cùng id với lần gọi Agent nên bên gọi khử trùng, không đếm đôi. Bash codex khác dùng id riêng.
+    Chỉ đọc khối tool_use; chữ trong prompt/văn bản không tính."""
+    if sk.get("type") != "assistant":
+        return []
+    cha = _chuoi(sk.get("parent_tool_use_id"))
+    ra: list[str | None] = []
+    for k in _noi_dung(sk):
+        if k.get("type") != "tool_use":
+            continue
+        ten = k.get("name")
+        inp = k.get("input") if isinstance(k.get("input"), dict) else {}
+        ma = _chuoi(k.get("id"))
+        if ten in ("Agent", "Task"):
+            sub = inp.get("subagent_type")
+            trung = isinstance(sub, str) and sub.strip().lower().startswith("codex")
+        elif ten == "Skill":
+            sk_ten = inp.get("skill")
+            trung = isinstance(sk_ten, str) and sk_ten.strip().lower().startswith("codex:")
+        elif ten == "Bash":
+            lenh = inp.get("command")
+            trung = lenh_goi_codex(lenh)
+            if trung and cha is not None and _RE_COMPANION.search(lenh):
+                ma = cha
+        else:
+            trung = False
+        if trung:
+            ra.append(ma)
+    return ra
 
 
 def _cat(s: str, n: int) -> str:

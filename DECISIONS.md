@@ -60,6 +60,7 @@ Trạng thái: Đã chốt (người dùng duyệt 17/11/2026: "Duyệt, làm lu
 
 ## D3: Danh mục việc cố định; web không gửi đường dẫn hay lệnh; đợt 3 chỉ trả lời bằng nút  (2026-11-17)
 Trạng thái: Đã chốt (người dùng duyệt 17/11/2026: "Duyệt, làm luôn"; hạn mức "Giữ mức đề xuất"; người duyệt "Cả nhan và comeofage")
+Bị thay một phần bởi D13 (đường dẫn/chữ tự do tới backend Poster qua `/api/poster/*`)
 
 **Bối cảnh.** Web công khai điều khiển máy nhà, có agent dùng Bash. Thư viện JS nạp từ CDN không ghim phiên bản (`web/index.html:8-10`) và chưa có CSP, nên XSS có thể biến thành chạy lệnh trên máy nhà.
 
@@ -235,6 +236,7 @@ Trạng thái: Đã chốt (người dùng duyệt 17/11/2026: "Duyệt, làm lu
 
 ## D9: Sổ "lời duyệt đã tiêu" trên Cloudflare KV; mỗi lời duyệt chỉ chạy được một lần pha tốn tiền  (2026-11-17)
 Trạng thái: Đã chốt (người dùng chọn "Sổ trên Cloudflare" ngày 17/11/2026, sửa lỗi review R-11 P1-1). Bổ sung D5 và D7, không thay hai quyết định này.
+Bị thay một phần bởi D13 (trang Poster V2 không qua hạn mức `poster_len_lich`)
 
 **Bối cảnh.**
 - Review R-11 P1-1: chữ ký duyệt D7 chỉ chứng minh "việc này đã được duyệt", không chứng minh "lời duyệt này chưa dùng". Ai sửa được `runner.db` (đưa việc `xong`/`loi` về `cho`, giữ nguyên tham số và chữ ký) thì runner chạy lại pha tốn tiền: chữ ký vẫn khớp, nên Muse/GenMax/Poster bị gọi thêm lần nữa. Agent chạy cùng user Mi sửa được `runner.db` (D7 Bối cảnh).
@@ -283,3 +285,296 @@ Trạng thái: Đã chốt (người dùng chọn "Sổ trên Cloudflare" ngày 
   - KV chỉ nhất quán cuối cùng (eventual consistency), và đọc-rồi-ghi không nguyên tử. Hai lần gọi gần nhau ở hai colo khác nhau có thể cùng nhận 200. Runner luôn ở cùng một máy nên thường vào cùng colo và đọc thấy bản ghi vừa ghi. Runner gọi tuần tự.
   - Ai có `.runner_key` (agent cùng user) gọi được route này để "tiêu" trước một lời duyệt. Như vậy chỉ chặn được việc (DoS), không chạy được gì tốn tiền: chữ ký trả về gắn nonce của người gọi, runner không dùng được. Spam khoá rác có thể làm cạn hạn mức ghi KV trong ngày.
   - Agent có Bash cùng user vẫn có thể sửa code runner trong bản cài rồi chờ runner khởi động lại (đã ghi ở D7). D9 không đổi điều này. `TONG_KIEM` chỉ phát hiện nhầm lẫn.
+
+## D10: Sửa video từ web bằng bộ chuyển đổi trong bản cài runner, không sửa engine; dựng lại tại chỗ có sao lưu và cập nhật bản ghi nguồn  (2026-11-17)
+Trạng thái: Đã chốt (người dùng 17/11/2026: Q1 "Chỉ video đang sửa", Q2 "Trong bộ chạy việc", Q3 "Có, mỗi lần lưu")
+Bị thay một phần bởi D12 (vị trí nút ✏ Sửa)
+
+**Bối cảnh.**
+- Người dùng muốn sửa phụ đề và đổi clip của một video ngay trong tab ✅ Duyệt, trên điện thoại, rồi dựng lại đúng video đó.
+- Engine `F:\auto video oneshot` là app khác và không có git. Engine chưa có lệnh dựng 1 video: `cli.py render` chỉ chạy tiếp `render_batch.json` (`cli.py:441-458`).
+- `render_batch.json` bị ghi đè mỗi lần dựng trong cùng thư mục (`render.py:1094`). Bỏ qua render dựa vào `.done.json` có key gồm chữ ký file nguồn (`render.py:911-921`, `render_checkpoint.py:33-49`).
+- Dữ liệu thật có đường dẫn tuyệt đối đã cũ: `50oto 1736818222555104357\output_poster\render_batch.json` trỏ `...\50oto\takes`, `...\50oto\output\hau_ky`.
+- Mẻ Adam xoá `.done.json` và `_hau_ky/<B>` sau khi đổi tên (`autovideo_audio_take.py:1494-1511`). `output_poster` là hardlink (`day_len_poster.py:95-134`), nên `os.replace` để link trỏ bản cũ.
+
+**Quyết định.**
+- **Không sửa engine.** Thêm bộ chuyển đổi `tools/runner/sua_video_engine.py`, chạy bằng Python của engine, cwd là thư mục engine. Bộ này gọi hàm engine có sẵn: `render_single_plan`, `dung_hau_ky_cho_plan`, `build_subtitle_json`, `mach_trung_voi_lich_su`, `load_wm_from_project`. Được cài theo D8 cùng runner. Phần tra cứu thuần stdlib nằm ở `tools/runner/sua_video.py`. Lúc chạy, bộ chuyển đổi kiểm chữ ký các hàm engine; lệch thì từ chối.
+- **Tra cứu video → bản ghi:**
+  - luồng C (giọng creator): `render_batch.json` + tên `<prefix>_<NNN>.mp4` + `.done.json` khớp size và mtime;
+  - luồng A (Adam): `<out>/<B>_plan.json` + segment BASE `<B>_<ma>`;
+  - mọi đường dẫn được đổi gốc sang thư mục dự án hiện tại; hậu kỳ luôn dựng lại.
+- **Dựng lại tại chỗ:**
+  - chép cứng bản cũ vào `_sua_cu/`;
+  - dựng 1 bản (luồng C ghi thẳng tên cũ để `.done.json` khớp lần chạy tiếp);
+  - **cập nhật đúng một mục** trong `render_batch.json` / `<B>_plan.json` (có sao lưu);
+  - nối lại hardlink trong `output_poster`;
+  - nhật ký từng bước với đường dẫn tương đối, nên chạy lại được và hoàn tác được.
+- Giữ khoá render `.render.lock` và khoá máy `.render-may.lock` theo đúng định dạng `KhoaPlan` của cầu nối Adam.
+- **Loại việc mới** `sua_video` và `hoan_tac_sua`: miễn phí, làn `gpu`, gắn `dot=4`. Gắn đợt 6 thì phải nâng `dot_bat`, như vậy mở luôn `taovideo` đợt 5. Trần `sua_video_ngay = 60`.
+- **Bản sửa** lưu trong bảng `ban_sua` của runner (schema 3). Việc chỉ mang mã `ban_sua`. Web không gửi đường dẫn; video định danh bằng `ma_video = sha1(ma_du_an/thu_muc/ten)[:16]`.
+- **Bổ sung D3: chữ phụ đề là chỗ chữ tự do thứ ba.**
+  - Chữ chỉ vào `<take>.sua.srt` qua script, không bao giờ vào phiếu agent hay dòng lệnh.
+  - Lọc ký tự: cấm điều khiển, xuống dòng, `{ } \ < >`, `-->`; tối đa 200 ký tự mỗi câu, 30 câu mỗi lần.
+  - Bắt nhập mật khẩu khi lưu nếu có sửa chữ (chờ người dùng chốt, Q3 trong `docs/sua-video.md` §12).
+- **Phạm vi tối thiểu:** sửa chữ từng câu, đổi clip cùng vai, đổi chỗ hai cảnh phủ. Không cắt, kéo giãn hay xoá đoạn.
+
+**Phương án đã loại.**
+- Thêm lệnh `render-mot` vào `cli.py` của engine: sửa app khác không có git; `cli.py` import nặng; skill phải đổi theo. Giữ làm phương án B nếu người dùng muốn (`docs/sua-video.md` §6.8).
+- Vá `render_batch.json` rồi xoá `.done.json` và gọi `cli.py render`: chạy lại cả mẻ (ffprobe mọi bản), không dùng được cho mẻ Adam (render_batch là của mẻ cuối, `.done.json` đã bị xoá), và đường dẫn cũ làm key lệch.
+- Sửa tay `plan.json` rồi `cli.py timeline`: timeline sinh lại toàn bộ, mất bản đang có, trái luật skill.
+- Dựng ra file tên mới (`_v2`) thay vì thay tại chỗ: Poster và sổ `_da_gom.txt` coi là video mới, dễ đăng cả hai bản.
+- Chạy `run_subtitle_pipeline` cho cả thư mục take: có thể kích Whisper ở take chưa có `.words.json`.
+- Cho chữ phụ đề đi qua tham số việc: vượt giới hạn tham số của Worker (chuỗi ≤ 40), và lẫn dữ liệu với lệnh.
+
+**Hệ quả.**
+- Bộ chuyển đổi phụ thuộc hàm nội bộ engine. Engine đổi chữ ký hàm thì việc sửa bị từ chối (không hỏng ngầm); phải sửa bộ chuyển đổi và cài lại runner.
+- Ledger chống trùng không biết clip vừa đổi, nên mẻ dựng sau có thể trùng với video đã sửa. Lúc đổi chỉ kiểm trùng với các bản đã có.
+- Luồng A dựng lại bằng tham số mặc định của `run` (mẻ không lưu tham số). Nếu mẻ đã chạy với tham số khác thì chuyển cảnh và âm lượng nhạc có thể khác nhẹ. Phiếu tuỳ chọn B-9 sửa skill để lưu tham số (cần duyệt).
+- `.sua.srt` được ưu tiên hơn `.script.txt` cho take đã sửa.
+- Video dựng lại có `sua_luc` mới, nên phải duyệt lại.
+- Mỗi lần sửa giữ tối đa 3 bản cũ trong `_sua_cu/` (tốn đĩa bằng dung lượng video).
+- Thêm 6 phiếu (B-6, B-7, A-6, W-7, W-8, W-9) và một bước cài runner, deploy Worker có duyệt.
+
+**Ghi chú 18/11/2026 (A-DOC2, trưởng phòng chốt sau R-20, FX-20, FX-21; không đổi trạng thái).** Chi tiết: `docs/sua-video.md` §6.1, §6.2, §6.3, §6.3a, §6.4, §7.2a.
+- **Xếp loại trước khi đè.** Trước khi đè bất kỳ mục nào (video, `.done.json`, mục `chi_so` trong `render_batch.json` / `<B>_plan.json`, `plan_<pid>` trong `plan.json`, phụ đề take + `.sua.srt`), xếp vào `goc` (đã là bản cũ, không làm), `minh` (đúng thứ lần sửa này ghi, được đè), `khac` (đã có bản mới hơn hoặc việc khác đổi, không đè), `mat` (của lần sửa nhưng mất sao lưu, không đè).
+- **Hoàn tác:**
+  - mục gắn với video ở `khac`/`mat` → mã 2 "đã có bản mới hơn… chưa đổi gì", không chạm gì;
+  - mất sao lưu nguồn → từ chối (bỏ cách cũ "giữ bản sửa, cảnh báo");
+  - phụ đề take + `.sua.srt` (dùng chung nhiều video) ở `khac`/`mat` → video vẫn về bản cũ, phụ đề giữ nguyên, cảnh báo + `hoan_tac_bo_qua`, **mã 5 "kiểm tay"** (thay cho "để nguyên, cảnh báo, mã 0"). Chạy lại vẫn mã 5.
+- **Hoàn nguyên khi dựng hỏng:** đã ở bước `hoan_nguyen` thì không hoàn nguyên lại. Mỗi mục đối chiếu dấu size + `mtime_ns` + sha với dấu việc này ghi (video: size + `mtime_ns`); không khớp → bỏ qua, ghi `hoan_nguyen_bo_qua`, mã 5.
+- **Luồng C:** bước `nguon` so `st_mtime_ns` của `render_batch.json` với lúc tra (hoặc với dấu chính việc này đã ghi); lệch → không ghi, cảnh báo.
+- **Khoá dự án / máy:** gỡ khoá cũ bằng `os.replace` sang tên tạm rồi so lại, sai thì trả lại.
+- **Mật khẩu khi chạy lại (Q3 = "mật khẩu mỗi lần").** Chạy lại / chạy tiếp việc `sua_video` có sửa chữ phụ đề (`ban_sua.phu_de` khác rỗng) phải lưu lại qua `/luu` kèm mật khẩu; nút "Chạy lại"/"Chạy tiếp" trả 409. Runner tự làm nốt sau khi khởi động lại (D6) không bị chặn. Code `api.py` làm ở FX-22.
+
+## D11: `taovideo` chạy bằng một phiên Claude sống suốt việc (stream-json hai chiều); một lời duyệt cho một phiên, kèm trần đo từ dữ liệu thật  (2026-11-17)
+Trạng thái: Đã chốt (người dùng 17/11/2026: "1 lần cho cả phiên", "Cho sửa + mở đợt 5"; watermark cho phép: nha.cua.mit hoặc không)
+
+**Bối cảnh.**
+- D4 chọn gọi Claude theo lượt và nối bằng `--resume`, và đã loại phương án stream-json hai chiều vì "treo hàng giờ, mất phiên khi reboot". D4 ghi rõ đợt 5 phụ thuộc spike S-02.
+- S-2 (đo thật): Bash nền chết khi `-p` thoát; lượt resume không nhận thông báo việc nền; không có `SendMessage` (`.culiapp/nhat-ky.md:31`).
+- Quy trình `taomevideo` / `tao-video-tu-canh-quay` dựa vào việc nền ở phiên chính và thông báo hoàn tất (`SKILL.md:48`, `:172`), cấm `sleep` (`:65`), và chờ Poster bằng lệnh nền (`:202`). Theo lượt thì quy trình đứng.
+- S-3 (đo thật, `.culiapp/test-spike-s3.json`), với một tiến trình `claude -p --input-format stream-json --output-format stream-json --verbose --strict-mcp-config` giữ stdin mở:
+  - tiến trình sống qua nhiều lượt;
+  - Bash nền chạy qua ranh giới lượt; thông báo việc nền tới; agent tự thức;
+  - khối `CẦN_USER` phát hiện được ở result cuối lượt + im lặng, trả lời qua stdin thì agent nhớ ngữ cảnh;
+  - đóng stdin thì thoát gọn mã 0;
+  - `total_cost_usd` cộng dồn trong phiên;
+  - init báo công cụ `Agent` dưới tên `Task`; không có `SendMessage`.
+- `taovideo` là loại tốn tiền (GenMax). D9 hiện bắt mỗi lần sinh tiến trình tốn tiền phải tiêu một lời duyệt mới, và việc tốn tiền ở `can_tra_loi` không được trả lời trên web (A-D9b).
+- Key GenMax nằm ở biến môi trường tài khoản Windows, script tự đọc (`tao-video-tu-canh-quay\SKILL.md:40`). Runner không chặn cứng được từng lần gọi GenMax bên trong phiên.
+
+**Quyết định.**
+- **Phiên sống.** Mỗi lần chạy `taovideo` là MỘT tiến trình `claude.exe -p --input-format stream-json --output-format stream-json --verbose --agent aff-taovideo --strict-mcp-config --permission-mode dontAsk …`:
+  - stdin giữ mở; mỗi tin là một dòng JSON `{"type":"user",…}`; chỉ luồng làn ghi stdin, và chỉ khi agent đang rảnh;
+  - làn `gpu`, giữ tài nguyên `kho` suốt phiên;
+  - module mới `tools/runner/phien_song.py`; phân loại sự kiện thuần trong `tools/runner/theo_doi_phien.py`.
+- **Phát hiện tình trạng** từ sự kiện cấp cao (`parent_tool_use_id` rỗng):
+  - `result` + im lặng ≥ 10 s → kết luận lượt;
+  - tập việc nền từ `system/task_started` / `task_notification` / `task_updated`;
+  - `CẦN_USER` → hỏi; `TRẠNG THÁI: DONE…` → đóng stdin rồi đối soát; không rõ mà còn việc nền → chờ; không rõ mà không còn việc nền → nhắc 1 lần rồi hỏi.
+- **Không dùng `--resume` cho `taovideo`.** Mỗi lần sinh tiến trình dùng một session id mới. Chạy tiếp sau khi bị ngắt dùng phiếu "LẦN CHẠY TIẾP", vì trạng thái thật đã nằm ở file (`trang_thai.py tiep`, `trang-thai.json`, kho).
+- **Một lời duyệt = một phiên sống** (D9 tiêu đúng một lần, ngay trước khi sinh tiến trình). Trong phiên, trả lời câu hỏi trên web đi thẳng vào stdin, không tiêu lời duyệt. `chon` và `cau_hoi` bắt nhập lại mật khẩu; `viec_tay` và `khong_ro` chỉ cần nút. Phiên kết thúc vì bất kỳ lý do gì → muốn chạy tiếp phải "Xin duyệt lại".
+- **Trần cứng trong một phiên** (hằng số trong `han_muc.py`, chỉ được hạ):
+  - ≤ 60 USD-ước-tính, tính bằng chênh lệch `total_cost_usd`;
+  - ≤ 25 file voice `*_adam.mp3` mới, đếm file thật;
+  - ≤ 6 lượt Codex, đặt lại khi có lời duyệt mới;
+  - ≤ 1500 message;
+  - 8 giờ làm, 3 giờ cho mỗi lần chờ trả lời, 4 giờ chờ việc nền liên tục, 24 giờ tuyệt đối.
+
+  Vượt trần → giết cả cây → `loi`. `taovideo_ngay` đếm việc (1/ngày); thêm `taovideo_lan_ngay = 3` lần tiêu/ngày.
+- **Bị ngắt** (reboot, runner chết, tiến trình chết):
+  - không cố nối lại việc nền;
+  - `doi_soat_taovideo` **chỉ đọc file**: `<B>_trang-thai.json`, `_log/<B>_tron_goi.xong.json`, `data/<UID>/info.json` → `da_lam_video.poster`, `output/*.mp4`;
+  - đổi tên mp3 hỏng `.hong-<id>`;
+  - `xong` hoặc `loi` kèm tóm tắt + "Xin duyệt lại".
+- **Công cụ** `Read, Write, Edit, Glob, Grep, Bash, Skill, Agent, Task, TaskOutput, TaskStop, TodoWrite`. Bỏ `SendMessage`. Danh sách soát được bổ sung công cụ chỉ đọc mà subagent phát ra, theo kết quả S-4.
+- **Bước B** chốt thư mục lúc tạo việc (runner tìm dự án của UID có `takes/*.mp4`), không hỏi giữa chừng.
+
+**Phương án đã loại.**
+- Giữ D4 (theo lượt + `--resume`) cho `taovideo`: S-2 cho thấy việc nền chết và thông báo mất, nên quy trình đứng ở render/voice/chờ Poster.
+- Bắt skill chạy mọi thứ foreground để hợp với theo lượt: phải viết lại `taomevideo` / `tao-video-tu-canh-quay` (vốn chốt việc nền ở phiên chính sau sự cố "mẻ bigcup đứng 3 giờ", `SKILL.md:47-48`); lượt dài hàng giờ thì quá giờ / trần lượt khó đặt.
+- Nối phiên bằng `--resume` sau khi bị ngắt: việc nền không sống sót; đọc lại ngữ cảnh hàng trăm nghìn token rất đắt; chưa đo `--resume` với stream-json vào.
+- Duyệt từng pha GenMax qua `CẦN_USER`: không phải chốt chặn (agent tự quyết khi nào hỏi, key đọc từ tài khoản Windows); trái luật "voice tự chạy" đã chốt (`SKILL.md:36`); người dùng phải trả lời đúng lúc voice, việc giữ GPU lâu hơn.
+- Một lời duyệt tiêu N lần cho cả việc (kể cả sau khi bị ngắt): D9 đã loại vì mở đường chạy lại mà không có người bấm.
+- Nhả tiến trình khi chờ lâu rồi sinh lại: phải tiêu lời duyệt mới hoặc phá D9, và việc nền đang chạy (render, chờ Poster) chết.
+
+**Hệ quả.**
+- Quy trình `taovideo` chạy được từ web mà không phải sửa skill. Phiếu có khối "CHẾ ĐỘ CHẠY" thay cho `SendMessage` và chờ Poster nền. K-1/K-2 (sửa agent/skill) làm hành vi ổn định hơn, cần người dùng duyệt.
+- Trong lúc chờ trả lời (≤ 3 giờ mỗi câu), làn `gpu` và tài nguyên `kho` bị giữ: `voice_pv`, `voice_genmax`, `sua_video` và các việc đụng kho phải đợi.
+- Reboot giữa chừng mất toàn bộ việc nền. Chạy tiếp cần duyệt lại; agent làm tiếp từ file trạng thái.
+- Trần GenMax chỉ phát hiện sau khi xảy ra (có thể vượt tối đa 1 file).
+- Phụ thuộc vào `--input-format stream-json` của Claude CLI 2.1.169 (ít tài liệu). CLI báo phiên bản khác thì có cảnh báo; nâng bản thì chạy lại S-3/S-4.
+- Ngày có `taovideo`, mức chung 40 USD/ngày có thể bị vượt (trần riêng 60). Việc Claude khác đợi tới hôm sau.
+- Thêm phiếu S-4, B-5, B-4 (thay bản cũ), W-6 (thay bản cũ), K-1, K-2, A-5 (thay A-4). Không đổi schema DB: phiên sống nhận biết bằng `pid` khác rỗng ở `dang_chay`/`can_tra_loi`.
+- Khi D11 được chốt: D4 ghi thêm "Bị thay một phần bởi D11 (loại `taovideo`)"; D9 ghi thêm ngoại lệ trả lời trong phiên sống của `taovideo`.
+
+**Ghi chú 18/11/2026 (A-DOC2): kết luận spike S-4** (đo thật trên Claude CLI 2.1.169, `.culiapp/test-spike-s4.json`; không đổi trạng thái). Chi tiết: `docs/bo-chay-viec.md` §7.0a, §7.2, §7.6, §7.9–§7.11.
+- `--tools` nhận `Agent` nhưng `init.tools` báo `Task`; `Skill` gọi được. Giữ cả `Agent` và `Task`.
+- `tool_use` của subagent có trên stdout kèm `parent_tool_use_id`. Công cụ ngoài `--tools` (`WebFetch`) subagent không gọi được, nên danh sách soát **không nới thêm** công cụ nào (thay câu "bổ sung công cụ chỉ đọc mà subagent phát ra" ở mục Công cụ).
+- Subagent **không** gọi được `Agent` lồng. Mọi fan-out (vd C2 viết kịch bản bằng `tvc-tho`) phải do agent chính của tiến trình gọi: thêm dòng vào khối CHẾ ĐỘ CHẠY, và đề xuất K-3 sửa skill (cần duyệt).
+- Tin user ghi vào stdin giữa lượt (agent đang chạy công cụ) không chen vào lượt đó, chỉ được thấy ở lượt sau. Runner xếp hàng mọi tin và chỉ ghi stdin sau sự kiện `result` cấp cao, mỗi `result` tối đa một tin. Mỗi câu hỏi có **mã câu hỏi**; câu trả lời mang mã đó, lệch thì bỏ, để không trả nhầm câu hỏi mới.
+- `--max-budget-usd` cộng dồn cả phiên; chạm trần thì mọi lượt sau trả `error_max_budget_usd` ngay. Đặt bằng trần phiên (60 USD, hoặc mức đã hạ); runner vẫn tự giám sát theo chênh lệch `total_cost_usd`.
+- Im lặng 30 phút với stdin mở: tiến trình sống, nhớ ngữ cảnh.
+- `total_cost_usd` gồm cả subagent, cộng dồn trong phiên.
+- Có `system/task_started` (cả `Agent` foreground) và `task_notification` `status = "completed"`.
+- Phiếu phát sinh: FX-24, FX-25, FX-26, K-3 (`docs/bo-chay-viec.md` §13, Đ5-L3).
+
+## D12: Web Kho dùng menu trái 6 mục, mỗi trang một việc; đăng bài chỉ ở trang Đăng bài, dựng trên việc có sẵn  (2026-11-18)
+Trạng thái: Đã chốt (2026-11-18; người dùng duyệt thiết kế: "Đồng ý, làm đi"; B-L1 `poster_bo_loai` làm trong đợt này: "Làm luôn đợt này")
+Bị thay một phần bởi D13 (menu 7 mục; gọi thẳng Poster V2 và không chặn video Loại trong mục Poster V2)
+
+**Bối cảnh.**
+- Người dùng nói web "quá rối rắm, chồng chéo, muốn đăng bài cũng không biết làm thế nào".
+- Hiện tại chuyện đăng nằm rải ở 3 chỗ trên trang SP:
+  - khối "Bước tiếp theo" (`web/loi.js:192-200`);
+  - nút `poster_day_folder` / `poster_len_lich` của khối việc, chỉ hiện ở bước 8 (`web/viec.js:115`);
+  - dòng "Tải về", tải rồi xoá file (`web/app.js:511`, `:942-985`).
+- Nút đăng chỉ hiện khi đã chấm hết video (`web/app.js:415-418` + `buocHienTai`). Trang SP có 9 tab.
+- Người dùng đã chốt:
+  - menu 6 mục (Hôm nay · Sản phẩm · Cần quay · Duyệt video · Đăng bài · Máy nhà), trên điện thoại thành thanh đáy;
+  - trang Đăng bài kiểu Poster V2;
+  - không bắt chấm hết; video Loại không được đăng;
+  - video Loại dời sang `_loai/` bằng việc miễn phí ở máy nhà;
+  - ⛔ Ngừng đăng khoá Lên lịch;
+  - linh/thu chỉ thấy Kho sản phẩm (ca 2026-11-18-d).
+- Điều tra:
+  - runner **không** lọc video Loại khi đẩy folder hay lên lịch. Dữ liệu chấm chỉ nằm ở `data/<id>/duyet.json`, không script máy nhà nào đọc (`docs/giao-dien-menu-trai.md` §1.1);
+  - Poster V2 ghim tên + đường dẫn file vào hàng đợi **lúc lên lịch** (`E:/tool/tiktok_poster_v2/src/backend/scheduler/queue_builder.py:229-271`), nên phải dời video Loại trước khi lên lịch.
+- `data/index.json` không có `da_lam_video`, Đạt/Loại hay số video (`tools/kho.py:287-296`).
+
+**Quyết định.** Thay một phần D10: nút ✏ Sửa rời tab ✅ Duyệt của trang SP sang trang Duyệt video. Phần còn lại của D10 giữ nguyên.
+- Chủ kho có menu 6 mục:
+  - cột trái 200px khi màn ≥ 900px, thanh đáy khi hẹp hơn.
+- Người không phải chủ kho giữ giao diện P-33: 1 mục "Sản phẩm", không cột trái, không thanh đáy.
+- Route mới: `#/can-quay`, `#/duyet[/<id>]`, `#/dang[/<id>]`, `#/may-nha`. Route cũ (`#/`, `#/kho`, `#/sp/<id>`, `#/viec[/<id>]`, `#/suc-khoe`, `#/sua/…`) vẫn vào được, không redirect.
+- **Đăng chỉ ở trang Đăng bài.**
+  - Dùng đúng việc có sẵn: `poster_day_folder` (miễn phí), `poster_len_lich` (tốn tiền, qua `cho_duyet` và duyệt mật khẩu ở `#/viec/<id>`).
+  - Không đổi D3, D5, D7, D9.
+  - Bỏ nút đăng khỏi khối việc trang SP; dời "Tải về" sang Đăng bài, bỏ qua video Loại.
+- Không bắt chấm hết. Chặn video Loại ở 2 lớp:
+  - web: trang Đăng bài + nút Duyệt của mọi việc `poster_len_lich`;
+  - máy nhà (B-L1, làm trong đợt này): việc miễn phí `poster_bo_loai {uid}` dời file Loại ở cấp trên `output_poster/`, `output/` sang `_loai/` và chuyển ngược khi hết Loại. `poster_len_lich` không qua được điều kiện chạy khi folder còn Loại. B-L1 thêm 1 dòng vào danh mục loại việc của Worker.
+- Danh sách SP ở các trang chỉ dùng `/api/ds`. Số Đạt/Loại/chưa chấm và folder Poster chỉ tải khi đã chọn 1 SP.
+- Phần mới nằm ở file mới (`web/khung.js`, `web/menu.css`, `web/dang.js`, `web/duyet.js`), có tiền tố tên toàn cục `mn`/`dg`/`dy`. `app.js` chỉ có móc ở lượt đầu. Không thêm thư viện.
+- Thiết kế chi tiết: `docs/giao-dien-menu-trai.md`.
+
+**Phương án đã loại.**
+- Giữ 3 tab, chỉ dọn trang SP: không trả lời được "đăng ở đâu", vẫn phải vào từng SP.
+- Viết lại bằng framework SPA (React/Vue): phải đổi cách nạp script dưới CSP `script-src 'self'` và vendor tự host (D3), viết lại cả 5 file JS và bộ test JS hiện có (229 pass, `.culiapp/nhat-ky.md:8`).
+- Trang Đăng bài gọi thẳng API Poster V2 / có nút "Đăng ngay" (`post_now`): phá danh mục cố định (D3) và luật việc tốn tiền phải duyệt (D5, D9).
+- Thêm endpoint Worker trả tóm tắt video của mọi SP: phải gọi máy nhà theo từng SP qua tunnel, hoặc đổi API runner (ngoài phạm vi). Danh sách không cần số liệu này mới chọn được SP.
+- Giữ luật "chấm hết mới đăng": người dùng đã bác.
+- Web tự xoá video Loại bằng `/api/video/<id>/xoa`: xoá luôn bản gốc trong `output_daonguoc` (`tools/video_server.py:48-56`), không hoàn tác được.
+- Chỉ cảnh báo, không chặn: trái chốt "video Loại không được đăng".
+- Gắn bước dời Loại vào chính `poster_len_lich`: lời duyệt bị tiêu trước khi sinh tiến trình đầu (`tools/runner/vong_lap.py:1462-1464`), nên bước miễn phí hỏng cũng làm mất lời duyệt.
+- Dồn phần mới vào `app.js`: đụng độ với phiên song song và với các phiếu cùng lượt.
+
+**Hệ quả.**
+- Mỗi việc có đúng một trang; link cũ vẫn chạy.
+- Trang SP còn 7 tab.
+- "Bước tiếp theo" trỏ sang Duyệt / Đăng.
+- Thẻ kho dùng chung hệ 4 chặng.
+- Không làm B-L1 thì còn hở 2 chỗ:
+  - folder creator lên lịch không qua trang Đăng bài (tên folder không chứa UID, web chỉ cảnh báo);
+  - video bị chấm Loại sau khi đã vào hàng đợi Poster.
+- Có B-L1 thì lượt đã vào hàng đợi trỏ file đã dời, có thể đăng lỗi và được thử lại (chưa đo). Xoá khỏi hàng đợi phải làm tay trong app Poster.
+- Thanh đáy phải nhường màn sửa video (`.sua-thanh`) và toast; trên Android có thể bị bàn phím ảo đẩy lên.
+- Không deploy giữa lượt 1 và lượt 2.
+- Phiếu: W-M1, W-M2, B-L1 (lượt 1), W-M3 (lượt 2), W-M4 (sau B-L1). Thêm 3 file test JS, trưởng phòng đưa vào `kiem-chung.py`.
+- Khi D12 chốt: D10 ghi thêm "Bị thay một phần bởi D12 (vị trí nút ✏ Sửa)".
+
+## D13: Trang "Poster V2" trên web Kho gọi thẳng backend Poster qua video_server; chủ kho bấm mọi nút ghi không qua việc, không mật khẩu  (2026-11-18)
+Trạng thái: Đã chốt (2026-11-18; người dùng duyệt thiết kế: "Đồng ý, làm đi")
+
+**Bối cảnh.**
+- Người dùng chốt (phiếu A-PV1): thêm mục menu thứ 7 "Poster V2" (chỉ chủ kho), trong đó có 9 trang giống hệt app desktop TikTok Poster V2 (`E:/tool/tiktok_poster_v2/src/desktop/app.py:52-62`, `pages/*.py`). Cùng nút, cùng chữ, cùng lỗi gốc. Mở công khai qua đăng nhập web sẵn có.
+- Chủ kho bấm thẳng các nút ghi như app gốc: Đăng ngay, Thêm vào Queue, bật/tắt Auto post, xoá, sửa account, Settings. Không qua việc/runner, không nhập mật khẩu từng lần.
+- Người dùng chốt thêm (A-PV1b):
+  - phạm vi API: "Mở hết /api/v2/";
+  - video Loại / hạn mức 100: "Giữ nguyên như app gốc";
+  - nút "🔓 Tạo profile & Login lấy cookies": "Giữ, thêm dòng nhắc".
+- Điều này đi ngược bốn chỗ đã chốt:
+  - D12 đã loại "Trang Đăng bài gọi thẳng API Poster V2 / có nút Đăng ngay", và chốt "video Loại không được đăng";
+  - D3 cấm web gửi đường dẫn;
+  - D5/D9 bắt việc đăng tốn tiền phải duyệt bằng mật khẩu và giới hạn hạn mức `poster_len_lich` (100 video/ngày/tài khoản);
+  - D1 đã loại việc nhồi hàng đợi việc vào `video_server.py`.
+- Backend Poster (`127.0.0.1:8023`) là production, có account TikTok thật. Backend chỉ nghe localhost, bắt Bearer token trong `.env`, CORS chỉ cho `:8022`.
+- Máy nhà đã có đường vào qua Tunnel `video.kutidak.com` → `tools/video_server.py` (D2). Tunnel cắt request ở khoảng 100 s, trong khi desktop chờ tới 300 s khi đăng và 360 s khi login lấy cookie (`src/desktop/api_client.py:38-43`). Lần đầu `GET /api/v2/folders/` mất khoảng 84 s.
+- Backend `post/direct` INSERT dòng `pending` trước khi lấy semaphore rồi trả 429 (`src/core/poster_api.py:73-87`); `queue/{id}/post|run` đưa dòng về `pending` trước semaphore (`src/backend/routers/queue.py:260-275`). Hai lệnh đăng song song để lại dòng `pending` mà scheduler đăng sau.
+
+**Quyết định.**
+- **Thay một phần D12:**
+  - menu 6 mục → 7 mục;
+  - phương án đã loại "gọi thẳng API Poster V2 / Đăng ngay" nay được làm, chỉ trong mục Poster V2;
+  - **luật "video Loại không được đăng" không áp cho trang Poster V2** (người dùng chọn "Giữ nguyên như app gốc"). Trang `#/dang` vẫn giữ luật này.
+- **Thay một phần D9:** trang Poster V2 là **đường vòng có chủ ý** quanh hạn mức `poster_len_lich` (100 video/ngày/tài khoản, duyệt mật khẩu). Lên lịch / đăng từ trang này không qua hạn mức, không đếm vào sổ của D9. D9 vẫn nguyên với runner/việc.
+- **Thay một phần D3:** web gửi đường dẫn và chữ tự do tới backend Poster (không tới runner hay agent).
+- Không đổi D5, D7 với runner/việc.
+
+- **Đường đi 3 chặng:**
+  1. Trình duyệt → Worker `/api/poster/<rest>`. Worker kiểm phiên, kiểm chủ kho (403 trước mọi lần gọi máy nhà), header `x-pv`, lọc path thô, rồi gọi `${VIDEO_ORIGIN}/p/<rest>` với `x-key` và `x-poster-boi`.
+  2. `video_server` tự kiểm `x-key` (sai thì 401 kèm `x-kho-tu-choi: khoa`), lọc path chung, kiểm hợp đồng body, áp chốt riêng, gắn `Authorization: Bearer <TT_API_BEARER_TOKEN>`.
+  3. Backend `127.0.0.1:<TT_API_PORT|8023>`.
+- **Mở hết `/api/v2/`** (người dùng chọn "Mở hết /api/v2/"): chuyển tiếp mọi path `/api/v2/<…>` và `/health`, method GET/POST/PUT/PATCH/DELETE. Không danh sách trắng. Vẫn giữ:
+  - lọc path chung: ký tự `[A-Za-z0-9_.~\-/]`, không `%` (chặn `%2e%2e` và mọi dạng mã hoá), không `\`, không ký tự điều khiển, không `//`, không đoạn `.`/`..`;
+  - lọc header: chỉ `Authorization`, `Accept`, `Content-Type` tới backend;
+  - body ≤ 256 KB; phản hồi ≤ 4 MB.
+  - Bảng "tuyến 9 trang dùng" chỉ để phân lớp timeout S/L/DN và gắn chốt riêng; path ngoài bảng mặc định lớp S.
+- **Hợp đồng content-type chung cho 3 chặng:** GET và DELETE không content-type, không body; POST/PUT/PATCH luôn `application/json` với body JSON, rỗng = `{}`. Có test nối 3 chặng cho từng method.
+- **Token** đọc ở máy nhà, **mỗi lần gọi**: env trước, sau đó `<KHO_POSTER_DIR>/.env`. Token không bao giờ rời máy nhà và không có secret Worker mới. Dưới test (`pytest` hoặc `KHO_POSTER_TEST=1`), gặp cổng 8023 hay thư mục `E:/tool/tiktok_poster_v2` thì ném lỗi trước khi kết nối.
+- **Chốt riêng** (áp theo method + mẫu path, cả path ngoài bảng):
+  - B1, tên account: không chứa `/`, `\`, `:`, ký tự điều khiển; khác `.` và `..`. Lý do: `POST /api/v2/accounts/{id}/clean-profile` ghép tên vào đường dẫn rồi `rmtree` (`src/backend/routers/accounts.py:481-505`), tuyến này nay đi qua được;
+  - B2, `post/direct` chỉ nhận video nằm trực tiếp trong thư mục của folder;
+  - B3, các khoá `path`, `video_path`, `cookies_path`, `chrome_profile_dir`, `duong_dan` phải là đường dẫn có ổ đĩa, không UNC (`\\…`, `//…`, `\\?\…`). Lý do: Windows mở UNC sẽ gửi hash NetNTLM của user tới máy lạ;
+  - C1, phản hồi `/api/v2/settings*`: giá trị khác rỗng của khoá chứa `token`/`api_key`/`secret`/`password` đổi thành `"***"`. Desktop cũng không hiện token (ô Password, placeholder "ẩn khi đã lưu").
+- **Chống CSRF:**
+  - mọi request (cả GET) bắt buộc header `x-pv: 1`, vì có GET ghi dữ liệu (`GET /api/v2/views/health/{id}` ghi `account_health`, `src/backend/routers/views.py:440-447`) và cookie `SameSite=Lax` đi theo điều hướng GET cấp cao;
+  - mọi method khác GET bắt buộc `Origin` đúng (thiếu cũng 403); POST/PUT/PATCH bắt buộc `content-type: application/json`.
+- **Bảng lệnh chống trùng trong video_server:** mọi lời gọi backend chạy trong luồng có khoá `(method, path?query, sha256(body))`.
+  - Trùng khoá đang chạy → gắn vào lệnh cũ (L/DN trả lại đúng `cho` cũ, 202), không gọi backend lần hai.
+  - Lớp S chờ 80 s rồi tự chuyển nền (202 `{cho}`); L/DN (đăng, login) nền ngay. Hạn tổng theo đồng hồ monotonic (S 300 s, L 300 s, DN 360 s); video_server luôn trả lời Worker ≤ 85 s.
+  - Chỗ chạy: 6 luồng S, **1 lệnh đăng**, 1 lệnh login; bảng tối đa 50 mục, chỉ trong RAM.
+  - `GET /_kq` liệt kê lệnh đang chạy; trang Đăng bài/Queue/Accounts gọi khi mở để khoá nút và hỏi tiếp; rời trang chỉ ngừng hỏi.
+  - `_video`/`_dem` quét đĩa trong cùng giới hạn luồng S, tối đa 30 s.
+- **Mã lỗi:** backend 401 → 502 "token lệch" (không để 401 tới trình duyệt); backend 403 (câu bản quyền, `src/backend/license_guard.py:11-14`) chuyển nguyên. Worker chỉ đổi 401 của máy nhà thành "VIDEO_KEY lệch" khi có header `x-kho-tu-choi: khoa`; 403 chuyển nguyên.
+- **Không bước xác nhận thứ hai.** Hộp xác nhận của app gốc là lớp xác nhận duy nhất. Nút login lấy cookie giữ chữ gốc, thêm dòng nhắc "Cần người ngồi ở máy nhà để đăng nhập trên Chrome vừa mở".
+- **Nhật ký ai bấm gì:**
+  - video_server ghi JSONL cho mọi lệnh ghi vào `%LOCALAPPDATA%\kho-poster-web\nhat-ky.jsonl`, ngoài repo. Mỗi dòng gồm người bấm, method, path, status, thời gian, sha256 body, tên khoá body, cờ trùng; không ghi giá trị body;
+  - Worker `console.log` một dòng cho mỗi lệnh ghi.
+- Công tắc tắt ở máy nhà: `KHO_POSTER_WEB=0` (đọc mỗi lần gọi).
+
+**Phương án đã loại.**
+- Mỗi nút thành một loại việc của runner, có ký Ed25519, duyệt và hạn mức (giữ D3/D5/D9): khoảng 30 loại việc mới, mỗi lần bấm phải chờ runner. Người dùng đã bác ("không qua việc/runner").
+- Nhập mật khẩu cho mỗi lệnh ghi: người dùng đã bác.
+- Hostname tunnel riêng trỏ thẳng :8023 kèm Cloudflare Access: cần UAC và dashboard (lý do như D2). Ngoài ra token Poster phải đi kèm request từ ngoài vào.
+- Worker giữ token Poster: token rời máy nhà, trái hợp đồng.
+- Bảng tuyến hẹp 45 tuyến (đề xuất A ở bản A-PV1): người dùng chọn "Mở hết /api/v2/".
+- Chặn `batch_schedule`/`post_now` khi folder còn video Loại (đọc `duyet.json`): người dùng chọn "Giữ nguyên như app gốc".
+- Chờ đồng bộ tới 300–360 s: Tunnel cắt ở khoảng 100 s (524). Người dùng không thấy kết quả và dễ bấm Đăng lại thành đăng 2 lần.
+- Lớp S quá giờ trả 504 "CÓ THỂ đã chạy" (bản A-PV1): người dùng bấm Refresh/bấm lại, chồng lần quét đĩa hoặc ghi lần hai.
+- Cho 3 lệnh nền song song (bản A-PV1): hai lệnh đăng cùng lúc để lại dòng `pending` mồ côi ở backend → đăng trùng.
+- Đặt bảng lệnh nền trong runner (đúng tinh thần D1): phải qua việc/runner, người dùng đã bác.
+- Duyệt thư mục máy nhà từ web cho nút Browse: mặt tấn công mới. Thay bằng gõ đường dẫn + nút Test (`_dem`).
+
+**Hệ quả.**
+- Ai chiếm được phiên chủ kho (cookie 30 ngày) là thao tác được account TikTok thật: đăng, xoá, sửa cookie, đổi folder trỏ sang thư mục bất kỳ trên ổ đĩa máy nhà. Chỉ còn `x-pv`/Origin/SameSite, quyền chủ kho, chốt B1–B3 và nhật ký để tra sau.
+- **Do mở hết `/api/v2/`**, phiên bị chiếm còn gọi được các tuyến app không dùng:
+  - `PUT /api/v2/settings/<khoá bất kỳ>`: đổi giờ ngủ, autopost, `anthropic_api_key`… (C1 chỉ che khi đọc, không chặn ghi);
+  - `POST /api/v2/settings/backup-now`, `/settings/drive-reauth`, `/settings/clean-profile-cache`;
+  - `POST /api/v2/queue/{id}/run` (đăng ngay 1 item; xếp lớp L nên vẫn chỉ 1 lệnh đăng mỗi lúc);
+  - `POST /api/v2/folders/{id}/autogen-captions`, có thể gọi API sinh caption tốn phí nếu `caption_autogen` bật (chưa đọc sâu);
+  - `POST /api/v2/accounts/{id}/clean-profile` (có B1).
+
+  Poster V2 thêm tuyến mới thì tuyến đó đi qua ngay, không cần sửa video_server.
+- `POST/PUT accounts` nhận `cookies_path` và `chrome_profile_dir` tuỳ ý trên ổ đĩa máy nhà: backend có thể mở Chrome bằng profile Chrome thật của user, hoặc đọc file khác làm cookie. B3 chỉ chặn đường mạng. Desktop cũng vậy.
+- **Video Loại và hạn mức (theo lựa chọn "Giữ nguyên như app gốc"):** trang Poster V2 không chặn video Loại và không có hạn mức 100 video/ngày/tài khoản. Video Loại vẫn được `poster_bo_loai` tự dời khỏi folder sau mỗi lần chấm (FX-W8). Lần dời trượt (P1 R-45 còn treo) thì video Loại có thể bị lên lịch hoặc đăng từ trang này. Số video đăng mỗi ngày qua trang này chỉ bị giới hạn bởi chính Poster V2.
+- Cùng một việc "lên lịch" giờ có 2 đường với 2 mức kiểm khác nhau: `#/dang` (duyệt, hạn mức, chặn Loại) và Poster V2 (bấm thẳng).
+- Autopost/scheduler của Poster và lệnh đăng từ web dùng chung semaphore backend. Khi scheduler đang đăng, `post/direct` từ web vẫn có thể nhận 429 sau khi backend đã INSERT dòng `pending` (hành vi gốc, desktop gặp y vậy). video_server chỉ ngăn được 2 lệnh đăng cùng lúc từ web.
+- **video_server giữ bảng lệnh nền trong RAM, đi gần phương án D1 đã loại** ("nhồi queue vào `video_server.py`: lỗi bộ chạy làm sập luôn nút tải video"). Chấp nhận vì: không lưu đĩa; không chạy agent/script/GPU, việc thật do backend Poster làm, video_server chỉ đợi HTTP; tối đa 8 luồng, 50 mục, mỗi mục ≤ 6 phút + 15 phút giữ kết quả; khoá bảng không giữ trong lúc gọi backend; có công tắc `KHO_POSTER_WEB=0`. Rủi ro còn lại: lỗi ở phần này có thể giữ luồng của handler `/p`; video_server khởi động lại thì mất bảng, web nhận 404 ở `_kq` và câu "Xem Logs/Queue".
+- Mở tab Accounts gọi `GET views/health/{id}`, GET này ghi `account_health` như khi mở desktop. Kiểm live "chỉ GET" vì vậy vẫn có ghi phụ này.
+- Thêm 2 file Python (`poster_web.py`, `poster_noi_gia.py`), 1 module Worker, 11 file web, 7 file test. Móc vào file cũ: `video_server.py` ≤ 20 dòng (nhánh `/p` đặt trước dòng kiểm khoá của `_vao`), `worker.js` 2 dòng, `khung.js` khoảng 8 dòng, `index.html` 11 dòng. 2 test cũ đổi số mục 6 → 7 và regex thứ tự script (`menu-web.test.mjs:403-409`, `homnay-web.test.mjs:325`).
+- Khi D13 chốt:
+  - D12 ghi thêm "Bị thay một phần bởi D13 (menu 7 mục; gọi thẳng Poster V2 và không chặn video Loại trong mục Poster V2)";
+  - D9 ghi thêm "Bị thay một phần bởi D13 (trang Poster V2 không qua hạn mức `poster_len_lich`)";
+  - D3 ghi thêm "Bị thay một phần bởi D13 (đường dẫn/chữ tự do tới backend Poster qua `/api/poster/*`)".
+- Thiết kế chi tiết và phiếu: `docs/poster-v2-tren-web.md`.

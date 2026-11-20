@@ -1,75 +1,145 @@
 {
- "viec": "Bảng điều khiển (Bước 0 + 1a)",
- "phieu": [
-  {
-   "ma": "P-01",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "tools/video_server.py",
-    "tools/test_video_server.py"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "fixture",
-   "chua_kiem": [
-    "qua tunnel thật: đã kiểm tay /suc-khoe"
-   ]
-  },
-  {
-   "ma": "P-02",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "cf/src/worker.js",
-    "cf/test/worker.test.mjs"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "unit",
-   "chua_kiem": [
-    "sec-fetch-site trên trình duyệt thật"
-   ]
-  },
-  {
-   "ma": "P-03",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "web/app.js",
-    "web/style.css",
-    "web/index.html"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "unit",
-   "chua_kiem": [
-    "giao diện thật sau đăng nhập"
-   ]
-  },
-  {
-   "ma": "P-02b",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "cf/src/worker.js",
-    "cf/test/worker.test.mjs",
-    "tools/video_server.py",
-    "tools/test_video_server.py"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "unit+fixture"
-  },
-  {
-   "ma": "P-03b",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "web/app.js"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "unit"
-  },
-  {
-   "ma": "P-03c",
-   "agent": "culiapp-web",
-   "duoc_sua": [
-    "web/app.js"
-   ],
-   "trang_thai": "xong",
-   "muc_kiem_chung": "compile (gioSua unit)"
-  }
- ]
+  "viec": "Bảng điều khiển (Bước 0 + 1a)",
+  "phieu": [
+    {
+      "ma": "P-01",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "tools/video_server.py",
+        "tools/test_video_server.py"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "chua_kiem": [
+        "qua tunnel thật: đã kiểm tay /suc-khoe"
+      ]
+    },
+    {
+      "ma": "P-02",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "cf/src/worker.js",
+        "cf/test/worker.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "unit",
+      "chua_kiem": [
+        "sec-fetch-site trên trình duyệt thật"
+      ]
+    },
+    {
+      "ma": "P-03",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "web/app.js",
+        "web/style.css",
+        "web/index.html"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "unit",
+      "chua_kiem": [
+        "giao diện thật sau đăng nhập"
+      ]
+    },
+    {
+      "ma": "P-02b",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "cf/src/worker.js",
+        "cf/test/worker.test.mjs",
+        "tools/video_server.py",
+        "tools/test_video_server.py"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "unit+fixture"
+    },
+    {
+      "ma": "P-03b",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "web/app.js"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "unit"
+    },
+    {
+      "ma": "P-03c",
+      "agent": "culiapp-web",
+      "duoc_sua": [
+        "web/app.js"
+      ],
+      "trang_thai": "xong",
+      "muc_kiem_chung": "compile (gioSua unit)"
+    },
+    {
+      "ma": "A-UI1",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-architect",
+      "muc_tieu": "docs/giao-dien-menu-trai.md + D12",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "khong-ap-dung",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "W-M1",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-web",
+      "muc_tieu": "Menu trái, Cần quay, Máy nhà (khung.js, menu.css)",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "W-M2",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-web",
+      "muc_tieu": "Trang Đăng bài (dang.js) + Duyệt video (duyet.js)",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "B-L1",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-backend",
+      "muc_tieu": "Việc miễn phí poster_bo_loai + chặn poster_len_lich khi còn Loại",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "W-M3",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-web",
+      "muc_tieu": "Dọn trang SP, chốt Loại/Ngừng đăng ở nút Duyệt, W-M4 gộp",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "FX-B1..B3",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-backend",
+      "muc_tieu": "fetch+đọc ref, không pull; git không treo; fail-closed; 3 lượt",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "FX-W2..W9",
+      "ca": "2026-11-18-e",
+      "agent": "culiapp-web",
+      "muc_tieu": "Hoàn tác Loại; Worker tự tạo việc đồng bộ khi chấm dính Loại",
+      "trang_thai": "xong",
+      "muc_kiem_chung": "fixture",
+      "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
+      "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    }
+  ]
 }

@@ -8,6 +8,7 @@ khoá runner + khoá Ed25519 đều sinh trong test (không đụng %LOCALAPPDAT
 import hashlib
 import http.client
 import json
+import os
 import re
 import secrets
 import sys
@@ -93,7 +94,7 @@ def mt(tmp_path, dong):
 class May:
     """Server API thật + client ký request như Worker."""
 
-    def __init__(self, tmp_path, mt, dong, hm=None, trang_thai_lan=None, doc_log=None, che=None):
+    def __init__(self, tmp_path, mt, dong, hm=None, trang_thai_lan=None, doc_log=None, che=None, **them):
         self.kho = KhoViec(tmp_path / "du_lieu" / "runner.db", dong)
         self.mt = mt
         self.khoa_runner = secrets.token_hex(32)
@@ -112,7 +113,7 @@ class May:
                             trang_thai_lan or (lambda: {"lan": {"gpu": None, "nhe": None},
                                                         "tai_nguyen": {"kho": False, "poster": False},
                                                         "tam_dung_claude_den": None}),
-                            **({} if che is None else {"che": che}))
+                            **({} if che is None else {"che": che}), **them)
         self.srv = ThreadingHTTPServer(("127.0.0.1", 0), H)
         self.cong = self.srv.server_address[1]
         self.t = threading.Thread(target=self.srv.serve_forever, kwargs={"poll_interval": 0.02}, daemon=True)
@@ -275,7 +276,7 @@ def test_suc_khoe(may):
               "han_muc", "tam_dung_claude_den", "dot_bat", "canh_bao"):
         assert k in d, k
     assert d["lan"] == {"gpu": None, "nhe": None} and d["tai_nguyen"] == {"kho": False, "poster": False}
-    assert d["dem"]["cho"] == 1 and d["dot_bat"] == 4 and d["chi_phi_hom_nay_usd"] == 0
+    assert d["dem"]["cho"] == 1 and d["dot_bat"] == 5 and d["chi_phi_hom_nay_usd"] == 0
     assert d["canh_bao"] == ["cau_hinh.json: thử cảnh báo"]
     assert d["han_muc"]["claude_viec_ngay"] == 12
     assert d["luc"] == "2026-11-17T09:00:00+07:00" and d["phien_ban"] == "nguon"
@@ -286,7 +287,8 @@ def test_danh_muc_dot_4(may):
     assert s == 200
     ma = {x["ma"] for x in d["loai"]}
     assert ma == {"radar_ban_tin", "phan_tich_uid", "douyin_uid", "xu_ly_link_moi", "poster_day_folder", "voice_pv",
-                  "muse_clip", "voice_genmax", "poster_len_lich"}          # taovideo (đợt 5) chưa hiện
+                  "muse_clip", "voice_genmax", "poster_len_lich",
+                  "sua_video", "hoan_tac_sua", "taovideo", "poster_bo_loai"}           # B-L1                   # B-4: đã mở đợt 5
     r = next(x for x in d["loai"] if x["ma"] == "radar_ban_tin")
     assert set(r) == {"ma", "ten", "dot", "ton_tien", "lan_chay", "tham_so"}
     assert [t["ten"] for t in r["tham_so"]] == ["top_n", "chay_bu"]
@@ -296,7 +298,7 @@ def test_danh_muc_dot_4(may):
 
 
 def test_danh_muc_an_dot_cao_hon_dot_bat(tmp_path, mt, dong, monkeypatch):
-    monkeypatch.setitem(dm.DANH_MUC, "thu_dot5", replace(dm.DANH_MUC["phan_tich_uid"], ma="thu_dot5", dot=5))
+    monkeypatch.setitem(dm.DANH_MUC, "thu_dot5", replace(dm.DANH_MUC["phan_tich_uid"], ma="thu_dot5", dot=6))
     m = May(tmp_path, mt, dong)
     try:
         assert "thu_dot5" not in {x["ma"] for x in m.goi("GET", "/danh-muc")[1]["loai"]}
@@ -304,7 +306,7 @@ def test_danh_muc_an_dot_cao_hon_dot_bat(tmp_path, mt, dong, monkeypatch):
         assert s == 400 and m.kho.ds() == []
     finally:
         m.dong_lai()
-    # hm nới dot_bat quá trần code (dict truyền vào bị sửa) vẫn không mở đợt 5
+    # hm nới dot_bat quá trần code (dict truyền vào bị sửa) vẫn không mở đợt 6 (loại thử gắn dot=6)
     m2 = May(tmp_path / "b", mt, dong, hm={**HAN_MUC_TRAN, "dot_bat": 9})
     try:
         assert "thu_dot5" not in {x["ma"] for x in m2.goi("GET", "/danh-muc")[1]["loai"]}
@@ -1003,6 +1005,23 @@ def test_poster_folders(may4, mt4):
     assert s == 502 and "Poster" in d["loi"] and "venv" not in d["loi"]
 
 
+def test_poster_folders_khong_lo_duong_dan(may4, mt4):
+    """B-L1 (§4.9): runner giữ duong_dan nội bộ để chặn poster_len_lich; KHÔNG trả đường dẫn ổ máy nhà ra web."""
+    mt4.doc_folder_poster = lambda: [{"id": 7, "name": "Bình nước", "duong_dan": "E:/oneshottramcanh/x/output_poster"},
+                                     {"id": 9, "ten": "Ví"}]
+    s, d = may4.goi("GET", "/poster/folders")
+    assert s == 200 and d == {"folders": [{"id": 7, "ten": "Bình nước"}, {"id": 9, "ten": "Ví"}]}
+    assert "oneshottramcanh" not in json.dumps(d)
+
+
+def test_tao_poster_bo_loai(may, mt):
+    s, d = _tao(may, loai="poster_bo_loai", tham_so={"uid": UID})
+    assert s == 201 and d["viec"]["trang_thai"] == "cho" and d["viec"]["khoa"] == UID
+    assert d["viec"]["lan_chay"] == "nhe"
+    assert _tao(may, loai="poster_bo_loai", tham_so={"uid": UID})[0] == 409            # khoá chống trùng theo uid
+    assert _tao(may, loai="poster_bo_loai", tham_so={"uid": UID, "goc": "E:/x"})[0] == 400
+
+
 def test_tao_ton_tien_trang_thai_dau(may4, mt4):
     s, d = _tao(may4, "muse_clip", _muse_ts(mt4))
     assert s == 201 and d["viec"]["trang_thai"] == "cho_duyet" and d["viec"]["buoc"] == "chay"
@@ -1470,3 +1489,690 @@ def test_xin_duyet_lai_tu_loi_ghi_ly_do_la_loi_cu(may4, mt4, dong):
     assert may4.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})[0] == 200
     kq = may4.kho.lay(id_)["ket_qua"]
     assert kq["duyet_lai_tu"] == "can_tra_loi" and "(Kết quả lạ)" in kq["ly_do_duyet_lai"]
+
+
+# ---------- đợt 6: sửa video (docs/sua-video.md §7, §8.1, D10) ----------
+# Dự án GIẢ luồng C trong tmp_path (helper test lõi B-6); Python engine giả; không đụng runner thật 8788.
+
+import test_runner_danh_muc as tdm  # noqa: E402
+from runner import sua_video as sv  # noqa: E402
+
+
+@pytest.fixture
+def ms(tmp_path, mt, dong, monkeypatch):
+    tdm.dung_du_an_c(mt._p)
+    py = tmp_path / "engine" / "python.exe"
+    py.parent.mkdir(parents=True)
+    py.write_bytes(b"")
+    monkeypatch.setenv("KHO_PYTHON_ENGINE", str(py))
+    monkeypatch.setenv("KHO_ENGINE_DIR", str(py.parent))
+    monkeypatch.setenv("AUTOVIDEO_KHOA_MAY", str(tmp_path / "khoa" / ".render-may.lock"))
+    m = May(tmp_path, mt, dong)
+    m.v = tdm.video_sua(mt._p)  # type: ignore[attr-defined]
+    m.du_an = ma_du_an(mt._p)  # type: ignore[attr-defined]
+    yield m
+    m.dong_lai()
+
+
+def _body_sua(ms, **kw) -> dict:
+    _, d = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")
+    b = {"sua_luc": d["video"]["sua_luc"], "phu_de_sha": d["phu_de"]["sha"],
+         "phu_de": [{"i": 1, "text": "Xe chạy êm, cực bền"}],
+         "doi_clip": [{"seg": 1, "clip": "raw-4_002_proof_canh-2.mp4"}], "doi_cho": [], "boi": "nhan"}
+    b.update(kw)
+    return b
+
+
+def _luu(ms, **kw) -> tuple[int, dict]:
+    """Như Worker /luu: (1) ban-sua rồi (2) tạo việc sua_video."""
+    s, d = ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms, **kw))
+    assert s == 201, d
+    return _tao(ms, "sua_video", {"uid": UID, "du_an": d["du_an"], "ma_video": ms.v.ma_video,
+                                  "ban_sua": d["ban_sua"]})
+
+
+def _den(ms, id_: str, *ds: str) -> None:
+    tu = ms.kho.lay(id_)["trang_thai"]
+    for den in ds:
+        ms.kho.chuyen(id_, [tu], den, "he_thong")
+        tu = den
+
+
+def test_get_ds_video_sua(ms):
+    s, d = ms.goi("GET", f"/sua-video/{UID}")
+    assert s == 200
+    ten = [v["ten"] for v in d["videos"]]
+    assert ten == ["50oto2809_060.mp4", "50oto2809_061.mp4", "50oto2809_062.mp4"]
+    v = d["videos"][1]
+    assert set(v) == {"ma_video", "du_an", "goc", "thu_muc", "ten", "sua_luc", "luong", "sua_duoc", "ly_do",
+                      "viec_mo"}                                         # KHÔNG có duong_dan
+    assert v["ma_video"] == ms.v.ma_video and v["du_an"] == ms.du_an and v["thu_muc"] == "output_poster"
+    assert v["goc"] == ms.mt.gocs[0].as_posix() and v["luong"] == "C" and v["sua_duoc"] is True
+    assert v["sua_luc"] == tdm.tsv.T_VIDEO // 1_000_000 and v["viec_mo"] is None   # mili giây (chốt B-6)
+    assert ms.goi("GET", f"/sua-video/{UID2}")[1] == {"videos": []}
+    assert ms.goi("GET", "/sua-video/123")[0] == 404
+    assert ms.goi("GET", f"/sua-video/{UID}", khoa=False)[0] == 401
+
+
+def test_get_chi_tiet_va_ung_vien(ms):
+    s, d = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")
+    assert s == 200, d
+    assert d["video"]["ten"] == "50oto2809_061.mp4" and "duong_dan" not in d["video"]
+    assert (d["luong"], d["plan_id"], d["tien_to"], d["me"]) == ("C", 61, "50oto2809", None)
+    assert d["ghi_chu_luong_a"] is False and d["viec_mo"] is None and d["lich_su"] == []
+    assert [c["text"] for c in d["phu_de"]["cau"]] == ["Cái này là sàn trợ giá nè ba mẹ ơi!", "Xe chạy trớn, cực bền",
+                                                       "Mua ngay kẻo hết"]
+    assert re.fullmatch(r"[0-9a-f]{64}", d["phu_de"]["sha"]) and d["phu_de"]["co_words"] is True
+    assert [c["kind"] for c in d["canh"]] == ["BASE", "OVL", "OVL"] and d["canh"][1]["doi_duoc"] is True
+    s, u = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}/ung-vien?seg=1")
+    assert s == 200 and u["ung_vien"] and all(x["role"] == "proof" for x in u["ung_vien"])
+    for q, ma in (("seg=0", 400), ("seg=200", 400), ("seg=abc", 400), ("", 400), ("seg=1&seg=-1", 400)):
+        assert ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}/ung-vien?{q}")[0] == ma, q
+    assert ms.goi("GET", f"/sua-video/{UID}/{'0' * 16}")[0] == 404
+    assert ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video.upper()}")[0] == 404
+
+
+def test_post_ban_sua_luu_bang_va_tra_ma(ms):
+    s, d = ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms))
+    assert s == 201, d
+    assert set(d) == {"ban_sua", "du_an", "tom_tat"} and d["du_an"] == ms.du_an
+    assert d["tom_tat"] == {"so_cau": 1, "so_clip": 1, "so_doi_cho": 0}
+    row = ms.kho.lay_ban_sua(d["ban_sua"])
+    assert row["uid"] == UID and row["ma_video"] == ms.v.ma_video and row["tao_boi"] == "nhan"
+    assert sv.ma_ban_sua(row["noi_dung"]) == d["ban_sua"] and "boi" not in row["noi_dung"]
+    # gửi lại y hệt → cùng mã; chữ khác dạng Unicode (NFD) nhưng cùng nghĩa → CÙNG mã (chuẩn hoá trước khi băm)
+    import unicodedata
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms))[1]["ban_sua"] == d["ban_sua"]
+    nfd = _body_sua(ms, phu_de=[{"i": 1, "text": unicodedata.normalize("NFD", "Xe chạy êm, cực bền")}])
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", nfd)[1]["ban_sua"] == d["ban_sua"]
+    hoa = _body_sua(ms)
+    hoa["phu_de_sha"] = hoa["phu_de_sha"].upper()                         # sha viết hoa vẫn cùng mã
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", hoa)[1]["ban_sua"] == d["ban_sua"]
+
+
+@pytest.mark.parametrize("sua, ma", [
+    ({"sua_luc": 1}, 409),                                           # video đã đổi
+    ({"phu_de_sha": "0" * 64}, 409),                                 # phụ đề đã đổi
+    ({"phu_de": [{"i": 1, "text": "chữ {\\an8}"}]}, 400),            # thẻ ASS
+    ({"phu_de": [{"i": 1, "text": "a --> b"}]}, 400),               # phá SRT
+    ({"phu_de": [{"i": 1, "text": "hai\ndòng"}]}, 400),
+    ({"phu_de": [{"i": 99, "text": "x"}]}, 400),
+    ({"doi_clip": [{"seg": 0, "clip": "raw-4_002_proof_canh-2.mp4"}]}, 400),   # BASE không đổi được
+    ({"doi_clip": [{"seg": 1, "clip": "raw-5_002_detail_canh-2.mp4"}]}, 400),  # khác vai
+    ({"la": 1}, 400),
+    ({"boi": "a b"}, 400),
+    ({"phu_de": [], "doi_clip": []}, 400),                           # không có thay đổi
+])
+def test_post_ban_sua_tu_choi(ms, sua, ma):
+    s, d = ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms, **sua))
+    assert s == ma and "loi" in d, (s, d)
+    assert ms.kho._ket_noi().execute("SELECT COUNT(*) FROM ban_sua").fetchone()[0] == 0
+
+
+def test_post_ban_sua_413_khong_ky_404(ms):
+    to = _body_sua(ms, doi_cho=[[1, 2]] * 3000)
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", to)[0] == 413
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms), ky=False)[0] == 401
+    assert ms.goi("POST", f"/sua-video/{UID}/{'0' * 16}/ban-sua", _body_sua(ms))[0] == 404
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/khac", _body_sua(ms))[0] == 404
+    assert ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua")[0] == 404
+
+
+def test_tao_sua_video_va_trung_ma_video_409(ms):
+    s, d = _luu(ms)
+    assert s == 201, d
+    v = d["viec"]
+    assert v["loai"] == "sua_video" and v["trang_thai"] == "cho" and v["lan_chay"] == "gpu"
+    assert v["tham_so"]["ma_video"] == ms.v.ma_video and v["co_session"] is False
+    # Worker /luu lần 2 trong lúc việc còn mở → 409 kèm `trung` (Worker đọc trung.id)
+    s2, d2 = _luu(ms, phu_de=[{"i": 1, "text": "Bản khác"}])
+    assert s2 == 409 and d2["trung"]["id"] == v["id"]
+    # hoàn tác trong lúc việc sửa còn mở → 409 (hai loại không bao giờ cùng mở trên một video)
+    s3, d3 = _tao(ms, "hoan_tac_sua", {"uid": UID, "du_an": ms.du_an, "ma_video": ms.v.ma_video, "viec_goc": v["id"]})
+    assert s3 == 409 and d3["trung"]["id"] == v["id"]
+    # GET danh sách / chi tiết báo việc đang mở
+    lst = ms.goi("GET", f"/sua-video/{UID}")[1]["videos"]
+    assert [x["viec_mo"] for x in lst] == [None, v["id"], None]
+    ct = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")[1]
+    assert ct["viec_mo"] == v["id"] and ct["lich_su"][0]["viec"] == v["id"]
+    assert set(ct["lich_su"][0]) == {"viec", "loai", "trang_thai", "luc", "boi", "viec_goc", "hoan_tac_duoc"}
+    assert ct["lich_su"][0]["hoan_tac_duoc"] is False
+
+
+def test_tao_sua_video_ban_sua_khong_hop_le(ms):
+    s, d = ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", _body_sua(ms))
+    ts = {"uid": UID, "du_an": ms.du_an, "ma_video": ms.v.ma_video, "ban_sua": d["ban_sua"]}
+    assert _tao(ms, "sua_video", dict(ts, ban_sua="b" + "f" * 16))[0] == 400          # không có trong bảng
+    v60 = tdm.video_sua(ms.mt._p, "50oto2809_060.mp4")
+    assert _tao(ms, "sua_video", dict(ts, ma_video=v60.ma_video))[0] == 400           # bản của video khác
+    # video đã đổi sau khi lưu bản sửa (sua_luc lệch) → 409, không tạo việc dựng lại mù
+    f = ms.mt._p / "output_poster" / "50oto2809_061.mp4"
+    os.utime(f, ns=(tdm.tsv.T_VIDEO + 10**9, tdm.tsv.T_VIDEO + 10**9))
+    assert _tao(ms, "sua_video", ts)[0] == 409
+    assert ms.kho.ds() == []
+
+
+def test_hoan_tac_sua_chi_khi_viec_goc_xong(ms):
+    s, d = _luu(ms)
+    goc = d["viec"]["id"]
+    ts = {"uid": UID, "du_an": ms.du_an, "ma_video": ms.v.ma_video, "viec_goc": goc}
+    _den(ms, goc, "dang_chay", "loi")
+    s, r = _tao(ms, "hoan_tac_sua", ts)
+    assert s == 400 and "xong" in r["loi"]                               # việc gốc không xong → từ chối
+    assert _tao(ms, "hoan_tac_sua", dict(ts, viec_goc="j20261117090000zzzz"))[0] == 400   # không có
+    _den(ms, goc, "cho", "dang_chay", "xong")
+    v60 = tdm.video_sua(ms.mt._p, "50oto2809_060.mp4")
+    assert _tao(ms, "hoan_tac_sua", dict(ts, ma_video=v60.ma_video))[0] == 400            # việc gốc của video khác
+    ct = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")[1]
+    assert ct["lich_su"][0]["hoan_tac_duoc"] is True
+    s, r = _tao(ms, "hoan_tac_sua", ts)
+    assert s == 201 and r["viec"]["loai"] == "hoan_tac_sua" and r["viec"]["trang_thai"] == "cho"
+    ct = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")[1]
+    assert ct["viec_mo"] == r["viec"]["id"]
+    assert [x["loai"] for x in ct["lich_su"]] == ["hoan_tac_sua", "sua_video"]
+    assert all(x["hoan_tac_duoc"] is False for x in ct["lich_su"])       # đang có việc mở
+    assert ct["lich_su"][0]["viec_goc"] == goc and ct["lich_su"][1]["viec_goc"] is None
+    # sửa mới trong lúc hoàn tác còn mở → 409
+    assert _luu(ms, phu_de=[{"i": 1, "text": "Lần ba"}])[0] == 409
+    # hoàn tác xong → lần sửa đó không hoàn tác được nữa
+    _den(ms, r["viec"]["id"], "dang_chay", "xong")
+    ct = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")[1]
+    assert ct["viec_mo"] is None and all(x["hoan_tac_duoc"] is False for x in ct["lich_su"])
+
+
+def test_sua_video_chay_tiep_cung_id(ms):
+    """Mã thoát 5 (hỏng giữa lúc thay file): chạy tiếp CÙNG id để bộ chuyển đổi đọc nhật ký làm nốt (§6.1, §6.3).
+    FX-22: chỉ bản sửa KHÔNG đổi chữ phụ đề (bản có chữ: xem test_sua_chu_chay_lai_chay_tiep_409)."""
+    s, d = _luu(ms, phu_de=[])
+    id_ = d["viec"]["id"]
+    _den(ms, id_, "dang_chay", "loi")
+    assert ms.goi("GET", f"/viec/{id_}")[1]["viec"]["co_the_chay_tiep"] is True
+    # đang có hoàn tác mở trên cùng video → không chạy tiếp
+    h = ms.kho.tao("hoan_tac_sua", ms.v.ma_video, {"ma_video": ms.v.ma_video}, "gpu", "cho", "nhan")
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "nhan"})
+    assert s == 409 and r["trung"]["id"] == h["id"]
+    ms.kho.chuyen(h["id"], ["cho"], "huy", "nhan")
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "nhan"})
+    assert s == 200 and r["viec"]["id"] == id_ and r["viec"]["trang_thai"] == "cho"
+
+
+LOI_SUA_CHU = "Sửa chữ phụ đề cần lưu lại và nhập mật khẩu — mở màn Sửa video để lưu lại"
+
+
+@pytest.mark.parametrize("tt", ["loi", "huy"])
+def test_sua_chu_chay_lai_chay_tiep_409(ms, tt):
+    """FX-22 (§7.2a, D10 Q3): bản sửa có chữ phụ đề → chay-lai / chay-tiep 409, cờ co_the_chay_* = False."""
+    s, d = _luu(ms)                                                      # _body_sua mặc định có sửa chữ câu 1
+    assert s == 201, d
+    id_ = d["viec"]["id"]
+    _den(ms, id_, *(("dang_chay", "loi") if tt == "loi" else ("huy",)))
+    v = ms.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["co_the_chay_lai"] is False and v["co_the_chay_tiep"] is False and v["can_luu_lai_mat_khau"] is True
+    assert [x for x in ms.goi("GET", "/viec")[1]["viec"] if x["id"] == id_][0]["co_the_chay_lai"] is False
+    so_truoc = len(ms.kho.ds())
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert (s, r["loi"]) == (409, LOI_SUA_CHU)
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "nhan"})
+    assert (s, r["loi"]) == (409, LOI_SUA_CHU)
+    assert len(ms.kho.ds()) == so_truoc and ms.kho.lay(id_)["trang_thai"] == tt
+
+
+def test_chi_doi_clip_van_chay_lai_duoc(ms):
+    s, d = _luu(ms, phu_de=[])
+    id_ = d["viec"]["id"]
+    _den(ms, id_, "dang_chay", "loi")
+    v = ms.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["co_the_chay_lai"] is True and v["co_the_chay_tiep"] is True and v["can_luu_lai_mat_khau"] is False
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert s == 201 and r["viec"]["id"] != id_ and r["viec"]["tham_so"]["ban_sua"] == d["viec"]["tham_so"]["ban_sua"]
+
+
+def test_viec_ra_co_the_chay_lai_loai_khac():
+    v = {"id": "j1", "loai": "phan_tich_uid", "trang_thai": "loi"}
+    assert api.viec_ra(v)["co_the_chay_lai"] is True and api.viec_ra(v)["can_luu_lai_mat_khau"] is False
+    assert api.viec_ra(dict(v, trang_thai="huy"))["co_the_chay_lai"] is True
+    assert api.viec_ra(dict(v, trang_thai="xong"))["co_the_chay_lai"] is False
+    assert api.viec_ra(dict(v, trang_thai="loi"), sua_chu=True)["co_the_chay_lai"] is False
+
+
+def test_viec_ra_kiem_tay_tu_loi_vong_lap():
+    """FX-22 lỗi 2: mã 5 do bỏ qua có chủ đích → ket_qua.kiem_tay true + thông điệp liệt kê mục; không sửa dict gốc."""
+    loi = ("Bước hoan_tac_sua thoát mã 5:\n[sua_video] mã 5: Video đã về bản cũ nhưng hoàn tác bỏ qua phụ đề "
+           "(việc khác đã đổi) — kiểm tay\nKET_QUA_JSON " + json.dumps(
+               {"trang_thai": "do_dang", "ly_do": "Video đã về bản cũ nhưng hoàn tác bỏ qua phụ đề (việc khác đã đổi)"
+                " — kiểm tay", "canh_bao": ["c1"], "sao_luu": None, "video": "a.mp4", "giay": 1}, ensure_ascii=False))
+    v = {"id": "j1", "loai": "hoan_tac_sua", "trang_thai": "loi", "loi": loi, "ket_qua": None}
+    kq = api.viec_ra(v)["ket_qua"]
+    assert kq["kiem_tay"] is True and kq["bo_qua"] == ["phụ đề"] and "phụ đề" in kq["thong_diep"]
+    assert v["ket_qua"] is None
+    # ket_qua sẵn có được giữ, chỉ thêm khoá
+    assert api.viec_ra(dict(v, ket_qua={"khong_giet_duoc": False}))["ket_qua"]["khong_giet_duoc"] is False
+    # loại khác / trạng thái khác: không suy
+    assert api.viec_ra(dict(v, loai="phan_tich_uid"))["ket_qua"] is None
+    assert api.viec_ra(dict(v, trang_thai="xong"))["ket_qua"] is None
+
+
+def test_get_viec_sua_video_ma_5_kiem_tay(ms):
+    s, d = _luu(ms, phu_de=[])
+    id_ = d["viec"]["id"]
+    ms.kho.chuyen(id_, ["cho"], "dang_chay", "he_thong")
+    ly_do = "Hoàn nguyên bỏ qua render_batch.json vì việc khác đã đổi — không làm lại, kiểm tay"
+    ms.kho.chuyen(id_, ["dang_chay"], "loi", "he_thong", loi=f"Bước sua_video thoát mã 5:\n[sua_video] mã 5: {ly_do}")
+    v = ms.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["trang_thai"] == "loi" and v["ket_qua"]["kiem_tay"] is True
+    assert v["ket_qua"]["bo_qua"] == ["render_batch.json"] and v["ket_qua"]["ma_thoat"] == 5
+
+
+def test_sua_video_ngay_429(tmp_path, mt, dong, monkeypatch):
+    tdm.dung_du_an_c(mt._p)
+    py = tmp_path / "py.exe"
+    py.write_bytes(b"")
+    monkeypatch.setenv("KHO_PYTHON_ENGINE", str(py))
+    m = May(tmp_path, mt, dong, hm=dict(HAN_MUC_TRAN, sua_video_ngay=1))
+    try:
+        m.v = tdm.video_sua(mt._p)  # type: ignore[attr-defined]
+        s, d = _luu(m)
+        assert s == 201
+        m.kho.chuyen(d["viec"]["id"], ["cho"], "huy", "nhan")
+        assert _luu(m, phu_de=[{"i": 1, "text": "Lần hai"}])[0] == 429
+    finally:
+        m.dong_lai()
+
+
+def test_sua_video_dong_khi_dot_bat_thap(tmp_path, mt, dong):
+    tdm.dung_du_an_c(mt._p)
+    m = May(tmp_path, mt, dong, hm=dict(HAN_MUC_TRAN, dot_bat=3))
+    try:
+        v = tdm.video_sua(mt._p)
+        assert m.goi("GET", f"/sua-video/{UID}")[0] == 404
+        assert m.goi("GET", f"/sua-video/{UID}/{v.ma_video}")[0] == 404
+        assert m.goi("POST", f"/sua-video/{UID}/{v.ma_video}/ban-sua", {"boi": "nhan"})[0] == 404
+        assert _tao(m, "sua_video", {"uid": UID})[0] == 400
+    finally:
+        m.dong_lai()
+
+
+def test_chi_tiet_video_khong_sua_duoc_van_tra_lich_su(ms):
+    s, d = _luu(ms)
+    _den(ms, d["viec"]["id"], "dang_chay", "xong")
+    (ms.mt._p / "output_poster" / "50oto2809_061.done.json").unlink()   # mất bằng chứng nguồn gốc
+    s, ct = ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}")
+    assert s == 200 and ct["video"]["sua_duoc"] is False and ct["video"]["ly_do"]
+    assert ct["phu_de"] is None and ct["canh"] == [] and ct["lich_su"][0]["hoan_tac_duoc"] is True
+    assert ms.goi("GET", f"/sua-video/{UID}/{ms.v.ma_video}/ung-vien?seg=1")[0] == 409
+    assert ms.goi("POST", f"/sua-video/{UID}/{ms.v.ma_video}/ban-sua", {"boi": "nhan", "sua_luc": 1})[0] == 409
+
+
+# ================================================================ đợt 5 (B-4, D11): taovideo, trả lời phiên sống
+
+from runner.kieu import KhongCoPhien, SaiTrangThai  # noqa: E402
+
+
+@pytest.mark.parametrize("cau_hoi,tra_loi,xac,ton_tien,ket", [
+    (CanNguoiDung("chon", "Tạo lại voice?", ("Đồng ý", "Bỏ qua")), "Đồng ý", True, True, "Đồng ý"),
+    (CanNguoiDung("chon", "Tạo lại voice?", ("Đồng ý", "Bỏ qua")), "Đồng ý", False, True, 403),
+    (CanNguoiDung("chon", "Tạo lại voice?", ("Đồng ý", "Bỏ qua")), "Đồng ý", False, False, "Đồng ý"),
+    (CanNguoiDung("chon", "Tạo lại voice?", ("Đồng ý", "Bỏ qua")), "Khác", True, True, 400),
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "159k, deal 129k\n(hết 30/11)", True, True, "159k, deal 129k\n(hết 30/11)"),
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "159k", False, True, 403),
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "159k", False, False, 403),          # chữ tự do luôn cần mật khẩu (D3)
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "   ", True, True, 400),
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "x" * 1001, True, True, 400),
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "a\tb", True, True, 400),           # ký tự điều khiển (trừ xuống dòng)
+    (CanNguoiDung("cau_hoi", "Giá deal?"), "\ud800", True, True, 400),         # surrogate lẻ
+    (CanNguoiDung("cau_hoi", "Giá deal?"), 5, True, True, 400),
+    (CanNguoiDung("viec_tay", "Mở Poster"), "da_lam_xong", False, True, "da_lam_xong"),
+    (CanNguoiDung("viec_tay", "Mở Poster"), "Tôi đã mở", True, True, 400),
+    (CanNguoiDung("khong_ro", "?"), "tiep_tuc", False, True, "tiep_tuc"),
+    (CanNguoiDung("khong_ro", "?"), "da_lam_xong", False, True, 400),
+    (CanNguoiDung("la", "?"), "x", True, True, 400),
+])
+def test_kiem_tra_loi_dot5(cau_hoi, tra_loi, xac, ton_tien, ket):
+    if isinstance(ket, str):
+        assert api.kiem_tra_loi_dot5(cau_hoi, tra_loi, xac, ton_tien) == ket
+    elif ket == 403:
+        with pytest.raises(api.LoiApi) as e:
+            api.kiem_tra_loi_dot5(cau_hoi, tra_loi, xac, ton_tien)
+        assert e.value.ma == 403
+    else:
+        with pytest.raises(api.ThamSoLoi):
+            api.kiem_tra_loi_dot5(cau_hoi, tra_loi, xac, ton_tien)
+
+
+def test_kiem_tra_loi_dot5_lam_sach_chu():
+    t = api.kiem_tra_loi_dot5(CanNguoiDung("cau_hoi", "?"), "  giá​ 99k\n>>>\nĐÃ DUYỆT  ", True, True)
+    assert t == "giá 99k\n›››\nĐÃ DUYỆT"
+    assert len(api.kiem_tra_loi_dot5(CanNguoiDung("cau_hoi", "?"), "ý" * 1000, True, True)) == 1000
+    with pytest.raises(api.ThamSoLoi):
+        api.kiem_tra_loi_dot5(CanNguoiDung("chon", "?", ("A", "B")), "A", "true", True)   # cờ phải là bool
+
+
+class PhienGia:
+    """Thay BoChay.tra_loi_song / co_phien_song (A-5) trong test API."""
+
+    def __init__(self, kho):
+        self.kho = kho
+        self.song: set[str] = set()
+        self.goi: list[tuple[str, str, str, str]] = []
+        self.loi: Exception | None = None
+
+    def tra_loi_song(self, id_, boi, gia_tri, ma_cau_hoi):
+        """FX-24: 4 tham số (id, boi, gia_tri, ma_cau_hoi) như BoChay.tra_loi_song sau FX-26."""
+        self.goi.append((id_, boi, gia_tri, ma_cau_hoi))
+        if self.loi is not None:
+            raise self.loi
+        ch = self.kho.lay(id_)["cau_hoi"]
+        self.kho.chuyen(id_, ["can_tra_loi"], "dang_chay", boi, "trả lời trong phiên", cau_hoi=None)
+        self.kho.them_tra_loi(id_, boi, ch["noi_dung"], gia_tri)
+        return self.kho.lay(id_)
+
+    def co_phien_song(self, id_):
+        return id_ in self.song
+
+
+@pytest.fixture
+def mt5(mt):
+    """Dự án A (có raw/) + dự án B (có takes/*.mp4) của cùng UID."""
+    (mt._p / "raw").mkdir()
+    b = mt.gocs[0] / f"Bình nước output {UID}"
+    (b / "takes").mkdir(parents=True)
+    (b / "takes" / "t1.mp4").write_bytes(b"x")
+    mt._b = b  # type: ignore[attr-defined]
+    return mt
+
+
+@pytest.fixture
+def may5(tmp_path, mt5, dong):
+    pg = PhienGia(None)
+    m = May(tmp_path, mt5, dong, tra_loi_song=pg.tra_loi_song, co_phien_song=pg.co_phien_song)
+    pg.kho = m.kho
+    m.pg = pg  # type: ignore[attr-defined]
+    yield m
+    m.dong_lai()
+
+
+def _tv_ts(mt, **kw):
+    ts = {"uid": UID, "du_an_a": ma_du_an(mt._p), "du_an_b": "tu_tim", "wm": "nha.cua.mit"}
+    ts.update(kw)
+    return ts
+
+
+MA_CH = "q0123456789ab"          # mã câu hỏi (§7.6) mà vòng chạy gắn khi hỏi trong phiên sống
+
+
+def _taovideo_can_tra_loi(may, dong, cau_hoi):
+    """Việc taovideo đã duyệt, đang can_tra_loi với câu hỏi mang mã MA_CH (nếu câu hỏi chưa có mã)."""
+    s, d = _tao(may, "taovideo", _tv_ts(may.mt))
+    assert s == 201, d
+    id_ = d["viec"]["id"]
+    assert _duyet(may, dong, id_, loi="Duyệt cả phiên")[0] == 200
+    _vao_can_tra_loi(may, id_, cau_hoi if cau_hoi.ma else replace(cau_hoi, ma=MA_CH))
+    may.pg.song.add(id_)
+    return id_
+
+
+def test_danh_muc_dot_5_co_taovideo(may5):
+    s, d = may5.goi("GET", "/danh-muc")
+    tv = next(x for x in d["loai"] if x["ma"] == "taovideo")
+    assert tv["dot"] == 5 and tv["ton_tien"] is True and tv["lan_chay"] == "gpu"
+    mo_ta = {t["ten"]: t for t in tv["tham_so"]}
+    assert mo_ta["wm"]["lua_chon"] == ["khong", "nha.cua.mit"] and mo_ta["du_an_b"]["kieu"] == "du_an_hoac_tu_tim"
+
+
+def test_tao_taovideo_tu_tim_va_400_kem_danh_sach(may5, mt5):
+    s, d = _tao(may5, "taovideo", _tv_ts(mt5))
+    assert s == 201, d
+    v = d["viec"]
+    assert v["trang_thai"] == "cho_duyet" and v["tham_so"]["du_an_b"] == ma_du_an(mt5._b)
+    assert v["phien_song"] is False and v["co_the_xin_duyet_lai"] is False
+    may5.kho.chuyen(v["id"], ["cho_duyet"], "huy", "nhan")
+    # thêm dự án thứ 2 có takes → "tu_tim" không chốt được → 400 kèm danh sách cho web chọn
+    b2 = mt5.gocs[0] / f"Bình nước 2 {UID}"
+    (b2 / "takes").mkdir(parents=True)
+    (b2 / "takes" / "x.mp4").write_bytes(b"x")
+    s, d = _tao(may5, "taovideo", _tv_ts(mt5))
+    assert s == 400 and "chọn" in d["loi"]
+    assert {x["ma"] for x in d["ung_vien_b"] if x["co_takes"]} == {ma_du_an(mt5._b), ma_du_an(b2)}
+    assert all(set(x) == {"ma", "ten", "co_takes"} for x in d["ung_vien_b"])
+    # chọn tay → tạo được
+    s, d = _tao(may5, "taovideo", _tv_ts(mt5, du_an_b=ma_du_an(b2), gia=129000))
+    assert s == 201 and d["viec"]["tham_so"]["gia"] == 129000
+    # wm ngoài danh sách → 400
+    assert _tao(may5, "taovideo", _tv_ts(mt5, wm="kenh.khac"))[0] == 400
+
+
+def test_tao_taovideo_ghi_anh_chup_kho_va_giu_qua_duyet_xin_duyet_lai(may5, mt5, dong):
+    """FX-29: POST /viec taovideo ghi ket_qua.kho_luc_tao = anh_chup_kho_taovideo (sau khi chốt du_an_b); khoá còn
+    nguyên qua duyệt và xin duyệt lại. Loại khác không có ảnh chụp."""
+    import json as _json
+    from runner.danh_muc import KHOA_ANH_CHUP_KHO
+    f = mt5.repo_kho / "data" / UID / "info.json"
+    f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_text(_json.dumps({"uid": UID, "da_lam_video": {"xong": True, "poster": [
+        {"folder": 7, "so_video": 20, "duong_dan": f"{mt5._p.as_posix()}/output_poster", "nhan": "Adam"},
+        {"folder": 8, "so_video": 3, "duong_dan": f"{mt5._b.as_posix()}/output", "nhan": "nha.cua.mit"},
+        {"folder": 9, "so_video": 5, "duong_dan": "E:/khac/output", "nhan": "nha.cua.mit"}]}}), encoding="utf-8")
+    s, d = _tao(may5, "taovideo", _tv_ts(mt5))
+    assert s == 201, d
+    id_ = d["viec"]["id"]
+    anh = {"a": [[7, 20]], "b": [[8, 3]]}
+    v = may5.kho.lay(id_)
+    assert v["trang_thai"] == "cho_duyet" and v["ket_qua"] == {KHOA_ANH_CHUP_KHO: anh}
+    assert [e["den"] for e in may5.kho.su_kien(id_)][0] == "cho_duyet"
+    assert _duyet(may5, dong, id_, loi="Duyệt cả phiên")[0] == 200
+    assert may5.kho.lay(id_)["ket_qua"][KHOA_ANH_CHUP_KHO] == anh
+    may5.kho.chuyen(id_, ["cho"], "dang_chay", "he_thong")
+    may5.kho.chuyen(id_, ["dang_chay"], "loi", "he_thong", loi="phiên sống bị dừng",
+                    ket_qua=dict(may5.kho.lay(id_)["ket_qua"], so_codex=2))
+    assert may5.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})[0] == 200
+    v = may5.kho.lay(id_)
+    assert v["trang_thai"] == "cho_duyet" and v["ket_qua"][KHOA_ANH_CHUP_KHO] == anh, v
+    # loại không phải taovideo: không ghi ket_qua lúc tạo
+    s, d = _tao(may5, "phan_tich_uid")
+    assert s == 201 and may5.kho.lay(d["viec"]["id"])["ket_qua"] is None
+
+
+def test_tao_taovideo_chua_co_info_json_anh_chup_rong(may5, mt5):
+    from runner.danh_muc import KHOA_ANH_CHUP_KHO
+    s, d = _tao(may5, "taovideo", _tv_ts(mt5))
+    assert s == 201, d
+    assert may5.kho.lay(d["viec"]["id"])["ket_qua"] == {KHOA_ANH_CHUP_KHO: {"a": [], "b": []}}
+
+
+def test_tra_loi_taovideo_chon_thieu_mat_khau_403(may5, dong):
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "Tạo lại voice ud3?", ("Đồng ý", "Bỏ qua")))
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Đồng ý", "boi": "nhan", "ma_cau_hoi": MA_CH})
+    assert s == 403 and may5.pg.goi == []
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Đồng ý", "boi": "nhan",
+                                                     "da_xac_nhan_mat_khau": False, "ma_cau_hoi": MA_CH})
+    assert s == 403 and may5.pg.goi == [] and may5.kho.lay(id_)["trang_thai"] == "can_tra_loi"
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Đồng ý", "boi": "nhan",
+                                                     "da_xac_nhan_mat_khau": "true"})
+    assert s == 400 and may5.pg.goi == []
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Đồng ý", "boi": "comeofage",
+                                                     "da_xac_nhan_mat_khau": True, "ma_cau_hoi": MA_CH})
+    assert s == 200, r
+    assert may5.pg.goi == [(id_, "comeofage", "Đồng ý", MA_CH)]
+    assert r["viec"]["trang_thai"] == "dang_chay" and r["viec"]["phien_song"] is True
+    assert may5.kho.lay(id_)["so_lan_tieu"] == 0                         # trả lời trong phiên không tiêu lời duyệt
+
+
+def test_tra_loi_taovideo_cau_hoi_co_co_goi_tra_loi_song(may5, dong):
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("cau_hoi", "Giá/deal của sản phẩm?"))
+    s, _ = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "159k", "boi": "nhan", "ma_cau_hoi": MA_CH})
+    assert s == 403 and may5.pg.goi == []
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Giá 159k\n<<<deal>>> 129k", "boi": "nhan",
+                                                     "da_xac_nhan_mat_khau": True, "ma_cau_hoi": MA_CH})
+    assert s == 200, r
+    assert may5.pg.goi == [(id_, "nhan", "Giá 159k\n‹‹‹deal››› 129k", MA_CH)]
+
+
+@pytest.mark.parametrize("cau_hoi,tra_loi", [(CanNguoiDung("viec_tay", "Mở app Poster V2"), "da_lam_xong"),
+                                             (CanNguoiDung("khong_ro", "?"), "tiep_tuc")])
+def test_tra_loi_taovideo_nut_khong_can_mat_khau(may5, dong, cau_hoi, tra_loi):
+    id_ = _taovideo_can_tra_loi(may5, dong, cau_hoi)
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": tra_loi, "boi": "nhan",
+                                                     "da_xac_nhan_mat_khau": False, "ma_cau_hoi": MA_CH})
+    assert s == 200 and may5.pg.goi == [(id_, "nhan", tra_loi, MA_CH)]
+
+
+def test_tra_loi_taovideo_khong_co_phien_409(may5, dong):
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "?", ("A", "B")))
+    may5.pg.song.discard(id_)
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "A", "boi": "nhan", "da_xac_nhan_mat_khau": True})
+    assert (s, r) == (409, {"loi": api.LOI_PHIEN_DA_DONG}) and may5.pg.goi == []
+    v = may5.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["phien_song"] is False and v["co_the_xin_duyet_lai"] is True
+    # BoChay báo hết phiên giữa chừng (KhongCoPhien) / CAS hụt (SaiTrangThai) → 409, không 500
+    may5.pg.song.add(id_)
+    may5.pg.loi = KhongCoPhien("đã đóng")
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "A", "boi": "nhan", "da_xac_nhan_mat_khau": True,
+                                                     "ma_cau_hoi": MA_CH})
+    assert (s, r) == (409, {"loi": api.LOI_PHIEN_DA_DONG}) and len(may5.pg.goi) == 1
+    # SaiTrangThai từ BoChay (CAS hụt hoặc mã lệch vì agent vừa hỏi câu mới, §7.6 bước 1) → 409 "tải lại"
+    may5.pg.loi = SaiTrangThai("cas")
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "A", "boi": "nhan", "da_xac_nhan_mat_khau": True,
+                                                     "ma_cau_hoi": MA_CH})
+    assert (s, r) == (409, {"loi": api.LOI_CAU_HOI_DA_DOI}) and len(may5.pg.goi) == 2
+    assert may5.kho.lay(id_)["trang_thai"] == "can_tra_loi"
+
+
+def test_tra_loi_taovideo_khi_runner_chua_noi_tra_loi_song_409(tmp_path, mt5, dong):
+    m = May(tmp_path, mt5, dong, co_phien_song=lambda _id: True)        # có cờ nhưng thiếu hàm trả lời
+    try:
+        s, d = _tao(m, "taovideo", _tv_ts(mt5))
+        id_ = d["viec"]["id"]
+        assert _duyet(m, dong, id_)[0] == 200
+        _vao_can_tra_loi(m, id_, CanNguoiDung("viec_tay", "Mở app"))
+        s, r = m.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "da_lam_xong", "boi": "nhan"})
+        assert (s, r) == (409, {"loi": api.LOI_PHIEN_DA_DONG})
+    finally:
+        m.dong_lai()
+
+
+def test_phien_song_chan_xin_duyet_lai(may5, dong):
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "?", ("A", "B")))
+    v = may5.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["phien_song"] is True and v["co_the_xin_duyet_lai"] is False
+    assert next(x for x in may5.goi("GET", "/viec")[1]["viec"] if x["id"] == id_)["phien_song"] is True
+    s, r = may5.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})
+    assert s == 409 and "phiên" in r["loi"] and may5.kho.lay(id_)["trang_thai"] == "can_tra_loi"
+    may5.pg.song.discard(id_)                                            # phiên đã chết → xin duyệt lại được
+    s, r = may5.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})
+    assert s == 200 and r["viec"]["trang_thai"] == "cho_duyet"
+
+
+def test_tra_loi_ton_tien_khac_van_409_va_mien_phi_khong_nhan_chu(may5, mt5, dong):
+    _, d = _tao(may5, "muse_clip", {"uid": UID, "du_an": ma_du_an(mt5._p), "mau": ["xoay_360"]})
+    mid = d["viec"]["id"]
+    mt5._cong[dm.CONG_VIDEO_BATCH] = True
+    assert _duyet(may5, dong, mid)[0] == 200
+    _vao_can_tra_loi(may5, mid, CanNguoiDung("chon", "Tag?", ("A", "B")))
+    may5.pg.song.add(mid)                                               # kể cả cờ phiên lỗi bật: không phải taovideo
+    s, r = may5.goi("POST", f"/viec/{mid}/tra-loi", {"tra_loi": "A", "boi": "nhan", "da_xac_nhan_mat_khau": True})
+    assert (s, r) == (409, {"loi": LOI_TRA_LOI_TON_TIEN}) and may5.pg.goi == []
+    assert may5.goi("GET", f"/viec/{mid}")[1]["viec"]["phien_song"] is False
+    # loại miễn phí: câu hỏi chữ tự do không trả lời được (Worker cũng chặn), nút vẫn như cũ
+    _, d = _tao(may5)
+    pid = d["viec"]["id"]
+    _vao_can_tra_loi(may5, pid, CanNguoiDung("cau_hoi", "Giá?"))
+    assert may5.goi("POST", f"/viec/{pid}/tra-loi", {"tra_loi": "99k", "boi": "nhan",
+                                                     "da_xac_nhan_mat_khau": True})[0] == 400
+
+
+def test_viec_ra_phien_song_va_co_the_xin_duyet_lai():
+    v = {"id": "j1", "loai": "taovideo", "trang_thai": "loi"}
+    assert api.viec_ra(v)["phien_song"] is False and api.viec_ra(v)["co_the_xin_duyet_lai"] is True
+    assert api.viec_ra(v, phien_song=True)["co_the_xin_duyet_lai"] is False
+    assert api.viec_ra(dict(v, trang_thai="cho_duyet"))["co_the_xin_duyet_lai"] is False
+    assert api.viec_ra(dict(v, loai="phan_tich_uid"))["co_the_xin_duyet_lai"] is False
+    assert api.viec_ra(dict(v, ket_qua={"khong_giet_duoc": True}))["co_the_xin_duyet_lai"] is False
+
+
+# ================================================================ FX-24 (S-4 #4, §7.6): mã câu hỏi phiên sống
+
+@pytest.mark.parametrize("ma", [None, "", 5, "q0123456789a", "Q0123456789AB", "q0123456789ab\n",
+                                "qffffffffffff"])
+def test_tra_loi_phien_song_thieu_sai_dang_lech_ma_409(may5, dong, ma):
+    """Thiếu / sai dạng / lệch mã câu hỏi đang lưu → 409 "Câu hỏi đã đổi", không gọi tra_loi_song, việc giữ nguyên."""
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("viec_tay", "Mở app Poster V2"))
+    body = {"tra_loi": "da_lam_xong", "boi": "nhan"}
+    if ma is not None:
+        body["ma_cau_hoi"] = ma
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", body)
+    assert (s, r) == (409, {"loi": "Câu hỏi đã đổi — tải lại để xem câu mới"})
+    assert api.LOI_CAU_HOI_DA_DOI == r["loi"]
+    assert may5.pg.goi == [] and may5.kho.lay(id_)["trang_thai"] == "can_tra_loi"
+
+
+def test_tra_loi_phien_song_ma_kiem_truoc_gia_tri(may5, dong):
+    """Câu hỏi đã đổi thì báo đổi (409), không báo "không khớp lựa chọn" của câu mới (400) hay đòi mật khẩu (403)."""
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "Tạo lại voice ud4?", ("Tạo lại", "Bỏ qua")))
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Đồng ý", "boi": "nhan",
+                                                     "ma_cau_hoi": "qaaaaaaaaaaaa"})
+    assert (s, r["loi"]) == (409, api.LOI_CAU_HOI_DA_DOI) and may5.pg.goi == []
+
+
+def test_tra_loi_phien_song_cau_hoi_cu_khong_co_ma_409(may5, dong):
+    """Câu hỏi trong DB chưa có mã (vòng chạy cũ) → không có gì để khớp → 409, không gọi tra_loi_song."""
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("viec_tay", "Mở app"))
+    _sua_db(may5, id_, cau_hoi=json.dumps({"loai": "viec_tay", "noi_dung": "Mở app", "lua_chon": []}))
+    assert "ma" not in may5.kho.lay(id_)["cau_hoi"]
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "da_lam_xong", "boi": "nhan", "ma_cau_hoi": MA_CH})
+    assert (s, r["loi"]) == (409, api.LOI_CAU_HOI_DA_DOI) and may5.pg.goi == []
+
+
+def test_tra_loi_phien_song_dung_ma_goi_du_4_tham_so_va_get_tra_ma(may5, dong):
+    ma = "q" + secrets.token_hex(6)
+    id_ = _taovideo_can_tra_loi(may5, dong, CanNguoiDung("chon", "Bản trượt 2 vòng?", ("Giữ", "Bỏ"), ma))
+    v = may5.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["cau_hoi"]["ma"] == ma                                       # web đọc cau_hoi.ma để gửi lại
+    s, r = may5.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "Giữ", "boi": "nhan", "da_xac_nhan_mat_khau": True,
+                                                     "ma_cau_hoi": ma})
+    assert s == 200, r
+    assert may5.pg.goi == [(id_, "nhan", "Giữ", ma)] and r["viec"]["trang_thai"] == "dang_chay"
+
+
+def test_tra_loi_khong_phai_phien_song_bo_qua_ma(may):
+    """Việc miễn phí (không phải phiên sống): ma_cau_hoi sai/thừa bị bỏ qua — hành vi cũ."""
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    _vao_can_tra_loi(may, id_, CanNguoiDung("viec_tay", "Mở Chrome"))
+    s, r = may.goi("POST", f"/viec/{id_}/tra-loi", {"tra_loi": "da_lam_xong", "boi": "nhan",
+                                                    "ma_cau_hoi": "rác không đúng dạng"})
+    assert s == 200 and r["viec"]["trang_thai"] == "cho"
+
+
+# ================================================================ FX-24 (từ FX-22): kiem_tay chặn chạy tiếp
+
+LOI_KIEM_TAY = ("Bước sua_video thoát mã 5:\n[sua_video] mã 5: Hoàn nguyên bỏ qua render_batch.json vì việc khác "
+                "đã đổi — không làm lại, kiểm tay")
+
+
+def test_co_the_chay_tiep_false_khi_kiem_tay():
+    v = {"id": "j1", "loai": "sua_video", "trang_thai": "loi", "loi": LOI_KIEM_TAY}
+    assert api.co_the_chay_tiep(v) is False
+    ra = api.viec_ra(v)
+    assert ra["co_the_chay_tiep"] is False and ra["ket_qua"]["kiem_tay"] is True
+    # mã 5 dở dang (không phải bỏ qua có chủ đích) → vẫn chạy tiếp được để bộ chuyển đổi làm nốt
+    do_dang = dict(v, loi="Bước sua_video thoát mã 5:\n[sua_video] mã 5: dừng giữa lúc thay file")
+    assert api.co_the_chay_tiep(do_dang) is True and api.viec_ra(do_dang)["co_the_chay_tiep"] is True
+    ht = dict(v, loai="hoan_tac_sua", loi="Bước hoan_tac_sua thoát mã 5:\n[sua_video] mã 5: Video đã về bản cũ nhưng "
+                                         "hoàn tác bỏ qua phụ đề (việc khác đã đổi) — kiểm tay")
+    assert api.co_the_chay_tiep(ht) is False
+    # ket_qua đã lưu sẵn kiem_tay (dù loi không suy ra được) cũng chặn
+    assert api.co_the_chay_tiep(dict(v, loi="x", ket_qua={"kiem_tay": True})) is False
+
+
+def test_chay_tiep_sua_video_kiem_tay_409_kem_thong_diep(ms):
+    s, d = _luu(ms, phu_de=[])
+    id_ = d["viec"]["id"]
+    ms.kho.chuyen(id_, ["cho"], "dang_chay", "he_thong")
+    ms.kho.chuyen(id_, ["dang_chay"], "loi", "he_thong", loi=LOI_KIEM_TAY)
+    v = ms.goi("GET", f"/viec/{id_}")[1]["viec"]
+    assert v["co_the_chay_tiep"] is False and v["ket_qua"]["kiem_tay"] is True
+    assert [x for x in ms.goi("GET", "/viec")[1]["viec"] if x["id"] == id_][0]["co_the_chay_tiep"] is False
+    s, r = ms.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "nhan"})
+    assert s == 409 and r["loi"] == v["ket_qua"]["thong_diep"] and r["kiem_tay"] is True
+    assert "Chạy tiếp không giúp được" in r["loi"]
+    assert ms.kho.lay(id_)["trang_thai"] == "loi"

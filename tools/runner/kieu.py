@@ -1,6 +1,7 @@
 """Kiểu dữ liệu và ngoại lệ dùng chung của bộ chạy việc (docs/bo-chay-viec.md §13 B-1)."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -45,6 +46,10 @@ class VuotHanMuc(Exception):
     """Vượt hạn mức (D5, §10)."""
 
 
+class KhongCoPhien(Exception):
+    """D11 §7.6: việc không còn phiên Claude sống để nhận trả lời qua stdin (API trả 409 "dùng Xin duyệt lại")."""
+
+
 @dataclass(frozen=True)
 class BuocChay:
     ten: str
@@ -56,6 +61,13 @@ class BuocChay:
     het_gio_s: int
     hien_cua_so: bool = False
     file_log_phu: str | None = None
+    # D11 §7.2: bước là MỘT phiên Claude sống (stdin giữ mở, stream-json vào) — vòng chạy dùng phien_song (A-5).
+    song: bool = False
+
+
+# §7.6 (S-4 #4): mã câu hỏi trong phiên sống = "q" + secrets.token_hex(6). Dùng fullmatch khi kiểm input ngoài
+# (`$` của re còn khớp trước "\n" cuối chuỗi).
+RE_MA_CAU_HOI = re.compile(r"^q[0-9a-f]{12}$", re.ASCII)
 
 
 @dataclass(frozen=True)
@@ -63,14 +75,20 @@ class CanNguoiDung:
     loai: str                     # 'viec_tay' | 'chon' | 'khong_ro' | 'cau_hoi'
     noi_dung: str
     lua_chon: tuple[str, ...] = ()
+    # §7.6: mã câu hỏi của phiên sống ("" = câu hỏi không thuộc phiên sống / dữ liệu cũ).
+    ma: str = ""
 
     def thanh_dict(self) -> dict:
-        return {"loai": self.loai, "noi_dung": self.noi_dung, "lua_chon": list(self.lua_chon)}
+        d = {"loai": self.loai, "noi_dung": self.noi_dung, "lua_chon": list(self.lua_chon)}
+        if self.ma:
+            d["ma"] = self.ma
+        return d
 
     @staticmethod
     def tu_dict(d: dict) -> "CanNguoiDung":
+        ma = d.get("ma")
         return CanNguoiDung(str(d.get("loai", "viec_tay")), str(d.get("noi_dung", "")),
-                            tuple(str(x) for x in d.get("lua_chon") or ()))
+                            tuple(str(x) for x in d.get("lua_chon") or ()), ma if isinstance(ma, str) else "")
 
 
 @dataclass(frozen=True)

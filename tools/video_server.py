@@ -10,17 +10,27 @@ Thư mục: <GOC>/<tên> <id>/output_poster/*.mp4, GOC mặc định E:/oneshott
   GET  /v/<id>/xem?goc=<goc>&ten=<tên> -> xem video inline (Range, không attachment, KHÔNG BAO GIỜ xóa)
   GET  /v/<id>/tien-do          -> {"thu_muc": [{goc, ten, raw, takes, cuts, muse, voice, output_poster, output}]}
                                    đếm file trực tiếp trong từng thư mục con của mọi '<GOC>/*<id>'
-  GET  /suc-khoe                -> {"luc": ISO giờ máy, "apps": [{ma, ten, cong, song}]} (dò cổng TCP 127.0.0.1)
+  GET  /suc-khoe                -> {"luc": ISO giờ máy, "apps": [{ma, ten, cong, song, bat_tat?}]} (dò cổng TCP 127.0.0.1)
+  POST /app/<ma>/bat|tat        -> bật (lệnh cố định LENH_BAT, cửa sổ riêng) / tắt (taskkill /T tiến trình nghe cổng
+                                   + cửa sổ cmd bọc nó) app trong LENH_BAT -> {ma, ok, tin, song}; mã lạ 404
   GET|POST /r/<...>             -> chuyển tiếp sang runner KHO_RUNNER_ORIGIN (mặc định 127.0.0.1:8788), bỏ tiền tố /r;
                                    lọc path/query/body/header theo docs/bo-chay-viec.md §3.2, không chuyển x-key
+  GET  /v/<id>/anh?du_an=<12 hex>&ten=<clip>&k=<0-9|cs> -> image/jpeg cuts/.index_frames/<clip_id>/f_0k.jpg | contact_sheet.jpg
+  GET  /v/<id>/clip?du_an=<12 hex>&ten=<clip>  -> clip phủ trong cuts/ (hoặc con một cấp), Range, không attachment
+                                   (ten phải là khoá trong cuts/clip_index.json → clips; docs/sua-video.md §8.2)
   (ds: mỗi phần tử nguon[] có thêm "chi_tiet": [{ten, mb, sua_luc}] theo thứ tự ds)
+  GET|POST|PUT|PATCH|DELETE /p/<...> -> backend Poster V2 qua tools/poster_web.py (tự kiểm x-key, 401 kèm
+                                   x-kho-tu-choi: khoa; docs/poster-v2-tren-web.md; tắt bằng KHO_POSTER_WEB=0)
 """
-import hmac, os, re, secrets, socket, sys
+import hashlib, hmac, os, re, secrets, socket, sys, time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import quote, unquote, urlparse, parse_qs
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))  # poster_web nằm cạnh file này
+import poster_web
 
 # Nhiều thư mục gốc, cách nhau bằng ";" — video nằm ở đâu cũng được miễn là <GOC>/<tên> <id>/output_poster/*.mp4
 GOCS = [Path(g) for g in os.environ.get("KHO_VIDEO_GOC", "E:/oneshottramcanh;F:/2010;F:/2210;F:/2310/ncm;F:/2610/1026/ncm;F:/2710/1028;F:/3010/3010/ncm;E:/Aff anh nhan/review").split(";") if g.strip()]
@@ -126,8 +136,9 @@ APPS = [("muse", "Video Batch Local (Muse)", 3786), ("perfectvoice", "PerfectVoi
 RUNNER_ORIGIN = os.environ.get("KHO_RUNNER_ORIGIN", "http://127.0.0.1:8788")
 RUNNER_TIMEOUT = 10
 RE_R = re.compile(r"^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}"
-                  r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep))?)?)$", re.ASCII)
-R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat")
+                  r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai))?)?"
+                  r"|sua-video/\d{19}(/[0-9a-f]{16}(/(ung-vien|ban-sua))?)?)$", re.ASCII)
+R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg")
 RE_R_QUERY_GT = re.compile(r"^[A-Za-z0-9_,-]{0,40}$", re.ASCII)
 R_HEADER = ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce")  # + content-type cho POST; KHÔNG BAO GIỜ x-key
 R_BODY_TOI_DA = 16 * 1024
@@ -228,6 +239,106 @@ def chuyen_tiep_runner(h, method: str) -> None:
         pass
 
 
+# ---------- ảnh khung / clip phủ cho trang sửa video (docs/sua-video.md §8.2, §3.1) ----------
+RE_DU_AN = re.compile(r"^[0-9a-f]{12}$", re.ASCII)
+RE_TEN_CLIP = re.compile(r"^[0-9A-Za-z][0-9A-Za-z_.()\- ]{0,150}\.mp4$", re.ASCII)
+RE_CLIP_ID = re.compile(r"^(.+?_\d{3})_", re.ASCII)
+RE_K_ANH = re.compile(r"^([0-9]|cs)$", re.ASCII)
+
+
+def ma_du_an(p: Path) -> str:
+    """Bản sao y tools/runner/du_an.py:39 (test chéo trong test_video_server.py)."""
+    return hashlib.sha1(Path(p).as_posix().encode("utf-8")).hexdigest()[:12]
+
+
+def tim_du_an(id_: str, ma: str) -> Path | None:
+    """Thư mục '<GOC>/*<id>' có ma_du_an == ma (ký tự ngay trước id không là chữ số, như du_an.py)."""
+    if not RE_DU_AN.fullmatch(ma or ""):
+        return None
+    for g in GOCS:
+        try:
+            if not g.is_dir():
+                continue
+            for d in sorted(g.glob(f"*{id_}")):
+                ten = d.name
+                if not d.is_dir() or not ten.endswith(id_):
+                    continue
+                if len(ten) > len(id_) and ten[-len(id_) - 1] in "0123456789":
+                    continue
+                if ma_du_an(d) == ma:
+                    return d
+        except OSError:
+            continue
+    return None
+
+
+def _mot(q: dict, k: str) -> str:
+    return (q.get(k) or [""])[0]
+
+
+def _nam_trong(f: Path, goc: Path, cap_toi_da: int) -> bool:
+    """f (sau khi resolve) nằm dưới goc, sâu không quá cap_toi_da cấp thư mục."""
+    try:
+        rel = f.resolve().relative_to(goc.resolve())
+    except (OSError, ValueError):
+        return False
+    return 1 <= len(rel.parts) <= cap_toi_da + 1
+
+
+def tim_clip(id_: str, q: dict) -> tuple[Path, str] | None:
+    """(thư mục cuts, tên clip) nếu du_an hợp lệ thuộc id và ten là khoá trong clip_index.json → clips."""
+    import json
+    ten = _mot(q, "ten")
+    if not RE_TEN_CLIP.fullmatch(ten) or ".." in ten:
+        return None
+    d = tim_du_an(id_, _mot(q, "du_an"))
+    if d is None:
+        return None
+    cuts = d / "cuts"
+    try:
+        idx = json.loads((cuts / "clip_index.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    clips = idx.get("clips") if isinstance(idx, dict) else None
+    if not isinstance(clips, dict) or ten not in clips:
+        return None
+    return cuts, ten
+
+
+def file_clip(cuts: Path, ten: str) -> Path | None:
+    """File clip ngay trong cuts/ hoặc thư mục con một cấp (không theo liên kết ra ngoài)."""
+    ung = [cuts / ten]
+    try:
+        ung += [x / ten for x in sorted(cuts.iterdir()) if x.is_dir()]
+    except OSError:
+        pass
+    return next((f for f in ung if f.is_file() and _nam_trong(f, cuts, 1)), None)
+
+
+def file_anh(cuts: Path, ten: str, k: str) -> Path | None:
+    m = RE_CLIP_ID.match(ten)
+    if not m:
+        return None
+    goc_anh = cuts / ".index_frames"
+    f = goc_anh / m[1] / ("contact_sheet.jpg" if k == "cs" else f"f_0{k}.jpg")
+    return f if f.is_file() and _nam_trong(f, goc_anh, 1) else None
+
+
+def gui_anh(h, f: Path) -> None:
+    try:
+        b = f.read_bytes()
+    except OSError:
+        return h._json(404, {"loi": "Không thấy ảnh"})
+    h.send_response(200)
+    h.send_header("content-type", "image/jpeg")
+    h.send_header("content-length", str(len(b)))
+    h.end_headers()
+    try:
+        h.wfile.write(b)
+    except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+        pass
+
+
 def dem_file(d: Path, duoi: set[str]) -> int:
     """Số file (không đệ quy) có đuôi trong `duoi`; thư mục không tồn tại -> 0."""
     if not d.is_dir():
@@ -264,9 +375,123 @@ def cong_song(cong: int, cho: float = 1.0) -> bool:
 def suc_khoe(cong_video: int) -> dict:
     with ThreadPoolExecutor(max_workers=len(APPS) or 1) as ex:
         song = list(ex.map(lambda a: cong_song(a[2]), APPS))
-    apps = [{"ma": m, "ten": t, "cong": c, "song": s} for (m, t, c), s in zip(APPS, song)]
+    apps = [{"ma": m, "ten": t, "cong": c, "song": s, **({"bat_tat": True} if m in LENH_BAT else {})}
+            for (m, t, c), s in zip(APPS, song)]
     apps.append({"ma": "video_server", "ten": "Máy phát video", "cong": cong_video, "song": True})
     return {"luc": datetime.now().astimezone().isoformat(timespec="seconds"), "apps": apps}
+
+
+# ---------- bật/tắt từng app từ trang Máy nhà ----------
+# Lệnh bật CỐ ĐỊNH theo mã (web chỉ gửi mã, không gửi lệnh). Máy phát video không nằm đây: nó là đường điều khiển.
+PY312 = r"C:\Users\Mi\AppData\Local\Programs\Python\Python312\python.exe"
+LENH_BAT = {
+    "muse": ["cmd", "/c", r"E:\viết bài wp\VideoBatchLocal\Start.cmd"],
+    "perfectvoice": ["cmd", "/c", r"E:\PerfectVoice\Run.cmd"],
+    "poster": ["cmd", "/c", r"E:\tool\tiktok_poster_v2\backend_only.bat"],
+    "runner": ["cmd", "/c", PY312, r"E:\kho-runner\app\chay_runner.py"],
+}
+CHO_TAT = 8.0  # giây chờ cổng đóng sau taskkill
+
+
+def pid_nghe_cong(cong: int) -> set[int]:
+    """PID đang LISTENING trên <cổng> (netstat -ano, không cần psutil)."""
+    import subprocess
+    try:
+        out = subprocess.run(["netstat", "-ano", "-p", "TCP"], capture_output=True, text=True, timeout=10,
+                             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    kq = set()
+    for d in out.splitlines():
+        p = d.split()
+        if len(p) >= 5 and p[3].upper() == "LISTENING" and p[1].rsplit(":", 1)[-1] == str(cong) and p[4].isdigit():
+            kq.add(int(p[4]))
+    kq.discard(0)
+    return kq
+
+
+def bang_tien_trinh() -> dict[int, tuple[int, str]]:
+    """{pid: (pid cha, tên exe thường)} cho mọi tiến trình."""
+    import subprocess
+    try:
+        out = subprocess.run(["powershell", "-NoProfile", "-Command",
+                              "Get-CimInstance Win32_Process | ForEach-Object { \"$($_.ProcessId) $($_.ParentProcessId) $($_.Name)\" }"],
+                             capture_output=True, text=True, timeout=20,
+                             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0)).stdout
+    except (OSError, subprocess.SubprocessError):
+        return {}
+    kq = {}
+    for d in out.splitlines():
+        p = d.strip().split(" ", 2)
+        if len(p) == 3 and p[0].isdigit() and p[1].isdigit():
+            kq[int(p[0])] = (int(p[1]), p[2].lower())
+    return kq
+
+
+def goc_can_giet(pid: int, bang: dict[int, tuple[int, str]], cam: set[int]) -> int:
+    """Leo lên các cmd.exe cha (cửa sổ .cmd/.bat bọc app) để tắt luôn cửa sổ đó;
+    dừng khi cha không phải cmd.exe hoặc là tổ tiên của chính video_server (cam)."""
+    cur, da = pid, {pid}
+    while True:
+        cha = bang.get(cur, (0, ""))[0]
+        if not cha or cha in cam or cha in da or bang.get(cha, (0, ""))[1] != "cmd.exe":
+            return cur
+        cur = cha; da.add(cur)
+
+
+def to_tien(pid: int, bang: dict[int, tuple[int, str]]) -> set[int]:
+    kq, cur = {pid}, pid
+    while (cha := bang.get(cur, (0, ""))[0]) and cha not in kq:
+        kq.add(cha); cur = cha
+    return kq
+
+
+def tat_app(cong: int) -> tuple[bool, str]:
+    import subprocess
+    pids = pid_nghe_cong(cong)
+    if not pids:
+        return True, "Đã tắt sẵn"
+    bang = bang_tien_trinh()
+    cam = to_tien(os.getpid(), bang)
+    goc = {goc_can_giet(p, bang, cam) for p in pids} - cam
+    if not goc:
+        return False, "Không tắt được: app chạy chung tiến trình với máy phát video"
+    for p in goc:
+        subprocess.run(["taskkill", "/PID", str(p), "/T", "/F"], capture_output=True, timeout=15,
+                       creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+        print("TAT APP cong", cong, "pid", p, flush=True)
+    han = time.monotonic() + CHO_TAT
+    while time.monotonic() < han:
+        if not cong_song(cong, 0.5):
+            return True, "Đã tắt"
+        time.sleep(0.3)
+    return False, "Đã gửi lệnh tắt nhưng cổng vẫn mở"
+
+
+def bat_app(ma: str, cong: int) -> tuple[bool, str]:
+    import subprocess
+    if cong_song(cong):
+        return True, "Đang chạy sẵn"
+    lenh = LENH_BAT[ma]
+    file_chay = Path(lenh[-1])
+    if not file_chay.exists():
+        return False, f"Không thấy {file_chay}"
+    # Cửa sổ riêng, nhóm tiến trình riêng: tắt/khởi động lại video_server không kéo app chết theo.
+    co = getattr(subprocess, "CREATE_NEW_CONSOLE", 0) | getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+    try:
+        subprocess.Popen(lenh, cwd=str(file_chay.parent), creationflags=co, close_fds=True)
+    except OSError as e:
+        return False, f"Không chạy được: {e}"
+    print("BAT APP", ma, flush=True)
+    return True, "Đang bật — bấm Kiểm lại sau vài giây"
+
+
+def bat_tat(ma: str, hanh_dong: str) -> tuple[int, dict]:
+    app = next((a for a in APPS if a[0] == ma), None)
+    if not app or ma not in LENH_BAT:
+        return 404, {"loi": "App không bật/tắt được từ web"}
+    ok, tin = bat_app(ma, app[2]) if hanh_dong == "bat" else tat_app(app[2])
+    return (200 if ok else 500), {"ma": ma, "ok": ok, "tin": tin, "song": cong_song(app[2])}
 
 
 class H(BaseHTTPRequestHandler):
@@ -287,14 +512,19 @@ class H(BaseHTTPRequestHandler):
 
     def _vao(self):
         """Trả (id, hành động, query) nếu hợp lệ, ngược lại đã trả lỗi và trả None."""
+        if re.match(r"/p(/|$)", urlparse(self.path).path):  # poster_web.xu_ly tự kiểm x-key
+            return "", "poster", {}
         if not hmac.compare_digest(self.headers.get("x-key", ""), self.khoa):
             self._json(401, {"loi": "Sai khoá"}); return None
         u = urlparse(self.path)
         if u.path == "/suc-khoe":
             return "", "suc-khoe", parse_qs(u.query)
+        m = re.fullmatch(r"/app/([a-z_]{1,20})/(bat|tat)", u.path)
+        if m:
+            return m[1], "app-" + m[2], {}
         if u.path == "/r" or u.path.startswith("/r/"):
             return "", "runner", {}
-        m = re.fullmatch(r"/v/([^/]+)/(ds|file|xoa|dy|dyfile|xem|tien-do)", u.path)
+        m = re.fullmatch(r"/v/([^/]+)/(ds|file|xoa|dy|dyfile|xem|tien-do|anh|clip)", u.path)
         if not m or not RE_ID.match(m[1]):
             self._json(404, {"loi": "Đường dẫn không hợp lệ"}); return None
         return m[1], m[2], parse_qs(u.query)
@@ -310,6 +540,7 @@ class H(BaseHTTPRequestHandler):
         id_, act, q = r
         if act == "runner":
             return chuyen_tiep_runner(self, "GET")
+        if act == "poster": return poster_web.xu_ly(self, "GET")
         if act == "suc-khoe":
             return self._json(200, suc_khoe(self.cong))
         if act == "tien-do":
@@ -317,6 +548,19 @@ class H(BaseHTTPRequestHandler):
         if act == "xem":  # chỉ xem, không bao giờ xóa — bỏ qua mọi tham số khác (kể cả xoa)
             f = self._chon(id_, q)
             if not f: return self._json(404, {"loi": "Không thấy video"})
+            return gui_file_range(self, f)
+        if act == "anh":  # ảnh khung của clip phủ (chỉ đọc)
+            k = _mot(q, "k")
+            if not RE_K_ANH.fullmatch(k):
+                return self._json(400, {"loi": "k phải là 0-9 hoặc cs"})
+            c = tim_clip(id_, q)
+            f = file_anh(*c, k) if c else None
+            if not f: return self._json(404, {"loi": "Không thấy ảnh"})
+            return gui_anh(self, f)
+        if act == "clip":  # xem thử clip phủ: Range, không attachment, không bao giờ xoá
+            c = tim_clip(id_, q)
+            f = file_clip(*c) if c else None
+            if not f: return self._json(404, {"loi": "Không thấy clip"})
             return gui_file_range(self, f)
         if act == "dy":
             return self._json(200, {"video": [{"ten": f.name, "mb": round(f.stat().st_size / 1e6, 1)} for f in ds_douyin(id_)]})
@@ -374,6 +618,9 @@ class H(BaseHTTPRequestHandler):
         id_, act, q = r
         if act == "runner":
             return chuyen_tiep_runner(self, "POST")
+        if act == "poster": return poster_web.xu_ly(self, "POST")
+        if act in ("app-bat", "app-tat"):
+            return self._json(*bat_tat(id_, act[4:]))
         if act != "xoa": return self._json(405, {"loi": "Sai phương thức"})
         f = self._chon(id_, q)
         if not f: return self._json(404, {"loi": "Không thấy video"})
@@ -383,6 +630,11 @@ class H(BaseHTTPRequestHandler):
             print("XOA LOI", f, e, flush=True)
             return self._json(500, {"loi": f"Không xóa được: {e}"})
         self._json(200, {"da_xoa": f.name, "con_lai": len(ds_video(id_))})
+
+    def _ghi_khac(self):  # PUT/PATCH/DELETE: chỉ /p/*, path khác 405
+        r = self._vao()
+        if r: return poster_web.xu_ly(self, self.command) if r[1] == "poster" else self._json(405, {"loi": "Sai phương thức"})
+    do_PUT = do_PATCH = do_DELETE = _ghi_khac
 
 
 if __name__ == "__main__":

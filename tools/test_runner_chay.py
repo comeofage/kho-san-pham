@@ -81,6 +81,16 @@ def test_help_khong_can_khoa():
     assert "E:\\kho-runner" in out and "LOCALAPPDATA" not in out          # FX-7
 
 
+def test_help_khong_chet_vi_cp1252_khi_khong_dat_utf8():
+    """FX-26 e): stdout là pipe/console cp1252 (bật từ Startup, không PYTHONIOENCODING/PYTHONUTF8) → --help vẫn in
+    được chữ tiếng Việt (main tự reconfigure stdout/stderr sang UTF-8)."""
+    env = {k: v for k, v in os.environ.items() if k not in ("PYTHONIOENCODING", "PYTHONUTF8")}
+    r = subprocess.run([PY, "-B", str(CHAY_RUNNER), "--help"], capture_output=True, timeout=60, env=env)
+    assert r.returncode == 0, r.stderr.decode("utf-8", "replace")[-500:]
+    out = r.stdout.decode("utf-8")
+    assert "Bộ chạy việc" in out and "--khong-http" in out
+
+
 def test_cai_runner_help_va_dich_mac_dinh(tmp_path, monkeypatch, capsys):
     """FX-7: --help nói E:\\kho-runner; đích mặc định = thu_muc_runner()/app (KHO_RUNNER_DIR → tmp_path)."""
     with pytest.raises(SystemExit) as e:
@@ -264,6 +274,39 @@ def test_bochay_va_api_cung_mot_khoa_cong_khai_chan_ton_tien_va_worker_origin(tm
     assert goi_tieu == [("http://127.0.0.1:9", khoa_api, kcc)]
     assert khoa_api == (du_lieu / ".runner_key").read_text(encoding="utf-8").strip()
     assert any("TONG_KIEM" in c for c in canh_bao) and any("lệch tổng kiểm" in c for c in canh_bao)
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None
+    k.nha()
+
+
+def test_api_nhan_tra_loi_song_va_co_phien_song_cua_bochay(tmp_path, monkeypatch):
+    """A-5: chay_runner truyền tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song vào api.tao_handler."""
+    import chay_runner
+    from runner import api
+    du_lieu = tmp_path / "du_lieu"
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(du_lieu))
+    for k in ("KHO_REPO", "KHO_THU_MUC_RADAR", "KHO_THU_MUC_SP", "KHO_THU_MUC_SCRIPTS"):
+        monkeypatch.setenv(k, str(tmp_path / k.lower()))
+    monkeypatch.setattr(tt, "tu_gan_job_object", lambda: True)
+    monkeypatch.setattr(chay_runner, "_cai_log", lambda thu_muc: None)
+    monkeypatch.setattr(chay_runner, "_khoa_cong_khai", lambda: (object(), tmp_path / "gia.pem"))
+    monkeypatch.setattr(vl.BoChay, "khoi_dong", lambda self: {})
+    bat = {}
+    goc_init = vl.BoChay.__init__
+
+    def init(self, *a, **kw):
+        bat["bo"] = self
+        goc_init(self, *a, **kw)
+    monkeypatch.setattr(vl.BoChay, "__init__", init)
+
+    def tao_handler(kho, mt, khoa, kcc, hm, canh_bao, *a, **kw):
+        bat["kw"] = kw
+        raise KeyboardInterrupt
+    monkeypatch.setattr(api, "tao_handler", tao_handler)
+    assert chay_runner.main(["--cong", "1"]) == 0
+    bo, kw = bat["bo"], bat["kw"]
+    assert kw["tra_loi_song"] == bo.tra_loi_song and kw["co_phien_song"] == bo.co_phien_song
+    assert kw["co_phien_song"]("j20261118000000abcd") is False
     k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
     assert k is not None
     k.nha()

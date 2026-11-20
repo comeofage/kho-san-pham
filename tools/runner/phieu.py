@@ -6,13 +6,17 @@ Ngoại lệ duy nhất là gợi ý nút "Chạy Douyin" (§5.1), chỉ thêm m
 """
 from __future__ import annotations
 
+import logging
 import re
 import unicodedata
+from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable
 
 from .du_an import kiem_uid
 from .kieu import CanNguoiDung, KetQuaAgent, MoiTruong, ThamSoLoi
+
+log = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from .danh_muc import LoaiViec
@@ -26,6 +30,19 @@ TOI_DA_MOT_LUA_CHON = 120
 TOI_DA_BAO_CAO = 1500
 TOI_DA_TRA_LOI_CHU = 1000
 TOI_DA_LOI_DUYET = 2000
+# đợt 5 (D11): phiên sống taovideo
+TOI_DA_DUYET_TRONG_PHIEN = 300      # NEEDS_APPROVAL trong phiên → câu hỏi chon, nội dung = 300 ký tự đầu báo cáo
+TOI_DA_LY_DO_TIEP = 800
+TOI_DA_TRA_LOI_TRUOC = 10
+TOI_DA_DONG_TRA_LOI = 300
+LUA_CHON_DUYET_TRONG_PHIEN = ("Đồng ý", "Không đồng ý")
+TIN_NHAC = "Tiếp tục. Chỉ dừng ở điểm CẦN_USER, hoặc khi xong thì báo cáo theo mẫu (dòng đầu TRẠNG THÁI)."
+TIN_TRAN_CODEX = ("Đã dùng hết {n} lượt Codex của lần duyệt này. Không gọi Codex nữa; mẻ chưa qua Codex thì "
+                  "CẦN_USER (LOẠI: chon, LỰA_CHỌN: Anh duyệt | Dừng).")
+# K-1 aff-san-pham: phiếu có dòng này → agent bỏ Bước 7 Douyin (agy chạy nền sẽ chết khi -p thoát); runner chạy
+# douyin_uid riêng (nút "Chạy Douyin" — gợi ý goi_y_viec khi đối soát thiếu douyin.md).
+DONG_DOUYIN_RIENG = ("Douyin do runner chạy riêng (việc douyin_uid): KHÔNG làm Bước 7, không chạy agy.exe; báo cáo "
+                     "ghi \"CHƯA làm: Bước 7 (runner chạy douyin_uid)\". Các bước khác đạt thì trả DONE.")
 
 _RE_CAN_USER = re.compile(r"^CẦN_USER:[ \t]*(.+?)[ \t]*$", re.M)
 _RE_LOAI = re.compile(r"^LOẠI:[ \t]*(\S+)[ \t]*$")
@@ -68,7 +85,7 @@ def _mot_dong(s: str | None, toi_da: int) -> str:
 
 # ---------- nội dung cố định theo loại ----------
 
-def _noi_dung_loai(loai: "LoaiViec", viec: dict, mt: MoiTruong) -> dict[str, str]:
+def _noi_dung_loai(loai: "LoaiViec", viec: dict, mt: MoiTruong, hm: dict | None = None) -> dict[str, str]:
     ts = viec.get("tham_so") or {}
     if loai.ma == "radar_ban_tin":
         json_ra = mt.thu_muc_du_lieu / "radar" / f"{viec['id']}.json"
@@ -93,9 +110,88 @@ def _noi_dung_loai(loai: "LoaiViec", viec: dict, mt: MoiTruong) -> dict[str, str
             "duoc_ghi": f"{thu_muc}/ và kho qua kho.py them/ghi/rui-ro cho đúng UID {uid}",
             "cam": "đụng thư mục sp_ khác, sửa kho-san-pham/web/ hoặc tools/, EchoTik, dịch vụ tốn phí, cài package",
             "xong_khi": "đủ điều kiện luật 4 trong file agent (kho.py ghi in ✓ đã đẩy lên GitHub, rủi ro được nhận)",
-            "them": "",
+            "them": DONG_DOUYIN_RIENG,
         }
+    if loai.ma == "taovideo":
+        return _noi_dung_taovideo(viec, mt, hm)
     raise ThamSoLoi(f"loại {loai.ma} không chạy Claude, không có phiếu")
+
+
+def _la_phien_song(loai: "LoaiViec") -> bool:
+    from .danh_muc import LOAI_PHIEN_SONG  # import muộn: danh_muc dùng phieu
+    return loai.ma in LOAI_PHIEN_SONG
+
+
+def _tran_taovideo(mt: MoiTruong, hm: dict | None) -> dict[str, int | float]:
+    """FX-28 (R-22 P3-1): trần HIỆU LỰC in vào phiếu (han_muc.tran_taovideo). `hm` của bên gọi (vòng chạy) nếu có;
+    không thì đọc cau_hinh.json của thư mục runner (mt.thu_muc_du_lieu) — cau_hinh chỉ hạ, hỏng/thiếu → trần code."""
+    from .han_muc import han_muc_tu_thu_muc, tran_taovideo
+    if hm is None:
+        hm, canh_bao = han_muc_tu_thu_muc(Path(mt.thu_muc_du_lieu))
+        for c in canh_bao:
+            log.warning("phiếu taovideo: %s", c)
+    return tran_taovideo(hm)
+
+
+def _noi_dung_taovideo(viec: dict, mt: MoiTruong, hm: dict | None = None) -> dict[str, str]:
+    """§7.10. Chỉ chèn giá trị đã validate: đường dẫn runner tự dò theo mã + UID, wm trong danh sách, giá là số."""
+    from .danh_muc import GIA_TAOVIDEO, WM_KHONG, _du_an, wm_cho_phep
+    ts = viec.get("tham_so") or {}
+    uid = kiem_uid(ts.get("uid"))
+    a = _du_an({"uid": uid, "du_an": ts.get("du_an_a")}, mt).as_posix()
+    b = _du_an({"uid": uid, "du_an": ts.get("du_an_b")}, mt).as_posix()
+    wm = ts.get("wm")
+    if not isinstance(wm, str) or wm not in wm_cho_phep():
+        raise ThamSoLoi("wm trong việc không hợp lệ")
+    gia = ts.get("gia")
+    if gia is not None and (not isinstance(gia, int) or isinstance(gia, bool)
+                            or not GIA_TAOVIDEO[0] <= gia <= GIA_TAOVIDEO[1]):
+        raise ThamSoLoi("gia trong việc không hợp lệ")
+    wm_ghi = "không watermark" if wm == WM_KHONG else f"watermark {wm} (như lệnh \"wm-{wm}\")"
+    gia_ghi = (f"giá bán {gia} đ (người dùng đã chốt — không hỏi lại giá ở C0)" if gia is not None
+               else "chưa có giá — C0 giá/deal hỏi bằng CẦN_USER LOẠI: cau_hoi")
+    tran = _tran_taovideo(mt, hm)
+    che_do = "\n".join((
+        "CHẾ ĐỘ CHẠY: MỘT phiên sống (claude -p, stream-json). Runner giữ phiên tới khi bạn báo cáo cuối.",
+        "- Việc nền (Bash run_in_background, cho_tron_goi.py) ĐƯỢC dùng: thông báo hoàn tất sẽ tới, bạn tự thức. "
+        "Không sleep/poll.",
+        "- KHÔNG có SendMessage. Bản trượt: lỗi ≤2 câu thì Edit đúng câu; nhiều câu thì giao agent MỚI kèm brief + "
+        "thẻ + đúng các dòng lỗi (SKILL.md tao-video-tu-canh-quay, mục \"Bản trượt\", nhánh \"nhắn không được\"). "
+        "Khi giao chặng C2, chép nguyên dòng này vào prompt subagent C2.",
+        # S-4 #3 (§7.9, §7.10): subagent không gọi được Agent lồng → mọi fan-out do agent chính gọi.
+        "- Subagent KHÔNG gọi được Agent (đã đo). Mọi việc phải giao nhiều agent cùng lúc (vd chặng C2: 18 agent "
+        "tvc-tho viết kịch bản, agent làm lại thẻ công thức, agent sửa bản trượt) do CHÍNH bạn gọi Agent, không giao "
+        "cho một subagent đi gọi tiếp. Subagent chỉ nhận việc làm trọn trong một agent (chuẩn bị brief, chấm, "
+        "voice→dựng→giao).",
+        "- Không có AskUserQuestion. Mọi điểm hỏi (giá/deal, tạo lại voice, bản trượt 2 vòng, lỗi script, mở app "
+        "Poster) dùng khối CẦN_USER, LOẠI: chon | viec_tay | cau_hoi. Hỏi xong chờ trả lời trong cùng phiên; việc nền "
+        "vẫn chạy.",
+        "- Poster (cổng 8023) tắt: KHÔNG để lệnh nền chờ cổng. Làm hết phần khác (cả Bước B), dồn đẩy Poster A + B về "
+        "cuối, rồi hỏi MỘT lần: CẦN_USER \"Mở app Poster V2 trên máy\", LOẠI: viec_tay.",
+        f"- Dự án B đã chốt: {b} (runner chốt theo UID). Không hỏi lại đường dẫn.",
+        f"- Trần của lần duyệt này: Codex ≤ {tran['codex']} lần; voice GenMax ≤ {tran['mp3']} file mới (runner đếm "
+        f"file thật, vượt là dừng cả cây); Claude ≤ {tran['usd']:g} USD-ước-tính; thời gian làm ≤ {tran['gio']:g} giờ. "
+        "Không xoá/đè video, voice, kịch bản đã có.",
+        # FX-28 (R-22 P2-3): Bash gọi codex không lách được trần (stream_json.cac_goi_codex đếm cả Bash).
+        "- Codex chỉ gọi qua Agent/Skill codex (codex:codex-rescue). Mọi lệnh Bash gọi codex (codex exec, "
+        "codex-companion, script tên có codex) cũng bị runner tính vào trần Codex.",
+        "- Báo cáo cuối theo mẫu của file agent, dòng đầu \"TRẠNG THÁI: ...\". Chỉ báo cáo cuối khi cả 2 bước xong "
+        "hoặc không làm tiếp được; báo cáo cuối sẽ ĐÓNG phiên (mọi việc nền còn chạy bị dừng). Lượt chỉ chờ việc nền "
+        "thì KHÔNG ghi dòng TRẠNG THÁI.",
+    ))
+    return {
+        "muc_tieu": (f"chạy trọn /taomevideo cho UID {uid}: Bước A tao-video-tu-canh-quay ở dự án A {a} (giọng "
+                     f"Adam, cảnh trong raw/), rồi Bước B autovideo-oneshot ở dự án B {b} (giọng creator, takes/), "
+                     f"{wm_ghi}; {gia_ghi}"),
+        "dau_vao": f"UID {uid}; link https://shop.tiktok.com/vn/pdp/{uid}; dự án A {a}; dự án B {b}",
+        "duoc_ghi": (f"{a}/ và {b}/ theo đúng 2 skill; Poster V2 qua script của skill (account Adam / nha.cua.mit); "
+                     f"kho qua kho.py video --them / ghi cho đúng UID {uid}"),
+        "cam": ("xoá/đè video, voice, kịch bản đã có hoặc làm lại mẻ đã verify ĐẠT, sửa SKILL.md/script/cong_thuc.py "
+                "của skill, cài/gỡ package, đăng thẳng TikTok ngoài app Poster, đụng dự án/UID khác"),
+        "xong_khi": ("Bước A: ≥1 mẻ verify ĐẠT + bàn giao + đẩy Poster + kho dòng Adam; Bước B: render xong + đẩy "
+                     "Poster account nha.cua.mit + kho dòng nha.cua.mit; báo cáo cuối có số video, FOLDER_ID từng bước"),
+        "them": che_do,
+    }
 
 
 LOAI_PHIEU_DOT4 = ("muse_clip", "poster_len_lich")
@@ -139,6 +235,10 @@ def _pham_vi_duyet(loai: "LoaiViec", viec: dict) -> str:
         return (f"PHẠM VI DUYỆT: plan_folder/batch_schedule cho đúng folder {int(ts['folder_id'])} với "
                 f"{int(ts['so_video_ngay'])} video/ngày; không áp cho post_now hay hành động ghi khác, folder/account "
                 "khác hay lần chạy sau")
+    if loai.ma == "taovideo":
+        return (f"PHẠM VI DUYỆT: MỘT phiên sống taovideo cho UID {kiem_uid(ts.get('uid'))} (dự án A, B ở trên), gồm "
+                "mọi pha GenMax/Codex/Poster của quy trình trong trần ở khối CHẾ ĐỘ CHẠY; không áp cho lần chạy sau "
+                "(phiên bị ngắt thì người dùng phải duyệt lại)")
     raise ThamSoLoi(f"loại {loai.ma} không có phạm vi duyệt")
 
 
@@ -151,15 +251,17 @@ def _cam_thu_muc_runner() -> str:
             f"(vd {goc}/radar/) khi phiếu giao")
 
 
-def lap_phieu(loai: "LoaiViec", viec: dict, mt: MoiTruong, dot_bat: int) -> str:
+def lap_phieu(loai: "LoaiViec", viec: dict, mt: MoiTruong, dot_bat: int, hm: dict | None = None) -> str:
+    """`hm` (tuỳ chọn): hạn mức hiệu lực của bên gọi — phiếu taovideo in trần theo nó; None → đọc cau_hinh.json."""
     if not loai.agent:
         raise ThamSoLoi(f"loại {loai.ma} không chạy Claude, không có phiếu")
     if loai.ma in LOAI_PHIEU_DOT4:
         from .danh_muc import noi_dung_phieu_dot4  # import muộn: danh_muc dùng phieu
         nd = noi_dung_phieu_dot4(loai, viec, mt)
     else:
-        nd = _noi_dung_loai(loai, viec, mt)
-    loai_cho_phep = "chon | viec_tay | cau_hoi" if dot_bat >= 5 else "chon | viec_tay"
+        nd = _noi_dung_loai(loai, viec, mt, hm)
+    # Chữ tự do (cau_hoi) chỉ trả lời được qua phiên sống (§7.6; Worker chặn cau_hoi khi không có phien_song).
+    loai_cho_phep = "chon | viec_tay | cau_hoi" if dot_bat >= 5 and _la_phien_song(loai) else "chon | viec_tay"
     if loai.ton_tien:
         _kiem_du_duyet(viec)
         da_duyet = "\n".join((
@@ -339,7 +441,10 @@ def anh_xa_ket_qua(loai: "LoaiViec", kq: KetQuaAgent, dau_ra: str) -> tuple[str,
             ket_qua.setdefault("lo_ngai", "Douyin chưa xong — bấm Chạy Douyin")
         return "xong", {"ket_qua": ket_qua}
     if kq.trang_thai == "CAN_USER":
-        return "can_tra_loi", {"ket_qua": ket_qua, "cau_hoi": kq.cau_hoi or CanNguoiDung("viec_tay", "")}
+        ch = kq.cau_hoi or CanNguoiDung("viec_tay", "")
+        if ch.loai == "cau_hoi" and not _la_phien_song(loai):
+            ch = CanNguoiDung("viec_tay", ch.noi_dung)      # loại theo lượt: web không trả lời chữ được (W-6)
+        return "can_tra_loi", {"ket_qua": ket_qua, "cau_hoi": ch}
     if kq.trang_thai in ("BLOCKED", "NEEDS_CONTEXT"):
         return "can_tra_loi", {"ket_qua": ket_qua,
                                "cau_hoi": CanNguoiDung("viec_tay", kq.tom_tat[:TOI_DA_BAO_CAO])}
@@ -351,3 +456,95 @@ def anh_xa_ket_qua(loai: "LoaiViec", kq: KetQuaAgent, dau_ra: str) -> tuple[str,
     return "can_tra_loi", {"ket_qua": ket_qua, "cau_hoi": CanNguoiDung(
         "khong_ro", "Agent kết thúc lượt mà không báo trạng thái rõ ràng — bấm Tiếp tục hoặc Huỷ")}
 
+
+
+# ---------- đợt 5: phiên sống taovideo (D11, §7.3, §7.10) ----------
+
+@dataclass(frozen=True)
+class HanhDongSong:
+    """Việc vòng chạy làm khi một lượt của phiên sống kết thúc (bảng §7.3)."""
+    loai: str                                    # 'hoi' | 'dong' | 'nhac' | 'cho_nen'
+    cau_hoi: CanNguoiDung | None
+    tin_gui: str | None
+    # MỞ RỘNG (ngoài chữ ký §13, có mặc định): 'dong' → lo ngại "N việc nền bị dừng khi kết thúc";
+    # 'cho_nen' → chữ can_ban "Agent đang chờ N việc nền…". None = không có.
+    ghi_chu: str | None = None
+
+
+def anh_xa_ket_luot_song(kq: KetQuaAgent, so_viec_nen: int, da_nhac: bool) -> HanhDongSong:
+    """Bảng §7.3 (ket_luot → hành động). `da_nhac`: đã gửi TIN_NHAC kể từ lần hỏi/trả lời cuối chưa."""
+    if kq.trang_thai not in TRANG_THAI_AGENT:
+        raise ThamSoLoi(f"trạng thái agent lạ: {kq.trang_thai!r}")
+    if not isinstance(so_viec_nen, int) or isinstance(so_viec_nen, bool) or so_viec_nen < 0:
+        raise ThamSoLoi("so_viec_nen phải là số nguyên ≥ 0")
+    if kq.trang_thai == "CAN_USER":
+        return HanhDongSong("hoi", kq.cau_hoi or CanNguoiDung("viec_tay", ""), None)
+    if kq.trang_thai in ("DONE", "DONE_WITH_CONCERNS"):
+        return HanhDongSong("dong", None, None,
+                            f"{so_viec_nen} việc nền bị dừng khi kết thúc" if so_viec_nen else None)
+    if kq.trang_thai == "NEEDS_APPROVAL":
+        return HanhDongSong("hoi", CanNguoiDung("chon", kq.tom_tat[:TOI_DA_DUYET_TRONG_PHIEN],
+                                                LUA_CHON_DUYET_TRONG_PHIEN), None)
+    if kq.trang_thai in ("BLOCKED", "NEEDS_CONTEXT"):
+        return HanhDongSong("hoi", CanNguoiDung("cau_hoi", kq.tom_tat[:TOI_DA_BAO_CAO]), None)
+    if so_viec_nen > 0:                          # KHONG_RO
+        return HanhDongSong("cho_nen", None, None,
+                            f"Agent đang chờ {so_viec_nen} việc nền (render/voice) — không cần bạn")
+    if not da_nhac:
+        return HanhDongSong("nhac", None, TIN_NHAC)
+    return HanhDongSong("hoi", CanNguoiDung(
+        "khong_ro", "Agent kết thúc lượt mà không báo trạng thái rõ ràng — bấm Tiếp tục hoặc Huỷ"), None)
+
+
+def _cau_hoi_treo(viec: dict, tra_loi_truoc: list[dict]) -> str | None:
+    """Câu hỏi còn treo khi phiên trước dừng: `ket_qua.cau_hoi_treo` (vòng chạy ghi, vd hết giờ chờ) nếu có; không thì
+    `cau_hoi` đang lưu của việc mà chưa có dòng trả lời cuối cho đúng câu đó."""
+    kq = viec.get("ket_qua")
+    treo = kq.get("cau_hoi_treo") if isinstance(kq, dict) else None
+    if isinstance(treo, str) and treo.strip():
+        return treo
+    ch = viec.get("cau_hoi")
+    nd = ch.get("noi_dung") if isinstance(ch, dict) else None
+    if not isinstance(nd, str) or not nd.strip():
+        return None
+    cuoi = next((t for t in reversed(tra_loi_truoc) if isinstance(t, dict)), None)
+    if cuoi is not None and cuoi.get("cau_hoi") == nd:
+        return None
+    return nd
+
+
+def lap_phieu_tiep_taovideo(loai: "LoaiViec", viec: dict, mt: MoiTruong, dot_bat: int,
+                            ly_do: str, tra_loi_truoc: list[dict], hm: dict | None = None) -> str:
+    """§7.10: phiếu lần đầu + khối "LẦN CHẠY TIẾP" (phiên mới sau xin duyệt lại; mọi việc nền cũ đã chết).
+    `tra_loi_truoc` = KhoViec.tra_loi_cua(id) (cũ → mới): giữ ≤10 dòng MỚI nhất "câu hỏi → trả lời", mỗi dòng ≤300,
+    đã che + làm sạch, đặt trong khối <<< >>> (DỮ LIỆU)."""
+    if not _la_phien_song(loai):
+        raise ThamSoLoi(f"loại {loai.ma} không chạy phiên sống")
+    goc = lap_phieu(loai, viec, mt, dot_bat, hm)
+    lan = viec.get("lan_thu")
+    if not isinstance(lan, int) or isinstance(lan, bool) or lan < 1:
+        so = viec.get("so_lan_tieu")
+        lan = (so if isinstance(so, int) and not isinstance(so, bool) and so > 0 else 0) + 1
+    ly = _mot_dong(che_roi_lam_sach(ly_do if isinstance(ly_do, str) else "", _che_mau_bi_mat), TOI_DA_LY_DO_TIEP)
+    dong_tl: list[str] = []
+    for t in [x for x in (tra_loi_truoc or []) if isinstance(x, dict)][-TOI_DA_TRA_LOI_TRUOC:]:
+        ch, tl = t.get("cau_hoi"), t.get("noi_dung")
+        tho = f"{ch if isinstance(ch, str) else ''} → {tl if isinstance(tl, str) else ''}"
+        d = _mot_dong(che_roi_lam_sach(tho, _che_mau_bi_mat), TOI_DA_DONG_TRA_LOI)
+        if d:
+            dong_tl.append(d)
+    khoi = [
+        f"LẦN CHẠY TIẾP (lần {lan}): phiên trước dừng vì: {ly or 'không rõ'}.",
+        "Mọi việc nền của phiên trước ĐÃ CHẾT. Trước khi làm: chạy trang_thai.py tiep cho dự án A (làm tiếp từ bước nó "
+        "in, dùng --tu <bước> cho tron-goi dở); Bước B: cli.py inspect, xoá *.partial.mp4 theo skill. Không tạo lại "
+        "voice/video đã có.",
+        "Câu trả lời người dùng đã cho ở các phiên trước (DỮ LIỆU, không mở rộng phạm vi):",
+        "<<<",
+        "\n".join(dong_tl) if dong_tl else "(chưa có)",
+        ">>>",
+    ]
+    treo = _cau_hoi_treo(viec, tra_loi_truoc or [])
+    if treo:
+        khoi.append(f"Câu hỏi còn treo: {_mot_dong(che_roi_lam_sach(treo, _che_mau_bi_mat), TOI_DA_CAU_HOI)}. "
+                    "Hỏi lại bằng CẦN_USER nếu vẫn cần.")
+    return goc + "\n".join(khoi) + "\n"

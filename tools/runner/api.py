@@ -19,6 +19,30 @@ Hai lớp kiểm cho mọi request:
   + `ket_qua.ly_do_duyet_lai` (§5.2) cho lượt resume; `GET /suc-khoe` có `chan_ton_tien` (bool).
 - `GET /viec/<id>` trả `tham_so_chuan` (chuỗi JSON chuẩn) để Worker ký lời duyệt.
 
+Đợt 5 (D11, B-4 — §7.6, §8.1): `taovideo` chạy bằng phiên sống.
+- `viec` trả ra thêm `phien_song` (bool, do `co_phien_song(id)` của vòng chạy) và `co_the_xin_duyet_lai` (bool; False
+  khi còn phiên sống). `xin-duyet-lai` khi còn phiên sống → 409.
+- `POST /viec/<id>/tra-loi` với `taovideo`: body `{tra_loi, boi, da_xac_nhan_mat_khau?}` (cờ do Worker đặt sau khi
+  kiểm mật khẩu; phải là bool). `kiem_tra_loi_dot5`: chon/cau_hoi cần cờ = true (thiếu → 403); viec_tay/khong_ro chỉ
+  nút. Hợp lệ → `tra_loi_song(id, boi, gia_tri)` (BoChay, A-5) xếp tin vào stdin, không tiêu lời duyệt. Không có phiên
+  → 409 `LOI_PHIEN_DA_DONG`. Loại tốn tiền khác giữ 409 (A-D9b).
+- `POST /viec` taovideo `du_an_b:"tu_tim"` không chốt được → 400 `{loi, ung_vien_b:[{ma, ten, co_takes}]}`.
+
+Đợt 6 — sửa video (D10, docs/sua-video.md §8.1; mở khi dot_bat hiệu lực ≥ dot của sua_video = 4, ngược lại 404):
+- `GET /sua-video/<uid>` → `{videos: [VideoSua bỏ duong_dan + viec_mo]}`;
+- `GET /sua-video/<uid>/<ma_video>` → chi tiết + phụ đề + cảnh + lịch sử (video không sửa được vẫn 200, kèm ly_do);
+- `GET /sua-video/<uid>/<ma_video>/ung-vien?seg=<0–199>` → `{ung_vien}`;
+- `POST /sua-video/<uid>/<ma_video>/ban-sua` (ký) → 201 `{ban_sua, du_an, tom_tat}` · 400 · 404 · 409 · 413.
+`sua_luc` là MILI GIÂY (st_mtime_ns // 1_000_000, như sua_video.py). Việc `sua_video` tạo qua `POST /viec` có sẵn:
+api kiểm ban_sua có trong bảng, đúng video, sua_luc còn khớp; `hoan_tac_sua` chỉ khi viec_goc là lần sửa ĐÃ xong gần
+nhất chưa hoàn tác. Hai loại không bao giờ cùng mở trên một ma_video (409 `trung`).
+FX-22 (§7.2a): sua_video mà ban_sua có `phu_de` → `chay-lai`/`chay-tiep` 409 LOI_SUA_CHU_CAN_MAT_KHAU, `viec` có
+`co_the_chay_lai`/`co_the_chay_tiep` = false + `can_luu_lai_mat_khau` = true. Việc sửa video `loi` do mã thoát 2/5:
+`ket_qua` thêm {ma_thoat, kiem_tay, do_dang, chua_doi_gi, bo_qua, ly_do_sua, canh_bao_sua, thong_diep}.
+FX-24: `kiem_tay` = true → `co_the_chay_tiep` = false và `chay-tiep` 409 `{loi: thong_diep, kiem_tay: true}`.
+`tra-loi` phiên sống cần `ma_cau_hoi` (^q[0-9a-f]{12}$) bằng `cau_hoi.ma` đang lưu; thiếu/sai/lệch → 409
+LOI_CAU_HOI_DA_DOI; đúng → `tra_loi_song(id, boi, gia_tri, ma_cau_hoi)`. Việc khác bỏ qua `ma_cau_hoi`.
+
 Mọi lỗi bất ngờ trong handler → 500 JSON (không lộ chi tiết), log đủ traceback; server vẫn sống.
 """
 from __future__ import annotations
@@ -38,13 +62,15 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from . import chu_ky
-from .danh_muc import DANH_MUC, LoaiViec, ds_folder_poster, lay_loai, tham_so_chuan
+from . import sua_video as sv
+from .danh_muc import DANH_MUC, LoaiViec, ds_folder_poster, lay_loai, tham_so_chuan, video_cua_tham_so
 from .du_an import ds_du_an
-from .han_muc import HAN_MUC_TRAN, kiem_han_muc
-from .kho_viec import KhoViec
-from .kieu import (DANG_MO, TRANG_THAI, CanNguoiDung, MoiTruong, SaiTrangThai, ThamSoLoi, TrungViec,
-                   VuotHanMuc, gio_vn)
-from .phieu import GIA_TRI_KHONG_RO, GIA_TRI_VIEC_TAY
+from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, kiem_han_muc
+from .kho_viec import RE_BAN_SUA, KhoViec
+from .danh_muc import KHOA_ANH_CHUP_KHO, LOAI_PHIEN_SONG, anh_chup_kho_taovideo
+from .kieu import (DANG_MO, RE_MA_CAU_HOI, TRANG_THAI, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai, ThamSoLoi,
+                   TrungViec, VuotHanMuc, gio_vn)
+from .phieu import GIA_TRI_KHONG_RO, GIA_TRI_VIEC_TAY, lam_sach_chu
 
 log = logging.getLogger(__name__)
 
@@ -80,10 +106,30 @@ LY_DO_LOI_KHONG_RO = "lỗi không rõ"
 # D9: việc tốn tiền ở trạng thái này được xin duyệt lại (→ cho_duyet, xoá lời duyệt cũ).
 TRANG_THAI_XIN_DUYET_LAI = ("loi", "can_tra_loi")
 _RE_ROUTE_DU_AN = re.compile(r"^/du-an/(\d{19})$", re.ASCII)
+# Đợt 6: sửa video (§8.1). GET: danh sách / chi tiết / ứng viên; POST: ban-sua.
+_RE_ROUTE_SUA_GET = re.compile(r"^/sua-video/(\d{19})(?:/([0-9a-f]{16})(/ung-vien)?)?$", re.ASCII)
+_RE_ROUTE_SUA_POST = re.compile(r"^/sua-video/(\d{19})/([0-9a-f]{16})/ban-sua$", re.ASCII)
+_RE_SEG = re.compile(r"^\d{1,3}$", re.ASCII)
+SEG_TOI_DA = 199                   # khớp Worker SUA_SEG_TOI_DA
+# Loại chạy tiếp được bằng CÙNG id việc (không cần phiên Claude): bộ chuyển đổi đọc nhật ký _sua/<id>.json để làm
+# nốt/hoàn nguyên (§6.1 mã thoát 5, §6.3). Miễn phí; vẫn chặn khi tiến trình cũ có thể còn sống.
+LOAI_CHAY_TIEP_NHAT_KY = LOAI_SUA_VIDEO
+TRANG_THAI_CHAY_LAI = ("loi", "huy")
+LOI_KHONG_THAY_VIDEO = "Không thấy video này (có thể đã bị xoá hoặc đổi tên)"
 _RE_UID = re.compile(r"^\d{19}$", re.ASCII)
 _RE_SO = re.compile(r"^\d{1,9}$", re.ASCII)
 _RE_BOI = re.compile(r"^[A-Za-z0-9_.@-]{1,64}$", re.ASCII)
 _RE_DIEU_KHIEN = re.compile("[\x00-\x1f\x7f]")
+# Đợt 5: chữ tự do trả lời trong phiên sống. Khớp Worker TRA_LOI_CHU_TOI_DA (code point = len() Python) và
+# RE_DIEU_KHIEN_TRU_XUONG_DONG (cấm ký tự điều khiển trừ \n).
+TRA_LOI_CHU_TOI_DA = 1000
+_RE_DIEU_KHIEN_TRU_XUONG_DONG = re.compile("[\x00-\x09\x0b-\x1f\x7f]")
+LOI_PHIEN_DA_DONG = "Phiên đã đóng — dùng Xin duyệt lại"
+LOI_CAN_MAT_KHAU_CHU = "Trả lời bằng chữ cần nhập mật khẩu"
+LOI_CAN_MAT_KHAU_CHON = "Chọn trong phiên đang chạy cần nhập mật khẩu"
+LOI_XIN_DUYET_LAI_KHI_SONG = "Việc đang có phiên sống — trả lời câu hỏi hoặc Huỷ trước khi xin duyệt lại"
+# FX-24 (§7.6, S-4 #4): trả lời phiên sống thiếu / sai dạng / lệch mã câu hỏi đang lưu.
+LOI_CAU_HOI_DA_DOI = "Câu hỏi đã đổi — tải lại để xem câu mới"
 
 
 class LoiApi(Exception):
@@ -129,6 +175,47 @@ def kiem_tra_loi_dot3(cau_hoi: CanNguoiDung, tra_loi: object) -> str:
             raise ThamSoLoi(f"không rõ chỉ nhận {GIA_TRI_KHONG_RO!r}")
         return gt
     raise ThamSoLoi("câu hỏi này cần chữ tự do — chưa mở ở đợt 3 (chỉ trả lời bằng nút)")
+
+
+def kiem_tra_loi_dot5(cau_hoi: CanNguoiDung, tra_loi: object, da_xac_nhan: bool, ton_tien: bool) -> str:
+    """§7.6 (D11). Trả giá trị đưa vào tin stdin; sai hình dạng → ThamSoLoi (400); thiếu mật khẩu → LoiApi 403.
+    - chon: đúng một lựa chọn đã lưu; việc tốn tiền cần `da_xac_nhan` (lựa chọn có thể cho tiêu thêm tiền trong trần);
+    - cau_hoi: chữ 1–1000 ký tự (không ký tự điều khiển trừ xuống dòng, không surrogate lẻ), luôn cần `da_xac_nhan`
+      (D3); trả bản đã lam_sach_chu (lưu vào tra_loi và đưa vào phiếu lần chạy tiếp);
+    - viec_tay: "da_lam_xong"; khong_ro: "tiep_tuc" — chỉ nút, không cần mật khẩu."""
+    if not isinstance(da_xac_nhan, bool):
+        raise ThamSoLoi("da_xac_nhan_mat_khau phải là true/false")
+    if cau_hoi.loai == "cau_hoi":
+        if not isinstance(tra_loi, str) or len(tra_loi) > TRA_LOI_CHU_TOI_DA:
+            raise ThamSoLoi(f"tra_loi phải là chữ 1–{TRA_LOI_CHU_TOI_DA} ký tự")
+        if _RE_DIEU_KHIEN_TRU_XUONG_DONG.search(tra_loi):
+            raise ThamSoLoi("tra_loi chứa ký tự điều khiển")
+        try:
+            tra_loi.encode("utf-8")
+        except UnicodeEncodeError as e:
+            raise ThamSoLoi("tra_loi có ký tự Unicode hỏng") from e
+        sach = lam_sach_chu(tra_loi, TRA_LOI_CHU_TOI_DA)
+        if not sach:
+            raise ThamSoLoi("tra_loi rỗng")
+        if not da_xac_nhan:
+            raise LoiApi(403, LOI_CAN_MAT_KHAU_CHU)
+        return sach
+    gt = kiem_gia_tri_nut(tra_loi)
+    if cau_hoi.loai == "chon":
+        if gt not in cau_hoi.lua_chon:
+            raise ThamSoLoi("trả lời không khớp lựa chọn nào")
+        if ton_tien and not da_xac_nhan:
+            raise LoiApi(403, LOI_CAN_MAT_KHAU_CHON)
+        return gt
+    if cau_hoi.loai == "viec_tay":
+        if gt != GIA_TRI_VIEC_TAY:
+            raise ThamSoLoi(f"việc tay chỉ nhận {GIA_TRI_VIEC_TAY!r}")
+        return gt
+    if cau_hoi.loai == "khong_ro":
+        if gt != GIA_TRI_KHONG_RO:
+            raise ThamSoLoi(f"không rõ chỉ nhận {GIA_TRI_KHONG_RO!r}")
+        return gt
+    raise ThamSoLoi(f"loại câu hỏi lạ: {cau_hoi.loai!r}")
 
 
 def kiem_body_duyet(body: dict, bay_gio: datetime) -> tuple[str, str, str]:
@@ -206,15 +293,27 @@ def bi_tu_choi_gon(ds: object, che: Callable[[str], str] | None = None) -> list[
     return ra
 
 
-def viec_ra(v: dict, chi_tiet: bool = True, che: Callable[[str], str] | None = None) -> dict:
-    """Việc trả ra web (§8.1): bỏ trường nhạy cảm, thêm co_session / co_the_chay_tiep.
+def viec_ra(v: dict, chi_tiet: bool = True, che: Callable[[str], str] | None = None,
+            phien_song: bool = False, sua_chu: bool = False) -> dict:
+    """Việc trả ra web (§8.1): bỏ trường nhạy cảm, thêm co_session / co_the_chay_tiep / co_the_chay_lai /
+    co_the_xin_duyet_lai / can_luu_lai_mat_khau / phien_song (đợt 5: vòng chạy đang giữ phiên Claude sống của việc —
+    handler hỏi `co_phien_song`).
 
+    `sua_chu` (FX-22, §7.2a): việc sua_video mà bản sửa có đổi chữ phụ đề (handler tra bảng ban_sua) → không chạy
+    lại / chạy tiếp bằng nút, phải lưu lại qua màn Sửa video kèm mật khẩu.
+    Việc sửa video ở `loi` do bộ chuyển đổi thoát mã 2/5: `ket_qua` thêm kiem_tay/do_dang/chua_doi_gi/bo_qua/
+    thong_diep… (sua_video.doc_ket_thuc_loi, suy từ `loi`, không lưu DB).
     `ket_qua.bi_tu_choi`: danh sách (chi_tiet=False) bỏ hẳn; chi tiết → bản gọn (bi_tu_choi_gon).
     `che` (R-06 P3-3): che mọi chuỗi trả ra (loi, ghi_chu, can_ban, cau_hoi, ket_qua…) — dữ liệu cũ trong DB
     có thể chưa che. None = không che (giữ chữ ký cũ). Không sửa dict `v` gốc.
     """
     d = {k: x for k, x in v.items() if k not in TRUONG_AN}
     kq = d.get("ket_qua")
+    if v.get("trang_thai") == "loi":
+        them = sv.doc_ket_thuc_loi(v.get("loai"), v.get("loi"))
+        if them is not None:
+            kq = {**(kq if isinstance(kq, dict) else {}), **them}
+            d["ket_qua"] = kq
     bi_tu_choi = None
     if isinstance(kq, dict) and "bi_tu_choi" in kq:
         kq = dict(kq)
@@ -225,7 +324,11 @@ def viec_ra(v: dict, chi_tiet: bool = True, che: Callable[[str], str] | None = N
     if bi_tu_choi is not None and chi_tiet:
         d["ket_qua"]["bi_tu_choi"] = bi_tu_choi_gon(bi_tu_choi, che)
     d["co_session"] = bool(v.get("session_id"))
-    d["co_the_chay_tiep"] = co_the_chay_tiep(v)
+    d["co_the_chay_tiep"] = co_the_chay_tiep(v, sua_chu)
+    d["co_the_chay_lai"] = v.get("trang_thai") in TRANG_THAI_CHAY_LAI and not sua_chu
+    d["can_luu_lai_mat_khau"] = bool(sua_chu)
+    d["phien_song"] = bool(phien_song)
+    d["co_the_xin_duyet_lai"] = co_the_xin_duyet_lai(v, bool(phien_song))
     return d
 
 
@@ -241,10 +344,71 @@ def la_ton_tien(v: dict) -> bool:
     return loai is not None and loai.ton_tien
 
 
-def co_the_chay_tiep(v: dict) -> bool:
-    """D9: việc tốn tiền KHÔNG chạy tiếp bằng lời duyệt cũ — phải xin duyệt lại (POST …/xin-duyet-lai)."""
-    return (v.get("trang_thai") == "loi" and int(v.get("phien_da_tao") or 0) == 1
-            and int(v.get("so_lan_claude") or 0) > 0 and not tien_trinh_cu_con_song(v) and not la_ton_tien(v))
+def thong_diep_kiem_tay(v: dict) -> str | None:
+    """FX-24 (từ FX-22): việc sửa video `loi` vì bộ chuyển đổi CỐ Ý bỏ qua mục việc khác đã đổi (`kiem_tay`) → thông
+    điệp cho người dùng; chạy tiếp không giúp được. Suy từ `loi` bằng sv.doc_ket_thuc_loi (như viec_ra), hoặc
+    `ket_qua.kiem_tay` đã lưu. Không phải trường hợp đó → None."""
+    if v.get("loai") not in LOAI_SUA_VIDEO or v.get("trang_thai") != "loi":
+        return None
+    them = sv.doc_ket_thuc_loi(v.get("loai"), v.get("loi"))
+    if them is not None and them.get("kiem_tay") is True:
+        return str(them.get("thong_diep") or "Cần kiểm tay — chạy tiếp không giúp được")
+    kq = v.get("ket_qua")
+    if isinstance(kq, dict) and kq.get("kiem_tay") is True:
+        td = kq.get("thong_diep")
+        return td if isinstance(td, str) and td else "Cần kiểm tay — chạy tiếp không giúp được"
+    return None
+
+
+def co_the_chay_tiep(v: dict, sua_chu: bool = False) -> bool:
+    """D9: việc tốn tiền KHÔNG chạy tiếp bằng lời duyệt cũ — phải xin duyệt lại (POST …/xin-duyet-lai).
+    Việc Claude: cần phiên đã tạo + đã gọi Claude. Loại sửa video (LOAI_CHAY_TIEP_NHAT_KY): chạy tiếp cùng id, trừ
+    bản sửa có đổi chữ phụ đề (`sua_chu`, FX-22 §7.2a: phải lưu lại kèm mật khẩu) và việc cần kiểm tay
+    (thong_diep_kiem_tay, FX-24)."""
+    if v.get("trang_thai") != "loi" or tien_trinh_cu_con_song(v) or la_ton_tien(v) or sua_chu:
+        return False
+    if thong_diep_kiem_tay(v) is not None:
+        return False
+    if v.get("loai") in LOAI_CHAY_TIEP_NHAT_KY:
+        return True
+    return int(v.get("phien_da_tao") or 0) == 1 and int(v.get("so_lan_claude") or 0) > 0
+
+
+def co_the_xin_duyet_lai(v: dict, phien_song: bool = False) -> bool:
+    """D9 + §7.4: việc tốn tiền ở loi/can_tra_loi, tiến trình cũ chắc chắn đã chết, và KHÔNG còn phiên sống."""
+    return (la_ton_tien(v) and v.get("trang_thai") in TRANG_THAI_XIN_DUYET_LAI and not tien_trinh_cu_con_song(v)
+            and not phien_song)
+
+
+def video_sua_ra(v: "sv.VideoSua", viec_mo: str | None) -> dict:
+    """VideoSua trả ra web (§8.1): BỎ duong_dan (không lộ đường dẫn máy nhà), thêm viec_mo."""
+    return {"ma_video": v.ma_video, "du_an": v.du_an, "goc": v.goc, "thu_muc": v.thu_muc, "ten": v.ten,
+            "sua_luc": v.sua_luc, "luong": v.luong, "sua_duoc": v.sua_duoc, "ly_do": v.ly_do, "viec_mo": viec_mo}
+
+
+def lich_su_sua(ds: list[dict], viec_mo: str | None) -> list[dict]:
+    """Lịch sử sửa/hoàn tác của MỘT video, `ds` mới → cũ. hoan_tac_duoc: đúng lần sua_video ĐÃ xong gần nhất, chưa
+    có hoan_tac_sua xong nào trỏ vào nó, và video không có việc mở."""
+    co_the = lan_sua_hoan_tac_duoc(ds)
+    ra = []
+    for v in ds:
+        ts = v.get("tham_so") if isinstance(v.get("tham_so"), dict) else {}
+        vg = ts.get("viec_goc") if v.get("loai") == "hoan_tac_sua" else None
+        ra.append({"viec": v.get("id"), "loai": v.get("loai"), "trang_thai": v.get("trang_thai"),
+                   "luc": v.get("tao_luc"), "boi": v.get("tao_boi"), "viec_goc": vg if isinstance(vg, str) else None,
+                   "hoan_tac_duoc": viec_mo is None and v.get("id") == co_the})
+    return ra
+
+
+def lan_sua_hoan_tac_duoc(ds: list[dict]) -> str | None:
+    """id lần sua_video xong gần nhất (ds mới → cũ) nếu chưa bị hoàn tác xong; không có → None."""
+    gan_nhat = next((v for v in ds if v.get("loai") == "sua_video" and v.get("trang_thai") == "xong"), None)
+    if gan_nhat is None:
+        return None
+    da_hoan = any(v.get("loai") == "hoan_tac_sua" and v.get("trang_thai") == "xong"
+                  and isinstance(v.get("tham_so"), dict) and v["tham_so"].get("viec_goc") == gan_nhat.get("id")
+                  for v in ds)
+    return None if da_hoan else gan_nhat.get("id")
 
 
 def _uoc_tinh_genmax_hop_le(v: dict) -> bool:
@@ -307,18 +471,38 @@ def _phien_ban() -> str:
 def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict, canh_bao: list[str],
                 bao_huy: Callable[[str], None], doc_log: Callable[[str, int], dict],
                 trang_thai_lan: Callable[[], dict],
-                che: Callable[[str], str] | None = None) -> type[BaseHTTPRequestHandler]:
+                che: Callable[[str], str] | None = None, *,
+                tra_loi_song: Callable[[str, str, str, str], dict] | None = None,
+                co_phien_song: Callable[[str], bool] = lambda _id: False) -> type[BaseHTTPRequestHandler]:
     """Tạo lớp handler gắn sẵn phụ thuộc. Dùng với ThreadingHTTPServer(("127.0.0.1", cong), H).
 
     `che` (R-06 P3-3): hàm che bí mật áp lên mọi văn bản việc trả ra web (viec_ra, su_kien, tra_loi).
-    None = không che (giữ tương thích chữ ký cũ); runner thật luôn truyền bộ che."""
+    None = không che (giữ tương thích chữ ký cũ); runner thật luôn truyền bộ che.
+    Đợt 5 (A-5 nối, FX-24/FX-26): `tra_loi_song(id, boi, gia_tri, ma_cau_hoi) -> viec` xếp câu trả lời vào stdin phiên
+    sống (ném KhongCoPhien / SaiTrangThai — cả khi mã lệch); `co_phien_song(id)` = vòng chạy đang giữ phiên sống của
+    việc. Thiếu → mọi trả lời taovideo 409."""
     if not isinstance(khoa, str) or len(khoa) < 16:
         raise ValueError("khoá runner phải là chuỗi ≥16 ký tự")
     khoa_b = khoa.encode("utf-8")
     khoa_ghi = threading.Lock()     # tuần tự hoá mọi thao tác ghi qua API (hạn mức + tạo, trả lời + chuyển)
 
+    def _phien_song(v: dict) -> bool:
+        return v.get("loai") in LOAI_PHIEN_SONG and bool(co_phien_song(v["id"]))
+
+    def _sua_chu(v: dict) -> bool:
+        """FX-22 (§7.2a): việc sua_video ở loi/huy mà bản sửa có đổi chữ phụ đề. Mã ban_sua sai dạng / dòng đã bị
+        dọn → False (chạy lại vẫn bị _kiem_sua_video chặn 400 vì không có bản sửa)."""
+        if v.get("loai") != "sua_video" or v.get("trang_thai") not in TRANG_THAI_CHAY_LAI:
+            return False
+        ts = v.get("tham_so")
+        bs = ts.get("ban_sua") if isinstance(ts, dict) else None
+        if not isinstance(bs, str) or not RE_BAN_SUA.fullmatch(bs):
+            return False
+        dong = kho.lay_ban_sua(bs)
+        return dong is not None and sv.co_sua_chu(dong.get("noi_dung"))
+
     def _ra(v: dict, chi_tiet: bool = True) -> dict:
-        return viec_ra(v, chi_tiet, che)
+        return viec_ra(v, chi_tiet, che, _phien_song(v), _sua_chu(v))
 
     def _che_ds(ds: list) -> list:
         return ds if che is None else che_sau(ds, che)
@@ -348,15 +532,65 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             return "can_tra_loi", buoc, dk
         return tt, buoc, None    # None = sạch; 'ban' = đợi, vòng chạy thử lại
 
+    # ----- sửa video (đợt 6) -----
+    def _ds_viec_sua(ma: str) -> list[dict]:
+        """Việc sua_video/hoan_tac_sua của một video, mới → cũ (khoá chống trùng của cả hai loại = ma_video)."""
+        return [v for v in kho.ds(None, khoa=ma, gioi_han=GIOI_HAN_TOI_DA)
+                if v.get("loai") in LOAI_SUA_VIDEO and isinstance(v.get("tham_so"), dict)
+                and v["tham_so"].get("ma_video") == ma]
+
+    def _kiem_sua_video(loai: LoaiViec, ts: dict, tru_id: str | None = None) -> None:
+        """Gọi trong khoa_ghi trước khi tạo/chạy tiếp việc sửa video (cần KhoViec nên không nằm ở danh_muc):
+        - không có việc MỞ của loại kia trên cùng ma_video (cùng loại: chỉ mục viec_dang_mo) → TrungViec (409);
+        - tạo mới (tru_id None): sua_video cần ban_sua có trong bảng, đúng uid/du_an/ma_video, sua_luc còn khớp video
+          (lệch → 409, không dựng lại mù); hoan_tac_sua cần viec_goc = lần sửa xong gần nhất chưa hoàn tác."""
+        if loai.ma not in LOAI_SUA_VIDEO:
+            return
+        ma = ts.get("ma_video")
+        ds = _ds_viec_sua(ma) if isinstance(ma, str) else []
+        for v in ds:
+            if v["loai"] != loai.ma and v["trang_thai"] in DANG_MO and v["id"] != tru_id:
+                raise TrungViec(v)
+        if tru_id is not None:
+            return
+        dinh_danh = (ts.get("uid"), ts.get("du_an"), ma)
+        if loai.ma == "sua_video":
+            bs = kho.lay_ban_sua(ts.get("ban_sua"))
+            if bs is None or (bs["uid"], bs["du_an"], bs["ma_video"]) != dinh_danh:
+                raise ThamSoLoi("bản sửa không có hoặc không thuộc video này — mở lại màn sửa và lưu lại")
+            _, video = video_cua_tham_so(ts, mt)
+            if not isinstance(bs["noi_dung"], dict) or bs["noi_dung"].get("sua_luc") != video.sua_luc:
+                raise LoiApi(409, "Video đã đổi từ lúc bạn sửa — mở lại video rồi sửa lại")
+            return
+        goc = kho.lay(ts.get("viec_goc"))
+        ts_goc = goc.get("tham_so") if goc and isinstance(goc.get("tham_so"), dict) else {}
+        if (goc is None or goc.get("loai") != "sua_video" or goc.get("trang_thai") != "xong"
+                or (ts_goc.get("uid"), ts_goc.get("du_an"), ts_goc.get("ma_video")) != dinh_danh):
+            raise ThamSoLoi("viec_goc phải là việc sửa video đã xong của chính video này")
+        if lan_sua_hoan_tac_duoc(ds) != goc["id"]:
+            raise ThamSoLoi("Chỉ hoàn tác được lần sửa gần nhất chưa hoàn tác")
+
     def _tao_viec(loai: LoaiViec, ts_tho: dict, boi: str, chay_lai_tu: str | None = None) -> dict:
         ts = loai.kiem_tham_so(ts_tho, mt)        # chỉ gọi trên input thô (P3-2)
         khoa_chong_trung = loai.tinh_khoa(ts)
         with khoa_ghi:
+            _kiem_sua_video(loai, ts)
             kiem_han_muc(kho, loai.ma, ts, hm, "tao", boi)
             tt, buoc, cau_hoi = _trang_thai_dau(loai, ts)
             sid = str(uuid.uuid4()) if loai.agent else None
-            return kho.tao(loai.ma, khoa_chong_trung, ts, loai.lan_chay, tt, boi, buoc=buoc, cau_hoi=cau_hoi,
-                           session_id=sid, chay_lai_tu=chay_lai_tu)
+            # FX-29 (§7.8): ảnh chụp dòng kho Poster lúc tạo việc (ts đã chốt du_an_b) — đối soát đòi dòng MỚI so với nó
+            anh = anh_chup_kho_taovideo(ts, mt) if loai.ma == "taovideo" else None
+            v = kho.tao(loai.ma, khoa_chong_trung, ts, loai.lan_chay, tt, boi, buoc=buoc, cau_hoi=cau_hoi,
+                        session_id=sid, chay_lai_tu=chay_lai_tu)
+            if anh is None:
+                return v
+            try:
+                return kho.chuyen(v["id"], [tt], tt, boi, "ảnh chụp kho lúc tạo việc",
+                                  ket_qua={KHOA_ANH_CHUP_KHO: anh})
+            except SaiTrangThai as e:
+                # việc vừa tạo đã đổi trạng thái (huỷ ngay) — không có ảnh chụp thì đối soát dựa vào mp4 mới
+                log.warning("việc %s: không ghi được ảnh chụp kho lúc tạo (%s)", v["id"], e)
+                return kho.lay(v["id"]) or v
 
     # ----- GET -----
     def g_suc_khoe(_q) -> tuple[int, dict]:
@@ -431,7 +665,93 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             ds = ds_folder_poster(mt)
         except ThamSoLoi as e:
             raise LoiApi(502, str(e)) from e
-        return 200, {"folders": ds}
+        # B-L1 (§4.9): duong_dan chỉ dùng nội bộ (_dk_poster_len_lich) — không trả đường dẫn ổ máy nhà ra web.
+        return 200, {"folders": [{"id": f["id"], "ten": f["ten"]} for f in ds]}
+
+    # ----- sửa video (đợt 6, §8.1) -----
+    def _sua_mo() -> None:
+        if DANH_MUC["sua_video"].dot > dot_bat_hieu_luc(hm):
+            raise LoiApi(404, "không có API này")
+
+    def _viec_mo_theo_video() -> dict[str, str]:
+        mo: dict[str, str] = {}
+        for v in kho.ds(list(DANG_MO), gioi_han=GIOI_HAN_TOI_DA):
+            if v.get("loai") in LOAI_SUA_VIDEO:
+                mo.setdefault(v["khoa"], v["id"])
+        return mo
+
+    def _du_an_cua_uid(uid: str) -> list[tuple[Path, Path]]:
+        """[(thư mục dự án, gốc)] — gốc cùng định dạng video_server (chuỗi `goc` ghép thẻ Duyệt)."""
+        return [(Path(d["goc"]) / d["ten"], Path(d["goc"])) for d in ds_du_an(uid, mt.gocs)]
+
+    def _tim_video_uid(uid: str, ma: str) -> tuple[Path, "sv.VideoSua"]:
+        for p, goc in _du_an_cua_uid(uid):
+            try:
+                return p, sv.tim_video(p, goc, ma)
+            except sv.KhongTraDuoc:
+                continue
+        raise LoiApi(404, LOI_KHONG_THAY_VIDEO)
+
+    def _ban_ghi_sua_duoc(p: Path, v: "sv.VideoSua") -> "sv.BanGhi":
+        if not v.sua_duoc:
+            raise LoiApi(409, v.ly_do or "Video này không sửa được trên web")
+        return sv.tra_ban_ghi(p, v)          # KhongTraDuoc → 409 (bọc ở _chay)
+
+    def g_sua_ds(uid: str, _q) -> tuple[int, dict]:
+        _sua_mo()
+        mo = _viec_mo_theo_video()
+        return 200, {"videos": [video_sua_ra(v, mo.get(v.ma_video))
+                                for p, goc in _du_an_cua_uid(uid) for v in sv.ds_video_sua(p, goc)]}
+
+    def g_sua_chi_tiet(uid: str, ma: str, _q) -> tuple[int, dict]:
+        _sua_mo()
+        p, v = _tim_video_uid(uid, ma)
+        ds = _ds_viec_sua(ma)
+        viec_mo = next((x["id"] for x in ds if x["trang_thai"] in DANG_MO), None)
+        video = video_sua_ra(v, viec_mo)
+        kq: dict[str, Any] = {"video": video, "luong": v.luong, "me": None, "tien_to": None, "plan_id": None,
+                              "phu_de": None, "loi_phu_de": "", "canh": [], "ghi_chu_luong_a": v.luong == "A",
+                              "canh_bao": [], "viec_mo": viec_mo, "lich_su": lich_su_sua(ds, viec_mo)}
+        if not v.sua_duoc:
+            return 200, kq
+        try:
+            b = sv.tra_ban_ghi(p, v)
+        except sv.KhongTraDuoc as e:          # dữ liệu đổi giữa hai lần đọc: báo như video không sửa được
+            video.update(sua_duoc=False, ly_do=e.ly_do)
+            return 200, kq
+        kq.update(luong=b.luong, me=b.me, tien_to=b.tien_to, plan_id=b.plan.get("plan_id"),
+                  canh=sv.doc_canh(b, p), ghi_chu_luong_a=b.luong == "A", canh_bao=list(b.canh_bao))
+        try:
+            kq["phu_de"] = sv.doc_phu_de(b)
+        except sv.KhongTraDuoc as e:
+            kq["loi_phu_de"] = e.ly_do
+        return 200, kq
+
+    def g_sua_ung_vien(uid: str, ma: str, q: dict) -> tuple[int, dict]:
+        _sua_mo()
+        seg = q.get("seg")
+        if not isinstance(seg, str) or not _RE_SEG.fullmatch(seg) or int(seg) > SEG_TOI_DA:
+            raise ThamSoLoi(f"seg phải là số 0–{SEG_TOI_DA}")
+        p, v = _tim_video_uid(uid, ma)
+        b = _ban_ghi_sua_duoc(p, v)
+        return 200, {"ung_vien": sv.ung_vien(p, b, int(seg))}
+
+    def p_ban_sua(uid: str, ma: str, body: dict) -> tuple[int, dict]:
+        """§8.1: kiểm đầy đủ bản sửa với dữ liệu thật rồi lưu bảng ban_sua. Không tạo việc (Worker gọi POST /viec)."""
+        _sua_mo()
+        boi = _boi(body)
+        p, v = _tim_video_uid(uid, ma)
+        b = _ban_ghi_sua_duoc(p, v)
+        try:
+            ban = sv.kiem_ban_sua(body, sv.lap_chi_tiet(p, v, b))
+        except (sv.BanSuaLech, sv.BanSuaQuaLon) as e:
+            raise LoiApi(e.ma_http, str(e)) from e
+        id_ = sv.ma_ban_sua(ban)
+        with khoa_ghi:
+            kho.luu_ban_sua(id_, uid, v.du_an, v.ma_video, ban, boi)
+        return 201, {"ban_sua": id_, "du_an": v.du_an,
+                     "tom_tat": {"so_cau": len(ban["phu_de"]), "so_clip": len(ban["doi_clip"]),
+                                 "so_doi_cho": len(ban["doi_cho"])}}
 
     # ----- POST -----
     def p_tao(body: dict) -> tuple[int, dict]:
@@ -443,10 +763,46 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         ts_tho = body.get("tham_so", {})
         return 201, {"viec": _ra(_tao_viec(loai, ts_tho, boi))}
 
+    def _tra_loi_phien_song(v: dict, boi: str, tra_loi: object, da_xac_nhan: bool, ma_cau_hoi: object) -> dict:
+        """§7.6 nhánh taovideo: chỉ khi vòng chạy còn giữ phiên sống; KHÔNG tiêu lời duyệt, không sinh tiến trình.
+        `ma_cau_hoi` (S-4 #4) phải đúng dạng RE_MA_CAU_HOI và bằng `cau_hoi.ma` đang lưu — kiểm TRƯỚC giá trị trả lời
+        để câu hỏi đã đổi luôn báo 409 "tải lại" thay vì 400/403 theo câu mới."""
+        id_ = v["id"]
+        if tra_loi_song is None or not _phien_song(v):
+            raise LoiApi(409, LOI_PHIEN_DA_DONG)
+        if v["trang_thai"] != "can_tra_loi":
+            raise LoiApi(409, "việc không còn chờ trả lời")
+        if not isinstance(v.get("cau_hoi"), dict):
+            raise LoiApi(409, "việc không có câu hỏi đang chờ")
+        cau_hoi = CanNguoiDung.tu_dict(v["cau_hoi"])
+        if (not isinstance(ma_cau_hoi, str) or not RE_MA_CAU_HOI.fullmatch(ma_cau_hoi)
+                or ma_cau_hoi != cau_hoi.ma):
+            log.info("trả lời %s: mã câu hỏi thiếu/sai/lệch (gửi %r, đang lưu %r)", id_,
+                     ma_cau_hoi if isinstance(ma_cau_hoi, str) and len(ma_cau_hoi) <= 40 else type(ma_cau_hoi).__name__,
+                     cau_hoi.ma)
+            raise LoiApi(409, LOI_CAU_HOI_DA_DOI)
+        gt = kiem_tra_loi_dot5(cau_hoi, tra_loi, da_xac_nhan, ton_tien=True)
+        try:
+            moi = tra_loi_song(id_, boi, gt, ma_cau_hoi)
+        except KhongCoPhien as e:
+            log.info("trả lời %s: phiên sống đã đóng (%s)", id_, e)
+            raise LoiApi(409, LOI_PHIEN_DA_DONG) from e
+        except SaiTrangThai as e:
+            # BoChay kiểm lại dưới khoá của nó: việc vừa rời can_tra_loi hoặc agent vừa hỏi câu khác (mã lệch).
+            log.info("trả lời %s: vòng chạy từ chối (%s)", id_, e)
+            raise LoiApi(409, LOI_CAU_HOI_DA_DOI) from e
+        return moi if isinstance(moi, dict) else _lay_viec(id_)
+
     def p_tra_loi(id_: str, body: dict) -> tuple[int, dict]:
         boi = _boi(body)
+        da_xac_nhan = body.get("da_xac_nhan_mat_khau", False)
+        if not isinstance(da_xac_nhan, bool):
+            raise ThamSoLoi("da_xac_nhan_mat_khau phải là true/false")
         with khoa_ghi:
             v = _lay_viec(id_)
+            if v.get("loai") in LOAI_PHIEN_SONG:
+                return 200, {"viec": _ra(_tra_loi_phien_song(v, boi, body.get("tra_loi"), da_xac_nhan,
+                                                             body.get("ma_cau_hoi")))}
             if la_ton_tien(v):
                 # A-D9b: trả lời rồi chạy tiếp = tiêu lại lời duyệt cũ → phải xin duyệt lại (mật khẩu).
                 raise LoiApi(409, LOI_TRA_LOI_TON_TIEN)
@@ -493,18 +849,30 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             if tien_trinh_cu_con_song(v):
                 raise LoiApi(409, "không chạy tiếp được: tiến trình cũ của việc có thể còn sống (runner không giết "
                                   "được) — kiểm tay trên máy rồi dùng Chạy lại")
+            if _sua_chu(v):
+                raise LoiApi(409, sv.LOI_SUA_CHU_CAN_MAT_KHAU)
+            td_kiem_tay = thong_diep_kiem_tay(v)
+            if td_kiem_tay is not None:                # FX-24: bỏ qua có chủ đích → chạy tiếp không giúp được
+                raise LoiApi(409, td_kiem_tay if che is None else che(td_kiem_tay), {"kiem_tay": True})
             if not co_the_chay_tiep(v):
                 raise LoiApi(409, "không chạy tiếp được: cần trạng thái lỗi và phiên Claude đã tạo")
             loai = lay_loai(v["loai"], dot_bat_hieu_luc(hm))
+            _kiem_sua_video(loai, v.get("tham_so") or {}, tru_id=id_)
             kiem_han_muc(kho, loai.ma, v.get("tham_so") or {}, hm, "nhan", boi, viec_id=id_)
-            moi = kho.chuyen(id_, ["loi"], "cho", boi, "chạy tiếp (resume phiên Claude)")
+            ghi = ("chạy tiếp cùng mã việc (bộ chuyển đổi đọc nhật ký để làm nốt/hoàn nguyên)"
+                   if loai.ma in LOAI_CHAY_TIEP_NHAT_KY else "chạy tiếp (resume phiên Claude)")
+            moi = kho.chuyen(id_, ["loi"], "cho", boi, ghi)
         return 200, {"viec": _ra(moi)}
 
     def p_chay_lai(id_: str, body: dict) -> tuple[int, dict]:
         boi = _boi(body)
         v = _lay_viec(id_)
-        if v["trang_thai"] not in ("loi", "huy"):
+        if v["trang_thai"] not in TRANG_THAI_CHAY_LAI:
             raise LoiApi(409, "chỉ chạy lại được việc lỗi hoặc đã huỷ")
+        if _sua_chu(v):
+            # FX-22 (§7.2a, D10 Q3): chữ phụ đề cần mật khẩu MỖI lần lưu — không dùng lại ban_sua cũ qua nút bấm
+            # (sau hoàn tác mtime cũ được giữ nên sua_luc của bản cũ lại hợp lệ).
+            raise LoiApi(409, sv.LOI_SUA_CHU_CAN_MAT_KHAU)
         loai = lay_loai(v["loai"], dot_bat_hieu_luc(hm))
         moi = _tao_viec(loai, tham_so_tho_tu_luu(v.get("tham_so") or {}), boi, chay_lai_tu=id_)
         return 201, {"viec": _ra(moi)}
@@ -547,6 +915,8 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                 raise LoiApi(409, "loại việc này không cần duyệt — dùng Chạy tiếp/Chạy lại")
             if v["trang_thai"] not in TRANG_THAI_XIN_DUYET_LAI:
                 raise LoiApi(409, "chỉ xin duyệt lại được việc tốn tiền đang lỗi hoặc chờ trả lời")
+            if _phien_song(v):                  # §7.4: còn phiên sống → không mở đường sinh phiên thứ hai (CL21)
+                raise LoiApi(409, LOI_XIN_DUYET_LAI_KHI_SONG)
             if tien_trinh_cu_con_song(v):
                 raise LoiApi(409, "không xin duyệt lại được: tiến trình cũ của việc có thể còn sống (runner không "
                                   "giết được) — kiểm tay trên máy rồi dùng Chạy lại")
@@ -619,7 +989,10 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             except VuotHanMuc as e:
                 ma, d = 429, {"loi": f"vượt hạn mức: {e}"}
             except ThamSoLoi as e:
-                ma, d = 400, {"loi": str(e)}
+                them = getattr(e, "them", None)          # vd ChuaChotDuAnB: ung_vien_b cho web chọn lại
+                ma, d = 400, {"loi": str(e), **(them if isinstance(them, dict) else {})}
+            except sv.KhongTraDuoc as e:      # video/bản ghi dựng không còn lần được (dữ liệu đĩa đổi)
+                ma, d = 409, {"loi": e.ly_do}
             except Exception:   # noqa: BLE001 — chốt chặn cuối: không để một request làm sập vòng phục vụ
                 log.exception("lỗi bất ngờ khi xử lý %s %s", self.command, self.path)
                 ma, d = 500, {"loi": "lỗi nội bộ bộ chạy việc (xem log máy nhà)"}
@@ -647,6 +1020,11 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return g_du_an(m.group(1), q)
                 if p == "/poster/folders":
                     return g_poster_folders(q)
+                if m := _RE_ROUTE_SUA_GET.fullmatch(p):
+                    uid, ma, ung_vien = m.groups()
+                    if ma is None:
+                        return g_sua_ds(uid, q)
+                    return g_sua_ung_vien(uid, ma, q) if ung_vien else g_sua_chi_tiet(uid, ma, q)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 
@@ -672,6 +1050,8 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return p_tao(body)
                 if m := _RE_ROUTE_HANH_DONG.fullmatch(p):
                     return HANH_DONG[m.group(2)](m.group(1), body)
+                if m := _RE_ROUTE_SUA_POST.fullmatch(p):
+                    return p_ban_sua(m.group(1), m.group(2), body)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 

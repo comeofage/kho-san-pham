@@ -518,3 +518,239 @@ def test_r_khong_lam_hong_route_cu(srv, runner, monkeypatch):
     assert goi(srv + f"/v/{ID}/tien-do")[0] == 200
     assert goi(srv + "/suc-khoe")[0] == 200
     assert runner.nhan == []
+
+
+# ---------- sửa video: chuyển tiếp /r/sua-video/* (docs/sua-video.md §8.2) ----------
+
+UID = "1731141980888533631"
+MA_V = "0123456789abcdef"
+
+
+@pytest.mark.parametrize("duong", [
+    f"/r/sua-video/{UID}", f"/r/sua-video/{UID}/{MA_V}",
+    f"/r/sua-video/{UID}/{MA_V}/ung-vien", f"/r/sua-video/{UID}/{MA_V}/ban-sua",
+])
+def test_r_sua_video_4_dang_hop_le_chuyen_tiep(srv, runner, duong):
+    code, _, body = goi_r(srv + duong)
+    assert code == 200 and json.loads(body) == {"ok": True}
+    assert runner.nhan[0]["path"] == duong[2:]
+
+
+@pytest.mark.parametrize("duong", [
+    "/r/sua-video", "/r/sua-video/", f"/r/sua-video/{UID}/", "/r/sua-video/123",
+    f"/r/sua-video/{UID}0", f"/r/sua-video/{UID}/{MA_V[:15]}", f"/r/sua-video/{UID}/{MA_V}0",
+    f"/r/sua-video/{UID}/{MA_V.upper()}", f"/r/sua-video/{UID}/{MA_V}/xoa",
+    f"/r/sua-video/{UID}/{MA_V}/ung-vien/x", f"/r/sua-video/{UID}/{MA_V}/ban-sua/",
+    f"/r/sua-video/{UID}/../{MA_V}", f"/r/sua-video/{UID}/{MA_V}/ung-vien%2F..",
+    "/r/sua-video/" + quote("１７３１１４１９８０８８８５３３６３１"),
+])
+def test_r_sua_video_dang_khac_404(srv, runner, duong):
+    assert goi_r(srv + duong)[0] == 404
+    assert runner.nhan == []
+
+
+def test_r_sua_video_ung_vien_giu_seg_bo_khoa_la(srv, runner):
+    goi_r(srv + f"/r/sua-video/{UID}/{MA_V}/ung-vien?seg=12&du_an=abc&ten=x.mp4&seg=3")
+    sp = urlsplit(runner.nhan[0]["path"])
+    assert sp.path == f"/sua-video/{UID}/{MA_V}/ung-vien"
+    assert parse_qsl(sp.query) == [("seg", "12")]
+
+
+def test_r_sua_video_ban_sua_post_chuyen_body(srv, runner):
+    body = json.dumps({"sua_luc": 1, "boi": "nhan"}).encode()
+    code, _, _ = goi_r(srv + f"/r/sua-video/{UID}/{MA_V}/ban-sua", method="POST",
+                       headers={"content-type": "application/json", "x-ky": "k"}, body=body)
+    assert code == 200
+    g = runner.nhan[0]
+    assert g["method"] == "POST" and g["body"] == body and g["headers"]["x-ky"] == "k"
+
+
+def test_r_van_giu_xin_duyet_lai(srv, runner):
+    assert goi_r(srv + f"/r/viec/{JID}/xin-duyet-lai")[0] == 200
+
+
+# ---------- sửa video: act anh / clip trên /v/<id>/ ----------
+
+CLIP1 = "c01_001_hook_mo-hop.mp4"        # ngay trong cuts/
+CLIP2 = "c01_002_loi-ich (2).mp4"        # trong cuts/con/ (một cấp)
+CLIP_SAU = "c01_003_sau.mp4"             # cuts/a/b/ (hai cấp) -> không nhận
+CLIP_KHONG_FILE = "c01_004_mat.mp4"      # có trong index, không có file
+CLIP_KHONG_ID = "khongso.mp4"            # không khớp ^(.+?_\d{3})_
+CLIP_HAI_CHAM = "a..b_005_x.mp4"         # có '..'
+
+
+@pytest.fixture
+def cuts(goc):
+    d = goc / f"abc {ID}"
+    c = d / "cuts"
+    _ghi(c / CLIP1, 200)
+    _ghi(c / "con" / CLIP2, 30)
+    _ghi(c / "a" / "b" / CLIP_SAU)
+    _ghi(c / CLIP_KHONG_ID)
+    _ghi(c / CLIP_HAI_CHAM)
+    _ghi(c / "ngoai-index_001_x.mp4")
+    clips = {t: {"role": "hook", "dur": 2.0}
+             for t in (CLIP1, CLIP2, CLIP_SAU, CLIP_KHONG_FILE, CLIP_KHONG_ID, CLIP_HAI_CHAM)}
+    (c / "clip_index.json").write_text(json.dumps({"version": 1, "clips": clips}), encoding="utf-8")
+    fr = c / ".index_frames" / "c01_001"
+    fr.mkdir(parents=True)
+    (fr / "f_00.jpg").write_bytes(b"\xff\xd8anh0")
+    (fr / "f_03.jpg").write_bytes(b"\xff\xd8anh3")
+    (fr / "contact_sheet.jpg").write_bytes(b"\xff\xd8cs")
+    return d
+
+
+def _url(srv, act, d, ten, **them):
+    q = f"du_an={vs.ma_du_an(d) if isinstance(d, Path) else d}&ten={quote(ten)}"
+    for k, v in them.items():
+        q += f"&{k}={quote(v)}"
+    return srv + f"/v/{ID}/{act}?{q}"
+
+
+def test_ma_du_an_khop_cheo_runner(tmp_path, goc, cuts):
+    sys.path.insert(0, str(Path(__file__).parent))
+    from runner import du_an
+    for p in (cuts, tmp_path / "x y" / "Tên có dấu 123", Path("E:/oneshottramcanh/abc 1731141980888533631"),
+              Path("F:\\2710\\1028\\sp 1")):
+        assert vs.ma_du_an(p) == du_an.ma_du_an(p), p
+    ds = du_an.ds_du_an(ID, vs.GOCS)
+    assert {x["ma"] for x in ds} == {vs.ma_du_an(cuts), vs.ma_du_an(goc / f"moi {ID}")}
+    assert all(vs.tim_du_an(ID, x["ma"]) == Path(x["goc"]) / x["ten"] for x in ds)
+
+
+def test_anh_tra_jpeg(srv, cuts):
+    code, h, body = goi(_url(srv, "anh", cuts, CLIP1, k="0"))
+    assert code == 200 and body == b"\xff\xd8anh0" and h["content-type"] == "image/jpeg"
+    assert "content-disposition" not in h
+    assert goi(_url(srv, "anh", cuts, CLIP1, k="3"))[2] == b"\xff\xd8anh3"
+    assert goi(_url(srv, "anh", cuts, CLIP1, k="cs"))[2] == b"\xff\xd8cs"
+
+
+@pytest.mark.parametrize("k", ["", "10", "a", "-1", "cs2", "0/../x"])
+def test_anh_k_sai_400(srv, cuts, k):
+    assert goi(_url(srv, "anh", cuts, CLIP1, k=k))[0] == 400
+
+
+def test_anh_thieu_k_400(srv, cuts):
+    assert goi(_url(srv, "anh", cuts, CLIP1))[0] == 400
+
+
+def test_anh_khong_co_khung_hoac_khong_co_clip_id_404(srv, cuts):
+    assert goi(_url(srv, "anh", cuts, CLIP1, k="5"))[0] == 404
+    assert goi(_url(srv, "anh", cuts, CLIP2, k="0"))[0] == 404     # chưa có .index_frames/c01_002
+    assert goi(_url(srv, "anh", cuts, CLIP_KHONG_ID, k="0"))[0] == 404
+
+
+def test_clip_range_206_khong_attachment(srv, cuts):
+    code, h, body = goi(_url(srv, "clip", cuts, CLIP1), headers={"Range": "bytes=2-5"})
+    assert code == 206 and body == bytes([2, 3, 4, 5])
+    assert h["content-range"] == "bytes 2-5/200" and h["content-type"] == "video/mp4"
+    assert h["accept-ranges"] == "bytes" and "content-disposition" not in h
+    code, h, body = goi(_url(srv, "clip", cuts, CLIP1, xoa="1"))
+    assert code == 200 and len(body) == 200 and "content-disposition" not in h
+    time.sleep(0.2)
+    assert (cuts / "cuts" / CLIP1).is_file()
+
+
+def test_clip_trong_thu_muc_con_mot_cap(srv, cuts):
+    code, _, body = goi(_url(srv, "clip", cuts, CLIP2))
+    assert code == 200 and len(body) == 30
+
+
+@pytest.mark.parametrize("ten", [
+    CLIP_SAU, CLIP_KHONG_FILE, CLIP_HAI_CHAM, "ngoai-index_001_x.mp4",
+    "../output_poster/01.mp4", "..\\output_poster\\01.mp4", "con/" + CLIP2, "con\\" + CLIP2,
+    "clip_index.json", "", "c01_001_hook_mo-hop.MP4", ".index_frames", CLIP1 + "\n",
+])
+def test_clip_ten_xau_hoac_ngoai_index_404(srv, cuts, ten):
+    code, _, body = goi(_url(srv, "clip", cuts, ten))
+    assert code == 404, ten
+    assert "loi" in json.loads(body)
+    assert goi(_url(srv, "anh", cuts, ten, k="0"))[0] == 404
+
+
+@pytest.mark.parametrize("du_an", ["", "abc", "0" * 12, "ABCDEF012345", "../../x", "THEM-0"])
+def test_du_an_sai_hoac_khong_co_404(srv, cuts, du_an):
+    d = vs.ma_du_an(cuts) + "0" if du_an == "THEM-0" else du_an
+    assert goi(_url(srv, "clip", d, CLIP1))[0] == 404
+    assert goi(_url(srv, "anh", d, CLIP1, k="0"))[0] == 404
+
+
+def test_du_an_cua_id_khac_khong_dung_duoc(srv, cuts, goc):
+    khac = "1111111111111111111"
+    d2 = goc / f"zz {khac}"
+    _ghi(d2 / "cuts" / CLIP1)
+    (d2 / "cuts" / "clip_index.json").write_text(json.dumps({"clips": {CLIP1: {}}}), encoding="utf-8")
+    assert goi(srv + f"/v/{ID}/clip?du_an={vs.ma_du_an(d2)}&ten={quote(CLIP1)}")[0] == 404
+    assert goi(srv + f"/v/{khac}/clip?du_an={vs.ma_du_an(d2)}&ten={quote(CLIP1)}")[0] == 200
+
+
+def test_clip_index_hong_404(srv, cuts):
+    (cuts / "cuts" / "clip_index.json").write_text("{hong", encoding="utf-8")
+    assert goi(_url(srv, "clip", cuts, CLIP1))[0] == 404
+    (cuts / "cuts" / "clip_index.json").write_text(json.dumps({"clips": [CLIP1]}), encoding="utf-8")
+    assert goi(_url(srv, "clip", cuts, CLIP1))[0] == 404
+
+
+def test_anh_clip_post_405_va_thieu_khoa_401(srv, cuts):
+    assert goi(_url(srv, "clip", cuts, CLIP1), method="POST")[0] == 405
+    assert goi(_url(srv, "anh", cuts, CLIP1, k="0"), method="POST")[0] == 405
+    assert goi(_url(srv, "clip", cuts, CLIP1), khoa=None)[0] == 401
+    assert goi(_url(srv, "anh", cuts, CLIP1, k="0"), khoa="sai")[0] == 401
+
+
+# ---------- bật/tắt app ----------
+
+def test_lenh_bat_chi_cho_app_trong_APPS_khong_co_video_server():
+    assert set(vs.LENH_BAT) <= {a[0] for a in vs.APPS}
+    assert "video_server" not in vs.LENH_BAT
+
+
+def test_suc_khoe_danh_dau_bat_tat(srv, monkeypatch):
+    monkeypatch.setattr(vs, "cong_song", lambda c, cho=1.0: False)
+    apps = {a["ma"]: a for a in json.loads(goi(srv + "/suc-khoe")[2])["apps"]}
+    assert all(apps[m].get("bat_tat") is True for m in vs.LENH_BAT)
+    assert "bat_tat" not in apps["video_server"]
+
+
+def test_app_bat_tat_khoa_ma_la_phuong_thuc(srv, monkeypatch):
+    goi_that = []
+    monkeypatch.setattr(vs, "bat_app", lambda ma, c: (goi_that.append(("bat", ma, c)), (True, "Đang bật"))[1])
+    monkeypatch.setattr(vs, "tat_app", lambda c: (goi_that.append(("tat", c)), (False, "cổng vẫn mở"))[1])
+    monkeypatch.setattr(vs, "cong_song", lambda c, cho=1.0: False)
+    assert goi(srv + "/app/muse/bat", method="POST", khoa=None)[0] == 401
+    assert goi(srv + "/app/muse/bat", method="GET")[0] == 405
+    assert goi(srv + "/app/video_server/tat", method="POST")[0] == 404
+    assert goi(srv + "/app/la/bat", method="POST")[0] == 404
+    assert goi_that == []
+    code, _, body = goi(srv + "/app/muse/bat", method="POST")
+    assert code == 200 and json.loads(body) == {"ma": "muse", "ok": True, "tin": "Đang bật", "song": False}
+    code, _, body = goi(srv + "/app/runner/tat", method="POST")
+    assert code == 500 and json.loads(body)["tin"] == "cổng vẫn mở"
+    assert goi_that == [("bat", "muse", 3786), ("tat", 8788)]
+
+
+def test_goc_can_giet_leo_cmd_nhung_khong_dung_to_tien_video_server():
+    # 100 explorer → 200 cmd(chay_video.bat) → 300 python video_server ; 200 → 400 python runner
+    # 300 → 500 cmd(Start.cmd) → 600 node muse
+    bang = {100: (1, "explorer.exe"), 200: (100, "cmd.exe"), 300: (200, "python.exe"),
+            400: (200, "python.exe"), 500: (300, "cmd.exe"), 600: (500, "node.exe")}
+    cam = vs.to_tien(300, bang)
+    assert cam == {300, 200, 100, 1}
+    assert vs.goc_can_giet(600, bang, cam) == 500
+    assert vs.goc_can_giet(400, bang, cam) == 400
+
+
+def test_tat_app_khong_giet_chinh_minh(monkeypatch):
+    monkeypatch.setattr(vs, "pid_nghe_cong", lambda c: {os.getpid()})
+    monkeypatch.setattr(vs, "bang_tien_trinh", lambda: {})
+    ok, tin = vs.tat_app(1)
+    assert not ok and "chung tiến trình" in tin
+
+
+def test_pid_nghe_cong_doc_netstat_that():
+    nghe = socket.socket(); nghe.bind(("127.0.0.1", 0)); nghe.listen(1)
+    try:
+        assert os.getpid() in vs.pid_nghe_cong(nghe.getsockname()[1])
+    finally:
+        nghe.close()

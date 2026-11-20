@@ -1,7 +1,7 @@
 # Bộ chạy việc cho web Kho sản phẩm (đợt 3–5)
 
 Phiếu A-01, sửa lại theo phiếu A-01b (phản biện) · Kiến trúc sư Culiapp · 2026-11-17
-Trạng thái: **ĐỀ XUẤT, chờ người dùng duyệt**. Quyết định D1–D9 ghi trong `DECISIONS.md` (D9: sổ lời duyệt đã tiêu trên Cloudflare KV, sửa review R-11; phiếu A-D9).
+Trạng thái: **ĐỀ XUẤT, chờ người dùng duyệt**. Quyết định D1–D9 ghi trong `DECISIONS.md` (D9: sổ lời duyệt đã tiêu trên Cloudflare KV, sửa review R-11; phiếu A-D9). Đợt 5 thiết kế lại theo D11 (Đề xuất, phiếu A-05): `taovideo` chạy bằng một phiên Claude sống suốt việc (§7).
 
 Trước tài liệu này, dự án chưa có `CLAUDE.md`, `ARCHITECTURE.md`, `DECISIONS.md` hay `KNOWN_BUGS.md` (đã dò ở gốc repo và thư mục cha). Thiết kế dựa trên ba nguồn:
 - code thật, dẫn `file:dòng`;
@@ -374,7 +374,7 @@ Việc miễn phí mà agent trả `NEEDS_APPROVAL` → `loi` "Agent xin làm vi
 
 | Mã | Ai chạy | Tham số | Làn / tài nguyên | Duyệt / hạn mức | Đối soát |
 |---|---|---|---|---|---|
-| `taovideo` | Claude `--agent aff-taovideo`, `--tools Read,Write,Edit,Glob,Grep,Bash,Skill,Agent,SendMessage,TodoWrite` (P2-9), cwd dự án A, `--add-dir` dự án B, `F:\auto video oneshot`, `C:\Users\Mi\.claude\skills` | `uid`, `du_an_a`, `du_an_b` (mã hoặc `"tu_tim"`), `wm` (chỉ giá trị trong `WM_CHO_PHEP` hằng số code), `gia` int 1.000–10.000.000 hoặc null | gpu / `kho` | `cho_duyet`; ≤1/ngày; ≤ `CODEX_LUOT_VIEC` (mặc định 6) lần gọi subagent `codex:*` mỗi job: runner đếm `tool_use` tên `Agent` có `subagent_type` bắt đầu bằng `codex`, vượt thì giết cây → `can_tra_loi/khong_ro` "Đã chạm trần lượt Codex" | `khong_ro` → `loi` + "Chạy tiếp" |
+| `taovideo` | **Phiên sống** (D11, §7): MỘT tiến trình `claude -p --input-format stream-json --agent aff-taovideo` sống suốt việc, stdin mở; `--tools` = `BO_CONG_CU_TAOVIDEO` (§7.9, không có `SendMessage`); cwd dự án A, `--add-dir` dự án B, `F:\auto video oneshot`, `C:\Users\Mi\.claude\skills`; mỗi lần sinh tiến trình một session id mới, không `--resume` | `uid`, `du_an_a`, `du_an_b` (mã, hoặc `"tu_tim"` → runner chốt lúc tạo: đúng 1 dự án của UID có `takes/*.mp4`, ngược lại 400 kèm danh sách), `wm` ∈ `("khong", *WM_CHO_PHEP)`, `gia` int 1.000–10.000.000 hoặc null | gpu / `kho` | `cho_duyet`; **1 lời duyệt = 1 phiên sống** (§7.5); trong phiên: ≤ `taovideo_usd_viec` 60 USD-ước-tính (chênh lệch `total_cost_usd`), ≤ `taovideo_mp3_viec` 25 voice mới (đếm file thật), ≤ `codex_luot_viec` 6 Codex/phiên; ≤ 1 việc và ≤ 3 lần tiêu mỗi ngày; giờ theo §7.7; trả lời câu hỏi trong phiên không tiêu lời duyệt | `doi_soat_taovideo` chỉ đọc file (§7.8): `xong` / `chua` + tóm tắt → `loi` + "Xin duyệt lại" |
 
 ---
 
@@ -407,7 +407,7 @@ argv = [CLAUDE_EXE, "-p",
   - `radar_ban_tin`: `Read,Write,Glob`;
   - `phan_tich_uid`: `Read,Write,Edit,Glob,Grep,Bash,Skill`;
   - `muse_clip`, `poster_len_lich`: `Read,Write,Edit,Glob,Grep,Bash`;
-  - `taovideo`: như §5.3.
+  - `taovideo`: **không dùng lệnh §6.1**. Dùng lệnh phiên sống ở §7.2 (D11), công cụ ở §7.9. Các mục §6.2–6.5 vẫn áp dụng cho việc đọc trường sự kiện, mẫu phiếu và đọc kết quả. Riêng `--resume`, cách tính chi phí (chênh lệch) và cách phát hiện chờ người dùng theo §7.3–7.8.
 - `session_id = uuid4()` sinh khi tạo job. `phien_da_tao` đổi thành 1 khi thấy sự kiện đầu (`type=system`, `subtype=init`) mang `session_id` đó. Chưa thấy thì lần sau vẫn dùng `--session-id` cùng UUID.
 
 ### 6.2 Đọc sự kiện (cô lập, P2-5)
@@ -434,7 +434,7 @@ Bốn chốt, độc lập nhau:
 1. **USD/ngày**: tổng `chi_phi_usd` hôm nay ≥ `claude_usd_ngay` → job Claude đứng `cho`. Có thể không đúng khi đi qua `ANTHROPIC_BASE_URL` proxy (S-01 đo `total_cost_usd > 0`).
 2. **Số job Claude/ngày** (dự phòng): đếm job có `so_lan_claude > 0` và `bat_dau_luc` hôm nay ≥ `claude_viec_ngay` (mặc định 12) → đứng `cho`.
 3. **Trần lượt mỗi job**: runner cộng `dem_luot` theo thời gian thực. Vượt `tran_luot` của loại thì giết cây → `can_tra_loi/khong_ro` "Đã chạm trần N lượt". Trần: radar 40, phan_tich 250, muse 120, poster_len_lich 60, taovideo 1500/lượt chạy. Đây cũng là thay thế cho `--max-turns` mà CLI không có.
-4. `--max-budget-usd` mỗi lượt (nếu có hiệu lực): radar 3, phan_tich 8, muse 3, poster 2, taovideo 40.
+4. `--max-budget-usd` mỗi tiến trình (nếu có hiệu lực): radar 3, phan_tich 8, muse 3, poster 2. Với các loại theo lượt (D4), mỗi lượt là một tiến trình nên trần này là trần mỗi lượt. **`taovideo` (phiên sống, D11) không dùng số 40 ở đây** (`tran_usd_moi_luot=40.0`, `tools/runner/danh_muc.py:1357`, chỉ dùng cho lệnh theo lượt `danh_muc.py:1393`). S-4 đo được `--max-budget-usd` **cộng dồn cả phiên**, nên phiên sống đặt bằng trần phiên `taovideo_usd_viec` = 60 (§7.2, §7.5).
 
 Khác:
 - **Hết quota hoặc quá tải**: `loi=True` hoặc văn bản khớp `(?i)usage limit|rate limit|\b429\b|overloaded` → `loi`; tạm dừng mọi việc Claude 30 phút (`tam_dung_claude_den`).
@@ -500,39 +500,372 @@ Thứ tự:
 
 ---
 
-## 7. Đợt 5: hỏi-đáp `aff-taovideo` trên web
+## 7. Đợt 5: `aff-taovideo` chạy bằng "phiên sống" (D11, phiếu A-05)
 
-### 7.1 Theo lượt + resume (giữ lựa chọn D4)
+Bản §7 cũ (theo lượt + `--resume`, D4) bị thay cho riêng `taovideo`. Các loại khác vẫn theo D4 và §6.
 
-| | Theo lượt (CHỌN) | stream-json hai chiều |
+### 7.0 Vì sao đổi: kết quả đo thật
+
+| Spike | Kết quả | Nguồn |
 |---|---|---|
-| Trả lời sau vài giờ | Không tốn gì | Tiến trình treo hàng giờ |
-| Reboot khi đang chờ | Resume được (phiên trên đĩa) | Mất phiên |
-| Phát hiện "đang hỏi" | Rõ ràng: lượt kết thúc + khối `CẦN_USER` | Phải đoán |
-| Rủi ro | `-p` thoát khi việc nền (subagent / Bash nền) còn chạy; Job Object giết việc nền; thông báo hoàn tất việc nền bị mất (P2-9) → spike S-02 đo | Phức tạp |
+| S-2: mỗi lượt một tiến trình `-p`, nối lượt bằng `--resume` | Subagent chạy được. **Bash nền chết khi `-p` thoát.** Lượt resume **không** nhận thông báo việc nền. Không có `SendMessage` | `.culiapp/nhat-ky.md:31`, `.culiapp/test-spike-s2.json` |
+| S-3: **một** tiến trình `claude -p --input-format stream-json --output-format stream-json --verbose --strict-mcp-config`, stdin để mở | Tiến trình sống qua nhiều lượt. Bash nền chạy qua ranh giới lượt và xong. Có sự kiện `system/task_notification`, `system/task_updated`. **Agent tự thức** (assistant + result mới sau khi việc nền xong, không cần tin user). Khối `CẦN_USER` đọc được ở result cuối lượt + im lặng ≥ 5 s; trả lời qua stdin thì agent nhớ đúng ngữ cảnh. Đóng stdin → thoát gọn 0,73 s, mã 0. `total_cost_usd` **cộng dồn trong phiên**. `init.tools` = `Task, Bash, TaskOutput, TaskStop` (công cụ `Agent` hiện tên `Task` trong init, còn `tool_use` vẫn tên `Agent`). Không có `SendMessage` | `.culiapp/nhat-ky.md:41`, `.culiapp/test-spike-s3.json` (`muc.n1`…`n8`, `lan_goi[0].init`) |
+| S-4: phần còn thiếu của phiên sống (đo thật 18/11/2026, Claude CLI 2.1.169, ~0,69 USD, 33 phút) | Xem bảng §7.0a | `.culiapp/test-spike-s4.json` (`muc.s1`…`s8`), `.culiapp/nhat-ky.md:50` |
 
-### 7.2 Luồng
+Quy trình `taovideo` dựa hẳn vào việc nền + thông báo:
+- `tron-goi` chạy nền ở phiên chính, chờ bằng `cho_tron_goi.py` (`tao-video-tu-canh-quay\SKILL.md:48`, `:172`);
+- cấm `sleep` để chờ (`SKILL.md:65`);
+- Poster tắt thì để lệnh nền chờ cổng 8023 (`SKILL.md:202`, `taomevideo\SKILL.md:56`).
 
-1. Tạo `taovideo` → `cho_duyet` (ước tính "~21 voice GenMax + render 2 mẻ GPU ~N giờ").
-2. Người dùng gõ lời duyệt + mật khẩu; Worker ký → `cho` → làn gpu nhận (giữ `kho`) → lượt 1.
-3. Gặp điểm hỏi (`aff-taovideo.md:32`; `tao-video-tu-canh-quay\SKILL.md:67`) → khối `CẦN_USER` → `can_tra_loi`.
-   - `chon` (vd chốt thư mục Bước B) và `viec_tay` (mở Poster): trả lời bằng nút.
-   - `cau_hoi`: chữ tự do + mật khẩu (§9).
-4. Trả lời → `cho` → `--resume`.
-5. `TRẠNG THÁI: DONE…` → `kiem_dau_ra`: `kho.py xem <UID>` có 2 dòng Poster (`aff-taovideo.md:36`).
-6. `KHONG_RO`: tự "Tiếp tục" tối đa 1 lần mỗi job, chỉ khi không còn tiến trình con của job. Lần hai thì hỏi người dùng.
-7. Nếu S-02 cho thấy `-p` thoát trước khi việc nền xong: K-1 bắt buộc dòng "không kết thúc lượt khi còn việc nền; chờ bằng vòng kiểm ≤9 phút/lệnh" (như `aff-san-pham.md:33`). Nếu điều đó vẫn không đủ, đợt 5 dừng ở mức "chạy tay trên máy, theo dõi trên web" và tôi báo lại người dùng.
+Theo lượt thì mọi thứ này chết. Vì vậy `taovideo` phải giữ **một tiến trình Claude sống suốt việc**.
 
-### 7.3 Đề xuất cập nhật agent (phiếu K-1, culiapp-skill; chỉ đề xuất)
+### 7.0a Kết luận S-4 và chỗ thiết kế đổi theo
 
-- Sửa mâu thuẫn luật **"Không hỏi người dùng"** (`aff-radar.md`, `aff-san-pham.md`, `aff-poster.md`, `aff-muse.md`, `aff-voice.md`, luật 2) với quy ước `CẦN_USER`: thêm câu "Ngoại lệ: phiếu có mục KHI CẦN NGƯỜI DÙNG thì dùng khối CẦN_USER như phiếu quy định, thay cho BLOCKED". Phiếu §6.4 đã tự ghi ngoại lệ này, nên đợt 3 chạy được kể cả trước K-1.
-- `aff-taovideo.md`: thêm mục "Chạy từ bộ chạy việc web":
-  1. khối `CẦN_USER/LOẠI/LỰA_CHỌN`;
-  2. chốt Bước B dùng `LOẠI: chon`;
-  3. không kết thúc lượt khi còn việc nền;
-  4. được resume với "Phiên trước bị ngắt" → `trang_thai.py tiep` trước khi làm tiếp;
-  5. dùng Codex không quá trần phiếu ghi.
-- `aff-san-pham.md` Bước 7: khi phiếu ghi "Douyin do runner chạy riêng" thì bỏ qua Bước 7 và ghi `CHƯA làm: Bước 7 (runner chạy douyin_uid)`. Việc này tránh agy bị Job Object giết. Thay đổi đi kèm ở `danh_muc`: phiếu `phan_tich_uid` ghi dòng đó, và runner tự tạo `douyin_uid` khi `phan_tich_uid` xong. Trước K-1, giữ nguyên ánh xạ captcha ở §5.1.
+| # | Đo được | Thiết kế đổi / chốt |
+|---|---|---|
+| 1 | `--tools` nhận tên `Agent`, nhưng `init.tools` báo `Task` (`['Task','Bash','Read','Skill','TaskOutput','TaskStop']`). `Skill` gọi được (skill tạm `thu-s4` trả đúng mã) | Giữ cả `Agent` và `Task` trong `BO_CONG_CU_TAOVIDEO` (§7.9). Giữ `Skill` |
+| 2 | `tool_use` của subagent có trên stdout, kèm `parent_tool_use_id`. Công cụ ngoài `--tools` (`WebFetch`) subagent **không gọi được**. Subagent chỉ phát `Bash`, `Read` | `--tools` giới hạn cả subagent. Danh sách soát §7.9 **không nới thêm** công cụ nào; `SoatCongCu` soát cả sự kiện của subagent như đã thiết kế |
+| 3 | Subagent **không** gọi được `Agent` lồng một cấp (không có `tool_use` Agent/Task cấp con, không có dấu `CHAU-S4-OK`) | **Mọi fan-out phải do agent chính của tiến trình gọi**, ví dụ C2 viết kịch bản bằng `tvc-tho`. Khối CHẾ ĐỘ CHẠY (§7.10) thêm dòng cấm giao fan-out cho subagent; skill hiện để subagent C2 tự fan-out (bản cài `C:\Users\Mi\.claude\skills\tao-video-tu-canh-quay\SKILL.md:50`, `:72`, `:74`, `:76`, `:77`), cần K-3 (§7.11) |
+| 4 | Tin user ghi vào stdin **giữa lượt** (agent đang chạy Bash foreground) **không** chen vào lượt đó; chỉ được thấy ở lượt sau. File đo còn ghi `lượt hỏng: True` cho lượt bị chèn (result của lượt đó không nhắc kết quả Bash) | Runner **xếp hàng** mọi tin (trả lời, nhắc, báo trần Codex) và **chỉ ghi stdin sau sự kiện `result` cấp cao**, mỗi `result` tối đa một tin. Mỗi câu hỏi có **mã câu hỏi**; tin trả lời mang mã đó, tới lúc ghi mà đã có `result` mới (câu hỏi bị thay hoặc rút) thì bỏ tin, không trả nhầm câu hỏi mới (§7.2, §7.6) |
+| 5 | `--max-budget-usd` **cộng dồn cả phiên**. Chạm trần thì lượt đó và **mọi lượt sau** trả `result` `subtype=error_max_budget_usd`, `is_error=true` ngay. Đóng stdin sau đó: thoát trong hạn (0,78 s) nhưng **mã 1** | Đặt `--max-budget-usd` = trần phiên `taovideo_usd_viec` (60, hoặc mức đã hạ). Runner vẫn tự giám sát bằng Σ chênh lệch `total_cost_usd` (§7.3) và giết cây khi vượt; CLI là lưới thứ hai. Gặp `error_max_budget_usd` → `loi` "Chạm trần USD của phiên", không gửi thêm tin; mã thoát 1 trong trường hợp này là bình thường |
+| 6 | Im lặng 30 phút (1800 s) với stdin mở: tiến trình còn sống, lượt sau trả lời bình thường và nhớ từ khoá của lượt 1 | Giữ đồng hồ `cho_s` = 3 giờ (§7.7). Chờ lâu không làm mất phiên (mới đo tới 30 phút) |
+| 7 | `total_cost_usd` gồm cả chi phí subagent (khớp Σ `costUSD` trong `modelUsage`), cộng dồn trong phiên | Giữ cách tính chênh lệch §7.3; không cộng thêm chi phí subagent riêng |
+| 8 | Có `system/task_started` (4 lần, **cả Agent foreground**) và `task_notification` với `status = "completed"`. Không thấy `task_updated.patch` | Tập "việc nền đang mở" (§7.3) cũng chứa subagent foreground đang chạy; vẫn đóng bằng `task_notification`. Giữ nhánh `task_updated` (S-3 có thấy). Thiếu `task_notification` thì đồng hồ `nen_s` 4 giờ là lưới chặn |
+
+### 7.1 Mô hình
+
+| | Theo lượt + resume (D4, giữ cho loại khác) | Phiên sống (D11, CHỌN cho `taovideo`) |
+|---|---|---|
+| Việc nền (render, voice, chờ Poster) | Chết khi lượt kết thúc (S-2) | Sống qua ranh giới lượt (S-3 n2) |
+| Thông báo việc nền xong | Mất | Tới agent, agent tự thức (S-3 n3, n4) |
+| Trả lời người dùng | Tiến trình mới `--resume` | Một dòng JSON vào stdin của tiến trình đang sống |
+| Đang chờ người dùng | Không giữ gì | Giữ tiến trình, làn `gpu` và tài nguyên `kho` (có trần giờ chờ, §7.7) |
+| Reboot / runner chết | Resume được | Mất phiên và mọi việc nền → đối soát file thật, chạy tiếp bằng **phiên mới** (§7.8) |
+| Chi phí | `total_cost_usd` mỗi tiến trình | Cộng dồn trong phiên → runner lấy **chênh lệch** (S-3 n8) |
+
+Một làn: `taovideo` vẫn ở làn `gpu`, giữ tài nguyên `kho` suốt phiên (§4.4). Mỗi lúc chỉ có tối đa **một** phiên sống trên máy.
+
+### 7.2 Lệnh và giao tiếp stdin/stdout
+
+```python
+argv = [CLAUDE_EXE, "-p",
+        "--input-format", "stream-json",
+        "--output-format", "stream-json", "--verbose",
+        "--agent", "aff-taovideo",
+        "--strict-mcp-config",
+        "--tools", ",".join(BO_CONG_CU_TAOVIDEO),
+        "--permission-mode", "dontAsk",
+        "--allowedTools", *BO_CONG_CU_TAOVIDEO,
+        "--disallowedTools", *cong_cu_cam_chung(),
+        "--max-budget-usd", str(tran_usd_viec),       # = taovideo_usd_viec (60 hoặc mức đã hạ); CLI cộng dồn cả phiên (S-4 #5)
+        "--session-id", "<uuid4 MỚI mỗi lần sinh tiến trình>",
+        "--add-dir", "<dự án B>", "--add-dir", "F:/auto video oneshot", "--add-dir", "C:/Users/Mi/.claude/skills"]
+# cwd = dự án A. stdin = PIPE, GIỮ MỞ suốt phiên.
+```
+
+- **Không bao giờ dùng `--resume` cho `taovideo`.** Lý do:
+  - trạng thái thật của quy trình nằm ở file: `kich-ban/<B>_trang-thai.json`, `trang_thai.py tiep` (`scripts/trang_thai.py:403`), kho;
+  - resume một phiên hàng trăm nghìn token thì phải đọc lại cả ngữ cảnh, rất đắt. Chính skill cũng khuyên mở phiên mới (`SKILL.md:69`);
+  - việc nền không sống sót qua resume (S-2).
+
+  Mỗi lần chạy tiếp (sau khi bị ngắt) dùng session id mới, kèm phiếu "LẦN CHẠY TIẾP" (§7.10).
+- **Gửi tin**: mỗi tin là một dòng UTF-8 `{"type":"user","message":{"role":"user","content":"<chữ>"},"parent_tool_use_id":null}` + `\n` (đúng dạng đã đo, `test-spike-s3.json` `dinh_dang_tin_user`). Tin đầu là phiếu. Chỉ **luồng làn** ghi stdin (một người ghi). API chỉ xếp tin vào hàng đợi.
+- **Chỉ ghi stdin sau sự kiện `result` cấp cao** (S-4 #4: tin ghi giữa lượt không vào lượt đó, chỉ được thấy ở lượt sau, và lượt bị chèn có thể hỏng). Luật ghi của `PhienSong` (A-5):
+  - mọi tin (trả lời, `TIN_NHAC`, `TIN_TRAN_CODEX`) đi qua **một hàng đợi**; API và luồng khác chỉ xếp hàng;
+  - chỉ ghi khi tình trạng là `ket_luot` (§7.3: `result` cấp cao là sự kiện cuối + im lặng ≥ `im_lang_s`);
+  - **mỗi `result` cấp cao ghi tối đa một tin**: sau khi ghi, phải đợi `so_ket_luot` tăng (có `result` mới) mới được ghi tin kế. Agent đang `dang_lam` (kể cả tự thức vì việc nền xong) thì tin chờ tới `result` sau;
+  - tin trả lời mang **mã câu hỏi** (§7.6). Lúc ghi, nếu đã có `result` cấp cao mới kể từ `result` sinh ra câu hỏi đó (câu hỏi bị thay hoặc bị rút, §7.3) thì **bỏ tin**, ghi log "bỏ câu trả lời cho câu hỏi <mã> — câu hỏi đã đổi". Như vậy không bao giờ trả nhầm sang câu hỏi mới.
+  - `PhienSong.bo_hang_doi() -> int` (`tools/runner/phien_song.py:101`, FX-27) **chỉ huỷ tin trả lời** (tin có `ma_cau_hoi`). Tin hệ thống (`TIN_NHAC`, `TIN_TRAN_CODEX`, không có mã) giữ nguyên trong hàng đợi. Trả số tin đã huỷ.
+  - `PhienSong.da_ghi_tra_loi(ma_cau_hoi) -> bool` (`phien_song.py:110`): tin trả lời mang mã này đã ghi vào stdin chưa. Vòng chạy chỉ xoá câu hỏi treo (`tra_loi_cho`, `cau_hoi`) khi **chính tin trả lời đó** đã ghi (`vong_lap.py:2088-2092`), không dựa vào số tin còn chờ (tin hệ thống có thể vẫn đang chờ).
+- **Chạm trần `--max-budget-usd`** (S-4 #5): `result` có `subtype = error_max_budget_usd` → tình trạng `loi_luot` → không ghi thêm tin, đóng stdin, việc → `loi` "Chạm trần USD của phiên". Mã thoát 1 sau khi đóng stdin trong trường hợp này không coi là "tiến trình tự chết".
+- **Kết thúc gọn**: đóng stdin rồi chờ thoát ≤ 90 s (S-3 n7: 0,73 s). Quá hạn thì giết cây.
+- **Đọc stdout**: dùng lại cách đọc, che bí mật, ghi `log\<id>.jsonl` + `log\<id>.log` như `thuc_thi.chay_tien_trinh` (`tools/runner/thuc_thi.py:554`).
+  - Hàm đó luôn đóng stdin ngay sau khi ghi phiếu (`thuc_thi.py:541-551`), nên phiên sống cần một module riêng `tools/runner/phien_song.py` (phiếu A-5).
+  - Module này dùng lại `_cach_mo` (`thuc_thi.py:521`), `_tao_job_rieng` (`:157`), `giet_cay` (`:273`), `env_toi_thieu` (`:258`).
+
+### 7.3 Theo dõi phiên: phân loại tình trạng (thuần, phiếu B-5)
+
+Sự kiện **cấp cao** là sự kiện có `parent_tool_use_id` rỗng. Sự kiện của subagent có `parent_tool_use_id` khác rỗng; vẫn được dùng để soát công cụ, đếm lượt và đếm Codex, nhưng không dùng để kết luận lượt.
+
+| Sự kiện | Theo dõi |
+|---|---|
+| `system/init` | `session_id`, `tools`, `claude_code_version` (khác `PHIEN_BAN_CLAUDE_DA_DO` = `2.1.169`, `vong_lap.py:90` → cảnh báo một lần, không chặn: ghi log, `can_ban`, **và nối vào `ket_qua.canh_bao`** vì `can_ban` bị nhánh `hoi` xoá; `vong_lap.py:2038-2048`, FX-27) |
+| `system/task_started` (`task_id`) | thêm vào tập **việc nền đang mở**. S-4 #8: cả subagent `Agent` chạy foreground cũng sinh sự kiện này (đóng bằng `task_notification` `completed`) |
+| `system/task_notification` (`task_id`), hoặc `system/task_updated` có `patch.status` kết thúc | bỏ khỏi tập |
+| `result` cấp cao | `luc_ket_luot`, văn bản; chi phí chênh lệch `d = tong − moc` nếu `tong ≥ moc`, ngược lại `d = tong` (coi như phiên đếm lại); `moc = tong` |
+| mọi sự kiện | `luc_su_kien_cuoi` |
+
+Tình trạng tại thời điểm `t` (`im_lang_s` = 10 s, gấp đôi mức 5 s đã đo):
+
+| Điều kiện | Tình trạng |
+|---|---|
+| Chưa có `result` cấp cao kể từ hoạt động cuối, hoặc `t − luc_su_kien_cuoi < im_lang_s` | `dang_lam` |
+| `result` cấp cao có `is_error` | `loi_luot` (văn bản lỗi) |
+| `result` cấp cao là sự kiện cuối, đã im lặng ≥ `im_lang_s` | `ket_luot` (kèm `KetQuaAgent` từ `phieu.phan_tich_ket_qua`, `tools/runner/phieu.py:301`, và số việc nền đang mở) |
+
+Ánh xạ `ket_luot` → hành động (`phieu.anh_xa_ket_luot_song`, B-4):
+
+| `KetQuaAgent` | Việc nền mở | Hành động |
+|---|---|---|
+| `CAN_USER` | bất kỳ | `hoi`: câu hỏi lên web (§7.6); việc nền vẫn chạy |
+| `DONE`, `DONE_WITH_CONCERNS` | bất kỳ | `dong`: đóng stdin → đối soát → `xong`. Còn việc nền thì ghi lo ngại "N việc nền bị dừng khi kết thúc" |
+| `NEEDS_APPROVAL` | bất kỳ | `hoi` loại `chon` ["Đồng ý", "Không đồng ý"], nội dung = 300 ký tự đầu báo cáo |
+| `BLOCKED`, `NEEDS_CONTEXT` | bất kỳ | `hoi` loại `cau_hoi`, nội dung = 1500 ký tự đầu báo cáo |
+| `KHONG_RO` | > 0 | `cho_nen`: đứng `dang_chay`, `can_ban` = "Agent đang chờ N việc nền (render/voice) — không cần bạn" |
+| `KHONG_RO` | 0, chưa nhắc lần nào kể từ lần hỏi/trả lời cuối | `nhac`: gửi `TIN_NHAC` = "Tiếp tục. Chỉ dừng ở điểm CẦN_USER, hoặc khi xong thì báo cáo theo mẫu (dòng đầu TRẠNG THÁI)." |
+| `KHONG_RO` | 0, đã nhắc | `hoi` loại `khong_ro` (nút "Tiếp tục" / "Huỷ") |
+
+Agent tự thức trong lúc câu hỏi đang treo (việc nền vừa xong) → tình trạng về `dang_lam`, câu hỏi vẫn treo. `ket_luot` mới:
+- nếu có `CẦN_USER` thì thay câu hỏi cũ;
+- nếu không có thì câu hỏi cũ coi như bị agent rút lại, việc về `dang_chay`. Tin trả lời đã xếp hàng cho câu cũ bị huỷ (`bo_hang_doi`, chỉ huỷ tin có mã; `TIN_NHAC`/`TIN_TRAN_CODEX` giữ lại, §7.2) và ghi vào log.
+
+Trong cả hai trường hợp, câu trả lời mang mã câu hỏi cũ bị bỏ (§7.2), kể cả khi người dùng đã bấm gửi trước lúc agent tự thức.
+
+### 7.4 Máy trạng thái của `taovideo` (bổ sung §4.3)
+
+Không đổi schema DB (tránh đụng schema 3 mà D10 đề xuất).
+
+**Phiên sống được nhận biết bằng `pid` khác rỗng ở `dang_chay` hoặc `can_tra_loi`.** Với `taovideo`, runner giữ `pid`, `pid_tao_luc` suốt phiên (kể cả khi đang chờ trả lời). Phiên kết thúc thì xoá hai trường này.
+
+| Từ | Đến | Khi nào |
+|---|---|---|
+| `cho` | `dang_chay` | Như §4.3. Cổng tốn tiền §5.2 bước 1–4 chạy **một lần** ngay trước khi sinh tiến trình (tiêu lời duyệt D9). Đặt `session_id` = uuid4 mới, `phien_da_tao=0` |
+| `dang_chay` | `can_tra_loi` (phiên còn sống) | hành động `hoi` |
+| `can_tra_loi` (phiên sống) | `dang_chay` | `POST /tra-loi` hợp lệ (§7.6) → tin vào hàng đợi stdin. **Không** tiêu lời duyệt, không sinh tiến trình mới |
+| `can_tra_loi` (phiên sống) | `dang_chay` | agent rút câu hỏi (§7.3) |
+| `dang_chay` / `can_tra_loi` | `xong` | hành động `dong` + đối soát (§7.8) |
+| `dang_chay` / `can_tra_loi` | `loi` | quá giờ, chạm trần, công cụ ngoài danh sách, hết quota, tiến trình tự chết, runner khởi động lại (§7.7, §7.8). Từ `loi` chỉ có "Xin duyệt lại" / "Chạy lại" (D9) |
+| trạng thái mở | `huy` | `POST /huy` → giết cả cây |
+
+`co_the_xin_duyet_lai` thêm điều kiện: không có phiên sống (`api.co_the_xin_duyet_lai`, `tools/runner/api.py:377`). "Có phiên sống" lấy từ `BoChay.co_phien_song(id)` (`vong_lap.py:1013`, FX-27): đúng từ lúc đăng ký phiên **tới khi luồng làn đã ghi xong trạng thái cuối**, gồm cả khoảng tiến trình đang thoát, đổi tên mp3 hỏng và đối soát. Nhờ vậy web không mở "Xin duyệt lại" trong lúc phiên đang đóng. Nhận câu trả lời thì còn đòi stdin mở (`tra_loi_song` kiểm riêng).
+
+### 7.5 Duyệt và chi phí: một lời duyệt cho một phiên sống, kèm trần cứng
+
+**Chọn:** tiêu **một** lời duyệt (D9) cho **một phiên sống**. Trong phiên đó, agent được làm hết quy trình (cả 2 mẻ, mọi pha GenMax) nhưng bị chặn bởi các trần do runner đo từ dữ liệu thật. Phiên kết thúc vì bất kỳ lý do gì thì muốn chạy tiếp phải "Xin duyệt lại".
+
+**Không chọn duyệt từng pha GenMax qua `CẦN_USER`**, vì:
+1. Đó không phải chốt chặn. Agent tự quyết khi nào hỏi. `tao_voice.py --dong-y` gọi bằng Bash, và key GenMax nằm ở biến môi trường **tài khoản Windows**, script tự đọc (`SKILL.md:40`), nên env tối thiểu không giấu được. Runner không có cách chặn cứng một lần gọi GenMax giữa phiên.
+2. Skill đã chốt voice tự chạy không hỏi (`SKILL.md:36`, luật 4). Bắt hỏi thì phải sửa skill và người dùng phải trả lời đúng lúc voice (có thể nửa đêm). Hỏi chậm thì việc giữ GPU lâu hơn.
+3. Một câu trả lời bằng nút không qua sổ tiêu D9, nên không mạnh hơn một lời duyệt đầu việc.
+
+**Trần trong một phiên** (hằng số trong `han_muc.py`, `cau_hinh.json` chỉ được hạ):
+
+| Trần | Giá trị đề xuất | Đo bằng | Vượt thì |
+|---|---|---|---|
+| `taovideo_usd_viec` | 60 USD-ước-tính | Σ chênh lệch `total_cost_usd` (§7.3, đã gồm subagent theo S-4 #7), ghi DB sau mỗi `result` (`cong_chi_phi`). Cùng số truyền vào `--max-budget-usd` của tiến trình (CLI cộng dồn cả phiên, S-4 #5) làm lưới thứ hai | runner thấy vượt → giết cây → `loi`; CLI chặn trước (`error_max_budget_usd`) → đóng stdin → `loi` |
+| `taovideo_mp3_viec` | 25 file | Tập tên `<A>/voice/**/*_adam.mp3` có mtime ≥ lúc sinh phiên, quét 30 s một lần. Đếm theo tập tên đã từng thấy, nên dời sang `_hong/` không làm giảm số | giết cây → `loi` "vượt trần voice GenMax (đếm file thật)" |
+| `codex_luot_viec` | 6, **tính theo phiên** (đặt lại khi tiêu lời duyệt mới) | Lượt Codex đếm theo luật ở cuối §7.5 (`stream_json.cac_goi_codex`, `tools/runner/stream_json.py:327`; khử trùng theo id `tool_use` trong `theo_doi_phien.py:110-115`), trên mọi sự kiện (cả của subagent) | bằng trần → khi rảnh gửi `TIN_TRAN_CODEX` = "Đã dùng hết N lượt Codex của lần duyệt này. Không gọi Codex nữa; mẻ chưa qua Codex thì CẦN_USER (LOẠI: chon, Anh duyệt / Dừng)". Vượt trần → giết cây → `loi` |
+| `TRAN_LUOT["taovideo"]` | 1500 message assistant mỗi phiên (đã có, `han_muc.py:29-30`) | `dem_luot` khử trùng theo message id | giết cây → `loi` |
+| giờ | §7.7 | | |
+
+**Đếm lượt Codex** (FX-28; `lenh_goi_codex` `tools/runner/stream_json.py:313`, `cac_goi_codex` `:327`). Một lượt Codex là một khối `tool_use` thuộc một trong ba dạng:
+- `Agent`/`Task` có `input.subagent_type` bắt đầu bằng `codex`;
+- `Skill` có `input.skill` bắt đầu bằng `codex:`;
+- `Bash` có lệnh gọi Codex. Gồm: từ lệnh `codex` đứng riêng (kể cả `.exe/.cmd/.bat/.ps1`, cuối một đường dẫn); `codex-companion` với mọi lệnh con **trừ** `status`, `result`, `cancel`, `task-resume-candidate`, `setup` (chỉ đọc trạng thái, không gọi model); script có chữ `codex` trong tên file (`*.py/.js/.mjs/.cjs/.exe/.cmd/.bat/.ps1/.sh`). Mẫu chặt theo tên chương trình, nên lệnh chỉ mang chữ codex trong tham số (vd `c2_kiem.py --codex`) không tính.
+
+Bash `codex-companion` chạy **trong subagent** (`parent_tool_use_id` khác rỗng) được tính theo id của `Agent` cha, nên không đếm đôi với lần gọi Agent codex. Bash Codex khác dùng id riêng. Chữ trong prompt/văn bản không tính.
+
+Giới hạn đã chấp nhận: không chống được che giấu cố ý (lệnh qua biến môi trường, ghép chuỗi, script viết ra rồi chạy với tên không có chữ codex). Bù lại, phiếu CHẾ ĐỘ CHẠY ghi luật "Mọi lệnh Bash gọi codex … cũng bị runner tính vào trần Codex" (`tools/runner/phieu.py:175-177`).
+
+**Phiếu in trần HIỆU LỰC** (FX-28). Dòng "Trần của lần duyệt này" trong phiếu (`phieu.py:172-174`) lấy từ `han_muc.tran_taovideo(hm) -> {"usd", "mp3", "codex", "gio"}` (`tools/runner/han_muc.py:109`), cùng nguồn với vòng chạy. Vì vậy `cau_hinh.json` hạ trần thì phiếu in số đã hạ. `phieu._tran_taovideo` (`phieu.py:125`) dùng `hm` của bên gọi nếu có; không có thì đọc `cau_hinh.json` của thư mục runner (hỏng/thiếu → trần code).
+
+`taovideo_ngay` đổi nghĩa thành **1 việc/ngày (đếm việc, không đếm lần tiêu)**. Thêm `taovideo_lan_ngay = 3` (số lần tiêu/ngày). Lý do: theo cách đếm D9 hiện tại (`so_luong_ngay`, `han_muc.py:110`, mỗi lần tiêu tính một), lần duyệt lại sau khi máy tắt sẽ bị chặn tới hôm sau.
+
+`claude_usd_ngay` (40) chỉ kiểm lúc nhận việc, như §6.3. Một phiên `taovideo` được chạy tới trần riêng 60. Ngày đó các việc Claude khác có thể phải đợi tới hôm sau (câu hỏi Q5-1).
+
+Khung duyệt hiện `uoc_tinh`: "1 lời duyệt = 1 phiên chạy. Trong phiên: ≤25 voice GenMax (đếm file thật), ≤6 lượt Codex, ≤60 USD-ước-tính Claude, ≤8 giờ làm, mỗi câu hỏi chờ ≤3 giờ. Phiên bị ngắt (máy tắt, quá giờ, chạm trần) → phải duyệt lại. Trả lời câu hỏi trong phiên không cần duyệt lại."
+
+### 7.6 Câu hỏi lên web và trả lời qua stdin
+
+Hành động `hoi`:
+- sinh **mã câu hỏi** `ma` = `"q" + secrets.token_hex(6)` (khớp `^q[0-9a-f]{12}$`), lưu kèm `so_ket_luot` của `result` sinh ra câu hỏi (giữ trong `PhienSong`, không vào DB);
+- chuyển `dang_chay` → `can_tra_loi` với `cau_hoi` đã che + làm sạch (như `che_truong_ket_thuc`) **có thêm trường `ma`**, giữ `pid`;
+- bắt đầu đồng hồ chờ;
+- huy hiệu web tăng.
+
+**Mã câu hỏi** (S-4 #4; đổi so với bản trước). Tin ghi giữa lượt không tới được lượt đó, và agent có thể tự thức rồi hỏi câu khác trong lúc người dùng đang gõ. Vì vậy mỗi câu trả lời phải nói rõ nó trả lời câu hỏi nào:
+- `CanNguoiDung` (`tools/runner/kieu.py:68`) thêm trường cuối `ma: str = ""`. `thanh_dict` ghi `"ma"` khi khác rỗng; `tu_dict` đọc `"ma"` (thiếu → `""`);
+- web gửi `ma_cau_hoi` = `cau_hoi.ma` đang hiện;
+- runner so với `cau_hoi.ma` hiện tại trong DB; lệch hoặc thiếu (với việc phiên sống) → 409 "Câu hỏi đã đổi — tải lại để xem câu mới";
+- tới lúc ghi stdin vẫn kiểm lần nữa theo §7.2 (đã có `result` mới thì bỏ tin).
+
+Đường trả lời:
+1. Web gửi `POST /api/viec/<id>/tra-loi` với `{tra_loi, ma_cau_hoi, mat_khau?}`.
+2. Worker:
+   - có `mat_khau` → `kiemMatKhau` + đếm sai bằng KV (§9 mục 4), rồi body gửi máy nhà có `da_xac_nhan_mat_khau: true`;
+   - không có → `false`;
+   - `ma_cau_hoi`: nếu có thì phải khớp `^q[0-9a-f]{12}$` (sai → 400), chuyển nguyên sang máy nhà;
+   - ký request (D7).
+3. video_server chuyển tiếp (regex §3.2 đã có `tra-loi`).
+4. Runner `p_tra_loi`, nhánh `taovideo`:
+   - `kiem_tra_loi_dot5(cau_hoi, tra_loi, da_xac_nhan, ton_tien=True)`:
+     - `chon`: đúng một lựa chọn **và** `da_xac_nhan=true` (một lựa chọn có thể cho phép tiêu thêm tiền trong trần, vd tạo lại voice hỏng `SKILL.md:159`);
+     - `cau_hoi`: 1–1000 ký tự sau `lam_sach_chu` **và** `da_xac_nhan=true` (D3);
+     - `viec_tay`: `"da_lam_xong"` (không cần mật khẩu);
+     - `khong_ro`: `"tiep_tuc"` (không cần mật khẩu).
+   - kiểm `ma_cau_hoi` bằng `cau_hoi.ma` (như trên);
+   - gọi `tra_loi_song(id, boi, gia_tri, ma_cau_hoi)` (BoChay, dưới một khoá). Hàm này:
+     1. kiểm còn phiên sống, việc đang `can_tra_loi` và `cau_hoi.ma == ma_cau_hoi` (lệch → `SaiTrangThai` → 409);
+     2. CAS `can_tra_loi → dang_chay` (xoá `cau_hoi`);
+     3. `them_tra_loi`;
+     4. xếp `phieu.lap_tin_tiep(viec, cau_hoi, gia_tri)` (`phieu.py:283`) vào hàng đợi stdin, gắn `ma_cau_hoi` (`PhienSong.gui(text, ma_cau_hoi)`).
+
+     Không có phiên → `KhongCoPhien` → 409 "Phiên đã đóng — dùng Xin duyệt lại".
+
+     Câu hỏi treo trong bộ nhớ phiên (`tra_loi_cho`, `cau_hoi`) chỉ được xoá khi **chính tin trả lời** mang mã đó đã ghi vào stdin (`PhienSong.da_ghi_tra_loi`, §7.2; `vong_lap.py:2088-2092`, FX-27). Đồng hồ chờ và câu hỏi treo vì vậy không bị xoá sớm khi hàng đợi còn tin hệ thống.
+   - Loại tốn tiền khác giữ 409 như A-D9b.
+5. `GET /viec/<id>` thêm `phien_song: bool`. Web chỉ hiện khung trả lời cho việc tốn tiền khi `phien_song=true`; ngược lại chỉ có "Xin duyệt lại" / "Huỷ" (như FX-12).
+
+Các điểm hỏi dự kiến của quy trình:
+- C0 giá/deal (`SKILL.md:67`, `:130`) → `cau_hoi`;
+- tạo lại voice hỏng (`SKILL.md:159`, `:176`) → `chon`;
+- bản trượt sau 2 vòng (`SKILL.md:74`) → `chon`;
+- lỗi script (`SKILL.md:78`) → `cau_hoi`;
+- mở app Poster → `viec_tay`.
+
+Chốt thư mục Bước B (`taomevideo\SKILL.md:42`) **không còn là câu hỏi**: runner chốt lúc tạo việc (§7.10).
+
+### 7.7 Quá giờ và huỷ
+
+| Đồng hồ | Đề xuất | Hết giờ thì |
+|---|---|---|
+| `lam_s`: thời gian **không** chờ người dùng | 8 giờ (giữ `het_gio_s` hiện có, `danh_muc.py:815`) | giết cây → `loi` "Quá giờ làm 8 giờ" |
+| `cho_s`: mỗi lần chờ trả lời | 3 giờ | không còn việc nền → đóng stdin (thoát gọn); còn việc nền → giết cây. Cả hai → `loi` "Hết giờ chờ trả lời câu hỏi: <câu hỏi>". Xin duyệt lại thì phiên mới nhận lại câu hỏi đó trong phiếu "LẦN CHẠY TIẾP" |
+| `nen_s`: `cho_nen` liên tục | 4 giờ (khớp `cho_tron_goi.py --toi-da-phut 240`, `scripts/cho_tron_goi.py:68`) | giết cây → `loi` "Việc nền chạy quá 4 giờ" |
+| `tong_s`: trần tuyệt đối | 24 giờ | giết cây → `loi` |
+
+**Huỷ** (`POST /huy`, cả lúc `can_tra_loi`): `bao_huy` (`vong_lap.py:918`) → phiên giết cả cây bằng Job Object riêng → `huy`. Việc dở để lại:
+- `.render.lock` hết hạn sau 3 phút khi tiến trình chết (`SKILL.md:174`);
+- có thể có `*.partial.mp4` của Bước B;
+- mp3 dở được đổi tên `.hong-<id>` bằng `mp3_hong` (`danh_muc.py:919`) cho mẻ có trạng thái mtime ≥ lúc sinh phiên.
+
+Web ghi cạnh nút Huỷ: "Huỷ dừng ngay render/voice; video đã xong vẫn giữ".
+
+### 7.8 Bị ngắt (runner chết, máy khởi động lại, tiến trình tự chết) và đối soát
+
+Job Object (D6) giết mọi thứ, gồm cả việc nền. Không có cách nối lại việc nền (S-2), nên runner **không** cố resume mà đối soát bằng file thật.
+
+`khoi_dong` (`vong_lap.py:978`) mở rộng: mọi việc `taovideo` ở `dang_chay` **hoặc `can_tra_loi`** mà `pid` khác rỗng được coi là phiên bị ngắt:
+1. Giết cây nếu `pid` còn sống và `create_time` khớp.
+2. Đổi tên mp3 hỏng như §7.7.
+3. `doi_soat_taovideo(ts, viec, mt) -> tuple[str, str]` = (`xong` | `chua`, tóm tắt ≤ 800 ký tự) (`tools/runner/danh_muc.py:1217-1271`, FX-28). Hàm **chỉ đọc file**: không chạy lệnh, không `git pull`, không cần mutex `kho`. **Không** gọi `kho.py xem`, vì lệnh đó `git pull` trước (`tools/kho.py:432-433`).
+
+   **`xong` ⇔ cả ba điều kiện (a), (b), (c)** (`danh_muc.py:1270`); thiếu một là `chua`:
+   - **(a) Bước A:** có ≥ 1 mẻ mà `<A>/kich-ban/<B>_trang-thai.json` có mtime ≥ `tao_luc` (`_me_moi_buoc_a`, `danh_muc.py:1115`), trong đó `buoc.verify.xong` (do `chay.py verify` tự ghi, `SKILL.md:101`) **và** `kich-ban/_log/<B>_tron_goi.xong.json` có `exit` = 0 (`scripts/chay.py:177`). `buoc.ban_giao.xong` chỉ ghi vào tóm tắt, không là điều kiện.
+   - **(b) Bước B:** có ≥ 1 `<B>/output/*.mp4` mtime ≥ `tao_luc` **và** 0 file `*.partial.mp4` (đếm partial bất kể mtime, không đệ quy; `_dem_mp4_moi`, `danh_muc.py:1136`, `:1267-1268`).
+   - **(c) Kho:** đọc trực tiếp `data/<UID>/info.json` → `da_lam_video.poster[]` (`tools/kho.py:510-528`; `_dong_kho_taovideo`, `danh_muc.py:1162`): có **dòng A** (`nhan` ≠ `nha.cua.mit`, `duong_dan` thuộc dự án A) **và dòng B** (`nhan == "nha.cua.mit"`, `duong_dan` thuộc dự án B).
+
+   **Ảnh chụp kho lúc tạo việc** (`ket_qua.kho_luc_tao`, hằng `KHOA_ANH_CHUP_KHO`, `danh_muc.py:1159`). Dòng kho không có thời gian, nên một dòng cũ từ mẻ trước có thể làm (c) đúng oan. Cách chặn:
+   - lúc tạo việc, runner lưu `anh_chup_kho_taovideo(ts, mt) -> {"a": [[folder, so_video], …], "b": […]}` (`danh_muc.py:1182`, cùng luật lọc dòng A/B như trên) vào `ket_qua.kho_luc_tao`, và giữ nguyên trường này qua "Xin duyệt lại";
+   - việc có ảnh chụp → mỗi bước phải có ít nhất một cặp `(folder, so_video)` **chưa có** trong ảnh chụp (folder mới, hoặc đẩy lại cùng folder với `so_video` khác; `_co_dong_moi`, `danh_muc.py:1209`);
+   - ảnh chụp hỏng (không phải dict, thiếu `a`/`b`, phần tử không phải cặp 2 phần tử) → `chua` (`_doc_anh_chup`, `danh_muc.py:1192`; `:1255-1260`);
+   - không có ảnh chụp (việc tạo trước FX-28) → (c) chỉ cần có dòng khớp; khi đó Bước B dựa vào (b) để chống dòng cũ.
+
+   Tóm tắt dạng: "Bước A mẻ 20261118-cq01: verify ĐẠT, tron-goi exit 0, bàn giao xong · Bước A: Poster đã ghi kho (dòng mới) · Bước B: 12 mp4 mới, 1 partial, chưa có dòng mới trong kho".
+
+   Không chạy lại `verify` / `verify_render` lúc khởi động: chúng tốn GPU, ghi file, và runner chưa giữ làn lúc này. Agent của lần chạy tiếp sẽ tự kiểm theo skill.
+4. `xong` → `xong` ("đối soát sau khởi động lại"). `chua` → `loi` "Bị ngắt (máy tắt/runner dừng) — <tóm tắt>. Mọi việc nền đã dừng. Kiểm log rồi bấm Xin duyệt lại để làm tiếp". Việc tốn tiền không bao giờ tự chạy lại (D5).
+
+Phiên tự chết giữa chừng (mã ≠ 0, không có `result` cuối) → cùng đối soát → `loi` kèm 1200 ký tự cuối stderr đã che.
+
+**Chạy tiếp sau "Xin duyệt lại"**: phiên mới, session id mới, stdin = `lap_phieu_tiep_taovideo(...)` (§7.10).
+
+### 7.9 Công cụ cho phép
+
+`BO_CONG_CU_TAOVIDEO = ("Read", "Write", "Edit", "Glob", "Grep", "Bash", "Skill", "Agent", "Task", "TaskOutput", "TaskStop", "TodoWrite")`.
+
+- Bỏ `SendMessage`: không có trong `-p` (S-2, S-3 n5).
+- Có cả `Agent` và `Task`: init báo `Task`, còn `tool_use` tên `Agent` (S-3). Thiếu một trong hai thì `SoatCongCu` (`tools/runner/stream_json.py:142`) giết phiên.
+- `TaskOutput` / `TaskStop` thay `BashOutput` / `KillShell` (S-3 `cong_cu_tham_do_trong_tools`).
+- Subagent của quy trình (`tvc-tho` khai `SendMessage, ToolSearch`, `C:\Users\Mi\.claude\agents\tvc-tho.md:4`; `aff-dung-video` khai `Skill`, `aff-dung-video.md:4`) có thể phát `tool_use` ngoài danh sách.
+  - **Kết luận S-4 #2:** `--tools` giới hạn cả subagent (subagent được yêu cầu gọi `WebFetch` thì không gọi được); subagent chỉ phát `Bash`, `Read`. Vì vậy danh sách soát **giữ đúng** `BO_CONG_CU_TAOVIDEO`, không thêm công cụ nào. Subagent phát tên ngoài danh sách (vd do CLI đổi bản) → giết như cấp cao.
+  - Các công cụ ra mạng (`WebFetch`, `WebSearch`) hay `AskUserQuestion` thì không bao giờ được thêm.
+- **Subagent không gọi được `Agent` lồng** (S-4 #3). Có `Agent`/`Task` trong `--tools` chỉ giúp agent chính giao việc; subagent nhận việc "tự fan-out" sẽ không gọi được và phải tự làm lần lượt (hoặc trả lỗi). Mọi fan-out phải do agent chính gọi (§7.10, K-3).
+- `CONG_CU_CAM_CHUNG` giữ như §6.1. `AskUserQuestion` đã nằm trong đó.
+- **`Bash` gọi Codex** vẫn được phép (không chặn được bằng danh sách công cụ), nhưng bị tính vào trần `codex_luot_viec` theo luật đếm ở §7.5 (`stream_json.lenh_goi_codex`, `cac_goi_codex`). Che giấu cố ý (biến môi trường, ghép chuỗi) không chống được; phiếu CHẾ ĐỘ CHẠY ghi luật này cho agent.
+
+### 7.10 Phiếu `taovideo`
+
+Tham số (giữ khung `danh_muc.py:813-823`, hoàn thiện ở B-4):
+- `uid`;
+- `du_an_a`: mã 12 hex, dự án có `raw/`;
+- `du_an_b`: mã, hoặc `"tu_tim"`. **Runner tự chốt lúc tạo:** lấy các dự án của UID có `takes/*.mp4`; đúng 1 thì lưu mã đó, 0 hoặc ≥ 2 thì 400 kèm danh sách để web cho chọn. Đây là luật của `taomevideo\SKILL.md:36-43`, nhưng làm trước khi duyệt thay vì hỏi giữa chừng;
+- `wm` ∈ `("khong", *WM_CHO_PHEP)`;
+- `gia` int hoặc null.
+
+Phiếu lần đầu (`lap_phieu`, nhánh `taovideo`) = mẫu §6.4, thêm khối:
+
+```
+CHẾ ĐỘ CHẠY: MỘT phiên sống (claude -p, stream-json). Runner giữ phiên tới khi bạn báo cáo cuối.
+- Việc nền (Bash run_in_background, cho_tron_goi.py) ĐƯỢC dùng: thông báo hoàn tất sẽ tới, bạn tự thức. Không sleep/poll.
+- KHÔNG có SendMessage. Bản trượt: lỗi ≤2 câu thì Edit đúng câu; nhiều câu thì giao agent MỚI kèm brief + thẻ + đúng
+  các dòng lỗi (SKILL.md tao-video-tu-canh-quay, mục "Bản trượt", nhánh "nhắn không được"). Khi giao chặng C2, chép
+  nguyên dòng này vào prompt subagent C2.
+- Subagent KHÔNG gọi được Agent (đã đo). Mọi việc phải giao nhiều agent cùng lúc (vd chặng C2: 18 agent tvc-tho viết
+  kịch bản, agent làm lại thẻ công thức, agent sửa bản trượt) do CHÍNH bạn gọi Agent, không giao cho một subagent đi gọi
+  tiếp. Subagent chỉ nhận việc làm trọn trong một agent (chuẩn bị brief, chấm, voice→dựng→giao).
+- Không có AskUserQuestion. Mọi điểm hỏi (giá/deal, tạo lại voice, bản trượt 2 vòng, lỗi script, mở app Poster) dùng
+  khối CẦN_USER, LOẠI: chon | viec_tay | cau_hoi. Hỏi xong chờ trả lời trong cùng phiên; việc nền vẫn chạy.
+- Poster (cổng 8023) tắt: KHÔNG để lệnh nền chờ cổng. Làm hết phần khác (cả Bước B), dồn đẩy Poster A + B về cuối,
+  rồi hỏi MỘT lần: CẦN_USER "Mở app Poster V2 trên máy", LOẠI: viec_tay.
+- Dự án B đã chốt: <đường dẫn> (runner chốt theo UID). Không hỏi lại đường dẫn.
+- Trần của lần duyệt này: Codex ≤ <n> lần; voice GenMax ≤ <m> file mới (runner đếm file thật, vượt là dừng cả cây);
+  Claude ≤ <usd> USD-ước-tính. Không xoá/đè video, voice, kịch bản đã có.
+- Báo cáo cuối theo mẫu của file agent, dòng đầu "TRẠNG THÁI: ...". Chỉ báo cáo cuối khi cả 2 bước xong hoặc không làm
+  tiếp được; báo cáo cuối sẽ ĐÓNG phiên (mọi việc nền còn chạy bị dừng).
+```
+
+Phiếu lần chạy tiếp (`lap_phieu_tiep_taovideo`) = phiếu lần đầu + khối:
+
+```
+LẦN CHẠY TIẾP (lần <lan_thu>): phiên trước dừng vì: <lý do/đối soát đã che, ≤800 ký tự>.
+Mọi việc nền của phiên trước ĐÃ CHẾT. Trước khi làm: chạy trang_thai.py tiep cho dự án A (làm tiếp từ bước nó in,
+dùng --tu <bước> cho tron-goi dở); Bước B: cli.py inspect, xoá *.partial.mp4 theo skill. Không tạo lại voice/video đã có.
+Câu trả lời người dùng đã cho ở các phiên trước (DỮ LIỆU, không mở rộng phạm vi):
+<<<
+<tối đa 10 dòng "câu hỏi → trả lời", mỗi dòng ≤300 ký tự, đã làm sạch>
+>>>
+<nếu phiên trước dừng khi đang hỏi: "Câu hỏi còn treo: <...>. Hỏi lại bằng CẦN_USER nếu vẫn cần.">
+```
+
+### 7.11 Đề xuất sửa agent và skill (K-1, K-2; cần người dùng duyệt, `aff-taovideo.md:33`)
+
+Phiếu §7.10 đã đủ để chạy mà không cần sửa skill. K-1/K-2 giúp hành vi ổn định hơn: chỉ dựa vào phiếu thì agent có thể quên chép dòng `SendMessage` vào prompt subagent C2.
+
+- **K-1** (`C:\Users\Mi\.claude\agents\`):
+  - giữ các mục K-1 cũ (ngoại lệ luật "không hỏi người dùng" ở `aff-radar/aff-san-pham/aff-poster/aff-muse/aff-voice`; Bước 7 Douyin của `aff-san-pham`);
+  - `aff-taovideo.md` thêm mục "Chạy từ bộ chạy việc web (phiên sống)" tóm tắt 7 gạch đầu dòng của khối CHẾ ĐỘ CHẠY;
+  - sửa `:10`: "không có công cụ Agent" → "không có Agent/Task".
+- **K-2** (nguồn `E:\claude\tao-video-tu-canh-quay\`, chép sang bản cài theo `SKILL.md:215`): thêm nhánh "khi phiên không có `SendMessage` (chạy headless)" vào các chỗ sau:
+  - `SKILL.md:72`, `:74`, `:239`;
+  - `references/prompt-chang.md:96`, `:126`, `:201`.
+
+  Nhánh này: sửa theo câu bằng Edit, hoặc agent mới kèm brief + thẻ + dòng lỗi. Chạy 2 bộ test của skill (`SKILL.md:208-209`).
+- K-1 và K-2 đã ghi ngày 18/11 (người dùng "Ghi hết", `.culiapp/nhat-ky.md:46`).
+- **K-3 (mới, sau S-4 #3; cần người dùng duyệt).** Bản cài hiện tại của skill để **subagent chặng C2 tự fan-out**:
+  - `C:\Users\Mi\.claude\skills\tao-video-tu-canh-quay\SKILL.md:50`: "subagent C2 dùng agent FOREGROUND";
+  - `:72`: 18 agent `tvc-tho` "do subagent chặng C2 tự fan-out";
+  - `:74`: subagent C2 giao `tvc-tho` làm lại thẻ;
+  - `:76`: nhánh không có `SendMessage`, subagent C2 giao `tvc-tho` mới sửa bản trượt;
+  - `:77`: nhóm N mẻ, 18 agent cho cả nhóm.
+
+  Trong phiên `claude -p`, subagent không gọi được `Agent`, nên các chỗ này rơi vào nhánh dự phòng "subagent C2 tự viết lần lượt" (`:72`): chậm hơn nhiều, mất cách cache prompt chung, và có thể chạm trần `lam_s` 8 giờ.
+
+  Đề xuất K-3 thêm nhánh "chạy headless (`claude -p`)": **điều phối viên (agent chính) tự làm phần fan-out của C2**:
+  1. giao 1 subagent chuẩn bị (`c2_chuan_bi.py`, điền brief) → trả đường dẫn brief + danh sách mã;
+  2. agent chính phát 18 agent `tvc-tho` foreground trong 1 message, theo đúng mẫu prompt ở `references/prompt-chang.md`;
+  3. giao 1 subagent chấm (`c2_kiem.py`) → trả các mã trượt;
+  4. agent chính phát agent `tvc-tho` mới cho các mã trượt.
+
+  Làm thẻ công thức thiếu (`:74`) cũng theo cách trên. K-3 là một phần của việc sửa skill (nguồn `E:\claude\tao-video-tu-canh-quay\`, chép sang bản cài theo luật ở bản cài `SKILL.md:217`). Chưa có K-3 thì khối CHẾ ĐỘ CHẠY §7.10 vẫn nhắc agent chính, nhưng chỉ là lời dặn: agent có thể vẫn đi theo `SKILL.md`.
+
+### 7.12 Rủi ro còn lại
+
+- Giữ làn `gpu` + `kho` trong lúc chờ người dùng, tối đa 3 giờ mỗi câu hỏi. Trong lúc đó `voice_pv`, `voice_genmax`, `sua_video` và các việc đụng kho phải đợi.
+- Trần GenMax là **phát hiện sau khi xảy ra**: có thể vượt tối đa 1 file trước khi bị giết. Không chặn được trước khi gọi API (key đọc từ tài khoản Windows).
+- `stream-json` vào là giao diện ít tài liệu. Claude CLI tự nâng bản có thể đổi hành vi: init báo phiên bản khác `2.1.169` → `can_ban` cảnh báo; nâng bản thì chạy lại S-3/S-4.
+- Dự án lớn có thể chạm hạn mức gói Max giữa chừng → `loi_luot` → đóng phiên → `loi` + tạm dừng Claude 30 phút (§6.3). Chạy tiếp bằng xin duyệt lại.
+- Người dùng chạy tay quy trình trên cùng dự án khi phiên đang sống thì hai bên tranh `.render.lock`. Web ghi "đừng chạy tay cùng SP khi việc đang chạy".
 
 ---
 
@@ -552,7 +885,7 @@ Mọi route đòi `x-runner-key`. Mọi **POST** còn đòi chữ ký request §
 | `GET /viec` | `?trang_thai=&uid=&gioi_han=&tom_tat=1` | `{viec:[…]}` hoặc `{dem}` |
 | `GET /viec/<id>` | – | `{viec, tra_loi:[…], xem_truoc, tham_so_chuan}` (`tham_so_chuan` để Worker ký duyệt) |
 | `GET /viec/<id>/log` | `?tu=` | `{tu, den, noi_dung, het}` |
-| `POST /viec/<id>/tra-loi` | `{tra_loi, boi}` | Chỉ khi `can_tra_loi`. `chon`: đúng một lựa chọn; `viec_tay`: `"da_lam_xong"`; `khong_ro`: `"tiep_tuc"`; `cau_hoi`: chỉ đợt 5, 1–1000 ký tự |
+| `POST /viec/<id>/tra-loi` | `{tra_loi, boi}` | Chỉ khi `can_tra_loi`. `chon`: đúng một lựa chọn; `viec_tay`: `"da_lam_xong"`; `khong_ro`: `"tiep_tuc"`; `cau_hoi`: chỉ đợt 5, 1–1000 ký tự. **`taovideo` (D11, §7.6):** chỉ khi có phiên sống (`phien_song`), body thêm `da_xac_nhan_mat_khau`; `chon`/`cau_hoi` cần cờ này = true; không có phiên → 409 |
 | `POST /viec/<id>/duyet` | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` | Chỉ khi `cho_duyet`; kiểm chữ ký duyệt + hạn mức |
 | `POST /viec/<id>/tu-choi` · `/huy` | `{boi}` | `{viec}` |
 | `POST /viec/<id>/chay-tiep` | `{boi}` | `loi→cho` theo §4.3; 409 nếu không đủ điều kiện hoặc là loại tốn tiền (D9) |
@@ -716,6 +1049,7 @@ Kiểm ở 3 thời điểm: **tạo**, **duyệt** (cả duyệt lại), **nh�
 | R-N | Huỷ `voice_pv` để lại mp3 hỏng; PerfectVoice vẫn dùng GPU vài phút | Đối soát ffprobe + đổi tên `.hong-<id>`; web ghi rõ |
 | R-O | Workers Static Assets không áp `_headers` | Kiểm bằng `wrangler dev`; dự phòng `run_worker_first=true` (§9) |
 | R-P | SQLite khoá ghi | WAL + busy_timeout + kết nối riêng + CAS |
+| R-R | `taovideo` phiên sống: giữ GPU/kho lúc chờ; trần GenMax chỉ phát hiện sau; giao diện stream-json vào có thể đổi khi CLI nâng bản; mất phiên khi reboot | §7.5 (trần đo từ file thật), §7.7 (giờ chờ ≤ 3 giờ), §7.8 (đối soát chỉ đọc file + phiên mới), §7.12; S-4 |
 
 **Không làm được từ web**, hiển thị là hộp "👉 Việc của bạn" (`can_tra_loi/viec_tay`, nút "Tôi đã làm xong") hoặc thông báo không chặn `can_ban`:
 
@@ -1143,40 +1477,293 @@ def cai(nguon: Path, dich: Path) -> str          # trả PHIEN_BAN; dừng (Syst
 - Lệnh kiểm chứng: `node --check web/viec.js && node --test cf/test/`
 - Xong khi: test thuần qua; mật khẩu không bao giờ lưu vào `localStorage`/`sessionStorage` (grep).
 
-### Đợt 5
+### Đợt 5 (thiết kế lại theo D11, phiếu A-05)
 
-**S-2 · culiapp-automation** · ĐƯỢC SỬA: `tools/runner/spike_claude.py`
-- Phụ thuộc: S-1.
-- Việc: thêm `--kich-ban nen`: agent nội tuyến có `Agent`, `SendMessage`, `Bash`; gọi 1 subagent + 1 Bash nền `sleep 60`. Đo:
-  - `-p` thoát trước hay sau việc nền;
-  - việc nền có bị Job Object giết không;
-  - thông báo hoàn tất có tới lượt sau (`--resume`) không;
-  - `SendMessage` tới subagent cũ sau resume có chạy không.
-- Xong khi: NEEDS_APPROVAL `python tools/runner/spike_claude.py --chay --kich-ban nen` (~0,5 USD).
+Đã xong: **S-2** (đo theo lượt, `.culiapp/test-spike-s2.json`) và **S-3** (đo phiên sống, `.culiapp/test-spike-s3.json`). Phiếu S-2/K-1/B-4/A-4/W-6 cũ được thay bằng các phiếu dưới đây.
 
-**K-1 · culiapp-skill** · ĐƯỢC SỬA: `C:\Users\Mi\.claude\agents\aff-taovideo.md`, `aff-san-pham.md`, `aff-radar.md`, `aff-poster.md`, `aff-muse.md`, `aff-voice.md`
-- Phụ thuộc: S-2.
-- Việc: §7.3 (ngoại lệ luật "không hỏi người dùng"; mục chạy từ web cho taovideo; Bước 7 do runner chạy).
-- Xong khi: diff chỉ thêm câu hoặc mục; người dùng duyệt.
+Thứ tự: **Đ5-L1** (S-4 ∥ B-5 ∥ B-4 ∥ W-6 ∥ K-1 ∥ K-2) → S-4 chạy thật (duyệt) → **Đ5-L2** (A-5) → tích hợp (duyệt).
 
-**B-4 · culiapp-backend** · ĐƯỢC SỬA: `tools/runner/danh_muc.py`, `tools/runner/phieu.py`, `tools/runner/api.py`, `tools/runner/han_muc.py`, các test tương ứng
-- Phụ thuộc: S-2, B-3.
+W-6 sửa `web/viec.js`. Các phiếu W-7..W-9 của D10 (`docs/sua-video.md`) nếu cũng sửa file này thì không được chạy cùng lượt với W-6.
+
+**S-4 · culiapp-automation · Spike phiên sống, phần còn thiếu** — **ĐÃ CHẠY THẬT 18/11/2026** (trưởng phòng chạy, `.culiapp/test-spike-s4.json`). Kết luận và chỗ thiết kế đổi ở §7.0a.
+- ĐƯỢC SỬA: `tools/runner/spike_claude.py`
+- Phụ thuộc: không (S-3 đã có).
+- Việc: thêm `--kich-ban song2`. Dùng cùng dạng lệnh §7.2 với agent nội tuyến, cwd là thư mục tạm có `.claude/skills/thu-s4/SKILL.md` (skill tạm, chỉ trong thư mục tạm). In JSON ĐẠT/KHÔNG cho từng mục:
+  1. `--tools Read,Bash,Skill,Agent,Task,TaskOutput,TaskStop`: tên trong `init.tools` (có `Agent` hay chỉ `Task`; có `Skill`); gọi được `Skill thu-s4`;
+  2. subagent `general-purpose`: `tool_use` của subagent có xuất hiện trên stdout không (có `parent_tool_use_id`); subagent được yêu cầu gọi `WebFetch` (không có trong `--tools`) thì bị từ chối hay chạy được; liệt kê mọi tên công cụ subagent phát ra;
+  3. subagent gọi được `Agent` lồng một cấp không (mô phỏng C2 fan-out);
+  4. tin user gửi khi agent đang chạy Bash foreground 20 s: bị xếp hàng sau lượt hay chen giữa; lượt có hỏng không;
+  5. `--max-budget-usd 0.05` trong phiên sống: dừng lượt, dừng tiến trình, hay tính cộng dồn cả phiên;
+  6. im lặng `--cho-dai` giây (mặc định 1800) với stdin mở: tiến trình còn sống, lượt kế trả lời bình thường;
+  7. `total_cost_usd` có gồm chi phí subagent không (so với `modelUsage`);
+  8. các giá trị `task_notification.status` và `task_updated.patch` thấy được; Agent chạy foreground có sinh `task_started` không.
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -m py_compile tools/runner/spike_claude.py && python tools/runner/spike_claude.py --help`
+- Xong khi: `--help` có `song2` và `--cho-dai`; trả NEEDS_APPROVAL với lệnh `python tools/runner/spike_claude.py --chay --kich-ban song2 --ra .culiapp/test-spike-s4.json` (thư mục chạy là repo; tác động: quota ~0,6 USD-ước-tính, ~35 phút, 1 phiên trong `C:\Users\Mi\.claude\projects\`, thư mục tạm; hoàn tác: xoá thư mục tạm và thư mục phiên). Trưởng phòng chạy, rồi dán JSON cho A-5.
+
+**B-5 · culiapp-backend · Theo dõi phiên sống (thuần)**
+- ĐƯỢC SỬA: `tools/runner/stream_json.py`, `tools/runner/theo_doi_phien.py` (mới), `tools/test_runner_stream_json.py`, `tools/test_runner_theo_doi_phien.py` (mới)
+- Phụ thuộc: không.
+- Interface (đúng chữ ký):
+
+```python
+# stream_json.py (thêm; không đổi hàm cũ)
+KET_THUC_NEN: frozenset[str] = frozenset({"completed", "failed", "killed", "stopped", "error", "cancelled"})
+def la_cap_cao(sk: dict) -> bool                 # parent_tool_use_id thiếu hoặc None
+def viec_nen_bat_dau(sk: dict) -> str | None     # system/task_started → task_id
+def viec_nen_ket_thuc(sk: dict) -> str | None    # system/task_notification (mọi status) | task_updated có patch.status ∈ KET_THUC_NEN → task_id
+def phien_ban_claude(sk: dict) -> str | None     # init.claude_code_version
+def tin_user(text: str) -> bytes                 # json.dumps({"type":"user","message":{"role":"user","content":text},
+                                                 #   "parent_tool_use_id":None}, ensure_ascii=False) + "\n", UTF-8
+
+# theo_doi_phien.py
+@dataclass(frozen=True)
+class TinhTrang:
+    loai: str                          # 'dang_lam' | 'ket_luot' | 'loi_luot'
+    ket_qua: KetQuaAgent | None        # có khi loai == 'ket_luot'
+    van_ban: str                       # văn bản result cấp cao cuối (đã che)
+    so_viec_nen: int
+    so_ket_luot: int                   # số result cấp cao đã thấy (bên gọi biết có kết luận MỚI)
+class TheoDoiPhien:
+    def __init__(self, dot_bat: int, che: Callable[[str], str] | None = None): ...
+    def nap(self, sk: dict, luc: float) -> float          # trả chênh lệch USD do sự kiện này (§7.3), ≥ 0
+    def tinh_trang(self, bay_gio: float, im_lang_s: float) -> TinhTrang
+    session_id: str | None; phien_ban: str | None
+    so_luot: int                       # message assistant khác nhau (mọi cấp), khử trùng theo message.id
+    chi_phi_usd: float                 # Σ chênh lệch
+    viec_nen_mo: frozenset[str]
+    luc_su_kien_cuoi: float
+```
+
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -B -m pytest tools/test_runner_stream_json.py tools/test_runner_theo_doi_phien.py -q`
+- Xong khi (fixture dựng từ tên trường thật trong `.culiapp/test-spike-s3.json` `loai_su_kien_va_truong`):
+  - result cấp cao + im lặng 10 s → `ket_luot`; im lặng 9 s → `dang_lam`; result của subagent (có `parent_tool_use_id`) không kết luận lượt;
+  - `task_started` rồi `task_notification` cùng id → tập rỗng; `task_updated` có `patch.status="completed"` cũng đóng;
+  - chi phí 0,10 → 0,30 → 0,25 (đếm lại) → tổng 0,10 + 0,20 + 0,25;
+  - `is_error` → `loi_luot`;
+  - khối `CẦN_USER` LOẠI `cau_hoi` ở `dot_bat=5` → `KetQuaAgent` `CAN_USER` loại `cau_hoi`;
+  - `tin_user("Chào ✓")` parse lại được, đúng 1 dòng;
+  - test cũ vẫn qua.
+
+**B-4 · culiapp-backend · `taovideo` hoàn chỉnh: danh mục, phiếu, hạn mức, API trả lời**
+- ĐƯỢC SỬA: `tools/runner/kieu.py`, `tools/runner/danh_muc.py`, `tools/runner/phieu.py`, `tools/runner/han_muc.py`, `tools/runner/api.py`, `tools/test_runner_danh_muc.py`, `tools/test_runner_phieu.py`, `tools/test_runner_han_muc.py`, `tools/test_runner_api.py`
+- Phụ thuộc: không về file. Dùng `KetQuaAgent` có sẵn; không import `theo_doi_phien`.
+- Đầu vào trưởng phòng ghi vào phiếu:
+  - danh sách `WM_CHO_PHEP` (tên watermark người dùng cho phép). Không có thì `wm` chỉ nhận `"khong"`;
+  - người dùng **đã đồng ý mở đợt 5** hay chưa. Chưa thì giữ `HAN_MUC_TRAN["dot_bat"] = 4`.
+- Interface (đúng chữ ký):
+
+```python
+# kieu.py
+@dataclass(frozen=True)
+class BuocChay: ...; song: bool = False          # thêm trường cuối, mặc định False
+class KhongCoPhien(Exception): ...
+
+# danh_muc.py
+BO_CONG_CU_TAOVIDEO: tuple[str, ...]             # §7.9
+def lenh_claude_song(loai: LoaiViec, viec: dict, mt: MoiTruong, tran_usd: float) -> list[str]   # §7.2; luôn --session-id viec['session_id']
+def chot_du_an_b(uid: str, gia_tri: str, mt: MoiTruong) -> str                  # "tu_tim" → mã duy nhất có takes/*.mp4; 0/≥2 → ThamSoLoi kèm danh sách
+def doi_soat_taovideo(ts: dict, viec: dict, mt: MoiTruong) -> tuple[str, str]   # §7.8, chỉ đọc file; ('xong'|'chua', tóm tắt ≤800)
+def mp3_adam_moi(p: Path, tu: datetime) -> frozenset[str]                        # tên tương đối voice/**/*_adam.mp3 mtime ≥ tu
+# _ts_taovideo, _buoc_taovideo (1 BuocChay ten="claude_song", la_claude=True, song=True, stdin=lap_phieu(...),
+#   het_gio_s=HET_GIO_TAOVIDEO["lam_s"]), kiem_dau_ra = doi_soat_taovideo(...)[0], them_thu_muc theo §7.2
+
+# phieu.py
+TIN_NHAC: str; TIN_TRAN_CODEX: str               # §7.3, §7.5 (TIN_TRAN_CODEX có chỗ {n})
+@dataclass(frozen=True)
+class HanhDongSong:
+    loai: str                                    # 'hoi' | 'dong' | 'nhac' | 'cho_nen'
+    cau_hoi: CanNguoiDung | None
+    tin_gui: str | None
+def anh_xa_ket_luot_song(kq: KetQuaAgent, so_viec_nen: int, da_nhac: bool) -> HanhDongSong   # bảng §7.3
+def lap_phieu_tiep_taovideo(loai: LoaiViec, viec: dict, mt: MoiTruong, dot_bat: int,
+                            ly_do: str, tra_loi_truoc: list[dict]) -> str                  # §7.10
+# lap_phieu: nhánh taovideo thêm khối CHẾ ĐỘ CHẠY §7.10
+
+# han_muc.py
+HAN_MUC_TRAN += {"taovideo_usd_viec": 60, "taovideo_mp3_viec": 25, "taovideo_lan_ngay": 3}
+HET_GIO_TAOVIDEO: dict[str, int] = {"lam_s": 8*3600, "cho_s": 3*3600, "nen_s": 4*3600, "tong_s": 24*3600}
+def het_gio_taovideo(hm: dict) -> dict[str, int]                # min(hằng số, hm) — chỉ được hạ
+# taovideo_ngay đếm VIỆC (không nhân so_lan_tieu); taovideo_lan_ngay đếm lần tiêu (§7.5)
+
+# api.py
+def kiem_tra_loi_dot5(cau_hoi: CanNguoiDung, tra_loi: object, da_xac_nhan: bool, ton_tien: bool) -> str   # §7.6
+def tao_handler(..., che=None, *,
+                tra_loi_song: Callable[[str, str, str], dict] | None = None,   # (id, boi, gia_tri) → viec; ném KhongCoPhien/SaiTrangThai
+                co_phien_song: Callable[[str], bool] = lambda _id: False) -> type[BaseHTTPRequestHandler]
+# viec_ra thêm 'phien_song'; co_the_xin_duyet_lai = False khi phien_song; p_tra_loi nhánh taovideo §7.6
+```
+
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -B -m pytest tools/test_runner_danh_muc.py tools/test_runner_phieu.py tools/test_runner_han_muc.py tools/test_runner_api.py -q`
+- Xong khi (mỗi mục ≥ 1 test):
+  - `lenh_claude_song` có `--input-format stream-json`, `--strict-mcp-config`, `--session-id`, không có `--resume` và `SendMessage`; có cả `Agent` và `Task`;
+  - `chot_du_an_b`: 1 / 0 / 2 dự án có `takes/*.mp4` trên cây giả;
+  - `doi_soat_taovideo` trên cây giả: đủ → `xong`; thiếu dòng `nha.cua.mit` → `chua` và tóm tắt nêu "Bước B"; mẻ cũ có mtime < `tao_luc` bị bỏ qua; không gọi subprocess (monkeypatch `subprocess.run` để ném);
+  - `anh_xa_ket_luot_song` đủ 7 dòng bảng §7.3;
+  - `lap_phieu` taovideo có khối CHẾ ĐỘ CHẠY và đường dẫn B đã chốt; `lap_phieu_tiep_taovideo` cắt ≤ 10 câu trả lời, làm sạch, có câu hỏi treo;
+  - hạn mức: `taovideo` duyệt lại lần 2 trong ngày qua, lần 4 bị chặn; việc `taovideo` thứ 2 cùng ngày bị chặn ở `tao`;
+  - API: `tra-loi` taovideo `chon` thiếu `da_xac_nhan_mat_khau` → 403; `cau_hoi` có cờ → gọi `tra_loi_song`; `co_phien_song=False` → 409; loại tốn tiền khác vẫn 409; `viec_ra` có `phien_song`;
+  - `dot_bat` chỉ lên 5 khi phiếu ghi người dùng đồng ý;
+  - test cũ vẫn qua.
+
+**W-6 · culiapp-web · Trả lời trong phiên sống, chữ tự do có mật khẩu, form `taovideo`**
+- ĐƯỢC SỬA: `cf/src/worker.js`, `cf/test/worker.test.mjs`, `web/viec.js`, `web/style.css`, `web/index.html` (chỉ tăng `viec.js?v=`), `cf/test/viec-web.test.mjs`
+- Phụ thuộc: không về file. Hợp đồng API theo §7.6 và §8.1: `phien_song`, body `{tra_loi, boi, da_xac_nhan_mat_khau}`.
+- Interface (hàm thuần giữa marker `viec-thuan`): `nutTraLoi(cauHoi, dotBat, laTonTien, phienSong) -> {nut:[{nhan, gia_tri}], o_chu: bool, can_mat_khau: bool}`; `nutHanhDong(viec, laTonTien)` thêm nhánh `phien_song`.
 - Việc:
-  - `taovideo` hoàn chỉnh (§5.3);
-  - `tra-loi` loại `cau_hoi` cho phép chữ tự do 1–1000 ký tự **chỉ khi request có cờ `da_xac_nhan_mat_khau: true` trong body đã ký**;
-  - `WM_CHO_PHEP` theo người dùng; trần `dot_bat` = 5;
-  - sau K-1: `phan_tich_uid` ghi "Douyin do runner chạy riêng" và tự tạo `douyin_uid`.
-- Xong khi: test argv và phiếu khớp; `cau_hoi` không có cờ → 400.
+  - Worker `tra-loi`: có `mat_khau` thì kiểm theo §9 mục 4 (KV `sai:<user>`) rồi gắn `da_xac_nhan_mat_khau: true`; chuỗi ≤ 1000 ký tự khi có mật khẩu, ≤ 120 khi không;
+  - web: việc tốn tiền ở `can_tra_loi` **có `phien_song`** thì hiện khung trả lời. `chon` và `cau_hoi` có ô mật khẩu (`autocomplete="current-password"`); `viec_tay`/`khong_ro` chỉ có nút. Không có `phien_song` thì giữ như FX-12;
+  - dải `can_ban` "đang chờ việc nền";
+  - form `taovideo`: chọn A từ `/du-an/<uid>`; B = "tự tìm" hoặc chọn; khi 400 kèm danh sách thì cho chọn lại; `wm` từ `/danh-muc`; giá tuỳ chọn;
+  - khung duyệt hiện nguyên `uoc_tinh` (§7.5).
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && node --check web/viec.js && node --test cf/test/`
+- Xong khi:
+  - Worker: `cau_hoi` thiếu hoặc sai mật khẩu → 403 và không gọi máy nhà; 1001 ký tự → 400; đúng → body đã ký có `da_xac_nhan_mat_khau: true`;
+  - `nutTraLoi` cho 4 loại × có/không `phien_song`;
+  - mật khẩu không lưu `localStorage`/`sessionStorage` (grep); `grep -nE "on[a-z]+=\"" web/viec.js` → 0;
+  - test cũ vẫn qua.
 
-**A-4 · culiapp-automation** · ĐƯỢC SỬA: `tools/runner/vong_lap.py`, `tools/test_runner_vong_lap.py`
-- Phụ thuộc: B-4.
-- Việc: quá giờ theo lượt; tự Tiếp tục 1 lần; trần Codex; resume sau bị ngắt.
-- Xong khi: kịch bản giả 3 lượt qua.
+**K-1 · culiapp-skill · Agent (cần người dùng duyệt)**
+- ĐƯỢC SỬA: `C:\Users\Mi\.claude\agents\aff-taovideo.md`, `aff-san-pham.md`, `aff-radar.md`, `aff-poster.md`, `aff-muse.md`, `aff-voice.md`
+- Phụ thuộc: không. Phiếu §7.10 đã chạy được khi chưa có K-1.
+- Việc: §7.11 K-1.
+- Lệnh kiểm chứng: `grep -n "phiên sống\|SendMessage\|CẦN_USER" /c/Users/Mi/.claude/agents/aff-taovideo.md`
+- Xong khi: diff chỉ thêm câu/mục (trừ sửa `aff-taovideo.md:10`); người dùng duyệt nội dung.
 
-**W-6 · culiapp-web** · ĐƯỢC SỬA: `cf/src/worker.js`, `cf/test/worker.test.mjs`, `web/viec.js`, `web/style.css`, `cf/test/viec-web.test.mjs`
-- Phụ thuộc: W-5, B-4.
-- Việc: `tra-loi` chữ tự do cần `mat_khau` (Worker kiểm, thêm `da_xac_nhan_mat_khau: true` vào body đã ký); form `taovideo`; câu hỏi `cau_hoi` có ô mật khẩu.
-- Xong khi: test Worker (thiếu hoặc sai mật khẩu → 403) và test thuần qua.
+**K-2 · culiapp-skill · Skill `tao-video-tu-canh-quay` khi không có SendMessage (cần người dùng duyệt)**
+- ĐƯỢC SỬA: `E:\claude\tao-video-tu-canh-quay\SKILL.md`, `E:\claude\tao-video-tu-canh-quay\references\prompt-chang.md`. Chép sang bản cài `C:\Users\Mi\.claude\skills\tao-video-tu-canh-quay\` theo `SKILL.md:215`; việc chép là NEEDS_APPROVAL.
+- Phụ thuộc: không.
+- Việc: §7.11 K-2.
+- Lệnh kiểm chứng: hai bộ test ở `SKILL.md:208-209` (chạy trên bản nguồn), rồi `diff -q /e/claude/tao-video-tu-canh-quay/SKILL.md /c/Users/Mi/.claude/skills/tao-video-tu-canh-quay/SKILL.md` → rỗng sau khi chép.
+- Xong khi: chỉ thêm nhánh "không có SendMessage"; test skill qua; người dùng duyệt.
+
+**A-5 · culiapp-automation · Phiên sống trong runner** (Đ5-L2)
+- ĐƯỢC SỬA: `tools/runner/phien_song.py` (mới), `tools/runner/vong_lap.py`, `tools/chay_runner.py`, `tools/test_runner_phien_song.py` (mới), `tools/test_runner_vong_lap.py`, `tools/test_runner_chay.py`
+- Phụ thuộc: B-4, B-5, S-4 (đã chạy 18/11; danh sách soát §7.9 giữ nguyên `BO_CONG_CU_TAOVIDEO`).
+- **Đổi theo S-4** (A-DOC2, 18/11). A-5 đã được giao ở lượt 21 trước bản cập nhật này. Điểm nào dưới đây A-5 chưa làm thì làm ở **FX-26** (Đ5-L3). Interface đích là chữ ký trong khối code dưới (`gui(text, ma_cau_hoi)`, `dat_cau_hoi`, `tra_loi_song(..., ma_cau_hoi)`):
+  - `PhienSong.gui` nhận thêm `ma_cau_hoi`; luật ghi stdin theo §7.2 (chỉ sau `result` cấp cao, mỗi `result` tối đa một tin, bỏ tin trả lời cũ khi đã có `result` mới);
+  - hành động `hoi` sinh `ma` (§7.6) và lưu `cau_hoi` có `ma`;
+  - `lenh_claude_song(..., tran_usd)` nhận `tran_usd = hm["taovideo_usd_viec"]` với `hm` = `han_muc_hieu_luc(...)[0]` (`tools/runner/han_muc.py:59`; 60 hoặc mức đã hạ), **không** dùng `tran_usd_moi_luot`;
+  - `result` `subtype == "error_max_budget_usd"` → đóng stdin → `loi` "Chạm trần USD của phiên"; mã thoát 1 sau đó không coi là tự chết.
+- Interface (đúng chữ ký):
+
+```python
+# phien_song.py
+@dataclass(frozen=True)
+class CauHinhPhien:
+    argv: list[str]; cwd: str; env: dict[str, str]; file_log: Path; file_jsonl: Path
+    im_lang_s: float = 10.0; cho_thoat_s: float = 90.0
+@dataclass
+class KetQuaPhien:
+    ma_thoat: int | None
+    ly_do_dung: str               # 'dong_stdin' | 'tu_thoat' | 'giet:<lý do>'
+    khong_giet_duoc: bool; pid: int | None; pid_tao_luc: float | None
+class PhienSong:
+    def __init__(self, ch: CauHinhPhien, theo_doi: TheoDoiPhien, che: Callable[[str], str]): ...
+    def gui(self, text: str, ma_cau_hoi: str | None = None) -> bool
+        # thread-safe; xếp hàng; chỉ ghi stdin khi tinh_trang == ket_luot và có result cấp cao MỚI kể từ lần ghi trước
+        # (S-4 #4); ma_cau_hoi khác None mà so_ket_luot đã khác lúc hỏi → bỏ tin + log; False nếu đã đóng
+    def dat_cau_hoi(self, ma_cau_hoi: str, so_ket_luot: int) -> None   # gọi khi hành động 'hoi'
+    def bo_hang_doi(self) -> int            # huỷ tin chưa gửi (câu hỏi bị agent rút lại, §7.3)
+    def dong(self) -> None                  # đóng stdin
+    def giet(self, ly_do: str) -> None
+    def con_song(self) -> bool
+    def chay(self, khi_bat_dau: Callable[[int, float], None],
+             khi_su_kien: Callable[[dict, float, float], None],   # (sk, lúc, chênh lệch USD); ném lỗi → giết cây
+             khi_nhip: Callable[[TinhTrang, float], None],        # mỗi ~1 s trên luồng làn: quyết định hỏi/đóng/nhắc/giết
+             huy: threading.Event) -> KetQuaPhien
+
+# vong_lap.py
+class BoChay:
+    def _buoc_claude_song(self, loai: LoaiViec, viec: dict, b: BuocChay, huy: threading.Event,
+                          truoc_sinh: Callable[[], bool]) -> None
+    def tra_loi_song(self, id: str, boi: str, gia_tri: str, ma_cau_hoi: str) -> dict
+        # §7.6; ném KhongCoPhien / SaiTrangThai (cả khi ma_cau_hoi ≠ cau_hoi.ma)
+    def co_phien_song(self, id: str) -> bool
+```
+
+- Việc:
+  - §7.2–7.8. `_chay` (`vong_lap.py:1338`): `b.song` → `_buoc_claude_song`. Trước `lap_buoc` đặt `session_id` mới, `phien_da_tao=0`. Lần chạy từ xin duyệt lại thì stdin = `lap_phieu_tiep_taovideo(..., ly_do, kho.tra_loi_cua(id))`;
+  - tiêu lời duyệt một lần trước khi sinh tiến trình (giữ `_tieu_truoc_sinh`, `:1277`); `so_codex` của taovideo đặt lại 0 khi tiêu;
+  - chi phí: `cong_chi_phi(id, chenh_lech, so_luot_moi, them_lan)` sau mỗi result (lần đầu `them_lan=True`);
+  - trần USD, mp3 (quét 30 s), Codex (nhắc khi bằng trần, giết khi vượt), lượt, 4 đồng hồ §7.7; `SoatCongCu` với danh sách §7.9;
+  - `khoi_dong` (`:978`): taovideo ở `dang_chay`/`can_tra_loi` có `pid` → §7.8;
+  - `trang_thai_lan()` thêm `phien_song: [id]`;
+  - `chay_runner.py`: truyền `tra_loi_song=bo_chay.tra_loi_song`, `co_phien_song=bo_chay.co_phien_song` vào `api.tao_handler`.
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -B -m pytest tools/test_runner_phien_song.py tools/test_runner_vong_lap.py tools/test_runner_chay.py -q && python -B tools/chay_runner.py --help`
+- Xong khi (Claude giả = script Python đọc dòng JSON từ stdin, phát sự kiện stream-json theo kịch bản; giờ thu nhỏ bằng tham số; không gọi `claude.exe` thật):
+  1. phiếu → `CẦN_USER chon` → `can_tra_loi` giữ `pid` → `tra_loi_song` → tin tới stdin → `TRẠNG THÁI: DONE` → stdin đóng → `xong`;
+  2. `task_started` + result không khối → `cho_nen` + `can_ban`; `task_notification` + result DONE tự tới → `xong`;
+  3. `KHONG_RO` → nhắc đúng 1 lần → `KHONG_RO` lần 2 → `can_tra_loi/khong_ro`;
+  4. tin gửi lúc `dang_lam` chỉ được ghi sau `ket_luot`;
+  5. câu hỏi bị rút lại → `bo_hang_doi`, việc về `dang_chay`;
+  6. chi phí 0,1 / 0,3 / 0,25 → DB 0,55; vượt `taovideo_usd_viec` → giết → `loi`;
+  7. Claude giả ghi 26 file `*_adam.mp3` → giết → `loi`;
+  8. Codex bằng trần → `TIN_TRAN_CODEX`; vượt → giết;
+  9. hết `cho_s` không có việc nền → đóng stdin; có việc nền → giết; cả hai → `loi`;
+  10. huỷ lúc `can_tra_loi` → `huy`, cây chết (kiểm PID con);
+  11. khởi động lại với việc `can_tra_loi` có `pid` đã chết → `loi` kèm tóm tắt đối soát, mp3 hỏng đổi tên `.hong-<id>`;
+  12. `tra_loi_song` khi không có phiên → `KhongCoPhien`;
+  13. công cụ ngoài danh sách (cả của subagent) → giết;
+  14. xin duyệt lại → phiên mới có `--session-id` khác, stdin có "LẦN CHẠY TIẾP", tiêu lời duyệt đúng 1 lần;
+  15. (S-4 #4) hai tin xếp hàng cùng lúc → chỉ tin đầu được ghi sau `result`, tin sau chờ `result` kế; câu hỏi q1 → agent tự thức hỏi q2 → trả lời mang `q1` bị bỏ, không tới stdin; `tra_loi_song` với mã lệch → `SaiTrangThai`;
+  16. (S-4 #5) Claude giả trả `result` `error_max_budget_usd` → đóng stdin → `loi` "Chạm trần USD"; argv có `--max-budget-usd 60`;
+  17. (S-4 #8) `task_started` của Agent foreground + `task_notification completed` → tập việc nền rỗng, không đứng `cho_nen`;
+  18. test cũ vẫn qua.
+
+Ba phiếu dưới đây (A-DOC2, theo S-4) chạy ở **Đ5-L3**, sau lượt 21 (A-5 ∥ FX-22, `.culiapp/nhat-ky.md:53`), vì FX-22 đang sửa `api.py` và A-5 đang sửa `vong_lap.py`. Ba phiếu không trùng file nhau.
+
+**FX-24 · culiapp-backend · Mã câu hỏi + khối CHẾ ĐỘ CHẠY theo S-4** (Đ5-L3)
+- ĐƯỢC SỬA: `tools/runner/kieu.py`, `tools/runner/phieu.py`, `tools/runner/api.py`, `tools/test_runner_phieu.py`, `tools/test_runner_api.py`
+- Phụ thuộc: FX-22 (cùng `api.py`, lượt trước). Interface với FX-26: `CanNguoiDung.ma`; `api` gọi `tra_loi_song` 4 tham số.
+- Interface:
+
+```python
+# kieu.py
+@dataclass(frozen=True)
+class CanNguoiDung: ...; ma: str = ""          # thêm trường cuối; thanh_dict ghi "ma" khi khác rỗng; tu_dict đọc "ma"
+RE_MA_CAU_HOI = re.compile(r"^q[0-9a-f]{12}$", re.ASCII)
+
+# api.py
+def tao_handler(..., tra_loi_song: Callable[[str, str, str, str], dict] | None = None, ...)   # (id, boi, gia_tri, ma_cau_hoi)
+```
+
+- Việc:
+  - `p_tra_loi` (`api.py:717`) nhánh phiên sống: body có `ma_cau_hoi` khớp `RE_MA_CAU_HOI` **và** bằng `cau_hoi.ma` trong DB, sai → 409 "Câu hỏi đã đổi — tải lại để xem câu mới"; gọi `tra_loi_song(id, boi, gt, ma_cau_hoi)`. Việc không phải phiên sống thì bỏ qua `ma_cau_hoi` (giữ hành vi cũ);
+  - `phieu.py` khối CHẾ ĐỘ CHẠY (`:148`): thêm đúng 3 dòng "Subagent KHÔNG gọi được Agent…" như §7.10.
+  - Không làm phần chặn chạy lại `sua_video` có sửa chữ: FX-22 đã nhận (`docs/sua-video.md` §7.2a).
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -B -m pytest tools/test_runner_phieu.py tools/test_runner_api.py -q -p no:cacheprovider`
+- Xong khi: `CanNguoiDung` có `ma` đi vòng `thanh_dict`/`tu_dict`, dict cũ không có `ma` vẫn đọc được; `tra-loi` phiên sống thiếu / sai / lệch mã → 409, đúng mã → `tra_loi_song` nhận đủ 4 tham số; khối CHẾ ĐỘ CHẠY có dòng fan-out; test cũ vẫn qua.
+
+**FX-26 · culiapp-automation · Phiên sống theo S-4: hàng đợi một tin mỗi result, mã câu hỏi, trần USD** (Đ5-L3)
+- ĐƯỢC SỬA: `tools/runner/phien_song.py`, `tools/runner/vong_lap.py`, `tools/test_runner_phien_song.py`, `tools/test_runner_vong_lap.py`
+- Phụ thuộc: A-5 (cùng file, lượt trước). Interface với FX-24: `CanNguoiDung.ma` (`kieu.py`), `tra_loi_song(id, boi, gia_tri, ma_cau_hoi)`.
+- Việc: mục "Đổi theo S-4" của A-5 mà A-5 chưa làm. Cụ thể: §7.2 luật ghi stdin; §7.6 hành động `hoi` sinh `ma` + `dat_cau_hoi`; `tra_loi_song` 4 tham số; `--max-budget-usd` = `taovideo_usd_viec`; `error_max_budget_usd` → `loi`. Nếu A-5 đã làm điểm nào thì chỉ thêm test chứng minh.
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && python -B -m pytest tools/test_runner_phien_song.py tools/test_runner_vong_lap.py tools/test_runner_chay.py -q -p no:cacheprovider`
+- Xong khi: tiêu chí 15–17 của A-5 có test và qua; test cũ vẫn qua.
+
+**FX-25 · culiapp-web · Gửi mã câu hỏi khi trả lời** (Đ5-L3, song song FX-24, FX-26)
+- ĐƯỢC SỬA: `cf/src/worker.js`, `cf/test/worker.test.mjs`, `web/viec.js`, `web/index.html` (chỉ tăng `viec.js?v=`), `cf/test/viec-web.test.mjs`
+- Phụ thuộc: không về file. Hợp đồng §7.6: body web `{tra_loi, ma_cau_hoi, mat_khau?}`; body tới runner thêm `ma_cau_hoi`.
+- Việc: Worker `tra-loi` (`cf/src/worker.js:525-568`) nhận `ma_cau_hoi` (tuỳ chọn; có thì phải khớp `^q[0-9a-f]{12}$`, sai → 400), chuyển nguyên sang runner. `web/viec.js` gửi `cau_hoi.ma` đang hiện; 409 → hiện lý do và tải lại khung câu hỏi. Khung trả lời vẽ lại khi `cau_hoi.ma` đổi (khoá vẽ `khoaCauHoi` gồm `ma`).
+- Lệnh kiểm chứng: `cd /e/phantichcanhquay/kho-san-pham && node --check web/viec.js && node --test cf/test/`
+- Xong khi: Worker chuyển đúng `ma_cau_hoi`, mã sai dạng → 400 không gọi máy nhà; web gửi `ma_cau_hoi` khi `cau_hoi.ma` có; đổi `ma` thì khung vẽ lại; test cũ vẫn qua.
+
+**K-3 · culiapp-skill · Fan-out C2 do agent chính khi chạy headless (cần người dùng duyệt)** — §7.11 K-3.
+- ĐƯỢC SỬA: `E:\claude\tao-video-tu-canh-quay\SKILL.md`, `E:\claude\tao-video-tu-canh-quay\references\prompt-chang.md`. Chép sang bản cài là NEEDS_APPROVAL.
+- Phụ thuộc: không. Không chạy cùng lượt với phiếu nào khác sửa hai file này.
+- Lệnh kiểm chứng: hai bộ test của skill (`test_tu_canh`, `test_scripts`; bản cài `SKILL.md:210-211`), rồi `diff -q` bản nguồn và bản cài → rỗng sau khi chép.
+- Xong khi: chỉ thêm nhánh "chạy headless: agent chính fan-out"; nhánh có Agent lồng giữ nguyên; người dùng duyệt.
+
+**Tích hợp đợt 5 (trưởng phòng chạy, NEEDS_APPROVAL từng bước):**
+1. Người dùng đồng ý mở đợt 5 và duyệt K-1/K-2 (Q5-3) trước.
+2. `cd cf && npx wrangler deploy` (W-6).
+3. Tắt runner → `python tools/cai_runner.py` → bật runner (B-4, B-5, A-5). `/suc-khoe` có `dot_bat: 5`, `chan_ton_tien: false`.
+4. Chạy thật lần đầu **khi người dùng ngồi máy**, với một sản phẩm người dùng chọn (tốn GenMax và hàng giờ GPU):
+   - tạo `taovideo` trên web → duyệt;
+   - trả lời ít nhất một câu hỏi từ điện thoại;
+   - theo dõi `phien_song`, chi phí, số mp3;
+   - kết thúc → kiểm 2 dòng kho và 2 folder Poster.
+5. (Tuỳ chọn, cần duyệt riêng) thử huỷ giữa chừng trên một sản phẩm thử, rồi xin duyệt lại → phiên mới đọc `trang_thai.py tiep` và làm tiếp.
 
 ### Sửa theo review R-11 (D9): FX-9..FX-12
 
@@ -1350,7 +1937,9 @@ LOI_DA_DUNG = "lời duyệt đã dùng"
 | Đ4-L3 | W-5 (`viec.js`) |
 | FX-L1 | FX-9 (`chu_ky, vector_ky.json, kho_viec, han_muc, api` + 4 test) |
 | FX-L2 | FX-10 (`so_duyet, vong_lap, chay_runner` + 3 test) · FX-11 (`worker.js, worker.test.mjs, chu-ky-cheo.test.mjs`) · FX-12 (`viec.js, style.css, index.html, viec-web.test.mjs, video_server.py` + test) |
-| Đ5 | S-2 → K-1 ∥ B-4 → A-4 ∥ W-6 |
+| Đ5-L1 | S-4 (`spike_claude.py`) · B-5 (`stream_json, theo_doi_phien` + 2 test) · B-4 (`kieu, danh_muc, phieu, han_muc, api` + 4 test) · W-6 (`worker.js, worker.test.mjs, viec.js, style.css, index.html, viec-web.test.mjs`) · K-1 (`~/.claude/agents/aff-*.md`) · K-2 (`E:\claude\tao-video-tu-canh-quay\SKILL.md, references\prompt-chang.md`) |
+| Đ5-L2 (lượt 21) | A-5 (`phien_song` mới, `vong_lap, chay_runner` + 3 test) · FX-22 (`api.py, sua_video.py` + test; theo `.culiapp/nhat-ky.md:53`). S-4 đã chạy thật 18/11 |
+| Đ5-L3 (A-DOC2) | FX-24 (`kieu, phieu, api` + `test_runner_phieu`, `test_runner_api`) · FX-26 (`phien_song, vong_lap` + 2 test) · FX-25 (`worker.js, worker.test.mjs, viec.js, index.html, viec-web.test.mjs`) · K-3 (skill nguồn `SKILL.md`, `prompt-chang.md`; cần duyệt) |
 
 `stream_json.py` thuộc A-1 ở L1 rồi A-2 ở L2 (cùng vị trí, tuần tự). `web/index.html` thuộc W-0 ở L1 rồi W-2 ở L2 (tuần tự).
 
@@ -1371,6 +1960,22 @@ Gợi ý cho trưởng phòng: thêm các `tools/test_runner_*.py` và `cf/test/
   Câu hỏi này không ảnh hưởng đợt 3, vì đợt 3 chỉ có nút.
 
 Câu Q1 cũ (repo dùng chung) đã khép bằng D8 và tình trạng mới (repo ở `main`).
+
+### Đợt 5 (phiếu A-05, D11)
+
+- **Q5-1. Trần một phiên `taovideo`** (§7.5, §7.7): 60 USD-ước-tính Claude, 25 voice GenMax mới, 6 lượt Codex, 8 giờ làm, mỗi câu hỏi chờ tối đa 3 giờ (trong lúc chờ, làn GPU và kho bị giữ). Ngày chạy `taovideo` được vượt mức chung 40 USD/ngày; khi đó việc Claude khác đợi tới hôm sau.
+  - (A, đề xuất) Giữ các số này.
+  - (B) Người dùng đưa số khác. Nới trần phải sửa code và cài lại.
+- **Q5-2. Cách duyệt tiền cho `taovideo`.**
+  - (A, đề xuất) Một lời duyệt cho cả một phiên chạy, kèm các trần cứng ở Q5-1. Trả lời câu hỏi giữa chừng không phải duyệt lại; riêng câu trả lời kiểu chọn hoặc chữ tự do phải nhập mật khẩu. Phiên bị ngắt thì phải duyệt lại.
+  - (B) Duyệt riêng từng pha GenMax qua câu hỏi giữa chừng. Không chặn cứng được, vì agent tự quyết khi nào hỏi và key GenMax đọc từ tài khoản Windows. Phải sửa skill (bỏ luật "voice tự chạy"), và người dùng phải trả lời đúng lúc voice.
+- **Q5-3. Có cho sửa agent/skill không** (§7.11)?
+  - K-1: thêm mục "chạy từ web" vào `aff-taovideo.md`, cùng các ngoại lệ K-1 cũ;
+  - K-2: thêm nhánh "không có SendMessage" vào skill `tao-video-tu-canh-quay` (`SKILL.md:72`, `:74`, `:239`; `prompt-chang.md:96`, `:126`, `:201`).
+  - (A, đề xuất) Duyệt cả K-1 và K-2.
+  - (B) Chỉ K-1. Việc vẫn chạy được nhờ phiếu, nhưng agent dễ quên dặn subagent C2.
+
+  Kèm theo: danh sách tên watermark (`WM_CHO_PHEP`) được phép chọn trên web, và có đồng ý mở đợt 5 không.
 
 ---
 

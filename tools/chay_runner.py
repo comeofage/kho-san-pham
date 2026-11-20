@@ -106,7 +106,20 @@ def _khoa_cong_khai():
     return None, None
 
 
+def _stdout_utf8() -> None:
+    """FX-26 e): console/pipe cp1252 (bật từ Startup, không PYTHONIOENCODING) không in được tiếng Việt → --help và log
+    stderr chết vì UnicodeEncodeError. Đổi stdout/stderr sang UTF-8 (errors="replace"); không có stream (pythonw) hoặc
+    stream không đổi được thì bỏ qua."""
+    for s in (sys.stdout, sys.stderr):
+        try:
+            if s is not None:
+                s.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
 def main(argv: list[str] | None = None) -> int:
+    _stdout_utf8()
     ts = _phan_tich(argv)
 
     # ---- BƯỚC 1: khoá đơn instance, trước mọi việc đụng DB/job/tiến trình (P1-1) ----
@@ -201,8 +214,10 @@ def main(argv: list[str] | None = None) -> int:
                 log.error("không nạp được runner/api.py: %s", e)
                 return 5
             from http.server import ThreadingHTTPServer
+            # A-5 (§7.6): trả lời trong phiên sống taovideo đi thẳng vào stdin qua BoChay
             handler = api.tao_handler(kho, mt, khoa_runner, kcc, hm, canh_bao,
-                                      bo.bao_huy, bo.doc_log, bo.trang_thai_lan, che=che)
+                                      bo.bao_huy, bo.doc_log, bo.trang_thai_lan, che=che,
+                                      tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song)
             try:
                 srv = ThreadingHTTPServer(("127.0.0.1", ts.cong), handler)
             except OSError as e:

@@ -10,27 +10,38 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import secrets
 import sqlite3
 import string
 import threading
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Callable, Iterator, Sequence
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
+from urllib.parse import quote
 
 from .chu_ky import giai_chu_ky
 from .kieu import DANG_MO, LAN_CHAY, TRANG_THAI, CanNguoiDung, SaiTrangThai, ThamSoLoi, TrungViec, gio_vn
 
 log = logging.getLogger(__name__)
 
-PHIEN_BAN_SCHEMA = "2"
-# Nâng schema '1' → '2' (D9, §10): chạy trong CÙNG giao dịch BEGIN IMMEDIATE với việc đổi meta; lỗi → rollback cả cụm,
-# DB giữ nguyên schema '1'. KHÔNG bao giờ xoá/tạo lại DB cũ.
+PHIEN_BAN_SCHEMA = "3"
+TEN_DB = "runner.db"            # <thu_muc_runner>/runner.db (tools/chay_runner.py); danh_muc đọc bảng ban_sua ở đây
+# Nâng schema tại chỗ, chạy trong CÙNG giao dịch BEGIN IMMEDIATE với việc đổi meta; lỗi → rollback cả cụm, DB giữ
+# nguyên schema cũ. KHÔNG bao giờ xoá/tạo lại DB cũ.
+# - '1' → '2' (D9, §10): thêm 2 cột tiêu (bảng da_tieu do SCHEMA `CREATE … IF NOT EXISTS` tạo);
+# - '2' → '3' (D10, docs/sua-video.md §7.3): chỉ thêm bảng ban_sua (SCHEMA `CREATE … IF NOT EXISTS`), không đụng bảng cũ.
 NANG_1_LEN_2: tuple[str, ...] = (
     "ALTER TABLE viec ADD COLUMN so_lan_tieu INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE viec ADD COLUMN tieu_luc_dau TEXT",
 )
+SCHEMA_NANG_DUOC = ("1", "2")
+BAN_SUA_GIU_NGAY = 30           # §7.3: dòng ban_sua cũ hơn bị xoá ở bước dọn khởi động (trừ dòng việc mở còn dùng)
+RE_BAN_SUA = re.compile(r"^b[0-9a-f]{16}$", re.ASCII)
+_RE_UID = re.compile(r"^\d{19}$", re.ASCII)
+_RE_DU_AN = re.compile(r"^[0-9a-f]{12}$", re.ASCII)
+_RE_MA_VIDEO = re.compile(r"^[0-9a-f]{16}$", re.ASCII)
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta(khoa TEXT PRIMARY KEY, gia_tri TEXT NOT NULL);
@@ -65,6 +76,12 @@ CREATE TABLE IF NOT EXISTS tra_loi(id INTEGER PRIMARY KEY AUTOINCREMENT, viec_id
   luc TEXT NOT NULL, boi TEXT NOT NULL, cau_hoi TEXT NOT NULL, noi_dung TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS nonce(gia_tri TEXT PRIMARY KEY, luc REAL NOT NULL);
 CREATE TABLE IF NOT EXISTS da_tieu(khoa TEXT PRIMARY KEY, viec_id TEXT NOT NULL, luc TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS ban_sua(
+  id TEXT PRIMARY KEY,
+  uid TEXT NOT NULL, du_an TEXT NOT NULL, ma_video TEXT NOT NULL,
+  noi_dung TEXT NOT NULL,
+  tao_boi TEXT NOT NULL, tao_luc TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS ban_sua_tao_luc ON ban_sua(tao_luc)
 """
 
 COT_JSON = ("tham_so", "cau_hoi", "ket_qua")
@@ -126,6 +143,36 @@ def _dong_thanh_dict(r: sqlite3.Row) -> dict:
     return d
 
 
+def _kiem_id_ban_sua(id: object) -> str:
+    if not isinstance(id, str) or not RE_BAN_SUA.fullmatch(id):
+        raise ThamSoLoi("mã bản sửa phải là 'b' + 16 hex")
+    return id
+
+
+def _ban_sua_thanh_dict(r: sqlite3.Row | tuple, cot: Sequence[str]) -> dict:
+    d = dict(zip(cot, r))
+    d["noi_dung"] = json.loads(d["noi_dung"])
+    return d
+
+
+_COT_BAN_SUA = ("id", "uid", "du_an", "ma_video", "noi_dung", "tao_boi", "tao_luc")
+_SQL_LAY_BAN_SUA = f"SELECT {', '.join(_COT_BAN_SUA)} FROM ban_sua WHERE id=?"
+
+
+def doc_ban_sua_chi_doc(duong_dan_db: Path, id: str) -> dict | None:
+    """Đọc 1 dòng ban_sua bằng kết nối CHỈ ĐỌC (danh_muc.lap_buoc dùng — không có KhoViec trong tay).
+    DB không có → None (không bao giờ tạo DB rỗng). id sai định dạng → ThamSoLoi. Lỗi SQLite → ném tiếp."""
+    _kiem_id_ban_sua(id)
+    db = Path(duong_dan_db)
+    if not db.is_file():
+        return None
+    uri = f"file:{quote(db.resolve().as_posix(), safe='/:')}?mode=ro"
+    with closing(sqlite3.connect(uri, uri=True, timeout=10)) as c:
+        c.execute("PRAGMA busy_timeout=5000")
+        r = c.execute(_SQL_LAY_BAN_SUA, (id,)).fetchone()
+    return _ban_sua_thanh_dict(r, _COT_BAN_SUA) if r else None
+
+
 class KhoViec:
     NONCE_SONG_S = 86400.0      # khớp vong_lap: don_cu(bây giờ − 1 ngày) lúc khởi động (§4.5 bước 3)
     NONCE_DON_TOI_DA = 200      # mỗi lần ghi nonce chỉ xoá tối đa chừng này dòng (giới hạn chi phí)
@@ -170,15 +217,17 @@ class KhoViec:
             r = g.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()
             if r is None:
                 g.execute("INSERT INTO meta(khoa, gia_tri) VALUES('schema', ?)", (PHIEN_BAN_SCHEMA,))
-            elif r[0] == "1":
-                cot = {x[1] for x in g.execute("PRAGMA table_info(viec)")}
-                for cau in NANG_1_LEN_2:
-                    ten = cau.split("ADD COLUMN", 1)[1].split()[0] if "ADD COLUMN" in cau else None
-                    if ten is None or ten not in cot:
-                        g.execute(cau)
+            elif r[0] in SCHEMA_NANG_DUOC:
+                if r[0] == "1":
+                    cot = {x[1] for x in g.execute("PRAGMA table_info(viec)")}
+                    for cau in NANG_1_LEN_2:
+                        ten = cau.split("ADD COLUMN", 1)[1].split()[0] if "ADD COLUMN" in cau else None
+                        if ten is None or ten not in cot:
+                            g.execute(cau)
+                # '2' → '3': bảng ban_sua đã được SCHEMA tạo ở trên (CREATE … IF NOT EXISTS) trong cùng giao dịch.
                 g.execute("UPDATE meta SET gia_tri=? WHERE khoa='schema'", (PHIEN_BAN_SCHEMA,))
-                log.warning("đã nâng runner.db schema '1' → %r tại chỗ (giữ nguyên dữ liệu): %s",
-                            PHIEN_BAN_SCHEMA, self.duong_dan_db)
+                log.warning("đã nâng runner.db schema %r → %r tại chỗ (giữ nguyên dữ liệu): %s",
+                            r[0], PHIEN_BAN_SCHEMA, self.duong_dan_db)
             elif r[0] != PHIEN_BAN_SCHEMA:
                 raise RuntimeError(f"runner.db có schema {r[0]!r}, code cần {PHIEN_BAN_SCHEMA!r} — "
                                    f"KHÔNG tự xoá/tạo lại; kiểm tay {self.duong_dan_db}")
@@ -447,6 +496,43 @@ class KhoViec:
                           (luc - self.NONCE_SONG_S, self.NONCE_DON_TOI_DA))
             return moi
 
+    # ---------- bản sửa video (đợt 6, docs/sua-video.md §7.3) ----------
+    def luu_ban_sua(self, id: str, uid: str, du_an: str, ma_video: str, noi_dung: dict, boi: str) -> dict:
+        """Lưu bản sửa ĐÃ qua `sua_video.kiem_ban_sua` (id = ma_ban_sua(noi_dung), bên gọi tính).
+        Đã có cùng id: dữ liệu khớp → trả dòng cũ (gửi lại vô hại); khác → ThamSoLoi (không bao giờ ghi đè)."""
+        _kiem_id_ban_sua(id)
+        if not isinstance(uid, str) or not _RE_UID.fullmatch(uid):
+            raise ThamSoLoi("uid phải là 19 chữ số")
+        if not isinstance(du_an, str) or not _RE_DU_AN.fullmatch(du_an):
+            raise ThamSoLoi("du_an phải là 12 hex")
+        if not isinstance(ma_video, str) or not _RE_MA_VIDEO.fullmatch(ma_video):
+            raise ThamSoLoi("ma_video phải là 16 hex")
+        if not isinstance(noi_dung, dict):
+            raise ThamSoLoi("noi_dung bản sửa phải là object")
+        if not isinstance(boi, str) or not boi:
+            raise ThamSoLoi("thiếu người tạo bản sửa")
+        nd = _json_chuan(noi_dung)
+        with self._gd() as c:
+            c.execute("INSERT OR IGNORE INTO ban_sua(id, uid, du_an, ma_video, noi_dung, tao_boi, tao_luc)"
+                      " VALUES(?,?,?,?,?,?,?)", (id, uid, du_an, ma_video, nd, boi, self._luc()))
+            r = c.execute(_SQL_LAY_BAN_SUA, (id,)).fetchone()
+            if tuple(r[k] for k in ("uid", "du_an", "ma_video", "noi_dung")) != (uid, du_an, ma_video, nd):
+                raise ThamSoLoi("mã bản sửa đã dùng cho dữ liệu khác")
+            return _ban_sua_thanh_dict(tuple(r), _COT_BAN_SUA)
+
+    def lay_ban_sua(self, id: str) -> dict | None:
+        r = self._ket_noi().execute(_SQL_LAY_BAN_SUA, (_kiem_id_ban_sua(id),)).fetchone()
+        return _ban_sua_thanh_dict(tuple(r), _COT_BAN_SUA) if r else None
+
     def don_cu(self, truoc: datetime) -> None:
+        """Dọn lúc khởi động (§4.5 bước 3): nonce trước `truoc`; ban_sua cũ hơn BAN_SUA_GIU_NGAY ngày (tính theo
+        bay_gio) trừ bản mà một việc còn mở đang trỏ tới (lap_buoc của việc đó còn cần)."""
+        moc_ban_sua = (gio_vn(self.bay_gio()) - timedelta(days=BAN_SUA_GIU_NGAY)).isoformat(timespec="seconds")
         with self._gd() as c:
             c.execute("DELETE FROM nonce WHERE luc < ?", (gio_vn(truoc).timestamp(),))
+            n = c.execute(
+                f"DELETE FROM ban_sua WHERE tao_luc < ? AND id NOT IN (SELECT json_extract(tham_so, '$.ban_sua') "
+                f"FROM viec WHERE trang_thai IN ({','.join('?' * len(DANG_MO))}) "
+                "AND json_extract(tham_so, '$.ban_sua') IS NOT NULL)", (moc_ban_sua, *DANG_MO)).rowcount
+            if n:
+                log.info("đã xoá %d bản sửa video cũ hơn %d ngày", n, BAN_SUA_GIU_NGAY)

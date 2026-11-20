@@ -1444,7 +1444,7 @@ def test_poster_ds_folder_script_chi_goi_list_folders(tmp_path):
     po = poster_gia(tmp_path, folders=[{"id": 3, "name": "Ví da nam", "path": "E:/x"}, {"id": "7", "name": "Đèn"},
                                        {"id": "x", "name": "hỏng"}, {"id": True, "name": "bool"}, {"id": 9}, "rác"])
     ds = vl.doc_folder_poster_tu(Path(PY), vl.POSTER_DS_FOLDER, po)
-    assert ds == [{"id": 3, "ten": "Ví da nam"}, {"id": 7, "ten": "Đèn"}, {"id": 9, "ten": ""}]
+    assert ds == [{"id": 3, "ten": "Ví da nam", "duong_dan": "E:/x"}, {"id": 7, "ten": "Đèn"}, {"id": 9, "ten": ""}]
     assert (po / "goi.txt").read_text(encoding="utf-8").split() == ["list_folders"]     # không gọi API ghi nào
 
 
@@ -2258,3 +2258,109 @@ def test_tieu_chua_ro_giu_ly_do_duyet_lai_cho_luot_sau(tmp_path, khoa_ky):
     assert len(g) == 1 and g[0]["stdin"].count("vì X") == 1, g
     s = kho.lay(v["id"])
     assert s["trang_thai"] == "xong" and "ly_do_duyet_lai" not in s["ket_qua"] and len(so.goi) == 1, s
+
+
+# ---------- A-5 b): phan_tich_uid thiếu douyin.md → runner tự tạo việc con douyin_uid (không trùng) ----------
+
+@pytest.mark.parametrize("dau_ra", ["xong_lo_ngai", "xong"])
+def test_phan_tich_uid_thieu_douyin_tu_tao_viec_con_douyin_khong_trung(tmp_path, dau_ra):
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}], dau_ra=dau_ra)
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"phan_tich_uid": loai, "douyin_uid": DANH_MUC["douyin_uid"]})
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s
+    ds_douyin = [x for x in kho.ds(None, gioi_han=50) if x["loai"] == "douyin_uid"]
+    if dau_ra == "xong":                                   # đủ douyin.md → không tạo gì
+        assert ds_douyin == [] and "viec_con_douyin" not in s["ket_qua"]
+        return
+    assert len(ds_douyin) == 1
+    con = ds_douyin[0]
+    assert s["ket_qua"]["viec_con_douyin"] == con["id"]
+    assert (con["cha_id"], con["tham_so"], con["trang_thai"], con["tao_boi"]) == (v["id"], {"uid": UID}, "cho",
+                                                                                     "nhan")
+    assert "douyin_uid" not in s["ket_qua"]["goi_y_viec"] and con["id"] in s["ket_qua"]["lo_ngai"]
+    # phan_tich_uid lần 2 cùng UID trong khi douyin_uid còn mở → KHÔNG tạo trùng
+    v2 = tao(kho, loai, {"uid": UID}, khoa="lan2")
+    bo.chay_mot(kho.chuyen(v2["id"], ["cho"], "dang_chay", "nhan", "nhận tay (test)"))
+    s2 = kho.lay(v2["id"])
+    assert s2["trang_thai"] == "xong" and s2["ket_qua"]["viec_con_douyin"] == con["id"]
+    assert s2["ket_qua"]["douyin_trung"] is True
+    assert len([x for x in kho.ds(None, gioi_han=50) if x["loai"] == "douyin_uid"]) == 1
+
+
+def test_trang_thai_lan_co_phien_song_rong_khi_khong_co_phien(tmp_path):
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {})
+    assert bo.trang_thai_lan()["phien_song"] == [] and bo.co_phien_song("j20261118000000abcd") is False
+
+
+# ---------------- FX-29: phiếu taovideo theo hm vòng chạy đang giữ; ket_qua giữ kho_luc_tao ----------------
+
+def test_phieu_taovideo_dung_hm_vong_chay_ca_lan_dau_va_lan_chay_tiep(tmp_path, monkeypatch):
+    """Vòng chạy giữ hm đã hạ (codex 2, mp3 10) mà thư mục runner không có cau_hinh.json → phiếu lần đầu
+    (lap_buoc_hieu_luc) và phiếu LẦN CHẠY TIẾP (lap_phieu_tiep_taovideo) phải in trần theo hm đó."""
+    import test_runner_phien_song as tps
+    from runner import api as _api
+    monkeypatch.setattr(tps.ps, "NHIP_S", 0.1)
+    bo, kho, v, kb, _so, khoa, _a = tps.lam_tv(
+        tmp_path, [{"luot": [{"viec": [tps._ket(tps.CAN_CHON)]}]}, {"luot": [{"viec": [tps._ket(tps.DONE)]}]}],
+        taovideo_cho_s=1, codex_luot_viec=2, taovideo_mp3_viec=10)
+    id = v["id"]
+    assert not (tmp_path / "data" / "cau_hinh.json").exists()
+    _, t = tps.chay_nen(bo)
+    tps.xong_luong(t)
+    s = kho.lay(id)
+    assert s["trang_thai"] == "loi", s
+    p1 = tps.tin_nhan(kb, 0)[0]
+    assert "Codex ≤ 2 lần; voice GenMax ≤ 10 file mới" in p1
+    kho.chuyen(id, ["loi"], "cho_duyet", "nhan", "xin duyệt lại", loi_duyet=None, duyet_boi=None, duyet_luc=None,
+               chu_ky_duyet=None, ket_qua=_api.ket_qua_xin_duyet_lai(s))
+    tps.duyet_lan(kho, khoa, id, 2)
+    _, t = tps.chay_nen(bo)
+    tps.xong_luong(t)
+    p2 = tps.tin_nhan(kb, 1)[0]
+    assert "LẦN CHẠY TIẾP" in p2 and "Codex ≤ 2 lần; voice GenMax ≤ 10 file mới" in p2
+
+
+def test_phien_song_giu_kho_luc_tao_qua_duyet_lai_va_ket_thuc(tmp_path, monkeypatch):
+    """ket_qua.kho_luc_tao (ảnh chụp lúc tạo việc) còn nguyên qua: bắt đầu phiên, kết thúc loi, xin duyệt lại,
+    duyệt, phiên mới, kết thúc."""
+    import test_runner_phien_song as tps
+    from runner import api as _api
+    from runner.danh_muc import KHOA_ANH_CHUP_KHO
+    monkeypatch.setattr(tps.ps, "NHIP_S", 0.1)
+    bo, kho, v, kb, _so, khoa, _a = tps.lam_tv(
+        tmp_path, [{"luot": [{"viec": [tps._ket(tps.CAN_CHON)]}]}, {"luot": [{"viec": [tps._ket(tps.DONE)]}]}],
+        taovideo_cho_s=1)
+    id = v["id"]
+    anh = {"a": [[1, 20]], "b": []}
+    tps.sua_db(tmp_path, id, ket_qua=json.dumps({KHOA_ANH_CHUP_KHO: anh}))
+    _, t = tps.chay_nen(bo)
+    tps.xong_luong(t)
+    s = kho.lay(id)
+    assert s["trang_thai"] == "loi" and s["ket_qua"][KHOA_ANH_CHUP_KHO] == anh, s
+    kho.chuyen(id, ["loi"], "cho_duyet", "nhan", "xin duyệt lại", loi_duyet=None, duyet_boi=None, duyet_luc=None,
+               chu_ky_duyet=None, ket_qua=_api.ket_qua_xin_duyet_lai(s))
+    assert kho.lay(id)["ket_qua"][KHOA_ANH_CHUP_KHO] == anh
+    tps.duyet_lan(kho, khoa, id, 2)
+    assert kho.lay(id)["ket_qua"][KHOA_ANH_CHUP_KHO] == anh
+    _, t = tps.chay_nen(bo)
+    tps.xong_luong(t)
+    s = kho.lay(id)
+    assert s["trang_thai"] in ("xong", "loi") and s["ket_qua"][KHOA_ANH_CHUP_KHO] == anh, s
+
+
+def test_khoi_dong_lai_doi_soat_xong_gop_ket_qua_giu_khoa_cu(tmp_path):
+    """FX-29: đối soát sau khởi động lại → xong: ket_qua GỘP vào ket_qua cũ (giữ kho_luc_tao, so_codex…), không thay
+    cả dict (B7)."""
+    mt = lam_mt(tmp_path)
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"], dau_ra="xong")
+    bo, kho = lam_bo(tmp_path, mt, {"s": s})
+    v = tao(kho, s, {"k": "a"})
+    kho.chuyen(v["id"], ["cho"], "dang_chay", "he_thong", "nhận",
+               ket_qua={"kho_luc_tao": {"a": [], "b": []}, "so_codex": 3})
+    bo.khoi_dong()
+    st = kho.lay(v["id"])
+    assert st["trang_thai"] == "xong", st
+    assert st["ket_qua"]["kho_luc_tao"] == {"a": [], "b": []} and st["ket_qua"]["so_codex"] == 3
+    assert st["ket_qua"]["tom_tat"].startswith("đối soát sau khởi động lại") and st["ket_qua"]["file_ra"] == []

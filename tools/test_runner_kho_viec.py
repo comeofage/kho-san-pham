@@ -62,11 +62,13 @@ def test_tao_va_lay(kho):
 
 def test_schema_dung_phien_ban(kho, tmp_path):
     with sqlite3.connect(tmp_path / "runner.db") as c:
-        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "2"
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
         assert c.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
         cot = {r[1] for r in c.execute("PRAGMA table_info(viec)")}
         assert {"so_lan_tieu", "tieu_luc_dau"} <= cot
         assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='da_tieu'").fetchone()
+        cot_bs = {r[1] for r in c.execute("PRAGMA table_info(ban_sua)")}
+        assert cot_bs == {"id", "uid", "du_an", "ma_video", "noi_dung", "tao_boi", "tao_luc"}
 
 
 # Bản sao NGUYÊN VĂN schema '1' (trước D9/FX-10) để thử nâng schema tại chỗ trên DB cũ có dữ liệu.
@@ -130,9 +132,10 @@ def test_nang_schema_1_len_2_giu_du_lieu(tmp_path, dong):
     assert v["chu_ky_duyet"] == _ky("K") and v["so_lan_tieu"] == 0 and v["tieu_luc_dau"] is None
     assert len(kho.su_kien(v["id"])) == 1
     with sqlite3.connect(db) as c:
-        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "2"
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
         assert c.execute("SELECT COUNT(*) FROM nonce").fetchone()[0] == 1
-    # mở lại lần 2 (đã là schema 2): không ALTER lại, không lỗi, dữ liệu vẫn còn
+        assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='ban_sua'").fetchone()
+    # mở lại lần 2 (đã là schema mới): không ALTER lại, không lỗi, dữ liệu vẫn còn
     kho2 = KhoViec(db, dong)
     assert kho2.lay(v["id"])["chi_phi_usd"] == 1.25
     # việc mới trên DB đã nâng ghi được tiêu
@@ -153,6 +156,137 @@ def test_nang_schema_loi_giua_chung_thi_rollback(tmp_path, dong, monkeypatch):
         cot = {r[1] for r in c.execute("PRAGMA table_info(viec)")}
         assert "so_lan_tieu" not in cot
         assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 1
+
+
+# Schema '2' (D9/FX-10, trước đợt 6) = schema '1' + 2 cột tiêu + bảng da_tieu. DB thật đang ở schema này, có dữ liệu.
+SCHEMA_2 = SCHEMA_1.replace(
+    "so_lan_claude INTEGER NOT NULL DEFAULT 0\n);",
+    "so_lan_claude INTEGER NOT NULL DEFAULT 0,\n  so_lan_tieu INTEGER NOT NULL DEFAULT 0, tieu_luc_dau TEXT\n);",
+) + "CREATE TABLE da_tieu(khoa TEXT PRIMARY KEY, viec_id TEXT NOT NULL, luc TEXT NOT NULL);\n"
+
+
+def _db_schema_2(db: Path) -> None:
+    assert "tieu_luc_dau TEXT" in SCHEMA_2
+    c = sqlite3.connect(db)
+    try:
+        c.executescript(SCHEMA_2)
+        c.execute("PRAGMA journal_mode=WAL")
+        c.execute("INSERT INTO meta VALUES('schema','2')")
+        c.execute("INSERT INTO viec(id, loai, khoa, tham_so, lan_chay, trang_thai, tao_boi, tao_luc, cap_nhat_luc,"
+                  " so_lan_tieu, tieu_luc_dau, chi_phi_usd) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
+                  ("j20261116080000abcd", "voice_genmax", "k1", '{"me":"20261116-a"}', "gpu", "xong", "nhan",
+                   "2026-11-16T08:00:00+07:00", "2026-11-16T08:05:00+07:00", 2, "2026-11-16T08:01:00+07:00", 0.0))
+        c.execute("INSERT INTO viec(id, loai, khoa, tham_so, lan_chay, trang_thai, tao_boi, tao_luc, cap_nhat_luc)"
+                  " VALUES(?,?,?,?,?,?,?,?,?)",
+                  ("j20261116090000efgh", "voice_pv", "k2", '{"me":"20261116-b"}', "gpu", "cho", "nhan",
+                   "2026-11-16T09:00:00+07:00", "2026-11-16T09:00:00+07:00"))
+        c.execute("INSERT INTO da_tieu VALUES('abc', 'j20261116080000abcd', '2026-11-16T08:01:00+07:00')")
+        c.execute("INSERT INTO su_kien(viec_id, luc, tu, den, boi, ghi_chu) VALUES(?,?,?,?,?,?)",
+                  ("j20261116080000abcd", "2026-11-16T08:00:00+07:00", None, "cho", "nhan", "tạo"))
+        c.commit()
+    finally:
+        c.close()
+
+
+def test_nang_schema_2_len_3_giu_du_lieu(tmp_path, dong):
+    """DB thật đang schema '2' có dữ liệu → mở bằng code mới: thêm bảng ban_sua, giữ nguyên mọi dòng cũ."""
+    db = tmp_path / "runner.db"
+    _db_schema_2(db)
+    kho = KhoViec(db, dong)
+    v = kho.lay("j20261116080000abcd")
+    assert v["trang_thai"] == "xong" and v["so_lan_tieu"] == 2 and v["tieu_luc_dau"] == "2026-11-16T08:01:00+07:00"
+    assert kho.lay("j20261116090000efgh")["trang_thai"] == "cho"
+    assert kho.luc_tieu_theo_viec([v["id"]]) == {v["id"]: ["2026-11-16T08:01:00+07:00"]}
+    assert len(kho.su_kien(v["id"])) == 1
+    with sqlite3.connect(db) as c:
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
+        assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
+    # việc đang mở vẫn chặn trùng sau khi nâng
+    with pytest.raises(TrungViec):
+        kho.tao("voice_pv", "k2", {}, "gpu", "cho", "nhan")
+    # bảng mới dùng được ngay; mở lại lần 2 không lỗi, không mất gì
+    kho.luu_ban_sua("b" + "1" * 16, "1" * 19, "a" * 12, "c" * 16, {"x": 1}, "nhan")
+    kho2 = KhoViec(db, dong)
+    assert kho2.lay_ban_sua("b" + "1" * 16)["noi_dung"] == {"x": 1}
+    assert kho2.lay("j20261116090000efgh") is not None
+
+
+def test_nang_schema_2_loi_thi_rollback_giu_schema_2(tmp_path, dong, monkeypatch):
+    """Lỗi giữa giao dịch nâng → DB vẫn '2', không có bảng ban_sua, dữ liệu nguyên vẹn."""
+    db = tmp_path / "runner.db"
+    _db_schema_2(db)
+    import runner.kho_viec as kv
+    monkeypatch.setattr(kv, "SCHEMA", kv.SCHEMA + ";\nCREATE INDEX x_loi ON bang_khong_co(a)")
+    with pytest.raises(sqlite3.OperationalError):
+        KhoViec(db, dong)
+    with sqlite3.connect(db) as c:
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "2"
+        assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='ban_sua'").fetchone() is None
+        assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
+
+
+# ---------- bảng ban_sua (đợt 6, docs/sua-video.md §7.3) ----------
+
+BS = "b" + "0123456789abcdef"
+UID_SUA = "1736818222555104357"
+
+
+def test_ban_sua_luu_lay_va_trung_noi_dung(kho):
+    noi = {"ma_video": "a" * 16, "phu_de": [{"i": 1, "text": "Chữ ✓"}], "sua_luc": 5}
+    d = kho.luu_ban_sua(BS, UID_SUA, "d" * 12, "a" * 16, noi, "nhan")
+    assert d["id"] == BS and d["noi_dung"] == noi and d["tao_boi"] == "nhan"
+    assert d["tao_luc"] == "2026-11-17T09:00:00+07:00"
+    assert kho.lay_ban_sua(BS) == d
+    assert kho.lay_ban_sua("b" + "f" * 16) is None
+    # cùng id + cùng dữ liệu (gửi lại) → giữ dòng cũ, không lỗi
+    assert kho.luu_ban_sua(BS, UID_SUA, "d" * 12, "a" * 16, dict(noi), "comeofage")["tao_boi"] == "nhan"
+    # cùng id mà khác video → từ chối (không ghi đè)
+    with pytest.raises(ThamSoLoi):
+        kho.luu_ban_sua(BS, UID_SUA, "d" * 12, "b" * 16, noi, "nhan")
+    with pytest.raises(ThamSoLoi):
+        kho.luu_ban_sua(BS, UID_SUA, "d" * 12, "a" * 16, {"khac": 1}, "nhan")
+    # noi_dung lưu dạng JSON chuẩn (khoá sắp xếp, không ASCII-escape)
+    raw = kho._ket_noi().execute("SELECT noi_dung FROM ban_sua WHERE id=?", (BS,)).fetchone()[0]
+    assert raw == '{"ma_video":"aaaaaaaaaaaaaaaa","phu_de":[{"i":1,"text":"Chữ ✓"}],"sua_luc":5}'
+
+
+@pytest.mark.parametrize("sai", [
+    dict(id="b123"), dict(id="x" + "0" * 16), dict(uid="123"), dict(du_an="ABC"), dict(ma_video="z" * 16),
+    dict(noi_dung=["khong", "phai", "dict"]), dict(boi=""),
+])
+def test_ban_sua_tu_choi_gia_tri_la(kho, sai):
+    ts = dict(id=BS, uid=UID_SUA, du_an="d" * 12, ma_video="a" * 16, noi_dung={"a": 1}, boi="nhan")
+    ts.update(sai)
+    with pytest.raises(ThamSoLoi):
+        kho.luu_ban_sua(ts["id"], ts["uid"], ts["du_an"], ts["ma_video"], ts["noi_dung"], ts["boi"])
+
+
+def test_doc_ban_sua_chi_doc_khong_tao_db(tmp_path, kho):
+    import runner.kho_viec as kv
+    kho.luu_ban_sua(BS, UID_SUA, "d" * 12, "a" * 16, {"a": 1}, "nhan")
+    d = kv.doc_ban_sua_chi_doc(tmp_path / "runner.db", BS)
+    assert d is not None and d["noi_dung"] == {"a": 1} and d["ma_video"] == "a" * 16
+    assert kv.doc_ban_sua_chi_doc(tmp_path / "runner.db", "b" + "e" * 16) is None
+    khong = tmp_path / "khong" / "runner.db"
+    assert kv.doc_ban_sua_chi_doc(khong, BS) is None
+    assert not khong.exists() and not khong.parent.exists()     # không bao giờ tạo DB rỗng
+    with pytest.raises(ThamSoLoi):
+        kv.doc_ban_sua_chi_doc(tmp_path / "runner.db", "'; DROP TABLE viec; --")
+
+
+def test_don_cu_xoa_ban_sua_qua_30_ngay_tru_viec_dang_mo(kho, dong):
+    cu, cu_mo, moi = "b" + "1" * 16, "b" + "2" * 16, "b" + "3" * 16
+    kho.luu_ban_sua(cu, UID_SUA, "d" * 12, "a" * 16, {"a": 1}, "nhan")
+    kho.luu_ban_sua(cu_mo, UID_SUA, "d" * 12, "b" * 16, {"a": 2}, "nhan")
+    kho.tao("sua_video", "b" * 16, {"uid": UID_SUA, "du_an": "d" * 12, "ma_video": "b" * 16, "ban_sua": cu_mo},
+            "gpu", "cho", "nhan")
+    dong.toi(29 * 86400)
+    kho.luu_ban_sua(moi, UID_SUA, "d" * 12, "c" * 16, {"a": 3}, "nhan")
+    dong.toi(2 * 86400)                     # cu, cu_mo: 31 ngày; moi: 2 ngày
+    kho.don_cu(dong() - timedelta(days=1))
+    assert kho.lay_ban_sua(cu) is None
+    assert kho.lay_ban_sua(cu_mo) is not None      # việc còn mở dùng bản này → giữ
+    assert kho.lay_ban_sua(moi) is not None
 
 
 def test_ghi_tieu_tang_so_lan_va_giu_luc_dau(kho, dong):

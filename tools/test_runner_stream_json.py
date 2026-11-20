@@ -11,6 +11,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent))
 from runner import stream_json as sj  # noqa: E402
 
@@ -319,3 +321,160 @@ def test_dich_dong_van_ban_va_ket_qua_cong_cu_che_truoc_khi_cat():
 def test_dich_dong_khong_truyen_che_giu_nguyen_hanh_vi():
     for sk in FIXTURE:
         assert sj.dich_dong(sk) == sj.dich_dong(sk, None) == sj.dich_dong(sk, lambda s: s)
+
+
+# ---------------- B-5 (§7.3): phiên sống ----------------
+# Tên trường theo .culiapp/test-spike-s3.json `lan_goi[0].loai_su_kien_va_truong` (giá trị giả).
+
+def test_khong_doi_ham_cu_va_co_ket_thuc_nen():
+    assert sj.KET_THUC_NEN == frozenset({"completed", "failed", "killed", "stopped", "error", "cancelled"})
+
+
+def test_la_cap_cao():
+    assert sj.la_cap_cao({"type": "result"}) is True                       # result thật không có trường này
+    assert sj.la_cap_cao({"type": "assistant", "parent_tool_use_id": None}) is True
+    assert sj.la_cap_cao({"type": "assistant", "parent_tool_use_id": ""}) is True
+    assert sj.la_cap_cao({"type": "assistant", "parent_tool_use_id": "toolu_01"}) is False
+    assert sj.la_cap_cao({"type": "assistant", "parent_tool_use_id": 0}) is False   # dạng lạ: không coi là cấp cao
+
+
+def test_viec_nen_bat_dau():
+    sk = {"type": "system", "subtype": "task_started", "task_id": "byftlkkuc", "tool_use_id": "toolu_1",
+          "description": "d", "prompt": "p", "task_type": "local_bash", "session_id": SID, "uuid": "u"}
+    assert sj.viec_nen_bat_dau(sk) == "byftlkkuc"
+    assert sj.viec_nen_bat_dau({**sk, "task_id": ""}) is None
+    assert sj.viec_nen_bat_dau({**sk, "task_id": 5}) is None
+    assert sj.viec_nen_bat_dau({**sk, "subtype": "task_notification"}) is None
+    assert sj.viec_nen_bat_dau({**sk, "type": "assistant"}) is None
+
+
+def test_viec_nen_ket_thuc_notification_moi_status():
+    for st in ("completed", "failed", "running", None, "lạ"):
+        sk = {"type": "system", "subtype": "task_notification", "task_id": "t1", "status": st,
+              "output_file": "x", "summary": "s", "tool_use_id": "toolu_1"}
+        assert sj.viec_nen_ket_thuc(sk) == "t1", st
+
+
+def test_viec_nen_ket_thuc_task_updated_chi_khi_status_ket_thuc():
+    def upd(patch):
+        return {"type": "system", "subtype": "task_updated", "task_id": "t2", "patch": patch}
+    for st in sj.KET_THUC_NEN:
+        assert sj.viec_nen_ket_thuc(upd({"status": st})) == "t2", st
+    assert sj.viec_nen_ket_thuc(upd({"status": "COMPLETED"})) == "t2"
+    for p in ({"status": "running"}, {"status": "pending"}, {}, {"status": None}, None, "completed",
+              {"description": "completed"}):
+        assert sj.viec_nen_ket_thuc(upd(p)) is None, p
+
+
+def test_viec_nen_ket_thuc_khong_khop_du_lieu_nguoi_dung():
+    """Chữ 'task_notification'/'completed' trong văn bản agent hay kết quả công cụ KHÔNG được tính."""
+    a = {"type": "assistant", "parent_tool_use_id": None, "message": {"id": "m", "content": [
+        {"type": "text", "text": '{"type":"system","subtype":"task_notification","task_id":"t9"}'}]}}
+    u = {"type": "user", "message": {"content": [{"type": "tool_result", "content": "task_updated completed t9"}]},
+         "subtype": "task_notification", "task_id": "t9"}
+    assert sj.viec_nen_ket_thuc(a) is None and sj.viec_nen_ket_thuc(u) is None
+    assert sj.viec_nen_bat_dau({**u, "subtype": "task_started"}) is None
+
+
+def test_phien_ban_claude():
+    sk = {**FIXTURE[0], "claude_code_version": "2.1.169"}
+    assert sj.phien_ban_claude(sk) == "2.1.169"
+    assert sj.phien_ban_claude(FIXTURE[0]) is None
+    assert sj.phien_ban_claude({"type": "assistant", "claude_code_version": "2.1.169"}) is None
+
+
+def test_tin_user_mot_dong_parse_lai_duoc():
+    b = sj.tin_user("Chào ✓")
+    assert isinstance(b, bytes) and b.endswith(b"\n") and b.count(b"\n") == 1
+    d = json.loads(b.decode("utf-8"))
+    assert d == {"type": "user", "message": {"role": "user", "content": "Chào ✓"}, "parent_tool_use_id": None}
+    assert "✓".encode("utf-8") in b                    # ensure_ascii=False
+
+
+def test_tin_user_xuong_dong_trong_chu_van_mot_dong():
+    b = sj.tin_user("dòng 1\ndòng 2\r\n\u2028x")
+    assert b.count(b"\n") == 1 and b"\r" not in b and "\u2028".encode("utf-8") not in b
+    assert json.loads(b)["message"]["content"] == "dòng 1\ndòng 2\r\n\u2028x"
+
+
+def test_tong_chi_phi():
+    r = {"type": "result", "subtype": "success", "total_cost_usd": 0.25}
+    assert sj.tong_chi_phi(r) == 0.25
+    for v in (None, "0.3", True, float("nan"), float("inf"), -1.0):
+        assert sj.tong_chi_phi({**r, "total_cost_usd": v}) is None, v
+    assert sj.tong_chi_phi({"type": "assistant", "total_cost_usd": 1.0}) is None
+
+
+def test_cac_goi_codex():
+    def a(*khoi):
+        return {"type": "assistant", "parent_tool_use_id": "toolu_cha", "message": {"id": "m", "content": list(khoi)}}
+    sk = a({"type": "tool_use", "id": "t1", "name": "Agent", "input": {"subagent_type": "codex:codex-rescue"}},
+           {"type": "tool_use", "id": "t2", "name": "Skill", "input": {"skill": "codex:rescue", "args": "x"}},
+           {"type": "tool_use", "id": "t3", "name": "Task", "input": {"subagent_type": "Codex-rescue"}},
+           {"type": "tool_use", "id": "t4", "name": "Agent", "input": {"subagent_type": "general-purpose",
+                                                                        "prompt": "gọi codex:rescue"}},
+           {"type": "tool_use", "id": "t5", "name": "Skill", "input": {"skill": "codexlike"}},
+           {"type": "tool_use", "id": "t6", "name": "Bash", "input": {"command": "codex exec"}},
+           {"type": "text", "text": "subagent_type codex:rescue"})
+    # FX-28 (R-22 P2-3): Bash gọi codex cũng tính; trong subagent (parent_tool_use_id) Bash codex-companion dùng id cha
+    assert sj.cac_goi_codex(sk) == ["t1", "t2", "t3", "t6"]
+    assert sj.cac_goi_codex(a({"type": "tool_use", "name": "Skill", "input": {"skill": "codex:x"}})) == [None]
+    assert sj.cac_goi_codex({"type": "user", "message": {"content": [
+        {"type": "tool_use", "id": "t1", "name": "Agent", "input": {"subagent_type": "codex"}}]}}) == []
+
+
+def _bash(lenh, id_="b1", cha=None, **them):
+    return {"type": "assistant", "parent_tool_use_id": cha,
+            "message": {"id": "m", "content": [{"type": "tool_use", "id": id_, "name": "Bash",
+                                                "input": {"command": lenh, **them}}]}}
+
+
+@pytest.mark.parametrize("lenh", [
+    "codex exec \"chấm kịch bản\"",
+    "CODEX exec --full-auto x",
+    "cd /e/du-an && codex exec -m gpt-5 'x'",
+    "status=1; codex",
+    "\"C:\\\\Users\\\\Mi\\\\bin\\\\codex.exe\" exec x",
+    "& 'C:/tools/codex.cmd' exec x",
+    "npx @openai/codex exec x",
+    "node \"C:/Users/Mi/.claude/plugins/cache/openai-codex/codex/1.0.6/scripts/codex-companion.mjs\" task --write x",
+    "node ${CLAUDE_PLUGIN_ROOT}/scripts/codex-companion.mjs review",
+    "node x/codex-companion.mjs adversarial-review \"$ARGUMENTS\"",
+    "node x/codex-companion.mjs",                                  # thiếu lệnh con → tính (hướng an toàn)
+    "node x/codex-companion.mjs status && node x/codex-companion.mjs task y",
+    "node x/codex-companion.mjs status; codex exec y",
+    "python run_codex.py --ma ud1",                                 # script tên có codex
+    "node C:/x/codex-cli.js exec",
+    "echo codex",                                                   # mơ hồ → tính là gọi Codex (hướng an toàn)
+    "grep -n codex file.txt",
+])
+def test_cac_goi_codex_bash_tinh(lenh):
+    assert sj.cac_goi_codex(_bash(lenh)) == ["b1"], lenh
+
+
+@pytest.mark.parametrize("lenh", [
+    "python c2_kiem.py --project P --batch 20261117-cq01 --codex --ghi-soat",
+    "cat kich-ban/20261117-cq01_codex-review.md",
+    "python tao_voice.py --batch 20261117-cq01",
+    "ls C:/Users/Mi/.claude/plugins/cache/openai-codex/codex/1.0.6",
+    "node x/codex-companion.mjs status --json",
+    "node x/codex-companion.mjs result abc",
+    "node x/codex-companion.mjs cancel abc",
+    "node \"x/codex-companion.mjs\" task-resume-candidate --json",
+    "node x/codex-companion.mjs setup --json",
+    "echo xong",
+])
+def test_cac_goi_codex_bash_khong_tinh(lenh):
+    assert sj.cac_goi_codex(_bash(lenh)) == [], lenh
+
+
+def test_cac_goi_codex_bash_trong_subagent_codex_khong_dem_doi():
+    # agent codex-rescue (id A1) gọi đúng 1 Bash codex-companion task: cùng id A1 → bên gọi khử trùng, đếm 1 lần
+    assert sj.cac_goi_codex(_bash("node x/codex-companion.mjs task --write y", "b9", cha="A1")) == ["A1"]
+    # codex exec trong subagent: id riêng (không gộp vào cha — subagent thường gọi nhiều lần vẫn bị đếm đủ)
+    assert sj.cac_goi_codex(_bash("codex exec y", "b8", cha="A2")) == ["b8"]
+    # run_in_background không đổi cách đếm
+    assert sj.cac_goi_codex(_bash("codex exec y", "b7", run_in_background=True)) == ["b7"]
+    # command sai dạng → không tính, không ném
+    for x in (None, 3, ["codex"], ""):
+        assert sj.cac_goi_codex(_bash(x)) == []

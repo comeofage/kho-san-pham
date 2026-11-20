@@ -1,4 +1,4 @@
-"""Spike S-1/S-2: đo hành vi claude.exe headless cho bộ chạy việc (docs/bo-chay-viec.md §6, §7, §13).
+"""Spike S-1..S-4: đo hành vi claude.exe headless cho bộ chạy việc (docs/bo-chay-viec.md §6, §7, §13).
 
 Kịch bản 'cu' (S-1, mặc định) chỉ dùng thư viện chuẩn; kịch bản 'nen' (S-2) dùng thêm psutil
 nếu có (import lười, thiếu thì các mục đo tiến trình ghi null). Mặc định (không cờ) chỉ in trợ giúp. `--chay` mới gọi
@@ -23,7 +23,7 @@ import time
 import uuid
 from pathlib import Path
 
-PHIEN_BAN = 2
+PHIEN_BAN = 3
 
 CLAUDE_EXE_MAC_DINH = r"C:\Users\Mi\AppData\Roaming\npm\node_modules\@anthropic-ai\claude-code\bin\claude.exe"
 SETTINGS_NGUOI_DUNG = Path(r"C:\Users\Mi\.claude\settings.json")
@@ -1025,6 +1025,1129 @@ def chay_spike_nen(exe: str, giu_tam: bool, model: str | None) -> dict:
     return out
 
 
+# ---------------------------------------------------------------- kịch bản sống (S-3)
+# MỘT tiến trình `claude -p --input-format stream-json --output-format stream-json --verbose`
+# sống suốt việc; tin user gửi qua stdin dạng JSON lines, KHÔNG đóng stdin giữa các lượt.
+# Định dạng tin (docs: code.claude.com/docs/en/agent-sdk/streaming-vs-single-mode, SDKUserMessage):
+#   {"type":"user","message":{"role":"user","content":"<chữ>"},"parent_tool_use_id":null}
+# Mỗi lượt kết thúc bằng một sự kiện `result`.
+
+TEN_AGENT_SONG = "thu-runner-song"
+CONG_CU_SONG = ["Agent", "Task", "TaskOutput", "TaskStop", "SendMessage", "Bash"]  # --allowedTools
+CONG_CU_THAM_DO_SONG = ["BashOutput", "KillShell"]  # chỉ thêm vào --tools để xem init có không
+DAU_CON_S3 = "CON-S3-OK"
+DAU_CON_S3_LAI = "CON-S3-LAI"
+TU_KHOA_SONG = "CHIM-SAO-77"
+MAU_CHON = "xanh"
+CHO_QUAN_SAT_SONG_S = NGU_NEN_S2 + 20   # mốc quan sát tính từ lúc gọi Bash nền
+HET_GIO_LUOT_SONG_S = 300               # chờ result của một lượt
+CHO_RANH_TOI_DA_S = 150                 # chờ lượt tự thức (nếu có) xong trước khi gửi tin mới
+YEN_LANG_RANH_S = 5                     # coi là rảnh khi sau result im lặng ngần này giây
+CHO_THOAT_SAU_DONG_STDIN_S = 90
+TONG_HET_GIO_SONG_S = 1200              # trần cứng cả kịch bản: quá thì taskkill cây tiến trình
+
+MO_TA_MUC_SONG = {
+    "n1_tien_trinh_khong_thoat_giua_luot": "tiến trình claude còn sống ở mốc quan sát, trước lượt 2 và trước lượt 3",
+    "n2_nen_chay_qua_ranh_gioi_luot": "Bash nền chạy tiếp sau result lượt 1 và xong (nen_xong.txt xuất hiện)",
+    "n3_thong_bao_nen_toi_agent": "thông báo hoàn tất việc nền tới agent (sự kiện stream có dấu hiệu, hoặc agent tự khai ở lượt 2)",
+    "n4_agent_tu_thuc_day": "có sự kiện assistant/result MỚI trong cửa sổ quan sát khi runner chưa gửi gì",
+    "n5_subagent_sendmessage": "init.tools có Agent/Task, SendMessage; subagent lượt 1 trả đúng dấu; SendMessage lượt 2 gọi được",
+    "n6_phat_hien_cho_user": "result cuối lượt 2 có khối CẦN_USER (LOẠI: chon) đọc được; lượt 3 nhận câu trả lời và nhớ ngữ cảnh",
+    "n7_dong_stdin_thoat_gon": "đóng stdin -> tiến trình thoát trong thời hạn, mã thoát 0",
+    "n8_chi_phi": "total_cost_usd từng result (cộng dồn theo phiên hay theo lượt?) và tổng",
+}
+
+
+def tin_user_stream_json(noi_dung: str) -> str:
+    """Một dòng JSON (kết thúc \\n) cho stdin --input-format stream-json. Hàm thuần."""
+    return json.dumps({"type": "user", "message": {"role": "user", "content": noi_dung},
+                       "parent_tool_use_id": None}, ensure_ascii=False) + "\n"
+
+
+def doc_khoi_can_user(van_ban_kq: str) -> dict | None:
+    """Đọc khối CẦN_USER CUỐI cùng: {cau_hoi, loai, lua_chon[]}. Không có -> None. Hàm thuần."""
+    ds = list(RE_CAN_USER.finditer(van_ban_kq or ""))
+    if not ds:
+        return None
+    m = ds[-1]
+    sau = van_ban_kq[m.end():]
+    loai = re.search(r"^LOẠI:\s*(\S+)", sau, re.M)
+    lc = re.search(r"^LỰA_CHỌN:\s*(.+)$", sau, re.M)
+    return {"cau_hoi": m.group(1).strip(),
+            "loai": loai.group(1).strip() if loai else None,
+            "lua_chon": [x.strip() for x in lc.group(1).split("|") if x.strip()] if lc else []}
+
+
+def _khong_phai_he_thong(e: dict) -> bool:
+    return e.get("type") != "system"
+
+
+def dang_ranh(su_kien: list[dict], bay_gio_s: float, yen_s: float = YEN_LANG_RANH_S) -> bool:
+    """Agent đang chờ người dùng: sự kiện không-phải-system cuối là `result` và đã im lặng >= yen_s.
+
+    Sự kiện system lẻ sau result (vd. thông báo) không tính là bận; nếu nó kéo theo lượt mới thì
+    sẽ có assistant/user sau đó -> bận. Hàm thuần.
+    """
+    cuoi = next((e for e in reversed(su_kien) if _khong_phai_he_thong(e)), None)
+    if not cuoi or cuoi.get("type") != "result":
+        return False
+    moi_nhat = su_kien[-1].get("__t", 0) if su_kien else 0
+    return bay_gio_s - moi_nhat >= yen_s
+
+
+def vi_tri_sau_result_dau(su_kien: list[dict]) -> int:
+    """Chỉ số ngay SAU sự kiện `result` đầu tiên; không có result -> 0. Hàm thuần."""
+    return next((i + 1 for i, e in enumerate(su_kien) if e.get("type") == "result"), 0)
+
+
+def chia_theo_result(su_kien: list[dict]) -> list[list[dict]]:
+    """Chia luồng sự kiện thành các lượt, mỗi lượt kết thúc ở một `result` (phần dư cuối nếu có). Hàm thuần."""
+    luot, cur = [], []
+    for e in su_kien:
+        cur.append(e)
+        if e.get("type") == "result":
+            luot.append(cur)
+            cur = []
+    if cur:
+        luot.append(cur)
+    return luot
+
+
+def tom_tat_result(e: dict) -> dict:
+    return {"t_s": e.get("__t"), "subtype": e.get("subtype"), "is_error": e.get("is_error"),
+            "total_cost_usd": e.get("total_cost_usd"), "num_turns": e.get("num_turns"),
+            "duration_ms": e.get("duration_ms"), "session_id": e.get("session_id"),
+            "result_dau": str(e.get("result") or "")[:1500]}
+
+
+def danh_gia_chi_phi(chi_phi_ds: list) -> dict:
+    """Từ total_cost_usd của các result: đoán cộng dồn (không giảm) hay theo lượt. Hàm thuần."""
+    so = [x for x in chi_phi_ds if isinstance(x, (int, float))]
+    if not so:
+        return {"kieu": None, "tong_usd": None}
+    cong_don = all(b >= a for a, b in zip(so, so[1:])) and len(so) > 1
+    return {"kieu": "cong_don_khong_giam" if cong_don else ("mot_result" if len(so) == 1 else "theo_luot"),
+            "tong_usd": round(so[-1] if cong_don or len(so) == 1 else sum(so), 4),
+            "tong_neu_cong": round(sum(so), 4), "lon_nhat": round(max(so), 4)}
+
+
+class PhienSong:
+    """Một tiến trình claude stream-json sống; đọc stdout theo dòng có mốc thời gian, ghi stdin không đóng."""
+
+    def __init__(self, argv: list[str], cwd: Path, env: dict[str, str], t0: float):
+        self.argv, self.cwd, self.env, self.t0 = argv, cwd, env, t0
+        self.p: subprocess.Popen | None = None
+        self.dong_tho: list[str] = []
+        self.su_kien: list[dict] = []
+        self.loi_ra: list[str] = []
+        self.khong_json = 0
+        self.tin_da_gui: list[dict] = []
+        self._cv = threading.Condition()
+        self._th: list[threading.Thread] = []
+        self.loi_ghi: str | None = None
+
+    def t(self) -> float:
+        return time.monotonic() - self.t0
+
+    def bat_dau(self) -> str | None:
+        kw: dict = {}
+        if os.name == "nt":
+            si = subprocess.STARTUPINFO()
+            si.dwFlags |= STARTF_USESHOWWINDOW
+            si.wShowWindow = SW_HIDE
+            kw["startupinfo"] = si
+            kw["creationflags"] = CREATE_NEW_CONSOLE | CREATE_NEW_PROCESS_GROUP
+        try:
+            self.p = subprocess.Popen(self.argv, cwd=str(self.cwd), env=self.env, stdin=subprocess.PIPE,
+                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kw)
+        except OSError as e:
+            return f"{type(e).__name__}: {e}"
+        self._th = [threading.Thread(target=self._doc_out, daemon=True),
+                    threading.Thread(target=self._doc_err, daemon=True)]
+        for th in self._th:
+            th.start()
+        return None
+
+    def _doc_out(self) -> None:
+        for b in iter(self.p.stdout.readline, b""):
+            s = b.decode("utf-8", errors="replace").rstrip("\r\n")
+            t = round(self.t(), 2)
+            with self._cv:
+                self.dong_tho.append(s)
+                try:
+                    sk = json.loads(s)
+                except ValueError:
+                    self.khong_json += 1
+                    sk = None
+                if isinstance(sk, dict):
+                    sk["__t"] = t
+                    self.su_kien.append(sk)
+                self._cv.notify_all()
+        with self._cv:
+            self._cv.notify_all()
+
+    def _doc_err(self) -> None:
+        for b in iter(self.p.stderr.readline, b""):
+            self.loi_ra.append(b.decode("utf-8", errors="replace").rstrip("\r\n"))
+
+    def song(self) -> bool:
+        return self.p is not None and self.p.poll() is None
+
+    def chup(self) -> list[dict]:
+        with self._cv:
+            return list(self.su_kien)
+
+    def gui(self, ten: str, noi_dung: str) -> bool:
+        """Ghi một tin user (JSON line) rồi flush, KHÔNG đóng stdin."""
+        ghi = {"ten": ten, "t_s": round(self.t(), 2), "song_truoc_khi_gui": self.song(), "ok": False}
+        try:
+            self.p.stdin.write(tin_user_stream_json(noi_dung).encode("utf-8"))
+            self.p.stdin.flush()
+            ghi["ok"] = True
+        except (OSError, ValueError) as e:
+            ghi["loi"] = type(e).__name__
+            self.loi_ghi = ghi["loi"]
+        self.tin_da_gui.append(ghi)
+        return ghi["ok"]
+
+    def so_result(self) -> int:
+        with self._cv:
+            return sum(1 for e in self.su_kien if e.get("type") == "result")
+
+    def cho_result_moi(self, so_truoc: int, het_gio_s: float) -> bool:
+        """Chờ tới khi có result thứ so_truoc+1, tiến trình thoát, hoặc hết giờ."""
+        han = time.monotonic() + het_gio_s
+        with self._cv:
+            while True:
+                if sum(1 for e in self.su_kien if e.get("type") == "result") > so_truoc:
+                    return True
+                con = han - time.monotonic()
+                if con <= 0 or not self.song():
+                    return False
+                self._cv.wait(timeout=min(con, 2.0))
+
+    def cho_ranh(self, het_gio_s: float) -> bool:
+        han = time.monotonic() + het_gio_s
+        while time.monotonic() < han and self.song():
+            if dang_ranh(self.chup(), self.t()):
+                return True
+            time.sleep(1.0)
+        return dang_ranh(self.chup(), self.t())
+
+    def dong_stdin(self) -> None:
+        try:
+            if self.p and self.p.stdin and not self.p.stdin.closed:
+                self.p.stdin.close()
+        except OSError as e:
+            self.loi_ghi = f"dong_stdin: {type(e).__name__}"
+
+    def cho_thoat(self, het_gio_s: float) -> tuple[bool, float | None]:
+        """(thoát trong hạn?, giây từ lúc gọi tới lúc thoát)."""
+        if self.p is None:
+            return False, None
+        bd = time.monotonic()
+        try:
+            self.p.wait(timeout=het_gio_s)
+            return True, round(time.monotonic() - bd, 2)
+        except subprocess.TimeoutExpired:
+            return False, None
+
+    def ket_thuc(self) -> str | None:
+        """Dọn: còn sống thì taskkill cây; join thread đọc."""
+        ghi = None
+        if self.p is not None and self.p.poll() is None:
+            ghi = giet_cay(self.p.pid)
+            try:
+                self.p.wait(timeout=30)
+            except subprocess.TimeoutExpired:
+                ghi += "; van con song"
+        for th in self._th:
+            th.join(timeout=10)
+        return ghi
+
+
+def agents_json_song() -> str:
+    return json.dumps({TEN_AGENT_SONG: {
+        "description": "Agent thử phiên sống cho spike S-3; làm đúng chỉ dẫn, trả lời ngắn.",
+        "prompt": (f"Bạn là {TEN_AGENT_SONG}, agent kiểm thử phiên sống nhiều lượt. Làm đúng và chỉ đúng các bước "
+                   "được yêu cầu trong tin mới nhất. Nếu một công cụ bị từ chối hoặc không có, KHÔNG tìm cách khác, "
+                   "chỉ báo lại. Khi nhận thông báo hệ thống về việc nền, chỉ ghi nhận ngắn gọn, không tự làm thêm việc."),
+    }}, ensure_ascii=False)
+
+
+def dung_argv_song(exe: str, *, tools: list[str], session_id: str, model: str | None = None) -> list[str]:
+    """argv kịch bản song: -p, stream-json vào/ra, --strict-mcp-config, dontAsk, KHÔNG có prompt trên argv."""
+    a = [exe, "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+         "--strict-mcp-config", "--agents", agents_json_song(), "--agent", TEN_AGENT_SONG,
+         "--tools", ",".join(tools),
+         "--permission-mode", "dontAsk",
+         "--allowedTools", *CONG_CU_SONG,
+         "--disallowedTools", *CONG_CU_CAM_CHUNG,
+         "--session-id", session_id]
+    if model:
+        a += ["--model", model]
+    return a
+
+
+def _van_ban_result(luot: list[dict]) -> str:
+    r = next((e for e in reversed(luot) if e.get("type") == "result"), None)
+    return str((r or {}).get("result") or "")
+
+
+def chay_spike_song(exe: str, giu_tam: bool, model: str | None) -> dict:
+    """S-3: một tiến trình stream-json sống qua 3 lượt + cửa sổ quan sát việc nền."""
+    out: dict = {
+        "phien_ban_script": PHIEN_BAN,
+        "kich_ban": "song",
+        "claude_exe": exe,
+        "claude_exe_ton_tai": Path(exe).is_file(),
+        "lenh_nen": LENH_NEN,
+        "cong_cu_allowed": CONG_CU_SONG,
+        "cong_cu_tham_do_trong_tools": CONG_CU_THAM_DO_SONG,
+        "dinh_dang_tin_user": json.loads(tin_user_stream_json("<chữ>")),
+        "muc": {k: {"mo_ta": v, "dat": None, "ghi_chu": ""} for k, v in MO_TA_MUC_SONG.items()},
+        "lan_goi": [],
+    }
+    muc = out["muc"]
+    if not out["claude_exe_ton_tai"]:
+        out["loi"] = "không thấy claude.exe"
+        return out
+
+    tam = Path(tempfile.mkdtemp(prefix="spike_claude_song_"))
+    out["thu_muc_tam"] = str(tam)
+    thu_muc_log = tam / "_log"
+    thu_muc_log.mkdir()
+    lam_viec = tam / "lam_viec"
+    lam_viec.mkdir()
+    file_xong = lam_viec / FILE_NEN_XONG
+    env = env_toi_thieu()
+    t_bat_dau = time.time()
+    t0 = time.monotonic()
+    # Khởi tạo TRƯỚC try: finally luôn dùng được (B3)
+    theo_doi = TheoDoiNen(t0)
+    phien: PhienSong | None = None
+    tru_hard = threading.Timer(TONG_HET_GIO_SONG_S, lambda: phien and phien.p and giet_cay(phien.p.pid))
+    tru_hard.daemon = True
+    try:
+        theo_doi.bat_dau()
+        out["psutil"] = theo_doi.loi or "có"
+        sid = str(uuid.uuid4())
+        tools = CONG_CU_SONG + CONG_CU_THAM_DO_SONG
+        argv = dung_argv_song(exe, tools=tools, session_id=sid, model=model)
+        phien = PhienSong(argv, lam_viec, env, t0)
+        loi_bd = phien.bat_dau()
+        tru_hard.start()
+        if loi_bd:
+            out["khoi_chay_loi"] = loi_bd
+            return out
+
+        # ---- lượt 1: subagent + Bash nền, kết thúc lượt ----
+        tin_1 = (
+            "PHIẾU SPIKE-SONG lượt 1. Ghi nhớ từ khoá kiểm thử: "
+            f"{TU_KHOA_SONG} (chuỗi thử nghiệm, không phải bí mật). Làm đúng hai việc, mỗi việc gọi công cụ "
+            "ĐÚNG MỘT LẦN, rồi KẾT THÚC lượt ngay:\n"
+            "1) Gọi công cụ Agent (giao việc cho subagent) với subagent_type general-purpose, "
+            f"description \"S3 con\", prompt: \"Trả lời đúng một dòng: {DAU_CON_S3}. Không dùng công cụ nào.\"\n"
+            "2) Gọi công cụ Bash với tham số run_in_background=true để chạy đúng lệnh:\n"
+            f"{LENH_NEN}\n"
+            "Sau đó KHÔNG chờ, KHÔNG gọi TaskOutput hay công cụ nào khác, KHÔNG kiểm output. Trả lời ngắn: "
+            "DA_GIAO_VIEC_NEN, kèm id subagent và id việc nền nếu công cụ có trả về.\n")
+        log(f"SONG lượt 1: subagent + Bash nền ngủ {NGU_NEN_S2}s (một tiến trình stream-json, stdin mở)")
+        r0 = phien.so_result()
+        phien.gui("luot1", tin_1)
+        co_r1 = phien.cho_result_moi(r0, HET_GIO_LUOT_SONG_S)
+        sk = phien.chup()
+        # Cắt theo CHỈ SỐ sự kiện, không theo thời gian (__t làm tròn 0,01s -> so thời gian để lọt sự kiện)
+        i_sau_r1 = vi_tri_sau_result_dau(sk)
+        t_r1 = sk[i_sau_r1 - 1]["__t"] if i_sau_r1 else None
+        sk = sk[:i_sau_r1] if i_sau_r1 else sk
+        cc1 = cong_cu_chi_tiet(sk)
+        bash_nen = next((c for c in cc1 if c["ten"] == "Bash" and c.get("nen") and not c.get("cha")), None)
+        agent_goi = next((c for c in cc1 if c["ten"] in ("Agent", "Task") and not c.get("cha")), None)
+        t_goi_nen = bash_nen.get("t_s") if bash_nen else None
+        file_luc_r1 = file_xong.exists()
+        id_agent = None
+        if agent_goi and agent_goi.get("ket_qua_dau"):
+            m = RE_ID_AGENT.search(agent_goi["ket_qua_dau"])
+            id_agent = m.group(1) if m else None
+        out["id_tu_luot1"] = {"id_subagent": id_agent, "tool_use_id_bash_nen": bash_nen.get("id") if bash_nen else None}
+
+        # ---- cửa sổ quan sát: KHÔNG gửi gì tới mốc gọi nền + 80s ----
+        moc = (t_goi_nen if t_goi_nen is not None else (t_r1 or phien.t())) + CHO_QUAN_SAT_SONG_S
+        bd_cua_so = t_r1 if t_r1 is not None else phien.t()
+        log(f"SONG: im lặng quan sát tới mốc {round(moc, 1)}s (không gửi tin)")
+        t_file = phien.t() if file_luc_r1 else None
+        while phien.t() < moc and phien.song():
+            time.sleep(1.0)
+            if t_file is None and file_xong.exists():
+                t_file = phien.t()
+        if t_file is None and file_xong.exists():
+            t_file = phien.t()
+        song_o_moc = phien.song()
+        if theo_doi.psutil:
+            theo_doi.quet()
+        nen_song_o_moc = theo_doi.con_song()
+        i_bd_cua_so = i_sau_r1 if i_sau_r1 else len(phien.chup())
+        sk_cua_so = phien.chup()[i_bd_cua_so:]
+        # Nếu agent tự thức và còn đang chạy lượt đó: chờ rảnh trước khi gửi lượt 2
+        ranh_truoc_l2 = phien.cho_ranh(CHO_RANH_TOI_DA_S)
+        t_gui_2 = phien.t()
+        i_gui_2 = len(phien.chup())
+        sk_tu_thuc = phien.chup()[i_bd_cua_so:i_gui_2]
+        tu_thuc_assistant = [e for e in sk_tu_thuc if e.get("type") == "assistant" and not e.get("parent_tool_use_id")]
+        tu_thuc_result = [e for e in sk_tu_thuc if e.get("type") == "result"]
+
+        # ---- lượt 2: hỏi trạng thái + SendMessage + kết thúc bằng CẦN_USER ----
+        song_truoc_l2 = phien.song()
+        txt2 = ""
+        cc2: list[dict] = []
+        sk_l2: list[dict] = []
+        if song_truoc_l2:
+            goi_y_id = f" (id subagent lượt 1: {id_agent})" if id_agent else " (dùng id/tên subagent bạn nhớ từ lượt 1)"
+            tin_2 = (
+                "PHIẾU SPIKE-SONG lượt 2 (cùng phiên, cùng tiến trình). Không chạy Bash, không gọi TaskOutput.\n"
+                "1) Trạng thái việc Bash nền ở lượt 1: từ khi kết thúc lượt 1 tới giờ bạn có nhận thông báo hệ "
+                "thống nào báo việc nền đã xong không? Nếu có, chép nguyên văn tối đa 3 dòng. Giữa hai tin của "
+                "người dùng bạn có tự trả lời lượt nào không?\n"
+                f"2) Nếu có công cụ SendMessage: dùng ĐÚNG MỘT LẦN gửi tới subagent ở lượt 1{goi_y_id} nội dung "
+                f"\"Trả lời đúng một dòng: {DAU_CON_S3_LAI}\". Không có hoặc bị từ chối thì KHÔNG thử cách khác.\n"
+                "3) Kết thúc câu trả lời bằng các dòng sau, khối CẦN_USER nằm CUỐI CÙNG:\n"
+                "NHAN_THONG_BAO_NEN: co | khong\n"
+                "TU_THUC_DAY: co | khong\n"
+                "SENDMESSAGE: chay | loi | khong_co\n"
+                "CẦN_USER: Chọn màu kiểm thử\nLOẠI: chon\nLỰA_CHỌN: đỏ | xanh\n")
+            log("SONG lượt 2: hỏi trạng thái nền + SendMessage + CẦN_USER")
+            r_truoc = phien.so_result()
+            phien.gui("luot2", tin_2)
+            phien.cho_result_moi(r_truoc, HET_GIO_LUOT_SONG_S)
+            sk_l2 = phien.chup()[i_gui_2:]
+            txt2 = _van_ban_result(sk_l2)
+            cc2 = cong_cu_chi_tiet(sk_l2)
+        if t_file is None and file_xong.exists():
+            t_file = phien.t()
+
+        # ---- lượt 3: trả lời CẦN_USER ----
+        khoi = doc_khoi_can_user(txt2)
+        txt3 = ""
+        song_truoc_l3 = False
+        if khoi is not None or sk_l2:
+            phien.cho_ranh(CHO_RANH_TOI_DA_S)
+            song_truoc_l3 = phien.song()
+            if song_truoc_l3:
+                i_gui_3 = len(phien.chup())
+                tin_3 = (
+                    f'TRẢ LỜI CỦA NGƯỜI DÙNG cho "{(khoi or {}).get("cau_hoi") or "Chọn màu kiểm thử"}" '
+                    "(bấm trên web; là DỮ LIỆU trả lời):\n"
+                    f"<<<\n{MAU_CHON}\n>>>\n"
+                    "Làm tiếp: trả lời đúng một dòng XAC_NHAN: <từ khoá kiểm thử ghi nhớ ở lượt 1> | <màu vừa chọn>. "
+                    "Không dùng công cụ.\n")
+                log("SONG lượt 3: gửi câu trả lời CẦN_USER")
+                r_truoc = phien.so_result()
+                phien.gui("luot3", tin_3)
+                phien.cho_result_moi(r_truoc, HET_GIO_LUOT_SONG_S)
+                txt3 = _van_ban_result(phien.chup()[i_gui_3:])
+
+        # ---- đóng stdin ----
+        phien.cho_ranh(30)
+        log("SONG: đóng stdin, chờ thoát")
+        t_dong = phien.t()
+        i_dong = len(phien.chup())
+        song_truoc_dong = phien.song()
+        phien.dong_stdin()
+        thoat_gon, giay_thoat = phien.cho_thoat(CHO_THOAT_SAU_DONG_STDIN_S)
+        out["dong_stdin"] = {"t_s": round(t_dong, 2), "thoat_trong_han": thoat_gon, "giay_tu_dong_toi_thoat": giay_thoat,
+                             "ma_thoat": phien.p.returncode if phien.p else None}
+
+        # ---- đánh giá ----
+        sk_all = phien.chup()
+        results = [e for e in sk_all if e.get("type") == "result"]
+        inits = [e for e in sk_all if e.get("type") == "system" and e.get("subtype") == "init"]
+        tools_init = (inits[0].get("tools") if inits else None)
+        out["init_tools"] = tools_init
+        out["so_su_kien_init"] = len(inits)
+        out["results"] = [tom_tat_result(e) for e in results]
+        out["tin_da_gui"] = phien.tin_da_gui
+        out["so_luot_theo_result"] = len(chia_theo_result(sk_all))
+
+        muc["n1_tien_trinh_khong_thoat_giua_luot"].update(
+            dat=(song_o_moc and song_truoc_l2 and song_truoc_l3) if co_r1 else None,
+            ghi_chu=f"có result lượt 1: {co_r1} (lúc {t_r1}s); sống ở mốc {round(moc, 1)}s: {song_o_moc}; "
+                    f"trước lượt 2: {song_truoc_l2}; trước lượt 3: {song_truoc_l3}; lỗi ghi stdin: {phien.loi_ghi}")
+        muc["n2_nen_chay_qua_ranh_gioi_luot"].update(
+            dat=(t_file is not None and not file_luc_r1) if bash_nen else None,
+            ghi_chu=f"agent gọi Bash nền: {bool(bash_nen)} lúc {t_goi_nen}s; file có ngay lúc result lượt 1: {file_luc_r1}; "
+                    f"file xuất hiện lúc {t_file and round(t_file, 1)}s; psutil: {out['psutil']}; "
+                    f"tiến trình nền thấy: {len(theo_doi.thay)}; còn sống ở mốc: {nen_song_o_moc}")
+        bo_qua = [bash_nen.get("id")] if bash_nen and bash_nen.get("id") else []
+        tb_sau_r1 = tim_thong_bao_nen(sk_all[i_sau_r1:] if i_sau_r1 else [], bo_qua)
+        out["thong_bao_nen_sau_luot1"] = tb_sau_r1[:10]
+        m_tb = re.search(r"NHAN_THONG_BAO_NEN:\s*(\w+)", txt2)
+        muc["n3_thong_bao_nen_toi_agent"].update(
+            dat=(bool(tb_sau_r1) or bool(m_tb and m_tb.group(1).lower() == "co")) if bash_nen and txt2 else None,
+            ghi_chu=f"sự kiện stream có dấu hiệu sau lượt 1: {len(tb_sau_r1)} "
+                    f"(loại: {sorted({x['loai'] for x in tb_sau_r1})}); agent tự khai: {m_tb.group(1) if m_tb else None}")
+        m_tt = re.search(r"TU_THUC_DAY:\s*(\w+)", txt2)
+        loai_cua_so = sorted({f"{e.get('type')}/{e.get('subtype')}" for e in sk_cua_so})
+        muc["n4_agent_tu_thuc_day"].update(
+            dat=bool(tu_thuc_assistant or tu_thuc_result) if co_r1 else None,
+            ghi_chu=f"cửa sổ {bd_cua_so}s -> mốc {round(moc, 1)}s (không gửi gì): {len(sk_cua_so)} sự kiện; "
+                    f"tới lúc gửi lượt 2 ({round(t_gui_2, 1)}s): "
+                    f"assistant chính: {len(tu_thuc_assistant)}, result: {len(tu_thuc_result)} "
+                    f"(t={[e.get('__t') for e in tu_thuc_result]}); loại sự kiện: {loai_cua_so}; "
+                    f"rảnh trước lượt 2: {ranh_truoc_l2}; agent tự khai: {m_tt.group(1) if m_tt else None}")
+        sm = [c for c in cc2 if c["ten"] == "SendMessage"]
+        den = [d.get("tool_name") for r in results for d in (r.get("permission_denials") or []) if isinstance(d, dict)]
+        co_sm_init = isinstance(tools_init, list) and "SendMessage" in tools_init
+        co_agent_init = isinstance(tools_init, list) and any(x in tools_init for x in ("Agent", "Task"))
+        sub_ok = bool(agent_goi) and not agent_goi.get("loi") and DAU_CON_S3 in (agent_goi.get("ket_qua_dau") or "")
+        muc["n5_subagent_sendmessage"].update(
+            dat=(co_agent_init and sub_ok and co_sm_init and bool(sm) and not any(c.get("loi") for c in sm)
+                 and "SendMessage" not in den) if co_r1 else None,
+            ghi_chu=f"init có Agent/Task: {co_agent_init}; init có SendMessage: {co_sm_init}; subagent lượt 1 "
+                    f"({agent_goi['ten'] if agent_goi else None}) đúng dấu: {sub_ok}; id={id_agent}; "
+                    f"SendMessage gọi: {len(sm)}, kết quả: {[c.get('ket_qua_dau') for c in sm]}; "
+                    f"có {DAU_CON_S3_LAI}: {DAU_CON_S3_LAI in txt2 or any(DAU_CON_S3_LAI in (c.get('ket_qua_dau') or '') for c in cc2)}; "
+                    f"permission_denials (mọi result): {den}")
+        xac_nhan_ok = TU_KHOA_SONG in txt3 and MAU_CHON in txt3
+        muc["n6_phat_hien_cho_user"].update(
+            dat=(khoi is not None and (khoi.get("loai") or "").lower() == "chon" and xac_nhan_ok) if txt2 else None,
+            ghi_chu=f"khối CẦN_USER lượt 2: {khoi}; lượt 3 nhắc đúng từ khoá + màu: {xac_nhan_ok}; "
+                    f"dấu hiệu chờ user = sự kiện result cuối lượt rồi im lặng >= {YEN_LANG_RANH_S}s")
+        muc["n7_dong_stdin_thoat_gon"].update(
+            dat=(thoat_gon and phien.p.returncode == 0) if song_truoc_dong else None,
+            ghi_chu=f"còn sống lúc đóng stdin: {song_truoc_dong}; thoát sau {giay_thoat}s (hạn {CHO_THOAT_SAU_DONG_STDIN_S}s), mã {phien.p.returncode}; "
+                    f"sự kiện sau khi đóng stdin: {len(sk_all[i_dong:])}")
+        dg = danh_gia_chi_phi([e.get("total_cost_usd") for e in results])
+        out["chi_phi_danh_gia"] = dg
+        muc["n8_chi_phi"].update(
+            dat=(dg["tong_usd"] or 0) > 0 if dg["kieu"] else None,
+            ghi_chu=f"từng result: {[e.get('total_cost_usd') for e in results]}; đánh giá: {dg}")
+        out["van_ban_luot2_dau"] = txt2[:1500]
+        out["van_ban_luot3_dau"] = txt3[:600]
+        out["file_nen_xong_cuoi"] = file_xong.exists()
+    finally:
+        tru_hard.cancel()
+        theo_doi.dung()
+        con = theo_doi.con_song()
+        if con:
+            out["don_tien_trinh_nen"] = {pid: giet_cay(pid) for pid in con}
+        out["tien_trinh_nen_da_thay"] = list(theo_doi.thay.values())
+        if phien is not None:
+            don = phien.ket_thuc()
+            if don:
+                out["don_tien_trinh_claude"] = don
+            with open(thu_muc_log / "S_song.jsonl", "w", encoding="utf-8") as f:
+                for s in phien.dong_tho:
+                    f.write(s + "\n")
+            # Một mục lan_goi cho cả tiến trình: tom_tat lấy result CUỐI -> chi phí không đếm trùng
+            tt = tom_tat({"ten": "S_song", "argv": phien.argv, "su_kien": phien.chup(),
+                          "ma_thoat": phien.p.returncode if phien.p else None, "het_gio": False,
+                          "thoi_gian_s": round(phien.t(), 2), "so_dong_khong_json": phien.khong_json,
+                          "stderr_cuoi": "\n".join(phien.loi_ra)[-800:]})
+            tt["cong_cu_chi_tiet"] = cong_cu_chi_tiet(phien.chup())
+            out["lan_goi"].append(tt)
+        _dong_goi(out, tam, lam_viec, giu_tam, t_bat_dau)
+        dg = out.get("chi_phi_danh_gia")
+        if dg and dg.get("tong_usd") is not None:
+            out["chi_phi_tong_usd"] = dg["tong_usd"]
+    return out
+
+
+# ---------------------------------------------------------------- kịch bản sống 2 (S-4)
+# Cùng dạng lệnh §7.2 (stream-json vào/ra, --strict-mcp-config, dontAsk, --tools = --allowedTools,
+# --max-budget-usd, --session-id mới) với agent nội tuyến; cwd = thư mục tạm có skill tạm
+# .claude/skills/thu-s4/SKILL.md. Hai tiến trình: CHÍNH (mục 1-4, 6-8) và NGÂN SÁCH (mục 5, trần 0,05).
+
+TEN_AGENT_S4 = "thu-runner-s4"
+CONG_CU_S4 = ["Read", "Bash", "Skill", "Agent", "Task", "TaskOutput", "TaskStop"]  # --tools = --allowedTools
+CONG_CU_NGAN_SACH = ["Read"]
+TEN_SKILL_S4 = "thu-s4"
+MA_SKILL_S4 = "MA-SKILL-S4-9137"        # chỉ có trong SKILL.md tạm: thấy trong trả lời = skill đã được đọc
+MA_DOC_S4 = "MA-DOC-S4-2468"            # chỉ có trong doc_s4.txt: subagent Read được
+TU_KHOA_S4 = "CHIM-CU-31"
+DAU_CON_S4 = "CON-S4-OK"
+DAU_CON2_S4 = "CON2-S4-OK"
+DAU_CHAU_S4 = "CHAU-S4-OK"
+DAU_CON_BASH_S4 = "CON-BASH-S4"
+DAU_BASH_20 = "XONG-20-S4"
+DAU_CHEN = "CHEN-S4-55"
+DAU_B2 = "B2-S4-OK"
+URL_WEBFETCH_S4 = "https://example.com"
+NGU_FOREGROUND_S = 20
+TRAN_NGAN_SACH_S4 = 0.05
+TRAN_USD_CHINH_S4 = 2.0                 # chốt phụ cho tiến trình chính (như §7.2), đủ cao để không cắt phép đo
+CHO_DAI_MAC_DINH_S = 1800
+HET_GIO_LUOT_S4 = 420                   # chờ result một lượt (lượt 2 có 3 subagent)
+CHO_RESULT_THEM_S = 90                  # sau result đầu của lượt chèn: chờ thêm result của tin chèn
+TRAN_CUNG_THEM_S4 = 1500                # trần cứng = --cho-dai + ngần này giây rồi taskkill
+
+MO_TA_MUC_S4 = {
+    "s1_tools_skill": "--tools Read,Bash,Skill,Agent,Task,TaskOutput,TaskStop: tên trong init.tools (Agent hay chỉ Task; có Skill); "
+                      "gọi được Skill thu-s4 (trả lời có mã chỉ nằm trong SKILL.md tạm)",
+    "s2_subagent_cong_cu": "subagent general-purpose: tool_use của subagent có trên stdout (parent_tool_use_id); WebFetch (ngoài --tools) "
+                           "bị chặn hay chạy; danh sách mọi tên công cụ subagent phát. dat=true khi thấy được VÀ WebFetch không chạy được",
+    "s3_agent_long": "subagent gọi được Agent lồng một cấp (mô phỏng C2 fan-out): tool_use Agent/Task có parent_tool_use_id, có dấu CHAU-S4-OK",
+    "s4_tin_giua_luot": f"tin user gửi khi agent đang chạy Bash foreground {NGU_FOREGROUND_S}s: xếp hàng sau lượt hay chen giữa; lượt có hỏng không",
+    "s5_max_budget_phien_song": f"--max-budget-usd {TRAN_NGAN_SACH_S4} trong phiên sống (tiến trình riêng): dừng lượt, dừng tiến trình, "
+                                "hay tính cộng dồn cả phiên (lượt sau bị từ chối ngay)",
+    "s6_im_lang_dai": "im lặng --cho-dai giây với stdin mở: tiến trình còn sống, lượt kế trả lời bình thường và nhớ từ khoá lượt 1",
+    "s7_chi_phi_gom_subagent": "total_cost_usd có gồm chi phí subagent không (so token modelUsage với usage assistant cấp cao/subagent)",
+    "s8_su_kien_task": "giá trị task_notification.status và task_updated.patch thấy được; Agent chạy foreground có sinh task_started không",
+}
+
+
+def noi_dung_skill_s4() -> str:
+    return (f"---\nname: {TEN_SKILL_S4}\n"
+            "description: Skill tạm của spike S-4 bộ chạy việc. Chỉ dùng khi được yêu cầu gọi đúng tên thu-s4.\n"
+            "---\n\n"
+            "# thu-s4\n\n"
+            f"Khi skill này được gọi: trả lời đúng một dòng `SKILL_S4: {MA_SKILL_S4}` rồi làm tiếp phần còn lại "
+            "của tin người dùng. Không dùng công cụ nào vì skill này.\n")
+
+
+def agents_json_s4() -> str:
+    return json.dumps({TEN_AGENT_S4: {
+        "description": "Agent thử phiên sống cho spike S-4; làm đúng chỉ dẫn, trả lời ngắn.",
+        "prompt": (f"Bạn là {TEN_AGENT_S4}, agent kiểm thử phiên sống nhiều lượt. Làm đúng và chỉ đúng các bước "
+                   "được yêu cầu. Nếu một công cụ bị từ chối hoặc không có, KHÔNG tìm cách khác, chỉ báo lại. "
+                   "Khi nhận thông báo hệ thống về việc nền, chỉ ghi nhận ngắn gọn, không tự làm thêm việc."),
+    }}, ensure_ascii=False)
+
+
+def dung_argv_s4(exe: str, *, tools: list[str], session_id: str, budget: float,
+                 model: str | None = None) -> list[str]:
+    """argv dạng §7.2: stream-json vào/ra, --strict-mcp-config, agent nội tuyến, --tools = --allowedTools,
+    dontAsk, cấm chung, --max-budget-usd, --session-id mới. Hàm thuần."""
+    a = [exe, "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+         "--agents", agents_json_s4(), "--agent", TEN_AGENT_S4,
+         "--strict-mcp-config",
+         "--tools", ",".join(tools),
+         "--permission-mode", "dontAsk",
+         "--allowedTools", *tools,
+         "--disallowedTools", *CONG_CU_CAM_CHUNG,
+         "--max-budget-usd", str(budget),
+         "--session-id", session_id]
+    if model:
+        a += ["--model", model]
+    return a
+
+
+def tong_token(u) -> int:
+    """Tổng token của một usage (message.usage hoặc một mục modelUsage, chịu cả hai kiểu tên). Hàm thuần."""
+    if not isinstance(u, dict):
+        return 0
+    khoa = ("input_tokens", "output_tokens", "cache_creation_input_tokens", "cache_read_input_tokens",
+            "inputTokens", "outputTokens", "cacheCreationInputTokens", "cacheReadInputTokens")
+    return sum(int(u[k]) for k in khoa if isinstance(u.get(k), (int, float)))
+
+
+def usage_theo_cap(su_kien: list[dict]) -> dict:
+    """Token của message assistant, khử trùng theo message.id (lấy bản cuối), tách cấp cao / subagent. Hàm thuần."""
+    theo_id: dict[str, tuple[bool, int]] = {}
+    khong_id = {"cap_cao": 0, "subagent": 0}
+    for e in su_kien:
+        if e.get("type") != "assistant":
+            continue
+        msg = e.get("message") if isinstance(e.get("message"), dict) else {}
+        cap_cao = not e.get("parent_tool_use_id")
+        n = tong_token(msg.get("usage"))
+        if msg.get("id"):
+            theo_id[msg["id"]] = (cap_cao, n)
+        else:
+            khong_id["cap_cao" if cap_cao else "subagent"] += n
+    ra = dict(khong_id)
+    for cap_cao, n in theo_id.values():
+        ra["cap_cao" if cap_cao else "subagent"] += n
+    ra["so_message_subagent"] = sum(1 for c, _ in theo_id.values() if not c)
+    return ra
+
+
+def tom_model_usage(res: dict) -> dict:
+    """Tóm modelUsage của một result: Σ costUSD, Σ token, theo model. Hàm thuần."""
+    mu = res.get("modelUsage") if isinstance(res.get("modelUsage"), dict) else {}
+    theo = {k: {"token": tong_token(v), "costUSD": (v or {}).get("costUSD")} for k, v in mu.items()}
+    cost = [x["costUSD"] for x in theo.values() if isinstance(x["costUSD"], (int, float))]
+    return {"co_modelUsage": bool(mu), "theo_model": theo,
+            "tong_cost": round(sum(cost), 6) if cost else None,
+            "tong_token": sum(x["token"] for x in theo.values())}
+
+
+def danh_gia_chi_phi_subagent(token_mu_truoc: int | None, token_mu_sau: int, usage_luot: dict) -> dict:
+    """Mục 7: chênh token modelUsage của lượt có subagent so với token assistant cấp cao/subagent của lượt.
+
+    modelUsage cộng dồn (trước có số) -> lấy chênh; không thì dùng nguyên số sau. Gồm subagent ⇔ chênh
+    ≥ cấp cao + 50% subagent; chỉ ≈ cấp cao (< cấp cao + 10% subagent) -> không gồm. Hàm thuần.
+    """
+    chenh = token_mu_sau - token_mu_truoc if token_mu_truoc is not None and token_mu_sau >= token_mu_truoc else token_mu_sau
+    cc, sub = usage_luot.get("cap_cao", 0), usage_luot.get("subagent", 0)
+    if sub <= 0:
+        gom = None  # stdout không có usage subagent -> không so được
+    elif chenh >= cc + 0.5 * sub:
+        gom = True
+    elif chenh < cc + 0.1 * sub:
+        gom = False
+    else:
+        gom = None
+    return {"chenh_token_modelUsage": chenh, "token_cap_cao": cc, "token_subagent": sub, "gom_subagent": gom}
+
+
+def tom_su_kien_task(su_kien: list[dict], id_agent_foreground: list[str]) -> dict:
+    """Mục 8: tập status của task_notification, patch của task_updated, task_started theo tool_use_id. Hàm thuần."""
+    status, patch_khoa, patch_mau, bd = set(), set(), [], []
+    for e in su_kien:
+        if e.get("type") != "system":
+            continue
+        st = e.get("subtype")
+        if st == "task_notification":
+            status.add(str(e.get("status")))
+        elif st == "task_updated":
+            p = e.get("patch") if isinstance(e.get("patch"), dict) else {}
+            patch_khoa.update(p.keys())
+            if len(patch_mau) < 12:
+                patch_mau.append({k: (v if isinstance(v, (str, int, float, bool)) or v is None else type(v).__name__)
+                                  for k, v in p.items()})
+        elif st == "task_started":
+            bd.append({"task_id": e.get("task_id"), "tool_use_id": e.get("tool_use_id"),
+                       "task_type": e.get("task_type"), "subagent_type": e.get("subagent_type")})
+    fg = set(id_agent_foreground)
+    return {"task_notification_status": sorted(status), "task_updated_patch_khoa": sorted(patch_khoa),
+            "task_updated_patch_mau": patch_mau, "task_started": bd,
+            "agent_foreground_co_task_started": (any(x["tool_use_id"] in fg for x in bd) if fg else None)}
+
+
+def phan_loai_chen(su_kien: list[dict], id_bash: str | None, dau_chen: str, dau_bash: str) -> dict:
+    """Mục 4: su_kien = mọi sự kiện từ lúc gửi tin lượt Bash foreground (đã có tin chèn ở giữa). Hàm thuần.
+
+    - chen_giua_luot: chỉ MỘT result chứa cả dấu bash và dấu chèn (tin được nạp vào chính lượt đó);
+    - xep_hang_sau_luot: result đầu không có dấu chèn, một result SAU có;
+    - bi_bo_qua: không result nào có dấu chèn.
+    Lượt hỏng ⇔ result đầu is_error, hoặc tool_result Bash lỗi/thiếu dấu bash.
+    """
+    results = [e for e in su_kien if e.get("type") == "result"]
+    cc = cong_cu_chi_tiet(su_kien)
+    bash = next((c for c in cc if c["id"] == id_bash), None) if id_bash else None
+    co_chen = [dau_chen in str(r.get("result") or "") for r in results]
+    if not results:
+        kieu = None
+    elif co_chen[0] and dau_bash in str(results[0].get("result") or ""):
+        kieu = "chen_giua_luot"
+    elif co_chen[0]:
+        kieu = "chen_giua_luot_thay_ket_qua"  # result đầu có dấu chèn nhưng mất dấu bash
+    elif any(co_chen[1:]):
+        kieu = "xep_hang_sau_luot"
+    else:
+        kieu = "bi_bo_qua"
+    # assistant cấp cao nhắc dấu chèn TRƯỚC khi có tool_result Bash -> tin được đọc ngay giữa lúc tool chạy
+    t_bash_xong = bash.get("t_ket_qua_s") if bash else None
+    nhac_som = any(
+        e.get("type") == "assistant" and not e.get("parent_tool_use_id") and t_bash_xong is not None
+        and (e.get("__t") or 0) < t_bash_xong and dau_chen in json.dumps(e.get("message"), ensure_ascii=False)
+        for e in su_kien)
+    hong = bool(results and results[0].get("is_error")) or bash is None or bool(bash.get("loi")) \
+        or dau_bash not in (bash.get("ket_qua_dau") or "")
+    return {"kieu": kieu, "so_result": len(results), "result_co_dau_chen": co_chen,
+            "result_dau_co_dau_bash": bool(results) and dau_bash in str(results[0].get("result") or ""),
+            "subtype_result": [r.get("subtype") for r in results],
+            "nhac_chen_truoc_khi_bash_xong": nhac_som, "t_bash_xong_s": t_bash_xong,
+            "luot_hong": hong if results else None}
+
+
+def phan_loai_ngan_sach(ds: list[dict]) -> dict:
+    """Mục 5: ds = các lượt của tiến trình có --max-budget-usd, mỗi phần tử
+    {co_result, subtype, is_error, total_cost_usd, song_sau}. Hàm thuần.
+
+    Lượt k đầu tiên có subtype chứa 'budget':
+    - tiến trình chết sau lượt k -> dung_tien_trinh;
+    - lượt k+1 cũng 'budget' -> cong_don_ca_phien (mọi lượt sau bị từ chối);
+    - lượt k+1 thành công -> theo_luot;
+    - không có lượt k+1 -> chi_dung_luot (chưa biết lượt sau).
+    Không lượt nào chạm -> khong_cham (kèm chi phí cuối).
+    """
+    k = next((i for i, x in enumerate(ds) if "budget" in str(x.get("subtype") or "").lower()), None)
+    if k is None:
+        return {"kieu": "khong_cham", "luot_cham": None,
+                "chi_phi_cuoi": next((x.get("total_cost_usd") for x in reversed(ds) if x.get("co_result")), None)}
+    if not ds[k].get("song_sau"):
+        kieu = "dung_tien_trinh"
+    elif k + 1 >= len(ds) or not ds[k + 1].get("co_result"):
+        kieu = "chi_dung_luot" if k + 1 >= len(ds) else "luot_sau_khong_result"
+    elif "budget" in str(ds[k + 1].get("subtype") or "").lower():
+        kieu = "cong_don_ca_phien"
+    else:
+        kieu = "theo_luot"
+    return {"kieu": kieu, "luot_cham": k + 1, "subtype_luot_cham": ds[k].get("subtype"),
+            "chi_phi_luc_cham": ds[k].get("total_cost_usd")}
+
+
+def tom_tat_result_s4(e: dict) -> dict:
+    tt = tom_tat_result(e)
+    tt["modelUsage"] = tom_model_usage(e)
+    tt["permission_denials"] = [
+        {"tool_name": d.get("tool_name"),
+         "input": json.dumps(d.get("tool_input"), ensure_ascii=False)[:200]}
+        for d in (e.get("permission_denials") or []) if isinstance(d, dict)]
+    return tt
+
+
+def _gui_va_cho(phien: PhienSong, ten: str, noi_dung: str, het_gio_s: float) -> tuple[int, bool]:
+    """Gửi một tin, chờ result mới. Trả (chỉ số sự kiện lúc gửi, có result mới)."""
+    i = len(phien.chup())
+    r = phien.so_result()
+    phien.gui(ten, noi_dung)
+    return i, phien.cho_result_moi(r, het_gio_s)
+
+
+def _ghi_phien(out: dict, phien: PhienSong, ten: str, thu_muc_log: Path) -> None:
+    don = phien.ket_thuc()
+    if don:
+        out.setdefault("don_tien_trinh_claude", {})[ten] = don
+    with open(thu_muc_log / f"{ten}.jsonl", "w", encoding="utf-8") as f:
+        for s in phien.dong_tho:
+            f.write(s + "\n")
+    sk = phien.chup()
+    tt = tom_tat({"ten": ten, "argv": phien.argv, "su_kien": sk,
+                  "ma_thoat": phien.p.returncode if phien.p else None, "het_gio": False,
+                  "thoi_gian_s": round(phien.t(), 2), "so_dong_khong_json": phien.khong_json,
+                  "stderr_cuoi": "\n".join(phien.loi_ra)[-800:]})
+    tt["cong_cu_chi_tiet"] = cong_cu_chi_tiet(sk)
+    tt["results"] = [tom_tat_result_s4(e) for e in sk if e.get("type") == "result"]
+    tt["tin_da_gui"] = phien.tin_da_gui
+    out["lan_goi"].append(tt)
+
+
+def _do_ngan_sach(exe: str, lam_viec: Path, env: dict, t0: float, model: str | None,
+                  dat_phien) -> dict:
+    """Mục 5: tiến trình riêng --max-budget-usd 0.05, tối đa 3 lượt. dat_phien(p) đăng ký để finally dọn."""
+    for i in range(3):
+        (lam_viec / f"b_{i}.txt").write_text(f"Tệp ngân sách {i}: " + "dữ liệu thử ngân sách " * 60, encoding="utf-8")
+    phien = PhienSong(dung_argv_s4(exe, tools=CONG_CU_NGAN_SACH, session_id=str(uuid.uuid4()),
+                                   budget=TRAN_NGAN_SACH_S4, model=model), lam_viec, env, t0)
+    dat_phien(phien)
+    ra: dict = {"argv_tools": CONG_CU_NGAN_SACH, "tran_usd": TRAN_NGAN_SACH_S4, "luot": []}
+    loi = phien.bat_dau()
+    if loi:
+        ra["khoi_chay_loi"] = loi
+        return ra
+    tin = [
+        ("B1", "PHIẾU S4-NGÂN-SÁCH lượt 1: dùng Read đọc lần lượt b_0.txt, b_1.txt, b_2.txt trong thư mục hiện tại "
+               "(mỗi file một lần gọi), rồi tóm tắt mỗi file một câu.\n"),
+        ("B2", f"PHIẾU S4-NGÂN-SÁCH lượt 2: trả lời đúng một dòng: {DAU_B2}. Không dùng công cụ.\n"),
+        ("B3", "PHIẾU S4-NGÂN-SÁCH lượt 3: đọc lại b_0.txt bằng Read rồi trả lời một câu.\n"),
+    ]
+    da_cham = False
+    for ten, noi_dung in tin:
+        if not phien.song():
+            break
+        i, co = _gui_va_cho(phien, ten, noi_dung, HET_GIO_LUOT_S4)
+        time.sleep(5)
+        sk = phien.chup()[i:]
+        r = next((e for e in reversed(sk) if e.get("type") == "result"), None)
+        ra["luot"].append({"ten": ten, "co_result": co and r is not None,
+                           "subtype": (r or {}).get("subtype"), "is_error": (r or {}).get("is_error"),
+                           "total_cost_usd": (r or {}).get("total_cost_usd"), "num_turns": (r or {}).get("num_turns"),
+                           "result_dau": str((r or {}).get("result") or "")[:300],
+                           "so_tool_use": len(cong_cu_chi_tiet(sk)),
+                           "song_sau": phien.song()})
+        cham = "budget" in str((r or {}).get("subtype") or "").lower()
+        if da_cham:
+            break  # đã có lượt sau lượt chạm -> đủ để phân loại
+        da_cham = cham
+    ra["phan_loai"] = phan_loai_ngan_sach(ra["luot"])
+    song_truoc_dong = phien.song()
+    phien.dong_stdin()
+    thoat, giay = phien.cho_thoat(CHO_THOAT_SAU_DONG_STDIN_S)
+    ra["dong_stdin"] = {"song_truoc_dong": song_truoc_dong, "thoat_trong_han": thoat, "giay": giay,
+                        "ma_thoat": phien.p.returncode if phien.p else None}
+    return ra
+
+
+def chay_spike_song2(exe: str, giu_tam: bool, model: str | None, cho_dai_s: int) -> dict:
+    """S-4: phiên sống, phần còn thiếu (8 mục §13 Đợt 5)."""
+    out: dict = {
+        "phien_ban_script": PHIEN_BAN,
+        "kich_ban": "song2",
+        "claude_exe": exe,
+        "claude_exe_ton_tai": Path(exe).is_file(),
+        "cong_cu_tools_va_allowed": CONG_CU_S4,
+        "tran_usd_tien_trinh_chinh": TRAN_USD_CHINH_S4,
+        "cho_dai_s": cho_dai_s,
+        "muc": {k: {"mo_ta": v, "dat": None, "ghi_chu": ""} for k, v in MO_TA_MUC_S4.items()},
+        "lan_goi": [],
+    }
+    muc = out["muc"]
+    if not out["claude_exe_ton_tai"]:
+        out["loi"] = "không thấy claude.exe"
+        return out
+
+    tam = Path(tempfile.mkdtemp(prefix="spike_claude_s4_"))
+    out["thu_muc_tam"] = str(tam)
+    thu_muc_log = tam / "_log"
+    thu_muc_log.mkdir()
+    lam_viec = tam / "lam_viec"
+    thu_skill = lam_viec / ".claude" / "skills" / TEN_SKILL_S4
+    thu_skill.mkdir(parents=True)
+    (thu_skill / "SKILL.md").write_text(noi_dung_skill_s4(), encoding="utf-8")
+    file_doc = lam_viec / "doc_s4.txt"
+    file_doc.write_text(f"Tệp cho subagent đọc. Mã: {MA_DOC_S4}\n", encoding="utf-8")
+    env = env_toi_thieu()
+    t_bat_dau = time.time()
+    t0 = time.monotonic()
+    # Khởi tạo TRƯỚC try: finally luôn dùng được (B3)
+    ds_phien: dict[str, PhienSong] = {}
+
+    def _giet_het() -> None:
+        for p in list(ds_phien.values()):
+            if p.p is not None and p.p.poll() is None:
+                giet_cay(p.p.pid)
+
+    tru_hard = threading.Timer(cho_dai_s + TRAN_CUNG_THEM_S4, _giet_het)
+    tru_hard.daemon = True
+    try:
+        tru_hard.start()
+
+        # ======== tiến trình NGÂN SÁCH (mục 5) ========
+        log(f"S4 mục 5: tiến trình riêng --max-budget-usd {TRAN_NGAN_SACH_S4}, tối đa 3 lượt")
+        ns = _do_ngan_sach(exe, lam_viec, env, t0, model, lambda p: ds_phien.__setitem__("S4_ngan_sach", p))
+        out["ngan_sach"] = ns
+        pl = ns.get("phan_loai") or {}
+        muc["s5_max_budget_phien_song"].update(
+            dat=True if pl.get("kieu") in ("dung_tien_trinh", "cong_don_ca_phien", "theo_luot", "chi_dung_luot") else None,
+            ket_luan=pl.get("kieu"),
+            ghi_chu=f"phân loại: {pl}; các lượt: {[(x['ten'], x['subtype'], x['total_cost_usd'], x['song_sau']) for x in ns.get('luot', [])]}; "
+                    f"đóng stdin: {ns.get('dong_stdin')}")
+
+        # ======== tiến trình CHÍNH ========
+        sid = str(uuid.uuid4())
+        phien = PhienSong(dung_argv_s4(exe, tools=CONG_CU_S4, session_id=sid, budget=TRAN_USD_CHINH_S4, model=model),
+                          lam_viec, env, t0)
+        ds_phien["S4_chinh"] = phien
+        loi_bd = phien.bat_dau()
+        if loi_bd:
+            out["khoi_chay_loi"] = loi_bd
+            return out
+
+        # ---- lượt 1: Skill (mục 1) ----
+        tin_1 = (
+            f"PHIẾU S4 lượt 1. Ghi nhớ từ khoá kiểm thử: {TU_KHOA_S4} (chuỗi thử nghiệm, không phải bí mật). "
+            f"Gọi công cụ Skill ĐÚNG MỘT LẦN với skill \"{TEN_SKILL_S4}\" và làm theo nội dung skill. "
+            "Không gọi công cụ nào khác. Kết thúc bằng dòng: SKILL: chay | loi | khong_co\n")
+        log("S4 lượt 1: Skill thu-s4")
+        i1, co_r1 = _gui_va_cho(phien, "luot1", tin_1, HET_GIO_LUOT_S4)
+        phien.cho_ranh(60)
+        sk1 = phien.chup()[i1:]
+        txt1 = _van_ban_result(sk1)
+        cc1 = cong_cu_chi_tiet(sk1)
+        inits = [e for e in phien.chup() if e.get("type") == "system" and e.get("subtype") == "init"]
+        init0 = inits[0] if inits else {}
+        tools_init = init0.get("tools")
+        skills_init = init0.get("skills")
+        ds_skill_init = [s if isinstance(s, str) else (s or {}).get("name") for s in (skills_init or [])]
+        out["init"] = {"tools": tools_init, "claude_code_version": init0.get("claude_code_version"),
+                       "so_skills": len(ds_skill_init), "co_skill_thu_s4": TEN_SKILL_S4 in ds_skill_init,
+                       "permissionMode": init0.get("permissionMode"), "agents": init0.get("agents"),
+                       "so_su_kien_init": len(inits)}
+        goi_skill = [c for c in cc1 if c["ten"] == "Skill" and not c.get("cha")]
+        skill_ok = bool(goi_skill) and not any(c.get("loi") for c in goi_skill) and MA_SKILL_S4 in txt1
+        muc["s1_tools_skill"].update(
+            dat=(isinstance(tools_init, list) and "Skill" in tools_init and skill_ok) if co_r1 else None,
+            ghi_chu=f"init.tools={tools_init}; có Agent: {isinstance(tools_init, list) and 'Agent' in tools_init}; "
+                    f"có Task: {isinstance(tools_init, list) and 'Task' in tools_init}; có Skill: "
+                    f"{isinstance(tools_init, list) and 'Skill' in tools_init}; init.skills có thu-s4: "
+                    f"{out['init']['co_skill_thu_s4']} ({len(ds_skill_init)} skill); tool_use Skill: "
+                    f"{[(c['input_dau'], c['loi'], (c['ket_qua_dau'] or '')[:150]) for c in goi_skill]}; "
+                    f"trả lời có {MA_SKILL_S4}: {MA_SKILL_S4 in txt1}")
+        out["van_ban_luot1_dau"] = txt1[:800]
+
+        # ---- lượt 2: subagent công cụ + Agent lồng (mục 2, 3, 7, 8) ----
+        tin_2 = (
+            "PHIẾU S4 lượt 2. Gọi công cụ Agent ĐÚNG HAI LẦN, LẦN LƯỢT (chờ lần 1 xong mới gọi lần 2), đều chạy "
+            "foreground (KHÔNG đặt run_in_background), subagent_type general-purpose:\n"
+            f"Lần 1: description \"S4 con cong cu\", prompt: \"Làm đúng 3 bước, mỗi bước gọi công cụ ĐÚNG MỘT LẦN: "
+            f"(a) Read file {file_doc.as_posix()}; (b) WebFetch url {URL_WEBFETCH_S4} với prompt 'tiêu đề trang'; "
+            f"(c) Bash lệnh: python -c \\\"print('{DAU_CON_BASH_S4}')\\\". Bước nào bị từ chối hoặc không có công cụ thì "
+            "ghi nguyên văn lỗi, KHÔNG thử cách khác. Trả lời: dòng đầu " + DAU_CON_S4 + "; rồi kết quả từng bước; "
+            "rồi dòng CONG_CU_CUA_TOI: <tên chính xác mọi công cụ bạn có, cách nhau dấu phẩy>.\"\n"
+            f"Lần 2: description \"S4 con long\", prompt: \"Gọi công cụ Agent ĐÚNG MỘT LẦN (foreground) với "
+            f"subagent_type general-purpose, prompt 'Trả lời đúng một dòng: {DAU_CHAU_S4}. Không dùng công cụ nào.' "
+            f"Rồi trả lời: dòng đầu {DAU_CON2_S4}; dòng hai là nguyên văn kết quả agent đó trả về, hoặc lỗi nguyên "
+            "văn nếu không gọi được Agent. Không thử cách khác.\"\n"
+            "Xong hai lần thì trả lời ngắn: nguyên văn hai kết quả. Không gọi công cụ nào khác.\n")
+        log("S4 lượt 2: subagent (Read, WebFetch, Bash) + subagent gọi Agent lồng")
+        mu_truoc = tom_model_usage(next((e for e in reversed(sk1) if e.get("type") == "result"), {}) or {})
+        i2, co_r2 = _gui_va_cho(phien, "luot2", tin_2, HET_GIO_LUOT_S4)
+        phien.cho_ranh(120)
+        sk2 = phien.chup()[i2:]
+        txt2 = _van_ban_result(sk2)
+        cc2 = cong_cu_chi_tiet(sk2)
+        agent_cap_cao = [c for c in cc2 if c["ten"] in ("Agent", "Task") and not c.get("cha")]
+        id_cap_cao = [c["id"] for c in agent_cap_cao if c.get("id")]
+        cong_cu_con = [c for c in cc2 if c.get("cha")]
+        ten_con = sorted({str(c["ten"]) for c in cong_cu_con})
+        out["luot2"] = {"agent_cap_cao": [{"id": c["id"], "ten": c["ten"], "nen": c.get("nen"), "loi": c.get("loi"),
+                                           "ket_qua_dau": (c.get("ket_qua_dau") or "")[:400]} for c in agent_cap_cao],
+                        "cong_cu_subagent": [{"ten": c["ten"], "cha": c["cha"], "loi": c.get("loi"),
+                                              "input_dau": c["input_dau"][:200],
+                                              "ket_qua_dau": (c.get("ket_qua_dau") or "")[:300]} for c in cong_cu_con],
+                        "van_ban_dau": txt2[:1500]}
+        wf = [c for c in cong_cu_con if c["ten"] == "WebFetch"]
+        den2 = [d.get("tool_name") for e in sk2 if e.get("type") == "result"
+                for d in (e.get("permission_denials") or []) if isinstance(d, dict)]
+        if not wf:
+            trang_thai_wf = "khong_goi"
+        elif any(c.get("loi") is False for c in wf) and "WebFetch" not in den2:
+            trang_thai_wf = "chay_duoc"
+        else:
+            trang_thai_wf = "bi_chan"
+        read_con = [c for c in cong_cu_con if c["ten"] == "Read"]
+        bash_con = [c for c in cong_cu_con if c["ten"] == "Bash"]
+        m_cc = re.search(r"CONG_CU_CUA_TOI:\s*(.+)", "\n".join([txt2] + [c.get("ket_qua_dau") or "" for c in agent_cap_cao]))
+        thay_con = bool(cong_cu_con)
+        muc["s2_subagent_cong_cu"].update(
+            dat=(thay_con and trang_thai_wf != "chay_duoc") if co_r2 else None,
+            ket_luan={"tool_use_subagent_tren_stdout": thay_con, "webfetch": trang_thai_wf,
+                      "ten_cong_cu_subagent_phat": ten_con},
+            ghi_chu=f"số tool_use có parent_tool_use_id: {len(cong_cu_con)}; WebFetch: "
+                    f"{[(c['loi'], (c.get('ket_qua_dau') or '')[:200]) for c in wf]}; permission_denials lượt 2: {den2}; "
+                    f"Read con: {[(c['loi'], MA_DOC_S4 in (c.get('ket_qua_dau') or '')) for c in read_con]}; "
+                    f"Bash con: {[(c['loi'], DAU_CON_BASH_S4 in (c.get('ket_qua_dau') or '')) for c in bash_con]}; "
+                    f"subagent tự khai công cụ: {m_cc.group(1)[:400] if m_cc else None}")
+        long = [c for c in cong_cu_con if c["ten"] in ("Agent", "Task")]
+        chau_ok = any(not c.get("loi") and DAU_CHAU_S4 in (c.get("ket_qua_dau") or "") for c in long)
+        muc["s3_agent_long"].update(
+            dat=chau_ok if co_r2 else None,
+            ghi_chu=f"tool_use Agent/Task cấp con: {[(c['ten'], c['cha'], c['loi'], (c.get('ket_qua_dau') or '')[:200]) for c in long]}; "
+                    f"có {DAU_CHAU_S4} trong kết quả: {chau_ok}; trong văn bản cuối: {DAU_CHAU_S4 in txt2}")
+        r2 = next((e for e in reversed(sk2) if e.get("type") == "result"), None)
+        mu_sau = tom_model_usage(r2 or {})
+        u2 = usage_theo_cap(sk2)
+        dg7 = danh_gia_chi_phi_subagent(mu_truoc["tong_token"] if mu_truoc["co_modelUsage"] else None,
+                                         mu_sau["tong_token"], u2)
+        r1 = next((e for e in reversed(sk1) if e.get("type") == "result"), None)
+        c1, c2 = (r1 or {}).get("total_cost_usd"), (r2 or {}).get("total_cost_usd")
+        muc["s7_chi_phi_gom_subagent"].update(
+            dat=dg7["gom_subagent"] if co_r2 else None,
+            ghi_chu=f"{dg7}; modelUsage trước: {mu_truoc}; sau: {mu_sau}; total_cost_usd lượt 1={c1}, lượt 2={c2}; "
+                    f"total_cost_usd lượt 2 ≈ Σ costUSD modelUsage: "
+                    f"{isinstance(c2, (int, float)) and mu_sau['tong_cost'] is not None and abs(c2 - mu_sau['tong_cost']) < 1e-6}")
+
+        # ---- lượt 3: tin chen giữa Bash foreground (mục 4) ----
+        phien.cho_ranh(60)
+        tin_3 = (
+            f"PHIẾU S4 lượt 3. Gọi công cụ Bash ĐÚNG MỘT LẦN, foreground (KHÔNG run_in_background), lệnh:\n"
+            f"python -c \"import time; time.sleep({NGU_FOREGROUND_S}); print('{DAU_BASH_20}')\"\n"
+            "Rồi trả lời một dòng BASH: <output lệnh>. Nếu trong lúc đó có tin mới của người dùng thì làm theo tin đó luôn.\n")
+        tin_chen = (f"TIN CHÈN (gửi khi bạn đang chạy Bash): trong câu trả lời kế tiếp của bạn hãy có thêm dòng "
+                    f"DA_THAY_TIN_CHEN: {DAU_CHEN}. Không dùng công cụ vì tin này.\n")
+        log(f"S4 lượt 3: Bash foreground {NGU_FOREGROUND_S}s, chen tin giữa lúc chạy")
+        i3 = len(phien.chup())
+        r_truoc = phien.so_result()
+        phien.gui("luot3", tin_3)
+        id_bash = None
+        han = time.monotonic() + 180
+        while time.monotonic() < han and phien.song() and id_bash is None:
+            cc3 = cong_cu_chi_tiet(phien.chup()[i3:])
+            b = next((c for c in cc3 if c["ten"] == "Bash" and not c.get("cha")), None)
+            if b:
+                id_bash = b["id"]
+                break
+            if phien.so_result() > r_truoc:
+                break
+            time.sleep(0.5)
+        chen: dict = {"id_bash": id_bash, "da_gui": False}
+        if id_bash:
+            time.sleep(3)
+            b = next((c for c in cong_cu_chi_tiet(phien.chup()[i3:]) if c["id"] == id_bash), {})
+            chen["bash_xong_truoc_khi_chen"] = b.get("t_ket_qua_s") is not None
+            chen["t_gui_s"] = round(phien.t(), 2)
+            chen["da_gui"] = phien.gui("chen", tin_chen)
+        phien.cho_result_moi(r_truoc, HET_GIO_LUOT_S4)
+        if chen["da_gui"]:
+            phien.cho_result_moi(r_truoc + 1, CHO_RESULT_THEM_S)
+        phien.cho_ranh(60)
+        sk3 = phien.chup()[i3:]
+        pl4 = phan_loai_chen(sk3, id_bash, DAU_CHEN, DAU_BASH_20)
+        chen.update(pl4)
+        chen["su_kien_user_sau_khi_chen"] = [
+            {"t_s": e.get("__t"), "noi_dung_dau": json.dumps((e.get("message") or {}).get("content"), ensure_ascii=False)[:200]}
+            for e in sk3 if e.get("type") == "user" and chen.get("t_gui_s") is not None
+            and (e.get("__t") or 0) >= chen["t_gui_s"]
+            and not any(isinstance(c, dict) and c.get("type") == "tool_result"
+                        for c in ((e.get("message") or {}).get("content") or []) if isinstance(c, dict))][:5]
+        chen["results"] = [tom_tat_result(e) for e in sk3 if e.get("type") == "result"]
+        out["chen_giua_luot"] = chen
+        muc["s4_tin_giua_luot"].update(
+            dat=(pl4["kieu"] is not None and pl4["luot_hong"] is False) if chen["da_gui"] else None,
+            ket_luan=pl4["kieu"],
+            ghi_chu=f"gửi chèn lúc {chen.get('t_gui_s')}s; Bash xong trước khi chèn: {chen.get('bash_xong_truoc_khi_chen')}; "
+                    f"Bash xong lúc {pl4['t_bash_xong_s']}s; số result: {pl4['so_result']}; result có dấu chèn: "
+                    f"{pl4['result_co_dau_chen']}; result đầu có dấu bash: {pl4['result_dau_co_dau_bash']}; "
+                    f"nhắc chèn trước khi Bash xong: {pl4['nhac_chen_truoc_khi_bash_xong']}; lượt hỏng: {pl4['luot_hong']}"
+                    + ("" if id_bash else "; KHÔNG thấy tool_use Bash cấp cao -> không chèn"))
+
+        # ---- im lặng dài (mục 6) ----
+        phien.cho_ranh(60)
+        i_im = len(phien.chup())
+        t_bd_im = phien.t()
+        log(f"S4: im lặng {cho_dai_s}s với stdin mở (mục 6)")
+        han = time.monotonic() + cho_dai_s
+        mau_song: list[tuple[float, bool]] = []
+        while time.monotonic() < han and phien.song():
+            time.sleep(min(30.0, max(0.0, han - time.monotonic())))
+            mau_song.append((round(phien.t(), 1), phien.song()))
+        song_sau_im = phien.song()
+        sk_im = phien.chup()[i_im:]
+        tin_5 = (f"PHIẾU S4 lượt cuối (sau {cho_dai_s}s im lặng). Không dùng công cụ. Trả lời đúng một dòng: "
+                 "XAC_NHAN_S4: <từ khoá kiểm thử ghi nhớ ở lượt 1>\n")
+        txt5, co_r5, r5 = "", False, None
+        if song_sau_im:
+            log("S4 lượt cuối: hỏi lại từ khoá")
+            i5, co_r5 = _gui_va_cho(phien, "luot_cuoi", tin_5, HET_GIO_LUOT_S4)
+            sk5 = phien.chup()[i5:]
+            txt5 = _van_ban_result(sk5)
+            r5 = next((e for e in reversed(sk5) if e.get("type") == "result"), None)
+        loai_im = sorted({f"{e.get('type')}/{e.get('subtype')}" for e in sk_im})
+        muc["s6_im_lang_dai"].update(
+            dat=(song_sau_im and co_r5 and not (r5 or {}).get("is_error") and TU_KHOA_S4 in txt5),
+            ghi_chu=f"im lặng {t_bd_im:.1f}s -> {phien.t():.1f}s; sống sau im lặng: {song_sau_im}; mã thoát nếu chết: "
+                    f"{phien.p.returncode if phien.p else None}; sự kiện trong lúc im lặng ({len(sk_im)}): {loai_im}; "
+                    f"lượt cuối có result: {co_r5}, is_error: {(r5 or {}).get('is_error')}, subtype: {(r5 or {}).get('subtype')}, "
+                    f"duration_ms: {(r5 or {}).get('duration_ms')}; nhắc đúng từ khoá: {TU_KHOA_S4 in txt5}; "
+                    f"mẫu sống (mỗi 30s, 3 mẫu cuối): {mau_song[-3:]}")
+        out["van_ban_luot_cuoi_dau"] = txt5[:400]
+
+        # ---- đóng stdin ----
+        phien.cho_ranh(30)
+        song_truoc_dong = phien.song()
+        phien.dong_stdin()
+        thoat, giay = phien.cho_thoat(CHO_THOAT_SAU_DONG_STDIN_S)
+        out["dong_stdin"] = {"song_truoc_dong": song_truoc_dong, "thoat_trong_han": thoat, "giay": giay,
+                             "ma_thoat": phien.p.returncode if phien.p else None}
+
+        # ---- mục 8 trên cả luồng ----
+        sk_all = phien.chup()
+        bg = [c["id"] for c in cong_cu_chi_tiet(sk_all) if c["ten"] in ("Agent", "Task") and c.get("id") and not c.get("nen")]
+        tk = tom_su_kien_task(sk_all, bg)
+        out["su_kien_task"] = tk
+        muc["s8_su_kien_task"].update(
+            dat=True if (tk["task_notification_status"] or tk["task_updated_patch_khoa"] or tk["task_started"]) else None,
+            ket_luan={"agent_foreground_co_task_started": tk["agent_foreground_co_task_started"]},
+            ghi_chu=f"task_notification.status: {tk['task_notification_status']}; task_updated.patch khoá: "
+                    f"{tk['task_updated_patch_khoa']}; số task_started: {len(tk['task_started'])}; "
+                    f"Agent foreground (id) có task_started: {tk['agent_foreground_co_task_started']}")
+        dg = danh_gia_chi_phi([e.get("total_cost_usd") for e in sk_all if e.get("type") == "result"])
+        out["chi_phi_danh_gia_chinh"] = dg
+    finally:
+        tru_hard.cancel()
+        _giet_het()  # giết mọi tiến trình còn sống TRƯỚC khi ghi log (ghi log lỗi cũng không để sót tiến trình)
+        for ten, p in ds_phien.items():
+            try:
+                _ghi_phien(out, p, ten, thu_muc_log)
+            except Exception as ex:  # noqa: BLE001
+                out.setdefault("loi_ghi_phien", {})[ten] = f"{type(ex).__name__}: {ex}"[:300]
+        _dong_goi(out, tam, lam_viec, giu_tam, t_bat_dau)
+    return out
+
+
 # ---------------------------------------------------------------- CLI
 
 def _stdio_utf8() -> None:
@@ -1040,11 +2163,13 @@ def main(argv: list[str] | None = None) -> int:
     _stdio_utf8()
     ds_muc = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC.items())
     ds_muc_nen = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC_NEN.items())
+    ds_muc_song = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC_SONG.items())
+    ds_muc_s4 = "\n".join(f"  {k}: {v}" for k, v in MO_TA_MUC_S4.items())
     ap = argparse.ArgumentParser(
         prog="spike_claude.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=(
-            "Spike S-1/S-2: đo hành vi claude.exe headless (-p, stream-json, dontAsk, --tools, --resume,\n"
+            "Spike S-1..S-4: đo hành vi claude.exe headless (-p, stream-json, dontAsk, --tools, --resume,\n"
             "việc nền) cho bộ chạy việc Kho sản phẩm. KHÔNG cờ = chỉ in trợ giúp, không gọi gì.\n\n"
             "Kịch bản 'cu' (mặc định, S-1). Các mục đo (dat = true | false | null(không kết luận) | QUAN_SAT_TAY):\n"
             + ds_muc + "\n\n"
@@ -1052,7 +2177,24 @@ def main(argv: list[str] | None = None) -> int:
             "dontAsk, --allowedTools đúng 3 công cụ; --tools thêm tên thăm dò "
             + ",".join(CONG_CU_THAM_DO) + ").\n"
             "Lượt 1 gọi 1 subagent general-purpose + 1 Bash nền ngủ 60s rồi kết thúc; lượt 2 --resume hỏi\n"
-            "trạng thái việc nền và thử SendMessage tới subagent cũ. Các mục đo:\n" + ds_muc_nen),
+            "trạng thái việc nền và thử SendMessage tới subagent cũ. Các mục đo:\n" + ds_muc_nen + "\n\n"
+            "Kịch bản 'song' (S-3): MỘT tiến trình claude -p --input-format stream-json --output-format\n"
+            "stream-json --verbose sống suốt việc; tin user gửi qua stdin dạng JSON lines\n"
+            '  {"type":"user","message":{"role":"user","content":"..."},"parent_tool_use_id":null}\n'
+            "không đóng stdin giữa các lượt. Agent nội tuyến có " + ",".join(CONG_CU_SONG) + "\n"
+            "(--strict-mcp-config, dontAsk, env tối thiểu, thư mục tạm; --tools thêm tên thăm dò "
+            + ",".join(CONG_CU_THAM_DO_SONG) + ").\n"
+            f"Lượt 1: 1 subagent + 1 Bash nền ngủ {NGU_NEN_S2}s rồi kết thúc lượt; runner im lặng tới mốc gọi nền\n"
+            f"+{CHO_QUAN_SAT_SONG_S}s; lượt 2 hỏi trạng thái + SendMessage + kết thúc bằng khối CẦN_USER (LOẠI: chon);\n"
+            "lượt 3 gửi câu trả lời; rồi đóng stdin. Các mục đo:\n" + ds_muc_song + "\n\n"
+            "Kịch bản 'song2' (S-4): cùng dạng lệnh §7.2 (stream-json vào/ra, --strict-mcp-config, dontAsk,\n"
+            "--tools = --allowedTools = " + ",".join(CONG_CU_S4) + ",\n"
+            f"--max-budget-usd {TRAN_USD_CHINH_S4}, --session-id mới), agent nội tuyến, cwd tạm có skill tạm\n"
+            f".claude/skills/{TEN_SKILL_S4}/SKILL.md. Tiến trình NGÂN SÁCH (--max-budget-usd {TRAN_NGAN_SACH_S4}, "
+            "--tools Read, tối đa 3 lượt)\n"
+            "chạy trước; rồi tiến trình CHÍNH: lượt 1 Skill; lượt 2 hai subagent foreground (Read+WebFetch+Bash;\n"
+            f"Agent lồng); lượt 3 Bash foreground {NGU_FOREGROUND_S}s + chèn tin giữa lúc chạy; im lặng --cho-dai giây;\n"
+            "lượt cuối hỏi lại từ khoá; đóng stdin. Các mục đo:\n" + ds_muc_s4),
         epilog=(
             "Tác động khi --chay (cu): gọi claude.exe THẬT 6-8 lượt (A, B resume, C, [C2], D, E, F, [A2]),\n"
             "tốn quota; tạo 5-7 phiên trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
@@ -1062,17 +2204,30 @@ def main(argv: list[str] | None = None) -> int:
             "được với tên thăm dò), 1 subagent, ~0,5 USD; chạy ~3-5 phút (chờ việc nền 60s + 20s);\n"
             "1 phiên (kèm file subagent) trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
             "thư mục tạm %TEMP%\\spike_claude_nen_*; tiến trình nền còn sót bị taskkill cuối lượt.\n"
+            "Tác động khi --chay --kich-ban song: 1 tiến trình claude.exe THẬT, 3 tin user (+ lượt tự thức\n"
+            "nếu có), 1 subagent (+1 SendMessage nếu có), ước ~0,3-0,8 USD; chạy ~3-6 phút (trần cứng\n"
+            f"{TONG_HET_GIO_SONG_S}s rồi taskkill); 1 phiên trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
+            "thư mục tạm %TEMP%\\spike_claude_song_* (có _log/S_song.jsonl nếu --giu-tam).\n"
+            "Tác động khi --chay --kich-ban song2: 2 tiến trình claude.exe THẬT (ngân sách tối đa 3 lượt; chính 4 lượt\n"
+            "+ 1 tin chèn), 3 subagent (1 gọi WebFetch tới https://example.com nếu không bị chặn), ước ~0,6-1,0 USD;\n"
+            f"chạy ~--cho-dai + 5 phút (mặc định ~35 phút; trần cứng --cho-dai + {TRAN_CUNG_THEM_S4}s rồi taskkill);\n"
+            "2 phiên (kèm file subagent) trong C:\\Users\\Mi\\.claude\\projects\\<mã cwd tạm>\\;\n"
+            "thư mục tạm %TEMP%\\spike_claude_s4_* (có _log/S4_*.jsonl nếu --giu-tam).\n"
             "Hoàn tác: xoá thư mục phiên in trong khoá thu_muc_phien và thư mục tạm (nếu --giu-tam)."),
     )
     ap.add_argument("--chay", action="store_true", help="chạy các phép đo bằng claude.exe thật (cần duyệt)")
-    ap.add_argument("--kich-ban", choices=["cu", "nen"], default="cu",
-                    help="cu = 12 mục S-1 (mặc định, hành vi cũ); nen = việc nền S-2")
+    ap.add_argument("--kich-ban", choices=["cu", "nen", "song", "song2"], default="cu",
+                    help="cu = 12 mục S-1 (mặc định, hành vi cũ); nen = việc nền S-2; "
+                         "song = một tiến trình stream-json sống nhiều lượt S-3; "
+                         "song2 = phiên sống, phần còn thiếu S-4 (8 mục)")
     ap.add_argument("--claude-exe", default=os.environ.get("KHO_CLAUDE_EXE", CLAUDE_EXE_MAC_DINH),
                     help="đường dẫn claude.exe (mặc định §6.1, ghi đè bằng env KHO_CLAUDE_EXE)")
     ap.add_argument("--model", default=None, help="tuỳ chọn --model truyền cho claude (mặc định: không truyền)")
     ap.add_argument("--giu-tam", action="store_true", help="giữ thư mục tạm (có _log/*.jsonl thô) để soi lại")
     ap.add_argument("--cho-quan-sat", type=int, default=8,
                     help="số giây chờ sau khi in hướng dẫn quan sát mục 9 (mặc định 8)")
+    ap.add_argument("--cho-dai", type=int, default=CHO_DAI_MAC_DINH_S,
+                    help=f"song2: số giây im lặng với stdin mở trước lượt cuối (mục s6; mặc định {CHO_DAI_MAC_DINH_S})")
     ns = ap.parse_args(argv)
     if not ns.chay:
         ap.print_help()
@@ -1086,6 +2241,10 @@ def main(argv: list[str] | None = None) -> int:
     che = dung_bo_che(settings)
     if ns.kich_ban == "nen":
         out = chay_spike_nen(ns.claude_exe, ns.giu_tam, ns.model)
+    elif ns.kich_ban == "song":
+        out = chay_spike_song(ns.claude_exe, ns.giu_tam, ns.model)
+    elif ns.kich_ban == "song2":
+        out = chay_spike_song2(ns.claude_exe, ns.giu_tam, ns.model, max(0, ns.cho_dai))
     else:
         out = chay_spike(ns.claude_exe, ns.giu_tam, ns.model, max(0, ns.cho_quan_sat))
     print(json.dumps(che_de_quy(out, che), ensure_ascii=False, indent=2))
