@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-20T15:19:43+07:00",
+ "cap_nhat_luc": "2026-11-20T18:58:47+07:00",
  "san_pham": [
   {
    "id": "1737868324381558078",
@@ -876,16 +876,16 @@
    "gia": "249.955₫",
    "shop": "Memeeie quần băng vệ sinh",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-20T18:58:37+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -893,7 +893,7 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-10T13:13:53+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
+   "cap_nhat_luc": "2026-11-20T18:58:37+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
