@@ -255,7 +255,8 @@ def test_dieu_kien_truoc_du_an_bien_mat(mt):
 def test_lenh_claude_session_va_resume(mt):
     l = dm.DANH_MUC["radar_ban_tin"]
     a = dm.lenh_claude(l, _viec("radar_ban_tin", {}), mt)
-    assert a[:4] == [str(mt.claude_exe), "-p", "--agent", "aff-radar"]
+    assert a[:6] == [str(mt.claude_exe), "-p", "--model", dm.MODEL_CLAUDE, "--agent", "aff-radar"]
+    assert dm.MODEL_CLAUDE == "claude-sonnet-5-5"
     assert a[a.index("--tools") + 1] == "Read,Write,Glob"
     assert a[a.index("--permission-mode") + 1] == "dontAsk"
     i = a.index("--allowedTools")

@@ -27,13 +27,13 @@ def kho(tmp_path):
 
 def test_hang_so_dung_tai_lieu():
     assert HAN_MUC_TRAN == {
-        "dot_bat": 5, "claude_usd_ngay": 40, "claude_viec_ngay": 12,
+        "dot_bat": 5, "claude_usd_ngay": 999999, "claude_viec_ngay": 999999,
         "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
         "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
-        "genmax_ban_moi_viec": 25, "genmax_viec_ngay": 2,
+        "genmax_ban_moi_viec": 999999, "genmax_viec_ngay": 999999,
         "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,
-        "taovideo_ngay": 10, "codex_luot_viec": 6,
-        "taovideo_usd_viec": 60, "taovideo_mp3_viec": 25, "taovideo_lan_ngay": 10,
+        "taovideo_ngay": 10, "codex_luot_viec": 999999,
+        "taovideo_usd_viec": 999999, "taovideo_mp3_viec": 999999, "taovideo_lan_ngay": 10,
         "sua_video_ngay": 60,
     }
     assert TRAN_LUOT == {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,

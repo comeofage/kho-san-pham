@@ -153,8 +153,9 @@ def _noi_dung_taovideo(viec: dict, mt: MoiTruong, hm: dict | None = None) -> dic
                             or not GIA_TAOVIDEO[0] <= gia <= GIA_TAOVIDEO[1]):
         raise ThamSoLoi("gia trong việc không hợp lệ")
     wm_ghi = "không watermark" if wm == WM_KHONG else f"watermark {wm} (như lệnh \"wm-{wm}\")"
-    gia_ghi = (f"giá bán {gia} đ (người dùng đã chốt — không hỏi lại giá ở C0)" if gia is not None
-               else "chưa có giá — C0 giá/deal hỏi bằng CẦN_USER LOẠI: cau_hoi")
+    # Số giá cố ý KHÔNG đưa vào phiếu: có số trong tay là agent đặt noi_gia=true (coconutsquidsy 20/11/2026).
+    gia_ghi = ("mẻ KHÔNG nói giá: kịch bản/voice/phụ đề không có bất kỳ số tiền nào; ghi du_lieu "
+               "\"khong_noi_gia\": true, KHÔNG BAO GIỜ đặt noi_gia=true; không hỏi giá/deal ở C0 (TikTok quét gắt lời nói giá)")
     tran = _tran_taovideo(mt, hm)
     che_do = "\n".join((
         "CHẾ ĐỘ CHẠY: MỘT phiên sống (claude -p, stream-json). Runner giữ phiên tới khi bạn báo cáo cuối.",
@@ -224,8 +225,11 @@ def _khoi_da_duyet(viec: dict) -> str:
     if not viec.get("loi_duyet"):
         raise ThamSoLoi("việc chưa có lời duyệt")
     loi = lam_sach_chu(che_roi_lam_sach(str(viec["loi_duyet"]), _che_mau_bi_mat), TOI_DA_LOI_DUYET)
+    # Bỏ "gia" khỏi tham số in ra: agent thấy số giá là đưa vào kịch bản (20/11/2026). Chữ ký duyệt do vòng chạy
+    # kiểm trên tham số đầy đủ trong DB, khối này chỉ để agent đọc.
+    ts_in = {k: v for k, v in (viec.get("tham_so") or {}).items() if k != "gia"}
     return (f"ĐÃ DUYỆT: {_mot_dong(viec.get('duyet_boi'), 40)} lúc {_mot_dong(viec.get('duyet_luc'), 40)}, "
-            f"cho đúng job {_mot_dong(viec.get('id'), 40)} với tham số {tham_so_chuan(viec.get('tham_so') or {})}, "
+            f"cho đúng job {_mot_dong(viec.get('id'), 40)} với tham số {tham_so_chuan(ts_in)}, "
             f"nguyên văn:\n<<<\n{loi}\n>>>")
 
 

@@ -21,18 +21,19 @@ HAN_MUC_TRAN: dict[str, int | float] = {
     # đợt cao nhất được mở; tăng = sửa code + cài lại (có duyệt). Đợt 5: B-4 — người dùng đã đồng ý mở (D11,
     # 17/11/2026 "Cho sửa + mở đợt 5"). cau_hinh.json hạ về 4 để đóng taovideo.
     "dot_bat": 5,
-    "claude_usd_ngay": 40, "claude_viec_ngay": 12,
+    "claude_usd_ngay": 999999, "claude_viec_ngay": 999999,
     "viec_tao_ngay_moi_nguoi": 30, "con_toi_da_xu_ly_link": 5,
     "muse_clip_moi_viec": 10, "muse_clip_ngay": 15,
-    "genmax_ban_moi_viec": 25, "genmax_viec_ngay": 2,
+    "genmax_ban_moi_viec": 999999, "genmax_viec_ngay": 999999,
     # poster_video_ngay_toi_da: trần video/ngày của MỘT việc VÀ tổng so_video_ngay mỗi tài khoản mỗi ngày
     # (người dùng chốt FX-11: 100 video/tài khoản/ngày; vẫn ≤ poster_len_lich_ngay việc/ngày).
     "poster_len_lich_ngay": 2, "poster_video_ngay_toi_da": 100,
     # taovideo (D11 §7.5): taovideo_ngay đếm VIỆC/ngày; taovideo_lan_ngay đếm LẦN TIÊU lời duyệt/ngày.
     # Trần trong MỘT phiên sống: USD-ước-tính (Σ chênh lệch total_cost_usd), số voice *_adam.mp3 mới (file thật),
     # codex_luot_viec lượt Codex (đặt lại khi tiêu lời duyệt mới). Vòng chạy (A-5) đo và giết cây khi vượt.
-    "taovideo_ngay": 10, "codex_luot_viec": 6,   # 19/11/2026: 1 → 10 để xếp nhiều SP vào hàng chờ (GPU vẫn 1 việc một lúc)
-    "taovideo_usd_viec": 60, "taovideo_mp3_viec": 25, "taovideo_lan_ngay": 10,
+    "taovideo_ngay": 10, "codex_luot_viec": 999999,   # 19/11/2026: 1 → 10 để xếp nhiều SP vào hàng chờ (GPU vẫn 1 việc một lúc)
+    # 20/11/2026 chủ shop: KHÔNG giới hạn chi phí — usd/mp3/codex/claude/genmax = 999999 (usd phải in ra không dạng 1e+06 cho --max-budget-usd)
+    "taovideo_usd_viec": 999999, "taovideo_mp3_viec": 999999, "taovideo_lan_ngay": 10,
     # D10 (docs/sua-video.md §7.3): số việc sua_video + hoan_tac_sua TẠO trong ngày VN (chặn bấm lặp làm bận GPU).
     "sua_video_ngay": 60,
 }

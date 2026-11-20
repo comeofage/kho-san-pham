@@ -593,13 +593,15 @@ def test_lap_phieu_taovideo_co_che_do_chay_va_b_da_chot(mt_tv):
     assert "Codex ≤ 6 lần; voice GenMax ≤ 25 file mới" in p and "Claude ≤ 60 USD-ước-tính" in p
     assert "KHÔNG có SendMessage" in p and "Không có AskUserQuestion" in p and "CẦN_USER \"Mở app Poster V2" in p
     assert "LOẠI: chon | viec_tay | cau_hoi" in p
-    assert a.as_posix() in p and "nha.cua.mit" in p and "159000" in p
+    assert a.as_posix() in p and "nha.cua.mit" in p
+    # 20/11/2026: số giá KHÔNG bao giờ vào phiếu (có số là agent đặt noi_gia=true) — luôn ghi khong_noi_gia
+    assert "159000" not in p and "\"khong_noi_gia\": true" in p and "KHÔNG BAO GIỜ đặt noi_gia=true" in p
     assert "ĐÃ DUYỆT: nhan lúc" in p and "PHẠM VI DUYỆT: MỘT phiên sống taovideo" in p
     assert _khoi_duyet(p) == "Duyệt chạy cả phiên"
     # không watermark, không giá
     ts2 = {k: v for k, v in ts.items() if k != "gia"} | {"wm": "khong"}
     p2 = phieu.lap_phieu(TV, _tv_viec(ts2), mt2, 5)
-    assert "không watermark" in p2 and "159000" not in p2 and "chưa có giá" in p2
+    assert "không watermark" in p2 and "159000" not in p2 and "\"khong_noi_gia\": true" in p2
     with pytest.raises(ThamSoLoi):                                       # chưa duyệt → không dựng phiếu
         phieu.lap_phieu(TV, _tv_viec(ts, loi_duyet=None), mt2, 5)
     with pytest.raises(ThamSoLoi):                                       # wm lạ trong DB → không chèn

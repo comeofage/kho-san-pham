@@ -103,6 +103,8 @@ THU_MUC_SKILLS = "C:/Users/Mi/.claude/skills"
 TU_TIM_DU_AN_B = "tu_tim"
 WM_KHONG = "khong"
 GIA_TAOVIDEO = (1_000, 10_000_000)
+# Model cho mọi phiên claude -p runner gọi (chủ shop chốt Sonnet 5.5 ngày 20/11/2026; không truyền thì chạy Opus mặc định).
+MODEL_CLAUDE = "claude-sonnet-5-5"
 NHAN_KHO_BUOC_B = "nha.cua.mit"  # account Poster của autovideo-oneshot (kho.py video --nhan), không phải watermark
 TOM_TAT_DOI_SOAT_TOI_DA = 800
 _RE_MA_BAN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_]{0,19}$", re.ASCII)
@@ -1585,6 +1587,7 @@ def lenh_claude(loai: LoaiViec, viec: dict, mt: MoiTruong) -> list[str]:
     for d in loai.them_thu_muc(viec.get("tham_so") or {}, mt):
         them += ["--add-dir", d]
     return [str(mt.claude_exe), "-p",
+            "--model", MODEL_CLAUDE,
             "--agent", loai.agent,
             "--strict-mcp-config",
             "--tools", ",".join(loai.bo_cong_cu),
@@ -1619,6 +1622,7 @@ def lenh_claude_song(loai: LoaiViec, viec: dict, mt: MoiTruong, tran_usd: float)
     return [str(mt.claude_exe), "-p",
             "--input-format", "stream-json",
             "--output-format", "stream-json", "--verbose",
+            "--model", MODEL_CLAUDE,
             "--agent", loai.agent,
             "--strict-mcp-config",
             "--tools", ",".join(loai.bo_cong_cu),
