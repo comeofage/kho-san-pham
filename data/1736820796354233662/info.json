@@ -31,11 +31,21 @@
   "luc": "2026-11-16T10:17:31+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-21T11:08:46+07:00",
+  "poster": [
+   {
+    "folder": 364,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 364,
+  "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T10:17:31+07:00",
+ "cap_nhat_luc": "2026-11-21T11:08:46+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
