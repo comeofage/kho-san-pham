@@ -32,20 +32,26 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 20,
-  "luc": "2026-11-21T11:08:46+07:00",
+  "so_video": 40,
+  "luc": "2026-11-21T15:47:14+07:00",
   "poster": [
    {
     "folder": 364,
     "so_video": 20,
     "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output_poster",
     "nhan": "Adam"
+   },
+   {
+    "folder": 367,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output",
+    "nhan": "nha.cua.mit"
    }
   ],
-  "poster_folder": 364,
-  "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output_poster"
+  "poster_folder": 367,
+  "duong_dan": "E:/oneshottramcanh/toilet 1111-1736820796354233662/output"
  },
- "cap_nhat_luc": "2026-11-21T11:08:46+07:00",
+ "cap_nhat_luc": "2026-11-21T15:47:14+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
