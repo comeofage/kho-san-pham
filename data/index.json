@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-21T09:25:54+07:00",
+ "cap_nhat_luc": "2026-11-21T10:56:10+07:00",
  "san_pham": [
   {
    "id": "1738496407898916706",
@@ -1365,7 +1365,7 @@
    "gia": "30.018₫",
    "shop": "MIMI VN1",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1382,7 +1382,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T09:40:13+07:00",
-   "cap_nhat_luc": "2026-11-17T10:39:18+07:00",
+   "cap_nhat_luc": "2026-11-21T10:55:57+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
