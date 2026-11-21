@@ -25,12 +25,20 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 24,
-  "luc": "2026-11-08T16:25:27+07:00",
+  "so_video": 40,
+  "luc": "2026-11-21T14:05:14+07:00",
+  "poster": [
+   {
+    "folder": 126,
+    "so_video": 40,
+    "duong_dan": "E:/oneshottramcanh/balochonggu 1730425984528845500/output_poster",
+    "nhan": "Adam"
+   }
+  ],
   "poster_folder": 126,
   "duong_dan": "E:/oneshottramcanh/balochonggu 1730425984528845500/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:46:08+07:00",
+ "cap_nhat_luc": "2026-11-21T14:05:14+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "❌",
