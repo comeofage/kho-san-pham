@@ -99,7 +99,8 @@ _RE_ID = r"j\d{14}[a-z0-9]{4}"
 _RE_ROUTE_ID = re.compile(rf"^/viec/({_RE_ID})$", re.ASCII)
 _RE_ROUTE_LOG = re.compile(rf"^/viec/({_RE_ID})/log$", re.ASCII)
 _RE_ROUTE_HANH_DONG = re.compile(
-    rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin)$", re.ASCII)
+    rf"^/viec/({_RE_ID})/(tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin|luu-tru|bo-luu-tru)$",
+    re.ASCII)
 LOI_CAN_DUYET_LAI = "Việc tốn tiền: cần duyệt lại"
 # D9/A-D9b (FX-14): việc tốn tiền ở can_tra_loi không được trả lời trực tiếp.
 LOI_TRA_LOI_TON_TIEN = "Việc tốn tiền: bấm Xin duyệt lại rồi duyệt bằng mật khẩu"
@@ -660,14 +661,19 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             if not _RE_SO.fullmatch(q["gioi_han"]) or not 1 <= int(q["gioi_han"]) <= GIOI_HAN_TOI_DA:
                 raise ThamSoLoi(f"gioi_han phải là số 1–{GIOI_HAN_TOI_DA}")
             gioi_han = int(q["gioi_han"])
+        offset = 0
+        if "offset" in q:
+            if not _RE_SO.fullmatch(q["offset"]):
+                raise ThamSoLoi("offset phải là số nguyên ≥ 0")
+            offset = int(q["offset"])
         uid = q.get("uid")
         if uid is not None and not _RE_UID.fullmatch(uid):
             raise ThamSoLoi("uid phải là 19 chữ số")
         if uid is None:
-            ds = kho.ds(tt, gioi_han=gioi_han)
-        else:
-            ds = [v for v in kho.ds(tt, gioi_han=GIOI_HAN_TOI_DA)
-                  if isinstance(v.get("tham_so"), dict) and v["tham_so"].get("uid") == uid][:gioi_han]
+            ds = kho.ds(tt, gioi_han=gioi_han, offset=offset)
+            return 200, {"viec": [_ra(v, chi_tiet=False) for v in ds], "tong": kho.dem_loc(tt)}
+        ds = [v for v in kho.ds(tt, gioi_han=GIOI_HAN_TOI_DA)
+              if isinstance(v.get("tham_so"), dict) and v["tham_so"].get("uid") == uid][:gioi_han]
         return 200, {"viec": [_ra(v, chi_tiet=False) for v in ds]}
 
     def g_viec(id_: str, _q) -> tuple[int, dict]:
@@ -862,6 +868,20 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             kq["canh_bao"] = f"Đã huỷ nhưng chưa dừng được tiến trình ({type(e).__name__}) — kiểm trên máy"
         return 200, kq
 
+    def p_luu_tru(id_: str, body: dict) -> tuple[int, dict]:
+        boi = _boi(body)
+        with khoa_ghi:
+            _lay_viec(id_)
+            moi = kho.dat_luu_tru(id_, True, boi)
+        return 200, {"viec": _ra(moi)}
+
+    def p_bo_luu_tru(id_: str, body: dict) -> tuple[int, dict]:
+        boi = _boi(body)
+        with khoa_ghi:
+            _lay_viec(id_)
+            moi = kho.dat_luu_tru(id_, False, boi)
+        return 200, {"viec": _ra(moi)}
+
     def p_tu_choi(id_: str, body: dict) -> tuple[int, dict]:
         boi = _boi(body)
         with khoa_ghi:
@@ -993,7 +1013,7 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
 
     HANH_DONG = {"tra-loi": p_tra_loi, "huy": p_huy, "tu-choi": p_tu_choi, "chay-tiep": p_chay_tiep,
                  "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai,
-                 "nhan-tin": p_nhan_tin}
+                 "nhan-tin": p_nhan_tin, "luu-tru": p_luu_tru, "bo-luu-tru": p_bo_luu_tru}
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "kho-runner"

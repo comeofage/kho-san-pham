@@ -1,5 +1,51 @@
 # Nhật ký Phòng Kỹ sư Culiapp — kho-san-pham
 
+## Ca 2026-11-21-dp — Trang ⚙ Việc: dừng/ẩn/phân trang (phiên Agency)
+- Yêu cầu người dùng (qua ảnh chụp trang ⚙ Việc): cho dừng việc đang chạy, cho "xoá" (chốt = chỉ ẩn/lưu trữ,
+  KHÔNG xoá cứng vì D7/D9 ký theo id việc), phân trang cố định 10 dòng/trang. Khảo sát trước thấy `/huy` đã dừng
+  được việc đang chạy từ lâu (chỉ thiếu nút trên thẻ danh sách) nên KHÔNG viết cơ chế dừng mới.
+- Lượt 1: DP-1 backend (cột `luu_tru`, `dat_luu_tru`, `dem_loc`, `offset`, act `luu-tru`/`bo-luu-tru`,
+  `tools/runner/kho_viec.py` + `api.py`), DP-2 web (nút Dừng/Ẩn trên thẻ + phân trang mỗi nhóm, `cf/src/worker.js`
+  + `web/viec.js`), DP-4 web (phát hiện giữa chừng: tunnel `tools/video_server.py` có allowlist path/query riêng
+  theo D2, chưa mở cho act/tham số mới — vá luôn, cùng lượt), DP-3 architect (docs/bo-chay-viec.md §3.2/§7.7/§8/§12
+  + DECISIONS.md D14). so/kiem_san sau lượt: sạch (1 cảnh báo `# type: ignore` ở `kho_viec.py:520` là báo oan — idiom
+  cũ có sẵn từ `chuyen()`, không phải DP-1 thêm). kiem-chung cuối lượt 1: JS vẫn đúng 3 lỗi có sẵn từ trước (không
+  liên quan — một trong số là `nt.onclick=` property JS hợp lệ, không phải inline HTML, bị regex kiểm CSP bắt
+  nhầm); Python 1496→1514 pass; engine 33/33 không đổi. Trưởng phòng tự bump `web/index.html` viec.js?v=15→16
+  (việc nhỏ).
+- Review R-DP1 (culiapp-reviewer, chỉ đọc): **CHƯA ĐẠT**. P1 `moi:an-viec-roi-chay-lai-an-tang-hinh` — `chuyen()`
+  không xoá `luu_tru=1` khi việc đổi `trang_thai` ra khỏi `TRANG_THAI_DONG` (qua `chay-tiep`/`xin-duyet-lai` sẵn
+  có) → việc đã ẩn có thể chạy lại (kể cả việc tốn tiền) mà biến mất khỏi mọi danh sách, vi phạm đúng ràng buộc đã
+  chốt trong phiếu. Đã ghi sổ bài học (`bai_hoc.py them`, mã trên, phiếu DP-1). P3: `boi` của `luu-tru`/`bo-luu-tru`
+  không ghi `su_kien` (mất dấu ai đã ẩn); docs nói nút Dừng cũng hiện ở `can_tra_loi` nhưng code/test chỉ hiện ở
+  `dang_chay`. D7/D9/D2/CSP/schema migration: reviewer xác nhận ổn, không cần sửa DP-2/DP-4.
+- Vòng sửa 1/2: DP-1 vá `chuyen()` (luôn `luu_tru=0` khi `den not in TRANG_THAI_DONG`, một chỗ duy nhất, có bằng
+  chứng RED→GREEN) + ghi `su_kien` cho `luu-tru`/`bo-luu-tru` (289 pass, +6 test); DP-3 sửa đúng 1 câu §12. `so`
+  sau vòng sửa: sạch cho 5 file của 2 phiếu; có 1 file ngoài phạm vi `data/1737981550082229795/info.json` đổi —
+  đã kiểm là commit thật (`1fac632c`, 21/11 09:17) của hệ thống sống (kho.py/người dùng), không liên quan tới
+  phiếu nào ở đây, không ai trong phòng khai sửa — không trả phiếu. `kiem_san` sạch.
+- Review vòng 2 (chỉ soi phần vá): **ĐẠT**, 0 lỗi. Xác nhận bất biến `luu_tru=1 ⇒ trang_thai ∈ TRANG_THAI_DONG`
+  đúng ở MỌI nơi ghi `trang_thai` (rà cả `vong_lap.py` — 10 lời gọi `chuyen()`, ngoài phạm vi phiếu nhưng reviewer
+  tự soi thêm cho chắc), `su_kien` ghi đúng `boi` thật, test không giả, docs khớp code.
+- KIỂM CHỨNG CUỐI (lượt 1 + vòng sửa): JS vẫn đúng 3 lỗi có sẵn từ trước khi bắt đầu việc này (không liên quan —
+  đã đối chiếu từng cái, không file mới); Python 1496→1520 passed (+24 test); engine 33/33. `so` từ snapshot GỐC
+  (trước lượt 1) tới giờ: sạch, đúng 13 file dự kiến (`tools/runner/kho_viec.py`, `tools/runner/api.py`,
+  `tools/test_runner_kho_viec.py`, `tools/test_runner_api.py`, `tools/video_server.py`,
+  `tools/test_video_server.py`, `cf/src/worker.js`, `web/viec.js`, `web/index.html`, `cf/test/worker.test.mjs`,
+  `cf/test/viec-web.test.mjs`, `docs/bo-chay-viec.md`, `DECISIONS.md`) + 2 file dữ liệu sống không liên quan
+  (`data/1737981550082229795/info.json`, `data/index.json` — hệ thống/kho.py tự commit, không phải phòng kỹ sư).
+- Mức kiểm chứng cả việc: **unit** (thấp nhất trong các phiếu kỹ sư cấp 3 — DP-1/DP-2/DP-4 đều `unit`; DP-3
+  `khong-ap-dung`, bỏ qua theo quy định). CHƯA chạy thật: chưa bấm thử trên trình duyệt thật (cần đăng nhập Worker
+  + runner sống); chưa nâng `runner.db` thật trên máy nhà (ALTER schema "3"→"4" sẽ tự chạy ở lần khởi động kế tiếp
+  của runner — không mất dữ liệu theo test, nhưng chưa kiểm trên file production); chưa deploy Worker
+  (`npx wrangler deploy`); chưa cài lại bản runner (`tools/cai_runner.py`) + khởi động lại runner/video_server
+  trên máy thật — các bước này đều là TÍCH HỢP cần người dùng duyệt riêng, không tự làm.
+- Treo nhẹ (không chặn): §4.2 `docs/bo-chay-viec.md` (bảng schema) vẫn ghi "phiên bản 1", lạc hậu từ TRƯỚC việc
+  này (schema thật đã ở '3' rồi '4') — kiến trúc sư nêu ở DP-3 nhưng ngoài phạm vi phiếu, để dành cho phiếu dọn
+  tài liệu riêng sau này nếu cần.
+- GIAO CA: 4 phiếu (DP-1 backend, DP-2 web, DP-3 architect, DP-4 web) + 1 vòng sửa (DP-1, DP-3) đều `xong`. Đã xoá
+  `.culiapp/snap-*.json`. Đề xuất một commit gộp (code + `.culiapp/` trừ snap); CHƯA commit, chờ người dùng.
+
 ## Ca 2026-11-19-a — Gỡ trang Duyệt video + Đăng bài khỏi web Kho (phiên Agency)
 - Yêu cầu: "Bỏ Duyệt Video luôn, Bỏ Đăng Bài luôn. Duyệt từ lúc tạo Video rồi" (đã có tab Poster V2). Làm trực tiếp, không qua phòng kỹ sư (chỉ gỡ web).
 - Web: menu 7 → 5 mục; index.html bỏ dang.js, duyet.js (khung v4, loi v6, homnay v6, viec v13, app v24, sua v3); link cũ #/dang[/id], #/duyet[/id] → #/sp/<id> hoặc #/poster (chủ kho); bước 7 "Kiểm duyệt" luôn bo_qua ("duyệt lúc tạo video"); bước 8 → nút "Mở Poster V2" (trang:poster); Hôm nay SP da_lam_video → #/sp/<id>; màn sửa "← Về sản phẩm".

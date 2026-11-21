@@ -527,7 +527,7 @@ function queryViec(src, khoaChoPhep, mauRieng = {}) {
 function tuyenViec(p) {
   const s = p.slice("/api/viec".length);
   let k;
-  if (s === "") return { GET: { dich: "/viec", query: ["trang_thai", "uid", "gioi_han", "tom_tat"] }, POST: { dich: "/viec", lam: "tao" } };
+  if (s === "") return { GET: { dich: "/viec", query: ["trang_thai", "uid", "gioi_han", "tom_tat", "offset"] }, POST: { dich: "/viec", lam: "tao" } };
   if (s === "/danh-muc") return { GET: { dich: "/danh-muc" } };
   if (s === "/suc-khoe") return { GET: { dich: "/suc-khoe" } };
   if (s === "/poster-folders" || s === "/poster/folders") return { GET: { dich: "/poster/folders" } };
@@ -540,7 +540,7 @@ function tuyenViec(p) {
     if (act === "ung-vien") return { GET: { dich: `/sua-video/${uid}/${ma}/ung-vien`, query: ["seg"], mau: { seg: /^\d{1,3}$/ } } };
     return { POST: { dich: `/sua-video/${uid}/${ma}/ban-sua`, lam: "sua_video", uid, ma } };
   }
-  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin))?$/))) {
+  if ((k = s.match(/^\/(j\d{14}[a-z0-9]{4})(?:\/(log|tra-loi|duyet|tu-choi|huy|chay-tiep|chay-lai|xin-duyet-lai|nhan-tin|luu-tru|bo-luu-tru))?$/))) {
     const [, id, act] = k;
     if (!act) return { GET: { dich: `/viec/${id}` } };
     if (act === "log") return { GET: { dich: `/viec/${id}/log`, query: ["tu"] } };

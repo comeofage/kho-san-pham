@@ -380,6 +380,13 @@ def test_r_query_toan_khoa_la_khong_them_dau_hoi(srv, runner):
     assert runner.nhan[0]["path"] == "/viec"
 
 
+def test_r_query_giu_offset(srv, runner):
+    goi_r(srv + "/r/viec?offset=20&la=1")
+    sp = urlsplit(runner.nhan[0]["path"])
+    assert sp.path == "/viec"
+    assert parse_qsl(sp.query, keep_blank_values=True) == [("offset", "20")]
+
+
 def test_r_chi_chuyen_header_cho_phep(srv, runner):
     hdr = {"x-runner-key": "rk-1", "x-ky": "kyabc", "x-ky-ngay": "1763340000000", "x-ky-nonce": "ab" * 16,
            "content-type": "application/json", "cookie": "phien=1", "authorization": "Bearer t",
@@ -567,6 +574,14 @@ def test_r_sua_video_ban_sua_post_chuyen_body(srv, runner):
 
 def test_r_van_giu_xin_duyet_lai(srv, runner):
     assert goi_r(srv + f"/r/viec/{JID}/xin-duyet-lai")[0] == 200
+
+
+@pytest.mark.parametrize("act", ["luu-tru", "bo-luu-tru"])
+def test_r_act_luu_tru_bo_luu_tru_chuyen_tiep(srv, runner, act):
+    code, _, body = goi_r(srv + f"/r/viec/{JID}/{act}", method="POST",
+                          headers={"content-type": "application/json"}, body=b"{}")
+    assert code == 200 and json.loads(body) == {"ok": True}
+    assert runner.nhan[0]["method"] == "POST" and runner.nhan[0]["path"] == f"/viec/{JID}/{act}"
 
 
 # ---------- sửa video: act anh / clip trên /v/<id>/ ----------

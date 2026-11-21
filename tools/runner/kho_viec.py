@@ -26,17 +26,22 @@ from .kieu import DANG_MO, LAN_CHAY, TRANG_THAI, CanNguoiDung, SaiTrangThai, Tha
 
 log = logging.getLogger(__name__)
 
-PHIEN_BAN_SCHEMA = "3"
+PHIEN_BAN_SCHEMA = "4"
 TEN_DB = "runner.db"            # <thu_muc_runner>/runner.db (tools/chay_runner.py); danh_muc đọc bảng ban_sua ở đây
 # Nâng schema tại chỗ, chạy trong CÙNG giao dịch BEGIN IMMEDIATE với việc đổi meta; lỗi → rollback cả cụm, DB giữ
 # nguyên schema cũ. KHÔNG bao giờ xoá/tạo lại DB cũ.
 # - '1' → '2' (D9, §10): thêm 2 cột tiêu (bảng da_tieu do SCHEMA `CREATE … IF NOT EXISTS` tạo);
 # - '2' → '3' (D10, docs/sua-video.md §7.3): chỉ thêm bảng ban_sua (SCHEMA `CREATE … IF NOT EXISTS`), không đụng bảng cũ.
+# - '3' → '4' (phiếu DP-1, ẩn/lưu trữ việc đã xong khỏi danh sách): chỉ thêm cột `luu_tru` (mặc định 0, không ai bị
+#   ẩn sẵn), không đụng cột/bảng cũ.
 NANG_1_LEN_2: tuple[str, ...] = (
     "ALTER TABLE viec ADD COLUMN so_lan_tieu INTEGER NOT NULL DEFAULT 0",
     "ALTER TABLE viec ADD COLUMN tieu_luc_dau TEXT",
 )
-SCHEMA_NANG_DUOC = ("1", "2")
+NANG_3_LEN_4: tuple[str, ...] = (
+    "ALTER TABLE viec ADD COLUMN luu_tru INTEGER NOT NULL DEFAULT 0",
+)
+SCHEMA_NANG_DUOC = ("1", "2", "3")
 BAN_SUA_GIU_NGAY = 30           # §7.3: dòng ban_sua cũ hơn bị xoá ở bước dọn khởi động (trừ dòng việc mở còn dùng)
 RE_BAN_SUA = re.compile(r"^b[0-9a-f]{16}$", re.ASCII)
 _RE_UID = re.compile(r"^\d{19}$", re.ASCII)
@@ -65,7 +70,8 @@ CREATE TABLE IF NOT EXISTS viec(
   ket_qua TEXT,
   loi TEXT, ghi_chu TEXT,
   chi_phi_usd REAL NOT NULL DEFAULT 0, so_luot_claude INTEGER NOT NULL DEFAULT 0, so_lan_claude INTEGER NOT NULL DEFAULT 0,
-  so_lan_tieu INTEGER NOT NULL DEFAULT 0, tieu_luc_dau TEXT
+  so_lan_tieu INTEGER NOT NULL DEFAULT 0, tieu_luc_dau TEXT,
+  luu_tru INTEGER NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX IF NOT EXISTS viec_dang_mo ON viec(loai, khoa)
   WHERE trang_thai IN ('cho','dang_chay','can_tra_loi','cho_duyet');
@@ -218,13 +224,20 @@ class KhoViec:
             if r is None:
                 g.execute("INSERT INTO meta(khoa, gia_tri) VALUES('schema', ?)", (PHIEN_BAN_SCHEMA,))
             elif r[0] in SCHEMA_NANG_DUOC:
+                # Cột hiện có TRƯỚC khi ALTER bất kỳ — dùng chung để kiểm "đã có chưa" cho mọi mức xuất phát
+                # (1/2/3), vì ALTER của NANG_1_LEN_2 không đụng cột của NANG_3_LEN_4 (tên khác nhau).
+                cot = {x[1] for x in g.execute("PRAGMA table_info(viec)")}
                 if r[0] == "1":
-                    cot = {x[1] for x in g.execute("PRAGMA table_info(viec)")}
                     for cau in NANG_1_LEN_2:
                         ten = cau.split("ADD COLUMN", 1)[1].split()[0] if "ADD COLUMN" in cau else None
                         if ten is None or ten not in cot:
                             g.execute(cau)
                 # '2' → '3': bảng ban_sua đã được SCHEMA tạo ở trên (CREATE … IF NOT EXISTS) trong cùng giao dịch.
+                # '*' → '4': thêm cột luu_tru nếu chưa có (áp dụng cho cả 3 mức xuất phát 1/2/3).
+                for cau in NANG_3_LEN_4:
+                    ten = cau.split("ADD COLUMN", 1)[1].split()[0] if "ADD COLUMN" in cau else None
+                    if ten is None or ten not in cot:
+                        g.execute(cau)
                 g.execute("UPDATE meta SET gia_tri=? WHERE khoa='schema'", (PHIEN_BAN_SCHEMA,))
                 log.warning("đã nâng runner.db schema %r → %r tại chỗ (giữ nguyên dữ liệu): %s",
                             r[0], PHIEN_BAN_SCHEMA, self.duong_dan_db)
@@ -253,8 +266,10 @@ class KhoViec:
     def lay(self, id: str) -> dict | None:
         return self._lay(self._ket_noi(), id)
 
-    def ds(self, trang_thai: Sequence[str] | None = None, khoa: str | None = None, gioi_han: int = 50) -> list[dict]:
-        dk, ts = [], []
+    @staticmethod
+    def _dieu_kien_ds(trang_thai: Sequence[str] | None, khoa: str | None) -> tuple[list[str], list]:
+        """Mệnh đề WHERE dùng chung cho `ds()`/`dem_loc()`: luôn loại việc đã ẩn/lưu trữ (`luu_tru=1`)."""
+        dk, ts = ["luu_tru=0"], []
         if trang_thai:
             tt = list(trang_thai)
             for t in tt:
@@ -265,10 +280,22 @@ class KhoViec:
         if khoa is not None:
             dk.append("khoa=?")
             ts.append(khoa)
+        return dk, ts
+
+    def ds(self, trang_thai: Sequence[str] | None = None, khoa: str | None = None, gioi_han: int = 50,
+           offset: int = 0) -> list[dict]:
+        dk, ts = self._dieu_kien_ds(trang_thai, khoa)
         gioi_han = max(1, min(int(gioi_han), 500))
-        sql = "SELECT * FROM viec" + (" WHERE " + " AND ".join(dk) if dk else "") + \
-              " ORDER BY tao_luc DESC, rowid DESC LIMIT ?"
-        return [_dong_thanh_dict(r) for r in self._ket_noi().execute(sql, (*ts, gioi_han))]
+        offset = max(0, int(offset))
+        sql = "SELECT * FROM viec WHERE " + " AND ".join(dk) + \
+              " ORDER BY tao_luc DESC, rowid DESC LIMIT ? OFFSET ?"
+        return [_dong_thanh_dict(r) for r in self._ket_noi().execute(sql, (*ts, gioi_han, offset))]
+
+    def dem_loc(self, trang_thai: Sequence[str] | None = None, khoa: str | None = None) -> int:
+        """Đếm số việc khớp ĐÚNG điều kiện lọc của `ds()` (gồm loại bỏ `luu_tru=1`), không LIMIT/OFFSET."""
+        dk, ts = self._dieu_kien_ds(trang_thai, khoa)
+        sql = "SELECT COUNT(*) FROM viec WHERE " + " AND ".join(dk)
+        return int(self._ket_noi().execute(sql, ts).fetchone()[0])
 
     def su_kien(self, id: str) -> list[dict]:
         return [dict(r) for r in self._ket_noi().execute(
@@ -364,6 +391,13 @@ class KhoViec:
             gan["bat_dau_luc"] = luc
         if den in TRANG_THAI_DONG and "ket_thuc_luc" not in gan:
             gan["ket_thuc_luc"] = luc
+        if den not in TRANG_THAI_DONG:
+            # Bất biến bắt buộc đúng mọi lúc: luu_tru=1 ⇒ trang_thai ∈ TRANG_THAI_DONG (phiếu DP-1, lỗi P1
+            # "moi:an-viec-roi-chay-lai-an-tang-hinh"). Việc ẩn/lưu trữ chỉ đặt được khi đã kết thúc
+            # (dat_luu_tru), nhưng MỌI đường đưa một việc ra khỏi TRANG_THAI_DONG đi qua chuyen() ở đây — nên
+            # xoá cờ ngay tại chỗ duy nhất này, không cần sửa từng act (chay-tiep/xin-duyet-lai/...) trong api.py.
+            # luu_tru là cột hệ thống tự quản (không phải cột caller được chọn ghi) nên không đi qua **truong.
+            gan["luu_tru"] = 0
         cot = ["trang_thai=?", "cap_nhat_luc=?"] + [f"{k}=?" for k in gan]
         gia = [den, luc] + [_ma_hoa(k, v) for k, v in gan.items()]
         try:
@@ -383,6 +417,26 @@ class KhoViec:
             if cu is not None and cu["id"] != id:
                 raise TrungViec(cu) from e
             raise
+
+    def dat_luu_tru(self, id: str, luu_tru: bool, boi: str, ghi_chu: str = "") -> dict:
+        """Ẩn ('lưu trữ') hoặc bỏ ẩn một việc ĐÃ KẾT THÚC khỏi `ds()` — KHÔNG đổi `trang_thai` (không phải CAS của
+        `chuyen()`: `luu_tru` là một cờ độc lập, không nằm trong CHECK constraint của trang_thai). Chỉ việc trong
+        TRANG_THAI_DONG mới ẩn/bỏ ẩn được (việc còn mở phải huỷ/chạy xong trước).
+
+        Ghi một dòng `su_kien` trong CÙNG giao dịch (P3, reviewer: trước đây hành động này vô vết — không biết
+        ai đã ẩn/bỏ ẩn). `tu`/`den` chỉ là text lưu vào cột (không phải CAS của chuyen()) nên dùng
+        `tu=den=trang_thai hiện tại`; hành động thật nằm ở `ghi_chu`."""
+        with self._gd() as c:
+            r = c.execute("SELECT trang_thai FROM viec WHERE id=?", (id,)).fetchone()
+            if r is None:
+                raise SaiTrangThai(f"việc {id}: không có")
+            tt = r["trang_thai"]
+            if tt not in TRANG_THAI_DONG:
+                raise ThamSoLoi(f"việc {id}: chỉ ẩn/bỏ ẩn được việc đã kết thúc (xong/lỗi/huỷ), đang {tt!r}")
+            c.execute("UPDATE viec SET luu_tru=? WHERE id=?", (1 if luu_tru else 0, id))
+            mac_dinh = "ẩn/lưu trữ từ web" if luu_tru else "bỏ ẩn/lưu trữ từ web"
+            self._ghi_su_kien(c, id, tt, tt, boi, ghi_chu or mac_dinh)
+            return self._lay(c, id)  # type: ignore[return-value]
 
     def nhan_viec_ke(self, lan_chay: str, tai_nguyen_ban: set[str],
                      tai_nguyen_cua: Callable[[str], frozenset[str]]) -> dict | None:

@@ -136,9 +136,10 @@ APPS = [("muse", "Video Batch Local (Muse)", 3786), ("perfectvoice", "PerfectVoi
 RUNNER_ORIGIN = os.environ.get("KHO_RUNNER_ORIGIN", "http://127.0.0.1:8788")
 RUNNER_TIMEOUT = 10
 RE_R = re.compile(r"^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}"
-                  r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai|nhan-tin))?)?"
+                  r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai|nhan-tin"
+                  r"|luu-tru|bo-luu-tru))?)?"
                   r"|sua-video/\d{19}(/[0-9a-f]{16}(/(ung-vien|ban-sua))?)?)$", re.ASCII)
-R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg")
+R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg", "offset")
 RE_R_QUERY_GT = re.compile(r"^[A-Za-z0-9_,-]{0,40}$", re.ASCII)
 R_HEADER = ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce")  # + content-type cho POST; KHÔNG BAO GIỜ x-key
 R_BODY_TOI_DA = 16 * 1024

@@ -140,6 +140,51 @@
       "muc_kiem_chung": "fixture",
       "bang_chung": "kiem-chung cuối: JS 336, Python 1246, engine 33 QUA; deploy c6ed93ac; runner 6ac662e-sua",
       "chua_kiem": "chưa chạy thật poster_bo_loai/poster_len_lich trên folder thật; GCM/HTTPS fetch thật"
+    },
+    {
+      "ma": "DP-1",
+      "ca": "2026-11-21",
+      "agent": "culiapp-backend",
+      "muc_tieu": "Cột luu_tru (ẩn/lưu trữ việc kết thúc) + offset/tong cho GET /viec + act luu-tru/bo-luu-tru",
+      "duoc_sua": ["tools/runner/kho_viec.py", "tools/runner/api.py", "tools/test_runner_kho_viec.py", "tools/test_runner_api.py"],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không thêm",
+      "muc_can_dat": "unit",
+      "review": "R-DP1 vòng 1: P1 moi:an-viec-roi-chay-lai-an-tang-hinh + P3 su_kien thiếu boi — đã vá tại chuyen() (một chỗ) + dat_luu_tru; R-DP1 vòng 2: ĐẠT, 0 lỗi",
+      "bang_chung": "python -B -m pytest tools/test_runner_kho_viec.py tools/test_runner_api.py -q: 289 passed (RED→GREEN cho cả 2 lỗi, dán trong nhat-ky.md)"
+    },
+    {
+      "ma": "DP-2",
+      "ca": "2026-11-21",
+      "agent": "culiapp-web",
+      "muc_tieu": "Nút Dừng trên thẻ Đang chạy (tái dùng /huy), nút Ẩn trên thẻ Gần đây, phân trang 10 dòng/trang mỗi nhóm",
+      "duoc_sua": ["cf/src/worker.js", "web/viec.js", "cf/test/worker.test.mjs", "cf/test/viec-web.test.mjs"],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không thêm",
+      "muc_can_dat": "unit",
+      "bang_chung": "node --test cf/test/worker.test.mjs cf/test/viec-web.test.mjs: 192 passed; review R-DP1 xác nhận D7/D2/CSP ổn"
+    },
+    {
+      "ma": "DP-4",
+      "ca": "2026-11-21",
+      "agent": "culiapp-web",
+      "muc_tieu": "Mở allowlist tunnel tools/video_server.py cho act luu-tru/bo-luu-tru + query offset (D2/§3.2)",
+      "duoc_sua": ["tools/video_server.py", "tools/test_video_server.py"],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không thêm",
+      "muc_can_dat": "unit",
+      "bang_chung": "python -B -m pytest tools/test_video_server.py -q: 123 passed; review R-DP1 xác nhận allowlist đồng bộ 3 lớp"
+    },
+    {
+      "ma": "DP-3",
+      "ca": "2026-11-21",
+      "agent": "culiapp-architect",
+      "muc_tieu": "Cập nhật docs/bo-chay-viec.md (§7.7/§8/§12) + DECISIONS.md (D14) cho cơ chế ẩn/lưu trữ + phân trang",
+      "duoc_sua": ["docs/bo-chay-viec.md", "DECISIONS.md"],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không thêm",
+      "muc_can_dat": "khong-ap-dung",
+      "review": "R-DP1 vòng 1: P3 câu docs sai (nút Dừng cũng hiện ở can_tra_loi) — đã sửa đúng 1 câu §12; vòng 2: ĐẠT"
     }
   ]
 }

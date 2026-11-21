@@ -62,10 +62,10 @@ def test_tao_va_lay(kho):
 
 def test_schema_dung_phien_ban(kho, tmp_path):
     with sqlite3.connect(tmp_path / "runner.db") as c:
-        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "4"
         assert c.execute("PRAGMA journal_mode").fetchone()[0] == "wal"
         cot = {r[1] for r in c.execute("PRAGMA table_info(viec)")}
-        assert {"so_lan_tieu", "tieu_luc_dau"} <= cot
+        assert {"so_lan_tieu", "tieu_luc_dau", "luu_tru"} <= cot
         assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='da_tieu'").fetchone()
         cot_bs = {r[1] for r in c.execute("PRAGMA table_info(ban_sua)")}
         assert cot_bs == {"id", "uid", "du_an", "ma_video", "noi_dung", "tao_boi", "tao_luc"}
@@ -130,9 +130,10 @@ def test_nang_schema_1_len_2_giu_du_lieu(tmp_path, dong):
     v = kho.lay("j20261116080000abcd")
     assert v["trang_thai"] == "xong" and v["tham_so"] == {"mau": ["m1"]} and v["chi_phi_usd"] == 1.25
     assert v["chu_ky_duyet"] == _ky("K") and v["so_lan_tieu"] == 0 and v["tieu_luc_dau"] is None
+    assert v["luu_tru"] == 0
     assert len(kho.su_kien(v["id"])) == 1
     with sqlite3.connect(db) as c:
-        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "4"
         assert c.execute("SELECT COUNT(*) FROM nonce").fetchone()[0] == 1
         assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='ban_sua'").fetchone()
     # mở lại lần 2 (đã là schema mới): không ALTER lại, không lỗi, dữ liệu vẫn còn
@@ -195,11 +196,12 @@ def test_nang_schema_2_len_3_giu_du_lieu(tmp_path, dong):
     kho = KhoViec(db, dong)
     v = kho.lay("j20261116080000abcd")
     assert v["trang_thai"] == "xong" and v["so_lan_tieu"] == 2 and v["tieu_luc_dau"] == "2026-11-16T08:01:00+07:00"
+    assert v["luu_tru"] == 0
     assert kho.lay("j20261116090000efgh")["trang_thai"] == "cho"
     assert kho.luc_tieu_theo_viec([v["id"]]) == {v["id"]: ["2026-11-16T08:01:00+07:00"]}
     assert len(kho.su_kien(v["id"])) == 1
     with sqlite3.connect(db) as c:
-        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "4"
         assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
     # việc đang mở vẫn chặn trùng sau khi nâng
     with pytest.raises(TrungViec):
@@ -222,6 +224,79 @@ def test_nang_schema_2_loi_thi_rollback_giu_schema_2(tmp_path, dong, monkeypatch
     with sqlite3.connect(db) as c:
         assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "2"
         assert c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='ban_sua'").fetchone() is None
+        assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
+
+
+# Schema '3' (đợt 6, docs/sua-video.md §7.3, trước phiếu DP-1) = schema '2' + bảng ban_sua. DB thật đang ở schema
+# này, có dữ liệu (chưa có cột luu_tru).
+SCHEMA_3 = SCHEMA_2 + """
+CREATE TABLE ban_sua(
+  id TEXT PRIMARY KEY,
+  uid TEXT NOT NULL, du_an TEXT NOT NULL, ma_video TEXT NOT NULL,
+  noi_dung TEXT NOT NULL,
+  tao_boi TEXT NOT NULL, tao_luc TEXT NOT NULL);
+CREATE INDEX ban_sua_tao_luc ON ban_sua(tao_luc);
+"""
+
+
+def _db_schema_3(db: Path) -> None:
+    assert "CREATE TABLE ban_sua" in SCHEMA_3
+    c = sqlite3.connect(db)
+    try:
+        c.executescript(SCHEMA_3)
+        c.execute("PRAGMA journal_mode=WAL")
+        c.execute("INSERT INTO meta VALUES('schema','3')")
+        c.execute("INSERT INTO viec(id, loai, khoa, tham_so, lan_chay, trang_thai, tao_boi, tao_luc, cap_nhat_luc)"
+                  " VALUES(?,?,?,?,?,?,?,?,?)",
+                  ("j20261116080000abcd", "phan_tich_uid", "k1", '{"uid":"1"}', "nhe", "xong", "nhan",
+                   "2026-11-16T08:00:00+07:00", "2026-11-16T08:05:00+07:00"))
+        c.execute("INSERT INTO viec(id, loai, khoa, tham_so, lan_chay, trang_thai, tao_boi, tao_luc, cap_nhat_luc)"
+                  " VALUES(?,?,?,?,?,?,?,?,?)",
+                  ("j20261116090000efgh", "voice_pv", "k2", '{"me":"20261116-b"}', "gpu", "cho", "nhan",
+                   "2026-11-16T09:00:00+07:00", "2026-11-16T09:00:00+07:00"))
+        c.execute("INSERT INTO ban_sua(id, uid, du_an, ma_video, noi_dung, tao_boi, tao_luc) VALUES(?,?,?,?,?,?,?)",
+                  ("b" + "1" * 16, "1" * 19, "d" * 12, "a" * 16, '{"x":1}', "nhan", "2026-11-16T08:01:00+07:00"))
+        c.commit()
+    finally:
+        c.close()
+
+
+def test_nang_schema_3_len_4_giu_du_lieu(tmp_path, dong):
+    """DB thật đang schema '3' có dữ liệu (kể cả ban_sua) → mở bằng code mới: thêm cột luu_tru=0, giữ nguyên mọi
+    dòng cũ."""
+    db = tmp_path / "runner.db"
+    _db_schema_3(db)
+    kho = KhoViec(db, dong)
+    v = kho.lay("j20261116080000abcd")
+    assert v["trang_thai"] == "xong" and v["luu_tru"] == 0
+    assert kho.lay("j20261116090000efgh")["luu_tru"] == 0
+    assert kho.lay_ban_sua("b" + "1" * 16)["noi_dung"] == {"x": 1}
+    with sqlite3.connect(db) as c:
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "4"
+        cot = {r[1] for r in c.execute("PRAGMA table_info(viec)")}
+        assert "luu_tru" in cot
+        assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
+    # việc đang mở vẫn chặn trùng sau khi nâng
+    with pytest.raises(TrungViec):
+        kho.tao("voice_pv", "k2", {}, "gpu", "cho", "nhan")
+    # mở lại lần 2 không lỗi, không mất gì
+    kho2 = KhoViec(db, dong)
+    assert kho2.lay(v["id"])["luu_tru"] == 0
+    assert kho2.lay_ban_sua("b" + "1" * 16) is not None
+
+
+def test_nang_schema_3_loi_thi_rollback_giu_schema_3(tmp_path, dong, monkeypatch):
+    """ALTER lỗi giữa chừng khi nâng 3→4 → cả giao dịch huỷ, DB vẫn schema '3' nguyên vẹn (không mất dữ liệu)."""
+    db = tmp_path / "runner.db"
+    _db_schema_3(db)
+    import runner.kho_viec as kv
+    monkeypatch.setattr(kv, "NANG_3_LEN_4", kv.NANG_3_LEN_4 + ("ALTER TABLE khong_co ADD COLUMN x TEXT",))
+    with pytest.raises(sqlite3.OperationalError):
+        KhoViec(db, dong)
+    with sqlite3.connect(db) as c:
+        assert c.execute("SELECT gia_tri FROM meta WHERE khoa='schema'").fetchone()[0] == "3"
+        cot = {r[1] for r in c.execute("PRAGMA table_info(viec)")}
+        assert "luu_tru" not in cot
         assert c.execute("SELECT COUNT(*) FROM viec").fetchone()[0] == 2
 
 
@@ -608,6 +683,106 @@ def test_ds_loc(kho, dong):
     assert [v["id"] for v in kho.ds(trang_thai=["huy"])] == [a["id"]]
     assert [v["id"] for v in kho.ds(khoa="2" * 19)] == [b["id"]]
     assert len(kho.ds(gioi_han=1)) == 1
+
+
+def test_ds_phan_trang_offset(kho, dong):
+    ds = []
+    for i in range(5):
+        ds.append(_tao(kho, khoa=f"{i}" * 19))
+        dong.toi(1)
+    moi_nhat_truoc = [v["id"] for v in ds[::-1]]           # ds() sắp mới → cũ
+    assert [v["id"] for v in kho.ds(gioi_han=2)] == moi_nhat_truoc[:2]
+    assert [v["id"] for v in kho.ds(gioi_han=2, offset=2)] == moi_nhat_truoc[2:4]
+    assert [v["id"] for v in kho.ds(gioi_han=2, offset=4)] == moi_nhat_truoc[4:5]
+    assert kho.ds(gioi_han=2, offset=10) == []
+    # offset âm được chặn về 0 (không lỗi, không trang lùi về trước)
+    assert [v["id"] for v in kho.ds(gioi_han=2, offset=-5)] == moi_nhat_truoc[:2]
+
+
+def test_ds_va_dem_loc_luon_bo_viec_da_luu_tru(kho, dong):
+    a = _tao(kho, khoa="1" * 19)
+    dong.toi(1)
+    b = _tao(kho, khoa="2" * 19)
+    kho.chuyen(a["id"], ["cho"], "xong", "he_thong")
+    kho.chuyen(b["id"], ["cho"], "huy", "nhan")
+    kho.dat_luu_tru(a["id"], True, "nhan")
+    assert [v["id"] for v in kho.ds()] == [b["id"]]
+    assert kho.dem_loc() == 1
+    assert kho.ds(trang_thai=["xong"]) == [] and kho.dem_loc(trang_thai=["xong"]) == 0
+    assert kho.dem_loc(trang_thai=["huy"]) == 1
+    assert kho.dem_loc(khoa="1" * 19) == 0
+    # bỏ ẩn lại → quay về danh sách và đếm bình thường
+    kho.dat_luu_tru(a["id"], False, "nhan")
+    assert {v["id"] for v in kho.ds()} == {a["id"], b["id"]}
+    assert kho.dem_loc() == 2
+
+
+def test_dem_loc_khong_limit(kho, dong):
+    for i in range(3):
+        _tao(kho, khoa=f"{i}" * 19)
+        dong.toi(1)
+    assert kho.dem_loc() == 3
+    assert kho.dem_loc() == len(kho.ds(gioi_han=500))
+
+
+def test_dat_luu_tru_chi_cho_viec_da_ket_thuc(kho):
+    v = _tao(kho)
+    with pytest.raises(ThamSoLoi):
+        kho.dat_luu_tru(v["id"], True, "nhan")           # đang "cho" — chưa kết thúc
+    kho.chuyen(v["id"], ["cho"], "huy", "nhan")
+    moi = kho.dat_luu_tru(v["id"], True, "nhan")
+    assert moi["luu_tru"] == 1 and moi["trang_thai"] == "huy"       # trang_thai không đổi — không phải CAS
+    moi2 = kho.dat_luu_tru(v["id"], False, "nhan")
+    assert moi2["luu_tru"] == 0
+    with pytest.raises(SaiTrangThai):
+        kho.dat_luu_tru("j00000000000000zzzz", True, "nhan")
+
+
+@pytest.mark.parametrize("tt", ["xong", "loi", "huy"])
+def test_dat_luu_tru_chap_nhan_moi_trang_thai_dong(kho, tt):
+    v = _tao(kho)
+    kho.chuyen(v["id"], ["cho"], tt, "he_thong")
+    assert kho.dat_luu_tru(v["id"], True, "nhan")["luu_tru"] == 1
+
+
+def test_an_viec_roi_chuyen_ve_mo_xoa_luu_tru(kho):
+    """P1 (moi:an-viec-roi-chay-lai-an-tang-hinh): bất biến luu_tru=1 ⇒ trang_thai ở TRANG_THAI_DONG phải đúng
+    MỌI LÚC, kể cả qua đường vòng ẩn → chạy tiếp/xin duyệt lại. `chuyen()` đưa việc ra khỏi TRANG_THAI_DONG phải
+    tự xoá cờ luu_tru — không được để việc "đang chạy lại" biến mất khỏi mọi danh sách ⚙ Việc."""
+    v = _tao(kho)
+    kho.chuyen(v["id"], ["cho"], "loi", "he_thong")
+    kho.dat_luu_tru(v["id"], True, "nhan")
+    assert kho.lay(v["id"])["luu_tru"] == 1
+    moi = kho.chuyen(v["id"], ["loi"], "cho", "nhan")          # mô phỏng "Chạy tiếp"
+    assert moi["luu_tru"] == 0
+    assert kho.lay(v["id"])["luu_tru"] == 0
+    assert moi["id"] in {x["id"] for x in kho.ds()}            # việc lại xuất hiện trong danh sách
+
+
+def test_an_viec_roi_xin_duyet_lai_xoa_luu_tru(kho):
+    """Cùng bất biến P1, qua đường "xin duyệt lại" (chuyen → cho_duyet, cũng ngoài TRANG_THAI_DONG)."""
+    v = _tao(kho)
+    kho.chuyen(v["id"], ["cho"], "loi", "he_thong")
+    kho.dat_luu_tru(v["id"], True, "nhan")
+    moi = kho.chuyen(v["id"], ["loi"], "cho_duyet", "nhan", "xin duyệt lại (lời duyệt cũ đã huỷ)")
+    assert moi["luu_tru"] == 0
+
+
+def test_dat_luu_tru_ghi_su_kien(kho):
+    """P3 (reviewer): dat_luu_tru phải ghi một dòng su_kien (ai, lúc nào, làm gì) — không để vô vết."""
+    v = _tao(kho)
+    kho.chuyen(v["id"], ["cho"], "huy", "nhan")
+    so_truoc = len(kho.su_kien(v["id"]))
+    kho.dat_luu_tru(v["id"], True, "comeofage")
+    sk = kho.su_kien(v["id"])
+    assert len(sk) == so_truoc + 1
+    assert (sk[-1]["tu"], sk[-1]["den"], sk[-1]["boi"]) == ("huy", "huy", "comeofage")
+    assert "ẩn" in sk[-1]["ghi_chu"]
+    kho.dat_luu_tru(v["id"], False, "nhan")
+    sk2 = kho.su_kien(v["id"])
+    assert len(sk2) == so_truoc + 2
+    assert (sk2[-1]["tu"], sk2[-1]["den"], sk2[-1]["boi"]) == ("huy", "huy", "nhan")
+    assert "ẩn" in sk2[-1]["ghi_chu"]
 
 
 def test_dem_trong_ngay_va_chi_phi(kho, dong):

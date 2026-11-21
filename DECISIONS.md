@@ -578,3 +578,76 @@ Trạng thái: Đã chốt (2026-11-18; người dùng duyệt thiết kế: "Đ
   - D9 ghi thêm "Bị thay một phần bởi D13 (trang Poster V2 không qua hạn mức `poster_len_lich`)";
   - D3 ghi thêm "Bị thay một phần bởi D13 (đường dẫn/chữ tự do tới backend Poster qua `/api/poster/*`)".
 - Thiết kế chi tiết và phiếu: `docs/poster-v2-tren-web.md`.
+
+## D14: Ẩn/lưu trữ việc đã kết thúc bằng cờ `luu_tru`, không xoá cứng; phân trang thật cho trang ⚙ Việc  (2026-11-21)
+Trạng thái: Đề xuất
+
+**Bối cảnh.**
+- Trang ⚙ Việc (`#/viec`) chỉ tải `gioi_han` việc mới nhất mỗi lượt (mặc định 50, tối đa 500, `api.py:82-83`,
+  `:659-662`) và không có số trang hay tổng số thật — việc `xong`/`loi`/`huy` dồn lại theo thời gian làm danh sách
+  ngày càng dài, không dọn được.
+- Người dùng muốn dọn danh sách nhưng **không được xoá cứng khỏi `runner.db`**, vì hai lý do khó đảo ngược đã
+  chốt ở D7 và D9:
+  - D7: chữ ký duyệt (`chu_ky_duyet`) và sự kiện (`su_kien`) gắn theo `viec.id`; xoá dòng `viec` làm đứt liên kết
+    `su_kien.viec_id REFERENCES viec(id)` và `tra_loi.viec_id REFERENCES viec(id)` (khoá ngoại, §4.2), mất cả
+    lịch sử "ai duyệt gì, khi nào" mà D7 dựng ra để kiểm tra sau;
+  - D9: sổ "lời duyệt đã tiêu" (`SO_DUYET` trên Cloudflare KV) khoá theo `sha256(chu_ky_duyet)`, còn hạn mức ngày
+    (`so_lan_tieu`, `tieu_luc_dau`) đếm theo đúng dòng `viec`. Xoá dòng `viec` xong rồi lỡ tạo lại job tình cờ
+    trùng `id` (khó nhưng không phải không thể — `id` chỉ là giờ + 4 ký tự ngẫu nhiên, `kho_viec.py:_id_moi`) sẽ
+    làm hạn mức/sổ tiêu tính sai hoặc lạc khỏi dữ liệu thật — đúng kiểu lỗi D9 vừa mới vá (R-11 P1-1).
+  - Vì vậy "xoá cứng" bị loại ngay từ đầu, không bàn lại.
+- Cần phân biệt "ẩn khỏi danh sách cho đỡ rối" với "xoá dữ liệu" — hai nhu cầu khác nhau, không cần đánh đổi an
+  toàn của D7/D9 để giải quyết nhu cầu đầu.
+
+**Quyết định.**
+- **Cột mới `luu_tru INTEGER NOT NULL DEFAULT 0`** trong bảng `viec` (`runner.db`), nâng schema tại chỗ
+  `'3' → '4'` theo đúng khuôn các lần nâng trước (`ALTER TABLE … ADD COLUMN`, không xoá/tạo lại DB, D1/D9 §schema;
+  code đã làm ở `tools/runner/kho_viec.py:34-45`, `:236`).
+- **`KhoViec.dat_luu_tru(id, luu_tru: bool)`** (`tools/runner/kho_viec.py:414-425`): chỉ cho ẩn/bỏ ẩn khi
+  `trang_thai ∈ TRANG_THAI_DONG` (`xong`, `loi`, `huy`); việc còn mở (`cho`/`dang_chay`/`can_tra_loi`/`cho_duyet`)
+  bị từ chối (`ThamSoLoi`) — phải huỷ hoặc chạy xong trước. `luu_tru` là **cờ độc lập**, không đi qua CAS của
+  `chuyen()` và không đổi `trang_thai`.
+- Việc có `luu_tru=1` bị loại khỏi **mọi** kết quả `ds()`/`dem_loc()` (nền của `GET /viec` danh sách), nhưng vẫn
+  xem đủ qua `GET /viec/<id>` (tra theo id không lọc `luu_tru`) — ẩn khỏi danh sách, không mất dữ liệu, không mất
+  khả năng tra lại khi cần (vd kiểm toán lại một lời duyệt cũ).
+- **2 act mới `luu-tru` / `bo-luu-tru`** qua đúng endpoint sẵn có `POST /viec/<id>/<act>`, đi qua **CÙNG** đường
+  ký Ed25519 request ghi (§8.3, D7) như `huy`/`chay-tiep`/…, không thêm cơ chế ký riêng — vì đây chỉ là đổi một
+  cờ hiển thị, không phải hành động tốn tiền hay ảnh hưởng tiến trình, không cần mức bảo vệ riêng của D9.
+- **`GET /viec` (và `GET /api/viec` phía Worker) nhận thêm `offset`** bên cạnh `gioi_han` đã có, trả thêm
+  `"tong"` = tổng số việc khớp bộ lọc `trang_thai` hiện tại (đã loại `luu_tru=1`, cùng điều kiện với
+  `ds()`/`dem_loc()`), để web tính số trang thật.
+- Web (trang ⚙ Việc): phân trang **CỐ ĐỊNH 10 dòng/trang**; mỗi nhóm trạng thái (Cần bạn / Đang chạy / Đang chờ /
+  Gần đây) có số trang riêng; trang hiện tại của mỗi nhóm giữ nguyên qua các lần tự làm mới 5 giây.
+- **Dừng việc đang chạy KHÔNG phải cơ chế mới.** Vẫn là `POST /huy` đã có từ trước (D6: giết cây tiến trình qua
+  Job Object riêng, chuyển `huy`). Thay đổi duy nhất là web thêm nút gọi `huy` ngay trên thẻ việc ở trang danh
+  sách (trước đây phải mở trang chi tiết mới thấy nút này).
+
+**Phương án đã loại.**
+- **Xoá cứng dòng `viec` (và dọn `su_kien`/`tra_loi` theo)**: phá khoá ngoại và lịch sử duyệt mà D7 dựng ra; có
+  thể làm hạn mức/sổ tiêu của D9 tính sai nếu `id` bị tái dùng sau này. Người dùng đã chốt không làm theo hướng
+  này.
+- **Xoá mềm bằng cách gài `trang_thai` riêng (vd `'an'`) thay vì cột cờ**: phá `CHECK` constraint hiện có của
+  `trang_thai` và mọi chỗ coi `trang_thai ∈ TRANG_THAI_DONG` là "đã kết thúc" (đối soát D6, hạn mức D9); phải sửa
+  rất nhiều nơi để phân biệt "đã kết thúc" với "đã kết thúc và bị ẩn". Cờ độc lập (`luu_tru`) không đụng gì trong
+  số đó.
+- **Tự động ẩn theo tuổi (vd ẩn mọi việc đã xong quá N ngày) thay vì người dùng bấm**: người dùng có thể còn cần
+  nhìn lại việc cũ (vd đang tra một lời duyệt tháng trước); ẩn tự động xoá mất lựa chọn đó. Giữ hành động bấm tay,
+  bỏ-ẩn-được bất cứ lúc nào.
+- **Phân trang kiểu "tải thêm" dựa vào con trỏ `id`/`tao_luc` cuối trang trước** (không cần `tong`): đơn giản hơn
+  cho API, nhưng không cho web biết "còn bao nhiêu trang" để vẽ số trang theo đúng yêu cầu (phân trang CỐ ĐỊNH 10
+  dòng, có số trang riêng từng nhóm) — người dùng đã chốt kiểu có số trang, không phải "tải thêm".
+
+**Hệ quả.**
+- `runner.db` không giảm dung lượng theo thời gian (dữ liệu vẫn còn, chỉ ẩn) — đây là đánh đổi có chủ ý để giữ
+  được bằng chứng ký/duyệt của D7/D9; dọn dung lượng thật (nếu cần sau này) phải là một quyết định khác, riêng.
+- Mọi nơi đang gọi `kho.ds()`/`dem_loc()` tự động loại việc đã ẩn mà không cần sửa logic gọi (lọc nằm trong
+  `_dieu_kien_ds`, dùng chung cho cả hai hàm) — rủi ro quên lọc ở một đường gọi mới trong tương lai nếu có người
+  viết thêm hàm đọc danh sách riêng không đi qua `_dieu_kien_ds`.
+- Thêm 2 act vào mọi nơi đang liệt kê "các act ghi tới `/viec/<id>`" (regex allowlist của `video_server.py`,
+  route Worker, bảng API) — bỏ sót một chỗ thì act mới bị 404 ở đúng chỗ đó, không chạy được, không có rủi ro bảo
+  mật (an toàn hơn so với sót ngược — không lọt được việc không nên làm).
+- Web cần giữ "trang hiện tại" riêng cho từng nhóm trạng thái qua các lần tự làm mới 5 giây; nếu không giữ, người
+  dùng đang đọc trang 2 của nhóm Gần đây sẽ bị bật về trang 1 mỗi 5 giây — khó dùng. Đây là ràng buộc UI cần nhớ,
+  không phải vấn đề của API.
+- Không đổi D1, D3 (phần còn hiệu lực), D5, D6, D7, D9 (phần còn hiệu lực) — D14 chỉ thêm một cờ và hai act đi
+  qua đúng cơ chế đã có, không mở đường chạy lại việc tốn tiền và không đổi cách ký/duyệt.

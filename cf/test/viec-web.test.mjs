@@ -17,7 +17,8 @@ const F = new Function("esc", `"use strict";\n${m[1]}\nreturn { goiYViec, nhomVi
   duocDuyet, khungDuyetHtml, loiDuyetMau, kiemLoiDuyet, dongUocTinh, thamSoMuse, thamSoPoster, locFolderPoster, formViecSpHtml, TEN_MAU_MUSE, LOI_DUYET_TOI_DA_WEB,
   nutChoViecTonTien, thamSoChuanDuyet, sha256HexWeb, duLieuViecDoi, hanMucHtml,
   nutHanhDong, khungTraLoiHtml, khungChiDaoHtml, kiemChuTraLoi, khoaCauHoi, dangChoNen, logDangSong, thamSoTaovideo, wmTaovideo, TRA_LOI_CHU_TOI_DA_WEB,
-  maCauHoi, nutChayLaiTiep, linkLuuLaiSua, TEN_LOAI_VIEC, LOAI_VIEC_SP, loaiDuyetHtml, khoaLoaiDuyet };`)(esc);
+  maCauHoi, nutChayLaiTiep, linkLuuLaiSua, TEN_LOAI_VIEC, LOAI_VIEC_SP, loaiDuyetHtml, khoaLoaiDuyet,
+  soTrangViec, trangNhomHtml, NHOM_VIEC, TRANG_VIEC_SO_DONG, TT_DA_KET_THUC, theVtActHtml };`)(esc);
 const WORKER = readFileSync(new URL("../src/worker.js", import.meta.url), "utf8");
 
 const UID = "1729706628656957720";
@@ -1079,4 +1080,101 @@ test("khungChiDaoHtml: chỉ khi phiên sống dang_chay/can_tra_loi; ô mật k
   assert.match(F.khungChiDaoHtml(v({ trang_thai: "loi", phien_song: false }), {}), /Xin duyệt lại/);
   assert.equal(F.khungChiDaoHtml(null), "");
   assert.equal(F.ketQuaHanhDong("nhan-tin", { status: 200, viec: { id: "x" } }, "x").toast, "✓ Đã gửi chỉ đạo — agent nhận khi xong bước đang làm");
+});
+
+// ---------- DP-2 (FX-28): phân trang 10 dòng/trang + nút ⏹ Dừng / 🗃 Ẩn trên thẻ ----------
+test("NHOM_VIEC: đúng 4 nhóm, trang_thai khớp bộ lọc dùng khi gọi API", () => {
+  assert.deepEqual(F.NHOM_VIEC.map((x) => x.k), ["can_ban", "dang_chay", "dang_cho", "gan_day"]);
+  assert.equal(F.NHOM_VIEC.find((x) => x.k === "can_ban").tt, "can_tra_loi,cho_duyet");
+  assert.equal(F.NHOM_VIEC.find((x) => x.k === "dang_chay").tt, "dang_chay");
+  assert.equal(F.NHOM_VIEC.find((x) => x.k === "dang_cho").tt, "cho");
+  assert.equal(F.NHOM_VIEC.find((x) => x.k === "gan_day").tt, "xong,loi,huy");
+  assert.equal(F.TRANG_VIEC_SO_DONG, 10);
+  assert.deepEqual(F.TT_DA_KET_THUC, ["xong", "loi", "huy"]);
+});
+
+test("soTrangViec: 10 dòng/trang, tong không hợp lệ/≤10 → 1 trang", () => {
+  for (const n of [0, 1, 10, -5, NaN, undefined, null, "x"]) assert.equal(F.soTrangViec(n), 1, String(n));
+  assert.equal(F.soTrangViec(11), 2);
+  assert.equal(F.soTrangViec(20), 2);
+  assert.equal(F.soTrangViec(21), 3);
+  assert.equal(F.soTrangViec(100), 10);
+});
+
+test("trangNhomHtml: khoá nút Trước ở trang 1, khoá Sau ở trang cuối, hiện đúng dataset", () => {
+  let h = F.trangNhomHtml("gan_day", 1, 3);
+  assert.match(h, /data-vt-trang="gan_day:-1"[^>]*disabled/);
+  assert.ok(!/data-vt-trang="gan_day:1"[^>]*disabled/.test(h), "Sau không bị khoá ở trang 1/3");
+  assert.match(h, /Trang 1\/3/);
+  h = F.trangNhomHtml("gan_day", 3, 3);
+  assert.ok(!/data-vt-trang="gan_day:-1"[^>]*disabled/.test(h), "Trước không bị khoá ở trang cuối");
+  assert.match(h, /data-vt-trang="gan_day:1"[^>]*disabled/);
+  h = F.trangNhomHtml("gan_day", 2, 3);
+  assert.ok(!/disabled/.test(h), "trang giữa: cả 2 nút đều bật");
+});
+
+test("dsNhomHtml: trangs cung cấp tong/trang → hiện tổng số + nút chuyển trang khi tong > 10; không có trangs → như cũ", () => {
+  const vFull = Array.from({ length: 3 }, (_, i) => ({ id: `j2026111715000${i}ab12`, trang_thai: "xong" }));
+  let h = F.dsNhomHtml({ gan_day: vFull }, { gan_day: { trang: 2, tong: 25 } });
+  assert.match(h, /🗂 Gần đây.*\(25\)/s);
+  assert.match(h, /data-vt-trang="gan_day:-1"/);
+  assert.match(h, /Trang 2\/3/);
+  // tong ≤ 10 → không có điều hướng trang, dù trangs được truyền
+  h = F.dsNhomHtml({ gan_day: vFull }, { gan_day: { trang: 1, tong: 3 } });
+  assert.ok(!/data-vt-trang/.test(h));
+  // không truyền trangs: giữ hành vi cũ (đếm theo g[k].length, không có nav)
+  h = F.dsNhomHtml({ gan_day: vFull });
+  assert.match(h, /🗂 Gần đây.*\(3\)/s);
+  assert.ok(!/data-vt-trang/.test(h));
+  // nhóm rỗng mà trangs báo tong > 0 (trang khác đang xem) → vẫn hiện tiêu đề + nav, dù list rỗng
+  h = F.dsNhomHtml({ gan_day: [] }, { gan_day: { trang: 2, tong: 15 } });
+  assert.match(h, /🗂 Gần đây.*\(15\)/s);
+  assert.match(h, /data-vt-trang/);
+});
+
+test("theVtActHtml / theViecHtml: dang_chay → ⏹ Dừng (act huy); xong/loi/huy → 🗃 Ẩn (act luu-tru); các trạng thái khác không có nút", () => {
+  const ID3 = "j20261117150000ab12";
+  assert.match(F.theVtActHtml(ID3, "dang_chay"), /data-vt-act="huy" data-vt-id="j20261117150000ab12"[^>]*>⏹ Dừng/);
+  for (const tt of F.TT_DA_KET_THUC) assert.match(F.theVtActHtml(ID3, tt), /data-vt-act="luu-tru"[^>]*>🗃 Ẩn/, tt);
+  for (const tt of ["cho", "can_tra_loi", "cho_duyet", "khac"]) assert.equal(F.theVtActHtml(ID3, tt), "", tt);
+  assert.equal(F.theVtActHtml("", "dang_chay"), "", "không id thì không nút");
+  for (const tt of ["dang_chay", "xong", "loi", "huy"]) {
+    const h = F.theViecHtml({ id: ID3, trang_thai: tt, loai: "voice_pv" });
+    assert.match(h, new RegExp(`data-vt-id="${ID3}"`), tt);
+    // nút nằm TRONG thẻ <a class="vt"> (giữ cấu trúc/CSS cũ) — không có href riêng của nút
+    assert.match(h, /^<a class="vt" href="#\/viec\/j20261117150000ab12">[\s\S]*<\/a>$/);
+  }
+  for (const tt of ["cho", "can_tra_loi", "cho_duyet"]) assert.ok(!F.theViecHtml({ id: ID3, trang_thai: tt }).includes("data-vt-act"), tt);
+  // id sai mẫu → không id, không nút (dù trạng thái khớp)
+  assert.ok(!F.theViecHtml({ id: "../x", trang_thai: "dang_chay" }).includes("data-vt-act"));
+});
+
+test("theViecHtml: chuỗi id/loại từ runner vẫn qua esc trong thuộc tính data-vt-id (phòng id lạ)", () => {
+  // id sai mẫu laIdViec đã lọc id rỗng nên không render nút; test XSS tổng quát đã có ở 'dựng HTML' phía trên
+  // — ở đây chỉ kiểm nút act đúng thuộc tính cho id hợp lệ.
+  const h = F.theViecHtml({ id: "j20261117150000ab12", trang_thai: "huy", loai: "voice_pv" });
+  assert.match(h, /<button type="button" class="btn ghost sm" data-vt-act="luu-tru" data-vt-id="j20261117150000ab12">🗃 Ẩn<\/button>/);
+});
+
+test("NHAN_XONG / ketQuaHanhDong: luu-tru/bo-luu-tru có toast riêng, 409 báo đổi trạng thái như act khác", () => {
+  assert.equal(F.ketQuaHanhDong("luu-tru", { status: 200, viec: { id: "x", trang_thai: "huy", luu_tru: 1 } }, "x").toast, "✓ Đã ẩn");
+  assert.equal(F.ketQuaHanhDong("bo-luu-tru", { status: 200, viec: { id: "x" } }, "x").toast, "✓ Đã bỏ ẩn");
+  assert.deepEqual(F.ketQuaHanhDong("luu-tru", { status: 409, loi: "Việc chưa kết thúc" }, "x"), { toast: "⚠ Việc chưa kết thúc", chuyen: "", canhBao: "" });
+});
+
+test("trang #/viec: nút data-vt-trang/data-vt-act chặn nổi bọt + điều hướng của <a class=\"vt\">, trang giữ qua polling", () => {
+  const r = VIEC.slice(VIEC.indexOf("async function renderViec()"), VIEC.indexOf("async function renderViecChiTiet("));
+  assert.match(r, /data-vt-trang/);
+  assert.match(r, /data-vt-act/);
+  assert.match(r, /e\.preventDefault\(\)/);
+  assert.match(r, /e\.stopPropagation\(\)/);
+  // trangNhom không được reset trong thân lamMoi() tự polling — chỉ khởi tạo 1 lần ngoài lamMoi
+  const iLamMoi = r.indexOf("const lamMoi");
+  assert.ok(iLamMoi > 0, "thiếu lamMoi");
+  assert.ok(r.indexOf("const trangNhom") < iLamMoi, "trangNhom phải khởi tạo trước (ngoài) lamMoi, không reset mỗi lần polling");
+  assert.match(r, /trang > soTrang/, "phải kẹp về trang cuối khi trang hiện tại vượt tổng số trang mới");
+  assert.match(r, /api\(`viec\?trang_thai=/);
+  assert.match(r, /offset=/);
+  assert.match(r, /dangGuiViec\.add\(idA\)/);
+  assert.ok(r.indexOf("dangGuiViec.add(idA)") < r.indexOf("api(`viec/${idA}/${act}`"), "khoá trước khi gửi (chống bấm đúp)");
 });

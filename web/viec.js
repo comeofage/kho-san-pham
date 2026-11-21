@@ -24,6 +24,16 @@ const TT_VIEC = {
   xong: "Xong", loi: "Lỗi", huy: "Đã huỷ",
 };
 const TT_MO = ["cho", "dang_chay", "can_tra_loi", "cho_duyet"];
+// Phân trang #/viec (FX-28): mỗi nhóm tự gọi API riêng theo trang_thai, cố định 10 dòng/trang (§12).
+const TRANG_VIEC_SO_DONG = 10;
+const NHOM_VIEC = [
+  { k: "can_ban", ten: "👉 Cần bạn", tt: "can_tra_loi,cho_duyet" },
+  { k: "dang_chay", ten: "⏳ Đang chạy", tt: "dang_chay" },
+  { k: "dang_cho", ten: "🕒 Đang chờ", tt: "cho" },
+  { k: "gan_day", ten: "🗂 Gần đây", tt: "xong,loi,huy" },
+];
+// Trạng thái ở nhóm "Gần đây" (đã kết thúc) — chỉ các việc này mới có nút "🗃 Ẩn" (luu-tru).
+const TT_DA_KET_THUC = ["xong", "loi", "huy"];
 const RE_ID_VIEC = /^j\d{14}[a-z0-9]{4}$/;
 const RE_UID_VIEC = /^\d{19}$/;
 const RE_DIEU_KHIEN = /[\u0000-\u001f\u007f]/;
@@ -128,6 +138,16 @@ function dongThamSo(ts) {
   return Object.keys(t).sort().map((k) => `${k} ${Array.isArray(t[k]) ? t[k].join(",") : String(t[k])}`).join(" · ");
 }
 
+// Nút hành động trên thẻ (FX-28, §12): dang_chay → "⏹ Dừng" (gọi act huy, có sẵn); đã kết thúc (nhóm Gần đây) →
+// "🗃 Ẩn" (gọi act luu-tru, mới). Nằm TRONG thẻ <a class="vt"> (giữ CSS/layout cũ) — handler ở renderViec() chặn
+// nổi bọt (preventDefault + stopPropagation) trước khi click chạy tới <a>, nên không điều hướng khi bấm nút.
+function theVtActHtml(id, tt) {
+  if (!id) return "";
+  const act = tt === "dang_chay" ? "huy" : TT_DA_KET_THUC.includes(tt) ? "luu-tru" : "";
+  if (!act) return "";
+  const nhan = act === "huy" ? "⏹ Dừng" : "🗃 Ẩn";
+  return `<div class="row vt-act"><button type="button" class="btn ghost sm" data-vt-act="${act}" data-vt-id="${esc(id)}">${nhan}</button></div>`;
+}
 function theViecHtml(v) {
   const x = v || {};
   const tt = nhanTrangThai(x.trang_thai);
@@ -138,14 +158,37 @@ function theViecHtml(v) {
   const banner = !x.can_ban ? "" : dangChoNen(x) ? `<div class="small vt-cho-nen">⏳ ${esc(x.can_ban)}</div>` : `<div class="small vt-can-ban">⚠ ${esc(x.can_ban)}</div>`;
   const inner = `<div class="vt-dong1"><span class="tt ${tt.lop}">${esc(tt.nhan)}</span> <b>${esc(tenLoaiViec(x.loai))}</b></div>
       ${ts ? `<div class="small muted vt-ts">${esc(ts)}</div>` : ""}${goiY}${banner}
-      <div class="small muted">${esc(x.tao_boi || "?")} · ${esc(gioViec(x.tao_luc))}${x.lan_thu > 1 ? ` · lần ${esc(x.lan_thu)}` : ""}</div>`;
+      <div class="small muted">${esc(x.tao_boi || "?")} · ${esc(gioViec(x.tao_luc))}${x.lan_thu > 1 ? ` · lần ${esc(x.lan_thu)}` : ""}</div>${theVtActHtml(id, x.trang_thai)}`;
   return id ? `<a class="vt" href="#/viec/${esc(id)}">${inner}</a>` : `<div class="vt">${inner}</div>`;
 }
 
-function dsNhomHtml(g) {
-  const muc = [["can_ban", "👉 Cần bạn"], ["dang_chay", "⏳ Đang chạy"], ["dang_cho", "🕒 Đang chờ"], ["gan_day", "🗂 Gần đây"]];
-  const html = muc.filter(([k]) => g[k] && g[k].length)
-    .map(([k, ten]) => `<h3 class="vt-nhom">${ten} <span class="small muted">(${g[k].length})</span></h3><div class="vt-ds">${g[k].map(theViecHtml).join("")}</div>`).join("");
+// Số trang (cố định 10 dòng/trang, FX-28); tong không hợp lệ/≤0 → luôn ít nhất 1 trang.
+function soTrangViec(tong) {
+  const n = Number(tong);
+  return Number.isFinite(n) && n > TRANG_VIEC_SO_DONG ? Math.ceil(n / TRANG_VIEC_SO_DONG) : 1;
+}
+// Nút chuyển trang dưới mỗi nhóm — khoá "‹ Trước"/"Sau ›" đúng dataset.vtTrang để handler cộng/trừ 1 trang.
+function trangNhomHtml(k, trang, soTrang) {
+  const t = Number.isInteger(trang) && trang > 0 ? trang : 1;
+  const s = Number.isInteger(soTrang) && soTrang > 0 ? soTrang : 1;
+  return `<div class="row small vt-trang">
+      <button type="button" class="btn ghost sm" data-vt-trang="${k}:-1"${t <= 1 ? " disabled" : ""}>‹ Trước</button>
+      <span class="muted">Trang ${t}/${s}</span>
+      <button type="button" class="btn ghost sm" data-vt-trang="${k}:1"${t >= s ? " disabled" : ""}>Sau ›</button>
+    </div>`;
+}
+// g: {can_ban:[...], ...} (mỗi nhóm là việc của ĐÚNG trang hiện tại, đã lọc trang_thai từ API riêng).
+// trangs (tuỳ chọn): {can_ban: {trang, tong}, ...} — tong = tổng số việc khớp bộ lọc (không phải list.length);
+// thiếu trangs[k] → coi tong = g[k].length (không có điều hướng trang, giữ hành vi cũ khi gọi F.dsNhomHtml(g)).
+function dsNhomHtml(g, trangs = {}) {
+  const html = NHOM_VIEC.filter(({ k }) => (g[k] && g[k].length) || (trangs[k] && trangs[k].tong > 0))
+    .map(({ k, ten }) => {
+      const tr = trangs[k] || {};
+      const tong = Number.isInteger(tr.tong) ? tr.tong : (g[k] ? g[k].length : 0);
+      const trang = Number.isInteger(tr.trang) && tr.trang > 0 ? tr.trang : 1;
+      const nav = tong > TRANG_VIEC_SO_DONG ? trangNhomHtml(k, trang, soTrangViec(tong)) : "";
+      return `<h3 class="vt-nhom">${ten} <span class="small muted">(${tong})</span></h3><div class="vt-ds">${(g[k] || []).map(theViecHtml).join("")}</div>${nav}`;
+    }).join("");
   return html || `<p class="muted center">Chưa có việc nào.</p>`;
 }
 
@@ -193,7 +236,8 @@ function idTrungViec(r) {
 
 const NHAN_XONG = { huy: "Đã huỷ", "tu-choi": "Đã từ chối", "chay-tiep": "▶ Đã cho chạy tiếp", "chay-lai": "↻ Đã tạo việc chạy lại", "tra-loi": "✓ Đã gửi trả lời", duyet: "✓ Đã duyệt — việc sẽ chạy trên máy nhà",
   "xin-duyet-lai": "↻ Đã xin duyệt lại — kiểm tham số rồi duyệt bằng mật khẩu",
-  "nhan-tin": "✓ Đã gửi chỉ đạo — agent nhận khi xong bước đang làm" };
+  "nhan-tin": "✓ Đã gửi chỉ đạo — agent nhận khi xong bước đang làm",
+  "luu-tru": "✓ Đã ẩn", "bo-luu-tru": "✓ Đã bỏ ẩn" };
 // Phản hồi của POST /viec/<id>/<act> → {toast, chuyen (id việc cần mở, "" = ở lại), canhBao (giữ trên trang)}.
 function ketQuaHanhDong(act, r, id) {
   const x = r || {};
@@ -876,6 +920,43 @@ document.addEventListener("visibilitychange", () => {
 const tabHien = () => document.visibilityState === "visible";
 const mdSach = (s) => (window.DOMPurify && window.marked ? DOMPurify.sanitize(marked.parse(s)) : null);
 
+// Báo khi có việc MỚI cần bạn (can_tra_loi/cho_duyet): tiêu đề tab, popup hệ thống, tiếng "ting".
+const TIEU_DE_GOC = document.title;
+let canBanTruoc = null, nhapNhayT = 0;
+function tingViec() {
+  try {
+    const Ac = window.AudioContext || window.webkitAudioContext;
+    if (!Ac) return;
+    const ac = new Ac(), o = ac.createOscillator(), g = ac.createGain();
+    o.frequency.value = 880; g.gain.setValueAtTime(0.15, ac.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + 0.6);
+    o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + 0.6);
+  } catch { /* trình duyệt chặn âm thanh khi chưa chạm trang */ }
+}
+function baoCanBan(n) {
+  const moi = canBanTruoc !== null && n > canBanTruoc;
+  canBanTruoc = n;
+  clearInterval(nhapNhayT); nhapNhayT = 0;
+  if (n <= 0) { document.title = TIEU_DE_GOC; return; }
+  const a = `(${n}) 👉 Cần bạn – ${TIEU_DE_GOC}`;
+  if (tabHien()) document.title = a;
+  else { let b = false; document.title = a; nhapNhayT = setInterval(() => { b = !b; document.title = b ? TIEU_DE_GOC : a; }, 1000); }
+  if (!moi) return;
+  tingViec();
+  if ("Notification" in window && Notification.permission === "granted") {
+    try {
+      const nt = new Notification("👉 Có việc cần bạn", { body: `${n} việc đang chờ bạn trả lời/duyệt`, tag: "viec-can-ban" });
+      nt.onclick = () => { window.focus(); location.hash = "#/viec"; nt.close(); };
+    } catch { /* bỏ qua */ }
+  }
+}
+document.addEventListener("visibilitychange", () => { if (tabHien() && canBanTruoc > 0) { clearInterval(nhapNhayT); nhapNhayT = 0; document.title = `(${canBanTruoc}) 👉 Cần bạn – ${TIEU_DE_GOC}`; } });
+// Xin quyền popup ở lần chạm đầu (trình duyệt đòi cử chỉ người dùng); poll nền 15s để báo cả khi không mở #/viec.
+document.addEventListener("click", () => {
+  if ("Notification" in window && Notification.permission === "default") Notification.requestPermission();
+}, { once: true });
+setInterval(() => { if (typeof laChu === "function" && laChu()) capNhatHuyHieuViec(); }, 15000);
+
 // Huy hiệu ⚙ Việc = can_tra_loi + cho_duyet.
 let huyHieuDangTai = false;
 function datHuyHieuViec(n) {
@@ -889,7 +970,9 @@ async function capNhatHuyHieuViec() {
   huyHieuDangTai = true;
   try {
     const r = await api("viec?tom_tat=1");
-    datHuyHieuViec(demCanBan(r && r.dem));
+    const n = demCanBan(r && r.dem);
+    datHuyHieuViec(n);
+    baoCanBan(n);
   } catch { /* bộ chạy việc tắt: không hiện huy hiệu */ }
   finally { huyHieuDangTai = false; }
 }
@@ -943,25 +1026,84 @@ async function renderViec() {
   $("#vt-radar").addEventListener("click", giao("radar_ban_tin"));
   $("#vt-link").addEventListener("click", giao("xu_ly_link_moi"));
 
+  // FX-28: mỗi nhóm giữ số trang riêng (không reset khi lamMoi() tự polling mỗi 5 s — chỉ đổi khi người dùng bấm
+  // nút chuyển trang, hoặc khi trang hiện tại vượt quá tổng số trang mới thì kẹp về trang cuối còn hợp lệ).
+  const trangNhom = { can_ban: 1, dang_chay: 1, dang_cho: 1, gan_day: 1 };
   let dangLamMoi = false;
+  // Tải đúng 1 trang của 1 nhóm; trang hiện tại vượt quá tổng số trang mới (vd. tong giảm) → kẹp về trang cuối rồi tải lại.
+  const taiTrangNhom = async (dinh) => {
+    const goi = (trang) => api(`viec?trang_thai=${dinh.tt}&gioi_han=${TRANG_VIEC_SO_DONG}&offset=${(trang - 1) * TRANG_VIEC_SO_DONG}`);
+    const docKq = (r) => {
+      const ds = Array.isArray(r.viec) ? r.viec : [];
+      return { ds, tong: Number.isInteger(r.tong) ? r.tong : ds.length };
+    };
+    let trang = trangNhom[dinh.k] || 1;
+    let { ds, tong } = docKq(await goi(trang));
+    const soTrang = soTrangViec(tong);
+    if (trang > soTrang) {
+      trang = soTrang;
+      trangNhom[dinh.k] = trang;
+      ({ ds, tong } = docKq(await goi(trang)));
+    }
+    return { ds, tong, trang };
+  };
   const lamMoi = async () => {
     if (dangLamMoi || tk !== phienViec) return;
     dangLamMoi = true;
     try {
-      const [sk, ds] = await Promise.allSettled([api("viec/suc-khoe"), api("viec?gioi_han=50")]);
+      const [sk, ...nhomKq] = await Promise.allSettled([api("viec/suc-khoe"), ...NHOM_VIEC.map(taiTrangNhom)]);
       if (tk !== phienViec) return;
       const tt = $("#vt-tom-tat"), dsEl = $("#vt-ds");
       if (sk.status === "fulfilled") {
         if (Number.isInteger(sk.value.dot_bat)) dotBatViec = sk.value.dot_bat;
         if (tt) tt.innerHTML = tomTatHtml(sk.value);
       } else if (tt) tt.innerHTML = `<div class="sk-banner">🔴 Bộ chạy việc không trả lời: ${esc(sk.reason && sk.reason.message)}</div>`;
-      if (ds.status === "fulfilled") {
-        const list = Array.isArray(ds.value.viec) ? ds.value.viec : [];
-        if (dsEl) dsEl.innerHTML = dsNhomHtml(nhomViec(list));
-        capNhatHuyHieuViec(); // đếm toàn kho qua tom_tat=1, không đếm từ 50 việc trên trang
-      } else if (dsEl) dsEl.innerHTML = `<p class="err">⚠ Không lấy được danh sách việc: ${esc(ds.reason && ds.reason.message)}</p>`;
+      const g = {}, trangs = {};
+      let coViec = false, coLoi = false;
+      NHOM_VIEC.forEach((dinh, i) => {
+        const kq = nhomKq[i];
+        if (kq.status === "fulfilled") {
+          g[dinh.k] = kq.value.ds; trangs[dinh.k] = { trang: kq.value.trang, tong: kq.value.tong };
+          if (kq.value.tong > 0) coViec = true;
+        } else { g[dinh.k] = []; coLoi = true; }
+      });
+      if (dsEl) {
+        dsEl.innerHTML = coLoi && !coViec ? `<p class="err">⚠ Không lấy được danh sách việc</p>` : dsNhomHtml(g, trangs);
+        capNhatHuyHieuViec(); // đếm toàn kho qua tom_tat=1, không đếm từ danh sách từng nhóm trên trang
+      }
     } finally { dangLamMoi = false; }
   };
+
+  // Nút chuyển trang (data-vt-trang="<nhóm>:<-1|1>") + nút "⏹ Dừng"/"🗃 Ẩn" trên thẻ (data-vt-act, data-vt-id):
+  // chặn nổi bọt/điều hướng của <a class="vt"> bọc thẻ TRƯỚC khi xử lý (nút nằm trong thẻ, không đổi cấu trúc/CSS cũ).
+  $("#vt-ds").addEventListener("click", (e) => {
+    const bt = e.target.closest("button[data-vt-trang]");
+    if (bt) {
+      if (bt.disabled) return;
+      const [k, d] = bt.dataset.vtTrang.split(":");
+      trangNhom[k] = Math.max(1, (trangNhom[k] || 1) + Number(d));
+      lamMoi();
+      return;
+    }
+    const ba = e.target.closest("button[data-vt-act]");
+    if (!ba || ba.disabled) return;
+    e.preventDefault(); e.stopPropagation(); // nút nằm trong <a class="vt"> — không điều hướng khi bấm
+    const act = ba.dataset.vtAct, idA = ba.dataset.vtId;
+    if (!laIdViec(idA) || dangGuiViec.has(idA)) return;
+    if (act === "huy" && !confirm("Dừng việc này?")) return;
+    dangGuiViec.add(idA); // khoá TRƯỚC await
+    ba.disabled = true;
+    const nhanCu = ba.textContent;
+    ba.textContent = "Đang gửi…";
+    api(`viec/${idA}/${act}`, {}).then((r) => { if (tk === phienViec) toast(ketQuaHanhDong(act, r, idA).toast); })
+      .catch((err) => { if (tk === phienViec) toast("⚠ " + err.message); })
+      .finally(() => {
+        dangGuiViec.delete(idA);
+        if (tk === phienViec) lamMoi();
+        else if (ba.isConnected) { ba.disabled = false; ba.textContent = nhanCu; }
+      });
+  });
+
   viecTrang = { lamMoi, timers: [setInterval(() => { if (tabHien()) lamMoi(); }, 5000)] };
   await lamMoi();
 }

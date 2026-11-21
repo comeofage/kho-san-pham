@@ -608,6 +608,7 @@ test("viec: GET chuyển đúng path runner, lọc query; không ký GET", async
   mayTraLoi = async () => Response.json({ ok: 1 });
   for (const [vao, ra] of [
     [`/api/viec?trang_thai=cho,dang_chay&uid=${UID}&gioi_han=20&tom_tat=1&la=x&tu=5`, `/r/viec?trang_thai=cho%2Cdang_chay&uid=${UID}&gioi_han=20&tom_tat=1`],
+    [`/api/viec?trang_thai=xong,loi,huy&gioi_han=10&offset=20`, `/r/viec?trang_thai=xong%2Cloi%2Chuy&gioi_han=10&offset=20`],
     ["/api/viec/danh-muc?x=1", "/r/danh-muc"],
     ["/api/viec/suc-khoe", "/r/suc-khoe"],
     ["/api/viec/poster-folders", "/r/poster/folders"],
@@ -636,6 +637,7 @@ test("viec: id/uid/query sai, route lạ, sai phương thức, duyet đợt 3 �
     ["/api/viec?trang_thai=cho%20x", 400], [`/api/viec?uid=${"1".repeat(41)}`, 400], [`/api/viec/${JOB}/log?tu=-1;x`, 400],
     [`/api/viec/${JOB}/xoa`, 404], ["/api/viec/poster/folders/1", 404], ["/api/viec/poster", 404],
     [`/api/viec/${JOB}/huy`, 405], [`/api/viec/${JOB}/tra-loi`, 405],
+    [`/api/viec/${JOB}/luu-tru`, 405], [`/api/viec/${JOB}/bo-luu-tru`, 405],
   ]) assert.equal((await call(p, { cookie })).status, st, p);
   assert.equal((await postViec(cookie, "/api/viec/danh-muc", {})).status, 405);
   assert.equal((await postViec(cookie, `/api/viec/${JOB}`, {})).status, 405);
@@ -645,10 +647,10 @@ test("viec: id/uid/query sai, route lạ, sai phương thức, duyet đợt 3 �
   assert.equal(mayGoi.length, 0);
 });
 
-test("viec: huy/chay-tiep/chay-lai/tu-choi → POST body {boi} có ký đúng path", async () => {
+test("viec: huy/chay-tiep/chay-lai/tu-choi/luu-tru/bo-luu-tru → POST body {boi} có ký đúng path", async () => {
   const { cookie } = await dangNhapNhan();
   mayTraLoi = async () => Response.json({ viec: { id: JOB } });
-  for (const act of ["huy", "chay-tiep", "chay-lai", "tu-choi"]) {
+  for (const act of ["huy", "chay-tiep", "chay-lai", "tu-choi", "luu-tru", "bo-luu-tru"]) {
     const r = await postViec(cookie, `/api/viec/${JOB}/${act}`, { boi: "lan", ly_do: "x" });
     assert.equal(r.status, 200, act);
     const g = goiCuoi();

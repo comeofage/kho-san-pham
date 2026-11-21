@@ -126,8 +126,8 @@ Ranh giới:
 
 ### 3.2 Quy tắc chuyển tiếp trong video_server
 
-- Path phải khớp `^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai))?)?)$` (`xin-duyet-lai` thêm theo D9, phiếu FX-12). Không khớp thì 404, không gọi runner.
-- Query: chỉ giữ khoá `tu`, `trang_thai`, `uid`, `gioi_han`, `tom_tat`; giá trị phải khớp `^[A-Za-z0-9_,-]{0,40}$`.
+- Path phải khớp `^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai|luu-tru|bo-luu-tru))?)?)$` (`xin-duyet-lai` thêm theo D9, phiếu FX-12; `luu-tru`/`bo-luu-tru` thêm theo D14 — đi qua CÙNG đường ký request như các act ghi khác, §8.3, không có cơ chế ký riêng). Không khớp thì 404, không gọi runner.
+- Query: chỉ giữ khoá `tu`, `trang_thai`, `uid`, `gioi_han`, `tom_tat`, `offset` (D14, phục vụ phân trang §8.1/§8.2/§12); giá trị phải khớp `^[A-Za-z0-9_,-]{0,40}$`.
 - Method: GET, hoặc POST với `content-type: application/json` và body ≤ 16 KB (lớn hơn → 413).
 - Kiểm `x-key` trước mọi thứ (dùng `_vao`, `tools/video_server.py:181-191`).
 - Chỉ chuyển các header: `x-runner-key`, `x-ky`, `x-ky-ngay`, `x-ky-nonce`, `content-type`. **Không** chuyển `x-key`.
@@ -755,6 +755,11 @@ KV) → runner `{noi_dung, ngat, boi, da_xac_nhan_mat_khau: true}` → `BoChay.n
 
 Web ghi cạnh nút Huỷ: "Huỷ dừng ngay render/voice; video đã xong vẫn giữ".
 
+**"Huỷ" và "Dừng" là CÙNG MỘT thứ (D14).** Không có cơ chế dừng mới nào được thêm. Nút "Dừng" mà trang danh sách
+`#/viec` thêm trên mỗi thẻ việc đang chạy (§12) gọi đúng `POST /viec/<id>/huy` ở trên — cùng giết cây tiến trình qua
+Job Object riêng, cùng chuyển sang `huy`, cùng lời ghi chú cạnh nút như ở trang chi tiết. Thay đổi duy nhất là
+**vị trí**: trước đây phải mở `#/viec/<id>` mới thấy nút Huỷ, nay bấm thẳng từ thẻ việc ở trang danh sách.
+
 ### 7.8 Bị ngắt (runner chết, máy khởi động lại, tiến trình tự chết) và đối soát
 
 Job Object (D6) giết mọi thứ, gồm cả việc nền. Không có cách nối lại việc nền (S-2), nên runner **không** cố resume mà đối soát bằng file thật.
@@ -896,8 +901,8 @@ Mọi route đòi `x-runner-key`. Mọi **POST** còn đòi chữ ký request §
 | `GET /du-an/<uid>` | – | `{du_an:[{ma, ten, goc, me:[…], co_captions}]}` |
 | `GET /poster/folders` | – | đợt 4; trước đó 404 |
 | `POST /viec` | `{loai, tham_so, boi}` | 201 `{viec}` · 409 `{trung}` · 400 · 429 (≤30 job/ngày/người) |
-| `GET /viec` | `?trang_thai=&uid=&gioi_han=&tom_tat=1` | `{viec:[…]}` hoặc `{dem}` |
-| `GET /viec/<id>` | – | `{viec, tra_loi:[…], xem_truoc, tham_so_chuan}` (`tham_so_chuan` để Worker ký duyệt) |
+| `GET /viec` | `?trang_thai=&uid=&gioi_han=&offset=&tom_tat=1` | `{viec:[…], tong}` hoặc `{dem}`. `tong` (D14) = tổng số việc khớp ĐÚNG bộ lọc `trang_thai` hiện tại (luôn loại `luu_tru=1`, cùng điều kiện với `ds()`/`dem_loc()`), không phụ thuộc `gioi_han`/`offset` — web dùng để tính số trang |
+| `GET /viec/<id>` | – | `{viec, tra_loi:[…], xem_truoc, tham_so_chuan}` (`tham_so_chuan` để Worker ký duyệt). **Xem theo id không bị chặn bởi `luu_tru=1`** (D14): việc đã ẩn vẫn xem đủ ở đây, chỉ bị loại khỏi `GET /viec` (danh sách) |
 | `GET /viec/<id>/log` | `?tu=` | `{tu, den, noi_dung, het}` |
 | `POST /viec/<id>/tra-loi` | `{tra_loi, boi}` | Chỉ khi `can_tra_loi`. `chon`: đúng một lựa chọn; `viec_tay`: `"da_lam_xong"`; `khong_ro`: `"tiep_tuc"`; `cau_hoi`: chỉ đợt 5, 1–1000 ký tự. **`taovideo` (D11, §7.6):** chỉ khi có phiên sống (`phien_song`), body thêm `da_xac_nhan_mat_khau`; `chon`/`cau_hoi` cần cờ này = true; không có phiên → 409 |
 | `POST /viec/<id>/duyet` | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` | Chỉ khi `cho_duyet`; kiểm chữ ký duyệt + hạn mức |
@@ -905,21 +910,23 @@ Mọi route đòi `x-runner-key`. Mọi **POST** còn đòi chữ ký request §
 | `POST /viec/<id>/chay-tiep` | `{boi}` | `loi→cho` theo §4.3; 409 nếu không đủ điều kiện hoặc là loại tốn tiền (D9) |
 | `POST /viec/<id>/xin-duyet-lai` (D9) | `{boi}` | Chỉ loại tốn tiền ở `loi` hoặc `can_tra_loi`, tiến trình cũ không còn sống: xoá `loi_duyet, duyet_boi, duyet_luc, chu_ky_duyet` → `cho_duyet`. Riêng `voice_genmax` chưa có `uoc_tinh` → `cho` + `buoc='uoc_tinh'`. 409 nếu sai điều kiện hoặc trùng việc đang mở |
 | `POST /viec/<id>/chay-lai` | `{boi}` | 201 job mới |
+| `POST /viec/<id>/luu-tru` (D14) | `{boi}` | Chỉ khi `trang_thai ∈ TRANG_THAI_DONG` (`xong`/`loi`/`huy`); việc chưa kết thúc → `ThamSoLoi` (400). Đặt `luu_tru=1` (`KhoViec.dat_luu_tru`), **không đổi `trang_thai`** — không phải CAS của `chuyen()`, `luu_tru` là cờ độc lập. Việc bị ẩn biến mất khỏi mọi `GET /viec`, vẫn xem đủ qua `GET /viec/<id>` |
+| `POST /viec/<id>/bo-luu-tru` (D14) | `{boi}` | Như trên, đặt `luu_tru=0`. Cùng điều kiện `trang_thai ∈ TRANG_THAI_DONG` (việc đã bị ẩn luôn ở trạng thái kết thúc) |
 
-`viec` trả ra có các trường của §4.2, trừ `pid`, `pid_tao_luc`, `session_id`, `chu_ky_duyet`; thêm `co_session`, `co_the_chay_tiep` và `co_the_xin_duyet_lai` (bool). `/suc-khoe` thêm `chan_ton_tien` (bool, D9).
+`viec` trả ra có các trường của §4.2 cộng cột `luu_tru` (0|1, D14), trừ `pid`, `pid_tao_luc`, `session_id`, `chu_ky_duyet`; thêm `co_session`, `co_the_chay_tiep` và `co_the_xin_duyet_lai` (bool). `/suc-khoe` thêm `chan_ton_tien` (bool, D9).
 
 ### 8.2 API Worker (chỉ `nhan`/`comeofage`)
 
 | Web gọi | Chuyển tới | Body Worker dựng lại |
 |---|---|---|
-| `GET /api/viec?…` | `/r/viec?…` | – |
+| `GET /api/viec?…` | `/r/viec?…` (gồm `offset`, D14, chuyển nguyên) | – · trả nguyên `tong` từ runner (D14), web dùng tính số trang |
 | `POST /api/viec` | `/r/viec` | `{loai, tham_so, boi}` (`loai` `^[a-z_]{3,30}$`; `tham_so` object phẳng ≤10 khoá; giá trị string ≤40 / số / bool / mảng ≤10 string ≤20) |
 | `GET /api/viec/danh-muc`, `/api/viec/suc-khoe`, `/api/viec/poster-folders` | `/r/danh-muc`, `/r/suc-khoe`, `/r/poster/folders` | – |
 | `GET /api/viec/du-an/<uid>` | `/r/du-an/<uid>` | – |
 | `GET /api/viec/<id>`, `/api/viec/<id>/log?tu=` | tương ứng | – |
 | `POST /api/viec/<id>/tra-loi` | tương ứng | Đợt 3: `{tra_loi}` chỉ nhận chuỗi ≤120 ký tự (giá trị nút). Đợt 5: chữ tự do chỉ khi có `mat_khau` đúng (§9) |
 | `POST /api/viec/<id>/duyet` (đợt 4) | Web gửi `{loi_duyet, mat_khau, sha_tham_so}`. Worker kiểm `mat_khau` (đếm sai bằng KV, §9) → GET `/r/viec/<id>` lấy `tham_so_chuan` + `loai` → `sha256_hex(tham_so_chuan) ≠ sha_tham_so` → 409 "Tham số việc đã đổi sau khi bạn mở trang — tải lại rồi duyệt" (D9, R-11 P2-2) → ký duyệt (§8.3) → POST | `{loi_duyet, duyet_luc, boi, chu_ky_duyet}` |
-| `POST /api/viec/<id>/(tu-choi\|huy\|chay-tiep\|chay-lai\|xin-duyet-lai)` | tương ứng | `{boi}` |
+| `POST /api/viec/<id>/(tu-choi\|huy\|chay-tiep\|chay-lai\|xin-duyet-lai\|luu-tru\|bo-luu-tru)` (2 act cuối: D14) | tương ứng | `{boi}` — `luu-tru`/`bo-luu-tru` đi qua CÙNG đường ký Ed25519 (§8.3) như các act khác, không có đường ký riêng |
 | `POST /api/runner/tieu-duyet` (D9) | **không chuyển tiếp**; runner gọi thẳng Worker | §8.3 "Tiêu lời duyệt" |
 
 `sha_tham_so` do web tính bằng `crypto.subtle.digest("SHA-256", UTF-8(tham_so_chuan))` trên đúng `tham_so_chuan` của response `GET /api/viec/<id>` dùng để vẽ khung duyệt (hex thường, 64 ký tự).
@@ -1085,7 +1092,13 @@ Kiểm ở 3 thời điểm: **tạo**, **duyệt** (cả duyệt lại), **nh�
 - **`#/viec`**:
   - dải tóm tắt: runner, làn, tài nguyên `kho`, chi phí và số việc Claude hôm nay so với hạn mức, tạm dừng;
   - nút "📡 Bản tin radar", "📥 Xử lý link mới";
-  - nhóm Cần bạn / Đang chạy / Đang chờ / Gần đây;
+  - nhóm Cần bạn / Đang chạy / Đang chờ / Gần đây, **mỗi nhóm phân trang CỐ ĐỊNH 10 dòng/trang, có số trang riêng**
+    (D14): số trang của một nhóm tính từ `tong` mà `GET /api/viec` trả cho đúng bộ lọc `trang_thai` của nhóm đó
+    (`offset = (trang-1)×10`, `gioi_han=10`); trang hiện tại của mỗi nhóm được giữ nguyên qua các lần tự làm mới
+    5 s (không tự nhảy về trang 1 khi dữ liệu đổi giữa chừng);
+  - mỗi thẻ việc đang `dang_chay` có thêm nút **"Dừng"** gọi thẳng `POST /viec/<id>/huy`
+    (D14, §7.7) — cùng cơ chế với nút Huỷ ở trang chi tiết, chỉ thêm vị trí bấm: trước đây phải mở `#/viec/<id>`
+    mới thấy nút này;
   - tự làm mới 5 s khi tab hiện.
 - **`#/viec/<id>`**:
   - thông tin, sự kiện, `can_ban` (dải vàng, không chặn);

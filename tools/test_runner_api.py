@@ -457,16 +457,40 @@ def test_ds_viec_va_loc(may, mt):
     _, c = _tao(may, loai="xu_ly_link_moi", tham_so={})
     may.kho.chuyen(c["viec"]["id"], ["cho"], "huy", "nhan")
     s, d = may.goi("GET", "/viec")
-    assert s == 200 and len(d["viec"]) == 3
+    assert s == 200 and len(d["viec"]) == 3 and d["tong"] == 3
     assert all("session_id" not in v and "pid" not in v for v in d["viec"])
     assert {v["id"] for v in may.goi("GET", "/viec?trang_thai=huy")[1]["viec"]} == {c["viec"]["id"]}
+    assert may.goi("GET", "/viec?trang_thai=huy")[1]["tong"] == 1
     assert len(may.goi("GET", "/viec?trang_thai=cho,huy")[1]["viec"]) == 3
-    assert {v["id"] for v in may.goi("GET", f"/viec?uid={UID}")[1]["viec"]} == {a["viec"]["id"], b["viec"]["id"]}
+    s, d = may.goi("GET", f"/viec?uid={UID}")
+    assert {v["id"] for v in d["viec"]} == {a["viec"]["id"], b["viec"]["id"]}
+    assert "tong" not in d        # nhánh lọc theo uid giữ nguyên như cũ, không phân trang
     assert len(may.goi("GET", "/viec?gioi_han=1")[1]["viec"]) == 1
     s, d = may.goi("GET", "/viec?tom_tat=1")
     assert s == 200 and d["dem"]["cho"] == 2 and d["dem"]["huy"] == 1 and "viec" not in d
-    for q in ("trang_thai=la", "uid=12", "gioi_han=abc", "gioi_han=0"):
+    for q in ("trang_thai=la", "uid=12", "gioi_han=abc", "gioi_han=0", "offset=abc", "offset=-1"):
         assert may.goi("GET", f"/viec?{q}")[0] == 400, q
+
+
+def test_ds_viec_offset_phan_trang(may, mt):
+    """GET /viec?offset=… lật trang thật; tổng (`tong`) khớp bộ lọc trang_thai đang áp, không đổi theo trang."""
+    ds_id = []
+    for loai, ts in [("phan_tich_uid", {"uid": UID}), ("douyin_uid", {"uid": UID}),
+                     ("voice_pv", {"uid": UID, "du_an": ma_du_an(mt._p), "me": ME})]:
+        _, d = _tao(may, loai=loai, tham_so=ts)
+        ds_id.append(d["viec"]["id"])
+    moi_nhat_truoc = list(reversed(ds_id))
+    s, d = may.goi("GET", "/viec?gioi_han=2")
+    assert s == 200 and [v["id"] for v in d["viec"]] == moi_nhat_truoc[:2] and d["tong"] == 3
+    s, d = may.goi("GET", "/viec?gioi_han=2&offset=2")
+    assert s == 200 and [v["id"] for v in d["viec"]] == moi_nhat_truoc[2:3] and d["tong"] == 3
+    s, d = may.goi("GET", "/viec?gioi_han=2&offset=10")
+    assert s == 200 and d["viec"] == [] and d["tong"] == 3
+    # việc đã ẩn/lưu trữ không tính vào tong
+    may.kho.chuyen(ds_id[0], ["cho"], "xong", "he_thong")
+    may.goi("POST", f"/viec/{ds_id[0]}/luu-tru", {"boi": "nhan"})
+    s, d = may.goi("GET", "/viec")
+    assert s == 200 and d["tong"] == 2 and ds_id[0] not in {v["id"] for v in d["viec"]}
 
 
 def test_chi_tiet_viec(may):
@@ -654,6 +678,64 @@ def test_tu_choi(may):
     assert s == 200 and d["viec"]["trang_thai"] == "huy"
 
 
+# ---------- luu-tru, bo-luu-tru ----------
+
+def test_luu_tru_viec_da_xong(may):
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    may.kho.chuyen(id_, ["cho"], "xong", "he_thong")
+    s, d = may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "comeofage"})
+    assert s == 200 and d["viec"]["id"] == id_ and d["viec"]["luu_tru"] == 1
+    assert d["viec"]["trang_thai"] == "xong"            # không đổi trang_thai
+    assert id_ not in {v["id"] for v in may.goi("GET", "/viec")[1]["viec"]}
+    assert may.kho.lay(id_)["luu_tru"] == 1             # vẫn còn nguyên trong DB, chỉ ẩn khỏi ds()
+
+
+def test_bo_luu_tru(may):
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    may.kho.chuyen(id_, ["cho"], "huy", "nhan")
+    may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "nhan"})
+    s, d = may.goi("POST", f"/viec/{id_}/bo-luu-tru", {"boi": "nhan"})
+    assert s == 200 and d["viec"]["luu_tru"] == 0
+    assert id_ in {v["id"] for v in may.goi("GET", "/viec")[1]["viec"]}
+
+
+def test_luu_tru_viec_chua_ket_thuc_400(may):
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    s, d = may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "nhan"})
+    assert s == 400 and may.kho.lay(id_)["luu_tru"] == 0
+    may.kho.chuyen(id_, ["cho"], "dang_chay", "he_thong")
+    assert may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "nhan"})[0] == 400
+
+
+def test_luu_tru_viec_khong_co_404(may):
+    assert may.goi("POST", "/viec/j20261117090000zzzz/luu-tru", {"boi": "nhan"})[0] == 404
+    assert may.goi("POST", "/viec/j20261117090000zzzz/bo-luu-tru", {"boi": "nhan"})[0] == 404
+
+
+def test_luu_tru_ghi_su_kien_ai_lam(may):
+    """P3 (reviewer): p_luu_tru/p_bo_luu_tru trước đây gọi _boi(body) chỉ để validate rồi bỏ — không ghi vết ai
+    đã ẩn/bỏ ẩn. Giờ phải truyền boi vào dat_luu_tru() và ghi được một dòng su_kien."""
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    may.kho.chuyen(id_, ["cho"], "xong", "he_thong")
+    may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "comeofage"})
+    sk = may.kho.su_kien(id_)[-1]
+    assert sk["boi"] == "comeofage" and "ẩn" in sk["ghi_chu"]
+    may.goi("POST", f"/viec/{id_}/bo-luu-tru", {"boi": "nhan"})
+    sk2 = may.kho.su_kien(id_)[-1]
+    assert sk2["boi"] == "nhan" and "ẩn" in sk2["ghi_chu"]
+
+
+def test_luu_tru_thieu_boi_400(may):
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    may.kho.chuyen(id_, ["cho"], "huy", "nhan")
+    assert may.goi("POST", f"/viec/{id_}/luu-tru", {})[0] == 400
+
+
 # ---------- chay-tiep ----------
 
 def _vao_loi(may, id_, phien=0, so_lan=0):
@@ -691,6 +773,21 @@ def test_chay_tiep_hop_le(may):
     assert d["viec"]["loi"] == "quá giờ"           # giữ lý do để vòng chạy dựng tin "Phiên trước dừng vì"
     sk = may.kho.su_kien(id_)[-1]
     assert (sk["tu"], sk["den"], sk["boi"]) == ("loi", "cho", "comeofage") and "chạy tiếp" in sk["ghi_chu"]
+
+
+def test_chay_tiep_sau_khi_an_xoa_luu_tru(may):
+    """P1 (moi:an-viec-roi-chay-lai-an-tang-hinh), qua đúng luồng web: ẩn việc lỗi rồi bấm Chạy tiếp không được
+    để việc biến mất khỏi mọi danh sách ⚙ Việc (chỉ nơi duy nhất có nút Dừng)."""
+    _, d = _tao(may)
+    id_ = d["viec"]["id"]
+    _vao_loi(may, id_, phien=1, so_lan=1)
+    s, _ = may.goi("POST", f"/viec/{id_}/luu-tru", {"boi": "nhan"})
+    assert s == 200 and may.kho.lay(id_)["luu_tru"] == 1
+    assert id_ not in {v["id"] for v in may.goi("GET", "/viec")[1]["viec"]}
+    s, d = may.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "comeofage"})
+    assert s == 200 and d["viec"]["trang_thai"] == "cho" and d["viec"]["luu_tru"] == 0
+    assert may.kho.lay(id_)["luu_tru"] == 0
+    assert id_ in {v["id"] for v in may.goi("GET", "/viec")[1]["viec"]}
 
 
 def test_chay_tiep_bi_chan_khi_tien_trinh_cu_khong_giet_duoc(may):
@@ -1300,6 +1397,16 @@ def test_xin_duyet_lai_tu_loi(may4, mt4, dong):
     assert may4.kho.lay(id_)["chu_ky_duyet"] != ky_cu
     # xin lại lần nữa khi đang cho → 409
     assert may4.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "nhan"})[0] == 409
+
+
+def test_xin_duyet_lai_sau_khi_an_xoa_luu_tru(may4, mt4, dong):
+    """Cùng bất biến P1, qua đường "xin duyệt lại" (việc tốn tiền, đi qua API thật)."""
+    id_ = _muse_loi(may4, mt4, dong)
+    may4.kho.dat_luu_tru(id_, True, "nhan")
+    assert may4.kho.lay(id_)["luu_tru"] == 1
+    s, r = may4.goi("POST", f"/viec/{id_}/xin-duyet-lai", {"boi": "comeofage"})
+    assert s == 200 and r["viec"]["luu_tru"] == 0
+    assert may4.kho.lay(id_)["luu_tru"] == 0
 
 
 def test_xin_duyet_lai_khong_dung_lai_duyet_cu(may4, mt4, dong):
