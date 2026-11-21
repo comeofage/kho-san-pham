@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-21T11:29:11+07:00",
+ "cap_nhat_luc": "2026-11-21T11:36:54+07:00",
  "san_pham": [
   {
    "id": "tam-20261121112901570",
@@ -35,11 +35,11 @@
    "id": "1737939068946252836",
    "uid": "1737939068946252836",
    "link": "https://vt.tiktok.com/ZS9PMe3thtBGb-wEr8Q/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【Bền chắc gấp đôi】Giá đỡ điện thoại cho xe điện, chống mưa nắng, phù hợp với nhân viên giao hàng, chống sốc và ổn định hình ảnh khi dẫn đường/đi xe đạp, giá đỡ điện thoại chuyên dụng, phù hợp với xe máy chạy pin và xe đạp điện,  giá đỡ điện thoại, 93",
+   "gia": "77.635₫",
+   "shop": "Chaozhiy Shop",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-21T11:28:05+07:00",
-   "cap_nhat_luc": "2026-11-21T11:28:12+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-21T11:36:41+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
