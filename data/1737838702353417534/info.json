@@ -36,5 +36,62 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-21T11:54:07+07:00"
+ "cap_nhat_luc": "2026-11-21T11:54:37+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Chủ đề quân sự có mô hình vũ khí nhỏ, tiêu đề trang nêu 'quân Đức', hàng xếp hình không rõ thương hiệu và là đồ chơi trẻ 6+ có mảnh nhỏ.",
+   "khuyen_nghi": "Làm được nếu né cụm 'quân Đức', không quay trẻ em, không cảnh bạo lực, không nói tương thích hay giống thương hiệu xếp hình nổi tiếng, chỉ nói điều đã tự kiểm trên hàng thật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh shop có các claim 'khớp nối chặt chẽ', 'bền chắc', 'vật liệu an toàn thân thiện môi trường' mà trang không có chứng nhận, chỉ nói điều tự quay kiểm được."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Không thấy thương hiệu trên ảnh; có chữ 'POLICE đặc nhiệm' trên khiên và chữ Trung 特警 trên khung căn cứ, nên né chữ và không nhắc thương hiệu xếp hình khác."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu nhân vật mặt nạ đầu lâu và bộ xếp hình quân sự không rõ nguồn gốc, shop không nêu chủ sở hữu thiết kế, không xác minh được bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô hình lính cầm súng nhỏ không phải súng đồ chơi mô phỏng, nhưng tiêu đề nêu 'quân Đức' nhạy cảm nên bỏ cụm này và tránh dựng cảnh bạo lực."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh ghi độ tuổi 6+ và có nhiều mảnh nhỏ dễ nuốt, không đưa trẻ em vào video và không nói 'an toàn cho bé'."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nhắc 'của quân Đức' hay tên quân đội thật trong lời, chữ dựng, caption",
+    "goi_y": "Gọi chung là 'căn cứ quân sự mô hình', 'đội lính đặc nhiệm mô hình'."
+   },
+   {
+    "khong_nen": "'An toàn cho bé', 'vật liệu thân thiện môi trường', 'bền tuyệt đối'",
+    "goi_y": "Chỉ nói 'đồ chơi từ 6 tuổi trở lên, có mảnh nhỏ' và cảnh tự test nhấc căn cứ nếu thật sự đạt."
+   },
+   {
+    "khong_nen": "'Tương thích LEGO', 'giống LEGO' hoặc nêu tên thương hiệu xếp hình khác",
+    "goi_y": "Dùng 'xếp hình lắp ráp', 'mô hình lắp ghép'."
+   },
+   {
+    "khong_nen": "Nói 'kèm xe tăng, ra-đa, tên lửa, lều' như trong ảnh",
+    "goi_y": "Chỉ giới thiệu món có trong gói đã mua và quay thật."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Trang không có mô tả chữ, thông số kích thước, số mảnh từng gói, độ tuổi chính thức ngoài chữ trên ảnh; shop mới (đã bán 16, 0 đánh giá), hàng gửi từ nước ngoài; chưa có giấy tờ chứng nhận an toàn đồ chơi.",
+  "danh_gia_luc": "2026-11-21T11:54:37+07:00"
+ }
 }
