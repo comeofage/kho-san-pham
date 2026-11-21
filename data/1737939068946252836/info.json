@@ -36,5 +36,69 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-21T11:36:41+07:00"
+ "cap_nhat_luc": "2026-11-21T11:37:01+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Claim 'chống rung/an toàn/thử nghiệm 2000 lần' của shop khó kiểm chứng và dễ kéo sang hình ảnh dùng điện thoại khi đang lái xe.",
+   "khuyen_nghi": "Làm được nếu chỉ quay demo trong phòng, nói 'che nắng, che mưa nhỏ, kẹp bằng một tay'; không quay/nói cảnh vừa lái vừa xem điện thoại, không lặp số thử nghiệm của shop."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "'Chống rung', 'không rơi', 'đảm bảo an toàn', '2000 lần/1000 km thử nghiệm', 'giảm nóng máy' là lời shop, chưa có chứng nhận kèm theo nên không nên nói như cam kết."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Không thấy logo hay tên thương hiệu nào trên sản phẩm hoặc ảnh."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Mũ gấu tai tròn là kiểu dáng phổ biến, không thấy nhân vật hay hình bản quyền nào trong ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Phụ kiện điện thoại cho xe, không thuộc nhóm hàng hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm cho người lái xe, kiểu dáng dễ thương nhưng không nhắm vào trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Hình ảnh/lời nói khuyến khích dùng điện thoại khi đang lái xe (ảnh shop có câu 'vừa đi vừa quay chụp', 'dẫn đường khi mưa').",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay người ngồi trên xe đang chạy, không dùng câu 'vừa đi vừa quay chụp'; chỉ demo trên bàn và nói 'xem bản đồ khi dừng xe'."
+   },
+   {
+    "van_de": "Ảnh shop không khớp trang: có ô che đen và màu 'vàng kem' nhưng phân loại chỉ có mũ che, hai màu hồng và đen đỏ; chất liệu ảnh 'ABS + silicon' khác thông số trang 'TPU'.",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay đúng phân loại có bán, không nhắc vàng kem hay chất liệu; kiểm tra hàng thật khi nhận."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống rung tuyệt đối, không bao giờ rơi, đảm bảo an toàn khi lái",
+    "goi_y": "Kẹp chắc tay, lắc thử tại bàn"
+   },
+   {
+    "khong_nen": "Đã thử nghiệm 2000 lần phanh gấp / 1000 km đường gồ ghề",
+    "goi_y": "Chỉ nói thứ em tự quay được: bấm một nút, chấu ôm lại"
+   },
+   {
+    "khong_nen": "Chống nước cho điện thoại, mưa to cũng không sao",
+    "goi_y": "Mái che nằm phía trên màn hình, che mưa nhỏ"
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa biết hộp có kiểu lắp gương hay tay lái, bản không mũ trông ra sao, và có giấy tờ kiểm định nào cho số liệu 2000 lần/1000 km hay không.",
+  "danh_gia_luc": "2026-11-21T11:37:01+07:00"
+ }
 }
