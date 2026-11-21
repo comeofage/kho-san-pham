@@ -36,5 +36,62 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-21T15:58:48+07:00"
+ "cap_nhat_luc": "2026-11-21T15:59:12+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Phụ kiện điện thoại rủi ro thấp, nhưng ảnh shop có claim tuyệt đối (chống nước/chống bụi loa, kim loại nguyên khối, số liệu có dấu *) và thông tin thương hiệu không thống nhất.",
+   "khuyen_nghi": "Chỉ nói những gì tự quay được (dán, vân tay, nhìn nghiêng Privacy 28°), không lặp lại các số liệu dấu * như sự thật. Đối chiếu tên thương hiệu trên hộp nhận được trước khi đăng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh shop có 'chống nước, chống bụi' cho loa, 'kim loại nguyên khối', 10.000 lần ma sát, 5 Mohs (đều có dấu *); mô tả shop ghi Privacy 28°, không phải 360°."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thông số ghi Thương hiệu 'iPhone' và Brand 'MOLAN CANO', trong khi ảnh/hộp ghi CrystalArmor; tên iPhone chỉ nên dùng để chỉ mẫu máy tương thích."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh shop dựng hình iPhone 3D; nên dùng footage tự quay thay vì ảnh shop và không dùng logo Apple."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Kính cường lực điện thoại, không thuộc nhóm hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm đến trẻ em, không có hình trẻ em trong ảnh."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nhìn trộm hoàn toàn / không ai nhìn thấy được",
+    "goi_y": "Nói đúng mô tả shop: Privacy 28° hạn chế người bên cạnh nhìn từ hai bên trái-phải, không phải 360°."
+   },
+   {
+    "khong_nen": "Chống nước, chống bụi cho loa; kim loại nguyên khối",
+    "goi_y": "Không nhắc; chỉ quay cận viền và lỗ loa sau khi dán."
+   },
+   {
+    "khong_nen": "Không bao giờ vỡ / không xước / chống va đập tuyệt đối",
+    "goi_y": "Chỉ nói 'shop ghi' hoặc mô tả cảnh thử của mình (cào chìa khóa, vân tay) khi kết quả thật."
+   },
+   {
+    "khong_nen": "Chính hãng, bảo hành",
+    "goi_y": "Thông số ghi Không bảo hành, bỏ hẳn các từ này khỏi lời và caption."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa đọc nội dung 94 đánh giá và chưa có giấy tờ nhãn hiệu/ủy quyền của CrystalArmor; không tra được trang chính sách TikTok Shop (cần JS), đánh giá dựa vào hiểu biết sẵn có.",
+  "danh_gia_luc": "2026-11-21T15:59:12+07:00"
+ }
 }
