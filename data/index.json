@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-21T11:37:38+07:00",
+ "cap_nhat_luc": "2026-11-21T11:54:19+07:00",
  "san_pham": [
   {
    "id": "1737838702353417534",
    "uid": "1737838702353417534",
    "link": "https://vt.tiktok.com/ZS9PMdL2Bsbo6-G9HS0/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Đồ chơi lắp ráp khối xếp hình: căn cứ quân sự, vị trí phòng thủ, hầm trú ẩn, hào chiến, tháp canh, tháp quan sát của quân Đức.",
+   "gia": "77.557₫",
+   "shop": "Đồ chơi Hải Tử",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-21T11:29:01+07:00",
-   "cap_nhat_luc": "2026-11-21T11:37:23+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-21T11:54:07+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
