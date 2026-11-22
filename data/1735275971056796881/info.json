@@ -35,5 +35,58 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-22T16:58:37+07:00"
+ "cap_nhat_luc": "2026-11-22T16:58:48+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ dùng ăn uống cho trẻ sơ sinh: dễ vướng claim y tế/an toàn, và thương hiệu Tini Baby chưa thấy giấy ủy quyền cho shop DolPhinKid.",
+   "khuyen_nghi": "Chỉ quay và nói điều nhìn thấy (cổ rộng, vạch chia, họa tiết, 2 dung tích), không claim công dụng/an toàn, không có em bé trong khung; kiểm lại giấy công bố tiêu chuẩn và nhãn trên hộp khi nhận hàng."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Bình sữa dễ kéo theo claim chống đầy hơi/chống sặc/an toàn cho bé; mô tả shop không có các claim này nên video cũng không được thêm."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Logo 'Tini Baby' in trên bình và hộp, shop bán là DolPhinKid; trang không nêu ủy quyền thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Họa tiết thỏ, khủng long, gấu, sên là hình vẽ riêng của nhãn, không thấy nhân vật có bản quyền (Disney, Sanrio...) trong ảnh."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Vật dụng tiếp xúc thực phẩm cho trẻ nhỏ; trang có giấy công bố tiêu chuẩn cấp Hà Nội 23/04/2026, ô 'Số đăng kí' ghi 'Không có'."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Tuổi khuyến nghị 0 tháng đến 6 tuổi; hàng dành cho người lớn mua, tránh quay hay nhắc đến em bé thật trong video."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống đầy hơi, chống sặc, giúp bé tiêu hoá tốt, tốt cho sức khoẻ bé",
+    "goi_y": "Chỉ tả điều nhìn thấy: cổ rộng, vạch chia ml, họa tiết sticker, 2 dung tích 200ml/280ml."
+   },
+   {
+    "khong_nen": "An toàn tuyệt đối, chịu nhiệt bao nhiêu độ, không chứa BPA",
+    "goi_y": "Nói 'nhãn PPSU in trên hộp' như hình ảnh thật; không nêu nhiệt độ hay chứng nhận khi trang không ghi."
+   },
+   {
+    "khong_nen": "Bình Tini Baby chính hãng, nhập khẩu Hàn Quốc chính hãng",
+    "goi_y": "Không dùng chữ 'chính hãng'; xuất xứ chỉ nhắc 'xuất xứ Hàn Quốc' đúng như thông số trang."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Mô tả shop chỉ có tiêu đề mục (thành phần, núm ti, hướng dẫn vệ sinh) không có nội dung; không rõ có kèm núm ti, vật liệu nắp, giới hạn nhiệt, ủy quyền thương hiệu Tini Baby cho shop. Chưa tra được trang chính sách TikTok (cần JS).",
+  "danh_gia_luc": "2026-11-22T16:58:48+07:00"
+ }
 }
