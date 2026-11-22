@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-22T16:58:50+07:00",
+ "cap_nhat_luc": "2026-11-22T17:05:19+07:00",
  "san_pham": [
   {
    "id": "1737502677631862090",
    "uid": "1737502677631862090",
    "link": "https://vt.tiktok.com/ZS9PSP1R8HB9J-yXOlG/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Lu Uống Nước, Cốc Uống Nước Tiện Dụng, Tráng Men Bóng Đẹp Cả Trong Lẫn Ngoài, Lu Uống Nước Loại Đẹp, Lu Sinh Tố Lúa Mạch",
+   "gia": "96.436₫",
+   "shop": "Long Gốm sứ 2",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:37:04+07:00",
-   "cap_nhat_luc": "2026-11-22T16:39:38+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T17:05:06+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
@@ -56,10 +56,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:36:17+07:00",
-   "cap_nhat_luc": "2026-11-22T16:58:37+07:00",
+   "cap_nhat_luc": "2026-11-22T16:58:48+07:00",
    "so_caption": 100,
    "co_file01": true,
-   "rui_ro": null
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1734125528943986297",
