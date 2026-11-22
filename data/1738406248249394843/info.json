@@ -37,5 +37,78 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-22T17:10:32+07:00"
+ "cap_nhat_luc": "2026-11-22T17:11:05+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tên và mô tả sản phẩm chứa claim 'kháng khuẩn khử mùi 99,99%' và 'thấm hút gấp 16 lần' đồng thời là đồ vệ sinh phụ nữ, dễ bị gỡ video nếu lặp lại claim.",
+   "khuyen_nghi": "Làm theo hướng demo vật lý (độ mỏng, keo dán, bề mặt, mang theo), tuyệt đối không nhắc kháng khuẩn, khử mùi, con số 99,99% hay 16 lần. Kiểm giấy công bố/kiểm định của shop trước khi chạy đẩy mạnh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Tên sản phẩm có 'kháng khuẩn khử mùi 99,99%' và 'thấm hút gấp 16 lần', là claim chức năng/số liệu chưa có bằng chứng trên trang."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu SPACE7 (CoolFit) hiện trên bao bì và ảnh; ảnh bìa 7 còn có chữ Trung '七度空间', chưa rõ mối liên hệ với thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh bìa dùng người mẫu có nhãn 'YuQi — SPACE7 Brand Ambassador' và chữ ký; không được dùng lại hình/tên người này trong video."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Băng vệ sinh/miếng lót là đồ vệ sinh cá nhân, hàng xuất xứ Trung Quốc Đại Lục, trang ghi 'Phi y tế'; có thể cần giấy tờ công bố, trang chưa hiện."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Sản phẩm dành cho nữ trưởng thành; ảnh có hình đi học nhưng không nhắm trẻ em. Không quay người trong video."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim 'kháng khuẩn khử mùi 99,99%' trong tên sản phẩm đọc như claim y tế/vệ sinh",
+    "rui_ro": "🟠",
+    "xu_ly": "Không đọc, không viết lên chữ dựng, không đưa vào caption; chỉ nói điều quay được (độ mỏng, keo, bề mặt, mang theo)."
+   },
+   {
+    "van_de": "Claim 'thấm hút gấp 16 lần' không có số liệu hay ảnh chứng minh",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ quay demo nhỏ vài giọt nước thật và nói theo kết quả thật, không nhắc con số 16 lần."
+   },
+   {
+    "van_de": "Nội dung liên quan kỳ kinh nguyệt, đồ vệ sinh phụ nữ",
+    "rui_ro": "🟠",
+    "xu_ly": "Chỉ nói 'dịch tiết hằng ngày và cuối kỳ lượng ít' đúng như mô tả shop, không so sánh thay thế băng vệ sinh, không mô tả tình trạng cơ thể, không quay mặc lên người."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Kháng khuẩn 99,99%, khử mùi hiệu quả",
+    "goi_y": "Nói 'hương bạc hà dịu, cảm giác mát' (đúng mô tả) thay cho claim kháng khuẩn/khử mùi."
+   },
+   {
+    "khong_nen": "Thấm hút gấp 16 lần",
+    "goi_y": "Quay nhỏ nước màu rồi nói 'em thử nhỏ vài giọt, kết quả như trong video'."
+   },
+   {
+    "khong_nen": "Dùng thay băng vệ sinh khi kinh nhiều, ngừa bệnh phụ khoa, giảm ngứa",
+    "goi_y": "Nói 'hợp dịch tiết hằng ngày và cuối kỳ lượng ít' như mô tả shop."
+   },
+   {
+    "khong_nen": "Nhắc tên/hình ảnh người mẫu YuQi hoặc dùng ảnh bìa có người mẫu",
+    "goi_y": "Chỉ dùng hình sản phẩm tự quay."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy công bố/kiểm định sản phẩm, chưa rõ quan hệ giữa SPACE7 và chữ Trung 七度空间, chưa rõ shop có ủy quyền dùng hình người mẫu. Trang ghi giao 33–35 ngày, cần xác minh.",
+  "danh_gia_luc": "2026-11-22T17:11:05+07:00"
+ }
 }
