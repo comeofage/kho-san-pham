@@ -35,5 +35,66 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-22T16:51:20+07:00"
+ "cap_nhat_luc": "2026-11-22T16:51:46+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Sản phẩm vệ sinh phụ nữ nhập từ Trung Quốc, tên và ảnh có claim hiệu năng (chống tràn 360°, thoáng khí) và nhắm đối tượng nhạy cảm (mang thai, sau sinh); bao bì in 'Japan quality' trong khi xuất xứ ghi China.",
+   "khuyen_nghi": "Làm được nếu chỉ quay demo vật thật (thấm nước, kéo giãn, xé hông), không có người mặc, không claim y tế hay sức khoẻ, không nói hàng Nhật. Kiểm lại giấy công bố/số lưu hành tại Việt Nam của người bán trước khi đẩy mạnh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên sản phẩm có 'chống tràn 360°', 'thoáng khí', 'phù hợp phụ nữ mang thai và sau sinh'; số 50% mỏng hơn là dữ liệu phòng thí nghiệm của shop, không có kiểm định độc lập."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Misecr, chưa thấy giấy tờ đăng ký nhãn hiệu tại Việt Nam trên trang; gói có nhiều ngôn ngữ và dòng 'Japan quality' dễ gây hiểu nhầm nguồn gốc."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Bộ quay dùng vật thật tự quay, không dùng lại ảnh KOC hay người mẫu trên ảnh shop."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Hàng vệ sinh phụ nữ dùng trực tiếp lên da; thông số ghi giấy công bố hợp quy do Fujian (Trung Quốc) cấp 2022, chưa thấy giấy công bố hay số lưu hành tại Việt Nam, không có bảng thành phần."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không nhắm trẻ em; ảnh shop có cảnh học sinh nhưng bộ quay không dùng."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho bà bầu / phụ nữ sau sinh, không kích ứng, bảo vệ sức khoẻ, kháng khuẩn",
+    "goi_y": "Chỉ nói điều nhìn thấy: dạng quần, cạp cao, thun gợn, gờ chống rò, xé hai hông, chọn size theo cân nặng."
+   },
+   {
+    "khong_nen": "Hàng Nhật, chuẩn Nhật, Japan quality",
+    "goi_y": "Không đọc và không để lộ dòng chữ này trong khung; thông số trang ghi xuất xứ China."
+   },
+   {
+    "khong_nen": "Không bao giờ tràn, chống tràn tuyệt đối, chống tràn 360° như một lời đảm bảo",
+    "goi_y": "Chiếu demo thật (đổ nước, nghiêng) và để khách tự xem, chữ dựng chỉ ghi 'test thật'."
+   },
+   {
+    "khong_nen": "Mỏng hơn băng thường 50%, thấm gấp nhiều lần",
+    "goi_y": "Chỉ chiếu cảnh chồng cạnh nhau và cảnh đổ cùng lượng nước, không lặp số của shop."
+   },
+   {
+    "khong_nen": "Không mùi, thoáng khí như cam kết hiệu quả",
+    "goi_y": "Không có cách chứng minh bằng hình; chỉ nhắc 'không mùi' theo thông số shop nếu cần, không đưa vào chữ dựng."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Không có bảng thành phần, chưa thấy giấy công bố/số lưu hành tại Việt Nam của người bán, chưa có nội dung review thật (chỉ đếm 721 đánh giá), chưa đọc được chính sách TikTok Shop VN trực tiếp (trang cần JS), đánh giá dựa trên hiểu biết sẵn có.",
+  "danh_gia_luc": "2026-11-22T16:51:46+07:00"
+ }
 }
