@@ -35,5 +35,62 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-22T16:38:53+07:00"
+ "cap_nhat_luc": "2026-11-22T16:39:22+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Mô tả shop dùng ngôn ngữ y tế/chăm sóc (nước tiểu, người lớn, da, không formaldehyde, nguyên liệu tự nhiên) và sản phẩm dùng cho em bé, nên dễ vướng claim và quy định trẻ em nếu đưa nguyên văn.",
+   "khuyen_nghi": "Chỉ nói đặc tính vật lý quay được (chống thấm, chống trượt, giặt máy, nhiều cỡ và họa tiết); không dùng chữ của mô tả shop; không quay trẻ em thật."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Claim 'chống thấm/chống trượt/giặt được' là đặc tính vật lý chấp nhận được nếu có demo thật; claim 'thân thiện với da, không formaldehyde, nguyên liệu tự nhiên, không chất độc hại' không có chứng nhận trong trang nên không nên nhắc."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Shop Sky Dragon Quality Goods không thấy thương hiệu hay logo trên ảnh; chưa xác minh đăng ký nhãn hiệu của người bán."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Họa tiết 'Gấu bé', 'Trái tim', 'Hoa' là hình chung, không thấy nhân vật bản quyền rõ trong ảnh ghép, nhưng chưa kiểm từng ảnh phân loại ở độ phân giải cao."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Tấm lót vải gia dụng, không phải thiết bị y tế hay hàng cấm; tên 'miếng đệm chăm sóc người lớn' trong mô tả chỉ là cách gọi, không có đăng ký y tế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Ảnh shop dùng em bé làm mẫu và nêu dùng cho giường em bé, ghế an toàn; video của mình không quay trẻ em thật, không nói 'an toàn cho trẻ sơ sinh'."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chăm sóc/cách ly nước tiểu cho người lớn, dùng cho người bệnh, người già tiểu không tự chủ",
+    "goi_y": "Nói 'tấm lót chống thấm trải giường', 'đỡ ướt nệm khi làm đổ nước'."
+   },
+   {
+    "khong_nen": "Thân thiện với da, chăm sóc da, không formaldehyde, không huỳnh quang, nguyên liệu tự nhiên không độc hại",
+    "goi_y": "Chỉ tả cảm giác khi chạm: 'mặt vải cotton mềm'."
+   },
+   {
+    "khong_nen": "Thấm kinh nguyệt, cầm máu, ngừa hăm/viêm, chống khuẩn",
+    "goi_y": "Bỏ hẳn, không có trong cảnh quay."
+   },
+   {
+    "khong_nen": "Đúng 4 lớp, không bao giờ thấm, bền vĩnh viễn, giặt bao nhiêu lần cũng không hỏng",
+    "goi_y": "Nói 'nhiều lớp'; chỉ nói điều đã tự thử (đổ nước, giặt thử N lần)."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có giấy chứng nhận chất liệu/chất lượng; chưa biết số lớp thật (tên 4 lớp, mô tả 3 thành phần); chưa xác minh họa tiết có nhân vật bản quyền hay không; chưa thử hàng thật. Tab Rủi ro này đánh giá theo hiểu biết sẵn có, không đọc được trang chính sách TikTok (cần JS).",
+  "danh_gia_luc": "2026-11-22T16:39:22+07:00"
+ }
 }
