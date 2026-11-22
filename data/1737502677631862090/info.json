@@ -37,5 +37,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-22T17:05:06+07:00"
+ "cap_nhat_luc": "2026-11-22T17:05:10+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Tên gọi 'Cốc/Lu Uống Nước' lệch với mô tả (đồ trang trí) và trang không có thông tin men dùng được cho thực phẩm/đồ uống; hàng gốm dễ vỡ khi ship.",
+   "khuyen_nghi": "Làm theo hướng trang trí/đựng đồ nhỏ, chỉ rót nước thường để demo, không nói an toàn thực phẩm, chịu nhiệt hay bảo hành. Nhận hàng kiểm số lượng/màu thật trước khi quay."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tiêu đề gợi công dụng đựng đồ uống nhưng mô tả chỉ nói trang trí; tránh claim an toàn thực phẩm/chịu nhiệt."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Chỉ có logo shop 'Long Gốm Sứ' trên banner; không thấy thương hiệu bên thứ ba."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Lu gốm trơn men màu, ảnh thật cầm tay, không có hình/nhân vật có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Nếu bán/quảng cáo như đồ chứa đồ uống thì thuộc nhóm tiếp xúc thực phẩm, trang không có giấy tờ kiểm định men."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Không có yếu tố trẻ em trong ảnh hay mô tả."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn thực phẩm / không chì / chịu nhiệt / dùng thay cốc uống hằng ngày",
+    "goi_y": "Nói theo hướng trang trí, đựng bút, cắm hoa khô; chỉ cho thấy rót nước thường, không khẳng định độ an toàn."
+   },
+   {
+    "khong_nen": "Bảo hành bể vỡ, bền mãi, chính hãng",
+    "goi_y": "Chỉ tả điều nhìn thấy: màu men, độ bóng, kích thước đo thật."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có kích thước/trọng lượng thật (trang chỉ ghi 0-500 ml); chưa có giấy tờ kiểm định men gốm tiếp xúc thực phẩm; chưa rõ phân loại màu '/ 5 Lu' là cùng màu hay lẫn màu; phí ship hiển thị 'From 101.900₫' chưa rõ thật.",
+  "danh_gia_luc": "2026-11-22T17:05:10+07:00"
+ }
 }
