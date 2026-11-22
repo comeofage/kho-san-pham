@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-22T16:51:58+07:00",
+ "cap_nhat_luc": "2026-11-22T16:58:50+07:00",
  "san_pham": [
   {
    "id": "1737502677631862090",
@@ -35,11 +35,11 @@
    "id": "1735275971056796881",
    "uid": "1735275971056796881",
    "link": "https://vt.tiktok.com/ZS9PSfcefcVt8-Y6FnQ/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[DolPhinKid] Bình Sữa TiNi Baby PPSU Sticker Ngộ Nghĩnh 200ml / 280ml – Thiết Kế Cổ Rộng Dễ Sử Dụng",
+   "gia": "64.333₫",
+   "shop": "DolPhinKid",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:36:17+07:00",
-   "cap_nhat_luc": "2026-11-22T16:39:38+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T16:58:37+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
