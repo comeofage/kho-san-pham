@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-22T10:58:11+07:00",
+ "cap_nhat_luc": "2026-11-22T10:59:58+07:00",
  "san_pham": [
   {
    "id": "1729785329583032959",
    "uid": "1729785329583032959",
    "link": "https://vt.tiktok.com/ZS9PBkKSSV8Tr-SY6o4/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Bộ đất nặn 3D Deli 12/24 màu - Đất sét nặn an toàn, không dính tay, màu sắc tươi sáng, kèm phụ kiện khuôn nặn cho bé Toy Đồ Chơi thông minh",
+   "gia": "89.004₫",
+   "shop": "Deli Vietnam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-22T10:30:30+07:00",
-   "cap_nhat_luc": "2026-11-22T10:55:49+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T10:59:46+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
