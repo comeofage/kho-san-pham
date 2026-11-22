@@ -33,25 +33,26 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 47,
-  "luc": "2026-11-17T12:50:36+07:00",
+  "so_video": 46,
+  "luc": "2026-11-22T11:25:27+07:00",
   "poster": [
-   {
-    "folder": 255,
-    "so_video": 21,
-    "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output_poster"
-   },
    {
     "folder": 256,
     "so_video": 26,
     "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output",
     "nhan": "nha.cua.mit"
+   },
+   {
+    "folder": 255,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output_poster",
+    "nhan": "Adam"
    }
   ],
-  "poster_folder": 256,
-  "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output"
+  "poster_folder": 255,
+  "duong_dan": "E:/oneshottramcanh/chaunhua-1731141980888533631/output_poster"
  },
- "cap_nhat_luc": "2026-11-17T12:50:36+07:00",
+ "cap_nhat_luc": "2026-11-22T11:25:27+07:00",
  "the": [
   "pemit89"
  ],
