@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-22T16:37:13+07:00",
+ "cap_nhat_luc": "2026-11-22T16:39:06+07:00",
  "san_pham": [
   {
    "id": "tam-20261122163704298",
@@ -125,11 +125,11 @@
    "id": "1737333797021713675",
    "uid": "1737333797021713675",
    "link": "https://vt.tiktok.com/ZS9PSfkHDTjxb-ASkSi/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Tấm lót chống thấm trải giường mẫu mới nhất 2026, chống nước chống trượt có thể giặt,Tấm Lót Chống Thấm 4 Lớp",
+   "gia": "53.688₫",
+   "shop": "Sky Dragon Quality Goods",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -146,9 +146,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:33:30+07:00",
-   "cap_nhat_luc": "2026-11-22T16:33:34+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T16:38:53+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
