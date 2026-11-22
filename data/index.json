@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-22T16:39:56+07:00",
+ "cap_nhat_luc": "2026-11-22T16:51:33+07:00",
  "san_pham": [
   {
    "id": "1737502677631862090",
@@ -65,11 +65,11 @@
    "id": "1734125528943986297",
    "uid": "1734125528943986297",
    "link": "https://vt.tiktok.com/ZS9PSfpp3Ebem-6uwkd/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【Misecr】Băng vệ sinh dạng quần Misecr 2 túi  (60 miếng) , chống tràn 360°, thoáng khí, phù hợp sử dụng ngày và đêm dành cho phụ nữ mang thai và sau sinh,Thích Hợp Cho Phụ Nữ",
+   "gia": "228.083₫",
+   "shop": "MISECR Vietnam",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -86,9 +86,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:35:46+07:00",
-   "cap_nhat_luc": "2026-11-22T16:39:38+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T16:51:20+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
