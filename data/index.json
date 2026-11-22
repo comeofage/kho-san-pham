@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-22T17:05:19+07:00",
+ "cap_nhat_luc": "2026-11-22T17:10:44+07:00",
  "san_pham": [
   {
    "id": "1737502677631862090",
@@ -26,10 +26,13 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:37:04+07:00",
-   "cap_nhat_luc": "2026-11-22T17:05:06+07:00",
+   "cap_nhat_luc": "2026-11-22T17:05:10+07:00",
    "so_caption": 100,
    "co_file01": true,
-   "rui_ro": null
+   "rui_ro": {
+    "nen_lam": "⚠️",
+    "muc_do": "🟡"
+   }
   },
   {
    "id": "1735275971056796881",
@@ -101,11 +104,11 @@
    "id": "1738406248249394843",
    "uid": "1738406248249394843",
    "link": "https://vt.tiktok.com/ZS9PSf5TYHjPC-Z56YZ/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【SPACE7】Miếng lót mát lạnh 155mm, gói lớn nâng cấp 84 miếng, mềm mại, siêu mỏng 0,08cm, thấm hút gấp 16 lần, hương bạc hà, kháng khuẩn khử mùi 99,99%, thoáng khí, sảng khoái, dùng hằng ngày, phù hợp mùa hè và cuối kỳ kinh.",
+   "gia": "74.926₫",
+   "shop": "Hearttex & Space7",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -122,9 +125,9 @@
    "the": [],
    "them_boi": "Linh",
    "them_luc": "2026-11-22T16:34:04+07:00",
-   "cap_nhat_luc": "2026-11-22T16:39:37+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-22T17:10:32+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
