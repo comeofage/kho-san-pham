@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-23T11:42:34+07:00",
+ "cap_nhat_luc": "2026-11-23T11:45:50+07:00",
  "san_pham": [
   {
    "id": "1738083993239520429",
    "uid": "1738083993239520429",
    "link": "https://vt.tiktok.com/ZS9PUp3nhdbWh-sjMJ8/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Búa Đồ Chơi Hoạt Hình Dễ Thương, Móc Khóa Treo Balo Phát Ra Tiếng Kêu, Đồ Chơi Giảm Stress Sáng Tạo Búa Hoạt Hình Dễ Thương。Lắc Lên Phát Ra Tiếng Bíp Bíp",
+   "gia": "48.931₫",
+   "shop": "Youyo toys",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-23T10:32:25+07:00",
-   "cap_nhat_luc": "2026-11-23T11:42:21+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-23T11:45:39+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
