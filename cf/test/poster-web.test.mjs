@@ -725,7 +725,7 @@ test("pvThongBao / pvHop: tiêu đề + câu đã esc, nút OK; pvHop trả {el,
 // ---------- móc khung.js (§6.1) ----------
 const K = new Function("esc", `"use strict";\n${khoi(KHUNG, "khung-thuan")}\nreturn { mnMENU, mnMuc, mnNavHtml, mnPhanTichHash };`)(esc);
 
-test("khung.js: mnPhanTichHash/mnMuc nhận #/poster, #/poster/<x>; nav chủ 5 mục (mục 5 Poster V2), người thường 1 mục", () => {
+test("khung.js: mnPhanTichHash/mnMuc nhận #/poster, #/poster/<x>; nav chủ 6 mục (mục 5 Poster V2, mục 6 Radar UID), người thường 1 mục", () => {
   assert.deepEqual(K.mnPhanTichHash("#/poster"), { trang: "poster", id: "" });
   assert.deepEqual(K.mnPhanTichHash("#/poster/queue"), { trang: "poster", id: "queue" });
   assert.deepEqual(K.mnPhanTichHash("#/poster/"), { trang: "poster", id: "" });
@@ -736,8 +736,8 @@ test("khung.js: mnPhanTichHash/mnMuc nhận #/poster, #/poster/<x>; nav chủ 5 
   assert.equal(K.mnMuc("#/poster", false), "");
   assert.deepEqual(K.mnMENU[4], { ma: "poster", href: "#/poster", ic: "📮", ten: "Poster V2", ngan: "Poster" });
   const h = K.mnNavHtml(true);
-  assert.equal((h.match(/<a\b/g) || []).length, 5); // 2026-11-19: gỡ Duyệt video + Đăng bài
-  assert.match(h, /<a href="#\/poster" data-nav="poster" aria-label="Poster V2">[^]*Poster V2[^]*<\/a>$/);
+  assert.equal((h.match(/<a\b/g) || []).length, 6); // 2026-11-19: gỡ Duyệt video + Đăng bài; D16: thêm Radar UID (mục 6)
+  assert.match(h, /<a href="#\/poster" data-nav="poster" aria-label="Poster V2">[^]*Poster V2[^]*<\/a>/); // bỏ neo $: Poster không còn là mục cuối
   assert.equal(K.mnNavHtml(false), `<a href="#/kho" data-nav="kho">Sản phẩm</a>`);
 });
 
@@ -773,13 +773,13 @@ test("mnRoute: pvDung ở đầu MỌI lần route; chủ #/poster[/x] → pvRen
 });
 
 // ---------- index.html (§6.2) + poster.css ----------
-test("index.html: poster.css sau menu.css; poster.js + 9 pv-*.js giữa khung.js và app.js đúng thứ tự §6.2; khung.js?v=4 (2026-11-19 gỡ dang.js, duyet.js)", () => {
+test("index.html: poster.css sau menu.css; poster.js + 9 pv-*.js giữa khung.js và app.js đúng thứ tự §6.2; khung.js?v=6 (2026-11-19 gỡ dang.js, duyet.js; D16 thêm Radar UID)", () => {
   assert.match(HTML, /<link rel="stylesheet" href="menu\.css\?v=1">\s*<link rel="stylesheet" href="poster\.css\?v=2">/);
   const js = [...HTML.matchAll(/<script src="([^"?]+)\?v=\d+" defer><\/script>/g)].map((m) => m[1]).filter((s) => !s.startsWith("vendor/"));
   const i = js.indexOf("khung.js");
   assert.deepEqual(js.slice(i, i + 12), ["khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js", "pv-folders.js", "pv-calendar.js",
     "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js"]);
-  assert.match(HTML, /khung\.js\?v=5"/);
+  assert.match(HTML, /khung\.js\?v=6"/); // D16: khung.js thêm mục Radar UID → ?v 5 → 6
   assert.match(HTML, /poster\.js\?v=2" defer/, "2026-11-19 nút Bật Poster V2: nâng ?v");
   for (const f of ["pv-dashboard.js", "pv-settings.js"]) assert.match(HTML, new RegExp(`${f.replace(".", "\\.")}\\?v=1" defer`));
 });

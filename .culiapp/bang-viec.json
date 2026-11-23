@@ -527,6 +527,306 @@
       "muc_can_dat": "khong-ap-dung",
       "muc_kiem_chung": "khong-ap-dung",
       "review": "R-L7 ĐẠT"
+    },
+    {
+      "ma": "A-RU1",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-architect",
+      "luot": 1,
+      "muc_tieu": "Thiết kế tab Radar UID (docs/radar-uid.md + D16)",
+      "duoc_sua": [
+        "docs/radar-uid.md",
+        "DECISIONS.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "muc_kiem_chung": null
+    },
+    {
+      "ma": "RU-B1",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 2,
+      "muc_tieu": "Công thức thuần radar_uid_tinh",
+      "duoc_sua": [
+        "tools/runner/radar_uid_tinh.py",
+        "tools/test_runner_radar_uid_tinh.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "unit",
+      "muc_kiem_chung": "unit"
+    },
+    {
+      "ma": "RU-B2",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 2,
+      "muc_tieu": "Kho radar_uid.db",
+      "duoc_sua": [
+        "tools/runner/kho_radar_uid.py",
+        "tools/test_runner_radar_uid_kho.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-A1",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-automation",
+      "luot": 2,
+      "muc_tieu": "Client EchoTik echotik.py",
+      "duoc_sua": [
+        "tools/runner/echotik.py",
+        "tools/test_runner_echotik.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-W1",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-web",
+      "luot": 2,
+      "muc_tieu": "Worker /api/radar/*",
+      "duoc_sua": [
+        "cf/src/radar.js",
+        "cf/src/worker.js(2 dòng)",
+        "cf/test/radar-worker.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-B4",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 2,
+      "muc_tieu": "Chuyển tiếp video_server /r/radar/*",
+      "duoc_sua": [
+        "tools/video_server.py",
+        "tools/test_video_server.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-W2",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-web",
+      "luot": 2,
+      "muc_tieu": "Giao diện tab #/theo-doi",
+      "duoc_sua": [
+        "web/radar-uid.js",
+        "web/khung.js",
+        "web/index.html",
+        "web/style.css",
+        "web/viec.js",
+        "web/loi.js",
+        "cf/test/radar-uid-web.test.mjs",
+        "cf/test/menu-web.test.mjs",
+        "cf/test/poster-web.test.mjs",
+        "cf/test/homnay-web.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-A3",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-automation",
+      "luot": 3,
+      "muc_tieu": "Test nối đầu-cuối bằng EchoTik giả",
+      "duoc_sua": [
+        "tools/test_runner_radar_uid_noi_day.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-B5",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 3,
+      "muc_tieu": "Sửa cờ MAU_TOP_VIDEO (bỏ vế thứ tự)",
+      "duoc_sua": [
+        "tools/runner/radar_uid_tinh.py",
+        "tools/test_runner_radar_uid_tinh.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "unit",
+      "muc_kiem_chung": "unit"
+    },
+    {
+      "ma": "RU-D2",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-architect",
+      "luot": 3,
+      "muc_tieu": "Cập nhật đặc tả theo hành vi thật",
+      "duoc_sua": [
+        "docs/radar-uid.md",
+        "docs/bo-chay-viec.md",
+        "docs/giao-dien-menu-trai.md",
+        "DECISIONS.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "muc_kiem_chung": "khong-ap-dung"
+    },
+    {
+      "ma": "RU-W4",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-web",
+      "luot": 4,
+      "muc_tieu": "Nhãn MAU_TOP_VIDEO web",
+      "duoc_sua": [
+        "web/radar-uid.js",
+        "web/index.html",
+        "cf/test/radar-uid-web.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-B6",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 4,
+      "muc_tieu": "4 câu lý do Radar",
+      "duoc_sua": [
+        "tools/runner/api.py",
+        "tools/test_runner_radar_uid_api.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-B7",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 5,
+      "muc_tieu": "ds_can_chup lấy loi_tim",
+      "duoc_sua": [
+        "tools/runner/kho_radar_uid.py",
+        "tools/test_runner_radar_uid_kho.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-A4",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-automation",
+      "luot": 5,
+      "muc_tieu": "khong_chup_duoc + chặn redirect EchoTik",
+      "duoc_sua": [
+        "tools/runner/radar_uid.py",
+        "tools/runner/echotik.py",
+        "tools/test_runner_radar_uid_script.py",
+        "tools/test_runner_echotik.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-B8",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 5,
+      "muc_tieu": "gỡ kẹt dang_tim + xoá mã chết",
+      "duoc_sua": [
+        "tools/runner/api.py",
+        "tools/test_runner_radar_uid_api.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-W5",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-web",
+      "luot": 5,
+      "muc_tieu": "ô View đổi đúng mẫu số",
+      "duoc_sua": [
+        "web/radar-uid.js",
+        "cf/test/radar-uid-web.test.mjs",
+        "web/index.html"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-D3",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-architect",
+      "luot": 5,
+      "muc_tieu": "đặc tả sau review R-RU3",
+      "duoc_sua": [
+        "docs/radar-uid.md",
+        "docs/bo-chay-viec.md",
+        "DECISIONS.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "muc_kiem_chung": "khong-ap-dung"
+    },
+    {
+      "ma": "RU-B9",
+      "ca": "2026-11-23-a",
+      "agent": "culiapp-backend",
+      "luot": 6,
+      "muc_tieu": "câu khong_chup_duoc",
+      "duoc_sua": [
+        "tools/runner/api.py",
+        "tools/test_runner_radar_uid_api.py",
+        "tools/runner/radar_uid.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "RU-T1",
+      "ca": "2026-11-23-a",
+      "agent": "truong-phong",
+      "luot": 5,
+      "muc_tieu": "thêm 8 file test vào LENH kiem-chung",
+      "duoc_sua": [
+        ".culiapp/kiem-chung.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture"
     }
   ]
 }

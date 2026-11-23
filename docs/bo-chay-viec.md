@@ -242,6 +242,7 @@ CREATE TABLE IF NOT EXISTS nonce(gia_tri TEXT PRIMARY KEY, luc REAL NOT NULL);  
 - **Làn `gpu`** (1 việc): `voice_pv`, `voice_genmax`, `taovideo`. Điều kiện trước: không có `ffmpeg.exe` nào nằm ngoài cây tiến trình của runner.
 - **Làn `nhe`** (1 việc): `radar_ban_tin`, `phan_tich_uid`, `douyin_uid`, `xu_ly_link_moi`, `poster_day_folder`, `muse_clip`, `poster_len_lich`.
   - D15 (Đã chốt 2026-11-22) thêm `quet_view_hang_ngay` và `hoc_hang_ngay` vào làn này, kèm **hẹn giờ** tối thiểu trong vòng làn `nhe` (`BoChay(hen_gio=…)`, 09:00 và 12:00 giờ VN, chỉ bật khi thư mục runner là `E:\kho-runner`): xem `docs/hoc-tu-dong.md` §3.4, §3.4a.
+  - D16 (Đã chốt 2026-11-23, đã hiện thực, chờ tích hợp) thêm `radar_uid_hang_ngay` và `radar_uid_nap` vào làn `nhe`, không tài nguyên (`tai_nguyen=frozenset()`, `danh_muc.py:1739-1751`). Hẹn giờ mặc định `HEN_GIO_MAC_DINH` (`vong_lap.py:118-119`), giờ VN, theo thứ tự tạo trong một vòng: `quet_view_hang_ngay` **09:00**, `radar_uid_hang_ngay` **10:00**, `hoc_hang_ngay` **12:00** (quét trước, Radar sau, học cuối). Chỉ bật khi thư mục runner là `E:\kho-runner` (`chay_runner.py:113-114`). `_hen_gio` bỏ lịch Radar (ghi `log.warning`, không thử lại trong ngày) nếu `radar_uid.db` không mở được hoặc `radar_uid_bat = 0` (`vong_lap.py:1408-1413`). Thiết kế: `docs/radar-uid.md` §6.
 - **Mutex tài nguyên** (P2-8): `LoaiViec.tai_nguyen: frozenset[str]`. Runner giữ một `threading.Lock` cho mỗi tên tài nguyên, **dùng chung cho mọi làn**. Khi nhận việc, `nhan_viec_ke` chỉ chọn job FIFO đầu tiên trong làn mà mọi tài nguyên của nó đang rảnh. Tài nguyên được giữ suốt job.
   - `kho`: `phan_tich_uid`, `douyin_uid`, `xu_ly_link_moi`, `taovideo`. Hệ quả: khi `taovideo` chạy (hàng giờ), các việc đụng kho ở làn `nhe` phải đợi. Radar, poster và muse vẫn chạy. Chấp nhận được vì taovideo ≤ 1 lần/ngày.
   - `poster`: `poster_day_folder`, `poster_len_lich`.
@@ -265,6 +266,8 @@ Unique index một phần `viec_dang_mo(loai, khoa)`. `tao()` ném `TrungViec(vi
 | `poster_day_folder`, `muse_clip` | `ma_du_an` |
 | `voice_pv`, `voice_genmax` | `ma_du_an:me` |
 | `poster_len_lich` | `folder:<id>` |
+| `radar_uid_hang_ngay` | ngày chụp `YYYY-MM-DD` (hôm nay hoặc hôm qua giờ VN) |
+| `radar_uid_nap` | UID gốc 19 chữ số (`goc`) |
 
 ### 4.6 Job Object, khởi động lại, mồ côi
 
@@ -326,6 +329,8 @@ Quy tắc chung:
 | `xu_ly_link_moi` | script `python tools/kho.py cho`, cwd repo | không | nhe / `kho` | 5 phút | chẩn đoán kho | Dòng `^(\d{19})\t` (`tools/kho.py:419`) → tạo job con `phan_tich_uid` (tối đa 5, trùng thì bỏ qua); id `tam-…` báo "link rút gọn chưa phân giải". Exit 0 → `xong` | có |
 | `poster_day_folder` | script 2 bước: `E:/tool/tiktok_poster_v2/.venv/Scripts/python.exe C:/Users/Mi/.claude/skills/tao-video-tu-canh-quay/scripts/day_len_poster.py --project <P> --link https://shop.tiktok.com/vn/pdp/<UID> --captions <P>/kich-ban/poster_captions.txt --xem`, rồi cùng lệnh bỏ `--xem` | `uid`, `du_an` | nhe / `poster` | 15 phút | cổng 8023 sống; có file captions | Bước xem: exit 0, không `[LỖI]`. Bước thật: exit 0 + có `soát lại:` + không `[LỖI]`; có `[CẢNH BÁO]` → `xong` + `co_lo_ngai` (`aff-poster.md:57-59`) | có (`aff-poster.md:41`) |
 | `voice_pv` | script `python C:/Users/Mi/.claude/skills/tao-video-tu-canh-quay/scripts/tao_voice_pv.py --project <P> --batch <me>` | `uid`, `du_an`, `me` | gpu / – | 4 giờ | cổng 7890 sống; không ffmpeg ngoài | Xem P2-7 bên dưới | có |
+| `radar_uid_hang_ngay` (D16) | 1 bước script `python -B -m runner.radar_uid --che-do hang-ngay --ngay <ngày> --db <du_lieu>/radar_uid.db --token-file <file token> --viec-id <id> --tran-goi <radar_uid_goi_ngay hiệu lực>`, cwd `THU_MUC_CAI` (`_buoc_radar_uid`, `danh_muc.py:1037-1057`). Miễn phí, chỉ GET EchoTik, không Claude | `ngay` (chỉ hôm nay hoặc hôm qua) | nhe / – | 20 phút (`het_gio_s=1200`) | không (`_dk_khong`) | **theo `lan_chay`** (`_dau_ra_radar_uid("hang-ngay")`, `danh_muc.py:1624-1641`): mở `radar_uid.db` `mode=ro`, bảng `lan_chay` theo `(che_do, viec_id)` mới nhất: `trang_thai ∈ {xong, tu_dung}` → `xong`; còn lại (thiếu file, chưa chạy, dở, `loi`, DB hỏng) → `chua`. **Không** đòi mọi UID có `chup_uid`: `tu_dung` (hết ngân sách, token hết hạn…) vẫn là `xong`. Từ lượt 5, lượt đã thử ≥ 1 UID mà chụp `ok` = 0 kết thúc `loi` (`ly_do="khong_chup_duoc"`) ⇒ `chua`; `hang-ngay` nay chụp cả nhóm `loi_tim` (chi tiết `docs/radar-uid.md` §6.2–6.3) | có (script idempotent, tối đa 3 lần đối soát) |
+| `radar_uid_nap` (D16) | như trên với `--che-do nap --goc <UID>` (thêm `--goc`) | `goc` (19 chữ số, chuỗi) | nhe / – | 15 phút (`het_gio_s=900`) | không | như trên với `che_do='nap'` | có |
 
 **`voice_pv` đối soát (P2-7):**
 - Danh sách mã lấy bằng `python …/trang_thai.py --project <P> --batch <me> ma`.
@@ -340,6 +345,8 @@ Quy tắc chung:
 Mẻ giọng creator (`day_poster.py`) **không** có trong đợt 3.
 
 **Loại chỉ runner tự tạo (D15, Đã chốt 2026-11-22):** `quet_view_hang_ngay` (quét view video của mình, bọc chuỗi `tiktok_scan.py` → `ghi_view_poster.py`) và `hoc_hang_ngay` (học mỗi ngày). Web không tạo được; `hoc_hang_ngay` không chạy lại được; `quet_view_hang_ngay` chỉ chạy lại được lượt của hôm nay. Bảng bước/tham số/đối soát: `docs/hoc-tu-dong.md` §3.3, §3.4a.
+
+**Loại chỉ runner/API nội bộ tạo (D16, Đã chốt 2026-11-23, đã hiện thực):** `radar_uid_hang_ngay` (chụp snapshot EchoTik hằng ngày) và `radar_uid_nap` (nạp một UID gốc: tìm tương tự + chụp lần đầu). Cùng script `runner.radar_uid`, miễn phí, `ton_tien=False`, `dot=3`, `agent=None`, `tu_chay_lai=True`. Cả hai nằm trong `LOAI_CHI_HE_THONG` (`danh_muc.py:163-164`: web không tạo qua `POST /viec`, `/danh-muc` không liệt kê) **và** `LOAI_KHONG_CHAY_LAI` (`:167`: không "Chạy lại" qua `/viec/<id>/chay-lai`); nút trong tab Radar gọi route riêng `/radar/*` (API tạo bằng `_tao_viec_da_khoa`, bỏ cổng loại chỉ-hệ-thống nhưng vẫn qua `kiem_han_muc`; hàm `_tao_viec_he_thong` bản đầu là mã chết, đã xoá ở lượt 5). Không vào `LOAI_TON_TIEN` nên không cần duyệt. Kiểm hạn mức riêng ở mục 10. Chi tiết, bảng dừng/lỗi, ngân sách gọi: `docs/radar-uid.md` §6.
 
 ### 5.2 Đợt 4: tốn tiền hoặc rủi ro (luôn cần duyệt có chữ ký)
 
@@ -1030,6 +1037,14 @@ WM_CHO_PHEP: tuple[str, ...] = ()     # đợt 5 điền theo người dùng
 ```
 
 D15 (Đã chốt 2026-11-22) thêm 3 trần `hoc_bat_ngay` (1; 0 = tắt tự áp dụng **và** tắt hẳn gợi ý vào phiếu, vẫn đo và báo cáo), `hoc_hieu_luc_toi_da` (5; 0 = không bài nào vào phiếu), `quet_view_ngay` (3 việc/ngày; 0 = tắt lịch quét). Runner đọc `cau_hinh.json` **một lần lúc khởi động**: sửa xong phải khởi động lại runner; file hỏng thì quay về trần code: xem `docs/hoc-tu-dong.md` §4.3.
+
+D16 (Đã chốt 2026-11-23, đã hiện thực) thêm 3 trần Radar UID (`han_muc.py:43-46`, hiệu lực qua `han_muc_radar(hm)` `:136-140`; cùng cách đọc một lần lúc khởi động):
+
+| Khoá | Trần code | Ý nghĩa |
+|---|---|---|
+| `radar_uid_bat` | 1 | `0` = cầu dao: tắt lịch hẹn giờ, tắt tạo việc Radar (`VuotHanMuc` "Radar UID đang tắt"), mọi route ghi `/radar/*` trả 409 "Radar UID đang tắt"; route đọc vẫn chạy |
+| `radar_uid_goi_ngay` | 60 | trần GET EchoTik mỗi ngày VN; truyền cho script qua `--tran-goi` (`lap_buoc_hieu_luc` thay giá trị bằng trần hiệu lực); hết trần ⇒ lượt `tu_dung`/`het_han_muc_goi` |
+| `radar_uid_chay_ngay` | 6 | số việc `radar_uid_*` do **API** tạo mỗi ngày VN (nạp, tìm lại, chụp lại; hai loại cộng chung); việc hẹn giờ (`boi="he_thong"`) **không đếm**; vượt ⇒ `VuotHanMuc` ⇒ 429 (`_kiem_radar_uid`, `han_muc.py:403-415`) |
 
 Kiểm ở 3 thời điểm: **tạo**, **duyệt** (cả duyệt lại), **nhận**. Từ D9, loại tốn tiền không còn `chay-tiep`; loại miễn phí vẫn kiểm hạn mức ở `chay-tiep`.
 

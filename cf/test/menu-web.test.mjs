@@ -46,6 +46,8 @@ test("mnMuc: đủ bảng §2.3 cho chủ kho và người thường", () => {
     ["#/may-nha", "may-nha", ""], ["#/viec", "may-nha", ""], ["#/viec/j20261118100001abcd", "may-nha", ""], ["#/suc-khoe", "may-nha", ""],
     // D15 Q6: #/hoc không có mục menu riêng — mở từ khối Học hôm nay nên tô mục Hôm nay; người thường không tô gì.
     ["#/hoc", "hom-nay", ""], ["#/hocx", "", "kho"], ["#/hoc/x", "", "kho"],
+    // D16: Radar UID (#/theo-doi) là mục menu thứ 6, chỉ chủ kho; người thường không tô gì.
+    ["#/theo-doi", "theo-doi", ""], ["#/theo-doix", "", "kho"], ["#/theo-doi/x", "", "kho"],
     ["#/la", "", "kho"], ["#/khoxyz", "", "kho"], ["#/dangky", "", "kho"], ["#/viecx", "", "kho"], [`#/sua/${UID}`, "", "kho"],
   ];
   for (const [h, chu, thuong] of BANG) {
@@ -57,17 +59,18 @@ test("mnMuc: đủ bảng §2.3 cho chủ kho và người thường", () => {
 });
 
 // ---------- mnNavHtml ----------
-test("mnNavHtml: chủ 5 mục đúng thứ tự (mục 5 Poster V2), có icon/nhãn/aria-label, huy hiệu viec-hh trên Máy nhà; người thường đúng 1 mục 'Sản phẩm'", () => {
+test("mnNavHtml: chủ 6 mục đúng thứ tự (mục 5 Poster V2, mục 6 Radar UID), có icon/nhãn/aria-label, huy hiệu viec-hh trên Máy nhà; người thường đúng 1 mục 'Sản phẩm'", () => {
   const h = F.mnNavHtml(true);
   const a = [...h.matchAll(/<a href="([^"]+)" data-nav="([\w-]+)" aria-label="([^"]+)"/g)].map((m) => [m[1], m[2], m[3]]);
   assert.deepEqual(a, [["#/", "hom-nay", "Hôm nay"], ["#/kho", "kho", "Sản phẩm"], ["#/can-quay", "can-quay", "Cần quay"],
-    ["#/may-nha", "may-nha", "Máy nhà"], ["#/poster", "poster", "Poster V2"]]);
-  assert.equal((h.match(/<a\b/g) || []).length, 5);
-  assert.equal((h.match(/class="mn-ic" aria-hidden="true"/g) || []).length, 5);
+    ["#/may-nha", "may-nha", "Máy nhà"], ["#/poster", "poster", "Poster V2"], ["#/theo-doi", "theo-doi", "Radar UID"]]);
+  assert.equal((h.match(/<a\b/g) || []).length, 6);
+  assert.equal((h.match(/class="mn-ic" aria-hidden="true"/g) || []).length, 6);
   assert.ok(!/Duyệt video|Đăng bài|#\/duyet|#\/dang/.test(h), "đã gỡ Duyệt video + Đăng bài (2026-11-19)");
   assert.equal((h.match(/id="viec-hh"/g) || []).length, 1, "huy hiệu đúng 1 chỗ");
   assert.match(h, /data-nav="may-nha"(?:(?!<\/a>)[^])*<span class="huy-hieu" id="viec-hh" hidden><\/span><\/a><a href="#\/poster"/, "huy hiệu nằm trong mục Máy nhà");
   assert.match(h, /class="mn-ngan"[^>]*>Poster</, "nhãn ngắn cho thanh đáy");
+  assert.match(h, /class="mn-ngan"[^>]*>Radar</, "nhãn ngắn mục Radar UID");
   assert.ok(!/Kho sản phẩm/.test(h), "nhãn mới là 'Sản phẩm'");
   for (const m of F.mnMENU) assert.equal(F.mnMuc(m.href, true), m.ma, `href ${m.href} tô đúng mục ${m.ma}`);
   const t = F.mnNavHtml(false);
@@ -114,7 +117,7 @@ const theGia = (extra = {}) => ({ innerHTML: "", textContent: "", dataset: {}, d
   classList: { toggle() {}, add() {}, remove() {} }, addEventListener(ev, f) { this.nghe[ev] = f; }, setAttribute() {}, removeAttribute() {},
   insertAdjacentHTML(vt, html) { this.chen = (this.chen || []).concat([[vt, html]]); }, ...extra });
 
-function dungKhung({ chu = true, list = [], apiGia, dg = false, dy = false, viTri = { replace: () => {} } } = {}) {
+function dungKhung({ chu = true, list = [], apiGia, dg = false, dy = false, rdu = false, viTri = { replace: () => {} } } = {}) {
   const goi = [];
   const app = theGia();
   const dauKhung = theGia(), khung = theGia({ firstElementChild: dauKhung });
@@ -148,22 +151,42 @@ function dungKhung({ chu = true, list = [], apiGia, dg = false, dy = false, viTr
   ns.hcRender = async (p) => { goi.push(`hcRender:${p}`); };
   if (dg) Object.assign(ns, { dgRenderDs: async () => goi.push("dgRenderDs"), dgRender: async (id) => goi.push(`dgRender:${id}`), dgDung: () => goi.push("dgDung") });
   if (dy) Object.assign(ns, { dyRenderDs: async () => goi.push("dyRenderDs"), dyRender: async (id) => goi.push(`dyRender:${id}`), dyDung: () => goi.push("dyDung") });
+  if (rdu) Object.assign(ns, { rduRender: async (p) => goi.push(`rduRender:${p}`), rduDung: () => goi.push("rduDung") });
   const ten = Object.keys(ns);
   const K = new Function(...ten, `"use strict";\nlet phienCT = 0;\n${SRC_QUAY}\n${KHUNG}
 return { mnRoute, mnKiemSk, phien: () => phienCT, doiPhien: () => ++phienCT };`)(...ten.map((k) => ns[k]));
   return { K, goi, app, nut, dauKhung, chu };
 }
 
-const ROUTE_CHU = ["#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster", "#/hoc"];
+const ROUTE_CHU = ["#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster", "#/hoc", "#/theo-doi"];
 
 test("D15 mnRoute #/hoc: chủ kho → hcRender(phiên mới), trả true; thiếu hoc.js → câu 'đang cập nhật'; số mục menu không đổi (không thêm mục Học)", async () => {
   const x = dungKhung();
   assert.equal(await x.K.mnRoute("#/hoc", true), true);
   assert.deepEqual(x.goi, ["hcRender:1"]);
   assert.equal(x.K.phien(), 1);
-  assert.equal((F.mnNavHtml(true).match(/<a\b/g) || []).length, 5);
+  assert.equal((F.mnNavHtml(true).match(/<a\b/g) || []).length, 6);
   assert.ok(!/#\/hoc/.test(F.mnNavHtml(true)), "không có mục menu #/hoc");
-  assert.equal(F.mnMENU.length, 5);
+  assert.equal(F.mnMENU.length, 6);
+});
+
+test("D16 mnRoute #/theo-doi: chủ kho → rduDung rồi rduRender(phiên mới), trả true; người thường → CHI_CHU_HTML, không gọi rduRender; thiếu radar-uid.js → 'đang cập nhật'; rduDung chạy ở MỌI route", async () => {
+  let x = dungKhung({ rdu: true });
+  assert.equal(await x.K.mnRoute("#/theo-doi", true), true);
+  assert.deepEqual(x.goi, ["rduDung", "rduRender:1"]);
+  assert.equal(x.K.phien(), 1);
+  x = dungKhung({ rdu: true });
+  assert.equal(await x.K.mnRoute("#/kho", true), false);
+  assert.deepEqual(x.goi, ["rduDung"], "rời Radar sang trang khác cũng dừng hẹn giờ hỏi lại");
+  x = dungKhung({ chu: false, rdu: true });
+  assert.equal(await x.K.mnRoute("#/theo-doi", false), true);
+  assert.equal(x.app.innerHTML, CHI_CHU_HTML);
+  assert.deepEqual(x.goi, ["rduDung"], "người thường không vẽ Radar, không gọi rduRender");
+  x = dungKhung();
+  assert.equal(await x.K.mnRoute("#/theo-doi", true), true);
+  assert.match(x.app.innerHTML, /Trang đang được cập nhật/);
+  assert.equal(F.mnNavHtml(false), `<a href="#/kho" data-nav="kho">Sản phẩm</a>`, "người thường vẫn đúng 1 mục, không thấy Radar UID");
+  assert.ok(!/theo-doi|Radar/.test(F.mnNavHtml(false)));
 });
 
 test("mnRoute: người thường mở route chủ kho → CHI_CHU_HTML, trả true, không gọi API / không vẽ trang", async () => {
@@ -178,7 +201,7 @@ test("mnRoute: người thường mở route chủ kho → CHI_CHU_HTML, trả t
 
 test("mnRoute: hash ngoài phạm vi trả false, không vẽ; không còn gọi dgDung/dyDung (2 trang đã gỡ)", async () => {
   for (const chu of [true, false]) {
-    for (const h of ["", "#/", "#/kho", `#/sp/${UID}`, "#/viec/j20261118100001abcd", `#/sua/${UID}/0123456789abcdef`, "#/la", "#/dang/a/b", "#/can-quayx"]) {
+    for (const h of ["", "#/", "#/kho", `#/sp/${UID}`, "#/viec/j20261118100001abcd", `#/sua/${UID}/0123456789abcdef`, "#/la", "#/dang/a/b", "#/can-quayx", "#/theo-doix", "#/theo-doi/x"]) {
       const x = dungKhung({ chu, dg: true, dy: true });
       assert.equal(await x.K.mnRoute(h, chu), false, `${chu} ${h}`);
       assert.deepEqual(x.goi, [], `${chu} ${h}`);
@@ -280,11 +303,12 @@ test("app.js renderUser + danhDauNav: dùng mnNavHtml/mnMuc khi có khung.js; g�
   }
   for (const u of ["nhan", "comeofage"]) {
     const x = dungNavApp(u, `#/sua/${UID}/0123456789abcdef`, true);
-    assert.equal((x.nav.match(/<a\b/g) || []).length, 5);
+    assert.equal((x.nav.match(/<a\b/g) || []).length, 6);
     assert.equal(x.body.dataset.vai, "chu");
     assert.equal(x.body.dataset.trang, "sua");
     assert.ok(!/suc-khoe/.test(x.user), "đã có mục Máy nhà, bỏ 🩺 góc phải");
     assert.equal(dungNavApp(u, "#/poster", true).body.dataset.trang, "poster");
+    assert.equal(dungNavApp(u, "#/theo-doi", true).body.dataset.trang, "theo-doi");
   }
   // chưa nạp khung.js: giữ chuỗi cũ
   const cu = dungNavApp("nhan", "#/", false);
@@ -405,12 +429,12 @@ test("menu.css: chỉ áp cho chủ kho; cột trái ≥900px; thanh đáy 6 ô 
   assert.ok(!/overflow-x: (auto|scroll)/.test(boChuThich), "không cuộn ngang");
 });
 
-test("index.html: menu.css sau style.css, poster.css sau menu.css; script đúng thứ tự loi → homnay → hoc → viec → khung → poster → 9 pv-* → app → sua", () => {
+test("index.html: menu.css sau style.css, poster.css sau menu.css; script đúng thứ tự loi → homnay → hoc → viec → khung → poster → 9 pv-* → app → sua → radar-uid", () => {
   const css = [...HTML.matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map((m) => m[1]);
   assert.deepEqual(css, ["style.css", "menu.css", "poster.css"]);
   const js = [...HTML.matchAll(/<script src="([^"?]+)\?v=\d+" defer><\/script>/g)].map((m) => m[1]).filter((s) => !s.startsWith("vendor/"));
   assert.deepEqual(js, ["loi.js", "homnay.js", "hoc.js", "viec.js", "khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js",
-    "pv-folders.js", "pv-calendar.js", "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js", "sua.js"]);
+    "pv-folders.js", "pv-calendar.js", "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js", "sua.js", "radar-uid.js"]);
   assert.ok(!/app\.js\?v=20"|viec\.js\?v=9"/.test(HTML), "đã nâng ?v app.js, viec.js");
 });
 
@@ -428,7 +452,7 @@ const SCRIPTS = [...HTML.matchAll(/<script src="([^"?]+)(?:\?[^"]*)?"/g)].map((m
 const THIEU = SCRIPTS.filter((s) => !existsSync(duong(s)));
 const CO = SCRIPTS.filter((s) => existsSync(duong(s)));
 // Poster V2 (docs/poster-v2-tren-web.md §6.3): poster.js "pv" + 9 trang con; pv-*.js chưa có (lượt sau) thì phần của file đó skip.
-const TIEN_TO = { "khung.js": "mn", "poster.js": "pv", "hoc.js": "hc",
+const TIEN_TO = { "khung.js": "mn", "poster.js": "pv", "hoc.js": "hc", "radar-uid.js": "rdu",
   "pv-dashboard.js": "pvdb", "pv-views.js": "pvvi", "pv-logs.js": "pvlo", "pv-settings.js": "pvse", "pv-accounts.js": "pvac",
   "pv-post.js": "pvpo", "pv-folders.js": "pvfo", "pv-calendar.js": "pvca", "pv-queue.js": "pvqu" };
 const tenDinh = (src) => [...src.matchAll(/^(?:async )?function\*? ?(\w+)|^(?:const|let|var|class) (\w+)/gm)].map((m) => m[1] || m[2]);

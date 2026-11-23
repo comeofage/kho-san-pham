@@ -34,7 +34,7 @@ from urllib.parse import quote
 from . import bo_loai as bl
 from . import sua_video as sv
 from .du_an import RE_MA, RE_ME, ds_du_an, ds_me, kiem_uid, tim_du_an
-from .han_muc import TRAN_LUOT, han_muc_hoc
+from .han_muc import LOAI_RADAR_UID, TRAN_LUOT, han_muc_hoc, han_muc_radar
 from .kho_viec import RE_BAN_SUA, TEN_DB, doc_ban_sua_chi_doc
 from .kieu import DAU_RA, BuocChay, CanNguoiDung, MoiTruong, ThamSoLoi, gio_vn
 
@@ -143,6 +143,8 @@ _CAM_POSTER: tuple[str, ...] = (
 _CONG_CU_CAM_CO_DINH: tuple[str, ...] = (
     "AskUserQuestion", "Bash(git push*)", "Bash(*wrangler*)", "Bash(*deploy_cloudflare*)", "Bash(*gui_telegram*)",
     "Bash(pip *)", "Bash(*--gui-lai-ma*)", "Bash(*kho-runner*)",
+    # Radar UID §6.6: chỉ GIẢM chạm nhầm file token EchoTik của phiên Claude cùng user, KHÔNG phải bảo vệ tuyệt đối.
+    "Read(//E:/timsanpham/.echotik_token.json)",
 )
 # Thư mục runner cũ (%LOCALAPPDATA%\kho-runner, trước FX-7): vẫn chặn để bản cài cũ còn sót không bị đụng.
 _THU_MUC_RUNNER_CU = "C:/Users/Mi/AppData/Local/kho-runner"
@@ -153,19 +155,23 @@ _THU_MUC_RUNNER_CU = "C:/Users/Mi/AppData/Local/kho-runner"
 # D15 §6.1: hoc.db* (agent sửa được là đầu độc gợi ý vào phiếu) và quet_view/** (log lượt quét chứa chữ TikTok).
 PHAN_CAM_THU_MUC_RUNNER: tuple[str, ...] = (
     "app/**", "app.moi/**", "app.cu/**", "log/**", "runner.db*", ".runner_key", "runner.lock", "runner.log*",
-    "cau_hinh.json", "hoc.db*", "quet_view/**",
+    "cau_hinh.json", "hoc.db*", "quet_view/**", "radar_uid.db*",
 )
 
 # ---------- D15: học tự động mỗi ngày (docs/hoc-tu-dong.md §3.3, §3.4a, §9 HT-B3) ----------
 # Loại CHỈ runner tự tạo (hẹn giờ trong vong_lap): web không tạo được (api._tao_viec → 400, /danh-muc không liệt kê).
-LOAI_CHI_HE_THONG: tuple[str, ...] = ("hoc_hang_ngay", "quet_view_hang_ngay")
+# Radar UID (docs/radar-uid.md §6.1): radar_uid_hang_ngay (hẹn giờ 10:00) + radar_uid_nap (API tạo qua route /radar/*).
+LOAI_CHI_HE_THONG: tuple[str, ...] = ("hoc_hang_ngay", "quet_view_hang_ngay", *LOAI_RADAR_UID)
 # Trong số đó, loại không Chạy lại được (kể cả chủ kho). quet_view_hang_ngay chạy lại được, chỉ lượt của hôm nay.
-LOAI_KHONG_CHAY_LAI: tuple[str, ...] = ("hoc_hang_ngay",)
+# Radar: nút trong tab gọi route riêng (/radar/chup-lai, /radar/goc/<goc>/tim-lai), không qua /viec/<id>/chay-lai.
+LOAI_KHONG_CHAY_LAI: tuple[str, ...] = ("hoc_hang_ngay", *LOAI_RADAR_UID)
 GIO_HOC_TOI_DA_CHO = 18          # giờ VN: sau giờ này việc học không chờ việc quét cùng ngày nữa
 # Thư mục chứa gói `runner` (cwd của `python -B -m runner.<script>`): tools/ khi chạy mã nguồn, E:\kho-runner\app khi
 # chạy bản cài. Tính từ vị trí file (không đọc env, không I/O) nên luôn khớp đúng bản đang chạy.
 THU_MUC_CAI = Path(__file__).resolve().parent.parent
 TEN_HOC_DB = "hoc.db"            # <thu_muc_runner>/hoc.db (kho_hoc.KhoHoc)
+TEN_RADAR_UID_DB = "radar_uid.db"   # <thu_muc_runner>/radar_uid.db (kho_radar_uid.KhoRadarUid)
+CHE_DO_RADAR_UID = {"radar_uid_hang_ngay": "hang-ngay", "radar_uid_nap": "nap"}   # cờ --che-do = che_do của lan_chay
 
 
 def _mau_cam_thu_muc(posix: str) -> tuple[str, ...]:
@@ -567,6 +573,17 @@ def _ts_quet_view(ts: dict, mt: MoiTruong) -> dict:
     if date.fromisoformat(ngay) != hom_nay:
         raise ThamSoLoi("chỉ chạy lại lượt quét của hôm nay")
     return {"ngay": ngay}
+
+
+def _ts_radar_hang_ngay(ts: dict, mt: MoiTruong) -> dict:
+    """Radar UID §6.1: ngày chụp = hôm nay hoặc hôm qua (giờ VN), như việc học."""
+    return _ts_hoc(ts, mt)
+
+
+def _ts_radar_nap(ts: dict, mt: MoiTruong) -> dict:
+    """Radar UID §6.1: chỉ khoá goc = đúng 19 chữ số (chuỗi: id > 2^53 không bao giờ qua số)."""
+    _chi_khoa(_la_dict(ts), {"goc"})
+    return {"goc": kiem_uid(ts.get("goc"))}
 
 
 def _cho_chay(_ts: dict) -> tuple[str, str]:
@@ -1017,6 +1034,29 @@ def _buoc_quet_view(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
     return [_buoc("quet_view", argv, THU_MUC_CAI, DANH_MUC["quet_view_hang_ngay"].het_gio_s)]
 
 
+def _buoc_radar_uid(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    """Radar UID §6.1: MỘT bước python -B -m runner.radar_uid --che-do {hang-ngay|nap} ..., cwd THU_MUC_CAI.
+    Token chỉ vào argv dưới dạng ĐƯỜNG DẪN file (§6.6). --tran-goi ở đây là trần code; lap_buoc_hieu_luc thay bằng
+    radar_uid_goi_ngay hiệu lực. Thiếu đường dẫn token → ThamSoLoi (không tự đoán đường dẫn thật)."""
+    if mt.echotik_token_file is None:
+        raise ThamSoLoi("chưa cấu hình đường dẫn file token EchoTik (KHO_ECHOTIK_TOKEN_FILE) — không chạy Radar UID")
+    nap = "goc" in ts
+    if nap:
+        goc: str | None = kiem_uid(ts.get("goc"))
+        ngay = gio_vn(mt.bay_gio()).date().isoformat()
+    else:
+        goc, ngay = None, _ngay_hop_le(ts.get("ngay"))
+    ma = "radar_uid_nap" if nap else "radar_uid_hang_ngay"
+    from .han_muc import HAN_MUC_TRAN
+    du = Path(mt.thu_muc_du_lieu)
+    argv = [PYTHON, "-B", "-m", "runner.radar_uid", "--che-do", CHE_DO_RADAR_UID[ma], "--ngay", ngay,
+            "--db", str(du / TEN_RADAR_UID_DB), "--token-file", str(mt.echotik_token_file),
+            "--viec-id", _id_viec(viec), "--tran-goi", str(int(HAN_MUC_TRAN["radar_uid_goi_ngay"]))]
+    if goc is not None:
+        argv += ["--goc", goc]
+    return [_buoc("radar_uid", argv, THU_MUC_CAI, DANH_MUC[ma].het_gio_s)]
+
+
 def lap_buoc_hieu_luc(loai: "LoaiViec", ts: dict, viec: dict, mt: MoiTruong, hm: dict) -> list[BuocChay]:
     """FX-29: vòng chạy lập bước bằng hàm này để phiếu phiên sống in trần theo `hm` nó đang giữ.
     `loai.lap_buoc` vẫn là nguồn bước (argv/cwd/đồng hồ — test có thể bọc lại); với loại phiên sống, stdin của bước
@@ -1031,6 +1071,9 @@ def lap_buoc_hieu_luc(loai: "LoaiViec", ts: dict, viec: dict, mt: MoiTruong, hm:
         bat_ngay, hieu_luc_toi_da = han_muc_hoc(hm)
         them = ["--bat-ngay", str(bat_ngay), "--hieu-luc-toi-da", str(hieu_luc_toi_da)]
         return [replace(b, argv=[*b.argv, *them]) if b.ten == "hoc" else b for b in ds]
+    if loai.ma in LOAI_RADAR_UID:
+        _, tran_goi, _ = han_muc_radar(hm)
+        return [replace(b, argv=_dat_tran_goi(b.argv, tran_goi)) if b.ten == "radar_uid" else b for b in ds]
     if loai.ma == "phan_tich_uid":
         if not any(b.la_claude and isinstance(b.stdin, str) and b.stdin.strip() for b in ds):
             return ds                                        # resume: không lập phiếu (chỉ phiếu lần đầu có khối)
@@ -1041,6 +1084,14 @@ def lap_buoc_hieu_luc(loai: "LoaiViec", ts: dict, viec: dict, mt: MoiTruong, hm:
         return ds
     phieu = lap_phieu(loai, viec, mt, int(_gia_tri(hm, "dot_bat")), hm)
     return [replace(b, stdin=phieu) if b.song and isinstance(b.stdin, str) and b.stdin.strip() else b for b in ds]
+
+
+def _dat_tran_goi(argv: list[str], tran_goi: int) -> list[str]:
+    """Thay giá trị ngay sau --tran-goi (đúng một cờ); không thêm/bớt phần tử nào khác."""
+    if argv.count("--tran-goi") != 1 or argv.index("--tran-goi") + 1 >= len(argv):
+        raise ThamSoLoi("lệnh Radar UID thiếu --tran-goi")
+    i = argv.index("--tran-goi") + 1
+    return [*argv[:i], str(tran_goi), *argv[i + 1:]]
 
 
 def _id_viec(viec: dict) -> str:
@@ -1570,6 +1621,26 @@ def _dau_ra_hoc(ts: dict, viec: dict, mt: MoiTruong) -> str:
     return "xong" if r is not None and r[0] in ("xong", "tu_dung") else "chua"
 
 
+def _dau_ra_radar_uid(che_do: str) -> Callable[[dict, dict, MoiTruong], str]:
+    """Radar UID §6.1: radar_uid.db (mode=ro) có lan_chay(che_do, viec_id) ở xong/tu_dung → 'xong'; còn lại (thiếu
+    file, chưa chạy, dở, lỗi, DB hỏng) → 'chua'. Script idempotent (UID ok hôm nay bỏ qua, ngân sách đếm trước) nên
+    chạy lại vô hại, có trần 3 lần đối soát. KHÔNG đòi mọi UID có chup_uid: tu_dung (hết ngân sách...) vẫn là xong."""
+    def _dau_ra(ts: dict, viec: dict, mt: MoiTruong) -> str:
+        db = Path(mt.thu_muc_du_lieu) / TEN_RADAR_UID_DB
+        if not db.is_file():
+            return "chua"
+        viec_id = _id_viec(viec)
+        try:
+            with closing(_mo_chi_doc(db)) as c:
+                r = c.execute("SELECT trang_thai FROM lan_chay WHERE che_do=? AND viec_id=? "
+                              "ORDER BY bat_dau DESC LIMIT 1", (che_do, viec_id)).fetchone()
+        except sqlite3.Error as e:
+            log.warning("không đọc được lan_chay trong %s: %s — coi như chưa chạy", db, e)
+            return "chua"
+        return "xong" if r is not None and r[0] in ("xong", "tu_dung") else "chua"
+    return _dau_ra
+
+
 def _dau_ra_quet_view(ts: dict, viec: dict, mt: MoiTruong) -> str:
     """§3.4a: file trạng thái lượt quét của ngày `ok` → 'xong' (khởi động lại sau khi đã quét: không gọi TikTok lần
     nữa); còn lại → 'chua'."""
@@ -1664,6 +1735,20 @@ DANH_MUC: dict[str, LoaiViec] = {
         tu_chay_lai=True, het_gio_s=600, tai_nguyen=frozenset(),
         tham_so=_ts_mo_ta(_NGAY), kiem_tham_so=_ts_hoc, tinh_khoa=lambda ts: str(ts["ngay"]),
         trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_hoc, lap_buoc=_buoc_hoc, kiem_dau_ra=_dau_ra_hoc),
+    # Radar UID (docs/radar-uid.md §6.1): CHỈ runner/API tạo, miễn phí, làn nhe, không Claude, KHÔNG vào LOAI_TON_TIEN.
+    "radar_uid_hang_ngay": LoaiViec(
+        ma="radar_uid_hang_ngay", ten="Chụp Radar UID mỗi ngày", dot=3, lan_chay="nhe", ton_tien=False, agent=None,
+        tu_chay_lai=True, het_gio_s=1200, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta(_NGAY), kiem_tham_so=_ts_radar_hang_ngay, tinh_khoa=lambda ts: str(ts["ngay"]),
+        trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_khong, lap_buoc=_buoc_radar_uid,
+        kiem_dau_ra=_dau_ra_radar_uid("hang-ngay")),
+    "radar_uid_nap": LoaiViec(
+        ma="radar_uid_nap", ten="Nạp UID vào Radar", dot=3, lan_chay="nhe", ton_tien=False, agent=None,
+        tu_chay_lai=True, het_gio_s=900, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta({"ten": "goc", "kieu": "uid", "bat_buoc": True}), kiem_tham_so=_ts_radar_nap,
+        tinh_khoa=lambda ts: str(ts["goc"]),
+        trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_khong, lap_buoc=_buoc_radar_uid,
+        kiem_dau_ra=_dau_ra_radar_uid("nap")),
     # ----- đợt 4: tốn tiền / rủi ro — luôn cần duyệt có chữ ký, không tự chạy lại -----
     "muse_clip": LoaiViec(
         ma="muse_clip", ten="Sinh clip AI (Muse)", dot=4, lan_chay="nhe", ton_tien=True, agent="aff-muse",

@@ -953,7 +953,7 @@ test("P-33 nav: người thường chỉ còn 'Kho sản phẩm' (không Hôm na
   }
 });
 
-test("P-33 nav khi đã nạp khung.js (menu trái): người thường vẫn đúng 1 mục 'Sản phẩm' (#/kho), không huy hiệu, không vai chủ; chủ 7 mục (mục 7 Poster V2)", () => {
+test("P-33 nav khi đã nạp khung.js (menu trái): người thường vẫn đúng 1 mục 'Sản phẩm' (#/kho), không huy hiệu, không vai chủ; chủ 6 mục (mục 5 Poster V2, mục 6 Radar UID)", () => {
   for (const u of NGUOI_THUONG) {
     for (const hash of ["", "#/", "#/kho", "#/la", `#/sp/${UID}`]) {
       const x = dungNav(u, hash, true);
@@ -968,7 +968,7 @@ test("P-33 nav khi đã nạp khung.js (menu trái): người thường vẫn đ
   }
   for (const u of CHU) {
     const x = dungNav(u, "#/", true);
-    assert.equal((x.nav.match(/<a\b/g) || []).length, 5, `${u}: 5 mục`);
+    assert.equal((x.nav.match(/<a\b/g) || []).length, 6, `${u}: 6 mục`);
     assert.equal(x.vai, "chu");
     assert.deepEqual(x.goi, ["huy-hieu"]);
     assert.deepEqual(x.dang, ["hom-nay"]);

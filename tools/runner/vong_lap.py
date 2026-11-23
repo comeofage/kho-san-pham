@@ -47,7 +47,7 @@ from .danh_muc import (DANH_MUC, LOAI_PHIEN_SONG, LoaiViec, can_ban_douyin, con_
                        kiem_dau_ra_an_toan, lap_buoc_hieu_luc, kiem_truoc_buoc, mp3_adam_moi, mp3_hong, phan_tich_poster,
                        quyet_dinh_sau_khoi_dong)
 from .du_an import RE_ME, gocs_tu_moi_truong, tim_du_an
-from .han_muc import HAN_MUC_TRAN, _gia_tri as _tran_hieu_luc, het_gio_taovideo, kiem_han_muc
+from .han_muc import HAN_MUC_TRAN, _gia_tri as _tran_hieu_luc, han_muc_radar, het_gio_taovideo, kiem_han_muc
 from .kho_viec import KhoViec
 from .kieu import (DANG_MO, MUI_GIO_VN, RE_MA_CAU_HOI, BuocChay, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai,
                    ThamSoLoi, TrungViec, VuotHanMuc, gio_vn)
@@ -109,10 +109,14 @@ MAC_DINH = {
     # D15 (docs/hoc-tu-dong.md §3.4a): chỉ dùng khi thư mục runner là mặc định (xem tao_moi_truong)
     "KHO_THU_MUC_VIEW": "C:/Users/Mi/view-poster",
     "KHO_SCRIPT_QUET_KENH": "C:/Users/Mi/.claude/skills/quet-phan-tich-kenh-tiktok/scripts/tiktok_scan.py",
+    # Radar UID (docs/radar-uid.md §6.6): file token EchoTik, cũng chỉ dùng khi thư mục runner là mặc định
+    "KHO_ECHOTIK_TOKEN_FILE": "E:/timsanpham/.echotik_token.json",
 }
 # D15 (§3.4): (loại việc hệ thống, giờ VN) — đến giờ thì làn nhe tạo 1 việc khoá = ngày VN hôm nay. Thứ tự trong tuple
-# là thứ tự tạo trong cùng một vòng (quét trước học). chay_runner.hen_gio_cho chỉ bật khi thư mục runner là mặc định.
-HEN_GIO_MAC_DINH: tuple[tuple[str, int], ...] = (("quet_view_hang_ngay", 9), ("hoc_hang_ngay", 12))
+# là thứ tự tạo trong cùng một vòng (quét trước, Radar UID 10:00, học sau). chay_runner.hen_gio_cho chỉ bật khi thư mục
+# runner là mặc định.
+HEN_GIO_MAC_DINH: tuple[tuple[str, int], ...] = (("quet_view_hang_ngay", 9), ("radar_uid_hang_ngay", 10),
+                                                 ("hoc_hang_ngay", 12))
 _NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
@@ -463,7 +467,8 @@ def tao_moi_truong() -> MoiTruong:
         thoi_luong_media=thoi_luong_ffprobe, bay_gio=_bay_gio, ds_ma_voice=_ds_ma_voice_tu(scripts),
         doc_folder_poster=lambda: doc_folder_poster_tu(py_poster, POSTER_DS_FOLDER, thu_poster),
         poster_db=thu_poster_hoc / "v2_data.db" if thu_poster_hoc is not None else None,
-        thu_muc_view=g3("KHO_THU_MUC_VIEW"), script_quet_kenh=g3("KHO_SCRIPT_QUET_KENH"))
+        thu_muc_view=g3("KHO_THU_MUC_VIEW"), script_quet_kenh=g3("KHO_SCRIPT_QUET_KENH"),
+        echotik_token_file=g3("KHO_ECHOTIK_TOKEN_FILE"))
 
 
 # ================================================================ logic thuần
@@ -794,9 +799,10 @@ class BoChay:
                  chan_ton_tien: bool = False,
                  tieu: Callable[[str, str], tuple[str, str]] | None = None,
                  im_lang_song_s: float = IM_LANG_SONG_S, quet_mp3_s: float = QUET_MP3_S,
-                 kho_hoc=None, hen_gio: tuple[tuple[str, int], ...] = ()):
+                 kho_hoc=None, hen_gio: tuple[tuple[str, int], ...] = (), kho_radar=None):
         """`kho_hoc` (D15): KhoHoc đã mo() — ghi vết bài học vào phiếu phan_tich_uid (§3.7); None = học tự động tắt
         (không ghi vết, hẹn giờ bỏ việc hoc_hang_ngay). `hen_gio` (D15 §3.4): ((loại, giờ VN), …); () = không hẹn giờ.
+        `kho_radar` (Radar UID §6.1): KhoRadarUid đã mo(); None = Radar tắt (hẹn giờ bỏ việc radar_uid_hang_ngay).
         `khoa_cong_khai` (A-3, P3-1): khoá Ed25519 kiểm chữ ký duyệt lúc nhận việc tốn tiền — chay_runner truyền
         CÙNG đối tượng đã nạp cho API (không nạp lười). None = không có khoá → việc tốn tiền đứng chờ.
         `chan_ton_tien` (D9, R-11 P2-1): bản cài lệch TONG_KIEM → mọi việc tốn tiền đứng chờ, việc miễn phí vẫn chạy.
@@ -854,6 +860,7 @@ class BoChay:
         # D15: bộ học + hẹn giờ. _hen_da_xet: loại → ngày VN đã xét xong (đã tạo / đã có / bị chặn) — chỉ luồng làn nhe
         # đọc/ghi; khởi động lại thì rỗng, lớp chặn trùng thật nằm ở DB (_da_co_viec_ngay).
         self.kho_hoc = kho_hoc
+        self.kho_radar = kho_radar
         self.hen_gio: tuple[tuple[str, int], ...] = tuple(hen_gio)
         self._hen_da_xet: dict[str, str] = {}
 
@@ -1397,6 +1404,12 @@ class BoChay:
             if ma == "hoc_hang_ngay" and self.kho_hoc is None:
                 self._hen_da_xet[ma] = ngay
                 log.warning("hẹn giờ: bỏ hoc_hang_ngay ngày %s — học tự động chưa bật (không mở được hoc.db)", ngay)
+                continue
+            if ma == "radar_uid_hang_ngay" and (self.kho_radar is None or han_muc_radar(self.hm)[0] < 1):
+                self._hen_da_xet[ma] = ngay
+                log.warning("hẹn giờ: bỏ radar_uid_hang_ngay ngày %s — %s", ngay,
+                            "Radar UID chưa bật (không mở được radar_uid.db)" if self.kho_radar is None
+                            else "cầu dao radar_uid_bat = 0")
                 continue
             if self._da_co_viec_ngay(ma, ngay):
                 self._hen_da_xet[ma] = ngay

@@ -2385,23 +2385,26 @@ class KhoHocGia:
             raise self.loi
 
 
-def bo_hen_gio(tmp: Path, dong: Dong, *, hm=None, kho=None, kho_hoc="gia", hen_gio=None):
+def bo_hen_gio(tmp: Path, dong: Dong, *, hm=None, kho=None, kho_hoc="gia", hen_gio=None, kho_radar=None):
     hen_gio = vl.HEN_GIO_MAC_DINH if hen_gio is None else hen_gio
     mt = lam_mt(tmp, bay_gio=dong)
     kh = KhoHocGia() if kho_hoc == "gia" else kho_hoc
-    return lam_bo(tmp, mt, DANH_MUC, hm=hm, kho=kho, kho_hoc=kh, hen_gio=hen_gio)
+    return lam_bo(tmp, mt, DANH_MUC, hm=hm, kho=kho, kho_hoc=kh, hen_gio=hen_gio, kho_radar=kho_radar)
 
 
 def viec_he_thong(kho: KhoViec) -> list[dict]:
-    return [v for v in kho.ds(None, gioi_han=500) if v["loai"] in ("quet_view_hang_ngay", "hoc_hang_ngay")]
+    return [v for v in kho.ds(None, gioi_han=500)
+            if v["loai"] in ("quet_view_hang_ngay", "hoc_hang_ngay", "radar_uid_hang_ngay")]
 
 
 def test_hen_gio_hang_so_va_mac_dinh_tat():
     import inspect
-    assert vl.HEN_GIO_MAC_DINH == (("quet_view_hang_ngay", 9), ("hoc_hang_ngay", 12))
+    # Radar UID (docs/radar-uid.md §6.1, §13 RU-B3): 10:00 nằm giữa quét 09:00 và học 12:00
+    assert vl.HEN_GIO_MAC_DINH == (("quet_view_hang_ngay", 9), ("radar_uid_hang_ngay", 10), ("hoc_hang_ngay", 12))
     p = inspect.signature(vl.BoChay.__init__).parameters
     assert p["kho_hoc"].default is None and p["hen_gio"].default == ()
     assert p["kho_hoc"].kind is inspect.Parameter.KEYWORD_ONLY and p["hen_gio"].kind is inspect.Parameter.KEYWORD_ONLY
+    assert p["kho_radar"].default is None and p["kho_radar"].kind is inspect.Parameter.KEYWORD_ONLY
 
 
 def test_hen_gio_dung_gio_moi_ngay_mot_viec_moi_loai(tmp_path):
@@ -2600,4 +2603,98 @@ def test_tao_moi_truong_thu_muc_mac_dinh_dung_mac_dinh(tmp_path, monkeypatch):
     assert mt.poster_db == Path(vl.MAC_DINH["KHO_THU_MUC_POSTER"]) / "v2_data.db"
     assert mt.thu_muc_view == Path(vl.MAC_DINH["KHO_THU_MUC_VIEW"])
     assert mt.script_quet_kenh == Path(vl.MAC_DINH["KHO_SCRIPT_QUET_KENH"])
+    assert not (tmp_path / "goc_gia").exists()
+
+
+# ---------------- Radar UID (RU-B3): hẹn giờ 10:00, cầu dao radar_uid_bat, kho_radar=None ----------------
+
+def test_hen_gio_radar_hang_so_gio_va_thu_tu():
+    gio_cua = dict(vl.HEN_GIO_MAC_DINH)
+    assert gio_cua["radar_uid_hang_ngay"] == 10
+    ten = [ma for ma, _ in vl.HEN_GIO_MAC_DINH]
+    assert ten == ["quet_view_hang_ngay", "radar_uid_hang_ngay", "hoc_hang_ngay"]
+    assert [g for _, g in vl.HEN_GIO_MAC_DINH] == sorted(g for _, g in vl.HEN_GIO_MAC_DINH)
+    assert "radar_uid_nap" not in gio_cua                          # việc nạp chỉ do API tạo, không hẹn giờ
+
+
+def test_hen_gio_radar_10h_tao_dung_mot_viec_he_thong(tmp_path):
+    dong = Dong(gio(9, 59))
+    bo, kho = bo_hen_gio(tmp_path, dong, kho_radar=object())
+    assert [kho.lay(i)["loai"] for i in bo._hen_gio()] == ["quet_view_hang_ngay"]      # 09:59: mới tới giờ quét
+    dong.t = gio(10, 0)
+    ids = bo._hen_gio()
+    assert len(ids) == 1
+    v = kho.lay(ids[0])
+    assert (v["loai"], v["khoa"], v["tham_so"], v["tao_boi"], v["trang_thai"], v["lan_chay"]) == (
+        "radar_uid_hang_ngay", "2026-11-23", {"ngay": "2026-11-23"}, "he_thong", "cho", "nhe")
+    for _ in range(50):
+        assert bo._hen_gio() == []
+    dong.t = gio(12, 0)
+    assert [kho.lay(i)["loai"] for i in bo._hen_gio()] == ["hoc_hang_ngay"]
+    dong.t = gio(10, 0, ngay=24)                                   # sang ngày mới: tạo lại đúng một việc
+    ids2 = bo._hen_gio()
+    assert [kho.lay(i)["loai"] for i in ids2] == ["quet_view_hang_ngay", "radar_uid_hang_ngay"]
+    assert kho.lay(ids2[1])["khoa"] == "2026-11-24"
+
+
+def test_hen_gio_radar_may_bat_muon_tao_theo_thu_tu_quet_radar_hoc(tmp_path):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), kho_radar=object())
+    assert [kho.lay(i)["loai"] for i in bo._hen_gio()] == ["quet_view_hang_ngay", "radar_uid_hang_ngay", "hoc_hang_ngay"]
+
+
+def test_hen_gio_khong_co_kho_radar_bo_viec_radar(tmp_path, caplog):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), kho_radar=None)
+    with caplog.at_level("WARNING", logger="kho_runner.vong_lap"):
+        for _ in range(5):
+            bo._hen_gio()
+    assert sorted(v["loai"] for v in viec_he_thong(kho)) == ["hoc_hang_ngay", "quet_view_hang_ngay"]
+    log_radar = [r for r in caplog.records if "radar_uid_hang_ngay" in r.getMessage()]
+    assert len(log_radar) == 1                                      # log đúng một lần, không lặp mỗi vòng
+
+
+def test_hen_gio_radar_uid_bat_0_cau_dao_tat_lich(tmp_path, caplog):
+    hm = dict(HAN_MUC_TRAN, radar_uid_bat=0)
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), hm=hm, kho_radar=object())
+    with caplog.at_level("WARNING", logger="kho_runner.vong_lap"):
+        for _ in range(5):
+            bo._hen_gio()
+    assert sorted(v["loai"] for v in viec_he_thong(kho)) == ["hoc_hang_ngay", "quet_view_hang_ngay"]
+    assert len([r for r in caplog.records if "radar_uid_hang_ngay" in r.getMessage()]) == 1
+
+
+def test_hen_gio_radar_da_co_viec_ngay_khong_tao_lai(tmp_path):
+    dong = Dong(gio(10, 30))
+    bo, kho = bo_hen_gio(tmp_path, dong, kho_radar=object())
+    ids = bo._hen_gio()
+    radar_id = [i for i in ids if kho.lay(i)["loai"] == "radar_uid_hang_ngay"][0]
+    kho.chuyen(radar_id, ["cho"], "huy", "nhan", "huỷ (test)")
+    bo2, _ = bo_hen_gio(tmp_path, dong, kho=kho, kho_radar=object())                     # runner mới, bộ nhớ rỗng
+    assert bo2._hen_gio() == [] and len([v for v in viec_he_thong(kho) if v["loai"] == "radar_uid_hang_ngay"]) == 1
+
+
+def test_hen_gio_radar_viec_he_thong_khong_tinh_vao_radar_uid_chay_ngay(tmp_path):
+    """Việc hẹn giờ (he_thong) không đếm vào radar_uid_chay_ngay: trần 0 vẫn tạo lịch (chỉ radar_uid_bat mới tắt)."""
+    hm = dict(HAN_MUC_TRAN, radar_uid_chay_ngay=0)
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(10, 5)), hm=hm, kho_radar=object())
+    assert "radar_uid_hang_ngay" in [kho.lay(i)["loai"] for i in bo._hen_gio()]
+
+
+def test_tao_moi_truong_echotik_token_thu_muc_tam_none(tmp_path, monkeypatch):
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "du_lieu"))
+    monkeypatch.delenv("KHO_ECHOTIK_TOKEN_FILE", raising=False)
+    assert vl.tao_moi_truong().echotik_token_file is None
+
+
+def test_tao_moi_truong_echotik_token_tu_bien_moi_truong(tmp_path, monkeypatch):
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "du_lieu"))
+    monkeypatch.setenv("KHO_ECHOTIK_TOKEN_FILE", str(tmp_path / "token.json"))
+    assert vl.tao_moi_truong().echotik_token_file == tmp_path / "token.json"
+
+
+def test_tao_moi_truong_echotik_token_thu_muc_mac_dinh(tmp_path, monkeypatch):
+    assert vl.MAC_DINH["KHO_ECHOTIK_TOKEN_FILE"] == "E:/timsanpham/.echotik_token.json"
+    monkeypatch.setattr(vl, "_thu_muc_mac_dinh", lambda: tmp_path / "goc_gia")
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "goc_gia"))
+    monkeypatch.delenv("KHO_ECHOTIK_TOKEN_FILE", raising=False)
+    assert vl.tao_moi_truong().echotik_token_file == Path(vl.MAC_DINH["KHO_ECHOTIK_TOKEN_FILE"])
     assert not (tmp_path / "goc_gia").exists()

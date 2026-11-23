@@ -58,7 +58,7 @@ import threading
 import time
 import uuid
 from collections.abc import Callable
-from datetime import datetime
+from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler
 from pathlib import Path
 from typing import Any
@@ -66,12 +66,14 @@ from urllib.parse import parse_qs, urlsplit
 
 from . import chu_ky
 from . import hoc_danh_muc as hdm
+from . import radar_uid_tinh as rut
 from . import sua_video as sv
 from .danh_muc import (DANH_MUC, LOAI_CHI_HE_THONG, LOAI_KHONG_CHAY_LAI, LoaiViec, ds_folder_poster, lay_loai,
                        tham_so_chuan, video_cua_tham_so)
 from .du_an import ds_du_an
-from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, han_muc_hoc, kiem_han_muc
+from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, han_muc_hoc, han_muc_radar, kiem_han_muc
 from .kho_hoc import KhoHoc, KhongCoBaiHoc, SaiTrangThaiHoc
+from .kho_radar_uid import GOC_TOI_DA, LOI_DANG_TIM, KhongCoRadar, KhoRadarUid, SaiTrangThaiRadar
 from .kho_viec import RE_BAN_SUA, KhoViec
 from .danh_muc import KHOA_ANH_CHUP_KHO, LOAI_PHIEN_SONG, anh_chup_kho_taovideo
 from .kieu import (DANG_MO, RE_MA_CAU_HOI, TRANG_THAI, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai, ThamSoLoi,
@@ -151,6 +153,90 @@ HOC_GIOI_HAN_MAC_DINH = 50
 HOC_GIOI_HAN_TOI_DA = 200
 # 404 của /hoc/*: chỉ 2 câu cố định trong danh mục (web đọc hoc_danh_muc.py để đối chiếu).
 _LOI_404_HOC = (hdm.TEN_LY_DO["chua_co_lan_hoc"], hdm.TEN_LY_DO["khong_co_bai_hoc"])
+
+
+# ---------- Radar UID (docs/radar-uid.md §7, §7.1): 8 route /radar/* ----------
+# Câu 503/409 web so khớp NGUYÊN VĂN — không đổi chữ.
+LOI_RADAR_CHUA_BAT = "Radar UID chưa bật"
+LOI_RADAR_TAT = "Radar UID đang tắt"
+LOI_DANG_CHUP = "Đang có lượt chụp chạy"
+LOI_NHOM_NGUNG = "Nhóm đã ngừng: bật theo dõi lại trước"
+# Uid trong đường dẫn GET: nhận mọi đoạn (sai dạng cũng đi tới kho để ra đúng 404 "Không có UID này trong Radar").
+_RE_ROUTE_RADAR_UID = re.compile(r"^/radar/uid/([^/]+)$")
+_RE_ROUTE_RADAR_GOC = re.compile(r"^/radar/goc/(\d{19})/(tim-lai|ngung|theo-lai|them-tay)$", re.ASCII)
+_RE_ROUTE_RADAR_UID_HD = re.compile(r"^/radar/goc/(\d{19})/uid/(\d{19})/(ghim|bo-ghim|loai|bo-loai)$", re.ASCII)
+RADAR_NGAY_DOC = 20                # đọc snapshot trong chừng này ngày (đủ cho chuỗi 14 kỳ + spark 7 kỳ)
+RADAR_CHUOI_TOI_DA = 14            # ChiTiet.chuoi: tối đa 14 kỳ gần nhất
+RADAR_VIDEO_TOI_DA = 50            # ChiTiet.video: tối đa 50 video của snapshot mới nhất
+# Mã ly_do (docs/radar-uid.md §6.3) → câu lời thường cho UI. het_han_muc_goi có số nên dựng trong ten_ly_do_radar.
+TEN_LY_DO_RADAR: dict[str, str] = {
+    "token_thieu": "Chưa có token EchoTik: đăng nhập EchoTik trên Chrome để tạo lại file token.",
+    "token_het_han": "EchoTik trả trang lỗi: token hết hạn hoặc EchoTik từ chối tham số. "
+                     "Đăng nhập lại EchoTik trên máy nhà.",
+    "rate_limit": "EchoTik giới hạn lượt gọi: thử lại ngày mai.",
+    "mang_lien_tiep": "Mất mạng tới EchoTik.",
+    "keyword_khong_loc": "EchoTik không lọc theo từ khoá nên không tìm được tương tự: thêm tay UID.",
+    "khong_tim_thay": "EchoTik không có UID này.",
+    "khong_co_video": "EchoTik chưa có video nào cho UID này.",
+    "dinh_dang": "EchoTik trả dữ liệu lạ.",
+    "nhom_ngung": "Nhóm đã ngừng theo dõi nên không chụp.",
+    "khong_co_nhom": "Chưa có nhóm theo dõi cho UID này: thêm UID gốc trước.",
+    "loi_bat_ngo": "Lỗi bất ngờ khi chạy: xem runner.log.",
+    "tham_so_sai": "Tham số chạy việc sai (lỗi hệ thống): báo người bảo trì.",
+    "khong_chup_duoc": "Không chụp được UID nào hôm nay: kiểm tra EchoTik và mạng, rồi bấm Chụp lại.",
+}
+CAU_TOKEN_RADAR: dict[str, str] = {"thieu": TEN_LY_DO_RADAR["token_thieu"], "het_han": TEN_LY_DO_RADAR["token_het_han"]}
+_HANG_XEP_RADAR = {"dang_co_da": 0, "chua_co_da": 1, "chua_du": 2, "chan": 3}
+
+
+def ten_ly_do_radar(ly_do: object, goi_hom_nay: int, tran_goi: int) -> str:
+    """Câu UI của một mã ly_do (§6.3); mã lạ/rỗng → "" (UI tự có câu dự phòng)."""
+    if ly_do == "het_han_muc_goi":
+        return f"Hết ngân sách gọi EchoTik hôm nay ({goi_hom_nay}/{tran_goi})."
+    return TEN_LY_DO_RADAR.get(ly_do, "") if isinstance(ly_do, str) else ""
+
+
+def _khoa_sap_radar(u: dict) -> tuple:
+    tv, nv = u.get("trung_vi"), u.get("n_video")
+    return (u.get("trang_thai") == "loai", _HANG_XEP_RADAR.get(u.get("xep_loai"), len(_HANG_XEP_RADAR)),
+            tv is None, -(tv or 0), -(nv or 0), u["uid"])
+
+
+def sap_xep_uid_ra(ds: list[dict]) -> list[dict]:
+    """§5.4: dang_co_da → chua_co_da → chua_du → chan; trong mỗi lớp trung_vi giảm (null cuối), rồi n_video giảm, rồi uid.
+    UID đã loại xuống cuối (UI ẩn, vẫn trả để có nút Bỏ loại)."""
+    return sorted(ds, key=_khoa_sap_radar)
+
+
+def dung_uid_ra(lk: dict, snaps: list, hom_nay: datetime, bat_dau_ngay: str) -> dict:
+    """UidRa (§7.1) = liên kết (uid/vai/trang_thai/ten/shop/do_giong) + mọi chỉ số của radar_uid_tinh.xep_hang_uid."""
+    ra = {"uid": lk["uid"], "vai": lk["vai"], "trang_thai": lk["trang_thai"], "ten": lk["ten"], "shop": lk["shop"],
+          "do_giong": lk["do_giong"]}
+    ra.update(rut.xep_hang_uid(snaps, hom_nay, bat_dau_ngay))
+    return ra
+
+
+def dung_chuoi_va_video(snaps: list) -> tuple[list[dict], list[dict]]:
+    """ChiTiet.chuoi (≤ 14 kỳ gần nhất) + ChiTiet.video (≤ 50 của snapshot mới nhất, kèm d24 của kỳ cuối nếu hợp lệ).
+    Dùng đúng _chuoi_ky của radar_uid_tinh (cùng cách xét "đứng yên" với xep_hang_uid) — test đối chiếu kỳ cuối."""
+    snaps = sorted(snaps, key=lambda s: (s["ngay"], s["lay_luc"]))[-(RADAR_CHUOI_TOI_DA + 1):]
+    if not snaps:
+        return [], []
+    cac_ky = rut._chuoi_ky(snaps)
+    chuoi = [{"ngay": k.sau["ngay"], "gio": round(k.ky["gio"], 1), "hop_le": k.ky["hop_le"],
+              "trung_vi": k.ky["trung_vi"], "tong_delta_top5": k.ky["tong_delta_top5"], "n_video": k.ky["n_video"],
+              "n_creator": k.ky["n_creator"], "n_doi": k.ky["n_doi"], "ti_le_doi": k.ky["ti_le_doi"]} for k in cac_ky]
+    ky_cuoi = cac_ky[-1].ky if cac_ky else None
+    d24 = {vid: d for vid, _creator, d in ky_cuoi["ds_d24"]} if ky_cuoi is not None and ky_cuoi["hop_le"] else {}
+
+    def so_view(v: dict) -> int:
+        s = rut.doc_so_rut_gon(v["view"])
+        return s.gia_tri if s is not None else -1
+    video = [{"video_id": v["video_id"], "creator": v["creator"], "follower": v["follower"], "view": v["view"],
+              "d24": d24.get(v["video_id"]), "dang_luc": v["dang_luc"], "is_promote": v["is_promote"]}
+             for v in snaps[-1]["videos"].values()]
+    video.sort(key=lambda v: (v["d24"] is None, -(v["d24"] or 0), -so_view(v), v["video_id"]))
+    return chuoi, video[:RADAR_VIDEO_TOI_DA]
 
 
 class LoiApi(Exception):
@@ -534,12 +620,17 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                 tra_loi_song: Callable[[str, str, str, str], dict] | None = None,
                 co_phien_song: Callable[[str], bool] = lambda _id: False,
                 nhan_tin_song: Callable[[str, str, str, bool], dict] | None = None,
-                kho_hoc: KhoHoc | None = None) -> type[BaseHTTPRequestHandler]:
+                kho_hoc: KhoHoc | None = None,
+                kho_radar: KhoRadarUid | None = None) -> type[BaseHTTPRequestHandler]:
     """Tạo lớp handler gắn sẵn phụ thuộc. Dùng với ThreadingHTTPServer(("127.0.0.1", cong), H).
 
     D15 (docs/hoc-tu-dong.md §3.8): `kho_hoc` = KhoHoc đã mo() (chay_runner, sau mutex). None (mở hoc.db lỗi / chưa
     bật) → mọi route /hoc/* hợp lệ trả 503 {"loi": LOI_HOC_CHUA_BAT}. Hạn mức truyền vào kho là hạn mức HIỆU LỰC đọc
     từ `hm` ở MỖI request (han_muc.han_muc_hoc).
+
+    Radar UID (docs/radar-uid.md §7): `kho_radar` = KhoRadarUid đã mo() (chay_runner, sau mutex). None (mở radar_uid.db
+    lỗi / chưa bật) → mọi route /radar/* hợp lệ trả 503 {"loi": LOI_RADAR_CHUA_BAT}. Cầu dao radar_uid_bat = 0 (hạ ở
+    cau_hinh.json, `hm` đọc một lần lúc khởi động) → route GHI trả 409 "Radar UID đang tắt", route đọc vẫn chạy.
 
     `che` (R-06 P3-3): hàm che bí mật áp lên mọi văn bản việc trả ra web (viec_ra, su_kien, tra_loi).
     None = không che (giữ tương thích chữ ký cũ); runner thật luôn truyền bộ che.
@@ -642,25 +733,29 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         if loai.ma in LOAI_CHI_HE_THONG and (chay_lai_tu is None or loai.ma in LOAI_KHONG_CHAY_LAI):
             raise LoiApi(400, LOI_CHI_HE_THONG)
         ts = loai.kiem_tham_so(ts_tho, mt)        # chỉ gọi trên input thô (P3-2)
-        khoa_chong_trung = loai.tinh_khoa(ts)
         with khoa_ghi:
-            _kiem_sua_video(loai, ts)
-            kiem_han_muc(kho, loai.ma, ts, hm, "tao", boi)
-            tt, buoc, cau_hoi = _trang_thai_dau(loai, ts)
-            sid = str(uuid.uuid4()) if loai.agent else None
-            # FX-29 (§7.8): ảnh chụp dòng kho Poster lúc tạo việc (ts đã chốt du_an_b) — đối soát đòi dòng MỚI so với nó
-            anh = anh_chup_kho_taovideo(ts, mt) if loai.ma == "taovideo" else None
-            v = kho.tao(loai.ma, khoa_chong_trung, ts, loai.lan_chay, tt, boi, buoc=buoc, cau_hoi=cau_hoi,
-                        session_id=sid, chay_lai_tu=chay_lai_tu)
-            if anh is None:
-                return v
-            try:
-                return kho.chuyen(v["id"], [tt], tt, boi, "ảnh chụp kho lúc tạo việc",
-                                  ket_qua={KHOA_ANH_CHUP_KHO: anh})
-            except SaiTrangThai as e:
-                # việc vừa tạo đã đổi trạng thái (huỷ ngay) — không có ảnh chụp thì đối soát dựa vào mp4 mới
-                log.warning("việc %s: không ghi được ảnh chụp kho lúc tạo (%s)", v["id"], e)
-                return kho.lay(v["id"]) or v
+            return _tao_viec_da_khoa(loai, ts, boi, chay_lai_tu)
+
+    def _tao_viec_da_khoa(loai: LoaiViec, ts: dict, boi: str, chay_lai_tu: str | None = None) -> dict:
+        """Phần tạo việc của _tao_viec: bên gọi ĐÃ giữ khoa_ghi và `ts` đã qua loai.kiem_tham_so."""
+        khoa_chong_trung = loai.tinh_khoa(ts)
+        _kiem_sua_video(loai, ts)
+        kiem_han_muc(kho, loai.ma, ts, hm, "tao", boi)
+        tt, buoc, cau_hoi = _trang_thai_dau(loai, ts)
+        sid = str(uuid.uuid4()) if loai.agent else None
+        # FX-29 (§7.8): ảnh chụp dòng kho Poster lúc tạo việc (ts đã chốt du_an_b) — đối soát đòi dòng MỚI so với nó
+        anh = anh_chup_kho_taovideo(ts, mt) if loai.ma == "taovideo" else None
+        v = kho.tao(loai.ma, khoa_chong_trung, ts, loai.lan_chay, tt, boi, buoc=buoc, cau_hoi=cau_hoi,
+                    session_id=sid, chay_lai_tu=chay_lai_tu)
+        if anh is None:
+            return v
+        try:
+            return kho.chuyen(v["id"], [tt], tt, boi, "ảnh chụp kho lúc tạo việc",
+                              ket_qua={KHOA_ANH_CHUP_KHO: anh})
+        except SaiTrangThai as e:
+            # việc vừa tạo đã đổi trạng thái (huỷ ngay) — không có ảnh chụp thì đối soát dựa vào mp4 mới
+            log.warning("việc %s: không ghi được ảnh chụp kho lúc tạo (%s)", v["id"], e)
+            return kho.lay(v["id"]) or v
 
     # ----- GET -----
     def g_suc_khoe(_q) -> tuple[int, dict]:
@@ -1113,6 +1208,209 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         log.info("học: %s %s bởi %s", act, ma, boi)
         return 200, _ra_hoc({"bai_hoc": bai})
 
+    # ----- Radar UID (docs/radar-uid.md §7, §7.1) -----
+    def _kho_radar_mo() -> KhoRadarUid:
+        if kho_radar is None:
+            raise LoiApi(503, LOI_RADAR_CHUA_BAT)
+        return kho_radar
+
+    def _radar_bat() -> None:
+        """Cầu dao radar_uid_bat (hạn mức HIỆU LỰC): 0 → mọi route GHI 409. Gọi sau khi biết kho đã mở."""
+        if han_muc_radar(hm)[0] < 1:
+            raise LoiApi(409, LOI_RADAR_TAT)
+
+    def _goi_radar(lam: Callable[[KhoRadarUid], Any]) -> Any:
+        """Gọi kho Radar: KhongCoRadar → 404 (câu cố định của kho), SaiTrangThaiRadar → 409 (câu cố định); ThamSoLoi
+        → 400 và lỗi khác → 500 do _chay xử lý. Luôn đóng kết nối SQLite của luồng HTTP này (mỗi request một luồng)."""
+        k = _kho_radar_mo()
+        try:
+            return lam(k)
+        except KhongCoRadar as e:
+            raise LoiApi(404, e.loi) from e
+        except SaiTrangThaiRadar as e:
+            raise LoiApi(409, e.loi) from e
+        finally:
+            try:
+                k.dong()
+            except sqlite3.Error:
+                log.warning("radar_uid.db: đóng kết nối luồng HTTP lỗi", exc_info=True)
+
+    def _ra_radar(d: Any) -> Any:
+        return d if che is None else che_sau(d, che)
+
+    def _nhom_radar(k: KhoRadarUid, goc: str) -> dict:
+        for n in k.ds_nhom():
+            if n["goc"] == goc:
+                return n
+        raise KhongCoRadar()
+
+    def _ds_uid_ra(k: KhoRadarUid, goc: str, bat_dau_ngay: str, bay: datetime) -> list[dict]:
+        tu_ngay = (bay.date() - timedelta(days=RADAR_NGAY_DOC)).isoformat()
+        return sap_xep_uid_ra([dung_uid_ra(lk, k.doc_snapshots(lk["uid"], tu_ngay), bay, bat_dau_ngay)
+                               for lk in k.uid_cua_nhom(goc)])
+
+    def g_radar_bang(_q: dict) -> tuple[int, dict]:
+        _kho_radar_mo()
+        bay = gio_vn(kho.bay_gio())
+        ngay = bay.date().isoformat()
+
+        def lam(k: KhoRadarUid) -> dict:
+            bat, tran_goi, _ = han_muc_radar(hm)
+            goi = k.goi_hom_nay(ngay)
+            tk = k.doc_token()
+            lan = k.lan_gan_nhat()
+            nhom = [{"goc": n["goc"], "ten": n["ten"], "trang_thai": n["trang_thai"], "ly_do": n["ly_do"],
+                     "ten_ly_do": ten_ly_do_radar(n["ly_do"], goi, tran_goi), "tim_luc": n["tim_luc"],
+                     "bat_dau_ngay": n["bat_dau_ngay"], "ds": _ds_uid_ra(k, n["goc"], n["bat_dau_ngay"], bay)}
+                    for n in k.ds_nhom()]
+            return {
+                "luc": bay.isoformat(timespec="seconds"), "ngay": ngay,
+                "token": {"trang_thai": tk["trang_thai"], "cau": CAU_TOKEN_RADAR.get(tk["trang_thai"], "")},
+                "han_muc": {"bat": bat, "goi_ngay_toi_da": tran_goi, "goi_hom_nay": goi, "goc_toi_da": GOC_TOI_DA},
+                "lan": ({"trang_thai": "chua_chay", "ly_do": "", "ngay": "", "ten_ly_do": ""} if lan is None else
+                        {"trang_thai": lan["trang_thai"], "ly_do": lan["ly_do"], "ngay": lan["ngay"],
+                         "ten_ly_do": ten_ly_do_radar(lan["ly_do"], goi, tran_goi)}),
+                "nhom": nhom}
+        return 200, _ra_radar(_goi_radar(lam))
+
+    def g_radar_uid(uid: str, _q: dict) -> tuple[int, dict]:
+        _kho_radar_mo()
+        bay = gio_vn(kho.bay_gio())
+
+        def lam(k: KhoRadarUid) -> dict:
+            if not _RE_UID.fullmatch(uid):
+                raise KhongCoRadar()                                  # uid sai dạng cũng 404 (§7 dòng 2)
+            chon: tuple[dict, dict] | None = None
+            for n in k.ds_nhom():                                     # ưu tiên nhóm đang theo; chung UID ở nhiều nhóm
+                for lk in k.uid_cua_nhom(n["goc"]):
+                    if lk["uid"] == uid and (chon is None or (chon[0]["trang_thai"] == "ngung"
+                                                              and n["trang_thai"] != "ngung")):
+                        chon = (n, lk)
+            if chon is None:
+                raise KhongCoRadar()
+            n, lk = chon
+            snaps = k.doc_snapshots(uid, (bay.date() - timedelta(days=RADAR_NGAY_DOC)).isoformat())
+            ra = dung_uid_ra(lk, snaps, bay, n["bat_dau_ngay"])
+            ra["chuoi"], ra["video"] = dung_chuoi_va_video(snaps)
+            return ra
+        return 200, _ra_radar(_goi_radar(lam))
+
+    def _co_viec_mo(ma: str, khoa: str) -> bool:
+        return any(v.get("loai") == ma and v.get("trang_thai") in DANG_MO for v in kho.ds(None, khoa=khoa, gioi_han=50))
+
+    def _uid_trong_body(body: dict) -> str:
+        uid = body.get("uid")
+        if not isinstance(uid, str) or not _RE_UID.fullmatch(uid):
+            raise ThamSoLoi("UID phải đủ 19 chữ số")
+        return uid
+
+    def p_radar_goc(body: dict) -> tuple[int, dict]:
+        """POST /radar/goc {boi, uid}: thêm UID gốc (nhóm cho_tim) + tạo việc radar_uid_nap. UID đã có → da_co, không tạo
+        việc. Hạn mức/cầu dao kiểm TRƯỚC khi ghi nhóm (429 không để lại nhóm mồ côi)."""
+        _kho_radar_mo()
+        _radar_bat()
+        boi = _boi(body)
+        uid = _uid_trong_body(body)
+        loai = DANH_MUC["radar_uid_nap"]
+
+        def lam(k: KhoRadarUid) -> tuple[int, dict]:
+            ts = loai.kiem_tham_so({"goc": uid}, mt)
+            with khoa_ghi:
+                if any(n["goc"] == uid for n in k.ds_nhom()):
+                    return 202, {"da_co": True, "goc": uid}
+                kiem_han_muc(kho, loai.ma, ts, hm, "tao", boi)
+                if k.them_goc(uid, boi)["da_co"]:
+                    return 202, {"da_co": True, "goc": uid}
+                v = _tao_viec_da_khoa(loai, ts, boi)
+            log.info("radar: thêm UID gốc %s bởi %s, việc nạp %s", uid, boi, v["id"])
+            return 202, {"da_co": False, "goc": uid, "viec_id": v["id"]}
+        return _goi_radar(lam)
+
+    def p_radar_tim_lai(goc: str, body: dict) -> tuple[int, dict]:
+        """POST /radar/goc/<goc>/tim-lai: nhóm → cho_tim + việc nạp mới. 409 khi đang tìm / đã có việc nạp mở / nhóm
+        ngừng; 429 kiểm TRƯỚC khi đổi trạng thái."""
+        _kho_radar_mo()
+        _radar_bat()
+        boi = _boi(body)
+        loai = DANH_MUC["radar_uid_nap"]
+
+        def lam(k: KhoRadarUid) -> tuple[int, dict]:
+            ts = loai.kiem_tham_so({"goc": goc}, mt)
+            with khoa_ghi:
+                n = _nhom_radar(k, goc)
+                if _co_viec_mo(loai.ma, goc):
+                    raise LoiApi(409, LOI_DANG_TIM)
+                if n["trang_thai"] == "ngung":
+                    raise LoiApi(409, LOI_NHOM_NGUNG)
+                kiem_han_muc(kho, loai.ma, ts, hm, "tao", boi)
+                if n["trang_thai"] == "dang_tim":
+                    # kẹt: không có việc nạp mở (đã huỷ / hết lần thử / runner chết) mà nhóm vẫn dang_tim. Kho cấm
+                    # dang_tim→cho_tim trực tiếp, nên đi qua loi_tim; cả hai bước nằm trong khoa_ghi và vừa kiểm
+                    # không có việc mở, nên không đua với việc đang chạy.
+                    log.warning("radar: nhóm %s kẹt dang_tim không có việc nạp mở — gỡ kẹt bởi %s", goc, boi)
+                    k.dat_trang_thai_nhom(goc, "loi_tim")
+                k.dat_trang_thai_nhom(goc, "cho_tim")
+                try:
+                    v = _tao_viec_da_khoa(loai, ts, boi)
+                except TrungViec as e:
+                    raise LoiApi(409, LOI_DANG_TIM) from e
+            log.info("radar: tìm lại nhóm %s bởi %s, việc nạp %s", goc, boi, v["id"])
+            return 202, {"viec_id": v["id"]}
+        return _goi_radar(lam)
+
+    def p_radar_nhom(goc: str, act: str, body: dict) -> tuple[int, dict]:
+        """POST /radar/goc/<goc>/(tim-lai|ngung|theo-lai|them-tay)."""
+        if act == "tim-lai":
+            return p_radar_tim_lai(goc, body)
+        _kho_radar_mo()
+        _radar_bat()
+        boi = _boi(body)
+        if act == "them-tay":
+            uid = body.get("uid")
+            _goi_radar(lambda k: k.them_tay(goc, uid, boi))          # kho kiểm UID (400 "UID phải đủ 19 chữ số")
+            return 200, {"goc": goc, "uid": uid}
+        loai = DANH_MUC["radar_uid_nap"]
+
+        def lam(k: KhoRadarUid) -> dict:
+            with khoa_ghi:
+                truoc = _nhom_radar(k, goc)["trang_thai"]
+                kq = k.dat_goc(goc, act, boi)
+                if act == "theo-lai" and truoc == "ngung" and kq["trang_thai"] == "cho_tim":
+                    # nhóm chưa từng tìm xong: không có ai sẽ nạp nó → tạo việc nạp (lỗi hạn mức/trùng: log, nhóm giữ cho_tim)
+                    try:
+                        ts = loai.kiem_tham_so({"goc": goc}, mt)
+                        _tao_viec_da_khoa(loai, ts, boi)
+                    except (VuotHanMuc, TrungViec, ThamSoLoi) as e:
+                        log.warning("radar: theo-lai %s không tạo được việc nạp (%s: %s) — bấm Tìm lại sau", goc,
+                                    type(e).__name__, e)
+            return kq
+        return 200, _goi_radar(lam)
+
+    def p_radar_uid(goc: str, uid: str, act: str, body: dict) -> tuple[int, dict]:
+        """POST /radar/goc/<goc>/uid/<uid>/(ghim|bo-ghim|loai|bo-loai) → {uid, trang_thai}."""
+        _kho_radar_mo()
+        _radar_bat()
+        boi = _boi(body)
+        return 200, _goi_radar(lambda k: k.dat_uid(goc, uid, act, boi))
+
+    def p_radar_chup_lai(body: dict) -> tuple[int, dict]:
+        """POST /radar/chup-lai: tạo một lượt radar_uid_hang_ngay cho hôm nay (UID `ok` hôm nay được bỏ qua, chỉ chụp
+        lại phần lỗi/chưa chụp). 409 khi đang có lượt mở; 429 khi vượt radar_uid_chay_ngay."""
+        _kho_radar_mo()
+        _radar_bat()
+        boi = _boi(body)
+        loai = DANH_MUC["radar_uid_hang_ngay"]
+        ts = loai.kiem_tham_so({"ngay": _hom_nay().isoformat()}, mt)
+        with khoa_ghi:
+            if _co_viec_mo(loai.ma, ts["ngay"]):
+                raise LoiApi(409, LOI_DANG_CHUP)
+            try:
+                v = _tao_viec_da_khoa(loai, ts, boi)
+            except TrungViec as e:
+                raise LoiApi(409, LOI_DANG_CHUP) from e
+        log.info("radar: chụp lại %s bởi %s, việc %s", ts["ngay"], boi, v["id"])
+        return 202, {"viec_id": v["id"]}
+
     HANH_DONG = {"tra-loi": p_tra_loi, "huy": p_huy, "tu-choi": p_tu_choi, "chay-tiep": p_chay_tiep,
                  "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai,
                  "nhan-tin": p_nhan_tin, "luu-tru": p_luu_tru, "bo-luu-tru": p_bo_luu_tru}
@@ -1212,6 +1510,10 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return g_hoc_bao_cao(q)
                 if p == "/hoc/bai-hoc":
                     return g_hoc_bai_hoc(q)
+                if p == "/radar/bang":
+                    return g_radar_bang(q)
+                if m := _RE_ROUTE_RADAR_UID.fullmatch(p):
+                    return g_radar_uid(m.group(1), q)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 
@@ -1241,6 +1543,14 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return p_ban_sua(m.group(1), m.group(2), body)
                 if m := _RE_ROUTE_HOC_POST.fullmatch(p):
                     return p_hoc(m.group(1), m.group(2), body)
+                if p == "/radar/goc":
+                    return p_radar_goc(body)
+                if p == "/radar/chup-lai":
+                    return p_radar_chup_lai(body)
+                if m := _RE_ROUTE_RADAR_GOC.fullmatch(p):
+                    return p_radar_nhom(m.group(1), m.group(2), body)
+                if m := _RE_ROUTE_RADAR_UID_HD.fullmatch(p):
+                    return p_radar_uid(m.group(1), m.group(2), m.group(3), body)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 

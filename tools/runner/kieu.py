@@ -138,3 +138,6 @@ class MoiTruong:
     # Gợi ý đã học: nhận hieu_luc_toi_da (hạn mức HIỆU LỰC, phiếu đã áp cầu dao hoc_bat_ngay) → danh sách mục cấu trúc
     # cho hoc_danh_muc.render_goi_y. chay_runner gắn đúng `kho_hoc.goi_y_hieu_luc` (cùng chữ ký).
     goi_y_hoc: Callable[[int], list[dict]] = field(default=_khong_co_goi_y)
+    # Radar UID (docs/radar-uid.md §6.6): file token EchoTik (CHỈ đường dẫn; nội dung token không bao giờ vào argv/env).
+    # None = chưa cấu hình (thư mục runner tạm thiếu KHO_ECHOTIK_TOKEN_FILE) → lap_buoc 2 loại radar báo ThamSoLoi.
+    echotik_token_file: Path | None = None

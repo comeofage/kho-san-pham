@@ -36,7 +36,9 @@ def env_runner(du_lieu: Path, repo: Path) -> dict:
               # D15 §8.1: 3 đường dẫn của học tự động luôn về thư mục tạm (không bao giờ trỏ tới đường thật)
               "KHO_THU_MUC_POSTER": str(du_lieu.parent / "poster_gia"),
               "KHO_THU_MUC_VIEW": str(du_lieu.parent / "view_gia"),
-              "KHO_SCRIPT_QUET_KENH": str(du_lieu.parent / "view_gia" / "tiktok_scan_gia.py")})
+              "KHO_SCRIPT_QUET_KENH": str(du_lieu.parent / "view_gia" / "tiktok_scan_gia.py"),
+              # Radar UID §6.6: file token EchoTik cũng luôn về thư mục tạm (không bao giờ trỏ E:	imsanpham)
+              "KHO_ECHOTIK_TOKEN_FILE": str(du_lieu.parent / "token_gia" / ".echotik_token.json")})
     return e
 
 
@@ -609,3 +611,74 @@ def test_cai_sao_luu_db_truoc_khi_cai(tmp_path):
         assert b.execute("SELECT COUNT(*) FROM t").fetchone()[0] == 4
     finally:
         b.close()
+
+
+# ---------------- Radar UID (RU-B3): hẹn giờ 10:00 + KhoRadarUid trong main (docs/radar-uid.md §6.1, §13) ----------------
+
+def test_hen_gio_cho_thu_muc_mac_dinh_co_radar_10h_va_thu_muc_tam_khong():
+    import chay_runner
+    mac_dinh = chay_runner.hen_gio_cho(Path(r"E:\kho-runner"))
+    assert mac_dinh == (("quet_view_hang_ngay", 9), ("radar_uid_hang_ngay", 10), ("hoc_hang_ngay", 12))
+    assert chay_runner.hen_gio_cho(Path("E:/kho-runner/app")) == ()                 # thư mục khác: không hẹn giờ radar
+
+
+def test_hen_gio_cho_thu_muc_tam_khong_tao_viec_radar(tmp_path):
+    """Thư mục runner tạm → hen_gio=() → BoChay không bao giờ tạo việc radar (kể cả có kho_radar)."""
+    import chay_runner
+    from runner.han_muc import HAN_MUC_TRAN
+    from runner.kho_viec import KhoViec
+    hen = chay_runner.hen_gio_cho(tmp_path / "du_lieu")
+    assert hen == ()
+    mt = lam_mt_chay(tmp_path)
+    kho = KhoViec(tmp_path / "du_lieu" / "runner.db", mt.bay_gio)
+    bo = vl.BoChay(kho, mt, dict(HAN_MUC_TRAN), tmp_path / "du_lieu" / "log", lambda s: s, hen_gio=hen,
+                   kho_radar=object())
+    assert bo._hen_gio() == [] and [v for v in kho.ds(None, gioi_han=50) if v["loai"].startswith("radar_uid")] == []
+
+
+def lam_mt_chay(tmp_path):
+    from datetime import datetime
+    from runner.kieu import MUI_GIO_VN, MoiTruong
+    for d in ("goc", "repo", "scripts", "radar", "sp"):
+        (tmp_path / d).mkdir(exist_ok=True)
+    return MoiTruong(
+        gocs=[tmp_path / "goc"], repo_kho=tmp_path / "repo", thu_muc_scripts=tmp_path / "scripts",
+        python_poster=Path(sys.executable), claude_exe=Path(sys.executable), agy_exe=Path(sys.executable),
+        thu_muc_radar=tmp_path / "radar", thu_muc_sp=tmp_path / "sp", thu_muc_du_lieu=tmp_path / "du_lieu",
+        cong_song=lambda c: True, chan_doan_kho=lambda r: None, ffmpeg_ngoai=lambda: False,
+        thoi_luong_media=lambda p: 1.0, bay_gio=lambda: datetime(2026, 11, 23, 10, 0, tzinfo=MUI_GIO_VN))
+
+
+def test_main_mo_kho_radar_truyen_bochay_va_api(tmp_path, monkeypatch):
+    from runner.kho_radar_uid import KhoRadarUid
+    chay_runner, du_lieu, bat = _main_trong_tien_trinh(tmp_path, monkeypatch)
+    assert chay_runner.main(["--cong", "1"]) == 0
+    kr = bat["bo"]["kho_radar"]
+    assert isinstance(kr, KhoRadarUid) and kr.duong_dan == du_lieu / "radar_uid.db" and kr.chi_doc is False
+    assert (du_lieu / "radar_uid.db").is_file()                         # đã mo() trong thư mục tạm, sau mutex
+    assert bat["api_kw"]["kho_radar"] is kr and bat["bo_obj"].kho_radar is kr
+    assert bat["bo"]["hen_gio"] == ()                                    # thư mục tạm → không hẹn giờ
+    assert not any("radar_uid" in c or "Radar UID" in c for c in bat["canh_bao"]), bat["canh_bao"]
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None                                                 # đã nhả mutex
+    k.nha()
+
+
+def test_main_kho_radar_mo_loi_canh_bao_va_runner_van_chay(tmp_path, monkeypatch, caplog):
+    from runner import kho_radar_uid as kr_mod
+    chay_runner, du_lieu, bat = _main_trong_tien_trinh(tmp_path, monkeypatch)
+
+    def mo_loi(self):
+        raise RuntimeError("radar_uid.db có schema '9' — kiểm tay C:/duong/dan/bi/mat")
+    monkeypatch.setattr(kr_mod.KhoRadarUid, "mo", mo_loi)
+    with caplog.at_level("ERROR", logger="kho_runner"):
+        assert chay_runner.main(["--cong", "1"]) == 0                    # tới tận bước HTTP (tao_handler)
+    assert bat["bo"]["kho_radar"] is None and bat["api_kw"]["kho_radar"] is None
+    cb = [c for c in bat["canh_bao"] if "Radar UID" in c]
+    assert len(cb) == 1 and "RuntimeError" in cb[0] and "C:/duong" not in cb[0], bat["canh_bao"]
+    assert any("radar_uid.db" in r.getMessage() for r in caplog.records)
+    # học tự động vẫn mở bình thường: lỗi Radar không kéo theo các kho khác
+    assert bat["bo"]["kho_hoc"] is not None
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None
+    k.nha()

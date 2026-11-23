@@ -6,7 +6,8 @@ Thứ tự trong main() (bước 1 trước MỌI việc đụng job/tiến trì
      ngay sau đó (khi có HTTP) kiểm ky_cong_khai.pem và đọc/sinh .runner_key — thiếu hoặc hỏng → mã 6, chưa đụng
      DB/việc nào;
   2. tự gắn Job Object (KILL_ON_JOB_CLOSE) — thất bại → cảnh báo trên /suc-khoe;
-  3. mở DB, mở hoc.db (D15; lỗi → cảnh báo, học tự động tắt), dọn mồ côi, đối soát (BoChay.khoi_dong);
+  3. mở DB, mở hoc.db (D15; lỗi → cảnh báo, học tự động tắt), mở radar_uid.db (Radar UID; lỗi → cảnh báo, Radar tắt),
+     dọn mồ côi, đối soát (BoChay.khoi_dong);
   4. bind 127.0.0.1:<cổng> (thất bại → mã 5);
   5. bật 2 làn.
 Trước bước 1 chỉ có phân tích tham số dòng lệnh (không I/O) để `--help` chạy được cả khi runner đang chạy.
@@ -133,6 +134,27 @@ def _mo_kho_hoc(thu_muc: Path, bay_gio, canh_bao: list[str]):
         return None
 
 
+def _mo_kho_radar(thu_muc: Path, bay_gio, canh_bao: list[str]):
+    """Radar UID (docs/radar-uid.md §4, §6.1): mở `<thu_muc>/radar_uid.db` (KhoRadarUid.mo, SAU mutex). Lỗi bất kỳ →
+    log đủ + một cảnh báo /suc-khoe (chỉ tên lỗi, không đường dẫn) → None: runner chạy tiếp, Radar tắt (/radar/* 503,
+    không hẹn giờ việc radar_uid_hang_ngay). Không bao giờ chạm trendradar.db."""
+    from runner.kho_radar_uid import KhoRadarUid
+    kr = None
+    try:
+        kr = KhoRadarUid(thu_muc / "radar_uid.db", bay_gio)
+        kr.mo()
+        return kr
+    except Exception as e:  # noqa: BLE001 — lỗi Radar không được chặn runner
+        log.error("không mở được radar_uid.db (%s: %s) — Radar UID tắt, runner chạy tiếp", type(e).__name__, e)
+        canh_bao.append(f"Radar UID chưa bật: không mở được radar_uid.db ({type(e).__name__}) — xem runner.log")
+        if kr is not None:
+            try:
+                kr.dong()                       # nhả kết nối dở của lần mở hỏng
+            except Exception:  # noqa: BLE001
+                log.exception("lỗi đóng radar_uid.db sau khi mở hỏng")
+        return None
+
+
 def _stdout_utf8() -> None:
     """FX-26 e): console/pipe cp1252 (bật từ Startup, không PYTHONIOENCODING) không in được tiếng Việt → --help và log
     stderr chết vì UnicodeEncodeError. Đổi stdout/stderr sang UTF-8 (errors="replace"); không có stream (pythonw) hoặc
@@ -161,6 +183,7 @@ def main(argv: list[str] | None = None) -> int:
     srv = None
     bo = None
     kho_hoc = None
+    kho_radar = None
     try:
         _cai_log(thu_muc)
         log.info("bắt đầu runner pid %s, dữ liệu %s, mã %s", os.getpid(), thu_muc, THU_MUC_APP)
@@ -227,12 +250,14 @@ def main(argv: list[str] | None = None) -> int:
         kho_hoc = _mo_kho_hoc(thu_muc, mt.bay_gio, canh_bao)
         if kho_hoc is not None:
             mt.goi_y_hoc = kho_hoc.goi_y_hieu_luc            # cầu dao hạn mức nằm ở phieu.lay_goi_y_hoc
+        # Radar UID: radar_uid.db sau mutex; lỗi → cảnh báo /suc-khoe, kho_radar=None, runner chạy tiếp
+        kho_radar = _mo_kho_radar(thu_muc, mt.bay_gio, canh_bao)
         hen_gio = hen_gio_cho(thu_muc)
         if hen_gio:
             log.info("hẹn giờ việc hệ thống: %s", ", ".join(f"{ma} lúc {g:02d}:00" for ma, g in hen_gio))
         # R-06 P3-5: cùng list canh_bao với /suc-khoe; P3-1: CÙNG kcc với API; D9: lệch tổng kiểm → chặn tốn tiền
         bo = BoChay(kho, mt, hm, thu_muc / "log", che, canh_bao=canh_bao, khoa_cong_khai=kcc,
-                    chan_ton_tien=bool(lech_tong), tieu=tieu, kho_hoc=kho_hoc, hen_gio=hen_gio)
+                    chan_ton_tien=bool(lech_tong), tieu=tieu, kho_hoc=kho_hoc, hen_gio=hen_gio, kho_radar=kho_radar)
         kq = bo.khoi_dong()
         log.info("khởi động lại: %s", json.dumps(kq, ensure_ascii=False))
         if kq.get("con_song"):
@@ -253,7 +278,7 @@ def main(argv: list[str] | None = None) -> int:
             handler = api.tao_handler(kho, mt, khoa_runner, kcc, hm, canh_bao,
                                       bo.bao_huy, bo.doc_log, bo.trang_thai_lan, che=che,
                                       tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song,
-                                      nhan_tin_song=bo.nhan_tin_song, kho_hoc=kho_hoc)
+                                      nhan_tin_song=bo.nhan_tin_song, kho_hoc=kho_hoc, kho_radar=kho_radar)
             try:
                 srv = ThreadingHTTPServer(("127.0.0.1", ts.cong), handler)
             except OSError as e:
@@ -291,6 +316,11 @@ def main(argv: list[str] | None = None) -> int:
                 kho_hoc.dong()                  # kết nối của luồng chính (luồng làn là daemon, chết theo tiến trình)
             except Exception:  # noqa: BLE001 — vẫn phải nhả khoá bên dưới
                 log.exception("lỗi đóng hoc.db")
+        if kho_radar is not None:
+            try:
+                kho_radar.dong()                # kết nối của luồng chính (luồng làn/HTTP là daemon, chết theo tiến trình)
+            except Exception:  # noqa: BLE001 — vẫn phải nhả khoá bên dưới
+                log.exception("lỗi đóng radar_uid.db")
         try:
             khoa.nha()                      # luôn nhả, lỗi được ghi (không nuốt im)
         except OSError as e:

@@ -25,6 +25,8 @@ const LOI_LOAI_VIEC = {
   poster_bo_loai: "Gỡ video bị Loại khỏi folder đăng",
   hoc_hang_ngay: "Học mỗi ngày", // D15: runner tự tạo, web không tạo được
   quet_view_hang_ngay: "Quét view video của mình", // D15: runner tự tạo, web không tạo được
+  radar_uid_hang_ngay: "Chụp Radar UID mỗi ngày", // D16: runner tự tạo, web không tạo được
+  radar_uid_nap: "Nạp UID vào Radar", // D16: API radar tạo, web không tạo qua /api/viec
 };
 function loiLoaiViec(loai) {
   return coKhoaLoi(LOI_LOAI_VIEC, loai) ? LOI_LOAI_VIEC[loai] : "Việc trên máy nhà";

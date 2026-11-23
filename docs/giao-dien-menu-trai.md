@@ -129,9 +129,30 @@ Mọi hàm thuần nằm trong khối marker `// --- <ten>-thuan start/end ---` 
 | Đăng bài | ⬆ | `#/dang`, `#/dang/<id>` | §4 | `thamSoPoster` (`viec.js:515-521`), `locFolderPoster` (`viec.js:577-585`), `hanMucHtml` (`viec.js:396`), `taoViec` (`viec.js:847-870`), `theViecHtml` (`viec.js:130`), `bindVideo` (`app.js:942-985`) | Chủ kho |
 | Máy nhà | ⚙ | `#/may-nha`; `#/viec`, `#/suc-khoe`, `#/viec/<id>` vẫn vào | Sức khoẻ (trên) + danh sách việc (dưới), huy hiệu "cần bạn" | `renderViec` (`viec.js:873-915`), `sucKhoeHtml` (`app.js:435-448`), `capNhatHuyHieuViec` (`viec.js:835-843`) | Chủ kho |
 
+### 2.2a Cập nhật 2026-11-23 (D16, Radar UID): menu chủ kho hiện hành 6 mục
+
+Bảng §2.2 là thiết kế đợt 8 (D12). Từ 2026-11-19 hai mục Duyệt video và Đăng bài đã gỡ (duyệt lúc tạo video, đăng qua Poster V2; D13), nên mảng thật hiện nay **không** còn hai dòng đó. Nguồn thật: `web/khung.js` `mnMENU` (`:9-16`). Với D16 mảng có đúng **6 mục** cho chủ kho, theo thứ tự:
+
+| # | `ma` | Route | Ic | Tên / nhãn thanh đáy | Trang | Ai thấy |
+|---|---|---|---|---|---|---|
+| 1 | `hom-nay` | `#/` | 🏠 | Hôm nay | `renderHomNay` | Chủ kho |
+| 2 | `kho` | `#/kho`, `#/sp/<id>` | 📦 | Sản phẩm | danh sách kho + trang SP | **Mọi người** |
+| 3 | `can-quay` | `#/can-quay` | 🎥 | Cần quay | `mnRenderCanQuay` | Chủ kho |
+| 4 | `may-nha` | `#/may-nha`, `#/viec`, `#/suc-khoe`, `#/viec/<id>` | ⚙ | Máy nhà | `mnRenderMayNha` | Chủ kho |
+| 5 | `poster` | `#/poster…` | 📮 | Poster V2 / Poster | `pvRender` (`web/poster.js`, `docs/poster-v2-tren-web.md` §6.1) | Chủ kho |
+| 6 | `theo-doi` (mới) | `#/theo-doi` | 📡 | **Radar UID** / Radar | `rduRender` (`web/radar-uid.js`, `docs/radar-uid.md` §8) | Chủ kho |
+
+- `mnPhanTichHash` (`khung.js:22`): `#/theo-doi` ⇒ `{trang:"theo-doi", id:""}` (`:28`). `mnMuc` (`:40-42`): `theo-doi` ⇒ mục `theo-doi`; người thường ⇒ `""` (như các trang chủ kho khác). Thêm `"theo-doi"` vào kết quả hợp lệ của `mnMuc` bên cạnh `"poster"`.
+- `mnRoute` (`:82-95`): trang `theo-doi` chỉ vào được khi `chu` (người thường thấy `CHI_CHU_HTML`, `:88`); gọi `rduRender(phien)` qua `typeof` (chưa nạp `radar-uid.js` thì hiện `mnCHUA_CO`). **Dòng đầu của `mnRoute` gọi `rduDung()`** (`:84`) để huỷ hẹn giờ hỏi lại 10 s và bỏ kết quả muộn của trang Radar khi đổi route (cùng kiểu `pvDung()` của Poster V2, `:83`).
+- `#/hoc` (D15) vẫn **không** có mục riêng (tô mục Hôm nay).
+- Thanh đáy màn hẹp: 6 ô (`menu.css` `minmax(0, 1fr)`, không sửa `menu.css`). Người thường: vẫn đúng 1 mục "Sản phẩm", không đổi.
+- Các câu "menu 6 mục" ở đầu tài liệu (§0 và danh sách "Người dùng đã chốt") là **6 mục của D12 (có Duyệt video và Đăng bài)**, khác tập 6 mục hiện hành ở trên; tập hiện hành lấy theo bảng này và `khung.js`.
+
 ### 2.3 `mnMuc(hash, chu)` → tên mục đang mở
 
 Kết quả ∈ `"hom-nay" | "kho" | "can-quay" | "duyet" | "dang" | "may-nha" | ""`.
+
+(Bản D12. Hiện hành thêm `"poster"` và `"theo-doi"`, bỏ `"duyet"`, `"dang"`: xem §2.2a.)
 
 | hash | Chủ kho | Người thường |
 |---|---|---|

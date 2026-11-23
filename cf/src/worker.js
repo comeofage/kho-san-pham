@@ -6,6 +6,7 @@
 "use strict";
 import { apiPoster } from "./poster.js";
 import { apiHoc } from "./hoc.js";
+import { apiRadar } from "./radar.js";
 
 const COOKIE = "kho_s";
 const PHIEN_GIAY = 30 * 24 * 3600;
@@ -954,6 +955,7 @@ async function api(req, env, ctx, url) {
   if (p === "/api/me") return json(phien);
   if (p === "/api/viec" || p.startsWith("/api/viec/")) return apiViec(req, env, url, phien);
   if (p === "/api/hoc" || p.startsWith("/api/hoc/")) return apiHoc(req, env, url, phien, { goiMayNha, traVeMayNha, loi, json, laChuKho });
+  if (p === "/api/radar" || p.startsWith("/api/radar/")) return apiRadar(req, env, url, phien, { goiMayNha, traVeMayNha, loi, json, laChuKho });
   if (p === "/api/poster" || p.startsWith("/api/poster/")) return apiPoster(req, env, url, { user: phien.user, chu: laChuKho(phien.user) });
 
   let v;

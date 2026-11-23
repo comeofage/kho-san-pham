@@ -140,12 +140,16 @@ RE_R = re.compile(r"^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}"
                   r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai|nhan-tin"
                   r"|luu-tru|bo-luu-tru))?)?"
                   r"|sua-video/\d{19}(/[0-9a-f]{16}(/(ung-vien|ban-sua))?)?"
-                  r"|hoc/(bao-cao|bai-hoc(/bh\d{8}[a-z0-9]{4}/(hoan-tac|bat-lai))?))$", re.ASCII)
+                  r"|hoc/(bao-cao|bai-hoc(/bh\d{8}[a-z0-9]{4}/(hoan-tac|bat-lai))?)"
+                  r"|radar/(bang|chup-lai|uid/\d{19}|goc|goc/\d{19}/(tim-lai|ngung|theo-lai|them-tay)"
+                  r"|goc/\d{19}/uid/\d{19}/(ghim|bo-ghim|loai|bo-loai)))$", re.ASCII)
 R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg", "offset")
 # /r/hoc/* (docs/hoc-tu-dong.md §3.8): mỗi tuyến đúng 1 method + khoá query riêng, không nới R_QUERY_KHOA chung.
 # Path đã khớp RE_R mà không có ở đây = /r/hoc/bai-hoc/<ma>/(hoan-tac|bat-lai): chỉ POST, không query.
 R_HOC = {"/r/hoc/bao-cao": ("GET", ("ngay",)), "/r/hoc/bai-hoc": ("GET", ("gioi_han",))}
 R_HOC_GHI = ("POST", ())
+# /r/radar/* (docs/radar-uid.md §7, RU-B4): GET chỉ bang + uid/<uid>, mọi đường khớp RE_R còn lại chỉ POST; không query.
+R_RADAR_GET = re.compile(r"^/r/radar/(bang|uid/\d{19})$")
 RE_R_QUERY_GT = re.compile(r"^[A-Za-z0-9_,-]{0,40}$", re.ASCII)
 R_HEADER = ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce")  # + content-type cho POST; KHÔNG BAO GIỜ x-key
 R_BODY_TOI_DA = 16 * 1024
@@ -194,6 +198,8 @@ def chuyen_tiep_runner(h, method: str) -> None:
     if not RE_R.fullmatch(u.path):
         return _tu_choi(h, 404, "Đường dẫn không hợp lệ")
     hoc = R_HOC.get(u.path, R_HOC_GHI) if u.path.startswith("/r/hoc/") else None
+    if u.path.startswith("/r/radar/"):
+        hoc = ("GET" if R_RADAR_GET.fullmatch(u.path) else "POST", ())
     if hoc and method != hoc[0]:
         return _tu_choi(h, 405, "Sai phương thức")
     body = None

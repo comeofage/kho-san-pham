@@ -980,3 +980,116 @@ def test_pid_nghe_cong_doc_netstat_that():
         assert os.getpid() in vs.pid_nghe_cong(nghe.getsockname()[1])
     finally:
         nghe.close()
+
+
+# ---------- radar UID: chuyển tiếp /r/radar/* (docs/radar-uid.md §7, RU-B4) ----------
+U1 = "1729706628656957720"   # > 2^53, giữ chuỗi
+U2 = "1737422436677814024"
+RADAR_GET = ["/r/radar/bang", f"/r/radar/uid/{U1}"]
+RADAR_POST = ["/r/radar/chup-lai", "/r/radar/goc", f"/r/radar/goc/{U1}/tim-lai", f"/r/radar/goc/{U1}/ngung",
+              f"/r/radar/goc/{U1}/theo-lai", f"/r/radar/goc/{U1}/them-tay"] + \
+             [f"/r/radar/goc/{U1}/uid/{U2}/{a}" for a in ("ghim", "bo-ghim", "loai", "bo-loai")]
+
+
+@pytest.mark.parametrize("duong", RADAR_GET)
+def test_r_radar_get_chuyen_tiep_khong_query(srv, runner, duong):
+    code, h, body = goi_r(srv + duong + "?tu=1&uid=2&gioi_han=5&ngay=2026-11-23", headers={"x-runner-key": "rk-1"})
+    assert code == 200 and json.loads(body) == {"ok": True}
+    g = runner.nhan
+    assert len(g) == 1 and g[0]["method"] == "GET" and g[0]["path"] == duong[2:]  # query bị bỏ hết
+    assert g[0]["headers"]["x-runner-key"] == "rk-1" and "x-key" not in g[0]["headers"]
+
+
+@pytest.mark.parametrize("duong", RADAR_POST)
+def test_r_radar_post_chuyen_nguyen_body_header_khong_query(srv, runner, duong):
+    hdr = dict(HDR_KY, **{"content-type": "application/json", "cookie": "phien=1", "authorization": "Bearer t",
+                          "x-ky-khac": "z"})
+    body = json.dumps({"boi": "nhan", "uid": U1}).encode()
+    code, _, rb = goi_r(srv + duong + "?uid=9&tu=1", method="POST", headers=hdr, body=body)
+    assert code == 200 and json.loads(rb) == {"ok": True}
+    g = runner.nhan
+    assert len(g) == 1 and g[0]["method"] == "POST" and g[0]["path"] == duong[2:]
+    assert g[0]["body"] == body
+    h = g[0]["headers"]
+    for k in ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce", "content-type"):
+        assert h[k] == hdr[k], k
+    for k in ("x-key", "cookie", "authorization", "x-ky-khac"):
+        assert k not in h, k
+
+
+@pytest.mark.parametrize("duong", [
+    "/r/radar", "/r/radar/", "/r/radar/x", "/r/radar/bang/", "/r/radar/uid", "/r/radar/uid/", "/r/radar/uid/12",
+    f"/r/radar/uid/{U1}0", f"/r/radar/uid/{U1[:-1]}", "/r/radar/uid/" + quote("１" * 19), "/r/radar/uid/abcdefghijklmnopqrs",
+    f"/r/radar/uid/{U1}/", f"/r/radar/goc/", f"/r/radar/goc/12/tim-lai", f"/r/radar/goc/{U1}", f"/r/radar/goc/{U1}/",
+    f"/r/radar/goc/{U1}/xoa", f"/r/radar/goc/{U1}/tim-lai/", f"/r/radar/goc/{U1}/uid/{U2}",
+    f"/r/radar/goc/{U1}/uid/{U2}/xoa", f"/r/radar/goc/{U1}/uid/12/ghim", f"/r/radar/goc/12/uid/{U2}/ghim",
+    f"/r/radar/goc/{U1}/uid/{U2}/ghim/", "/r/radar/chup-lai/", "/r/radar/../viec", "/r/radar%2Fbang",
+    "/r/RADAR/bang", "/r/radar/BANG", f"/r/radar/goc/{U1}/../{U1}/ngung",
+])
+def test_r_radar_path_la_404_khong_goi_runner(srv, runner, duong):
+    code, _, body = goi_r(srv + duong)
+    assert code == 404 and json.loads(body) == {"loi": "Đường dẫn không hợp lệ"}
+    code, _, _ = goi_r(srv + duong, method="POST", headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                       body=b"")
+    assert code == 404
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("duong", RADAR_GET)
+def test_r_radar_post_tren_route_get_405(srv, runner, duong):
+    code, _, body = goi_r(srv + duong, method="POST", headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                          body=b'{"boi":"nhan"}')
+    assert code == 405 and json.loads(body) == {"loi": "Sai phương thức"}
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("duong", RADAR_POST)
+def test_r_radar_get_tren_route_post_405(srv, runner, duong):
+    code, _, body = goi_r(srv + duong)
+    assert code == 405 and json.loads(body) == {"loi": "Sai phương thức"}
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("method", ["PUT", "DELETE", "PATCH"])
+def test_r_radar_method_khac_khong_chuyen(srv, runner, method):
+    for duong in ("/r/radar/chup-lai", "/r/radar/bang"):
+        code, _, _ = goi_r(srv + duong, method=method, headers={"content-type": "application/json"}, body=b"")
+        assert code in (405, 501)
+    assert runner.nhan == []
+
+
+def test_r_radar_post_body_qua_16kb_413_khong_goi_runner(srv, runner):
+    code, _, body = goi_r(srv + "/r/radar/goc", method="POST", headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                          body=b"x" * (16 * 1024 + 1))
+    assert code == 413 and "loi" in json.loads(body)
+    assert runner.nhan == []
+
+
+def test_r_radar_post_sai_content_type_415_khong_goi_runner(srv, runner):
+    for ct in ("text/plain", "application/x-www-form-urlencoded", "application/jsonx"):
+        code, _, _ = goi_r(srv + "/r/radar/chup-lai", method="POST", headers=dict(HDR_KY, **{"content-type": ct}),
+                           body=b'{"boi":"nhan"}')
+        assert code == 415, ct
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("khoa", [None, "sai"])
+def test_r_radar_thieu_sai_x_key_401_khong_goi_runner(srv, runner, khoa):
+    assert goi_r(srv + "/r/radar/bang", khoa=khoa)[0] == 401
+    code, _, _ = goi_r(srv + "/r/radar/chup-lai", khoa=khoa, method="POST",
+                       headers=dict(HDR_KY, **{"content-type": "application/json"}), body=b"")
+    assert code == 401
+    assert runner.nhan == []
+
+
+def test_r_radar_post_khong_chu_ky_van_chuyen_de_runner_401(srv, runner):
+    runner.tra_code, runner.tra_body = 401, json.dumps({"loi": "Thiếu chữ ký"}).encode()
+    code, _, rb = goi_r(srv + "/r/radar/goc", method="POST", headers={"content-type": "application/json"},
+                        body=b'{"boi":"nhan"}')
+    assert code == 401 and rb == runner.tra_body
+    assert not any(k.startswith("x-ky") for k in runner.nhan[0]["headers"])
+
+
+def test_r_radar_khong_noi_query_chung_va_get_regex():
+    assert vs.R_QUERY_KHOA == ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg", "offset")
+    assert vs.R_RADAR_GET.pattern == r"^/r/radar/(bang|uid/\d{19})$"

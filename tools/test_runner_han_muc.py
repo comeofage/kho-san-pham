@@ -37,6 +37,8 @@ def test_hang_so_dung_tai_lieu():
         "sua_video_ngay": 60,
         # D15 (docs/hoc-tu-dong.md §4.3): học tự động + lượt quét view hằng ngày
         "hoc_bat_ngay": 1, "hoc_hieu_luc_toi_da": 5, "quet_view_ngay": 3,
+        # Radar UID (docs/radar-uid.md §6.4): cầu dao, trần GET EchoTik/ngày, số việc API tạo/ngày
+        "radar_uid_bat": 1, "radar_uid_goi_ngay": 60, "radar_uid_chay_ngay": 6,
     }
     assert TRAN_LUOT == {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
                          "poster_len_lich": 60, "taovideo": 1500}
@@ -758,3 +760,73 @@ def test_quet_view_ngay_sang_ngay_moi_dat_lai(tmp_path):
         kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-17"}, dict(HAN_MUC_TRAN), "tao", "he_thong")
     luc["t"] = datetime(2026, 11, 18, 9, 0, 0, tzinfo=MUI_GIO_VN)
     kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-18"}, dict(HAN_MUC_TRAN), "tao", "he_thong")
+
+
+# ---------- Radar UID (docs/radar-uid.md §6.4) ----------
+
+def _radar(kho, loai="radar_uid_nap", boi="nhan", tt="cho"):
+    ts = {"goc": "1" * 19} if loai == "radar_uid_nap" else {"ngay": "2026-11-17"}
+    return kho.tao(loai, ts.get("goc") or ts["ngay"], ts, "nhe", tt, boi)
+
+
+def test_radar_uid_han_muc_chi_ha_khong_noi():
+    hm, cb = han_muc_hieu_luc({"radar_uid_bat": 0, "radar_uid_goi_ngay": 40, "radar_uid_chay_ngay": 2})
+    assert han_muc.han_muc_radar(hm) == (0, 40, 2) and cb == []
+    hm, cb = han_muc_hieu_luc({"radar_uid_bat": 2, "radar_uid_goi_ngay": 100, "radar_uid_chay_ngay": 7})
+    assert han_muc.han_muc_radar(hm) == (1, 60, 6) and len(cb) == 3          # nới → bỏ + cảnh báo, giữ trần code
+
+
+@pytest.mark.parametrize("hm,ky_vong", [
+    ({}, (1, 60, 6)),
+    ({"radar_uid_bat": 0, "radar_uid_goi_ngay": 0, "radar_uid_chay_ngay": 0}, (0, 0, 0)),
+    ({"radar_uid_bat": 9, "radar_uid_goi_ngay": 999, "radar_uid_chay_ngay": 99}, (1, 60, 6)),   # dict bị nới → kẹp
+    ({"radar_uid_bat": True, "radar_uid_goi_ngay": "3", "radar_uid_chay_ngay": float("nan")}, (1, 60, 6)),
+    (None, (1, 60, 6)),
+])
+def test_han_muc_radar_ke_ca_dict_hong(hm, ky_vong):
+    assert han_muc.han_muc_radar(hm) == ky_vong
+
+
+def test_radar_uid_chay_ngay_chi_dem_viec_api_tao(kho):
+    """6 việc radar_uid_* do API tạo/ngày (nạp + hang_ngay "chụp lại" tính chung); việc hẹn giờ không đếm."""
+    hm = dict(HAN_MUC_TRAN)
+    for _ in range(10):                                                    # hẹn giờ: không đếm, nên không chặn
+        kiem_han_muc(kho, "radar_uid_hang_ngay", {"ngay": "2026-11-17"}, hm, "tao", "he_thong")
+    kho.chuyen(_radar(kho, "radar_uid_hang_ngay", boi="he_thong")["id"], ["cho"], "huy", "nhan")
+    for i in range(6):
+        kiem_han_muc(kho, "radar_uid_nap" if i % 2 else "radar_uid_hang_ngay", {}, hm, "tao", "nhan")
+        v = _radar(kho, "radar_uid_nap" if i % 2 else "radar_uid_hang_ngay", boi="nhan")
+        kho.chuyen(v["id"], ["cho"], "huy", "nhan")                        # đã huỷ vẫn tính (đếm theo ngày tạo)
+    for loai in ("radar_uid_nap", "radar_uid_hang_ngay"):
+        with pytest.raises(VuotHanMuc, match="radar_uid_chay_ngay"):
+            kiem_han_muc(kho, loai, {}, hm, "tao", "nhan")
+    kiem_han_muc(kho, "radar_uid_hang_ngay", {}, hm, "tao", "he_thong")    # hẹn giờ vẫn tạo được
+    kiem_han_muc(kho, "hoc_hang_ngay", {"ngay": "2026-11-17"}, hm, "tao", "he_thong")   # loại khác không bị chặn
+    kiem_han_muc(kho, "radar_uid_nap", {}, hm, "nhan", "nhan")             # lúc nhận không áp trần tạo
+
+
+def test_radar_uid_chay_ngay_ha_thap_hon(kho):
+    hm, _ = han_muc_hieu_luc({"radar_uid_chay_ngay": 1})
+    kiem_han_muc(kho, "radar_uid_nap", {}, hm, "tao", "nhan")
+    _radar(kho)
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "radar_uid_nap", {}, hm, "tao", "nhan")
+
+
+def test_radar_uid_bat_0_cau_dao_tat_ca_he_thong_va_api(kho):
+    hm, _ = han_muc_hieu_luc({"radar_uid_bat": 0})
+    for loai in ("radar_uid_nap", "radar_uid_hang_ngay"):
+        for boi in ("he_thong", "nhan"):
+            with pytest.raises(VuotHanMuc, match="Radar UID đang tắt"):
+                kiem_han_muc(kho, loai, {}, hm, "tao", boi)
+
+
+def test_radar_uid_chay_ngay_sang_ngay_moi_dat_lai(tmp_path):
+    kho, luc = _kho_dong_ho(tmp_path, datetime(2026, 11, 17, 23, 0, 0, tzinfo=MUI_GIO_VN))
+    hm = dict(HAN_MUC_TRAN)
+    for _ in range(6):
+        kho.chuyen(_radar(kho)["id"], ["cho"], "huy", "nhan")
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "radar_uid_nap", {}, hm, "tao", "nhan")
+    luc["t"] = datetime(2026, 11, 18, 9, 0, 0, tzinfo=MUI_GIO_VN)
+    kiem_han_muc(kho, "radar_uid_nap", {}, hm, "tao", "nhan")

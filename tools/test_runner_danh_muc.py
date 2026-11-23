@@ -302,13 +302,15 @@ def test_lenh_claude_tu_choi(mt):
 
 _CAM_CO_DINH = (
     "AskUserQuestion", "Bash(git push*)", "Bash(*wrangler*)", "Bash(*deploy_cloudflare*)", "Bash(*gui_telegram*)",
-    "Bash(pip *)", "Bash(*--gui-lai-ma*)", "Bash(*kho-runner*)")
+    "Bash(pip *)", "Bash(*--gui-lai-ma*)", "Bash(*kho-runner*)",
+    # Radar UID §6.6: giảm chạm nhầm file token EchoTik (cùng user nên KHÔNG phải bảo vệ tuyệt đối)
+    "Read(//E:/timsanpham/.echotik_token.json)")
 _CAM_CU = ("Edit(//C:/Users/Mi/AppData/Local/kho-runner/**)", "Write(//C:/Users/Mi/AppData/Local/kho-runner/**)",
            "Read(//C:/Users/Mi/AppData/Local/kho-runner/**)")
 
 
 _PHAN_CAM = ("app/**", "app.moi/**", "app.cu/**", "log/**", "runner.db*", ".runner_key", "runner.lock",
-             "runner.log*", "cau_hinh.json", "hoc.db*", "quet_view/**")
+             "runner.log*", "cau_hinh.json", "hoc.db*", "quet_view/**", "radar_uid.db*")
 
 
 def _mau_hep(p: str) -> tuple[str, ...]:
@@ -359,6 +361,8 @@ def test_cong_cu_cam_chung_khong_cam_ca_thu_muc_runner(monkeypatch):
                   # D15 §6.1: hoc.db (agent sửa được thì đầu độc gợi ý) + log lượt quét (chữ TikTok)
                   "E:/kho-runner/hoc.db", "E:/kho-runner/hoc.db-wal", "E:/kho-runner/hoc.db-shm",
                   "E:/kho-runner/quet_view/2026-11-17.json", "E:/kho-runner/quet_view/2026-11-17-kenh.log",
+                  # Radar UID §6.6: radar_uid.db* (agent không được sửa số liệu xếp hạng)
+                  "E:/kho-runner/radar_uid.db", "E:/kho-runner/radar_uid.db-wal", "E:/kho-runner/radar_uid.db-shm",
                   "C:/Users/Mi/AppData/Local/kho-runner/radar/x.json"):
             assert _bi_cam(cam, cc, p), (cc, p)
     # mọi thư mục --add-dir của danh mục đều không bị cấm
@@ -1994,8 +1998,9 @@ def _mt_hoc(mt, tmp_path, **kw):
 
 
 def test_loai_he_thong_trong_danh_muc():
-    assert dm.LOAI_CHI_HE_THONG == ("hoc_hang_ngay", "quet_view_hang_ngay")
-    assert dm.LOAI_KHONG_CHAY_LAI == ("hoc_hang_ngay",)
+    # Radar UID (docs/radar-uid.md §6.1): 2 loại mới cũng chỉ runner tạo và không Chạy lại qua /viec
+    assert dm.LOAI_CHI_HE_THONG == ("hoc_hang_ngay", "quet_view_hang_ngay", "radar_uid_hang_ngay", "radar_uid_nap")
+    assert dm.LOAI_KHONG_CHAY_LAI == ("hoc_hang_ngay", "radar_uid_hang_ngay", "radar_uid_nap")
     assert dm.GIO_HOC_TOI_DA_CHO == 18
     assert dm.THU_MUC_CAI == Path(dm.__file__).resolve().parent.parent
     assert (dm.THU_MUC_CAI / "runner" / "danh_muc.py").is_file()
@@ -2246,3 +2251,193 @@ def test_lap_buoc_hieu_luc_phan_tich_uid_goi_y_theo_hm(mt):
     # resume (đã có phiên): không lập phiếu → không có khối
     br = dm.lap_buoc_hieu_luc(P, v["tham_so"], dict(v, phien_da_tao=1), m, hm)[0]
     assert br.stdin is None
+# ---------- Radar UID: radar_uid_hang_ngay + radar_uid_nap (docs/radar-uid.md §6.1, §6.6, RU-B3) ----------
+
+GOC_RADAR = "1737422436677814024"      # > 2^53: id luôn là chuỗi
+
+
+def _mt_radar(mt, tmp_path, **kw):
+    them = {"echotik_token_file": tmp_path / "token" / ".echotik_token.json"}
+    them.update(kw)
+    return replace(mt, **them)
+
+
+def test_radar_uid_hai_loai_khai_bao_dung_phieu():
+    h, n = dm.DANH_MUC["radar_uid_hang_ngay"], dm.DANH_MUC["radar_uid_nap"]
+    for l in (h, n):
+        assert (l.dot, l.lan_chay, l.ton_tien, l.agent, l.tu_chay_lai) == (3, "nhe", False, None, True)
+        assert l.tai_nguyen == frozenset() and l.bo_cong_cu == () and l.tran_luot is None
+        assert l.ma in dm.LOAI_CHI_HE_THONG and l.ma in dm.LOAI_KHONG_CHAY_LAI
+    assert (h.het_gio_s, n.het_gio_s) == (1200, 900)
+    assert [t["ten"] for t in h.tham_so] == ["ngay"] and [t["ten"] for t in n.tham_so] == ["goc"]
+    assert h.tinh_khoa({"ngay": HOM_NAY}) == HOM_NAY and n.tinh_khoa({"goc": GOC_RADAR}) == GOC_RADAR
+    assert h.trang_thai_dau({"ngay": HOM_NAY}) == ("cho", "chay")
+    assert n.trang_thai_dau({"goc": GOC_RADAR}) == ("cho", "chay")
+    from runner.han_muc import LOAI_RADAR_UID, TRAN_LUOT
+    assert LOAI_RADAR_UID == ("radar_uid_hang_ngay", "radar_uid_nap") == dm.LOAI_RADAR_UID
+    assert not (set(LOAI_RADAR_UID) & set(TRAN_LUOT))
+
+
+def test_radar_uid_mien_phi_khong_phien_song():
+    """Việc radar KHÔNG tốn tiền: không ton_tien, không phiên sống, không nằm trong loại nào của web."""
+    ton = {m for m, l in dm.DANH_MUC.items() if l.ton_tien}
+    assert not ({"radar_uid_hang_ngay", "radar_uid_nap"} & (ton | set(dm.LOAI_PHIEN_SONG)))
+
+
+def test_radar_uid_kiem_tham_so_hop_le(mt):
+    H, N = dm.DANH_MUC["radar_uid_hang_ngay"], dm.DANH_MUC["radar_uid_nap"]
+    assert H.kiem_tham_so({"ngay": HOM_NAY}, mt) == {"ngay": HOM_NAY}
+    assert H.kiem_tham_so({"ngay": HOM_QUA}, mt) == {"ngay": HOM_QUA}
+    assert N.kiem_tham_so({"goc": GOC_RADAR}, mt) == {"goc": GOC_RADAR}
+
+
+@pytest.mark.parametrize("ts", [
+    {}, {"ngay": None}, {"ngay": "2026-11-17\n"}, {"ngay": "2026-02-30"}, {"ngay": "2026-11-15"},
+    {"ngay": "2026-11-18"}, {"ngay": HOM_NAY, "goc": GOC_RADAR}, {"ngay": HOM_NAY, "x": 1},
+])
+def test_radar_uid_hang_ngay_tu_choi_tham_so(mt, ts):
+    with pytest.raises(ThamSoLoi):
+        dm.DANH_MUC["radar_uid_hang_ngay"].kiem_tham_so(ts, mt)
+
+
+@pytest.mark.parametrize("ts", [
+    {}, {"goc": None}, {"goc": 1737422436677814024}, {"goc": "123"}, {"goc": GOC_RADAR + "0"},
+    {"goc": GOC_RADAR + "\n"}, {"goc": "１７３７４２２４３６６７７８１４０２４"}, {"goc": GOC_RADAR, "uid": GOC_RADAR},
+    {"uid": GOC_RADAR}, {"goc": GOC_RADAR, "ngay": HOM_NAY},
+])
+def test_radar_uid_nap_tu_choi_tham_so(mt, ts):
+    with pytest.raises(ThamSoLoi):
+        dm.DANH_MUC["radar_uid_nap"].kiem_tham_so(ts, mt)
+
+
+def test_lap_buoc_radar_uid_hang_ngay(mt, tmp_path):
+    m = _mt_radar(mt, tmp_path)
+    H = dm.DANH_MUC["radar_uid_hang_ngay"]
+    du = Path(m.thu_muc_du_lieu)
+    ds = H.lap_buoc({"ngay": HOM_NAY}, _viec("radar_uid_hang_ngay", {"ngay": HOM_NAY}), m)
+    assert len(ds) == 1
+    b = ds[0]
+    assert (b.ten, b.cwd, b.het_gio_s, b.la_claude, b.song, b.stdin, b.env_them) == (
+        "radar_uid", str(dm.THU_MUC_CAI), 1200, False, False, None, {})
+    assert b.argv == [dm.PYTHON, "-B", "-m", "runner.radar_uid", "--che-do", "hang-ngay", "--ngay", HOM_NAY,
+                      "--db", str(du / "radar_uid.db"), "--token-file", str(m.echotik_token_file),
+                      "--viec-id", ID, "--tran-goi", "60"]
+    assert "--goc" not in b.argv
+    with pytest.raises(ThamSoLoi):
+        H.lap_buoc({"ngay": HOM_NAY}, _viec("radar_uid_hang_ngay", {}, id="../x"), m)
+    with pytest.raises(ThamSoLoi):
+        H.lap_buoc({"ngay": "2026-11-17 --x"}, _viec("radar_uid_hang_ngay", {}), m)
+    with pytest.raises(ThamSoLoi, match="token"):                    # echotik_token_file None: không tự đoán đường dẫn
+        H.lap_buoc({"ngay": HOM_NAY}, _viec("radar_uid_hang_ngay", {"ngay": HOM_NAY}), mt)
+
+
+def test_lap_buoc_radar_uid_nap(mt, tmp_path):
+    m = _mt_radar(mt, tmp_path)
+    N = dm.DANH_MUC["radar_uid_nap"]
+    du = Path(m.thu_muc_du_lieu)
+    ds = N.lap_buoc({"goc": GOC_RADAR}, _viec("radar_uid_nap", {"goc": GOC_RADAR}), m)
+    assert len(ds) == 1
+    b = ds[0]
+    assert (b.ten, b.cwd, b.het_gio_s, b.la_claude) == ("radar_uid", str(dm.THU_MUC_CAI), 900, False)
+    assert b.argv == [dm.PYTHON, "-B", "-m", "runner.radar_uid", "--che-do", "nap", "--ngay", HOM_NAY,
+                      "--db", str(du / "radar_uid.db"), "--token-file", str(m.echotik_token_file),
+                      "--viec-id", ID, "--tran-goi", "60", "--goc", GOC_RADAR]
+    with pytest.raises(ThamSoLoi):
+        N.lap_buoc({"goc": "12"}, _viec("radar_uid_nap", {}), m)
+
+
+def test_lap_buoc_radar_uid_token_chi_la_duong_dan(mt, tmp_path):
+    m = _mt_radar(mt, tmp_path)
+    for ma, ts in (("radar_uid_hang_ngay", {"ngay": HOM_NAY}), ("radar_uid_nap", {"goc": GOC_RADAR})):
+        b = dm.DANH_MUC[ma].lap_buoc(ts, _viec(ma, ts), m)[0]
+        assert b.argv[b.argv.index("--token-file") + 1] == str(m.echotik_token_file)
+        assert b.env_them == {}                                       # token không vào env, không có cờ truyền giá trị
+
+
+def test_lap_buoc_hieu_luc_radar_noi_tran_goi_hieu_luc(mt, tmp_path):
+    """lap_buoc_hieu_luc thay giá trị sau --tran-goi bằng radar_uid_goi_ngay HIỆU LỰC (cau_hinh chỉ hạ)."""
+    from runner.han_muc import HAN_MUC_TRAN, han_muc_hieu_luc
+    m = _mt_radar(mt, tmp_path)
+    for ma, ts in (("radar_uid_hang_ngay", {"ngay": HOM_NAY}), ("radar_uid_nap", {"goc": GOC_RADAR})):
+        L = dm.DANH_MUC[ma]
+        v = _viec(ma, ts)
+        goc_argv = L.lap_buoc(ts, v, m)[0].argv
+        assert dm.lap_buoc_hieu_luc(L, ts, v, m, dict(HAN_MUC_TRAN))[0].argv == goc_argv
+        hm, _ = han_muc_hieu_luc({"radar_uid_goi_ngay": 25})
+        b = dm.lap_buoc_hieu_luc(L, ts, v, m, hm)[0]
+        assert b.argv[b.argv.index("--tran-goi") + 1] == "25" and b.argv.count("--tran-goi") == 1
+        assert len(b.argv) == len(goc_argv)
+        b = dm.lap_buoc_hieu_luc(L, ts, v, m, {**HAN_MUC_TRAN, "radar_uid_goi_ngay": 999})[0]   # dict bị nới → kẹp
+        assert b.argv[b.argv.index("--tran-goi") + 1] == "60"
+
+
+def test_cli_radar_uid_khop_ten_cli_cua_ru_a2(mt, tmp_path):
+    """Hợp đồng với RU-A2 (chỉ TÊN CLI): mọi cờ argv nằm trong bộ cờ đã khai ở phiếu; che_do đúng 'nap'/'hang-ngay'."""
+    da_khai = {"--che-do", "--ngay", "--db", "--token-file", "--viec-id", "--tran-goi", "--goc"}
+    m = _mt_radar(mt, tmp_path)
+    for ma, ts, che_do in (("radar_uid_hang_ngay", {"ngay": HOM_NAY}, "hang-ngay"),
+                           ("radar_uid_nap", {"goc": GOC_RADAR}, "nap")):
+        argv = dm.DANH_MUC[ma].lap_buoc(ts, _viec(ma, ts), m)[0].argv
+        assert argv[:4] == [dm.PYTHON, "-B", "-m", "runner.radar_uid"]
+        assert {a for a in argv[4:] if a.startswith("--")} <= da_khai
+        assert argv[argv.index("--che-do") + 1] == che_do
+
+
+def _ket_thuc_lan_db(du: Path, ngay: str, che_do: str, viec_id: str, trang_thai: str) -> None:
+    from runner.kho_radar_uid import KhoRadarUid
+    k = KhoRadarUid(du / "radar_uid.db", lambda: BAY_GIO)
+    k.mo()
+    try:
+        k.bat_dau_lan(ngay, che_do, viec_id)
+        if trang_thai != "dang_chay":
+            k.ket_thuc_lan(ngay, che_do, viec_id, trang_thai, "" if trang_thai == "xong" else "het_han_muc_goi", 0)
+    finally:
+        k.dong()
+
+
+@pytest.mark.parametrize("ma,che_do,ts", [("radar_uid_hang_ngay", "hang-ngay", {"ngay": HOM_NAY}),
+                                          ("radar_uid_nap", "nap", {"goc": GOC_RADAR})])
+def test_dau_ra_radar_uid(mt, ma, che_do, ts):
+    K = dm.DANH_MUC[ma].kiem_dau_ra
+    du = Path(mt.thu_muc_du_lieu)
+    viec = _viec(ma, ts)
+    assert K(ts, viec, mt) == "chua" and not (du / "radar_uid.db").exists()      # thiếu DB: không tạo file
+    _ket_thuc_lan_db(du, HOM_NAY, che_do, ID, "dang_chay")
+    assert K(ts, viec, mt) == "chua"
+    from runner.kho_radar_uid import KhoRadarUid
+    k = KhoRadarUid(du / "radar_uid.db", lambda: BAY_GIO)
+    k.ket_thuc_lan(HOM_NAY, che_do, ID, "xong", "", 3)
+    k.dong()
+    assert K(ts, viec, mt) == "xong"
+    assert K(ts, _viec(ma, ts, id="j20261117090000zzzz"), mt) == "chua"          # việc khác không cho "xong" hộ
+    khac = "nap" if che_do == "hang-ngay" else "hang-ngay"
+    _ket_thuc_lan_db(du, HOM_NAY, khac, "j20261117090000yyyy", "xong")
+    assert K(ts, _viec(ma, ts, id="j20261117090000yyyy"), mt) == "chua"          # che_do khác không khớp
+    assert dm.kiem_dau_ra_an_toan(dm.DANH_MUC[ma], ts, viec, mt) == "xong"
+
+
+@pytest.mark.parametrize("ma,che_do,ts", [("radar_uid_hang_ngay", "hang-ngay", {"ngay": HOM_NAY}),
+                                          ("radar_uid_nap", "nap", {"goc": GOC_RADAR})])
+def test_dau_ra_radar_uid_tu_dung_la_xong_loi_la_chua(mt, ma, che_do, ts):
+    """Như _dau_ra_hoc: xong/tu_dung ⇒ xong; loi/đang chạy ⇒ chua. KHÔNG đòi mọi UID có chup_uid."""
+    du = Path(mt.thu_muc_du_lieu)
+    K = dm.DANH_MUC[ma].kiem_dau_ra
+    _ket_thuc_lan_db(du, HOM_NAY, che_do, ID, "tu_dung")
+    assert K(ts, _viec(ma, ts), mt) == "xong"
+    _ket_thuc_lan_db(du, HOM_NAY, che_do, "j20261117090000loi1", "loi")
+    assert K(ts, _viec(ma, ts, id="j20261117090000loi1"), mt) == "chua"
+    with sqlite3.connect(f"file:{(du / 'radar_uid.db').as_posix()}?mode=ro", uri=True) as c:
+        assert c.execute("SELECT COUNT(*) FROM chup_uid").fetchone()[0] == 0      # chưa chụp UID nào mà vẫn xong
+
+
+def test_dau_ra_radar_uid_db_hong(mt, caplog):
+    du = Path(mt.thu_muc_du_lieu)
+    du.mkdir(parents=True)
+    (du / "radar_uid.db").write_bytes(b"rac" * 1000)
+    ts = {"ngay": HOM_NAY}
+    assert dm.DANH_MUC["radar_uid_hang_ngay"].kiem_dau_ra(ts, _viec("radar_uid_hang_ngay", ts), mt) == "chua"
+    assert any("radar_uid.db" in r.getMessage() for r in caplog.records)
+
+
+def test_moi_truong_echotik_token_file_mac_dinh_none(mt):
+    assert mt.echotik_token_file is None
