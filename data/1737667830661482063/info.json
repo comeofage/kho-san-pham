@@ -30,10 +30,20 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 9,
-  "luc": "2026-11-07T09:12:30+07:00"
+  "so_video": 2,
+  "luc": "2026-11-23T11:55:31+07:00",
+  "poster": [
+   {
+    "folder": 244,
+    "so_video": 2,
+    "duong_dan": "E:/oneshottramcanh/rolau 1737667830661482063/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 244,
+  "duong_dan": "E:/oneshottramcanh/rolau 1737667830661482063/output_poster"
  },
- "cap_nhat_luc": "2026-11-16T08:34:59+07:00",
+ "cap_nhat_luc": "2026-11-23T11:55:31+07:00",
  "the": [
   "pemit89"
  ],
