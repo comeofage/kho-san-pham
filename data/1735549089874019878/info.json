@@ -36,5 +36,64 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-23T14:16:42+07:00"
+ "cap_nhat_luc": "2026-11-23T14:17:18+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Đồ chơi trẻ em có mô tả 'nam châm' và 'từ 2 tuổi', trong khi hộp gốc in '3+' — dễ bị vướng quy định an toàn đồ chơi và claim 'phát triển trí tuệ'.",
+   "khuyen_nghi": "Làm affiliate theo hướng đồ chơi thư giãn/decor cho người lớn, quay bằng hàng thật, không nói độ tuổi, không claim phát triển tư duy/an toàn cho bé, không có trẻ em trong video. Kiểm hàng thật có nam châm hay không trước khi nhắc chữ 'nam châm'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Shop claim 'phát triển tư duy, trí nhớ, quan sát, giải quyết vấn đề' — không có bằng chứng, không được lặp lại trong video/caption."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Từ 'Rubik' trong tên sản phẩm gắn với nhãn hiệu Rubik's; hộp in 'Magic Cube' — dùng chữ chung 'khối biến hình', tránh logo/tên 'Rubik's Cube'."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Kiểu khối biến hình nhiều mặt phổ biến trên thị trường có thể trùng thiết kế của thương hiệu khác; shop không nêu nguồn gốc thiết kế."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Đồ chơi không thuộc nhóm cấm, nhưng nếu thực sự có nam châm nhỏ thì thuộc nhóm cần chú ý an toàn với trẻ nhỏ."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟠",
+    "nhan_xet": "Sản phẩm dành cho trẻ nhỏ (mô tả 'từ 2 tuổi', hộp '3+'), không thấy chứng nhận an toàn đồ chơi trên trang; độ tuổi mâu thuẫn giữa poster và hộp."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Độ tuổi mâu thuẫn: mô tả/poster '2+ tuổi' còn hộp gốc in '3+'; mô tả nói 'nam châm' — nếu có nam châm nhỏ thì nguy cơ nuốt với trẻ dưới 3 tuổi.",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nói độ tuổi, không quay trẻ em, quay hộp góc không thấy dòng '3+'; kiểm hàng thật trước khi nhắc nam châm; xin chứng nhận/công bố hợp quy đồ chơi từ shop nếu muốn đẩy mạnh."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "Giúp bé phát triển tư duy, trí nhớ, quan sát, giải quyết vấn đề",
+    "goi_y": "Chỉ tả hành động nhìn thấy: lật, bung thành hình khác, ghép họa tiết thành tranh."
+   },
+   {
+    "khong_nen": "An toàn cho bé / phù hợp mọi lứa tuổi / từ 2 tuổi",
+    "goi_y": "Không nhắc độ tuổi; định vị là đồ chơi thư giãn để bàn."
+   },
+   {
+    "khong_nen": "Nam châm / hít vào nhau (khi chưa kiểm hàng thật)",
+    "goi_y": "Chỉ dùng nếu C4 thử thật có hít và quay được."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có chứng nhận/hợp quy an toàn đồ chơi, kích thước khối, vật liệu thật (mô tả nói nhựa ABS nhưng mặt khối trông như in), số hình biến được và việc có nam châm hay không. Chưa đọc được chính sách TikTok Shop hiện hành vì trang cần JS.",
+  "danh_gia_luc": "2026-11-23T14:17:18+07:00"
+ }
 }
