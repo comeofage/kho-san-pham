@@ -375,7 +375,7 @@ const pvfoCSS = `
 .pvfo-qr { position: relative; flex: none; cursor: zoom-in; outline: none; }
 .pvfo-qr svg { display: block; width: 100%; height: auto; }
 .pvfo-qr-mini { width: 30px; padding: 2px; background: #fff; border-radius: 6px; border: 1px solid #ccc; }
-.pvfo-qr-pop { display: none; position: absolute; left: calc(100% + 8px); top: 0; z-index: 20; width: 200px; padding: 10px; background: #fff; color: #333; border-radius: 12px; box-shadow: 0 8px 28px #0005; text-align: center; font-size: 12px; }
+.pvfo-qr-pop { display: none; position: absolute; right: calc(100% + 8px); left: auto; top: 0; z-index: 20; width: 200px; padding: 10px; background: #fff; color: #333; border-radius: 12px; box-shadow: 0 8px 28px #0005; text-align: center; font-size: 12px; }
 .pvfo-qr:hover .pvfo-qr-pop, .pvfo-qr:focus .pvfo-qr-pop { display: block; }
 .pvfo-hang { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
 .pvfo-hang > input[type="text"] { flex: 1; min-width: 160px; width: auto; }
