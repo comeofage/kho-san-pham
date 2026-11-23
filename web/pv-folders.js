@@ -189,10 +189,21 @@ function pvfoPidDem(o, pid) {
   const n = o.pid_dem && Object.hasOwn(o.pid_dem, pid) ? Number(o.pid_dem[pid]) : NaN;
   return Number.isFinite(n) ? ` · đã đăng ${n} video` : "";
 }
+// QR link sản phẩm cạnh mỗi ID (dùng lại thư viện qrcode + lớp .qr của app): nhỏ, rê chuột/chạm mới phóng to.
+const pvfoQrCache = new Map();
+function pvfoQr(pid) {
+  if (typeof window === "undefined" || typeof window.qrcode !== "function" || !/^\d+$/.test(pid)) return "";
+  if (!pvfoQrCache.has(pid)) {
+    const q = window.qrcode(0, "M"); q.addData(`https://shop.tiktok.com/vn/pdp/${pid}`); q.make();
+    pvfoQrCache.set(pid, q.createSvgTag({ cellSize: 4, margin: 4, scalable: true }));
+  }
+  const svg = pvfoQrCache.get(pid);
+  return `<div class="pvfo-qr" tabindex="0" title="Quét/mở link sản phẩm TikTok"><div class="pvfo-qr-mini">${svg}</div><div class="pvfo-qr-pop">${svg}<div class="small">Quét để mở sản phẩm</div></div></div>`;
+}
 function pvfoPidHtml(o) {
   const ds = pvfoDsPid(o.product_id);
   return `<p class="pv-nho">${esc("Tick ID muốn đăng (bỏ tick để tạm ngưng, không xoá):")}</p>`
-    + ds.map((pid) => `<label class="pvfo-hang"><input type="checkbox" class="pvfo-o-chon" data-pvfo-pid="${esc(pid)}"${pvfoPidTick(o, pid) ? " checked" : ""}> ${esc(pid)}${pvfoPidDem(o, pid)}</label>`).join("");
+    + ds.map((pid) => `<div class="pvfo-pid-hang"><label class="pvfo-hang"><input type="checkbox" class="pvfo-o-chon" data-pvfo-pid="${esc(pid)}"${pvfoPidTick(o, pid) ? " checked" : ""}> ${esc(pid)}${pvfoPidDem(o, pid)}</label>${pvfoQr(pid)}</div>`).join("");
 }
 // get_data (folders.py:206-223)
 function pvfoDuLieuSua(o) {
@@ -360,6 +371,12 @@ const pvfoCSS = `
 .pvfo-lo { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 .pvfo-rong { margin: 0; padding: 32px 10px; text-align: center; color: var(--muted); }
 .pvfo-rong-ic { display: block; font-size: 40px; }
+.pvfo-pid-hang { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
+.pvfo-qr { position: relative; flex: none; cursor: zoom-in; outline: none; }
+.pvfo-qr svg { display: block; width: 100%; height: auto; }
+.pvfo-qr-mini { width: 30px; padding: 2px; background: #fff; border-radius: 6px; border: 1px solid #ccc; }
+.pvfo-qr-pop { display: none; position: absolute; left: calc(100% + 8px); top: 0; z-index: 20; width: 200px; padding: 10px; background: #fff; color: #333; border-radius: 12px; box-shadow: 0 8px 28px #0005; text-align: center; font-size: 12px; }
+.pvfo-qr:hover .pvfo-qr-pop, .pvfo-qr:focus .pvfo-qr-pop { display: block; }
 .pvfo-hang { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; }
 .pvfo-hang > input[type="text"] { flex: 1; min-width: 160px; width: auto; }
 .pvfo-form textarea { min-height: 60px; }
