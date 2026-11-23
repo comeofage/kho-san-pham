@@ -241,7 +241,7 @@ function pvfoTheHtml(c) {
   const daDang = pvfoPy("total_posted" in f ? f.total_posted : 0);
   const xem = f.product_name || f.caption || "";
   const vpd = pvfoPy("videos_per_day" in f ? f.videos_per_day : 1);
-  const hq = pvfoInt(f.last_day_count, 0), hn = pvfoInt(f.today_count, 0);
+  const hq = pvfoInt(f.last_day_count, 0), hn = pvfoInt(f.today_count, 0), tu = pvfoInt(f.week_count, 0);
   const ma = pvfoMa(c);
   const laLuuTru = Boolean(f.is_archived || 0);
   return `<div class="pvfo-the${c.chon ? " pvfo-the-chon" : ""}" data-pvfo-the="${ma}" style="--tk-h:${pvfoHue(f)}">`
@@ -253,6 +253,7 @@ function pvfoTheHtml(c) {
     + `<span class="pvfo-bd pvfo-bd-vang">🏷️ ${esc(pvfoPy(pvfoSoPid(f)))} products</span>`
     + `<span class="pvfo-bd ${hq > 0 ? "pvfo-bd-xanh" : "pvfo-bd-mo"}" title="Số video đăng thành công hôm qua của folder này.">🕘 Hôm qua: ${hq}</span>`
     + `<span class="pvfo-bd ${hn > 0 ? "pvfo-bd-xanh" : "pvfo-bd-mo"}" title="Số video đã đăng thành công hôm nay của folder này.">📆 Hôm nay: ${hn}</span>`
+    + `<span class="pvfo-bd ${tu > 0 ? "pvfo-bd-xanh" : "pvfo-bd-mo"}" title="Số video đăng thành công trong 7 ngày gần nhất (gồm hôm nay).">📅 7 ngày: ${tu}</span>`
     + `<span class="pvfo-dk"><label class="pvfo-nho">Videos: <input type="number" class="pvfo-o-so" min="0" max="100" step="1" inputmode="numeric" value="${c.so}" data-pvfo-so="${ma}"`
     + `${c.homQua !== null ? ` title="Số video đăng hôm qua: ${esc(pvfoPy(c.homQua))}"` : ""}></label>`
     + `<select class="pvfo-o-lich" data-pvfo-lich="${ma}" title="Chỉ đăng vào các ngày trong tháng theo chu kỳ này" aria-label="Lịch đăng">`
