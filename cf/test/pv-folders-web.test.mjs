@@ -142,7 +142,7 @@ test("chữ kết quả Thêm vào Queue / Đăng ngay nguyên văn folders.py:1
 
 test("_FolderEditDialog: giá trị ban đầu + get_data y folders.py:57-223", () => {
   const m = T.pvfoMauSua(null, ACC);
-  assert.deepEqual(m, { name: "", source: "local", account_id: null, path: "", product_id: "", product_name: "", caption_pool: "",
+  assert.deepEqual(m, { name: "", source: "local", account_id: null, path: "", product_id: "", product_id_active: "", pid_tick: new Map(), pid_goc: new Set(), product_name: "", caption_pool: "",
     videos_per_day: 1, post_times: '["08:00"]', campaign_hashtags: "", first_comment: "", visibility: "everyone", active: true });
   const s = T.pvfoMauSua(F(3, { source: "drive", account_id: 2, path: "E:\\v", product_id: "11,22", caption_pool: '["a","b"]',
     videos_per_day: 300, post_times: "", visibility: "private", active: 0, campaign_hashtags: null }), ACC);
@@ -155,8 +155,26 @@ test("_FolderEditDialog: giá trị ban đầu + get_data y folders.py:57-223", 
   assert.equal(T.pvfoMauSua(F(3, { caption_pool: "[1,2]" }), ACC).caption_pool, "[1,2]", "list không phải chuỗi: giữ nguyên (join lỗi)");
   assert.deepEqual(T.pvfoDuLieuSua({ ...m, name: "  Tên  ", path: " E:\\x ", product_id: " 1, 2\n\n3 ", caption_pool: "\n c \n",
     post_times: "  ", account_id: 2, active: false }), {
-    name: "Tên", source: "local", path: "E:\\x", account_id: 2, product_id: "1\n2\n3", product_name: "", caption_pool: "c",
+    name: "Tên", source: "local", path: "E:\\x", account_id: 2, product_id: "1\n2\n3", product_id_active: "1\n2\n3", product_name: "", caption_pool: "c",
     videos_per_day: 1, post_times: '["08:00"]', campaign_hashtags: "", first_comment: "", visibility: "everyone", active: false });
+});
+
+test("tick từng Product ID: mặc định tick hết (folder cũ), theo product_id_active, bấm tick ghi đè; chỉ ID tick vào product_id_active", () => {
+  const cu = T.pvfoMauSua(F(3, { product_id: "11,22,33" }), ACC);
+  assert.equal(T.pvfoDuLieuSua(cu).product_id_active, "11\n22\n33", "product_id_active rỗng = tick hết");
+  const m = T.pvfoMauSua(F(3, { product_id: "11\n22\n33", product_id_active: "22" }), ACC);
+  assert.equal(T.pvfoDuLieuSua(m).product_id_active, "22");
+  assert.deepEqual([...T.pvfoHopSuaHtml(m, ACC).matchAll(/data-pvfo-pid="(\d+)"( checked)?/g)].map((x) => [x[1], !!x[2]]),
+    [["11", false], ["22", true], ["33", false]]);
+  m.pid_tick.set("11", true); m.pid_tick.set("22", false);
+  assert.equal(T.pvfoDuLieuSua(m).product_id_active, "11");
+  m.product_id = "11\n11\n44";
+  assert.equal(T.pvfoDuLieuSua(m).product_id, "11\n11\n44");
+  assert.equal(T.pvfoDuLieuSua(m).product_id_active, "11\n44", "trùng ID chỉ tính 1; ID gõ thêm mặc định tick");
+  const huyHieu = (f) => T.pvfoTheHtml(T.pvfoTheMoi(F(5, f), 1));
+  assert.ok(huyHieu({ product_id_count: 3, product_id_active_count: 1 }).includes("🏷️ 1/3 products"));
+  assert.ok(huyHieu({ product_id_count: 3, product_id_active_count: 3 }).includes("🏷️ 3 products"));
+  assert.ok(huyHieu({ product_id_count: 2 }).includes("🏷️ 2 products"));
 });
 
 test("(a) chữ nguyên văn: khung trang, thẻ folder, hộp Thêm/Sửa (không Browse, có dòng gợi ý), Dự báo", () => {
@@ -182,7 +200,7 @@ test("(a) chữ nguyên văn: khung trang, thẻ folder, hộp Thêm/Sửa (khô
   for (const chu of ["Tên folder:", `placeholder="Tên folder (bắt buộc)"`, "Nguồn + Account:", ">local<", ">drive<", "Account:",
     ">— Không chọn —<", ">acc1 (ID: 1)<", ">acc2 (ID: 2)<", "Đường dẫn / Drive ID:", `placeholder="Đường dẫn thư mục hoặc Google Drive ID"`,
     ">🔌 Test<", "Gõ đường dẫn thư mục trên máy nhà, rồi bấm 🔌 Test", "TikTok Shop Product IDs:",
-    `placeholder="Nhập các Product ID TikTok Shop (mỗi dòng 1 mã, tự xoay vòng)"`, "Tên sản phẩm:",
+    `placeholder="Nhập các Product ID TikTok Shop (mỗi dòng 1 mã)"`, "Tick ID muốn đăng (bỏ tick để tạm ngưng, không xoá):", "Tên sản phẩm:",
     `placeholder="Tên sản phẩm hiển thị trên giỏ hàng (tùy chọn)"`, "Caption Pool:",
     `placeholder="Danh sách caption (mỗi dòng 1 caption hoặc phân cách bởi ---)"`, "Tần suất &amp; Giờ đăng:", "video/ngày", "Giờ đăng:",
     `placeholder="[&quot;08:00&quot;, &quot;12:00&quot;, &quot;20:00&quot;]"`, "Campaign Hashtags:", `placeholder="#campaign #affiliate"`,
@@ -582,7 +600,7 @@ test("(b) + Add Folder: hộp 'Thêm folder' → gõ ô → Lưu Folder → crea
   await phat(hop, "change", muc({}, { name: "active", checked: false }));
   await t.bamHop("luu");
   assert.deepEqual(t.goiGhi().map((r) => [r.method, r.url, r.body]), [["POST", "/api/poster/api/v2/folders/", {
-    name: "Mới", source: "local", path: "E:\\vid", account_id: 2, product_id: "1\n2", product_name: "", caption_pool: "", videos_per_day: 3,
+    name: "Mới", source: "local", path: "E:\\vid", account_id: 2, product_id: "1\n2", product_id_active: "1\n2", product_name: "", caption_pool: "", videos_per_day: 3,
     post_times: '["08:00"]', campaign_hashtags: "", first_comment: "", visibility: "friends", active: false }]]);
   assert.equal(t.S.goi.filter((r) => r.url === URL_FO0).length, 2);
   loi = true;

@@ -161,6 +161,9 @@ function pvfoMauSua(folder, accounts) {
     account_id: coTk ? f.account_id : null,
     path: String(f.path || ""),
     product_id: String(f.product_id || "").replaceAll(",", "\n"),
+    product_id_active: String(f.product_id_active || "").replaceAll(",", "\n"),
+    pid_tick: new Map(),
+    pid_goc: new Set(pvfoDsPid(f.product_id)),
     product_name: String(f.product_name || ""),
     caption_pool: pool,
     videos_per_day: pvfoKep(pvfoInt(f.videos_per_day, 1), 1, 100),
@@ -171,12 +174,27 @@ function pvfoMauSua(folder, accounts) {
     active: "active" in f ? Boolean(f.active) : true,
   };
 }
+// Ô tick từng Product ID (folders.py _sync_product_checkboxes): ID có sẵn lúc mở hộp lấy theo product_id_active (rỗng = tick hết, folder cũ); ID gõ thêm mặc định tick.
+function pvfoDsPid(raw) {
+  return [...new Set(String(raw ?? "").replaceAll(",", "\n").split(/\r\n|\r|\n/).map((l) => l.trim()).filter(Boolean))];
+}
+function pvfoPidTick(o, pid) {
+  if (o.pid_tick instanceof Map && o.pid_tick.has(pid)) return !!o.pid_tick.get(pid);
+  const dau = pvfoDsPid(o.product_id_active);
+  return dau.length === 0 || !(o.pid_goc instanceof Set && o.pid_goc.has(pid)) || dau.includes(pid);
+}
+function pvfoPidHtml(o) {
+  const ds = pvfoDsPid(o.product_id);
+  return `<p class="pv-nho">${esc("Tick ID muốn đăng (bỏ tick để tạm ngưng, không xoá):")}</p>`
+    + ds.map((pid) => `<label class="pvfo-hang"><input type="checkbox" class="pvfo-o-chon" data-pvfo-pid="${esc(pid)}"${pvfoPidTick(o, pid) ? " checked" : ""}> ${esc(pid)}</label>`).join("");
+}
 // get_data (folders.py:206-223)
 function pvfoDuLieuSua(o) {
   const pids = String(o.product_id).replaceAll(",", "\n").split(/\r\n|\r|\n/).map((l) => l.trim()).filter(Boolean);
   return {
     name: String(o.name).trim(), source: o.source, path: String(o.path).trim(), account_id: o.account_id ?? null,
-    product_id: pids.join("\n"), product_name: String(o.product_name).trim(), caption_pool: String(o.caption_pool).trim(),
+    product_id: pids.join("\n"), product_id_active: pvfoDsPid(pids.join("\n")).filter((p) => pvfoPidTick(o, p)).join("\n"),
+    product_name: String(o.product_name).trim(), caption_pool: String(o.caption_pool).trim(),
     videos_per_day: pvfoKep(pvfoInt(o.videos_per_day, 1), 1, 100), post_times: String(o.post_times).trim() || '["08:00"]',
     campaign_hashtags: String(o.campaign_hashtags).trim(), first_comment: String(o.first_comment).trim(), visibility: o.visibility,
     active: !!o.active,
@@ -191,6 +209,12 @@ function pvfoHue(f) {
   if (Number.isFinite(id) && id > 0) return Math.round((id * 137.508) % 360);
   let h = 0; for (const ch of String((f && f.account_name) || "")) h = (h * 31 + ch.codePointAt(0)) % 360;
   return h;
+}
+// Huy hiệu products: "đang đăng/tổng" khi có ID bị bỏ tick (desktop folders.py _FolderCard).
+function pvfoSoPid(f) {
+  const tong = "product_id_count" in f ? f.product_id_count : 0;
+  const dang = "product_id_active_count" in f ? f.product_id_active_count : tong;
+  return dang === tong ? tong : `${dang}/${tong}`;
 }
 function pvfoTheHtml(c) {
   const f = c.f;
@@ -209,7 +233,7 @@ function pvfoTheHtml(c) {
     + `<span class="pvfo-bd pvfo-bd-lam">👤 ${esc(tk)}</span>`
     + `<span class="pvfo-bd ${Number(con) > 0 ? "pvfo-bd-xanh" : "pvfo-bd-do"}">🎬 Còn ${esc(pvfoPy(con))} video</span>`
     + `<span class="pvfo-bd pvfo-bd-ngoc" title="Tổng số video đã đăng từ folder này: ${esc(daDang)}">✅ Đã đăng ${esc(daDang)}</span>`
-    + `<span class="pvfo-bd pvfo-bd-vang">🏷️ ${esc(pvfoPy("product_id_count" in f ? f.product_id_count : 0))} products</span>`
+    + `<span class="pvfo-bd pvfo-bd-vang">🏷️ ${esc(pvfoPy(pvfoSoPid(f)))} products</span>`
     + `<span class="pvfo-bd ${hq > 0 ? "pvfo-bd-xanh" : "pvfo-bd-mo"}" title="Số video đăng thành công hôm qua của folder này.">🕘 Hôm qua: ${hq}</span>`
     + `<span class="pvfo-bd ${hn > 0 ? "pvfo-bd-xanh" : "pvfo-bd-mo"}" title="Số video đã đăng thành công hôm nay của folder này.">📆 Hôm nay: ${hn}</span>`
     + `<span class="pvfo-dk"><label class="pvfo-nho">Videos: <input type="number" class="pvfo-o-so" min="0" max="100" step="1" inputmode="numeric" value="${c.so}" data-pvfo-so="${ma}"`
@@ -273,7 +297,8 @@ function pvfoHopSuaHtml(o, accounts) {
       opt(String(i), `${pvfoPy(a && a.name)} (ID: ${pvfoPy(a && a.id)})`, i === chonTk)).join("")}</select></div>
   <span>Đường dẫn / Drive ID:</span><div><div class="pvfo-hang">${o1("path", "Đường dẫn thư mục hoặc Google Drive ID", o.path)}<button type="button" class="btn ghost sm" data-pvfo-test="">🔌 Test</button></div>
     <p class="pv-nho">Gõ đường dẫn thư mục trên máy nhà, rồi bấm 🔌 Test</p></div>
-  <span>TikTok Shop Product IDs:</span><textarea name="product_id" rows="3" placeholder="${esc("Nhập các Product ID TikTok Shop (mỗi dòng 1 mã, tự xoay vòng)")}">\n${esc(o.product_id)}</textarea>
+  <span>TikTok Shop Product IDs:</span><div><textarea name="product_id" rows="3" placeholder="${esc("Nhập các Product ID TikTok Shop (mỗi dòng 1 mã)")}">\n${esc(o.product_id)}</textarea>
+    <div data-pvfo-pid-ds="">${pvfoPidHtml(o)}</div></div>
   <span>Tên sản phẩm:</span>${o1("product_name", "Tên sản phẩm hiển thị trên giỏ hàng (tùy chọn)", o.product_name)}
   <span>Caption Pool:</span><textarea name="caption_pool" rows="4" placeholder="${esc("Danh sách caption (mỗi dòng 1 caption hoặc phân cách bởi ---)")}">\n${esc(o.caption_pool)}</textarea>
   <span>${esc("Tần suất & Giờ đăng:")}</span><div class="pvfo-hang"><input type="number" class="pvfo-o-so" name="videos_per_day" min="1" max="100" step="1" inputmode="numeric" value="${esc(String(o.videos_per_day))}">
@@ -690,7 +715,16 @@ async function pvfoMoHopSua(S, folder) {
   const hop = pvHop({ tieuDe: laSua ? "Sửa folder" : "Thêm folder", html: pvfoHopSuaHtml(o, ds),
     nut: [{ ma: "luu", chu: "Lưu Folder", chinh: true }, { ma: "huy", chu: "Hủy" }] });
   hop.el.className += " pvfo-hop";
-  const ghi = (ev) => pvfoGhiO(o, ev && ev.target, ds);
+  const ghi = (ev) => {
+    const t = ev && ev.target;
+    const pid = t && t.dataset ? t.dataset.pvfoPid : undefined;
+    if (pid !== undefined) { o.pid_tick.set(pid, !!t.checked); return; }
+    pvfoGhiO(o, t, ds);
+    if (t && t.name === "product_id" && typeof hop.el.querySelector === "function") {
+      const kv = hop.el.querySelector("[data-pvfo-pid-ds]");
+      if (kv) kv.innerHTML = pvfoPidHtml(o);
+    }
+  };
   hop.el.addEventListener("input", ghi);
   hop.el.addEventListener("change", ghi);
   hop.el.addEventListener("click", (ev) => {

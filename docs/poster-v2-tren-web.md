@@ -379,6 +379,11 @@ Mọi chuỗi từ backend qua `esc` (`web/app.js:9`), kể cả tên account/fo
 - Web hiện đúng 2 hộp gốc: "Thư mục Local hợp lệ!\nTìm thấy {n} video." / "Thư mục local không tồn tại.". Lỗi 400 B3 hiện qua `pvThongBao` kiểu warning.
 - Nguồn drive giữ nguyên lời gọi `drive-test` (tuyến 24).
 
+### 5.2a Folders: tick từng Product ID (2026-11-23, theo app desktop)
+- Hộp Thêm/Sửa folder: dưới ô "TikTok Shop Product IDs" có danh sách ô tick, mỗi Product ID một ô (`data-pvfo-pid`). Gõ thêm/bớt ID thì danh sách dựng lại; ID gõ thêm mặc định tick.
+- Lưu gửi thêm khoá `product_id_active` (các ID được tick, xuống dòng) cạnh `product_id` (mọi ID). `product_id_active` rỗng/thiếu = tick hết (folder cũ). Backend Poster chỉ chọn/gắn ID đã tick (`product_pool.get_active_product_ids`).
+- Thẻ folder hiện `🏷️ đang/tổng products` khi có ID bị bỏ tick (`product_id_active_count` từ `GET /folders/`). Không thêm route/chốt mới.
+
 ### 5.3 Không bê 1:1 được, kèm phương án
 
 | Chỗ | Desktop | Web | Lý do |
