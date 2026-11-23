@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-23T14:11:49+07:00",
+ "cap_nhat_luc": "2026-11-23T14:16:54+07:00",
  "san_pham": [
   {
    "id": "1735549089874019878",
    "uid": "1735549089874019878",
    "link": "https://www.tiktok.com/view/product/1735549089874019878",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Khối Rubik 3D Biến Hình, Đồ Chơi Khối Lập Phương Ma Thuật Magic Cube, Rubik Biến Thể Thay Đổi Hình Dáng Đa Chiều Giup Bé Phát Triển Khả Năng Sáng Tạo",
+   "gia": "29.486₫",
+   "shop": "TOY STORE 5.0",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-23T14:11:40+07:00",
-   "cap_nhat_luc": "2026-11-23T14:11:40+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-23T14:16:42+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
