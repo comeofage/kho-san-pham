@@ -779,7 +779,7 @@ test("index.html: poster.css sau menu.css; poster.js + 9 pv-*.js giữa khung.js
   const i = js.indexOf("khung.js");
   assert.deepEqual(js.slice(i, i + 12), ["khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js", "pv-folders.js", "pv-calendar.js",
     "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js"]);
-  assert.match(HTML, /khung\.js\?v=4"/);
+  assert.match(HTML, /khung\.js\?v=5"/);
   assert.match(HTML, /poster\.js\?v=2" defer/, "2026-11-19 nút Bật Poster V2: nâng ?v");
   for (const f of ["pv-dashboard.js", "pv-settings.js"]) assert.match(HTML, new RegExp(`${f.replace(".", "\\.")}\\?v=1" defer`));
 });

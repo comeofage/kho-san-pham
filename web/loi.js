@@ -23,6 +23,8 @@ const LOI_LOAI_VIEC = {
   sua_video: "Sửa lại một video",
   hoan_tac_sua: "Hoàn tác bản sửa video",
   poster_bo_loai: "Gỡ video bị Loại khỏi folder đăng",
+  hoc_hang_ngay: "Học mỗi ngày", // D15: runner tự tạo, web không tạo được
+  quet_view_hang_ngay: "Quét view video của mình", // D15: runner tự tạo, web không tạo được
 };
 function loiLoaiViec(loai) {
   return coKhoaLoi(LOI_LOAI_VIEC, loai) ? LOI_LOAI_VIEC[loai] : "Việc trên máy nhà";

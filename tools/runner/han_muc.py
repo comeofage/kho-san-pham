@@ -36,9 +36,15 @@ HAN_MUC_TRAN: dict[str, int | float] = {
     "taovideo_usd_viec": 999999, "taovideo_mp3_viec": 999999, "taovideo_lan_ngay": 10,
     # D10 (docs/sua-video.md §7.3): số việc sua_video + hoan_tac_sua TẠO trong ngày VN (chặn bấm lặp làm bận GPU).
     "sua_video_ngay": 60,
+    # D15 (docs/hoc-tu-dong.md §4.3). Hạ về 0: hoc_bat_ngay = tắt tự áp dụng VÀ tắt gợi ý vào phiếu (cầu dao,
+    # phieu.lay_goi_y_hoc); hoc_hieu_luc_toi_da = không bài nào vào phiếu; quet_view_ngay = tắt lịch quét
+    # (việc quet_view_hang_ngay TẠO/ngày, gồm cả tự tạo lẫn Chạy lại).
+    "hoc_bat_ngay": 1, "hoc_hieu_luc_toi_da": 5, "quet_view_ngay": 3,
 }
 # Loại tính chung trần sua_video_ngay (miễn phí, làn gpu, dot=4 — không cần nâng dot_bat).
 LOAI_SUA_VIDEO: tuple[str, ...] = ("sua_video", "hoan_tac_sua")
+# D15: loại đếm trần quet_view_ngay lúc tạo (danh_muc.LOAI_CHI_HE_THONG; đặt tên ở đây vì danh_muc import han_muc).
+LOAI_QUET_VIEW = "quet_view_hang_ngay"
 TRAN_LUOT: dict[str, int] = {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
                              "poster_len_lich": 60, "taovideo": 1500}
 # Watermark người dùng cho chọn ở taovideo (D11: "nha.cua.mit hoặc không"); "khong" luôn có, không nằm ở đây.
@@ -112,6 +118,12 @@ def tran_taovideo(hm: dict) -> dict[str, int | float]:
     codex (lượt), gio (đồng hồ làm lam_s, giờ). Cùng nguồn với vòng chạy (_gia_tri, het_gio_taovideo)."""
     return {"usd": _gia_tri(hm, "taovideo_usd_viec"), "mp3": int(_gia_tri(hm, "taovideo_mp3_viec")),
             "codex": int(_gia_tri(hm, "codex_luot_viec")), "gio": het_gio_taovideo(hm)["lam_s"] / 3600}
+
+
+def han_muc_hoc(hm: dict | None) -> tuple[int, int]:
+    """D15 §4.3: (hoc_bat_ngay, hoc_hieu_luc_toi_da) HIỆU LỰC — min(trần code, hm); hm thiếu/hỏng/nới → trần code.
+    Dùng chung cho API /hoc/*, lệnh việc hoc_hang_ngay và cầu dao gợi ý vào phiếu (kho_hoc không có mặc định)."""
+    return int(_gia_tri(hm, "hoc_bat_ngay")), int(_gia_tri(hm, "hoc_hieu_luc_toi_da"))
 
 
 def han_muc_tu_thu_muc(thu_muc: Path) -> tuple[dict, list[str]]:
@@ -404,6 +416,11 @@ def kiem_han_muc(kho: "KhoViec", ma_loai: str, tham_so: dict, hm: dict, luc: str
             n_sua = sum(kho.dem_trong_ngay(l, hom_nay) for l in LOAI_SUA_VIDEO)
             if n_sua >= tran_sua:
                 raise VuotHanMuc(f"hôm nay đã tạo {n_sua} việc sửa/hoàn tác video (trần {tran_sua})")
+        if ma_loai == LOAI_QUET_VIEW:
+            tran_q = _gia_tri(hm, "quet_view_ngay")
+            n_q = kho.dem_trong_ngay(LOAI_QUET_VIEW, hom_nay)
+            if n_q >= tran_q:
+                raise VuotHanMuc(f"hôm nay đã tạo {n_q} việc quet_view_hang_ngay (trần quet_view_ngay {tran_q})")
     if loai.ton_tien:
         _kiem_ton_tien(kho, ma_loai, tham_so, hm, luc, viec_id, hom_nay)
     if luc == "tao":

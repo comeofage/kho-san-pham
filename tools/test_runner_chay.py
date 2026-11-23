@@ -32,7 +32,11 @@ CHAY_RUNNER = TOOLS / "chay_runner.py"
 def env_runner(du_lieu: Path, repo: Path) -> dict:
     e = dict(os.environ)
     e.update({"KHO_RUNNER_DIR": str(du_lieu), "KHO_REPO": str(repo), "PYTHONIOENCODING": "utf-8",
-              "PYTHONDONTWRITEBYTECODE": "1"})
+              "PYTHONDONTWRITEBYTECODE": "1",
+              # D15 §8.1: 3 đường dẫn của học tự động luôn về thư mục tạm (không bao giờ trỏ tới đường thật)
+              "KHO_THU_MUC_POSTER": str(du_lieu.parent / "poster_gia"),
+              "KHO_THU_MUC_VIEW": str(du_lieu.parent / "view_gia"),
+              "KHO_SCRIPT_QUET_KENH": str(du_lieu.parent / "view_gia" / "tiktok_scan_gia.py")})
     return e
 
 
@@ -307,6 +311,90 @@ def test_api_nhan_tra_loi_song_va_co_phien_song_cua_bochay(tmp_path, monkeypatch
     bo, kw = bat["bo"], bat["kw"]
     assert kw["tra_loi_song"] == bo.tra_loi_song and kw["co_phien_song"] == bo.co_phien_song
     assert kw["co_phien_song"]("j20261118000000abcd") is False
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None
+    k.nha()
+
+
+# ---------------- D15 HT-A2: hẹn giờ + KhoHoc trong main (docs/hoc-tu-dong.md §3.4, §3.8, §8.3) ----------------
+
+def test_env_runner_dat_3_bien_hoc_ve_thu_muc_tam(tmp_path):
+    e = env_runner(tmp_path / "du_lieu", tmp_path / "repo")
+    for k in ("KHO_THU_MUC_POSTER", "KHO_THU_MUC_VIEW", "KHO_SCRIPT_QUET_KENH"):
+        assert Path(e[k]).is_relative_to(tmp_path), (k, e[k])
+
+
+def test_hen_gio_cho_chi_bat_o_thu_muc_mac_dinh(tmp_path):
+    import chay_runner
+    assert chay_runner.hen_gio_cho(tmp_path / "du_lieu") == ()
+    assert chay_runner.hen_gio_cho(tmp_path) == ()
+    # chỉ so giá trị đường dẫn, không mở/tạo thư mục thật
+    assert chay_runner.hen_gio_cho(Path(r"E:\kho-runner")) == vl.HEN_GIO_MAC_DINH
+    assert chay_runner.hen_gio_cho(Path("E:/kho-runner/")) == vl.HEN_GIO_MAC_DINH
+    assert chay_runner.hen_gio_cho(Path(r"E:\kho-runner\app")) == ()
+
+
+def _main_trong_tien_trinh(tmp_path, monkeypatch):
+    """Chuẩn bị chạy chay_runner.main() trong tiến trình test, dừng ở api.tao_handler (KeyboardInterrupt).
+    Trả (chay_runner, du_lieu, bat) — bat["bo"] = kwargs BoChay, bat["bo_obj"], bat["api_kw"], bat["mt"]."""
+    import chay_runner
+    from runner import api
+    du_lieu = tmp_path / "du_lieu"
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(du_lieu))
+    for k in ("KHO_REPO", "KHO_THU_MUC_RADAR", "KHO_THU_MUC_SP", "KHO_THU_MUC_SCRIPTS", "KHO_THU_MUC_POSTER",
+              "KHO_THU_MUC_VIEW", "KHO_SCRIPT_QUET_KENH"):
+        monkeypatch.setenv(k, str(tmp_path / k.lower()))
+    monkeypatch.setattr(tt, "tu_gan_job_object", lambda: True)
+    monkeypatch.setattr(chay_runner, "_cai_log", lambda thu_muc: None)
+    monkeypatch.setattr(chay_runner, "_khoa_cong_khai", lambda: (object(), tmp_path / "gia.pem"))
+    monkeypatch.setattr(vl.BoChay, "khoi_dong", lambda self: {})
+    bat = {}
+    goc_init = vl.BoChay.__init__
+
+    def init(self, kho, mt, *a, **kw):
+        bat["bo"], bat["bo_obj"], bat["mt"] = kw, self, mt
+        goc_init(self, kho, mt, *a, **kw)
+    monkeypatch.setattr(vl.BoChay, "__init__", init)
+
+    def tao_handler(kho, mt, khoa, kcc, hm, canh_bao, *a, **kw):
+        bat["api_kw"], bat["canh_bao"] = kw, canh_bao
+        raise KeyboardInterrupt
+    monkeypatch.setattr(api, "tao_handler", tao_handler)
+    return chay_runner, du_lieu, bat
+
+
+def test_main_mo_kho_hoc_gan_goi_y_va_truyen_bochay_api(tmp_path, monkeypatch):
+    from runner.kho_hoc import KhoHoc
+    chay_runner, du_lieu, bat = _main_trong_tien_trinh(tmp_path, monkeypatch)
+    assert chay_runner.main(["--cong", "1"]) == 0
+    kh = bat["bo"]["kho_hoc"]
+    assert isinstance(kh, KhoHoc) and kh.duong_dan == du_lieu / "hoc.db"
+    assert (du_lieu / "hoc.db").is_file()                              # đã mo() (schema tạo trong thư mục tạm)
+    assert bat["api_kw"]["kho_hoc"] is kh
+    assert bat["mt"].goi_y_hoc == kh.goi_y_hieu_luc
+    assert bat["bo"]["hen_gio"] == ()                                   # thư mục tạm → không hẹn giờ
+    assert bat["bo_obj"].kho_hoc is kh
+    assert not any("hoc.db" in c or "Học tự động" in c for c in bat["canh_bao"]), bat["canh_bao"]
+    k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
+    assert k is not None
+    k.nha()
+
+
+def test_main_kho_hoc_mo_loi_canh_bao_va_runner_van_chay(tmp_path, monkeypatch, caplog):
+    from runner import kho_hoc as kh_mod
+    from runner.kieu import _khong_co_goi_y
+    chay_runner, du_lieu, bat = _main_trong_tien_trinh(tmp_path, monkeypatch)
+
+    def mo_loi(self):
+        raise RuntimeError("hoc.db có schema '9' — kiểm tay C:/duong/dan/bi/mat")
+    monkeypatch.setattr(kh_mod.KhoHoc, "mo", mo_loi)
+    with caplog.at_level("ERROR", logger="kho_runner"):
+        assert chay_runner.main(["--cong", "1"]) == 0                  # tới tận bước HTTP (tao_handler)
+    assert bat["bo"]["kho_hoc"] is None and bat["api_kw"]["kho_hoc"] is None
+    assert bat["mt"].goi_y_hoc is _khong_co_goi_y                       # không gắn gợi ý
+    cb = [c for c in bat["canh_bao"] if "Học tự động" in c]
+    assert len(cb) == 1 and "RuntimeError" in cb[0] and "C:/duong" not in cb[0], bat["canh_bao"]
+    assert any("hoc.db" in r.getMessage() for r in caplog.records)
     k = tt.gianh_don_instance(du_lieu, vl.ten_mutex(du_lieu))
     assert k is not None
     k.nha()

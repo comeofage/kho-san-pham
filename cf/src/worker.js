@@ -5,6 +5,7 @@
 // KV SO_DUYET (D9): sổ lời duyệt đã tiêu (tieu:<sha256hex 64 byte chu_ky_duyet dạng chuẩn>, không TTL) + đếm sai mật khẩu duyệt (sai:<user>).
 "use strict";
 import { apiPoster } from "./poster.js";
+import { apiHoc } from "./hoc.js";
 
 const COOKIE = "kho_s";
 const PHIEN_GIAY = 30 * 24 * 3600;
@@ -487,7 +488,7 @@ async function tieuDuyet(req, env) {
 }
 
 // Gọi runner qua video_server. Luôn trả Response: của máy nhà, hoặc lỗi 502/504 đã đổi (401/403 → 502).
-async function goiMayNha(env, path, { method = "GET", body, timeoutMs = TIMEOUT_VIEC_MS } = {}) {
+export async function goiMayNha(env, path, { method = "GET", body, timeoutMs = TIMEOUT_VIEC_MS } = {}) {
   const headers = { "x-key": env.VIDEO_KEY, "x-runner-key": env.RUNNER_KEY };
   let bodyText;
   if (method === "POST") {
@@ -508,7 +509,7 @@ async function goiMayNha(env, path, { method = "GET", body, timeoutMs = TIMEOUT_
   }
   return r;
 }
-const traVeMayNha = (r) =>
+export const traVeMayNha = (r) =>
   new Response(r.body, { status: r.status, headers: { "content-type": r.headers.get("content-type") || "application/json; charset=utf-8", "cache-control": "no-store" } });
 
 function queryViec(src, khoaChoPhep, mauRieng = {}) {
@@ -952,6 +953,7 @@ async function api(req, env, ctx, url) {
   if (!phien) return loi("Chưa đăng nhập", 401);
   if (p === "/api/me") return json(phien);
   if (p === "/api/viec" || p.startsWith("/api/viec/")) return apiViec(req, env, url, phien);
+  if (p === "/api/hoc" || p.startsWith("/api/hoc/")) return apiHoc(req, env, url, phien, { goiMayNha, traVeMayNha, loi, json, laChuKho });
   if (p === "/api/poster" || p.startsWith("/api/poster/")) return apiPoster(req, env, url, { user: phien.user, chu: laChuKho(phien.user) });
 
   let v;

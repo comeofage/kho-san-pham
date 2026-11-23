@@ -2,7 +2,7 @@
 // Thiết kế: docs/giao-dien-menu-trai.md §2, §3, §6, §7. Script thường, chung phạm vi toàn cục với app.js:
 // mọi tên cấp đỉnh của file này bắt đầu bằng "mn" (P2-7, test cf/test/menu-web.test.mjs).
 // Dùng của app.js (lúc chạy): esc, $, api, state, loadList, route, cardHtml, bindSwitches, quay, soLoaiDaQuay, phienCT, CHI_CHU_HTML,
-// sucKhoeHtml; của viec.js: renderViec. Trang Poster V2 (poster.js) gọi qua typeof — chưa có file vẫn chạy.
+// sucKhoeHtml; của viec.js: renderViec. Trang Poster V2 (poster.js) và Học tự động (hoc.js, hcRender) gọi qua typeof — chưa có file vẫn chạy.
 "use strict";
 
 // --- khung-thuan start ---
@@ -14,7 +14,8 @@ const mnMENU = [
   { ma: "poster", href: "#/poster", ic: "📮", ten: "Poster V2", ngan: "Poster" },
 ];
 
-// hash → {trang, id}. trang ∈ "goc" | "kho" | "can-quay" | "cu" | "may-nha" | "sua" | "viec-ct" | "poster" | "".
+// hash → {trang, id}. trang ∈ "goc" | "kho" | "can-quay" | "cu" | "may-nha" | "sua" | "viec-ct" | "poster" | "hoc" | "".
+// "hoc" (#/hoc, D15 Q6): trang Học tự động, KHÔNG có mục menu riêng — mở từ khối "📈 Học hôm nay", tô mục Hôm nay.
 // id: phần sau "/" của #/poster/<trang>, hoặc của link cũ #/duyet/<id>, #/dang/<id> (trang "cu": chuyển về #/sp/<id> hoặc #/poster)
 // (CHƯA giải mã; "" = trang danh sách). Khớp regex của route() trong app.js.
 function mnPhanTichHash(hash) {
@@ -22,6 +23,7 @@ function mnPhanTichHash(hash) {
   if (h === "" || h === "#" || h === "#/") return { trang: "goc", id: "" };
   if (h === "#/kho" || /^#\/sp\/.+$/.test(h)) return { trang: "kho", id: "" };
   if (h === "#/can-quay") return { trang: "can-quay", id: "" };
+  if (h === "#/hoc") return { trang: "hoc", id: "" };
   if (h === "#/may-nha" || h === "#/viec" || h === "#/suc-khoe") return { trang: "may-nha", id: "" };
   if (/^#\/viec\/[^/]+$/.test(h)) return { trang: "viec-ct", id: "" };
   if (/^#\/sua\/\d{19}\/[0-9a-f]{16}$/.test(h)) return { trang: "sua", id: "" };
@@ -35,7 +37,7 @@ function mnPhanTichHash(hash) {
 // Mục menu đang mở (bảng §2.3). Người thường: trang mặc định là Kho; trang chủ kho → "" (đang xem câu chặn).
 function mnMuc(hash, chu) {
   const t = mnPhanTichHash(hash).trang;
-  const muc = { goc: chu ? "hom-nay" : "kho", kho: "kho", "can-quay": "can-quay", "may-nha": "may-nha", "viec-ct": "may-nha", poster: "poster" }[t] || "";
+  const muc = { goc: chu ? "hom-nay" : "kho", kho: "kho", "can-quay": "can-quay", "may-nha": "may-nha", "viec-ct": "may-nha", poster: "poster", hoc: "hom-nay" }[t] || "";
   if (chu) return muc;
   return t === "" ? "kho" : muc === "kho" ? "kho" : "";
 }
@@ -78,7 +80,7 @@ const mnCHUA_CO = `<p class="center muted">Trang đang được cập nhật. <a
 async function mnRoute(hash, chu) {
   if (typeof pvDung === "function") pvDung(); // Poster V2: xoá hẹn giờ, ngừng hỏi lệnh nền, bỏ kết quả muộn (poster.js)
   const { trang, id } = mnPhanTichHash(hash);
-  if (!["can-quay", "may-nha", "cu", "poster"].includes(trang)) return false;
+  if (!["can-quay", "may-nha", "cu", "poster", "hoc"].includes(trang)) return false;
   const phien = ++phienCT;
   if (!chu) { $("#app").innerHTML = CHI_CHU_HTML; return true; }
   // Link cũ #/duyet[/<id>], #/dang[/<id>] (2 trang đã gỡ 2026-11-19): có SP → trang SP, không → Poster V2.
@@ -86,6 +88,7 @@ async function mnRoute(hash, chu) {
   if (trang === "can-quay") await mnRenderCanQuay(phien);
   else if (trang === "may-nha") await mnRenderMayNha(phien);
   else if (trang === "poster") { if (typeof pvRender === "function") await pvRender(id); else $("#app").innerHTML = mnCHUA_CO; }
+  else if (trang === "hoc") { if (typeof hcRender === "function") await hcRender(phien); else $("#app").innerHTML = mnCHUA_CO; } // hoc.js (D15)
   return true;
 }
 

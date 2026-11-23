@@ -6,7 +6,7 @@ Thứ tự trong main() (bước 1 trước MỌI việc đụng job/tiến trì
      ngay sau đó (khi có HTTP) kiểm ky_cong_khai.pem và đọc/sinh .runner_key — thiếu hoặc hỏng → mã 6, chưa đụng
      DB/việc nào;
   2. tự gắn Job Object (KILL_ON_JOB_CLOSE) — thất bại → cảnh báo trên /suc-khoe;
-  3. mở DB, dọn mồ côi, đối soát (BoChay.khoi_dong);
+  3. mở DB, mở hoc.db (D15; lỗi → cảnh báo, học tự động tắt), dọn mồ côi, đối soát (BoChay.khoi_dong);
   4. bind 127.0.0.1:<cổng> (thất bại → mã 5);
   5. bật 2 làn.
 Trước bước 1 chỉ có phân tích tham số dòng lệnh (không I/O) để `--help` chạy được cả khi runner đang chạy.
@@ -106,6 +106,33 @@ def _khoa_cong_khai():
     return None, None
 
 
+def hen_gio_cho(thu_muc: Path) -> tuple[tuple[str, int], ...]:
+    """D15 §3.4: hẹn giờ việc hệ thống CHỈ khi `thu_muc` là thư mục runner mặc định (E:\\kho-runner); thư mục khác
+    (test, KHO_RUNNER_DIR tạm) → () — không bao giờ tạo việc quét/học. Chỉ so chuỗi đường dẫn, không mở thư mục."""
+    from runner.vong_lap import HEN_GIO_MAC_DINH, THU_MUC_RUNNER_MAC_DINH, _chuan
+    return HEN_GIO_MAC_DINH if _chuan(Path(thu_muc)) == _chuan(THU_MUC_RUNNER_MAC_DINH) else ()
+
+
+def _mo_kho_hoc(thu_muc: Path, bay_gio, canh_bao: list[str]):
+    """D15 §3.8: mở `<thu_muc>/hoc.db` (KhoHoc.mo). Lỗi bất kỳ → log đủ + một cảnh báo /suc-khoe (chỉ tên lỗi, không
+    đường dẫn) → None: runner chạy tiếp, học tự động tắt (/hoc/* 503, không gợi ý, không hẹn giờ việc học)."""
+    from runner.kho_hoc import KhoHoc
+    kh = None
+    try:
+        kh = KhoHoc(thu_muc / "hoc.db", bay_gio)
+        kh.mo()
+        return kh
+    except Exception as e:  # noqa: BLE001 — lỗi bộ học không được chặn runner
+        log.error("không mở được hoc.db (%s: %s) — học tự động tắt, runner chạy tiếp", type(e).__name__, e)
+        canh_bao.append(f"Học tự động chưa bật: không mở được hoc.db ({type(e).__name__}) — xem runner.log")
+        if kh is not None:
+            try:
+                kh.dong()                       # CL6: nhả kết nối dở của lần mở hỏng
+            except Exception:  # noqa: BLE001
+                log.exception("lỗi đóng hoc.db sau khi mở hỏng")
+        return None
+
+
 def _stdout_utf8() -> None:
     """FX-26 e): console/pipe cp1252 (bật từ Startup, không PYTHONIOENCODING) không in được tiếng Việt → --help và log
     stderr chết vì UnicodeEncodeError. Đổi stdout/stderr sang UTF-8 (errors="replace"); không có stream (pythonw) hoặc
@@ -133,6 +160,7 @@ def main(argv: list[str] | None = None) -> int:
 
     srv = None
     bo = None
+    kho_hoc = None
     try:
         _cai_log(thu_muc)
         log.info("bắt đầu runner pid %s, dữ liệu %s, mã %s", os.getpid(), thu_muc, THU_MUC_APP)
@@ -195,9 +223,16 @@ def main(argv: list[str] | None = None) -> int:
         if origin != WORKER_ORIGIN:
             log.warning("KHO_WORKER_ORIGIN ghi đè origin Worker tiêu lời duyệt: %s", origin)
         tieu = tao_ham_tieu(origin, khoa_runner, kcc) if (kcc is not None and khoa_runner) else None
+        # D15 §3.8: hoc.db sau mutex; lỗi → cảnh báo /suc-khoe, kho_hoc=None, runner chạy tiếp
+        kho_hoc = _mo_kho_hoc(thu_muc, mt.bay_gio, canh_bao)
+        if kho_hoc is not None:
+            mt.goi_y_hoc = kho_hoc.goi_y_hieu_luc            # cầu dao hạn mức nằm ở phieu.lay_goi_y_hoc
+        hen_gio = hen_gio_cho(thu_muc)
+        if hen_gio:
+            log.info("hẹn giờ việc hệ thống: %s", ", ".join(f"{ma} lúc {g:02d}:00" for ma, g in hen_gio))
         # R-06 P3-5: cùng list canh_bao với /suc-khoe; P3-1: CÙNG kcc với API; D9: lệch tổng kiểm → chặn tốn tiền
         bo = BoChay(kho, mt, hm, thu_muc / "log", che, canh_bao=canh_bao, khoa_cong_khai=kcc,
-                    chan_ton_tien=bool(lech_tong), tieu=tieu)
+                    chan_ton_tien=bool(lech_tong), tieu=tieu, kho_hoc=kho_hoc, hen_gio=hen_gio)
         kq = bo.khoi_dong()
         log.info("khởi động lại: %s", json.dumps(kq, ensure_ascii=False))
         if kq.get("con_song"):
@@ -218,7 +253,7 @@ def main(argv: list[str] | None = None) -> int:
             handler = api.tao_handler(kho, mt, khoa_runner, kcc, hm, canh_bao,
                                       bo.bao_huy, bo.doc_log, bo.trang_thai_lan, che=che,
                                       tra_loi_song=bo.tra_loi_song, co_phien_song=bo.co_phien_song,
-                                      nhan_tin_song=bo.nhan_tin_song)
+                                      nhan_tin_song=bo.nhan_tin_song, kho_hoc=kho_hoc)
             try:
                 srv = ThreadingHTTPServer(("127.0.0.1", ts.cong), handler)
             except OSError as e:
@@ -251,6 +286,11 @@ def main(argv: list[str] | None = None) -> int:
                 srv.server_close()
             except OSError as e:
                 log.error("lỗi đóng HTTP: %s", e)
+        if kho_hoc is not None:
+            try:
+                kho_hoc.dong()                  # kết nối của luồng chính (luồng làn là daemon, chết theo tiến trình)
+            except Exception:  # noqa: BLE001 — vẫn phải nhả khoá bên dưới
+                log.exception("lỗi đóng hoc.db")
         try:
             khoa.nha()                      # luôn nhả, lỗi được ghi (không nuốt im)
         except OSError as e:

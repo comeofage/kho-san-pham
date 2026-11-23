@@ -106,6 +106,10 @@ def _khong_ro_ma_voice(p: Path, me: str) -> list[str] | None:
     return None
 
 
+def _khong_co_goi_y(_hieu_luc_toi_da: int) -> list[dict]:
+    return []
+
+
 @dataclass
 class MoiTruong:
     gocs: list[Path]
@@ -126,3 +130,11 @@ class MoiTruong:
     # MỞ RỘNG (ngoài chữ ký §13, có mặc định nên không phá chỗ gọi): danh sách mã bản của mẻ
     # (`trang_thai.py --project P --batch me ma`, §5.1 P2-7). None = không xác định → đối soát 'khong_ro'.
     ds_ma_voice: Callable[[Path, str], list[str] | None] = field(default=_khong_ro_ma_voice)
+    # D15 (docs/hoc-tu-dong.md §3.3, §3.4a, §3.7) — đều có mặc định nên chỗ gọi cũ không đổi.
+    # None = chưa cấu hình (thư mục runner tạm thiếu biến KHO_*) → lap_buoc của 2 loại hệ thống báo ThamSoLoi.
+    poster_db: Path | None = None                 # <KHO_THU_MUC_POSTER>/v2_data.db
+    thu_muc_view: Path | None = None              # thư mục view-poster (channels.json, raw/)
+    script_quet_kenh: Path | None = None          # tiktok_scan.py của skill quet-phan-tich-kenh-tiktok
+    # Gợi ý đã học: nhận hieu_luc_toi_da (hạn mức HIỆU LỰC, phiếu đã áp cầu dao hoc_bat_ngay) → danh sách mục cấu trúc
+    # cho hoc_danh_muc.render_goi_y. chay_runner gắn đúng `kho_hoc.goi_y_hieu_luc` (cùng chữ ký).
+    goi_y_hoc: Callable[[int], list[dict]] = field(default=_khong_co_goi_y)

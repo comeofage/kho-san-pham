@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from runner import han_muc  # noqa: E402
 from runner.han_muc import HAN_MUC_TRAN, TRAN_LUOT, WM_CHO_PHEP, han_muc_hieu_luc, kiem_han_muc  # noqa: E402
 from runner.kho_viec import KhoViec  # noqa: E402
-from runner.kieu import ThamSoLoi, VuotHanMuc  # noqa: E402
+from runner.kieu import MUI_GIO_VN, ThamSoLoi, VuotHanMuc  # noqa: E402
 
 
 @pytest.fixture(autouse=True)
@@ -35,6 +35,8 @@ def test_hang_so_dung_tai_lieu():
         "taovideo_ngay": 10, "codex_luot_viec": 999999,
         "taovideo_usd_viec": 999999, "taovideo_mp3_viec": 999999, "taovideo_lan_ngay": 10,
         "sua_video_ngay": 60,
+        # D15 (docs/hoc-tu-dong.md §4.3): học tự động + lượt quét view hằng ngày
+        "hoc_bat_ngay": 1, "hoc_hieu_luc_toi_da": 5, "quet_view_ngay": 3,
     }
     assert TRAN_LUOT == {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120,
                          "poster_len_lich": 60, "taovideo": 1500}
@@ -685,3 +687,74 @@ def test_ngay_cac_lan_tieu():
     assert f({"so_lan_tieu": 0, "tao_luc": "2026-11-14T10:00:00+07:00"}, []) == []
     assert f({"so_lan_tieu": 0, "tao_luc": "2026-11-14T10:00:00+07:00"}, ["2026-11-14T23:00:00+07:00"]) == \
         [date(2026, 11, 14)]
+
+
+# ---------- D15: học tự động + quét view hằng ngày (docs/hoc-tu-dong.md §4.3) ----------
+
+def test_han_muc_hoc_chi_ha_khong_noi():
+    """3 trần mới: cau_hinh.json chỉ HẠ (kể cả về 0 = tắt), nới/hỏng → bỏ + cảnh báo, giữ trần code."""
+    hm, cb = han_muc_hieu_luc({"hoc_bat_ngay": 0, "hoc_hieu_luc_toi_da": 2, "quet_view_ngay": 0})
+    assert (hm["hoc_bat_ngay"], hm["hoc_hieu_luc_toi_da"], hm["quet_view_ngay"]) == (0, 2, 0) and cb == []
+    assert han_muc.han_muc_hoc(hm) == (0, 2)
+    hm, cb = han_muc_hieu_luc({"hoc_bat_ngay": 2, "hoc_hieu_luc_toi_da": 9, "quet_view_ngay": 4})
+    assert (hm["hoc_bat_ngay"], hm["hoc_hieu_luc_toi_da"], hm["quet_view_ngay"]) == (1, 5, 3) and len(cb) == 3
+    assert han_muc.han_muc_hoc(hm) == (1, 5)
+    hm, cb = han_muc_hieu_luc({"hoc_hieu_luc_toi_da": 2.9, "hoc_bat_ngay": True})
+    assert (hm["hoc_bat_ngay"], hm["hoc_hieu_luc_toi_da"]) == (1, 2) and len(cb) == 1
+
+
+@pytest.mark.parametrize("hm,ky_vong", [
+    ({}, (1, 5)),                                               # thiếu khoá → trần code
+    ({"hoc_bat_ngay": 0, "hoc_hieu_luc_toi_da": 0}, (0, 0)),
+    ({"hoc_bat_ngay": 7, "hoc_hieu_luc_toi_da": 99}, (1, 5)),  # dict truyền vào bị nới vẫn không vượt trần code
+    ({"hoc_bat_ngay": -1, "hoc_hieu_luc_toi_da": "3"}, (1, 5)),  # hỏng → trần code
+    ({"hoc_bat_ngay": True, "hoc_hieu_luc_toi_da": float("nan")}, (1, 5)),
+    (None, (1, 5)),
+])
+def test_han_muc_hoc_phong_thu(hm, ky_vong):
+    assert han_muc.han_muc_hoc(hm) == ky_vong
+    assert all(type(x) is int for x in han_muc.han_muc_hoc(hm))
+
+
+def _quet(kho, ngay="2026-11-17", boi="he_thong", tt="cho"):
+    return kho.tao("quet_view_hang_ngay", ngay, {"ngay": ngay}, "nhe", tt, boi)
+
+
+def test_quet_view_ngay_chan_luc_tao(kho):
+    """quet_view_ngay = số việc quet_view_hang_ngay TẠO trong ngày VN (tự + Chạy lại, mọi trạng thái)."""
+    hm = dict(HAN_MUC_TRAN)
+    ts = {"ngay": "2026-11-17"}
+    for i in range(3):
+        kiem_han_muc(kho, "quet_view_hang_ngay", ts, hm, "tao", "he_thong")
+        v = _quet(kho, boi="he_thong" if i == 0 else "nhan")
+        kho.chuyen(v["id"], ["cho"], "huy", "nhan")             # đã huỷ vẫn tính (đếm theo ngày tạo)
+    with pytest.raises(VuotHanMuc, match="quet_view"):
+        kiem_han_muc(kho, "quet_view_hang_ngay", ts, hm, "tao", "he_thong")
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "quet_view_hang_ngay", ts, hm, "tao", "nhan")
+    # loại khác không bị trần này chặn
+    kiem_han_muc(kho, "hoc_hang_ngay", ts, hm, "tao", "he_thong")
+    kiem_han_muc(kho, "phan_tich_uid", {"uid": "1" * 19}, hm, "tao", "nhan")
+    # lúc duyệt/nhận không áp trần tạo
+    kiem_han_muc(kho, "quet_view_hang_ngay", ts, hm, "nhan", "he_thong")
+
+
+def test_quet_view_ngay_ha_ve_0_tat_lich(kho):
+    hm, _ = han_muc_hieu_luc({"quet_view_ngay": 0})
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-17"}, hm, "tao", "he_thong")
+    hm1, _ = han_muc_hieu_luc({"quet_view_ngay": 1})
+    kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-17"}, hm1, "tao", "he_thong")
+    _quet(kho)
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-17"}, hm1, "tao", "he_thong")
+
+
+def test_quet_view_ngay_sang_ngay_moi_dat_lai(tmp_path):
+    kho, luc = _kho_dong_ho(tmp_path, datetime(2026, 11, 17, 23, 0, 0, tzinfo=MUI_GIO_VN))
+    for _ in range(3):
+        kho.chuyen(_quet(kho)["id"], ["cho"], "huy", "nhan")
+    with pytest.raises(VuotHanMuc):
+        kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-17"}, dict(HAN_MUC_TRAN), "tao", "he_thong")
+    luc["t"] = datetime(2026, 11, 18, 9, 0, 0, tzinfo=MUI_GIO_VN)
+    kiem_han_muc(kho, "quet_view_hang_ngay", {"ngay": "2026-11-18"}, dict(HAN_MUC_TRAN), "tao", "he_thong")

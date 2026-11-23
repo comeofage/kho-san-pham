@@ -40,6 +40,7 @@ import psutil
 
 from . import chu_ky
 from . import phien_song as ps
+from . import phieu as phieu_mod
 from . import stream_json as sj
 from . import thuc_thi as tt
 from .danh_muc import (DANH_MUC, LOAI_PHIEN_SONG, LoaiViec, can_ban_douyin, con_tu_xu_ly_link, doi_soat_taovideo,
@@ -105,7 +106,13 @@ MAC_DINH = {
     "KHO_AGY_EXE": "C:/Users/Mi/AppData/Local/agy/bin/agy.exe",
     "KHO_THU_MUC_RADAR": "E:/quet-kenh-anti",
     "KHO_THU_MUC_SP": "E:/phantichcanhquay",
+    # D15 (docs/hoc-tu-dong.md §3.4a): chỉ dùng khi thư mục runner là mặc định (xem tao_moi_truong)
+    "KHO_THU_MUC_VIEW": "C:/Users/Mi/view-poster",
+    "KHO_SCRIPT_QUET_KENH": "C:/Users/Mi/.claude/skills/quet-phan-tich-kenh-tiktok/scripts/tiktok_scan.py",
 }
+# D15 (§3.4): (loại việc hệ thống, giờ VN) — đến giờ thì làn nhe tạo 1 việc khoá = ngày VN hôm nay. Thứ tự trong tuple
+# là thứ tự tạo trong cùng một vòng (quét trước học). chay_runner.hen_gio_cho chỉ bật khi thư mục runner là mặc định.
+HEN_GIO_MAC_DINH: tuple[tuple[str, int], ...] = (("quet_view_hang_ngay", 9), ("hoc_hang_ngay", 12))
 _NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
@@ -437,6 +444,16 @@ def tao_moi_truong() -> MoiTruong:
     pid_runner = os.getpid()
     scripts = g("KHO_THU_MUC_SCRIPTS")
     py_poster, thu_poster = g("KHO_PYTHON_POSTER"), g("KHO_THU_MUC_POSTER")
+    # D15 (§3.6 "Chặn chạm production"): biến môi trường nếu đặt; không đặt thì đường dẫn thật mặc định CHỈ KHI thư mục
+    # runner là mặc định — thư mục tạm (test) thiếu biến → None (lap_buoc của 2 loại hệ thống báo ThamSoLoi).
+    la_mac_dinh = _chuan(thu_muc_runner()) == _chuan(_thu_muc_mac_dinh())
+
+    def g3(k: str) -> Path | None:
+        v = os.environ.get(k)
+        if v:
+            return Path(v)
+        return Path(MAC_DINH[k]) if la_mac_dinh else None
+    thu_poster_hoc = g3("KHO_THU_MUC_POSTER")
     return MoiTruong(
         gocs=gocs_tu_moi_truong(), repo_kho=g("KHO_REPO"), thu_muc_scripts=scripts,
         python_poster=py_poster, claude_exe=g("KHO_CLAUDE_EXE"), agy_exe=g("KHO_AGY_EXE"),
@@ -444,7 +461,9 @@ def tao_moi_truong() -> MoiTruong:
         cong_song=cong_song, chan_doan_kho=chan_doan_kho,
         ffmpeg_ngoai=lambda: tt.ffmpeg_ngoai({pid_runner}),
         thoi_luong_media=thoi_luong_ffprobe, bay_gio=_bay_gio, ds_ma_voice=_ds_ma_voice_tu(scripts),
-        doc_folder_poster=lambda: doc_folder_poster_tu(py_poster, POSTER_DS_FOLDER, thu_poster))
+        doc_folder_poster=lambda: doc_folder_poster_tu(py_poster, POSTER_DS_FOLDER, thu_poster),
+        poster_db=thu_poster_hoc / "v2_data.db" if thu_poster_hoc is not None else None,
+        thu_muc_view=g3("KHO_THU_MUC_VIEW"), script_quet_kenh=g3("KHO_SCRIPT_QUET_KENH"))
 
 
 # ================================================================ logic thuần
@@ -774,8 +793,11 @@ class BoChay:
                  khoa_cong_khai=None, cho_lai_han_muc_s: float = HOAN_HAN_MUC_S,
                  chan_ton_tien: bool = False,
                  tieu: Callable[[str, str], tuple[str, str]] | None = None,
-                 im_lang_song_s: float = IM_LANG_SONG_S, quet_mp3_s: float = QUET_MP3_S):
-        """`khoa_cong_khai` (A-3, P3-1): khoá Ed25519 kiểm chữ ký duyệt lúc nhận việc tốn tiền — chay_runner truyền
+                 im_lang_song_s: float = IM_LANG_SONG_S, quet_mp3_s: float = QUET_MP3_S,
+                 kho_hoc=None, hen_gio: tuple[tuple[str, int], ...] = ()):
+        """`kho_hoc` (D15): KhoHoc đã mo() — ghi vết bài học vào phiếu phan_tich_uid (§3.7); None = học tự động tắt
+        (không ghi vết, hẹn giờ bỏ việc hoc_hang_ngay). `hen_gio` (D15 §3.4): ((loại, giờ VN), …); () = không hẹn giờ.
+        `khoa_cong_khai` (A-3, P3-1): khoá Ed25519 kiểm chữ ký duyệt lúc nhận việc tốn tiền — chay_runner truyền
         CÙNG đối tượng đã nạp cho API (không nạp lười). None = không có khoá → việc tốn tiền đứng chờ.
         `chan_ton_tien` (D9, R-11 P2-1): bản cài lệch TONG_KIEM → mọi việc tốn tiền đứng chờ, việc miễn phí vẫn chạy.
         `tieu(id, chu_ky_duyet)` (D9): tiêu lời duyệt trên Worker → ("da_tieu"|"da_dung"|"chua_ro", mô tả);
@@ -829,6 +851,11 @@ class BoChay:
         self.quet_mp3_s = float(quet_mp3_s)
         self._khoa_song = threading.RLock()
         self._phien: dict[str, _TrangPhien] = {}
+        # D15: bộ học + hẹn giờ. _hen_da_xet: loại → ngày VN đã xét xong (đã tạo / đã có / bị chặn) — chỉ luồng làn nhe
+        # đọc/ghi; khởi động lại thì rỗng, lớp chặn trùng thật nằm ở DB (_da_co_viec_ngay).
+        self.kho_hoc = kho_hoc
+        self.hen_gio: tuple[tuple[str, int], ...] = tuple(hen_gio)
+        self._hen_da_xet: dict[str, str] = {}
 
     # ---------------------------------------------------------------- tiện ích
     def _loai(self, ma: str) -> LoaiViec:
@@ -1333,6 +1360,11 @@ class BoChay:
 
     def _vong(self, lan: str) -> None:
         while not self._dung.is_set():
+            if lan == "nhe" and self.hen_gio:
+                try:
+                    self._hen_gio()
+                except Exception:  # noqa: BLE001 — §3.4: lỗi hẹn giờ chỉ log, không giết làn
+                    log.exception("làn nhe: lỗi hẹn giờ việc hệ thống")
             try:
                 viec = self.nhan_viec(lan)
             except Exception:  # noqa: BLE001 — làn không được chết vì lỗi DB tạm thời
@@ -1343,6 +1375,65 @@ class BoChay:
                 self._dung.wait(self.nghi_s)
                 continue
             self.chay_mot(viec)
+
+    # ---------------------------------------------------------------- D15: hẹn giờ (§3.4)
+    def _da_co_viec_ngay(self, ma: str, ngay: str) -> bool:
+        """Đã có việc loại `ma` khoá `ngay` ở BẤT KỲ trạng thái? Gồm cả việc đã ẩn/lưu trữ (ds() không thấy): đếm theo
+        ngày tạo — việc hệ thống khoá = ngày VN hôm nay chỉ tạo được trong chính ngày đó (kiem_tham_so)."""
+        if any(v.get("loai") == ma for v in self.kho.ds(None, khoa=ngay, gioi_han=50)):
+            return True
+        return self.kho.dem_trong_ngay(ma, datetime.fromisoformat(ngay).date()) > 0
+
+    def _hen_gio(self) -> list[str]:
+        """Đến giờ (VN) thì tạo việc hệ thống cho ngày hôm nay nếu chưa có. Trả id các việc vừa tạo.
+        TrungViec / VuotHanMuc / ThamSoLoi → log 1 lần, ghi nhớ ngày (không thử lại trong ngày). Lỗi khác (DB) → ném
+        (bên gọi log), không ghi nhớ → vòng sau thử lại."""
+        bay = self._bay_gio()
+        ngay = bay.date().isoformat()
+        tao: list[str] = []
+        for ma, gio in self.hen_gio:
+            if bay.hour < gio or self._hen_da_xet.get(ma) == ngay:
+                continue
+            if ma == "hoc_hang_ngay" and self.kho_hoc is None:
+                self._hen_da_xet[ma] = ngay
+                log.warning("hẹn giờ: bỏ hoc_hang_ngay ngày %s — học tự động chưa bật (không mở được hoc.db)", ngay)
+                continue
+            if self._da_co_viec_ngay(ma, ngay):
+                self._hen_da_xet[ma] = ngay
+                continue
+            try:
+                loai = self._loai(ma)
+                ts = loai.kiem_tham_so({"ngay": ngay}, self.mt)
+                tt0, buoc = loai.trang_thai_dau(ts)
+                kiem_han_muc(self.kho, ma, ts, self.hm, "tao", "he_thong")
+                v = self.kho.tao(ma, loai.tinh_khoa(ts), ts, loai.lan_chay, tt0, "he_thong", buoc=buoc)
+            except (TrungViec, VuotHanMuc, ThamSoLoi) as e:
+                self._hen_da_xet[ma] = ngay
+                log.warning("hẹn giờ: không tạo %s ngày %s — %s: %s", ma, ngay, type(e).__name__, e)
+                continue
+            self._hen_da_xet[ma] = ngay
+            tao.append(v["id"])
+            log.info("hẹn giờ: đã tạo việc %s %s cho ngày %s", ma, v["id"], ngay)
+        return tao
+
+    # ---------------------------------------------------------------- D15: ghi vết áp dụng bài học (§3.7)
+    def _ghi_ap_dung(self, loai: LoaiViec, viec: dict, ds_buoc: list[BuocChay]) -> None:
+        """Sau lap_buoc_hieu_luc của phan_tich_uid: mã bài học runner đã chèn vào phiếu (stdin bước Claude) →
+        kho_hoc.ghi_ap_dung. CHỈ bọc đúng chỗ ghi vết: lỗi → log.warning, KHÔNG làm hỏng việc phân tích (P3-8)."""
+        if self.kho_hoc is None or loai.ma != "phan_tich_uid":
+            return
+        uid = str((viec.get("tham_so") or {}).get("uid") or "")
+        for b in ds_buoc:
+            if not b.la_claude:
+                continue
+            ma = phieu_mod.ma_goi_y_trong_phieu(b.stdin)
+            if not ma:
+                continue
+            try:
+                self.kho_hoc.ghi_ap_dung(ma, viec["id"], uid)
+            except Exception as e:  # noqa: BLE001 — ghi vết là việc phụ, không chặn phân tích
+                log.warning("việc %s: không ghi được vết áp dụng bài học (%s) — phân tích vẫn chạy",
+                            viec.get("id"), type(e).__name__)
 
     # ---------------------------------------------------------------- chạy một việc
     def chay_mot(self, viec: dict) -> None:
@@ -1610,6 +1701,7 @@ class BoChay:
         except ThamSoLoi as e:
             self._ket_thuc(id, "loi", "không lập được các bước", loi=f"Không lập được lệnh: {e}")
             return
+        self._ghi_ap_dung(loai, viec, ds_buoc)               # D15 §3.7: lỗi ghi vết chỉ log, việc chạy tiếp
 
         lo_ngai: list[str] = []
         them_kq: dict = {}

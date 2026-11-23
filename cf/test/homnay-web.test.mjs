@@ -188,15 +188,16 @@ test("loaiLoiTai: 401 → dang_nhap, 403 → quyen, còn lại (mạng, 5xx) →
   assert.match(APP, /\.status = r\.status/);
 });
 
-test("Hôm nay CHỈ gọi 3 API song song, không gọi theo từng SP; chặn vẽ đè bằng phienCT trước await", () => {
+test("Hôm nay CHỈ gọi 4 API song song (D15 thêm hoc/bao-cao), không gọi theo từng SP; chặn vẽ đè bằng phienCT trước await", () => {
   const dom = HN.slice(HN.indexOf("// --- homnay-thuan end ---"));
-  // P-32: phần tải trang (renderHomNay) chỉ 3 nguồn; API tra-loi/huy chỉ nằm trong bamViecHn (gọi từ listener click)
+  // P-32: phần tải trang (renderHomNay) chỉ 4 nguồn; API tra-loi/huy chỉ nằm trong bamViecHn (gọi từ listener click)
   const tai = dom.slice(dom.indexOf("async function renderHomNay"), dom.indexOf("async function bamViecHn"));
   assert.ok(tai.length > 0 && dom.indexOf("async function bamViecHn") > dom.indexOf("async function renderHomNay"));
   const goi = tai.match(/\bapi\(/g) || [];
-  assert.equal(goi.length, 2, "chỉ api(\"suc-khoe\") + api(\"viec?gioi_han=500\") (+ loadList)");
+  assert.equal(goi.length, 3, "chỉ api(\"suc-khoe\") + api(\"viec?gioi_han=500\") + api(\"hoc/bao-cao\") (+ loadList)");
   assert.match(tai, /api\("suc-khoe"\)/);
   assert.match(tai, /api\("viec\?gioi_han=500"\)/);
+  assert.match(tai, /chu \? api\("hoc\/bao-cao"\) : null/, "D15: báo cáo học chỉ gọi cho chủ kho");
   assert.match(tai, /loadList\(\)/);
   assert.match(tai, /Promise\.allSettled\(/);
   const bam = dom.slice(dom.indexOf("async function bamViecHn"));
@@ -322,7 +323,8 @@ test("CSS điện thoại: nút ≥44px, ô nhập 16px, 1 cột dưới 640px, 
 
 test("index.html: loi.js + homnay.js nạp trước viec.js/app.js, tăng phiên bản; không script inline", () => {
   // Đợt 8 (W-M1): khung.js nằm giữa viec.js và app.js (docs/giao-dien-menu-trai.md §9); dang.js, duyet.js gỡ 2026-11-19.
-  assert.match(HTML, /<script src="loi\.js\?v=\d+" defer><\/script>\s*<script src="homnay\.js\?v=\d+" defer><\/script>\s*<script src="viec\.js\?v=\d+" defer><\/script>\s*<script src="khung\.js\?v=\d+" defer><\/script>\s*<script src="poster\.js\?v=\d+" defer><\/script>\s*<script src="pv-dashboard\.js\?v=\d+" defer><\/script>\s*<script src="pv-accounts\.js\?v=\d+" defer><\/script>\s*<script src="pv-folders\.js\?v=\d+" defer><\/script>\s*<script src="pv-calendar\.js\?v=\d+" defer><\/script>\s*<script src="pv-views\.js\?v=\d+" defer><\/script>\s*<script src="pv-queue\.js\?v=\d+" defer><\/script>\s*<script src="pv-post\.js\?v=\d+" defer><\/script>\s*<script src="pv-logs\.js\?v=\d+" defer><\/script>\s*<script src="pv-settings\.js\?v=\d+" defer><\/script>\s*<script src="app\.js\?v=\d+" defer><\/script>\s*<script src="sua\.js\?v=\d+" defer>/);
+  // D15 (HT-W2): hoc.js ngay sau homnay.js.
+  assert.match(HTML, /<script src="loi\.js\?v=\d+" defer><\/script>\s*<script src="homnay\.js\?v=\d+" defer><\/script>\s*<script src="hoc\.js\?v=\d+" defer><\/script>\s*<script src="viec\.js\?v=\d+" defer><\/script>\s*<script src="khung\.js\?v=\d+" defer><\/script>\s*<script src="poster\.js\?v=\d+" defer><\/script>\s*<script src="pv-dashboard\.js\?v=\d+" defer><\/script>\s*<script src="pv-accounts\.js\?v=\d+" defer><\/script>\s*<script src="pv-folders\.js\?v=\d+" defer><\/script>\s*<script src="pv-calendar\.js\?v=\d+" defer><\/script>\s*<script src="pv-views\.js\?v=\d+" defer><\/script>\s*<script src="pv-queue\.js\?v=\d+" defer><\/script>\s*<script src="pv-post\.js\?v=\d+" defer><\/script>\s*<script src="pv-logs\.js\?v=\d+" defer><\/script>\s*<script src="pv-settings\.js\?v=\d+" defer><\/script>\s*<script src="app\.js\?v=\d+" defer><\/script>\s*<script src="sua\.js\?v=\d+" defer>/);
   assert.ok(Number(HTML.match(/style\.css\?v=(\d+)/)[1]) >= 18);
   // FX-30: loi.js, homnay.js, app.js đã sửa → tăng phiên bản
   assert.ok(Number(HTML.match(/loi\.js\?v=(\d+)/)[1]) >= 2);
@@ -337,9 +339,9 @@ test("index.html: loi.js + homnay.js nạp trước viec.js/app.js, tăng phiên
 });
 
 const khaiBao = (src) => [...src.matchAll(/^(?:const|let|var|function|async function|class)\s+([A-Za-z_$][\w$]*)/gm)].map((x) => x[1]);
-test("không trùng tên khai báo cấp cao giữa loi.js, homnay.js, viec.js, app.js, sua.js", () => {
+test("không trùng tên khai báo cấp cao giữa loi.js, homnay.js, hoc.js, viec.js, app.js, sua.js", () => {
   const thay = new Map();
-  for (const [ten, src] of [["loi.js", LOI], ["homnay.js", HN], ["viec.js", VIEC], ["app.js", APP], ["sua.js", SUA]]) {
+  for (const [ten, src] of [["loi.js", LOI], ["homnay.js", HN], ["hoc.js", doc("hoc.js")], ["viec.js", VIEC], ["app.js", APP], ["sua.js", SUA]]) {
     for (const k of khaiBao(src)) {
       assert.ok(!thay.has(k), `${k} khai báo ở cả ${thay.get(k)} và ${ten}`);
       thay.set(k, ten);
@@ -778,6 +780,7 @@ function dungHn({ traVe = {}, xacNhan = true } = {}) {
       goi.push(body === undefined ? p : [p, body]);
       if (p === "viec?gioi_han=500") return { status: 200, viec: traVe.viec || [] };
       if (p === "suc-khoe") return { status: 200, may_nha: true };
+      if (p === "hoc/bao-cao") return { status: 200, ngay: "2026-11-18", lan: { trang_thai: "xong" }, nguon: {} }; // D15: nguồn thứ 4
       // khi bị gọi tra-loi/huy: mọi nút của việc phải đã khoá
       if (S.nut.some((n) => !n.disabled)) throw new Error("chưa khoá nút trước await");
       if (S.choApi) await S.choApi;
@@ -793,11 +796,11 @@ ${HN.replace(/^"use strict";$/m, "")}\nreturn { renderHomNay, bamViecHn };`);
   return { H, goi, toasts, hop, S, nutGia };
 }
 
-test("P-32 fixture: tải trang gọi đúng 3 nguồn; bấm Thử lại → khoá nút, gửi da_lam_xong + ma_cau_hoi, toast, vẽ lại (3 nguồn)", async () => {
+test("P-32 fixture: tải trang gọi đúng 4 nguồn (D15 + hoc/bao-cao); bấm Thử lại → khoá nút, gửi da_lam_xong + ma_cau_hoi, toast, vẽ lại (4 nguồn)", async () => {
   const v = TAY({ cau_hoi: { loai: "viec_tay", noi_dung: CAU_KHO, ma: "q0123456789ab" }, tham_so: { uid: UID2 } });
   const { H, goi, toasts, S, nutGia } = dungHn({ traVe: { viec: [v] } });
   await H.renderHomNay();
-  assert.deepEqual(goi, ["ds", "viec?gioi_han=500", "suc-khoe"]);
+  assert.deepEqual(goi, ["ds", "viec?gioi_han=500", "suc-khoe", "hoc/bao-cao"]);
   goi.length = 0;
   const b = nutGia({ hnTl: v.id });
   S.nut = [b, nutGia({ hnHuy: v.id })];
@@ -806,7 +809,7 @@ test("P-32 fixture: tải trang gọi đúng 3 nguồn; bấm Thử lại → kh
   assert.ok(S.nut.every((n) => n.disabled), "khoá mọi nút của việc");
   assert.match(toasts[0], /Đã báo máy nhà thử lại/);
   await new Promise((r) => setTimeout(r, 0));
-  assert.deepEqual(goi.slice(1), ["ds", "viec?gioi_han=500", "suc-khoe"], "vẽ lại trang = tải lại đúng 3 nguồn");
+  assert.deepEqual(goi.slice(1), ["ds", "viec?gioi_han=500", "suc-khoe", "hoc/bao-cao"], "vẽ lại trang = tải lại đúng 4 nguồn");
 });
 
 test("P-32 fixture: Bỏ việc cũ → confirm rồi huy; huỷ confirm → không gọi; 409 / lỗi mạng → toast lời thường; id lạ / việc không còn viec_tay → không gửi", async () => {

@@ -2364,3 +2364,240 @@ def test_khoi_dong_lai_doi_soat_xong_gop_ket_qua_giu_khoa_cu(tmp_path):
     assert st["trang_thai"] == "xong", st
     assert st["ket_qua"]["kho_luc_tao"] == {"a": [], "b": []} and st["ket_qua"]["so_codex"] == 3
     assert st["ket_qua"]["tom_tat"].startswith("đối soát sau khởi động lại") and st["ket_qua"]["file_ra"] == []
+
+
+# ---------------- D15 HT-A2: hẹn giờ trong làn nhe (docs/hoc-tu-dong.md §3.4, §8.3) ----------------
+# Giờ giả lập qua Dong (bay_gio); không ngủ thật. DANH_MUC thật cho 2 loại hệ thống (kiem_tham_so, trang_thai_dau).
+
+def gio(h: int, m: int = 0, ngay: int = 23) -> datetime:
+    return datetime(2026, 11, ngay, h, m, tzinfo=MUI_GIO_VN)
+
+
+class KhoHocGia:
+    """Giả KhoHoc cho vòng chạy: chỉ ghi lại ghi_ap_dung; `loi` → ném lỗi đó."""
+
+    def __init__(self, loi: Exception | None = None):
+        self.loi, self.goi = loi, []
+
+    def ghi_ap_dung(self, ds_ma, viec_id, uid):
+        self.goi.append((list(ds_ma), viec_id, uid))
+        if self.loi is not None:
+            raise self.loi
+
+
+def bo_hen_gio(tmp: Path, dong: Dong, *, hm=None, kho=None, kho_hoc="gia", hen_gio=None):
+    hen_gio = vl.HEN_GIO_MAC_DINH if hen_gio is None else hen_gio
+    mt = lam_mt(tmp, bay_gio=dong)
+    kh = KhoHocGia() if kho_hoc == "gia" else kho_hoc
+    return lam_bo(tmp, mt, DANH_MUC, hm=hm, kho=kho, kho_hoc=kh, hen_gio=hen_gio)
+
+
+def viec_he_thong(kho: KhoViec) -> list[dict]:
+    return [v for v in kho.ds(None, gioi_han=500) if v["loai"] in ("quet_view_hang_ngay", "hoc_hang_ngay")]
+
+
+def test_hen_gio_hang_so_va_mac_dinh_tat():
+    import inspect
+    assert vl.HEN_GIO_MAC_DINH == (("quet_view_hang_ngay", 9), ("hoc_hang_ngay", 12))
+    p = inspect.signature(vl.BoChay.__init__).parameters
+    assert p["kho_hoc"].default is None and p["hen_gio"].default == ()
+    assert p["kho_hoc"].kind is inspect.Parameter.KEYWORD_ONLY and p["hen_gio"].kind is inspect.Parameter.KEYWORD_ONLY
+
+
+def test_hen_gio_dung_gio_moi_ngay_mot_viec_moi_loai(tmp_path):
+    dong = Dong(gio(8, 59))
+    bo, kho = bo_hen_gio(tmp_path, dong)
+    assert bo._hen_gio() == [] and viec_he_thong(kho) == []            # 08:59 chưa tới giờ
+    dong.t = gio(9, 0)
+    ids = bo._hen_gio()
+    assert len(ids) == 1
+    q = kho.lay(ids[0])
+    assert (q["loai"], q["khoa"], q["tham_so"], q["tao_boi"], q["trang_thai"], q["lan_chay"]) == (
+        "quet_view_hang_ngay", "2026-11-23", {"ngay": "2026-11-23"}, "he_thong", "cho", "nhe")
+    dong.t = gio(11, 59)
+    assert bo._hen_gio() == []
+    dong.t = gio(12, 0)
+    ids2 = bo._hen_gio()
+    assert len(ids2) == 1 and kho.lay(ids2[0])["loai"] == "hoc_hang_ngay"
+    assert kho.lay(ids2[0])["tham_so"] == {"ngay": "2026-11-23"} and kho.lay(ids2[0])["tao_boi"] == "he_thong"
+    for _ in range(100):
+        assert bo._hen_gio() == []
+    assert len(viec_he_thong(kho)) == 2
+    # ngày hôm sau: tạo lại đúng 1 việc quét lúc 09:00
+    dong.t = gio(9, 0, ngay=24)
+    ids3 = bo._hen_gio()
+    assert len(ids3) == 1 and kho.lay(ids3[0])["khoa"] == "2026-11-24"
+
+
+def test_hen_gio_khoi_dong_lai_cung_ngay_khong_tao_them(tmp_path):
+    dong = Dong(gio(12, 30))
+    bo, kho = bo_hen_gio(tmp_path, dong)
+    a, b = bo._hen_gio()
+    # việc đã kết thúc (xong / huỷ) vẫn chặn tạo lại trong ngày
+    kho.chuyen(a, ["cho"], "dang_chay", "he_thong", "nhận (test)")
+    kho.chuyen(a, ["dang_chay"], "xong", "he_thong", "xong (test)")
+    kho.chuyen(b, ["cho"], "huy", "nhan", "huỷ (test)")
+    dong.t = gio(15, 0)
+    bo2, _ = bo_hen_gio(tmp_path, dong, kho=kho)                         # runner mới, bộ nhớ rỗng
+    assert bo2._hen_gio() == [] and len(viec_he_thong(kho)) == 2
+    # việc đã ẩn/lưu trữ (ds() không thấy) cũng không bị tạo lại
+    kho.dat_luu_tru(a, True, "nhan")
+    bo3, _ = bo_hen_gio(tmp_path, dong, kho=kho)
+    assert bo3._hen_gio() == []
+    assert kho.dem_trong_ngay("quet_view_hang_ngay", gio(15).date()) == 1
+
+
+def test_hen_gio_may_bat_muon_tao_quet_roi_hoc(tmp_path):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)))
+    ids = bo._hen_gio()
+    assert [kho.lay(i)["loai"] for i in ids] == ["quet_view_hang_ngay", "hoc_hang_ngay"]
+    # FIFO của làn nhe: việc quét được nhận trước
+    v = kho.nhan_viec_ke("nhe", set(), lambda ma: frozenset())
+    assert v["id"] == ids[0]
+
+
+def test_hen_gio_vuot_han_muc_quet_khong_tao_chi_log_mot_lan(tmp_path, caplog):
+    hm = dict(HAN_MUC_TRAN, quet_view_ngay=0)
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), hm=hm)
+    with caplog.at_level("INFO", logger="kho_runner.vong_lap"):
+        for _ in range(5):
+            bo._hen_gio()
+    assert [v["loai"] for v in viec_he_thong(kho)] == ["hoc_hang_ngay"]  # học vẫn tạo, quét bị chặn
+    log_quet = [r for r in caplog.records if "quet_view_hang_ngay" in r.getMessage()]
+    assert len(log_quet) == 1 and "VuotHanMuc" in log_quet[0].getMessage(), [r.getMessage() for r in log_quet]
+
+
+def test_hen_gio_khong_co_kho_hoc_bo_viec_hoc(tmp_path):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), kho_hoc=None)
+    bo._hen_gio()
+    assert [v["loai"] for v in viec_he_thong(kho)] == ["quet_view_hang_ngay"]
+
+
+def test_hen_gio_rong_khong_tao_gi(tmp_path):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)), hen_gio=())
+    assert bo._hen_gio() == [] and viec_he_thong(kho) == []
+    # mặc định BoChay (không truyền hen_gio) cũng không tạo
+    bo2, _ = lam_bo(tmp_path, lam_mt(tmp_path, bay_gio=Dong(gio(13, 0))), DANH_MUC, kho=kho)
+    assert bo2.hen_gio == () and bo2._hen_gio() == [] and viec_he_thong(kho) == []
+
+
+def test_vong_nhe_goi_hen_gio_loi_khong_giet_lan(tmp_path, monkeypatch, caplog):
+    bo, kho = bo_hen_gio(tmp_path, Dong(gio(13, 0)))
+    goi = {"hen": 0, "nhe": 0, "gpu": 0}
+
+    def hen_loi():
+        goi["hen"] += 1
+        raise RuntimeError("hỏng giả")
+
+    def nhan(lan):
+        goi[lan] += 1
+        if goi[lan] >= 3:
+            bo._dung.set()
+        return None
+    monkeypatch.setattr(bo, "_hen_gio", hen_loi)
+    monkeypatch.setattr(bo, "nhan_viec", nhan)
+    with caplog.at_level("ERROR", logger="kho_runner.vong_lap"):
+        bo._vong("nhe")
+    assert goi["nhe"] == 3 and goi["hen"] == 3                          # mỗi vòng nhe: hẹn giờ trước, nhận sau
+    assert any("hẹn giờ" in r.getMessage() for r in caplog.records)
+    bo._dung.clear()
+    goi["hen"] = 0
+    bo._vong("gpu")
+    assert goi["hen"] == 0                                              # làn gpu không hẹn giờ
+
+
+# ---------------- D15 HT-A2: ghi vết áp dụng bài học (§3.7, P3-8) ----------------
+
+MA_BH1, MA_BH2 = "bh20261215k3x9", "bh20261217a1b2"
+GOI_Y = [{"ma": MA_BH1, "khoa": "cap_co_so", "huong": "tang", "nguon": "poster_view", "trang_thai": "hieu_luc",
+          "het_han_luc": "2026-12-30", "lift_pt": 22, "so_uid": 21, "so_cung_chieu": 15, "so_viec": 300},
+         {"ma": MA_BH2, "khoa": "pt_thieu_dau_ra", "huong": "tang", "nguon": "van_hanh", "trang_thai": "hieu_luc",
+          "het_han_luc": "2026-12-30", "lift_pt": 0, "so_uid": 4, "so_cung_chieu": 0, "so_viec": 15}]
+
+
+def test_ghi_ap_dung_dung_ma_cua_phieu(tmp_path):
+    kh = KhoHocGia()
+    mt = lam_mt(tmp_path, goi_y_hoc=lambda n: list(GOI_Y))
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai}, kho_hoc=kh)
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "xong"
+    stdin = cac_lan_goi(kb)[0]["stdin"]
+    assert f"[{MA_BH1}]" in stdin and f"[{MA_BH2}]" in stdin
+    assert kh.goi == [([MA_BH1, MA_BH2], v["id"], UID)]
+
+
+def test_ghi_ap_dung_khong_goi_khi_phieu_khong_co_khoi(tmp_path):
+    kh = KhoHocGia()
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path), {"phan_tich_uid": loai}, kho_hoc=kh)
+    v = tao(kho, loai, {"uid": UID})
+    chay_lan(bo, "nhe")
+    assert kho.lay(v["id"])["trang_thai"] == "xong" and kh.goi == []
+
+
+def test_ghi_ap_dung_loi_khong_lam_hong_viec_phan_tich(tmp_path, caplog):
+    kh = KhoHocGia(loi=RuntimeError("hoc.db khoá"))
+    mt = lam_mt(tmp_path, goi_y_hoc=lambda n: list(GOI_Y))
+    loai, kb = loai_claude(tmp_path, [{"ket_qua": "TRẠNG THÁI: DONE\nXong."}])
+    bo, kho = lam_bo(tmp_path, mt, {"phan_tich_uid": loai}, kho_hoc=kh)
+    v = tao(kho, loai, {"uid": UID})
+    with caplog.at_level("WARNING", logger="kho_runner.vong_lap"):
+        chay_lan(bo, "nhe")
+    s = kho.lay(v["id"])
+    assert s["trang_thai"] == "xong", s                                # không thành loi
+    assert len(cac_lan_goi(kb)) == 1 and len(kh.goi) == 1               # vẫn chạy bước Claude
+    assert any("RuntimeError" in r.getMessage() and r.levelname == "WARNING" for r in caplog.records)
+
+
+def test_ghi_ap_dung_bo_qua_loai_khac_phan_tich_uid(tmp_path):
+    kh = KhoHocGia()
+    s = loai_script("s", "nhe", [PY, "-c", "print(1)"])
+    bo, kho = lam_bo(tmp_path, lam_mt(tmp_path, goi_y_hoc=lambda n: list(GOI_Y)), {"s": s}, kho_hoc=kh)
+    tao(kho, s, {"k": "a"})
+    chay_lan(bo, "nhe")
+    assert kh.goi == []
+
+
+# ---------------- D15 HT-A2: tao_moi_truong điền 3 đường dẫn (§3.6 "Chặn chạm production") ----------------
+
+BIEN_3 = ("KHO_THU_MUC_POSTER", "KHO_THU_MUC_VIEW", "KHO_SCRIPT_QUET_KENH")
+
+
+def test_mac_dinh_co_hai_duong_dan_moi():
+    assert vl.MAC_DINH["KHO_THU_MUC_VIEW"] == "C:/Users/Mi/view-poster"
+    assert vl.MAC_DINH["KHO_SCRIPT_QUET_KENH"] == (
+        "C:/Users/Mi/.claude/skills/quet-phan-tich-kenh-tiktok/scripts/tiktok_scan.py")
+
+
+def test_tao_moi_truong_thu_muc_tam_thieu_bien_thi_none(tmp_path, monkeypatch):
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "du_lieu"))
+    for k in BIEN_3:
+        monkeypatch.delenv(k, raising=False)
+    mt = vl.tao_moi_truong()
+    assert (mt.poster_db, mt.thu_muc_view, mt.script_quet_kenh) == (None, None, None)
+
+
+def test_tao_moi_truong_lay_tu_bien_moi_truong(tmp_path, monkeypatch):
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "du_lieu"))
+    monkeypatch.setenv("KHO_THU_MUC_POSTER", str(tmp_path / "poster"))
+    monkeypatch.setenv("KHO_THU_MUC_VIEW", str(tmp_path / "view"))
+    monkeypatch.setenv("KHO_SCRIPT_QUET_KENH", str(tmp_path / "scan.py"))
+    mt = vl.tao_moi_truong()
+    assert mt.poster_db == tmp_path / "poster" / "v2_data.db"
+    assert mt.thu_muc_view == tmp_path / "view" and mt.script_quet_kenh == tmp_path / "scan.py"
+
+
+def test_tao_moi_truong_thu_muc_mac_dinh_dung_mac_dinh(tmp_path, monkeypatch):
+    """Thư mục runner = mặc định (giả bằng cách đổi _thu_muc_mac_dinh về tmp — không đụng E:\\kho-runner) và không
+    đặt biến → 3 đường dẫn mặc định (chỉ so giá trị, không mở file nào)."""
+    monkeypatch.setattr(vl, "_thu_muc_mac_dinh", lambda: tmp_path / "goc_gia")
+    monkeypatch.setenv("KHO_RUNNER_DIR", str(tmp_path / "goc_gia"))
+    for k in BIEN_3:
+        monkeypatch.delenv(k, raising=False)
+    mt = vl.tao_moi_truong()
+    assert mt.poster_db == Path(vl.MAC_DINH["KHO_THU_MUC_POSTER"]) / "v2_data.db"
+    assert mt.thu_muc_view == Path(vl.MAC_DINH["KHO_THU_MUC_VIEW"])
+    assert mt.script_quet_kenh == Path(vl.MAC_DINH["KHO_SCRIPT_QUET_KENH"])
+    assert not (tmp_path / "goc_gia").exists()

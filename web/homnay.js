@@ -1,7 +1,8 @@
 // Trang "Hôm nay" (#/) — W-7: một màn cho người không chuyên biết hôm nay cần làm gì.
 // Dùng chung với app.js/viec.js/loi.js (script thường, cùng phạm vi toàn cục): $, esc, api, loadList, state, laChu, anhBia,
 // trangThai, needLogin, phienCT (app.js); nhomViec, demCanBan, nutHanhDong (viec.js); loiLoaiViec, cauViec, changHtml… (loi.js).
-// Chỉ gọi 3 nguồn song song: danh sách SP, danh sách việc, sức khoẻ máy nhà — KHÔNG gọi theo từng SP (tunnel máy nhà).
+// Chỉ gọi 4 nguồn song song: danh sách SP, danh sách việc, sức khoẻ máy nhà, báo cáo học hôm nay (D15, khối từ hoc.js)
+// — KHÔNG gọi theo từng SP (tunnel máy nhà).
 // CSP script-src 'self': KHÔNG script inline, KHÔNG thuộc tính on…= — sự kiện gắn bằng addEventListener.
 "use strict";
 
@@ -245,6 +246,11 @@ function homNayHtml(t) {
     } else {
       ra.push(khoiLoiHn("viec", "Việc máy nhà", cauLoiTai(x.viec && x.viec.loai, "Chưa tải được việc — máy nhà có thể đang tắt")));
     }
+    // D15 §3.9: khối "📈 Học hôm nay" (hoc.js, chỉ chủ kho). Thiếu t.hoc / nguồn lỗi / chưa nạp hoc.js → không vẽ gì.
+    if (x.hoc && x.hoc.ok && typeof hcKhoiHomNayHtml === "function") {
+      const k = hcKhoiHomNayHtml(x.hoc.d, x.nowMs);
+      if (k) ra.push(k);
+    }
   }
   if (x.sp && x.sp.ok) {
     const viecOk = !x.chu || (x.viec && x.viec.ok);
@@ -308,13 +314,14 @@ async function renderHomNay() {
   });
   let ra;
   try {
-    // 3 nguồn song song; nguồn nào lỗi thì chỉ khối đó báo, khối khác vẫn hiện.
-    ra = await Promise.allSettled([loadList(), chu ? api("viec?gioi_han=500") : null, chu ? api("suc-khoe") : null]);
+    // 4 nguồn song song; nguồn nào lỗi thì chỉ khối đó báo (nguồn học lỗi: không vẽ khối học), khối khác vẫn hiện.
+    ra = await Promise.allSettled([loadList(), chu ? api("viec?gioi_han=500") : null, chu ? api("suc-khoe") : null,
+      chu ? api("hoc/bao-cao") : null]);
   } finally { if (phien === phienCT) hnDangTai = false; }
   if (phien !== phienCT) return; // đã sang trang khác
-  const [a, b, c] = ra;
+  const [a, b, c, d] = ra;
   const loai = (r) => loaiLoiTai(r.reason);
-  if ([a, b, c].some((r) => r.status === "rejected" && loai(r) === "dang_nhap")) needLogin(); // 401: mở lại hộp đăng nhập
+  if ([a, b, c, d].some((r) => r.status === "rejected" && loai(r) === "dang_nhap")) needLogin(); // 401: mở lại hộp đăng nhập
   const t = {
     chu, nowMs: Date.now(), anh: anhBia,
     sp: a.status === "fulfilled" ? { ok: true, ds: state.list.map((x) => ({ ...x, trang_thai: x.trang_thai || trangThai(x) })) } : { ok: false, loai: loai(a) },
@@ -322,6 +329,8 @@ async function renderHomNay() {
       ? { ok: true, ds: b.value && Array.isArray(b.value.viec) ? b.value.viec : [], dem: b.value && b.value.dem } // dem: bộ đếm toàn kho nếu runner trả kèm
       : { ok: false, loai: loai(b) },
     sk: c.status === "fulfilled" ? { ok: true, d: c.value } : { ok: false, loai: loai(c) },
+    // D15: báo cáo học hôm nay (404 "chưa có lần học nào", 503 chưa bật, lỗi mạng → ok:false → không vẽ khối)
+    hoc: chu && d.status === "fulfilled" && d.value && typeof d.value === "object" ? { ok: true, d: d.value } : { ok: false, loai: loai(d) },
   };
   hnViecDs = new Map(t.viec.ok ? t.viec.ds.filter((v) => v && typeof v === "object" && typeof v.id === "string").map((v) => [v.id, v]) : []);
   hnT = t;

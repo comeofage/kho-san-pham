@@ -1,5 +1,5 @@
 {
-  "viec": "Bảng điều khiển (Bước 0 + 1a)",
+  "viec": "Học tự động mỗi ngày (D15, docs/hoc-tu-dong.md)",
   "phieu": [
     {
       "ma": "P-01",
@@ -146,7 +146,12 @@
       "ca": "2026-11-21",
       "agent": "culiapp-backend",
       "muc_tieu": "Cột luu_tru (ẩn/lưu trữ việc kết thúc) + offset/tong cho GET /viec + act luu-tru/bo-luu-tru",
-      "duoc_sua": ["tools/runner/kho_viec.py", "tools/runner/api.py", "tools/test_runner_kho_viec.py", "tools/test_runner_api.py"],
+      "duoc_sua": [
+        "tools/runner/kho_viec.py",
+        "tools/runner/api.py",
+        "tools/test_runner_kho_viec.py",
+        "tools/test_runner_api.py"
+      ],
       "trang_thai": "xong",
       "hanh_dong_can_duyet": "không thêm",
       "muc_can_dat": "unit",
@@ -158,7 +163,12 @@
       "ca": "2026-11-21",
       "agent": "culiapp-web",
       "muc_tieu": "Nút Dừng trên thẻ Đang chạy (tái dùng /huy), nút Ẩn trên thẻ Gần đây, phân trang 10 dòng/trang mỗi nhóm",
-      "duoc_sua": ["cf/src/worker.js", "web/viec.js", "cf/test/worker.test.mjs", "cf/test/viec-web.test.mjs"],
+      "duoc_sua": [
+        "cf/src/worker.js",
+        "web/viec.js",
+        "cf/test/worker.test.mjs",
+        "cf/test/viec-web.test.mjs"
+      ],
       "trang_thai": "xong",
       "hanh_dong_can_duyet": "không thêm",
       "muc_can_dat": "unit",
@@ -169,7 +179,10 @@
       "ca": "2026-11-21",
       "agent": "culiapp-web",
       "muc_tieu": "Mở allowlist tunnel tools/video_server.py cho act luu-tru/bo-luu-tru + query offset (D2/§3.2)",
-      "duoc_sua": ["tools/video_server.py", "tools/test_video_server.py"],
+      "duoc_sua": [
+        "tools/video_server.py",
+        "tools/test_video_server.py"
+      ],
       "trang_thai": "xong",
       "hanh_dong_can_duyet": "không thêm",
       "muc_can_dat": "unit",
@@ -180,11 +193,340 @@
       "ca": "2026-11-21",
       "agent": "culiapp-architect",
       "muc_tieu": "Cập nhật docs/bo-chay-viec.md (§7.7/§8/§12) + DECISIONS.md (D14) cho cơ chế ẩn/lưu trữ + phân trang",
-      "duoc_sua": ["docs/bo-chay-viec.md", "DECISIONS.md"],
+      "duoc_sua": [
+        "docs/bo-chay-viec.md",
+        "DECISIONS.md"
+      ],
       "trang_thai": "xong",
       "hanh_dong_can_duyet": "không thêm",
       "muc_can_dat": "khong-ap-dung",
       "review": "R-DP1 vòng 1: P3 câu docs sai (nút Dừng cũng hiện ở can_tra_loi) — đã sửa đúng 1 câu §12; vòng 2: ĐẠT"
+    },
+    {
+      "ma": "A-HT1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-architect",
+      "luot": 0,
+      "muc_tieu": "Thiết kế docs/hoc-tu-dong.md + D15",
+      "duoc_sua": [
+        "docs/hoc-tu-dong.md",
+        "DECISIONS.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "review": "R-HT1 CẦN SỬA (2 P1, 6 P2, 10 P3) → A-HT1b sửa đủ; A-HT1c chốt D15 (80%, bật lại 7 ngày)"
+    },
+    {
+      "ma": "HT-B1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 1,
+      "muc_tieu": "Danh mục học + kho bài học hoc.db",
+      "duoc_sua": [
+        "tools/runner/hoc_danh_muc.py",
+        "tools/runner/kho_hoc.py",
+        "tools/test_runner_hoc_kho.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": "R-L1a ĐẠT; P2-1,P2-2,P3-6..11,13 → HT-B1b"
+    },
+    {
+      "ma": "HT-A3",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-automation",
+      "luot": 1,
+      "muc_tieu": "Bọc chuỗi quét view quet_view.py",
+      "duoc_sua": [
+        "tools/runner/quet_view.py",
+        "tools/test_runner_quet_view.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không (chạy thật = §10 bước 5)",
+      "muc_can_dat": "fixture",
+      "review": "R-L1a ĐẠT; P2-3,P2-4,P3-5,12,13 → HT-A3b"
+    },
+    {
+      "ma": "HT-A1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-automation",
+      "luot": 1,
+      "muc_tieu": "video_server /r/hoc/*",
+      "duoc_sua": [
+        "tools/video_server.py",
+        "tools/test_video_server.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "khởi động lại video_server (§10 bước 4)",
+      "muc_can_dat": "fixture",
+      "review": "R-L1b: ba chặng khớp, không lỗi"
+    },
+    {
+      "ma": "HT-W1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-web",
+      "luot": 1,
+      "muc_tieu": "Worker /api/hoc/*",
+      "duoc_sua": [
+        "cf/src/hoc.js",
+        "cf/src/worker.js",
+        "cf/test/hoc-worker.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "deploy Worker (§10 bước 8)",
+      "muc_can_dat": "unit",
+      "review": "R-L1b: ba chặng khớp, không lỗi"
+    },
+    {
+      "ma": "HT-W2",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-web",
+      "luot": 1,
+      "muc_tieu": "Giao diện Học hôm nay + #/hoc",
+      "duoc_sua": [
+        "web/hoc.js",
+        "web/khung.js",
+        "web/homnay.js",
+        "web/loi.js",
+        "web/viec.js",
+        "web/index.html",
+        "cf/test/hoc-web.test.mjs",
+        "cf/test/homnay-web.test.mjs",
+        "cf/test/menu-web.test.mjs",
+        "cf/test/viec-web.test.mjs",
+        "cf/test/poster-web.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "unit",
+      "review": "R-L1b CẦN SỬA P1-1 (hợp đồng mơ hồ) + P3 x7 → HT-W2b"
+    },
+    {
+      "ma": "HT-B2",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 3,
+      "muc_tieu": "Script đo hoc_tu_dong.py",
+      "duoc_sua": [
+        "tools/runner/hoc_tu_dong.py",
+        "tools/test_runner_hoc_tu_dong.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không (--chi-doc thật = §10 bước 6)",
+      "muc_can_dat": "fixture",
+      "review": "R-L3 ĐẠT (0 P0/P1); P2+P3 của hoc_tu_dong → HT-B2c",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-B3",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 3,
+      "muc_tieu": "Đấu nối danh mục/phiếu/API/hạn mức",
+      "duoc_sua": [
+        "tools/runner/danh_muc.py",
+        "tools/runner/phieu.py",
+        "tools/runner/kieu.py",
+        "tools/runner/han_muc.py",
+        "tools/runner/api.py",
+        "tools/test_runner_danh_muc.py",
+        "tools/test_runner_phieu.py",
+        "tools/test_runner_han_muc.py",
+        "tools/test_runner_api.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": "R-L3 ĐẠT (0 P0/P1); P2+P3 của hoc_tu_dong → HT-B2c",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-A2",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-automation",
+      "luot": 4,
+      "muc_tieu": "Hẹn giờ + đấu nối tiến trình runner",
+      "duoc_sua": [
+        "tools/runner/vong_lap.py",
+        "tools/chay_runner.py",
+        "tools/test_runner_vong_lap.py",
+        "tools/test_runner_chay.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "cài runner + bật lịch (§10 bước 1-3, 7)",
+      "muc_can_dat": "fixture",
+      "review": "R-L4 ĐẠT (0 P0/P1/P2, 5 P3 treo)",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-T1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-web",
+      "luot": 5,
+      "muc_tieu": "Test nối dây xuyên chặng",
+      "duoc_sua": [
+        "cf/test/hoc-noi-day.test.mjs",
+        "tools/hoc_noi_gia.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": "",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-B1b",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 2,
+      "muc_tieu": "Sửa R-L1a: lọc chữ khi đọc hoc.db, cầu dao trần 0, tuan_thu lưu được, mẫu câu, P3",
+      "duoc_sua": [
+        "tools/runner/hoc_danh_muc.py",
+        "tools/runner/kho_hoc.py",
+        "tools/test_runner_hoc_kho.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": ""
+    },
+    {
+      "ma": "HT-A3b",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-automation",
+      "luot": 2,
+      "muc_tieu": "Sửa R-L1a: yt-dlp.conf ở cwd, log theo lần, kiểm channels trước ghi, PID tái dùng, giờ test",
+      "duoc_sua": [
+        "tools/runner/quet_view.py",
+        "tools/test_runner_quet_view.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": ""
+    },
+    {
+      "ma": "HT-W2b",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-web",
+      "luot": 2,
+      "muc_tieu": "Sửa R-L1b: so ngày báo cáo với hôm nay + P3 x7",
+      "duoc_sua": [
+        "web/hoc.js",
+        "web/index.html",
+        "cf/test/hoc-web.test.mjs",
+        "cf/test/homnay-web.test.mjs"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "unit",
+      "review": ""
+    },
+    {
+      "ma": "HT-B2c",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 4,
+      "muc_tieu": "Sửa R-L3 P2 (trần việc cắt việc mới) + P3 (UTF-8 hỏng, --chi-doc không in JSON, đổi tên biến)",
+      "duoc_sua": [
+        "tools/runner/hoc_tu_dong.py",
+        "tools/test_runner_hoc_tu_dong.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": "R-L4 ĐẠT (0 P0/P1/P2, 5 P3 treo)",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-B4",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 6,
+      "muc_tieu": "R-CUOI P1-1 (a) + P2-2 backend + P2-3 mẫu gợi ý + P2-4 lọc snapshot + P3 bi_cat/_in",
+      "duoc_sua": [
+        "tools/runner/kho_hoc.py",
+        "tools/runner/hoc_danh_muc.py",
+        "tools/runner/hoc_tu_dong.py",
+        "tools/test_runner_hoc_kho.py",
+        "tools/test_runner_hoc_tu_dong.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "review": "R-L6 CẦN SỬA nhẹ (P2 mẫu menh_lenh) → HT-B4b/HT-D1b; R-L7 ĐẠT",
+      "muc_kiem_chung": "fixture"
+    },
+    {
+      "ma": "HT-W3",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-web",
+      "luot": 6,
+      "muc_tieu": "R-CUOI P2-2 web: hiện cầu dao + vao_phieu",
+      "duoc_sua": [
+        "web/hoc.js",
+        "cf/test/hoc-web.test.mjs",
+        "web/index.html (chỉ dòng hoc.js?v)"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "unit",
+      "review": "R-L6 CẦN SỬA nhẹ (P2 mẫu menh_lenh) → HT-B4b/HT-D1b; R-L7 ĐẠT",
+      "muc_kiem_chung": "unit"
+    },
+    {
+      "ma": "HT-D1",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-architect",
+      "luot": 6,
+      "muc_tieu": "Đồng bộ tài liệu D15 với code + quyết định R-CUOI",
+      "duoc_sua": [
+        "docs/hoc-tu-dong.md",
+        "DECISIONS.md",
+        "docs/bo-chay-viec.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "review": "R-L6 CẦN SỬA nhẹ (P2 mẫu menh_lenh) → HT-B4b/HT-D1b; R-L7 ĐẠT",
+      "muc_kiem_chung": "khong-ap-dung"
+    },
+    {
+      "ma": "HT-B4b",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-backend",
+      "luot": 7,
+      "muc_tieu": "R-L6 P2 mẫu cap_menh_lenh + P3 vao_phieu/MAX collected_at",
+      "duoc_sua": [
+        "tools/runner/hoc_danh_muc.py",
+        "tools/runner/kho_hoc.py",
+        "tools/runner/hoc_tu_dong.py",
+        "tools/test_runner_hoc_kho.py",
+        "tools/test_runner_hoc_tu_dong.py"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "fixture",
+      "muc_kiem_chung": "fixture",
+      "review": "R-L7 ĐẠT (4 P3 treo)"
+    },
+    {
+      "ma": "HT-D1b",
+      "ca": "2026-11-22-b",
+      "agent": "culiapp-architect",
+      "luot": 7,
+      "muc_tieu": "Tài liệu khớp code sau R-L6",
+      "duoc_sua": [
+        "docs/hoc-tu-dong.md",
+        "DECISIONS.md"
+      ],
+      "trang_thai": "xong",
+      "hanh_dong_can_duyet": "không",
+      "muc_can_dat": "khong-ap-dung",
+      "muc_kiem_chung": "khong-ap-dung",
+      "review": "R-L7 ĐẠT"
     }
   ]
 }

@@ -241,6 +241,7 @@ CREATE TABLE IF NOT EXISTS nonce(gia_tri TEXT PRIMARY KEY, luc REAL NOT NULL);  
 
 - **Làn `gpu`** (1 việc): `voice_pv`, `voice_genmax`, `taovideo`. Điều kiện trước: không có `ffmpeg.exe` nào nằm ngoài cây tiến trình của runner.
 - **Làn `nhe`** (1 việc): `radar_ban_tin`, `phan_tich_uid`, `douyin_uid`, `xu_ly_link_moi`, `poster_day_folder`, `muse_clip`, `poster_len_lich`.
+  - D15 (Đã chốt 2026-11-22) thêm `quet_view_hang_ngay` và `hoc_hang_ngay` vào làn này, kèm **hẹn giờ** tối thiểu trong vòng làn `nhe` (`BoChay(hen_gio=…)`, 09:00 và 12:00 giờ VN, chỉ bật khi thư mục runner là `E:\kho-runner`): xem `docs/hoc-tu-dong.md` §3.4, §3.4a.
 - **Mutex tài nguyên** (P2-8): `LoaiViec.tai_nguyen: frozenset[str]`. Runner giữ một `threading.Lock` cho mỗi tên tài nguyên, **dùng chung cho mọi làn**. Khi nhận việc, `nhan_viec_ke` chỉ chọn job FIFO đầu tiên trong làn mà mọi tài nguyên của nó đang rảnh. Tài nguyên được giữ suốt job.
   - `kho`: `phan_tich_uid`, `douyin_uid`, `xu_ly_link_moi`, `taovideo`. Hệ quả: khi `taovideo` chạy (hàng giờ), các việc đụng kho ở làn `nhe` phải đợi. Radar, poster và muse vẫn chạy. Chấp nhận được vì taovideo ≤ 1 lần/ngày.
   - `poster`: `poster_day_folder`, `poster_len_lich`.
@@ -337,6 +338,8 @@ Quy tắc chung:
 **Ánh xạ captcha (P2-3)** cho `phan_tich_uid`: agent trả `DONE_WITH_CONCERNS` mà báo cáo khớp `(?i)captcha|đăng nhập douyin|验证` → job `xong` + `co_lo_ngai` (phần bộ cảnh quay đã xong), **kèm nút "Chạy Douyin"** tạo `douyin_uid`. Không ánh xạ sang `can_tra_loi` + resume, vì Job Object đã giết agy khi `-p` thoát, và chạy lại `phan_tich_uid` sẽ bị Bước 0 chặn.
 
 Mẻ giọng creator (`day_poster.py`) **không** có trong đợt 3.
+
+**Loại chỉ runner tự tạo (D15, Đã chốt 2026-11-22):** `quet_view_hang_ngay` (quét view video của mình, bọc chuỗi `tiktok_scan.py` → `ghi_view_poster.py`) và `hoc_hang_ngay` (học mỗi ngày). Web không tạo được; `hoc_hang_ngay` không chạy lại được; `quet_view_hang_ngay` chỉ chạy lại được lượt của hôm nay. Bảng bước/tham số/đối soát: `docs/hoc-tu-dong.md` §3.3, §3.4a.
 
 ### 5.2 Đợt 4: tốn tiền hoặc rủi ro (luôn cần duyệt có chữ ký)
 
@@ -1025,6 +1028,8 @@ HAN_MUC_TRAN = {
 TRAN_LUOT = {"radar_ban_tin": 40, "phan_tich_uid": 250, "muse_clip": 120, "poster_len_lich": 60, "taovideo": 1500}
 WM_CHO_PHEP: tuple[str, ...] = ()     # đợt 5 điền theo người dùng
 ```
+
+D15 (Đã chốt 2026-11-22) thêm 3 trần `hoc_bat_ngay` (1; 0 = tắt tự áp dụng **và** tắt hẳn gợi ý vào phiếu, vẫn đo và báo cáo), `hoc_hieu_luc_toi_da` (5; 0 = không bài nào vào phiếu), `quet_view_ngay` (3 việc/ngày; 0 = tắt lịch quét). Runner đọc `cau_hinh.json` **một lần lúc khởi động**: sửa xong phải khởi động lại runner; file hỏng thì quay về trần code: xem `docs/hoc-tu-dong.md` §4.3.
 
 Kiểm ở 3 thời điểm: **tạo**, **duyệt** (cả duyệt lại), **nhận**. Từ D9, loại tốn tiền không còn `chay-tiep`; loại miễn phí vẫn kiểm hạn mức ở `chay-tiep`.
 

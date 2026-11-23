@@ -15,6 +15,7 @@ Thư mục: <GOC>/<tên> <id>/output_poster/*.mp4, GOC mặc định E:/oneshott
                                    + cửa sổ cmd bọc nó) app trong LENH_BAT -> {ma, ok, tin, song}; mã lạ 404
   GET|POST /r/<...>             -> chuyển tiếp sang runner KHO_RUNNER_ORIGIN (mặc định 127.0.0.1:8788), bỏ tiền tố /r;
                                    lọc path/query/body/header theo docs/bo-chay-viec.md §3.2, không chuyển x-key
+                                   (/r/hoc/*: method + query riêng từng tuyến, docs/hoc-tu-dong.md §3.8 — R_HOC)
   GET  /v/<id>/anh?du_an=<12 hex>&ten=<clip>&k=<0-9|cs> -> image/jpeg cuts/.index_frames/<clip_id>/f_0k.jpg | contact_sheet.jpg
   GET  /v/<id>/clip?du_an=<12 hex>&ten=<clip>  -> clip phủ trong cuts/ (hoặc con một cấp), Range, không attachment
                                    (ten phải là khoá trong cuts/clip_index.json → clips; docs/sua-video.md §8.2)
@@ -138,8 +139,13 @@ RUNNER_TIMEOUT = 10
 RE_R = re.compile(r"^/r/(suc-khoe|danh-muc|poster/folders|du-an/\d{19}"
                   r"|viec(/j\d{14}[a-z0-9]{4}(/(log|tra-loi|duyet|tu-choi|huy|chay-lai|chay-tiep|xin-duyet-lai|nhan-tin"
                   r"|luu-tru|bo-luu-tru))?)?"
-                  r"|sua-video/\d{19}(/[0-9a-f]{16}(/(ung-vien|ban-sua))?)?)$", re.ASCII)
+                  r"|sua-video/\d{19}(/[0-9a-f]{16}(/(ung-vien|ban-sua))?)?"
+                  r"|hoc/(bao-cao|bai-hoc(/bh\d{8}[a-z0-9]{4}/(hoan-tac|bat-lai))?))$", re.ASCII)
 R_QUERY_KHOA = ("tu", "trang_thai", "uid", "gioi_han", "tom_tat", "seg", "offset")
+# /r/hoc/* (docs/hoc-tu-dong.md §3.8): mỗi tuyến đúng 1 method + khoá query riêng, không nới R_QUERY_KHOA chung.
+# Path đã khớp RE_R mà không có ở đây = /r/hoc/bai-hoc/<ma>/(hoan-tac|bat-lai): chỉ POST, không query.
+R_HOC = {"/r/hoc/bao-cao": ("GET", ("ngay",)), "/r/hoc/bai-hoc": ("GET", ("gioi_han",))}
+R_HOC_GHI = ("POST", ())
 RE_R_QUERY_GT = re.compile(r"^[A-Za-z0-9_,-]{0,40}$", re.ASCII)
 R_HEADER = ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce")  # + content-type cho POST; KHÔNG BAO GIỜ x-key
 R_BODY_TOI_DA = 16 * 1024
@@ -147,12 +153,13 @@ R_TRA_TOI_DA = 1024 * 1024
 R_XA_TOI_DA = 1024 * 1024  # body quá cỡ nhưng ≤ mức này thì đọc bỏ để client nhận được 413 (không bị RST)
 
 
-def _loc_query(query: str) -> str:
-    """Chỉ giữ khoá cho phép có giá trị hợp lệ; mỗi khoá lấy lần đầu hợp lệ."""
+def _loc_query(query: str, khoa: tuple | None = None) -> str:
+    """Chỉ giữ khoá cho phép (mặc định R_QUERY_KHOA) có giá trị hợp lệ; mỗi khoá lấy lần đầu hợp lệ."""
     from urllib.parse import parse_qsl, urlencode
+    khoa = R_QUERY_KHOA if khoa is None else khoa
     giu = {}
     for k, v in parse_qsl(query, keep_blank_values=True):
-        if k in R_QUERY_KHOA and k not in giu and RE_R_QUERY_GT.fullmatch(v):
+        if k in khoa and k not in giu and RE_R_QUERY_GT.fullmatch(v):
             giu[k] = v
     return urlencode(list(giu.items()), safe=",")
 
@@ -186,6 +193,9 @@ def chuyen_tiep_runner(h, method: str) -> None:
     u = urlparse(h.path)
     if not RE_R.fullmatch(u.path):
         return _tu_choi(h, 404, "Đường dẫn không hợp lệ")
+    hoc = R_HOC.get(u.path, R_HOC_GHI) if u.path.startswith("/r/hoc/") else None
+    if hoc and method != hoc[0]:
+        return _tu_choi(h, 405, "Sai phương thức")
     body = None
     if method == "POST":
         ct = h.headers.get("content-type", "")
@@ -212,7 +222,7 @@ def chuyen_tiep_runner(h, method: str) -> None:
     hd = {k: h.headers[k] for k in R_HEADER if h.headers.get(k) is not None}
     if method == "POST":
         hd["content-type"] = h.headers["content-type"]
-    q = _loc_query(u.query)
+    q = _loc_query(u.query, hoc[1] if hoc else None)
     dich = u.path[2:] + ("?" + q if q else "")
     goc = urlparse(RUNNER_ORIGIN)
     conn = http.client.HTTPConnection(goc.hostname or "127.0.0.1", goc.port or 80, timeout=RUNNER_TIMEOUT)

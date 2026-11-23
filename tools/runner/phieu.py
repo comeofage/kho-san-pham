@@ -115,11 +115,78 @@ def _noi_dung_loai(loai: "LoaiViec", viec: dict, mt: MoiTruong, hm: dict | None 
             "duoc_ghi": f"{thu_muc}/ và kho qua kho.py them/ghi/rui-ro cho đúng UID {uid}",
             "cam": "đụng thư mục sp_ khác, sửa kho-san-pham/web/ hoặc tools/, EchoTik, dịch vụ tốn phí, cài package",
             "xong_khi": "đủ điều kiện luật 4 trong file agent (kho.py ghi in ✓ đã đẩy lên GitHub, rủi ro được nhận)",
-            "them": DONG_DOUYIN_RIENG,
+            "them": "\n".join((DONG_DOUYIN_RIENG, *_khoi_goi_y_hoc(mt, hm))),
         }
     if loai.ma == "taovideo":
         return _noi_dung_taovideo(viec, mt, hm)
     raise ThamSoLoi(f"loại {loai.ma} không chạy Claude, không có phiếu")
+
+
+# ---------- D15: gợi ý đã học vào phiếu phan_tich_uid (docs/hoc-tu-dong.md §3.7, §6.1) ----------
+
+# Một dòng gợi ý runner chèn: "- [<mã>] <câu ghép từ mẫu cố định>" (hoc_danh_muc.render_goi_y).
+_RE_DONG_GOI_Y = re.compile(r"- \[(bh\d{8}[a-z0-9]{4})\] ", re.ASCII)
+
+
+def _han_muc_cho_phieu(mt: MoiTruong, hm: dict | None) -> dict:
+    """`hm` của bên gọi (vòng chạy); None → cau_hinh.json của thư mục runner (chỉ hạ; thiếu/hỏng → trần code)."""
+    if hm is not None:
+        return hm
+    from .han_muc import han_muc_tu_thu_muc
+    hm_file, canh_bao = han_muc_tu_thu_muc(Path(mt.thu_muc_du_lieu))
+    for c in canh_bao:
+        log.warning("phiếu phan_tich_uid: %s", c)
+    return hm_file
+
+
+def lay_goi_y_hoc(mt: MoiTruong, hm: dict | None) -> list[dict]:
+    """CẦU DAO gợi ý vào phiếu (quyết định trưởng phòng 1, §4.3): lấy `mt.goi_y_hoc(n)` với
+    n = 0 nếu hoc_bat_ngay HIỆU LỰC == 0, ngược lại hoc_hieu_luc_toi_da HIỆU LỰC. n ≤ 0 → [] và KHÔNG hỏi kho (tắt
+    hẳn, kể cả khi kho trả bừa). `hm` None → đọc cau_hinh.json của thư mục runner. Lỗi → ném (bên gọi bọc)."""
+    from .han_muc import han_muc_hoc
+    bat_ngay, hieu_luc_toi_da = han_muc_hoc(_han_muc_cho_phieu(mt, hm))
+    n = 0 if bat_ngay == 0 else hieu_luc_toi_da
+    if n <= 0:
+        return []
+    return mt.goi_y_hoc(n)
+
+
+def _khoi_goi_y_hoc(mt: MoiTruong, hm: dict | None) -> list[str]:
+    """Các dòng khối "GỢI Ý ĐÃ HỌC…" (≤ 6) hoặc []. Chữ chỉ từ mẫu trong hoc_danh_muc + số nguyên đã kiểm; mục
+    sai bị bỏ. MỌI lỗi khi lấy/ghép → log, phiếu đi tiếp không có khối (§3.7)."""
+    from .hoc_danh_muc import SO_DONG_GOI_Y_TOI_DA, render_goi_y
+    try:
+        dong, bo = render_goi_y(lay_goi_y_hoc(mt, hm))
+    except Exception:
+        # Hợp đồng §3.7: gợi ý hỏng không bao giờ chặn việc phân tích — log đủ traceback rồi bỏ khối.
+        log.exception("phiếu phan_tich_uid: lấy/ghép gợi ý đã học lỗi — lập phiếu không có khối gợi ý")
+        return []
+    if bo:
+        log.warning("phiếu phan_tich_uid: bỏ %d mục gợi ý sai dạng (hoc.db bị sửa?)", bo)
+    return dong[:SO_DONG_GOI_Y_TOI_DA]
+
+
+def ma_goi_y_trong_phieu(phieu: str | None) -> list[str]:
+    """Mã bài học runner ĐÃ chèn vào phiếu phan_tich_uid (cho `KhoHoc.ghi_ap_dung`, HT-A2 gọi sau lap_buoc_hieu_luc
+    trên `stdin` của bước Claude). Chỉ đọc khối nằm NGAY sau dòng DONG_DOUYIN_RIENG CUỐI CÙNG (vị trí runner chèn, sau
+    mọi chữ người dùng trong phiếu) → chữ `[bh…]` trong lời duyệt/tên người giao không giả mạo được. Không có → []."""
+    from .hoc_danh_muc import SO_DONG_GOI_Y_TOI_DA, TIEU_DE_GOI_Y
+    if not isinstance(phieu, str):
+        return []
+    dong = phieu.split("\n")
+    vi_tri = [i for i, d in enumerate(dong) if d == DONG_DOUYIN_RIENG]
+    if not vi_tri:
+        return []
+    i = vi_tri[-1] + 1
+    if i >= len(dong) or dong[i] != TIEU_DE_GOI_Y:
+        return []
+    ra: list[str] = []
+    for d in dong[i + 1:i + SO_DONG_GOI_Y_TOI_DA]:
+        m = _RE_DONG_GOI_Y.match(d)
+        if m is None:
+            break
+        ra.append(m.group(1))
+    return ra
 
 
 def _la_phien_song(loai: "LoaiViec") -> bool:

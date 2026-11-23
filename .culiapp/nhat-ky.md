@@ -1,5 +1,240 @@
 # Nhật ký Phòng Kỹ sư Culiapp — kho-san-pham
 
+## Ca 2026-11-22-a — Review sức khoẻ web (ad-hoc, không phiếu) (phiên Agency)
+- Yêu cầu: "review web Tiniweb" — audit tổng quát, không gắn với ticket/thay đổi nào. culiapp-reviewer (chỉ đọc)
+  soi toàn bộ `cf/src/worker.js`, `web/*.js`, `cf/test/*.test.mjs` đối chiếu README/DECISIONS/docs.
+- Phát hiện: **P1** `/api/login` không khoá sau nhiều lần sai mật khẩu (khác các luồng khác đều qua
+  `kiemMatKhauCoDem`) — mã `moi:login-khong-khoa-sai-mat-khau`. **P2** badge "📄 N captions" thiếu trong
+  `web/pv-folders.js` so với test `pv-folders-web.test.mjs` — mã `moi:badge-caption-count-thieu`. **P3** 2 test
+  tự false-positive (`viec.js` property `onclick=` JS hợp lệ bị regex CSP bắt nhầm; `poster.css`
+  `main:has(>.pv-khung)` hợp lệ nhưng lệch quy ước đặt tên `.pv-*`) — mã `moi:test-qua-chat-false-positive`.
+  Nhiễu/cần hỏi: timing side-channel ở login (giá trị thấp, 4 username đã công khai), `ghi_chu` không che đường
+  dẫn máy nhà cho user thường (có chủ đích, ghi trong code, đáng hỏi lại), vài route `docBody()` không có trần
+  kích thước thân request như `apiViec`/`apiPoster`.
+- `so` sau review: `vi_pham_khong_ro` chỉ `data/**` (sản phẩm mới + `data/index.json`) — hệ thống sống (kho.py/
+  người dùng) tự ghi trong lúc reviewer chạy, reviewer không có tool Write/Edit, báo cáo tự khai "không sửa file
+  nào" → KHÔNG trả phiếu, không vi phạm. Đã xoá snapshot `.culiapp/snap-review-adhoc1.json` sau khi xong.
+- Chưa ghi sổ bài học (`bai_hoc.py`) — đây là review code sẵn có trong production, không phải lỗi của một
+  kỹ sư culiapp-* vừa viết trong ca này, nên không gán cho agent nào.
+- Chưa sửa gì (người dùng chỉ yêu cầu review). Câu hỏi thứ 2 của người dùng ("học tự động mỗi ngày cho web")
+  đã hỏi lại qua AskUserQuestion → chọn cả 3: hiệu suất video/sản phẩm thật + sửa tay nhân viên + lỗi vận hành.
+  Chưa giao phiếu nào cho hướng này — đang chờ người dùng chốt có muốn làm thiết kế (architect) hay không.
+
+## Ca 2026-11-22-b — Học tự động mỗi ngày (LỚN) (phiên Agency)
+- Người dùng chốt thêm: TỰ áp dụng vào gợi ý mặc định (không duyệt từng lần); chạy trên kho-runner; báo cáo +
+  hoàn tác trong web Kho. Bảng chốt yêu cầu (3 nguồn: hiệu suất thật, sửa tay nhân viên, lỗi vận hành; cỡ mẫu tối
+  thiểu; không nguồn trả phí mới; NGOÀI PHẠM VI: sản phẩm cũ, Telegram/email, API TikTok/EchoTik, /api/login) —
+  người dùng "Đúng, làm luôn".
+- Sổ bài học: `dem` = [] (không mã nào đạt ngưỡng).
+- Bước 3: snap-thietke.json → giao A-HT1 culiapp-architect (docs/hoc-tu-dong.md + D15 Đề xuất).
+- A-HT1 DONE_WITH_CONCERNS: docs/hoc-tu-dong.md (1428 dòng) + D15 (DECISIONS.md:655). Khảo sát thật: Radar 0/26.850
+  alert khớp UID kho, product_name rỗng 100% → đề xuất dùng view video của mình trong DB Poster V2
+  (video_view_snapshots, 1.528 video, 4 ngày dữ liệu); nguồn "sửa tay" không tồn tại (không route sửa caption/USP,
+  commit AI và người cùng tác giả); không có dữ liệu giỏ hàng; runner không có cơ chế hẹn giờ; nguồn view phụ thuộc
+  script ngoài C:\Users\Mi\view-poster. Câu hỏi mở Q1–Q6 (§11). Lo ngại: cài runner sẽ kéo theo schema 4 của D14.
+  8 phiếu / 4 lượt. `so`: đúng 2 file khai; vi_pham_khong_ro chỉ data/** = runner commit `ghi`/`rui-ro` 4 SP
+  (16:51–17:11) — người khác sửa, không trả phiếu.
+- Bước 3.2: snap-review-thietke.json → giao R-HT1 culiapp-reviewer phản biện (hiện vật + bảng chốt, không kèm
+  báo cáo architect).
+- R-HT1: CẦN SỬA — P1-1 nguồn view chạy tay không lịch + tiêu chí đếm ngày tự dừng là "chạy xong"; P1-2 thu hẹp
+  "mẫu USP/công thức caption" không hỏi; P2 x6 (--chi-doc ghi lan_hoc, hết hạn chỉ xét khi script chạy, luật giữ
+  vận hành, test chạm production qua env_toi_thieu/giờ thật, tích hợp kéo theo D14 web/Worker/video_server, tự tắt
+  không hoàn tác); P3 x10. Xác nhận: không chuỗi không tin cậy vào phiếu; hoàn tác đúng D7/D12; mô phỏng null
+  1,1–1,3%/khoá/ngày. `so` review: chỉ data/** (runner `ghi` 7510f1e) — sạch. Đã ghi sổ bài học 2 P1
+  (culiapp-architect, A-HT1, mã moi:nguon-view-chay-tay-khong-lich, moi:thu-hep-hop-dong-khong-hoi).
+- Người dùng chốt (AskUserQuestion): nguồn view "Lên lịch tự quét hằng ngày" (nới 'không gọi thêm TikTok' cho
+  riêng lượt quét view của mình); "Chỉ đặc trưng caption"; sửa tay "Bỏ đợt này"; "Giữ ngưỡng chặt". Trưởng phòng
+  tự quyết: Q2/Q3/Q4/Q6 theo (a); tự tắt có "bật lại" ký D7; chạy lại phan_tich_uid UID cũ do người bấm vẫn nhận gợi ý.
+- A-HT1b (vòng sửa 1/1): snap-thietke-2.json → culiapp-architect, ĐƯỢC SỬA docs/hoc-tu-dong.md, D15,
+  docs/bo-chay-viec.md (chỉ dòng trỏ).
+- A-HT1b DONE_WITH_CONCERNS: sửa đủ P1-1..P3-10 (Phụ lục B đối chiếu). Chuỗi quét view = bao_cao_view.py →
+  tiktok_scan.py (yt-dlp --impersonate chrome, không đăng nhập/cookie/Chrome) → ghi_view_poster.py. Chạy thẳng
+  KHÔNG an toàn (Apify tốn phí bật được qua channels.json, kênh lỗi vẫn exit 0 và vẫn ghi DB số chép, không giới
+  hạn giờ) → thiết kế bọc `quet_view.py` (chặn Apify, timeout giết cây, chỉ ghi khi mọi kênh ổn, ≤3 lần/ngày,
+  nhường mutex Radar), lịch trong runner 09:00, học 12:00. Mở lại Q7: con số 5,8% đã báo khi chốt Q5 là một phía —
+  thật ra ~9–12%/khoá/ngày, ~27% có ít nhất 1 khoá đạt nhầm; khuyến nghị nâng 70%→80% (1,2%). Q8: bài học người
+  hoàn tác có cho bật lại không. Bài học đầu tiên khó có trước giữa 12/2026. 9 phiếu / 4 lượt; §10 có 10 bước cần
+  duyệt (bước 0: D14 phải được duyệt vì cài kéo theo D14).
+- `so` vòng sửa: sạch, đúng 3 file khai (bo-chay-viec.md chỉ +5 dòng trỏ, đã đọc diff). Agent tự khai vi phạm nhỏ:
+  `mkdir -p /tmp/hocpt` (rỗng, ngoài GOC) → trưởng phòng đã rmdir. Đã xoá snap-thietke-2.json.
+- Người dùng (AskUserQuestion): Q7 "Nâng lên 80% (Recommended)"; Q8 "Cho trong 7 ngày (Recommended)";
+  duyệt thiết kế "Duyệt, giao code".
+- A-HT1c (snap-chot): D15 → Đã chốt; ngưỡng 80%; bật lại bài người hoàn tác trong 7 ngày (bài hoàn tác lúc còn
+  ứng viên → về ung_vien, không nhảy hiệu lực — architect tự quyết, trưởng phòng chấp nhận vì không đi tắt ngưỡng).
+  `so` sạch (2 file). TREO nhỏ: docs/bo-chay-viec.md còn 3 dòng trỏ ghi "D15 (Đề xuất)" — để phiếu tài liệu cuối ca.
+- Bước 4: ghi 10 phiếu vào bang-viec.json (A-HT1 xong; HT-B1/A3/A1/W1/W2 lượt 1; HT-B2/B3 lượt 2; HT-A2 lượt 3;
+  HT-T1 lượt 4). Git: làm thẳng trên main như các ca trước (kho.py tự pull --rebase --autostash/push main — rủi ro
+  đã biết); code dirs sạch trước lượt 1.
+- Mốc ratchet (kiem-chung trước lượt 1): JS 495 tests / 492 pass / 3 fail có sẵn (đúng 3 cái R-adhoc: onclick viec.js,
+  poster.css :has, badge captions); Python 1519 passed + 1 failed test_poster_web::test_nhat_ky_moi_lenh_ghi_mot_dong
+  = CHẬP CHỜN (chạy riêng 3/3 pass; sự kiện nền ket_thuc ghi sớm khi máy bận); engine 33/33.
+- Lượt 1 (snap-luot-1): HT-B1 backend ∥ HT-A3 automation ∥ HT-A1 automation ∥ HT-W1 web ∥ HT-W2 web — đang chạy.
+  - HT-W1 DONE_WITH_CONCERNS: cf/src/hoc.js mới, worker.js +4/-2 (import, export goiMayNha/traVeMayNha, 1 route),
+    151/151 (124 cũ + 27). Tự thêm: 5xx HTML/524 từ edge → JSON 502/504 như poster.js; deps thêm laChuKho — chấp nhận.
+  - HT-A1 DONE_WITH_CONCERNS: video_server.py +15/-5, test 123→201. Chặt hơn §3.8: `ngay`/`gioi_han` chỉ nhận ở
+    đúng tuyến hoc (không nới R_QUERY_KHOA chung), 405 sai method ngay tại video_server — chấp nhận; TREO: sửa dòng
+    §3.2/§3.8 'R_QUERY_KHOA thêm ngay' trong docs (test_hop_dong_hoc_trich_dung_tai_lieu đọc bảng §3.8 — giữ bảng).
+  - HT-W2 BLOCKED: khung.js đổi phải tăng ?v= nhưng cf/test/poster-web.test.mjs:782 ghim v=4. Trưởng phòng duyệt (A):
+    nới duoc_sua thêm đúng dòng 782 của poster-web.test.mjs + index.html khung.js?v=5; giao lại chính agent.
+    Phần còn lại: JS 514/517 (3 đỏ có sẵn), đột biến 13/14 đỏ (M7c tương đương).
+  - HT-W2 vòng 2 DONE: poster-web.test.mjs chỉ đổi dòng 782 (v=4→5), index khung.js?v=5; JS 514/517 (3 đỏ có sẵn).
+    Trưởng phòng đối chiếu nhãn: web HC_THIEU thiếu 4 mã backend (huong_lech, so_lan, ty_le, chua_co_nguon) → hiện mã
+    thô đã esc; HC_LY_DO_NGAN chỉ 4 mã (mã khác không hậu tố) → phiếu nhỏ HT-W2b chạy cùng lượt 2.
+  - HT-B1 DONE_WITH_CONCERNS: 58/58, ruff sạch, 16 đột biến đỏ (bỏ riêng lớp lọc SQL hết hạn = tương đương, lớp Python
+    vẫn chặn). Thêm 4 mã LY_DO_CHUYEN (dat_lan_dau, dem_chuoi, dat_lai_chuoi, gia_han — 3 mã sau lọc khỏi thay_doi);
+    bao_cao/ds_bai_hoc thêm kw bat_ngay/hieu_luc_toi_da; kiểm chặt viec_id/boi/so_lieu; mode=ro tạo -shm/-wal rỗng
+    (§10 bước 6 phải loại -shm khi so sha256). Gợi ý HT-B2: nhat_quan_pt chia làm tròn xuống.
+  - HT-A3 DONE_WITH_CONCERNS: 56/56 x2, ruff sạch, 23 đột biến S1–S7 đều đỏ (S4 ban đầu 2 lớp che nhau → thêm test
+    từng lớp). Thêm: khoá quet_view/.khoa, trần tổng 22 phút, ly_do mọi dòng JSON. Lo ngại: ghi_view_poster.py luôn
+    ghi DB thật đường dẫn cứng (--poster-db chỉ để đếm); chạy tay §10 bước 5 không tự hoãn khi Radar chạy → kiểm
+    Radar trước khi chạy; tác động §10.5 thêm .khoa và các <ngày>-*.log.
+  - `so` lượt 1: sạch — 9 file mới + 11 file sửa, đúng phạm vi, khớp khai; không file ngoài (cả data/** không đổi).
+  - `kiem_san` lượt 1 exit 1: video_server.py:324 except OSError = BÁO OAN (có sẵn, số except OSError 12→12, dời dòng);
+    quet_view.py:180/403/418/431 except psutil.* khi giết/duyệt cây = CHẤP NHẬN; :196 except Exception → None+log =
+    CHẤP NHẬN (hợp đồng §3.4a S6); :468 open không with, đóng trong finally sau khi giết cây = CHẤP NHẬN; :605 pragma
+    no cover nhánh fcntl non-Windows = CHẤP NHẬN; noqa DTZ (giờ naive khớp script thật) = CHẤP NHẬN; test: BaseException
+    chuyển lỗi luồng, except khi đọc pid file tạm, skipif win32 mutex = CHẤP NHẬN. bo_qua rỗng.
+  - Trưởng phòng thêm vào kiem-chung LENH: hoc-worker, hoc-web, test_runner_hoc_kho, test_runner_quet_view. Ratchet đang chạy.
+  - Ratchet sau lượt 1: JS 544 tests / 541 pass / 3 fail = đúng 3 đỏ có sẵn (mốc 492 pass); Python 1712 passed 0 failed
+    (mốc 1519 + 1 chập chờn); engine 33. Không giảm.
+- Bước 6 review lượt 1 (snap-review-1): R-L1a culiapp-reviewer (HT-B1, HT-A3) ∥ R-L1b culiapp-reviewer (HT-A1, HT-W1, HT-W2
+  + đối chiếu BaoCao thật của kho_hoc) — đang chạy. Lượt 2 chờ kết quả review.
+- R-L1b: CẦN SỬA — P1-1 web không so bc.ngay với hôm nay (api hoc/bao-cao không ngay → runner trả lần học mới nhất)
+  → báo cáo cũ hiện như hôm nay, mất báo đỏ khi bộ học ngừng. Xếp loại 1 = HỢP ĐỒNG MƠ HỒ (§3.9 chỉ đặc tả so_ngay_cu,
+  kỹ sư làm đúng chữ) → không ghi sổ. Trưởng phòng quyết sửa ở web (so ngày, hiện ngày số liệu, đỏ 'Bộ học chưa chạy từ
+  dd/mm'). P3 x7 (nhãn thieu lệch 4+5 mã; bài vận hành gắn 'SP/% cùng chiều'; tóm tắt thiếu hoan_tac/bật lại về ứng
+  viên, dut_chuoi đếm thành 'gợi ý'; 'bởi he_thong' thô; 503 KY_RIENG/404 RE_R cũ báo sai nguồn; nút kẹt khoá khi rời
+  rồi quay lại #/hoc; 'lúc này' cho bài không bao giờ bật lại) → gộp vào HT-W2b. Ba chặng khớp path/method/mã lỗi;
+  bảo mật không thấy lỗi. Ghi cho HT-B3: API runner phải truyền bat_ngay/hieu_luc_toi_da thật vào bao_cao/ds_bai_hoc.
+  Reviewer tự khai đã chạy `git stash list` (chỉ đọc) — ghi nhận, không vi phạm thay đổi.
+- R-L1a: ĐẠT (0 P0/P1), 114 test xanh, ruff sạch. P2-1 chữ tự do từ hoc.db sửa tay lọt ra BaoCao/BaiHocRa (không lọt vào
+  phiếu); P2-2 hạ hoc_hieu_luc_toi_da/hoc_bat_ngay về 0 không chặn bài hiệu lực vào phiếu, còn gia hạn (trái §4.3);
+  P2-3 bỏ sót <view_dir>/yt-dlp.conf (yt-dlp đọc config ở cwd) → quét không người canh có thể dùng cookie; P2-4 log
+  quét không truy theo lần (CL20). P3 x9 (TOCTOU channels trước ghi, co_the_bat_lai sau hoàn tác dùng hạn mức mặc định,
+  tuan_thu không có chỗ lưu → HT-B2/B3 sẽ BLOCKED, mẫu cap_co_so có thể đẩy '100%'/giảm giá, cap_menh_lenh đo một
+  khuyên một, vận hành 'giam' không mẫu, trần bật theo ngày học không theo ngày lịch, bang_chung vận hành đóng băng,
+  test quét view dùng date.today(), PID tái dùng/ROLLBACK che lỗi/mypy _mot_ra). Không P1 → không ghi sổ bài học.
+  Reviewer chạy thử trong %TEMP% để lại tmpqe4nwgbi\hoc.db → trưởng phòng đã xoá.
+- `so` review lượt 1 (cả 2 reviewer): sạch, 0 file đổi. Đã xoá snap-review-1.json.
+- Trưởng phòng quyết (chỗ hở giữa phiếu): cầu dao áp ở goi_y_hieu_luc(hieu_luc_toi_da) — trần 0 → [] và không gia hạn;
+  tuan_thu lưu trong hoc.db (chỉ số nguyên) qua hàm ghi mới, bao_cao/ds_bai_hoc đọc; hoan_tac/bat_lai nhận hạn mức thật.
+  P1-1 R-L1b sửa ở web. Lượt 2 = vòng sửa: HT-B1b ∥ HT-A3b ∥ HT-W2b. HT-B2/B3 → lượt 3, HT-A2 → lượt 4, HT-T1 → lượt 5.
+- Lượt 2 (snap-luot-2):
+  - HT-W2b DONE_WITH_CONCERNS: hoc.js + index hoc.js?v=2 + hoc-web test (36). So bc.ngay với hôm nay VN, đỏ 'Bộ học chưa
+    chạy từ dd/mm'; HC_THIEU/HC_LY_DO_NGAN khớp đúng hoc_danh_muc (test đọc thẳng .py); hcLoaiLoi phân biệt nguồn lỗi;
+    vẽ lại phiên hiện hành sau POST. JS LENH[0] 559/556/3 (3 đỏ có sẵn). Ghi cho HT-B3: runner trả đúng
+    {"loi":"Học tự động chưa bật"} 503. TREO P3: POST xong đúng lúc trang Hôm nay đang tải → khối có thể còn số cũ.
+  - HT-B1b DONE_WITH_CONCERNS: 84 test (58+26), 16 đột biến đỏ, ruff sạch. Interface mới: goi_y_hieu_luc(hieu_luc_toi_da);
+    hoan_tac(ma, boi, *, bat_ngay, hieu_luc_toi_da); bao_cao(ngay, *, bat_ngay, hieu_luc_toi_da); ds_bai_hoc(gioi_han=50, *,
+    bat_ngay, hieu_luc_toi_da); ghi_tuan_thu(ngay, ds); KHOA_TUAN_THU; mã cap_nhat_so_do; thay_doi[].boi có thể null;
+    bai_hoc thêm cột tuan_thu/tuan_thu_ngay (schema vẫn '1', chưa cài máy thật). Trưởng phòng quyết: hoc_bat_ngay=0 tắt
+    HẲN gợi ý vào phiếu (HT-B3 gọi goi_y_hieu_luc(0 if bat_ngay==0 else toi_da)); trần hạ >0 vẫn gia hạn mọi bài = TREO P3.
+  - HT-A3b DONE_WITH_CONCERNS: 83 test x2, đột biến đỏ, ruff sạch. Chặn {cwd}/yt-dlp.conf, {python dir}/yt-dlp.conf,
+    config-location/-P; log theo lượt (--nguon tay|runner, mặc định tay), log con <ngày>-l<lan>-*.log không ghi đè;
+    kiểm hash channels trước báo cáo và trước ghi; la_con_minh (create_time); DONG_HO_NGAY. Ghi cho HT-B3: lap_buoc thêm
+    '--nguon','runner'. Tài liệu §3.4a/§10.5 cần tên log mới. TREO: khe TOCTOU vài ms trong ghi_view_poster (mã ngoài).
+  - `so` lượt 2: sạch, 8 file đúng phạm vi, khớp khai. `kiem_san`: exit 0 (sạch).
+  - Ratchet sau lượt 2: JS 559/556/3 (3 đỏ có sẵn); Python 1765 passed 0 failed; engine 33. Không giảm.
+- Lượt 3 (snap-luot-3): HT-B2 backend (hoc_tu_dong.py) ∥ HT-B3 backend (danh_muc/phieu/kieu/han_muc/api) — đang chạy.
+  Phiếu kèm interface HT-B1b nguyên văn + quyết định: cầu dao bat_ngay=0; hạn mức thật vào API; 503 nguyên văn;
+  --nguon runner; chặn ở _tao_viec; không lộ su_kien thô.
+  - HT-B2 DONE: hoc_tu_dong.py (CLI --ngay --hoc-db --poster-db --runner-db --repo (--viec-id|--chi-doc) --bat-ngay
+    --hieu-luc-toi-da; stdout 1 dòng JSON) + test_runner_hoc_tu_dong.py (125 cùng hoc_kho).
+  - HT-B3 DONE: 2 loại việc hệ thống, argv khớp cả 2 CLI (trưởng phòng soát danh_muc ~1000-1016); lay_goi_y_hoc có
+    cầu dao; ma_goi_y_trong_phieu; /hoc/* + 503 nguyên văn; chặn loại hệ thống ở _tao_viec kể cả chay-lai. Runner test 556→691.
+  - `so` lượt 3: exit 0, 2 file mới + 9 file sửa đúng phạm vi, data 0.
+  - `kiem_san` exit 1, 4 mục — đều không trả phiếu: hoc_tu_dong.py:290/:493 `type: ignore` (dict dựng động gán TypedDict —
+    chấp nhận); :430/:512 `except (ValueError, RecursionError)` bỏ dòng JSON hỏng từ dữ liệu không tin cậy, trả None/bỏ
+    dòng đúng thiết kế (chấp nhận); test_runner_han_muc.py:15 `noqa: E402` sau sys.path (báo oan, như các ca trước).
+  - Trưởng phòng thêm tools/test_runner_hoc_tu_dong.py vào LENH kiem-chung.
+  - Ratchet sau lượt 3: JS 556 pass / 3 đỏ có sẵn (không đổi); Python 1941 passed (mốc 1765); engine 33. Không giảm.
+- Review R-L3 (reviewer, snap-review-3): ĐẠT, 0 P0/P1. `so` review: chỉ 5 file data/ đổi = runner tự ghi kho
+  (commit db9b0d3 "ghi 1738083993239520429") → người khác sửa, không vi phạm. Xếp loại:
+  - P2 CL14 trần SO_VIEC_TOI_DA ORDER BY tăng dần cắt việc mới nhất mà báo ok → lỗi thật (P2, không vào sổ) → HT-B2c.
+  - P3 UTF-8 hỏng dừng cả nguồn poster_view với lý do sai; P3 --chi-doc có đường thoát không in JSON; P3 mypy 7 lỗi → HT-B2c.
+  - P3 het_gio 25 phút quet_view < ca xấu nhất: NHIỄU — quet_view.py tự giới hạn tổng 22 phút (HT-A3b).
+  - Ghi chú cầu dao hoc_bat_ngay=0 quay về 1 khi cau_hinh.json hỏng / cần khởi động lại runner: theo luật hạn mức
+    chung có sẵn → đánh đổi chấp nhận, báo người dùng.
+- Lượt 4 (snap-luot-4): HT-A2 automation (vong_lap/chay_runner + 2 test) ∥ HT-B2c backend (hoc_tu_dong + test).
+  - HT-B2c DONE_WITH_CONCERNS: 136 test hoc_tu_dong+hoc_kho, ruff sạch, mypy 0 lỗi ở hoc_tu_dong. khoang_can_doc + lọc SQL
+    DESC + bi_cat; text_factory → CHU_HONG đếm bo_dong_hong; chay() in đúng 1 lần, chốt chặn loi_bat_ngo. TREO P3: web
+    chưa hiện bi_cat (bao_cao lọc khoá cố định, cần sửa kho_hoc.py).
+  - HT-A2 DONE_WITH_CONCERNS: 546 + 971 test qua. HEN_GIO_MAC_DINH, _hen_gio (chặn trùng theo khoá ngày + dem_trong_ngay
+    gồm việc ẩn), _ghi_ap_dung ngay sau lap_buoc_hieu_luc (theo §3.7 — ghi kể cả khi lượt Claude sau đó lỗi: chấp nhận,
+    đúng tài liệu), _mo_kho_hoc lỗi → canh_bao + None. TREO: kết nối hoc.db của luồng làn daemon không đóng chủ động.
+  - `so` lượt 4: 6 file đúng phạm vi, khớp khai. vi_pham_khong_ro: data/* (runner push 3529597) + web/pv-folders.js,
+    cf/test/pv-folders-web.test.mjs (12:02-12:03, tính năng tick Product ID trang Poster — PHIÊN KHÁC đang sửa cùng repo)
+    → người khác sửa, không trả phiếu. KHÔNG gộp 2 file pv-folders vào commit của việc này.
+  - `kiem_san` exit 1: 8 `except Exception  # noqa: BLE001` — 7 mới đúng yêu cầu phiếu (ghi vết không chặn việc, chốt
+    chặn JSON, hẹn giờ không giết làn, đóng hoc.db vẫn nhả khoá), đều có log → chấp nhận; vong_lap.py:1453 có sẵn → báo oan.
+- Review R-L4: ĐẠT, 0 P0/P1/P2. `so` review: chỉ file của phiên Poster khác (pv-folders.js + test, docs/poster-v2-tren-web.md,
+  web/index.html) → người khác sửa. LƯU Ý COMMIT: web/index.html chứa cả thẻ hoc.js của D15 lẫn sửa của phiên kia.
+  P3 treo (không kéo vòng): P3-1 bi_cat báo nhầm khi khoảng phụ rỗng (hoc_tu_dong:509-512); P3-2 dòng queue hỏng che
+  tình trạng mơ hồ (:402-424); P3-3 _in ngoài chốt chặn (:801); P3-4 lỗi hẹn giờ kéo dài log traceback mỗi 2 s
+  (vong_lap:1363); P3-5 ghi ap_dung trước khi Claude được sinh (đúng chữ §3.7, đếm dư khi huỷ trước bước).
+  Lo ngại §10 bước 7: bật lịch cần khởi động lại runner (hm đọc lúc khởi động) → đưa vào bước duyệt.
+- Ratchet sau lượt 4: JS 557 pass / 3 đỏ (index.html loi.js+homnay.js; poster.css; pv-folders "(a) chữ nguyên văn" —
+  cùng 3 đỏ có sẵn, +1 pass do phiên Poster); Python 1972 passed (mốc 1941); engine 33. Không giảm.
+- Lượt 5 (snap-luot-5): HT-T1 culiapp-web DONE_WITH_CONCERNS — 10/10 test x2 lần, ruff sạch, không lệch hợp đồng chặng.
+  Ca 7 dùng ngày 7/8 thay ngày 5/6 của §8.4 (do hoc_bat_ngay=1/ngày) → chấp nhận, ghi cho phiếu sửa tài liệu. Harness
+  thêm 2 trường dieu_khien/tam → chấp nhận. TREO (ngoài phạm vi): luồng HTTP runner mở kết nối runner.db (dung_nonce)
+  không đóng tường minh → giữ khoá file tới gc trên Windows, runner chạy lâu có thể tích kết nối mồ côi.
+  - `so`: 2 file mới đúng phạm vi; vi_pham_khong_ro data/* + web/index.html + web/pv-folders.js = phiên Poster khác.
+  - `kiem_san`: 4 mục trong harness test hoc_noi_gia.py (except OSError khi client ngắt / shutdown, 500 cho test đọc)
+    → chấp nhận (dọn dẹp harness, không phải code chạy thật).
+  - Trưởng phòng thêm cf/test/hoc-noi-day.test.mjs vào LENH.
+- Bước 7: R-CUOI (reviewer toàn bộ, snap-review-cuoi): CHƯA ĐẠT — 1 P1, 4 P2, 7 P3. Xếp loại (đã đối chiếu code):
+  - P1-1 `moi:bai-chi-bao-cao-chiem-cho` (kho_hoc.py:465-491 không lọc ap_phieu=False) → LỖI THẬT, đã ghi sổ bài học
+    (phiếu HT-B1). Trưởng phòng chọn hướng (a): khoá ap_phieu=False KHÔNG tạo dòng bai_hoc, chỉ đo + canh_bao_van_hanh
+    (web đã có khối "Lỗi vận hành lặp lại").
+  - P2-2 báo cáo "Đang dùng" khi cầu dao tắt → lỗi thật (backend + web).
+  - P2-3 mẫu gợi ý va kho.py kiem_captions (số đầu dòng, vế ≥4 chữ lặp >4 dòng, quota cứng dễ bịa số) → lỗi thật.
+  - P2-4 đọc toàn bảng snapshot không WHERE → lỗi thật (CL16).
+  - P2-1 hạn mức chỉ đọc lúc khởi động, §10 không nhắc khởi động lại → hợp đồng thiếu: sửa tài liệu + đưa vào bước duyệt.
+  - P3-1 tài liệu lệch hoc_bat_ngay=0 → sửa tài liệu. P3-2 cap_menh_lenh tự mâu thuẫn → sửa cùng P2-3.
+  - P3-3 CAS theo trạng thái đã ghi, P3-4 ghi vết sớm, P3-5 hoãn 'ban' ghi sai lý do mỗi 60 s, P3-6 quet_view/ không dọn
+    log, P3-7 ruff I001 hoc_noi_gia → TREO, báo người dùng.
+  - Kết luận rò kết nối runner.db (HT-T1 lo ngại 6): reviewer đọc api.py thấy _goi_kho_hoc đóng sau request; phần
+    dung_nonce chưa soi riêng → vẫn TREO.
+  - `so` review cuối: sạch (reviewer không sửa gì).
+- Ratchet cuối (trước lượt 6): JS 567 pass / 3 đỏ có sẵn; Python 1 failed / 1971 passed — test_video_server
+  ::test_pid_nghe_cong_doc_netstat_that, chạy riêng 3/3 qua, pid_nghe_cong không bị đụng → CHẬP CHỜN (netstat lúc máy
+  tải nặng, nhiều agent chạy server); engine 33.
+- Lượt 6 (snap-luot-6): HT-B4 backend ∥ HT-W3 web (hợp đồng trường han_muc/vao_phieu do trưởng phòng chốt trong cả 2
+  phiếu) ∥ HT-D1 architect (tài liệu).
+  - HT-B4 DONE_WITH_CONCERNS: 537 Python + 50 node xanh, ruff sạch. la_ap_phieu; _chon_goi_y dùng chung cho goi_y_hieu_luc
+    và vao_phieu; mẫu "Nếu … thì ưu tiên khoảng N/100"; 14 caption mẫu qua kho.kiem_captions; lọc collected_at
+    [ngay−74, ngay]; bi_cat SELECT 1; _in có dự phòng. TREO P3: mẫu cap_menh_lenh còn "đừng" ("đừng bỏ lỡ" hơi hối thúc);
+    409 bật lại dòng chỉ báo cáo dùng câu chung khong_the_bat_lai; tuân thủ đếm SP không có số là "không làm theo".
+  - HT-W3 DONE_WITH_CONCERNS: hoc-web 40/40; hoc.js?v=3. 2 đỏ trong lệnh gộp = 2 trong 3 đỏ có sẵn. TREO P3: câu xác
+    nhận "Bật lại" vẫn ghi "sẽ vào phiếu" khi cầu dao tắt.
+  - HT-D1 DONE_WITH_CONCERNS: tài liệu A1–A10 + B, §12a việc treo T1–T10, Phụ lục C; sửa ví dụ 15/21 → 17/21 (không
+    qua được 80%). BÁO NGƯỜI DÙNG: hoc_bat_ngay=0 nay tắt hẳn gợi ý (rộng hơn câu đã duyệt "tắt tự áp dụng").
+  - `so` lượt 6: 11 file đúng phạm vi, khớp khai; data/* = runner push. `kiem_san`: 2 except dự phòng in JSON (phiếu
+    yêu cầu) → chấp nhận. Tài liệu đã có vao_phieu/han_muc/lưu(?! ý).
+- R-L6 (review vòng sửa 1): CẦN SỬA nhẹ, 0 P0/P1. `so` review sạch. Ratchet sau lượt 6: JS 571/3 đỏ có sẵn; Python 1983;
+  engine 33 — không giảm.
+  - P2-1 mẫu cap_menh_lenh còn gợi "săm" (=sắm/mua) và "đừng" (FOMO) → lỗi thật (P2, không vào sổ). Trưởng phòng quyết:
+    gợi ý chỉ còn thử/xem/lưu + "không dùng 'ngay', 'kẻo hết', 'đừng bỏ lỡ'".
+  - P3-3/4/5 tài liệu lệch code; P3-7 vao_phieu lệch khi bang_chung hỏng; P3-2 mất "nguồn cũ N ngày" khi biên rỗng → sửa.
+  - P3-1 SQLite vẫn SCAN toàn bảng (DB chỉ đọc, không index) → chấp nhận, ghi §12a. P3-6 nghi vấn 2 dòng JSON khi flush
+    lỗi → TREO.
+- Lượt 7 (snap-luot-7, vòng sửa 2 — cuối): HT-B4b backend ∥ HT-D1b architect.
+  - HT-B4b DONE_WITH_CONCERNS: 245 Python + 50 node xanh, ruff sạch. DONG_TU_GOI_Y_MENH_LENH = thử/xem/lưu; mẫu tăng
+    rút còn 298 ký tự (test khoá ≤300); _chon_goi_y bỏ bài ghep_goi_y None; _ngay_snap_moi_nhat khi biên rỗng.
+    TREO P3: MAX(collected_at) có thể trả ngày trong biên khi mọi dòng trong biên hỏng.
+  - HT-D1b DONE_WITH_CONCERNS: §3.6/§3.7/§3.8/§12a T11–T14/D15. Câu mẫu cap_menh_lenh tài liệu viết trước khi backend
+    chốt → TRƯỞNG PHÒNG tự chép đúng hằng thật vào docs/hoc-tu-dong.md:498 (việc NHỎ 1 dòng, chép nguyên văn hằng).
+  - `so` lượt 7: 7 file đúng phạm vi; `kiem_san` sạch.
+- R-L7 (review vòng sửa 2): ĐẠT, 0 P0/P1/P2; `so` review sạch. P3 treo: trần hieu_luc_toi_da và SO_DONG_GOI_Y_TOI_DA
+  chưa khoá bằng test (khớp vì cùng 5); MAX(collected_at) bị chuỗi ngày sai dạng che; §3.6 chép SQL MAX thiếu WHERE,
+  "hai"→"ba" truy vấn; §3.8 vao_phieu có ở mọi BaiHocRa + câu "đang sửa song song" cũ.
+- Ratchet cuối: JS 571 pass / 3 đỏ có sẵn; Python 1987 passed (mốc đầu ca 1765); engine 33. Không giảm.
+- GIAO CA: 19 phiếu xong. Mức kiểm chứng cả việc = unit (HT-W3 web), phần runner/backend fixture + test nối dây 3 chặng.
+  CHƯA chạy thật: cài runner, khởi động lại video_server, deploy Worker, quét view thật, bật lịch (§10 bước 0–9, hỏi
+  người dùng từng bước). Đã xoá snap-*.json. Commit: chờ người dùng; LƯU Ý tách web/index.html (phiên Poster cũng sửa)
+  và loại web/pv-folders.js, cf/test/pv-folders-web.test.mjs, docs/poster-v2-tren-web.md, data/*.
+
 ## Ca 2026-11-21-dp — Trang ⚙ Việc: dừng/ẩn/phân trang (phiên Agency)
 - Yêu cầu người dùng (qua ảnh chụp trang ⚙ Việc): cho dừng việc đang chạy, cho "xoá" (chốt = chỉ ẩn/lưu trữ,
   KHÔNG xoá cứng vì D7/D9 ký theo id việc), phân trang cố định 10 dòng/trang. Khảo sát trước thấy `/huy` đã dừng

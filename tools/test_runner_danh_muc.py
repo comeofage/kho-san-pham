@@ -114,7 +114,8 @@ def test_ds_du_an_va_tim(mt):
 
 # ---------- danh mục, tham số ----------
 
-DOT3 = {m: l for m, l in dm.DANH_MUC.items() if l.dot == 3}
+# D15: 2 loại chỉ-hệ-thống (dot=3, web không tạo được) có test riêng ở cuối file
+DOT3 = {m: l for m, l in dm.DANH_MUC.items() if l.dot == 3 and m not in dm.LOAI_CHI_HE_THONG}
 
 
 def test_danh_muc_dot_3():
@@ -307,7 +308,7 @@ _CAM_CU = ("Edit(//C:/Users/Mi/AppData/Local/kho-runner/**)", "Write(//C:/Users/
 
 
 _PHAN_CAM = ("app/**", "app.moi/**", "app.cu/**", "log/**", "runner.db*", ".runner_key", "runner.lock",
-             "runner.log*", "cau_hinh.json")
+             "runner.log*", "cau_hinh.json", "hoc.db*", "quet_view/**")
 
 
 def _mau_hep(p: str) -> tuple[str, ...]:
@@ -355,6 +356,9 @@ def test_cong_cu_cam_chung_khong_cam_ca_thu_muc_runner(monkeypatch):
                   "E:/kho-runner/app/x.py", "E:/kho-runner/app/runner/vong_lap.py", "E:/kho-runner/app.cu/a.py",
                   "E:/kho-runner/app.moi/a.py", "E:/kho-runner/log/j1.log", "E:/kho-runner/runner.lock",
                   "E:/kho-runner/runner.log.1", "E:/kho-runner/cau_hinh.json",
+                  # D15 §6.1: hoc.db (agent sửa được thì đầu độc gợi ý) + log lượt quét (chữ TikTok)
+                  "E:/kho-runner/hoc.db", "E:/kho-runner/hoc.db-wal", "E:/kho-runner/hoc.db-shm",
+                  "E:/kho-runner/quet_view/2026-11-17.json", "E:/kho-runner/quet_view/2026-11-17-kenh.log",
                   "C:/Users/Mi/AppData/Local/kho-runner/radar/x.json"):
             assert _bi_cam(cam, cc, p), (cc, p)
     # mọi thư mục --add-dir của danh mục đều không bị cấm
@@ -1974,3 +1978,271 @@ def test_poster_ds_folder_chuan_hoa_giu_duong_dan():
                         {"id": 4, "name": "dài", "path": "E:/" + "a" * 2000}, {"id": "x"}])
     assert ds == [{"id": 3, "ten": "Ví", "duong_dan": "E:/g/Ví 1729420930611055346/output_poster"},
                   {"id": 7, "ten": "Đèn"}, {"id": 9, "ten": "x"}, {"id": 4, "ten": "dài"}]   # không biết → không có khoá
+
+
+# ---------- D15: hoc_hang_ngay + quet_view_hang_ngay (docs/hoc-tu-dong.md §3.3, §3.4a, §3.7, §9 HT-B3) ----------
+
+HOM_NAY, HOM_QUA = "2026-11-17", "2026-11-16"
+
+
+def _mt_hoc(mt, tmp_path, **kw):
+    """mt có đủ 3 đường dẫn D15 (đều trong tmp_path — không đường dẫn thật nào)."""
+    them = {"poster_db": tmp_path / "poster" / "v2_data.db", "thu_muc_view": tmp_path / "view",
+            "script_quet_kenh": tmp_path / "scan" / "tiktok_scan.py"}
+    them.update(kw)
+    return replace(mt, **them)
+
+
+def test_loai_he_thong_trong_danh_muc():
+    assert dm.LOAI_CHI_HE_THONG == ("hoc_hang_ngay", "quet_view_hang_ngay")
+    assert dm.LOAI_KHONG_CHAY_LAI == ("hoc_hang_ngay",)
+    assert dm.GIO_HOC_TOI_DA_CHO == 18
+    assert dm.THU_MUC_CAI == Path(dm.__file__).resolve().parent.parent
+    assert (dm.THU_MUC_CAI / "runner" / "danh_muc.py").is_file()
+    h, q = dm.DANH_MUC["hoc_hang_ngay"], dm.DANH_MUC["quet_view_hang_ngay"]
+    assert (h.ma, h.ten, h.dot, h.lan_chay, h.ton_tien, h.agent) == ("hoc_hang_ngay", "Học mỗi ngày", 3, "nhe",
+                                                                     False, None)
+    assert (h.tu_chay_lai, h.het_gio_s, h.tai_nguyen) == (True, 600, frozenset())
+    assert (q.ma, q.ten, q.dot, q.lan_chay, q.ton_tien, q.agent) == (
+        "quet_view_hang_ngay", "Quét view video của mình", 3, "nhe", False, None)
+    assert (q.tu_chay_lai, q.het_gio_s, q.tai_nguyen) == (True, 25 * 60, frozenset())
+    for l in (h, q):
+        assert [t["ten"] for t in l.tham_so] == ["ngay"]
+        assert l.tinh_khoa({"ngay": HOM_NAY}) == HOM_NAY
+        assert l.trang_thai_dau({"ngay": HOM_NAY}) == ("cho", "chay")
+        assert l.bo_cong_cu == () and l.tran_luot is None
+    assert set(dm.LOAI_KHONG_CHAY_LAI) <= set(dm.LOAI_CHI_HE_THONG) <= set(dm.DANH_MUC)
+
+
+def test_moi_truong_4_truong_moi_co_mac_dinh(mt):
+    assert mt.poster_db is None and mt.thu_muc_view is None and mt.script_quet_kenh is None
+    assert mt.goi_y_hoc(5) == [] and mt.goi_y_hoc(0) == []
+
+
+def test_kiem_tham_so_hoc_va_quet_hop_le(mt):
+    H, Q = dm.DANH_MUC["hoc_hang_ngay"], dm.DANH_MUC["quet_view_hang_ngay"]
+    assert H.kiem_tham_so({"ngay": HOM_NAY}, mt) == {"ngay": HOM_NAY}
+    assert H.kiem_tham_so({"ngay": HOM_QUA}, mt) == {"ngay": HOM_QUA}
+    assert Q.kiem_tham_so({"ngay": HOM_NAY}, mt) == {"ngay": HOM_NAY}
+    # "hôm nay" theo giờ VN: 2026-11-16 20:00 UTC = 2026-11-17 03:00 VN
+    from datetime import timezone
+    mt_utc = replace(mt, bay_gio=lambda: datetime(2026, 11, 16, 20, 0, tzinfo=timezone.utc))
+    assert Q.kiem_tham_so({"ngay": HOM_NAY}, mt_utc) == {"ngay": HOM_NAY}
+    with pytest.raises(ThamSoLoi):
+        Q.kiem_tham_so({"ngay": HOM_QUA}, mt_utc)
+
+
+@pytest.mark.parametrize("loai", ["hoc_hang_ngay", "quet_view_hang_ngay"])
+@pytest.mark.parametrize("ts", [
+    {}, {"ngay": None}, {"ngay": 20261117}, {"ngay": "2026/11/17"}, {"ngay": "2026-11-17\n"},
+    {"ngay": " 2026-11-17"}, {"ngay": "２０２６-11-17"}, {"ngay": "2026-02-30"}, {"ngay": "2026-11-17T00:00"},
+    {"ngay": "2026-11-15"}, {"ngay": "2026-11-18"}, {"ngay": HOM_NAY, "x": 1}, {"ngay": HOM_NAY, "ngay_tao": HOM_NAY},
+])
+def test_kiem_tham_so_hoc_va_quet_tu_choi(mt, loai, ts):
+    with pytest.raises(ThamSoLoi):
+        dm.DANH_MUC[loai].kiem_tham_so(ts, mt)
+
+
+def test_quet_chi_chay_lai_luot_hom_nay(mt):
+    with pytest.raises(ThamSoLoi, match="chỉ chạy lại lượt quét của hôm nay"):
+        dm.DANH_MUC["quet_view_hang_ngay"].kiem_tham_so({"ngay": HOM_QUA}, mt)
+
+
+def _kho_runner(mt):
+    from runner.kho_viec import KhoViec
+    Path(mt.thu_muc_du_lieu).mkdir(parents=True, exist_ok=True)
+    return KhoViec(Path(mt.thu_muc_du_lieu) / "runner.db", lambda: BAY_GIO)
+
+
+def test_dk_hoc_hoan_khi_viec_quet_cung_ngay_dang_mo(mt):
+    """§3.3: việc quét cùng ngày đang cho/dang_chay và giờ VN < 18 → 'ban'; không thì None. Đọc runner.db mode=ro
+    MỖI lần gọi (không dùng số liệu cũ)."""
+    D = dm.DANH_MUC["hoc_hang_ngay"].dieu_kien_truoc
+    db = Path(mt.thu_muc_du_lieu) / "runner.db"
+    assert D({"ngay": HOM_NAY}, mt) is None and not db.exists()          # thiếu runner.db → không hoãn, không tạo file
+    kho = _kho_runner(mt)
+    assert D({"ngay": HOM_NAY}, mt) is None                               # chưa có việc quét
+    v = kho.tao("quet_view_hang_ngay", HOM_NAY, {"ngay": HOM_NAY}, "nhe", "cho", "he_thong")
+    assert D({"ngay": HOM_NAY}, mt) == "ban"
+    assert D({"ngay": HOM_QUA}, mt) is None                               # việc quét của ngày khác
+    kho.chuyen(v["id"], ["cho"], "dang_chay", "he_thong")
+    assert D({"ngay": HOM_NAY}, mt) == "ban"
+    for gio, ky_vong in ((datetime(2026, 11, 17, 17, 59, 59, tzinfo=MUI_GIO_VN), "ban"),
+                         (datetime(2026, 11, 17, 18, 0, tzinfo=MUI_GIO_VN), None),
+                         (datetime(2026, 11, 17, 23, 0, tzinfo=MUI_GIO_VN), None)):
+        assert D({"ngay": HOM_NAY}, replace(mt, bay_gio=lambda g=gio: g)) == ky_vong, gio
+    kho.chuyen(v["id"], ["dang_chay"], "loi", "he_thong", loi="kenh_loi")
+    assert D({"ngay": HOM_NAY}, mt) is None                               # đọc lại: việc quét đã đóng
+    # việc loại khác cùng khoá ngày không làm hoãn
+    kho.tao("radar_ban_tin", HOM_NAY, {"top_n": 10, "chay_bu": False, "ngay_tao": HOM_NAY}, "nhe", "cho", "nhan")
+    assert D({"ngay": HOM_NAY}, mt) is None
+
+
+def test_dk_hoc_db_hong_khong_chan(mt, caplog):
+    D = dm.DANH_MUC["hoc_hang_ngay"].dieu_kien_truoc
+    Path(mt.thu_muc_du_lieu).mkdir(parents=True)
+    (Path(mt.thu_muc_du_lieu) / "runner.db").write_bytes(b"khong phai sqlite" * 100)
+    assert D({"ngay": HOM_NAY}, mt) is None
+    assert any("runner.db" in r.getMessage() for r in caplog.records)
+
+
+def test_dk_quet_view_dung_dang_ban(mt, monkeypatch):
+    from runner import quet_view
+    goi = []
+    ket = {"v": "radar_dang_quet"}
+
+    def gia(*a, **kw):
+        goi.append((a, kw))
+        return ket["v"]
+    monkeypatch.setattr(quet_view, "dang_ban", gia)
+    D = dm.DANH_MUC["quet_view_hang_ngay"].dieu_kien_truoc
+    assert D({"ngay": HOM_NAY}, mt) == "ban"
+    ket["v"] = "dang_chay_tay"
+    assert D({"ngay": HOM_NAY}, mt) == "ban"
+    ket["v"] = None
+    assert D({"ngay": HOM_NAY}, mt) is None
+    assert len(goi) == 3                                                  # hỏi lại mỗi lần, không nhớ kết quả cũ
+
+
+def test_lap_buoc_hoc(mt, tmp_path):
+    m = _mt_hoc(mt, tmp_path)
+    H = dm.DANH_MUC["hoc_hang_ngay"]
+    du = Path(m.thu_muc_du_lieu)
+    ds = H.lap_buoc({"ngay": HOM_NAY}, _viec("hoc_hang_ngay", {"ngay": HOM_NAY}), m)
+    assert len(ds) == 1
+    b = ds[0]
+    assert (b.ten, b.cwd, b.het_gio_s, b.la_claude, b.song, b.stdin) == ("hoc", str(dm.THU_MUC_CAI), 600, False,
+                                                                         False, None)
+    assert b.argv == [dm.PYTHON, "-B", "-m", "runner.hoc_tu_dong", "--ngay", HOM_NAY,
+                      "--hoc-db", str(du / "hoc.db"), "--poster-db", str(m.poster_db),
+                      "--runner-db", str(du / "runner.db"), "--repo", str(m.repo_kho), "--viec-id", ID]
+    with pytest.raises(ThamSoLoi, match="DB Poster"):
+        H.lap_buoc({"ngay": HOM_NAY}, _viec("hoc_hang_ngay", {"ngay": HOM_NAY}), mt)        # poster_db None
+    with pytest.raises(ThamSoLoi):
+        H.lap_buoc({"ngay": HOM_NAY}, _viec("hoc_hang_ngay", {"ngay": HOM_NAY}, id="../x"), m)
+    with pytest.raises(ThamSoLoi):
+        H.lap_buoc({"ngay": "2026-11-17 --x"}, _viec("hoc_hang_ngay", {}), m)
+
+
+def test_lap_buoc_hieu_luc_hoc_noi_han_muc_hieu_luc(mt, tmp_path):
+    """§3.3: lap_buoc_hieu_luc nối --bat-ngay/--hieu-luc-toi-da = hạn mức HIỆU LỰC (cau_hinh chỉ hạ)."""
+    from runner.han_muc import HAN_MUC_TRAN, han_muc_hieu_luc
+    m = _mt_hoc(mt, tmp_path)
+    H = dm.DANH_MUC["hoc_hang_ngay"]
+    v = _viec("hoc_hang_ngay", {"ngay": HOM_NAY})
+    assert "--bat-ngay" not in H.lap_buoc(v["tham_so"], v, m)[0].argv
+    b = dm.lap_buoc_hieu_luc(H, v["tham_so"], v, m, dict(HAN_MUC_TRAN))[0]
+    assert b.argv[-4:] == ["--bat-ngay", "1", "--hieu-luc-toi-da", "5"]
+    hm, _ = han_muc_hieu_luc({"hoc_bat_ngay": 0, "hoc_hieu_luc_toi_da": 2})
+    b = dm.lap_buoc_hieu_luc(H, v["tham_so"], v, m, hm)[0]
+    assert b.argv[-4:] == ["--bat-ngay", "0", "--hieu-luc-toi-da", "2"] and b.argv.count("--bat-ngay") == 1
+    # dict bị nới vẫn kẹp về trần code
+    b = dm.lap_buoc_hieu_luc(H, v["tham_so"], v, m, {**HAN_MUC_TRAN, "hoc_bat_ngay": 9})[0]
+    assert b.argv[-4:] == ["--bat-ngay", "1", "--hieu-luc-toi-da", "5"]
+
+    def boc(ts, viec, mm):                                               # test bọc lap_buoc (script giả)
+        return [replace(H.lap_buoc(ts, viec, mm)[0], argv=["gia"])]
+    b2 = dm.lap_buoc_hieu_luc(replace(H, lap_buoc=boc), v["tham_so"], v, m, hm)[0]
+    assert b2.argv == ["gia", "--bat-ngay", "0", "--hieu-luc-toi-da", "2"]
+
+
+def test_lap_buoc_quet_view(mt, tmp_path):
+    m = _mt_hoc(mt, tmp_path)
+    Q = dm.DANH_MUC["quet_view_hang_ngay"]
+    v = _viec("quet_view_hang_ngay", {"ngay": HOM_NAY})
+    ds = Q.lap_buoc(v["tham_so"], v, m)
+    assert len(ds) == 1
+    b = ds[0]
+    assert (b.ten, b.cwd, b.het_gio_s, b.la_claude, b.stdin) == ("quet_view", str(dm.THU_MUC_CAI), 25 * 60, False,
+                                                                 None)
+    assert b.argv == [dm.PYTHON, "-B", "-m", "runner.quet_view", "--ngay", HOM_NAY,
+                      "--view-dir", str(m.thu_muc_view), "--scan", str(m.script_quet_kenh),
+                      "--poster-db", str(m.poster_db), "--du-lieu", str(m.thu_muc_du_lieu), "--nguon", "runner"]
+    # CLI của quet_view nhận đúng bộ tham số này (bắt lệch hợp đồng giữa hai phiếu)
+    from runner import quet_view
+    a = quet_view._phan_tich_tham_so(b.argv[4:])
+    assert (a.ngay, a.nguon, a.du_lieu) == (HOM_NAY, "runner", str(m.thu_muc_du_lieu))
+    # lap_buoc_hieu_luc không đổi bước quét
+    from runner.han_muc import HAN_MUC_TRAN
+    assert dm.lap_buoc_hieu_luc(Q, v["tham_so"], v, m, dict(HAN_MUC_TRAN)) == ds
+    for thieu in ("poster_db", "thu_muc_view", "script_quet_kenh"):
+        with pytest.raises(ThamSoLoi):
+            Q.lap_buoc(v["tham_so"], v, _mt_hoc(mt, tmp_path, **{thieu: None}))
+
+
+def test_dau_ra_hoc(mt):
+    from runner.kho_hoc import KhoHoc
+    K = dm.DANH_MUC["hoc_hang_ngay"].kiem_dau_ra
+    du = Path(mt.thu_muc_du_lieu)
+    assert K({"ngay": HOM_NAY}, {}, mt) == "chua" and not (du / "hoc.db").exists()   # thiếu hoc.db: không tạo
+    kho = KhoHoc(du / "hoc.db", lambda: BAY_GIO)
+    kho.mo()
+    assert K({"ngay": HOM_NAY}, {}, mt) == "chua"
+    kho.bat_dau_lan(HOM_NAY, ID)
+    assert K({"ngay": HOM_NAY}, {}, mt) == "chua"                         # dang_chay
+    kho.ket_thuc_lan(HOM_NAY, "xong", "", {})
+    assert K({"ngay": HOM_NAY}, {}, mt) == "xong"
+    kho.bat_dau_lan(HOM_QUA, ID)
+    kho.ket_thuc_lan(HOM_QUA, "tu_dung", "poster_cu", {})
+    assert K({"ngay": HOM_QUA}, {}, mt) == "xong"
+    kho.bat_dau_lan("2026-11-15", ID)
+    kho.ket_thuc_lan("2026-11-15", "loi", "loi_bat_ngo", {})
+    assert K({"ngay": "2026-11-15"}, {}, mt) == "chua"
+    kho.dong()
+    assert dm.kiem_dau_ra_an_toan(dm.DANH_MUC["hoc_hang_ngay"], {"ngay": HOM_NAY}, {}, mt) == "xong"
+
+
+def test_dau_ra_hoc_db_hong(mt, caplog):
+    du = Path(mt.thu_muc_du_lieu)
+    du.mkdir(parents=True)
+    (du / "hoc.db").write_bytes(b"rac" * 1000)
+    assert dm.DANH_MUC["hoc_hang_ngay"].kiem_dau_ra({"ngay": HOM_NAY}, {}, mt) == "chua"
+    assert any("hoc.db" in r.getMessage() for r in caplog.records)
+
+
+def test_dau_ra_quet_view(mt):
+    K = dm.DANH_MUC["quet_view_hang_ngay"].kiem_dau_ra
+    qv = Path(mt.thu_muc_du_lieu) / "quet_view"
+    assert K({"ngay": HOM_NAY}, {}, mt) == "chua"
+    qv.mkdir(parents=True)
+    f = qv / f"{HOM_NAY}.json"
+    for noi, ky_vong in ((json.dumps({"trang_thai": "dang_chay", "lan": 1}), "chua"),
+                         (json.dumps({"trang_thai": "loi", "lan": 2}), "chua"),
+                         ("{hỏng", "chua"),
+                         (json.dumps({"trang_thai": "ok", "lan": 1, "kenh": []}), "xong")):
+        f.write_text(noi, encoding="utf-8")
+        assert K({"ngay": HOM_NAY}, {}, mt) == ky_vong, noi
+    assert K({"ngay": HOM_QUA}, {}, mt) == "chua"
+
+
+def test_khoi_dong_lai_he_thong_tu_chay_lai(mt):
+    for ma in dm.LOAI_CHI_HE_THONG:
+        l = dm.DANH_MUC[ma]
+        assert dm.quyet_dinh_sau_khoi_dong({"lan_thu": 1}, "chua", l)[0] == "cho"
+        assert dm.quyet_dinh_sau_khoi_dong({"lan_thu": 3}, "chua", l)[0] == "loi"
+        assert dm.quyet_dinh_sau_khoi_dong({"lan_thu": 1}, "xong", l)[0] == "xong"
+
+
+def test_lap_buoc_hieu_luc_phan_tich_uid_goi_y_theo_hm(mt):
+    """§3.7: phiếu phan_tich_uid lập lại theo hm vòng chạy đang giữ → gợi ý lấy với hạn mức HIỆU LỰC."""
+    from runner import hoc_danh_muc as hdm
+    from runner.han_muc import han_muc_hieu_luc
+    goi: list[int] = []
+    muc = {"ma": "bh20261117abcd", "khoa": "cap_co_so", "huong": "tang", "nguon": "poster_view",
+           "trang_thai": "hieu_luc", "lift_pt": 22, "so_uid": 21, "so_cung_chieu": 16, "so_viec": 300}
+
+    def goi_y(n):
+        goi.append(n)
+        return [muc][:n]
+    m = replace(mt, goi_y_hoc=goi_y)
+    P = dm.DANH_MUC["phan_tich_uid"]
+    v = _viec("phan_tich_uid", {"uid": UID})
+    hm, _ = han_muc_hieu_luc({"hoc_hieu_luc_toi_da": 2})
+    b = dm.lap_buoc_hieu_luc(P, v["tham_so"], v, m, hm)[0]
+    assert hdm.TIEU_DE_GOI_Y in b.stdin and "[bh20261117abcd]" in b.stdin and goi[-1] == 2
+    hm0, _ = han_muc_hieu_luc({"hoc_bat_ngay": 0})
+    b0 = dm.lap_buoc_hieu_luc(P, v["tham_so"], v, m, hm0)[0]
+    assert hdm.TIEU_DE_GOI_Y not in b0.stdin and "bh20261117abcd" not in b0.stdin
+    # resume (đã có phiên): không lập phiếu → không có khối
+    br = dm.lap_buoc_hieu_luc(P, v["tham_so"], dict(v, phien_da_tao=1), m, hm)[0]
+    assert br.stdin is None

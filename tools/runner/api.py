@@ -53,6 +53,7 @@ import hmac
 import json
 import logging
 import re
+import sqlite3
 import threading
 import time
 import uuid
@@ -64,10 +65,13 @@ from typing import Any
 from urllib.parse import parse_qs, urlsplit
 
 from . import chu_ky
+from . import hoc_danh_muc as hdm
 from . import sua_video as sv
-from .danh_muc import DANH_MUC, LoaiViec, ds_folder_poster, lay_loai, tham_so_chuan, video_cua_tham_so
+from .danh_muc import (DANH_MUC, LOAI_CHI_HE_THONG, LOAI_KHONG_CHAY_LAI, LoaiViec, ds_folder_poster, lay_loai,
+                       tham_so_chuan, video_cua_tham_so)
 from .du_an import ds_du_an
-from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, kiem_han_muc
+from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, han_muc_hoc, kiem_han_muc
+from .kho_hoc import KhoHoc, KhongCoBaiHoc, SaiTrangThaiHoc
 from .kho_viec import RE_BAN_SUA, KhoViec
 from .danh_muc import KHOA_ANH_CHUP_KHO, LOAI_PHIEN_SONG, anh_chup_kho_taovideo
 from .kieu import (DANG_MO, RE_MA_CAU_HOI, TRANG_THAI, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai, ThamSoLoi,
@@ -137,6 +141,16 @@ LOI_CHI_DAO_CAN_MAT_KHAU = "Chỉ đạo cần nhập mật khẩu"
 LOI_CHI_DAO_DANG_HOI = "Agent đang hỏi — trả lời câu hỏi, hoặc dùng Ngắt & nhắn"
 # Việc phiên sống KHÔNG còn phiên ở các trạng thái này: chỉ đạo chỉ được lưu cho lần chạy tiếp.
 TRANG_THAI_GHI_CHI_DAO = ("loi", "cho_duyet")
+# D15 (docs/hoc-tu-dong.md §3.8): học tự động. Câu 503 web so khớp NGUYÊN VĂN — không đổi chữ.
+LOI_HOC_CHUA_BAT = "Học tự động chưa bật"
+LOI_CHI_HE_THONG = "loại này chỉ runner tự tạo"
+# `ma` sai dạng → không khớp tuyến → 404 (hợp đồng 3 chặng P3-7). Mẫu mã = hoc_danh_muc.RE_MA_BAI_HOC.
+_RE_ROUTE_HOC_POST = re.compile(r"^/hoc/bai-hoc/(bh\d{8}[a-z0-9]{4})/(hoan-tac|bat-lai)$", re.ASCII)
+_RE_NGAY_HOC = re.compile(r"^\d{4}-\d{2}-\d{2}$", re.ASCII)
+HOC_GIOI_HAN_MAC_DINH = 50
+HOC_GIOI_HAN_TOI_DA = 200
+# 404 của /hoc/*: chỉ 2 câu cố định trong danh mục (web đọc hoc_danh_muc.py để đối chiếu).
+_LOI_404_HOC = (hdm.TEN_LY_DO["chua_co_lan_hoc"], hdm.TEN_LY_DO["khong_co_bai_hoc"])
 
 
 class LoiApi(Exception):
@@ -323,8 +337,23 @@ def bi_tu_choi_gon(ds: object, che: Callable[[str], str] | None = None) -> list[
     return ra
 
 
+def co_the_chay_lai(v: dict, sua_chu: bool = False, hom_nay: str | None = None) -> bool:
+    """Nút Chạy lại: việc loi/huy, không phải bản sửa có chữ phụ đề (FX-22). D15: loại LOAI_KHONG_CHAY_LAI không bao
+    giờ; loại chỉ-hệ-thống còn lại (quet_view_hang_ngay) chỉ lượt của hôm nay (`hom_nay` YYYY-MM-DD, None = không xét
+    ngày). Chặn thật nằm ở _tao_viec/kiem_tham_so; cờ này chỉ để web không hiện nút sẽ bị 400."""
+    if v.get("trang_thai") not in TRANG_THAI_CHAY_LAI or sua_chu:
+        return False
+    loai = v.get("loai")
+    if loai in LOAI_KHONG_CHAY_LAI:
+        return False
+    if loai in LOAI_CHI_HE_THONG and hom_nay is not None:
+        ts = v.get("tham_so")
+        return isinstance(ts, dict) and ts.get("ngay") == hom_nay
+    return True
+
+
 def viec_ra(v: dict, chi_tiet: bool = True, che: Callable[[str], str] | None = None,
-            phien_song: bool = False, sua_chu: bool = False) -> dict:
+            phien_song: bool = False, sua_chu: bool = False, hom_nay: str | None = None) -> dict:
     """Việc trả ra web (§8.1): bỏ trường nhạy cảm, thêm co_session / co_the_chay_tiep / co_the_chay_lai /
     co_the_xin_duyet_lai / can_luu_lai_mat_khau / phien_song (đợt 5: vòng chạy đang giữ phiên Claude sống của việc —
     handler hỏi `co_phien_song`).
@@ -355,7 +384,7 @@ def viec_ra(v: dict, chi_tiet: bool = True, che: Callable[[str], str] | None = N
         d["ket_qua"]["bi_tu_choi"] = bi_tu_choi_gon(bi_tu_choi, che)
     d["co_session"] = bool(v.get("session_id"))
     d["co_the_chay_tiep"] = co_the_chay_tiep(v, sua_chu)
-    d["co_the_chay_lai"] = v.get("trang_thai") in TRANG_THAI_CHAY_LAI and not sua_chu
+    d["co_the_chay_lai"] = co_the_chay_lai(v, sua_chu, hom_nay)
     d["can_luu_lai_mat_khau"] = bool(sua_chu)
     d["phien_song"] = bool(phien_song)
     d["co_the_xin_duyet_lai"] = co_the_xin_duyet_lai(v, bool(phien_song))
@@ -504,8 +533,13 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                 che: Callable[[str], str] | None = None, *,
                 tra_loi_song: Callable[[str, str, str, str], dict] | None = None,
                 co_phien_song: Callable[[str], bool] = lambda _id: False,
-                nhan_tin_song: Callable[[str, str, str, bool], dict] | None = None) -> type[BaseHTTPRequestHandler]:
+                nhan_tin_song: Callable[[str, str, str, bool], dict] | None = None,
+                kho_hoc: KhoHoc | None = None) -> type[BaseHTTPRequestHandler]:
     """Tạo lớp handler gắn sẵn phụ thuộc. Dùng với ThreadingHTTPServer(("127.0.0.1", cong), H).
+
+    D15 (docs/hoc-tu-dong.md §3.8): `kho_hoc` = KhoHoc đã mo() (chay_runner, sau mutex). None (mở hoc.db lỗi / chưa
+    bật) → mọi route /hoc/* hợp lệ trả 503 {"loi": LOI_HOC_CHUA_BAT}. Hạn mức truyền vào kho là hạn mức HIỆU LỰC đọc
+    từ `hm` ở MỖI request (han_muc.han_muc_hoc).
 
     `che` (R-06 P3-3): hàm che bí mật áp lên mọi văn bản việc trả ra web (viec_ra, su_kien, tra_loi).
     None = không che (giữ tương thích chữ ký cũ); runner thật luôn truyền bộ che.
@@ -533,7 +567,7 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         return dong is not None and sv.co_sua_chu(dong.get("noi_dung"))
 
     def _ra(v: dict, chi_tiet: bool = True) -> dict:
-        return viec_ra(v, chi_tiet, che, _phien_song(v), _sua_chu(v))
+        return viec_ra(v, chi_tiet, che, _phien_song(v), _sua_chu(v), _hom_nay().isoformat())
 
     def _che_ds(ds: list) -> list:
         return ds if che is None else che_sau(ds, che)
@@ -602,6 +636,11 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             raise ThamSoLoi("Chỉ hoàn tác được lần sửa gần nhất chưa hoàn tác")
 
     def _tao_viec(loai: LoaiViec, ts_tho: dict, boi: str, chay_lai_tu: str | None = None) -> dict:
+        # D15 §3.8 (P3-5): MỌI đường tạo việc của API đi qua đây (p_tao, p_chay_lai) → một chỗ chặn phủ cả hai.
+        # Loại chỉ-hệ-thống: web không tạo mới; chạy lại chỉ loại không nằm trong LOAI_KHONG_CHAY_LAI (quét view —
+        # kiem_tham_so còn đòi ngay = hôm nay).
+        if loai.ma in LOAI_CHI_HE_THONG and (chay_lai_tu is None or loai.ma in LOAI_KHONG_CHAY_LAI):
+            raise LoiApi(400, LOI_CHI_HE_THONG)
         ts = loai.kiem_tham_so(ts_tho, mt)        # chỉ gọi trên input thô (P3-2)
         khoa_chong_trung = loai.tinh_khoa(ts)
         with khoa_ghi:
@@ -646,7 +685,7 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         dot = dot_bat_hieu_luc(hm)
         return 200, {"loai": [{"ma": l.ma, "ten": l.ten, "dot": l.dot, "ton_tien": l.ton_tien,
                                "lan_chay": l.lan_chay, "tham_so": [dict(t) for t in l.tham_so]}
-                              for l in DANH_MUC.values() if l.dot <= dot]}
+                              for l in DANH_MUC.values() if l.dot <= dot and l.ma not in LOAI_CHI_HE_THONG]}
 
     def g_ds_viec(q: dict) -> tuple[int, dict]:
         if q.get("tom_tat") == "1":
@@ -1011,6 +1050,69 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                 raise LoiApi(409, "việc vừa đổi trạng thái — tải lại") from e
         return 200, {"viec": _ra(moi if isinstance(moi, dict) else _lay_viec(id_))}
 
+    # ----- học tự động (D15, docs/hoc-tu-dong.md §3.8) -----
+    def _kho_hoc_mo() -> KhoHoc:
+        if kho_hoc is None:
+            raise LoiApi(503, LOI_HOC_CHUA_BAT)
+        return kho_hoc
+
+    def _han_muc_hoc() -> dict[str, int]:
+        """Hạn mức HIỆU LỰC (cau_hinh.json đã hạ, kẹp trần code) đọc từ `hm` tại lúc gọi — kho không có mặc định."""
+        bat_ngay, hieu_luc_toi_da = han_muc_hoc(hm)
+        return {"bat_ngay": bat_ngay, "hieu_luc_toi_da": hieu_luc_toi_da}
+
+    def _goi_kho_hoc(lam: Callable[[KhoHoc], Any]) -> Any:
+        """Gọi kho học: KhongCoBaiHoc → 404 (chỉ 2 câu cố định), SaiTrangThaiHoc → 409 (câu cố định của kho);
+        ThamSoLoi → 400 và lỗi khác → 500 do _chay xử lý. Luôn đóng kết nối SQLite của luồng HTTP này (mỗi request một
+        luồng — không để kết nối mồ côi giữ hoc.db)."""
+        k = _kho_hoc_mo()
+        try:
+            return lam(k)
+        except KhongCoBaiHoc as e:
+            loi = e.loi if e.loi in _LOI_404_HOC else hdm.TEN_LY_DO["khong_co_bai_hoc"]
+            raise LoiApi(404, loi) from e
+        except SaiTrangThaiHoc as e:
+            raise LoiApi(409, str(e.loi)) from e
+        finally:
+            try:
+                k.dong()
+            except sqlite3.Error:
+                log.warning("hoc.db: đóng kết nối luồng HTTP lỗi", exc_info=True)
+
+    def _ra_hoc(d: dict) -> dict:
+        return d if che is None else che_sau(d, che)
+
+    def g_hoc_bao_cao(q: dict) -> tuple[int, dict]:
+        _kho_hoc_mo()
+        ngay = q.get("ngay")
+        if ngay is not None and not _RE_NGAY_HOC.fullmatch(ngay):
+            raise ThamSoLoi("ngay phải dạng YYYY-MM-DD")
+        hmh = _han_muc_hoc()
+        return 200, _ra_hoc(_goi_kho_hoc(lambda k: k.bao_cao(ngay, **hmh)))
+
+    def g_hoc_bai_hoc(q: dict) -> tuple[int, dict]:
+        _kho_hoc_mo()
+        gioi_han = HOC_GIOI_HAN_MAC_DINH
+        if "gioi_han" in q:
+            if not _RE_SO.fullmatch(q["gioi_han"]) or not 1 <= int(q["gioi_han"]) <= HOC_GIOI_HAN_TOI_DA:
+                raise ThamSoLoi(f"gioi_han phải là số 1–{HOC_GIOI_HAN_TOI_DA}")
+            gioi_han = int(q["gioi_han"])
+        hmh = _han_muc_hoc()
+        return 200, _ra_hoc({"bai_hoc": _goi_kho_hoc(lambda k: k.ds_bai_hoc(gioi_han, **hmh))})
+
+    def p_hoc(ma: str, act: str, body: dict) -> tuple[int, dict]:
+        """POST /hoc/bai-hoc/<ma>/(hoan-tac|bat-lai) — đã qua x-runner-key + chữ ký D7 + nonce ở do_POST; `boi` chỉ
+        tin vì nằm trong body đã ký (Worker tự dựng {"boi": phien.user})."""
+        _kho_hoc_mo()
+        boi = _boi(body)
+        hmh = _han_muc_hoc()
+        if act == "hoan-tac":
+            bai = _goi_kho_hoc(lambda k: k.hoan_tac(ma, boi, **hmh))
+        else:
+            bai = _goi_kho_hoc(lambda k: k.bat_lai(ma, boi, **hmh))
+        log.info("học: %s %s bởi %s", act, ma, boi)
+        return 200, _ra_hoc({"bai_hoc": bai})
+
     HANH_DONG = {"tra-loi": p_tra_loi, "huy": p_huy, "tu-choi": p_tu_choi, "chay-tiep": p_chay_tiep,
                  "chay-lai": p_chay_lai, "duyet": p_duyet, "xin-duyet-lai": p_xin_duyet_lai,
                  "nhan-tin": p_nhan_tin, "luu-tru": p_luu_tru, "bo-luu-tru": p_bo_luu_tru}
@@ -1106,6 +1208,10 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     if ma is None:
                         return g_sua_ds(uid, q)
                     return g_sua_ung_vien(uid, ma, q) if ung_vien else g_sua_chi_tiet(uid, ma, q)
+                if p == "/hoc/bao-cao":
+                    return g_hoc_bao_cao(q)
+                if p == "/hoc/bai-hoc":
+                    return g_hoc_bai_hoc(q)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 
@@ -1133,6 +1239,8 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
                     return HANH_DONG[m.group(2)](m.group(1), body)
                 if m := _RE_ROUTE_SUA_POST.fullmatch(p):
                     return p_ban_sua(m.group(1), m.group(2), body)
+                if m := _RE_ROUTE_HOC_POST.fullmatch(p):
+                    return p_hoc(m.group(1), m.group(2), body)
                 raise LoiApi(404, "không có API này")
             self._chay(lam)
 

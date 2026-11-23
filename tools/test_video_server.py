@@ -584,6 +584,217 @@ def test_r_act_luu_tru_bo_luu_tru_chuyen_tiep(srv, runner, act):
     assert runner.nhan[0]["method"] == "POST" and runner.nhan[0]["path"] == f"/viec/{JID}/{act}"
 
 
+# ---------- học tự động: chuyển tiếp /r/hoc/* (docs/hoc-tu-dong.md §3.8, HT-A1) ----------
+HOP_DONG_HOC = """Trích nguyên văn docs/hoc-tu-dong.md §3.8 (hợp đồng chung 3 chặng):
+
+| Method + path | Query/body | Trả |
+|---|---|---|
+| `GET /hoc/bao-cao` | `ngay` tuỳ chọn `^\\d{4}-\\d{2}-\\d{2}$` | 200 `BaoCao` · 404 `{"loi":"chưa có lần học nào"}` · 400 ngày sai |
+| `GET /hoc/bai-hoc` | `gioi_han` 1..200, mặc định 50 | 200 `{"bai_hoc":[BaiHocRa…]}` |
+| `POST /hoc/bai-hoc/<ma>/hoan-tac` | `{"boi"}` | 200 `{"bai_hoc"}` · 404 không có · 409 `{"loi":"bài học không còn hiệu lực"}` khi trạng thái ∉ {`ung_vien`,`hieu_luc`} · 401 |
+| `POST /hoc/bai-hoc/<ma>/bat-lai` | `{"boi"}` | 200 `{"bai_hoc"}` · 404 · 409 kèm 1 trong 5 câu cố định (§4.2), gồm "đã quá 7 ngày kể từ lúc hoàn tác, không bật lại được nữa" khi bài `hoan_tac` quá hạn Q8 · 401 |
+
+`<ma>` sai dạng thì không khớp tuyến → 404. **Hợp đồng mã lỗi thống nhất ở cả 3 chặng (sửa P3-7): `ma` sai dạng = 404**,
+không phải 400 (Worker `tuyenHoc` trả null → 404; video_server `RE_R` không khớp → 404; runner regex route không khớp → 404).
+`export const RE_MA_BAI_HOC = /^bh\\d{8}[a-z0-9]{4}$/;`
+Worker gọi máy nhà với `content-type: application/json` (cf/src/worker.js goiMayNha) + `x-ky*` (D7).
+
+Bảng → test:
+  GET /hoc/bao-cao (+ngay)          -> test_r_hoc_get_chuyen_tiep, test_r_hoc_query_dung_khoa_tung_tuyen
+  GET /hoc/bai-hoc (+gioi_han)      -> test_r_hoc_get_chuyen_tiep, test_r_hoc_query_dung_khoa_tung_tuyen
+  POST .../<ma>/hoan-tac|bat-lai    -> test_r_hoc_post_chuyen_nguyen_body_content_type_chu_ky
+  cột "Trả" (200/404/409/401/400)   -> test_r_hoc_tra_nguyen_ma_loi_runner
+  `ma` sai dạng = 404 (3 chặng)     -> test_r_hoc_ma_sai_dang_hoac_path_la_404_khong_goi_runner, test_r_hoc_ma_khop_dung_RE_MA_BAI_HOC
+  method ngoài bảng                 -> test_r_hoc_sai_method_405_khong_goi_runner
+  content-type lệch chặng (415)     -> test_r_hoc_post_sai_content_type_415_khong_goi_runner
+"""
+
+MA_BH = "bh20261123ab12"
+RE_MA_BAI_HOC = r"bh\d{8}[a-z0-9]{4}"   # = /^bh\d{8}[a-z0-9]{4}$/ của cf/src/hoc.js (§3.8)
+HDR_KY = {"x-runner-key": "rk-1", "x-ky": "kyabc", "x-ky-ngay": "1763340000000", "x-ky-nonce": "ab" * 16}
+
+
+def test_hop_dong_hoc_trich_dung_tai_lieu():
+    """Bảng trong docstring phải còn khớp §3.8 thật; tài liệu đổi mà test không đổi thì đỏ."""
+    tl = (Path(__file__).resolve().parent.parent / "docs" / "hoc-tu-dong.md").read_text(encoding="utf-8")
+    for dong in HOP_DONG_HOC.splitlines():
+        if dong.startswith("| `"):
+            assert dong in tl, dong
+
+
+@pytest.mark.parametrize("duong, dich", [
+    ("/r/hoc/bao-cao", "/hoc/bao-cao"),
+    ("/r/hoc/bao-cao?ngay=2026-11-23", "/hoc/bao-cao?ngay=2026-11-23"),
+    ("/r/hoc/bai-hoc", "/hoc/bai-hoc"),
+    ("/r/hoc/bai-hoc?gioi_han=50", "/hoc/bai-hoc?gioi_han=50"),
+])
+def test_r_hoc_get_chuyen_tiep(srv, runner, duong, dich):
+    code, h, body = goi_r(srv + duong, headers={"x-runner-key": "rk-1"})
+    assert code == 200 and json.loads(body) == {"ok": True}
+    assert h["content-type"].startswith("application/json")
+    g = runner.nhan
+    assert len(g) == 1 and g[0]["method"] == "GET" and g[0]["path"] == dich
+    assert g[0]["headers"]["x-runner-key"] == "rk-1" and "x-key" not in g[0]["headers"]
+    assert g[0]["body"] == b""
+
+
+@pytest.mark.parametrize("duong, mong", [
+    # chỉ khoá của chính tuyến; khoá của tuyến khác / khoá chung R_QUERY_KHOA / khoá lạ bị bỏ
+    ("/r/hoc/bao-cao?ngay=2026-11-23&gioi_han=5&tu=0&offset=1&la=1&x-key=k", [("ngay", "2026-11-23")]),
+    ("/r/hoc/bai-hoc?gioi_han=50&ngay=2026-11-23&uid=1&tom_tat=1", [("gioi_han", "50")]),
+    ("/r/hoc/bao-cao?ngay=2026-11-23&ngay=2026-11-22", [("ngay", "2026-11-23")]),
+    # giá trị ký tự lạ bị bỏ như lọc hiện có (Worker đã trả 400 trước đó, §3.8)
+    ("/r/hoc/bao-cao?ngay=2026%2F11%2F23", []),
+    ("/r/hoc/bao-cao?ngay=2026-11-23%0A", []),
+    ("/r/hoc/bao-cao?ngay=..%2F..%2Fx", []),
+    ("/r/hoc/bai-hoc?gioi_han=" + "9" * 41, []),
+    # tuyến ghi không có query
+    (f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac?ngay=2026-11-23&gioi_han=5&boi=x", []),
+])
+def test_r_hoc_query_dung_khoa_tung_tuyen(srv, runner, duong, mong):
+    post = "/hoan-tac" in duong
+    code, _, _ = goi_r(srv + duong, method="POST" if post else "GET",
+                       headers={"content-type": "application/json"} if post else None,
+                       body=b'{"boi":"nhan"}' if post else None)
+    assert code == 200
+    sp = urlsplit(runner.nhan[0]["path"])
+    assert sp.path == urlsplit(duong).path[2:]
+    assert parse_qsl(sp.query, keep_blank_values=True) == mong
+    assert "?" not in runner.nhan[0]["path"] or mong
+
+
+def test_r_hoc_khong_noi_query_chung():
+    """`ngay` chỉ mở cho /r/hoc/bao-cao, không thêm vào allowlist chung R_QUERY_KHOA."""
+    assert "ngay" not in vs.R_QUERY_KHOA
+
+
+def test_r_viec_khong_nhan_ngay(srv, runner):
+    goi_r(srv + "/r/viec?ngay=2026-11-23&offset=10")
+    assert parse_qsl(urlsplit(runner.nhan[0]["path"]).query) == [("offset", "10")]
+
+
+@pytest.mark.parametrize("act", ["hoan-tac", "bat-lai"])
+@pytest.mark.parametrize("ct", ["application/json", "application/json; charset=utf-8"])
+def test_r_hoc_post_chuyen_nguyen_body_content_type_chu_ky(srv, runner, act, ct):
+    hdr = dict(HDR_KY, **{"content-type": ct, "cookie": "phien=1", "authorization": "Bearer t", "x-ky-khac": "z"})
+    body = json.dumps({"boi": "nhan"}).encode()
+    code, _, rb = goi_r(srv + f"/r/hoc/bai-hoc/{MA_BH}/{act}", method="POST", headers=hdr, body=body)
+    assert code == 200 and json.loads(rb) == {"ok": True}
+    g = runner.nhan
+    assert len(g) == 1
+    assert g[0]["method"] == "POST" and g[0]["path"] == f"/hoc/bai-hoc/{MA_BH}/{act}"
+    assert g[0]["body"] == body
+    h = g[0]["headers"]
+    for k in ("x-runner-key", "x-ky", "x-ky-ngay", "x-ky-nonce", "content-type"):
+        assert h[k] == hdr[k], k          # content-type chuyển NGUYÊN chữ, không chuẩn hoá
+    for k in ("x-key", "cookie", "authorization", "x-ky-khac"):
+        assert k not in h, k
+
+
+@pytest.mark.parametrize("act", ["hoan-tac", "bat-lai"])
+def test_r_hoc_post_khong_chu_ky_van_chuyen_de_runner_401(srv, runner, act):
+    """video_server không tự cho qua/không tự ký: thiếu x-ky* vẫn chuyển, runner trả 401 thì trả nguyên 401 (D7, §8.4 ca 4)."""
+    runner.tra_code, runner.tra_body = 401, json.dumps({"loi": "Thiếu chữ ký"}).encode()
+    code, _, rb = goi_r(srv + f"/r/hoc/bai-hoc/{MA_BH}/{act}", method="POST",
+                        headers={"content-type": "application/json"}, body=b'{"boi":"nhan"}')
+    assert code == 401 and rb == runner.tra_body
+    assert not any(k.startswith("x-ky") for k in runner.nhan[0]["headers"])
+
+
+@pytest.mark.parametrize("duong, method, code_r, body_r", [
+    ("/r/hoc/bao-cao?ngay=2026-11-23", "GET", 404, {"loi": "chưa có lần học nào"}),
+    ("/r/hoc/bao-cao?ngay=2026-13-45", "GET", 400, {"loi": "ngày sai"}),
+    ("/r/hoc/bai-hoc", "GET", 503, {"loi": "Học tự động chưa bật"}),
+    (f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac", "POST", 409, {"loi": "bài học không còn hiệu lực"}),
+    (f"/r/hoc/bai-hoc/{MA_BH}/bat-lai", "POST", 409,
+     {"loi": "đã quá 7 ngày kể từ lúc hoàn tác, không bật lại được nữa"}),
+    (f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac", "POST", 404, {"loi": "không có"}),
+])
+def test_r_hoc_tra_nguyen_ma_loi_runner(srv, runner, duong, method, code_r, body_r):
+    runner.tra_code, runner.tra_body = code_r, json.dumps(body_r, ensure_ascii=False).encode()
+    post = method == "POST"
+    code, _, rb = goi_r(srv + duong, method=method, headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                        body=b'{"boi":"nhan"}' if post else None)
+    assert code == code_r and json.loads(rb) == body_r
+    assert len(runner.nhan) == 1
+
+
+@pytest.mark.parametrize("duong", [
+    "/r/hoc", "/r/hoc/", "/r/hoc/xoa", "/r/hoc/bao-cao/", "/r/hoc/bai-hoc/", "/r/hoc/bao-cao/x",
+    "/r/hoc/bai-hoc/../x", "/r/hoc/../viec", f"/r/hoc/bai-hoc/{MA_BH}", f"/r/hoc/bai-hoc/{MA_BH}/",
+    f"/r/hoc/bai-hoc/{MA_BH}/xoa", f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac/", f"/r/hoc/bai-hoc/{MA_BH}/bat-lai/x",
+    f"/r/hoc/bai-hoc/{MA_BH}/../{MA_BH}/hoan-tac", f"/r/hoc/bai-hoc/{MA_BH}%2Fhoan-tac",
+    f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac%2F..", "/r/hoc%2Fbao-cao", "/r/HOC/bao-cao", "/r/hoc/BAO-CAO",
+    # ma sai dạng
+    "/r/hoc/bai-hoc/bh2026112ab12/hoan-tac",       # 7 số
+    "/r/hoc/bai-hoc/bh202611230ab12/hoan-tac",     # 9 số + 4 đuôi = dài 1
+    "/r/hoc/bai-hoc/bh20261123ab1/hoan-tac",       # đuôi 3
+    "/r/hoc/bai-hoc/bh20261123ab123/bat-lai",      # đuôi 5
+    "/r/hoc/bai-hoc/BH20261123ab12/hoan-tac",      # tiền tố hoa
+    "/r/hoc/bai-hoc/bh20261123AB12/bat-lai",       # đuôi hoa
+    "/r/hoc/bai-hoc/bh20261123ab-2/hoan-tac",      # ký tự lạ
+    "/r/hoc/bai-hoc/j20261117093000ab12/hoan-tac", # mã việc, không phải mã bài học
+    "/r/hoc/bai-hoc/%62h20261123ab12/hoan-tac",    # %-mã hoá
+    "/r/hoc/bai-hoc/bh" + quote("２０２６１１２３") + "ab12/hoan-tac",  # số toàn chiều rộng
+])
+def test_r_hoc_ma_sai_dang_hoac_path_la_404_khong_goi_runner(srv, runner, duong):
+    code, _, body = goi_r(srv + duong)
+    assert code == 404 and json.loads(body) == {"loi": "Đường dẫn không hợp lệ"}
+    # body rỗng: server từ chối trước khi đọc body (đóng kết nối) -> body thật dễ bị WinError 10053 phía client
+    code, _, _ = goi_r(srv + duong, method="POST", headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                       body=b"")
+    assert code == 404
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("ma", [MA_BH, "bh00000000aaaa", "bh99999999zz99", "bh2026112ab12", "bh20261123ab1",
+                                "bh20261123ab123", "BH20261123ab12", "bh20261123AB12", "bh20261123ab_2",
+                                "xbh20261123ab12", "bh20261123ab12x"])
+def test_r_hoc_ma_khop_dung_RE_MA_BAI_HOC(ma):
+    """video_server nhận <ma> khi và chỉ khi RE_MA_BAI_HOC (Worker) nhận — lệch là lệch hợp đồng 3 chặng."""
+    import re
+    for act in ("hoan-tac", "bat-lai"):
+        assert bool(vs.RE_R.fullmatch(f"/r/hoc/bai-hoc/{ma}/{act}")) == bool(re.fullmatch(RE_MA_BAI_HOC, ma)), ma
+
+
+@pytest.mark.parametrize("duong, method", [
+    ("/r/hoc/bao-cao", "POST"), ("/r/hoc/bai-hoc", "POST"),
+    (f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac", "GET"), (f"/r/hoc/bai-hoc/{MA_BH}/bat-lai", "GET"),
+])
+def test_r_hoc_sai_method_405_khong_goi_runner(srv, runner, duong, method):
+    post = method == "POST"
+    code, _, body = goi_r(srv + duong, method=method, headers=dict(HDR_KY, **{"content-type": "application/json"}),
+                          body=b'{"boi":"nhan"}' if post else None)
+    assert code == 405 and json.loads(body) == {"loi": "Sai phương thức"}
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("method", ["PUT", "DELETE", "PATCH"])
+def test_r_hoc_method_ghi_khac_khong_chuyen(srv, runner, method):
+    code, _, _ = goi_r(srv + f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac", method=method,
+                       headers={"content-type": "application/json"}, body=b"")
+    assert code in (405, 501)
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("act", ["hoan-tac", "bat-lai"])
+def test_r_hoc_post_sai_content_type_415_khong_goi_runner(srv, runner, act):
+    for ct in ("text/plain", "application/x-www-form-urlencoded", "application/jsonx"):
+        code, _, _ = goi_r(srv + f"/r/hoc/bai-hoc/{MA_BH}/{act}", method="POST",
+                           headers=dict(HDR_KY, **{"content-type": ct}), body=b'{"boi":"nhan"}')
+        assert code == 415, ct
+    assert runner.nhan == []
+
+
+@pytest.mark.parametrize("khoa", [None, "sai"])
+def test_r_hoc_thieu_sai_x_key_401_khong_goi_runner(srv, runner, khoa):
+    assert goi_r(srv + "/r/hoc/bao-cao", khoa=khoa)[0] == 401
+    code, _, _ = goi_r(srv + f"/r/hoc/bai-hoc/{MA_BH}/hoan-tac", khoa=khoa, method="POST",
+                       headers=dict(HDR_KY, **{"content-type": "application/json"}), body=b"")
+    assert code == 401
+    assert runner.nhan == []
+
+
 # ---------- sửa video: act anh / clip trên /v/<id>/ ----------
 
 CLIP1 = "c01_001_hook_mo-hop.mp4"        # ngay trong cuts/

@@ -9,6 +9,9 @@ chỉ đọc file (doi_soat_taovideo).
 Đợt 6 (D10, docs/sua-video.md §7): sua_video, hoan_tac_sua — miễn phí, làn gpu, gắn dot=4 (không nâng dot_bat để
 khỏi mở taovideo). Chữ phụ đề KHÔNG BAO GIỜ vào argv: chỉ nằm trong file DATA/sua/<ban_sua>.json runner tự ghi.
 
+D15 (docs/hoc-tu-dong.md §3.3, §3.4a): quet_view_hang_ngay, hoc_hang_ngay — CHỈ runner tự tạo (LOAI_CHI_HE_THONG),
+miễn phí, làn nhe, chạy `python -B -m runner.<script>` với cwd THU_MUC_CAI. Đọc runner.db/hoc.db luôn `mode=ro`.
+
 Loại tốn tiền KHÔNG BAO GIỜ tự chạy lại (tu_chay_lai=False, đối soát 'khong_ro'). voice_genmax chỉ thêm
 `--dong-y` khi việc ở bước 'chay' VÀ đã có đủ trường duyệt; không đường nào sinh `--gui-lai-ma`.
 """
@@ -23,7 +26,7 @@ import sqlite3
 import time
 from contextlib import closing
 from dataclasses import dataclass, field, replace
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Callable
 from urllib.parse import quote
@@ -31,7 +34,7 @@ from urllib.parse import quote
 from . import bo_loai as bl
 from . import sua_video as sv
 from .du_an import RE_MA, RE_ME, ds_du_an, ds_me, kiem_uid, tim_du_an
-from .han_muc import TRAN_LUOT
+from .han_muc import TRAN_LUOT, han_muc_hoc
 from .kho_viec import RE_BAN_SUA, TEN_DB, doc_ban_sua_chi_doc
 from .kieu import DAU_RA, BuocChay, CanNguoiDung, MoiTruong, ThamSoLoi, gio_vn
 
@@ -147,10 +150,22 @@ _THU_MUC_RUNNER_CU = "C:/Users/Mi/AppData/Local/kho-runner"
 
 # FX-7b: chỉ cấm phần của chính runner (bản cài, khoá, DB, log, cấu hình) — KHÔNG cấm cả thư mục, vì thư mục dữ
 # liệu việc (vd `radar/`, truyền cho Claude qua --add-dir) nằm trong đó và agent phải đọc/ghi được.
+# D15 §6.1: hoc.db* (agent sửa được là đầu độc gợi ý vào phiếu) và quet_view/** (log lượt quét chứa chữ TikTok).
 PHAN_CAM_THU_MUC_RUNNER: tuple[str, ...] = (
     "app/**", "app.moi/**", "app.cu/**", "log/**", "runner.db*", ".runner_key", "runner.lock", "runner.log*",
-    "cau_hinh.json",
+    "cau_hinh.json", "hoc.db*", "quet_view/**",
 )
+
+# ---------- D15: học tự động mỗi ngày (docs/hoc-tu-dong.md §3.3, §3.4a, §9 HT-B3) ----------
+# Loại CHỈ runner tự tạo (hẹn giờ trong vong_lap): web không tạo được (api._tao_viec → 400, /danh-muc không liệt kê).
+LOAI_CHI_HE_THONG: tuple[str, ...] = ("hoc_hang_ngay", "quet_view_hang_ngay")
+# Trong số đó, loại không Chạy lại được (kể cả chủ kho). quet_view_hang_ngay chạy lại được, chỉ lượt của hôm nay.
+LOAI_KHONG_CHAY_LAI: tuple[str, ...] = ("hoc_hang_ngay",)
+GIO_HOC_TOI_DA_CHO = 18          # giờ VN: sau giờ này việc học không chờ việc quét cùng ngày nữa
+# Thư mục chứa gói `runner` (cwd của `python -B -m runner.<script>`): tools/ khi chạy mã nguồn, E:\kho-runner\app khi
+# chạy bản cài. Tính từ vị trí file (không đọc env, không I/O) nên luôn khớp đúng bản đang chạy.
+THU_MUC_CAI = Path(__file__).resolve().parent.parent
+TEN_HOC_DB = "hoc.db"            # <thu_muc_runner>/hoc.db (kho_hoc.KhoHoc)
 
 
 def _mau_cam_thu_muc(posix: str) -> tuple[str, ...]:
@@ -519,6 +534,41 @@ def _ts_hoan_tac_sua(ts: dict, mt: MoiTruong) -> dict:
     return {**co_ban, "viec_goc": vg}
 
 
+# ---------- D15: tham số 2 loại hệ thống (§3.3, §3.4a) ----------
+
+def _ngay_hop_le(ngay: object) -> str:
+    """Chuỗi YYYY-MM-DD (chữ số ASCII) là ngày có thật; trả lại đúng chuỗi đó (đưa thẳng vào argv)."""
+    if not isinstance(ngay, str) or not _RE_NGAY.fullmatch(ngay):
+        raise ThamSoLoi("ngay phải dạng YYYY-MM-DD")
+    try:
+        date.fromisoformat(ngay)
+    except ValueError as e:
+        raise ThamSoLoi("ngay không phải ngày có thật") from e
+    return ngay
+
+
+def _ts_ngay(ts: object, mt: MoiTruong) -> tuple[str, date]:
+    """(ngày đã kiểm, hôm nay giờ VN). Chỉ nhận đúng khoá `ngay`."""
+    _chi_khoa(_la_dict(ts), {"ngay"})
+    return _ngay_hop_le(ts.get("ngay")), gio_vn(mt.bay_gio()).date()
+
+
+def _ts_hoc(ts: dict, mt: MoiTruong) -> dict:
+    """§3.3: ngày học = hôm nay hoặc hôm qua (giờ VN)."""
+    ngay, hom_nay = _ts_ngay(ts, mt)
+    if date.fromisoformat(ngay) not in (hom_nay, hom_nay - timedelta(days=1)):
+        raise ThamSoLoi("ngày học phải là hôm nay hoặc hôm qua (giờ VN)")
+    return {"ngay": ngay}
+
+
+def _ts_quet_view(ts: dict, mt: MoiTruong) -> dict:
+    """§3.4a: chỉ lượt quét của HÔM NAY (giờ VN) — chạy lại việc của hôm qua → 400."""
+    ngay, hom_nay = _ts_ngay(ts, mt)
+    if date.fromisoformat(ngay) != hom_nay:
+        raise ThamSoLoi("chỉ chạy lại lượt quét của hôm nay")
+    return {"ngay": ngay}
+
+
 def _cho_chay(_ts: dict) -> tuple[str, str]:
     return ("cho", "chay")
 
@@ -707,6 +757,48 @@ def _dk_taovideo(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
     if mt.ffmpeg_ngoai():
         return "ban"
     return mt.chan_doan_kho(mt.repo_kho)
+
+
+def _mo_chi_doc(db: Path) -> sqlite3.Connection:
+    """Kết nối `mode=ro` (không bao giờ tạo/ghi file). Bên gọi đóng bằng `closing`."""
+    return sqlite3.connect(f"file:{quote(db.as_posix(), safe='/:')}?mode=ro", uri=True, timeout=5)
+
+
+def _co_viec_quet_mo(db: Path, ngay: str) -> bool:
+    """runner.db có việc quet_view_hang_ngay khoá `ngay` đang cho/dang_chay? Đọc MỚI mỗi lần gọi (mode=ro).
+    Thiếu/hỏng DB → False + log: không để lỗi đọc giữ việc học chờ vô hạn."""
+    if not db.is_file():
+        return False
+    try:
+        with closing(_mo_chi_doc(db)) as c:
+            return c.execute("SELECT 1 FROM viec WHERE loai=? AND khoa=? AND trang_thai IN ('cho','dang_chay') "
+                             "LIMIT 1", ("quet_view_hang_ngay", ngay)).fetchone() is not None
+    except sqlite3.Error as e:
+        log.warning("không đọc được việc quét view trong %s: %s — không hoãn việc học", db, e)
+        return False
+
+
+def _dk_hoc(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
+    """§3.3: việc quét cùng ngày còn mở và giờ VN < GIO_HOC_TOI_DA_CHO → 'ban' (vòng chạy thử lại sau); không học
+    trên dữ liệu chưa quét. Từ 18:00 thì học luôn (bộ học tự dừng nếu nguồn view cũ)."""
+    if gio_vn(mt.bay_gio()).hour >= GIO_HOC_TOI_DA_CHO:
+        return None
+    ngay = _ngay_hop_le(ts.get("ngay"))
+    if _co_viec_quet_mo(Path(mt.thu_muc_du_lieu) / TEN_DB, ngay):
+        log.info("việc học %s chờ việc quét view cùng ngày xong", ngay)
+        return "ban"
+    return None
+
+
+def _dk_quet_view(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
+    """§3.4a: pipeline Radar đang quét (mutex) hoặc đang có lượt quét chạy tay → 'ban' (hoãn, thử lại sau)."""
+    # import trong hàm: psutil/ctypes chỉ nạp khi thật sự xét loại này (§9 HT-B3)
+    from . import quet_view
+    ly_do = quet_view.dang_ban()
+    if ly_do is not None:
+        log.info("lượt quét view %s hoãn: %s", ts.get("ngay"), ly_do)
+        return "ban"
+    return None
 
 
 def _dk_voice(ts: dict, mt: MoiTruong) -> CanNguoiDung | str | None:
@@ -898,13 +990,53 @@ def _buoc_taovideo(ts: dict, viec: dict, mt: MoiTruong, hm: dict | None = None) 
     return [replace(b, song=True)]
 
 
+def _buoc_hoc(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    """§3.3: MỘT bước `python -B -m runner.hoc_tu_dong`, cwd THU_MUC_CAI. `--bat-ngay`/`--hieu-luc-toi-da` do
+    lap_buoc_hieu_luc nối theo hạn mức HIỆU LỰC mà vòng chạy đang giữ."""
+    ngay = _ngay_hop_le(ts.get("ngay"))
+    if mt.poster_db is None:
+        raise ThamSoLoi("chưa cấu hình DB Poster (KHO_THU_MUC_POSTER) — không chạy việc học")
+    du = Path(mt.thu_muc_du_lieu)
+    argv = [PYTHON, "-B", "-m", "runner.hoc_tu_dong", "--ngay", ngay, "--hoc-db", str(du / TEN_HOC_DB),
+            "--poster-db", str(mt.poster_db), "--runner-db", str(du / TEN_DB), "--repo", str(mt.repo_kho),
+            "--viec-id", _id_viec(viec)]
+    return [_buoc("hoc", argv, THU_MUC_CAI, DANH_MUC["hoc_hang_ngay"].het_gio_s)]
+
+
+def _buoc_quet_view(ts: dict, viec: dict, mt: MoiTruong) -> list[BuocChay]:
+    """§3.4a: MỘT bước `python -B -m runner.quet_view ... --nguon runner`, cwd THU_MUC_CAI, quá giờ 25 phút.
+    Thiếu một trong 3 đường dẫn → ThamSoLoi (không bao giờ tự đoán đường dẫn thật)."""
+    ngay = _ngay_hop_le(ts.get("ngay"))
+    thieu = [ten for ten, p in (("poster_db", mt.poster_db), ("thu_muc_view", mt.thu_muc_view),
+                                ("script_quet_kenh", mt.script_quet_kenh)) if p is None]
+    if thieu:
+        raise ThamSoLoi(f"chưa cấu hình đường dẫn cho lượt quét view: {', '.join(thieu)}")
+    argv = [PYTHON, "-B", "-m", "runner.quet_view", "--ngay", ngay, "--view-dir", str(mt.thu_muc_view),
+            "--scan", str(mt.script_quet_kenh), "--poster-db", str(mt.poster_db),
+            "--du-lieu", str(mt.thu_muc_du_lieu), "--nguon", "runner"]
+    return [_buoc("quet_view", argv, THU_MUC_CAI, DANH_MUC["quet_view_hang_ngay"].het_gio_s)]
+
+
 def lap_buoc_hieu_luc(loai: "LoaiViec", ts: dict, viec: dict, mt: MoiTruong, hm: dict) -> list[BuocChay]:
     """FX-29: vòng chạy lập bước bằng hàm này để phiếu phiên sống in trần theo `hm` nó đang giữ.
     `loai.lap_buoc` vẫn là nguồn bước (argv/cwd/đồng hồ — test có thể bọc lại); với loại phiên sống, stdin của bước
-    song được lập lại bằng lap_phieu(..., hm). Loại khác: trả nguyên lap_buoc."""
+    song được lập lại bằng lap_phieu(..., hm).
+    D15: hoc_hang_ngay → bước `hoc` nối `--bat-ngay`/`--hieu-luc-toi-da` (han_muc_hoc(hm)); phan_tich_uid → phiếu lần
+    đầu lập lại bằng lap_phieu(..., hm) để khối gợi ý đã học dùng hạn mức hiệu lực (cầu dao hoc_bat_ngay).
+    Loại khác: trả nguyên lap_buoc."""
     from .han_muc import _gia_tri
     from .phieu import lap_phieu
     ds = loai.lap_buoc(ts, viec, mt)
+    if loai.ma == "hoc_hang_ngay":
+        bat_ngay, hieu_luc_toi_da = han_muc_hoc(hm)
+        them = ["--bat-ngay", str(bat_ngay), "--hieu-luc-toi-da", str(hieu_luc_toi_da)]
+        return [replace(b, argv=[*b.argv, *them]) if b.ten == "hoc" else b for b in ds]
+    if loai.ma == "phan_tich_uid":
+        if not any(b.la_claude and isinstance(b.stdin, str) and b.stdin.strip() for b in ds):
+            return ds                                        # resume: không lập phiếu (chỉ phiếu lần đầu có khối)
+        phieu = lap_phieu(loai, viec, mt, int(_gia_tri(hm, "dot_bat")), hm)
+        return [replace(b, stdin=phieu) if b.la_claude and isinstance(b.stdin, str) and b.stdin.strip() else b
+                for b in ds]
     if loai.ma not in LOAI_PHIEN_SONG:
         return ds
     phieu = lap_phieu(loai, viec, mt, int(_gia_tri(hm, "dot_bat")), hm)
@@ -1422,6 +1554,30 @@ def mp3_adam_moi(p: Path, tu: datetime) -> frozenset[str]:
     return frozenset(ra)
 
 
+def _dau_ra_hoc(ts: dict, viec: dict, mt: MoiTruong) -> str:
+    """§3.3: hoc.db (mode=ro) có lan_hoc(ngay) ở xong/tu_dung → 'xong'; còn lại (thiếu file, chưa học, dở, lỗi, DB
+    hỏng) → 'chua' — script tự biết ngày đã học (da_hoc) nên chạy lại vô hại, có trần 3 lần đối soát."""
+    ngay = _ngay_hop_le(ts.get("ngay"))
+    db = Path(mt.thu_muc_du_lieu) / TEN_HOC_DB
+    if not db.is_file():
+        return "chua"
+    try:
+        with closing(_mo_chi_doc(db)) as c:
+            r = c.execute("SELECT trang_thai FROM lan_hoc WHERE ngay=?", (ngay,)).fetchone()
+    except sqlite3.Error as e:
+        log.warning("không đọc được lan_hoc trong %s: %s — coi như chưa học", db, e)
+        return "chua"
+    return "xong" if r is not None and r[0] in ("xong", "tu_dung") else "chua"
+
+
+def _dau_ra_quet_view(ts: dict, viec: dict, mt: MoiTruong) -> str:
+    """§3.4a: file trạng thái lượt quét của ngày `ok` → 'xong' (khởi động lại sau khi đã quét: không gọi TikTok lần
+    nữa); còn lại → 'chua'."""
+    from . import quet_view  # import trong hàm (psutil/ctypes)
+    d = quet_view.doc_ket_qua(Path(mt.thu_muc_du_lieu), _ngay_hop_le(ts.get("ngay")))
+    return "xong" if isinstance(d, dict) and d.get("trang_thai") == "ok" else "chua"
+
+
 def _dau_ra_khong_ro(_ts: dict, _viec: dict, _mt: MoiTruong) -> str:
     # Loại tốn tiền: không đoán đầu ra, không bao giờ tự chạy lại (CL21).
     return "khong_ro"
@@ -1449,6 +1605,7 @@ def _ts_mo_ta(*ds: dict) -> tuple[dict, ...]:
 _UID = {"ten": "uid", "kieu": "uid", "bat_buoc": True}
 _DU_AN = {"ten": "du_an", "kieu": "du_an", "bat_buoc": True}
 _ME = {"ten": "me", "kieu": "me", "bat_buoc": True}
+_NGAY = {"ten": "ngay", "kieu": "ngay", "bat_buoc": True}
 
 DANH_MUC: dict[str, LoaiViec] = {
     "radar_ban_tin": LoaiViec(
@@ -1495,6 +1652,18 @@ DANH_MUC: dict[str, LoaiViec] = {
         tham_so=_ts_mo_ta(_UID), kiem_tham_so=_ts_uid, tinh_khoa=lambda ts: str(ts["uid"]),
         trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_bo_loai, lap_buoc=_buoc_bo_loai,
         kiem_dau_ra=_dau_ra_bo_loai),
+    # D15 (docs/hoc-tu-dong.md §3.3, §3.4a): CHỈ runner tự tạo (LOAI_CHI_HE_THONG) — miễn phí, làn nhe, không Claude.
+    "quet_view_hang_ngay": LoaiViec(
+        ma="quet_view_hang_ngay", ten="Quét view video của mình", dot=3, lan_chay="nhe", ton_tien=False,
+        agent=None, tu_chay_lai=True, het_gio_s=25 * 60, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta(_NGAY), kiem_tham_so=_ts_quet_view, tinh_khoa=lambda ts: str(ts["ngay"]),
+        trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_quet_view, lap_buoc=_buoc_quet_view,
+        kiem_dau_ra=_dau_ra_quet_view),
+    "hoc_hang_ngay": LoaiViec(
+        ma="hoc_hang_ngay", ten="Học mỗi ngày", dot=3, lan_chay="nhe", ton_tien=False, agent=None,
+        tu_chay_lai=True, het_gio_s=600, tai_nguyen=frozenset(),
+        tham_so=_ts_mo_ta(_NGAY), kiem_tham_so=_ts_hoc, tinh_khoa=lambda ts: str(ts["ngay"]),
+        trang_thai_dau=_cho_chay, dieu_kien_truoc=_dk_hoc, lap_buoc=_buoc_hoc, kiem_dau_ra=_dau_ra_hoc),
     # ----- đợt 4: tốn tiền / rủi ro — luôn cần duyệt có chữ ký, không tự chạy lại -----
     "muse_clip": LoaiViec(
         ma="muse_clip", ten="Sinh clip AI (Muse)", dot=4, lan_chay="nhe", ton_tien=True, agent="aff-muse",

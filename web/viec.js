@@ -10,6 +10,7 @@ const TEN_LOAI_VIEC = {
   xu_ly_link_moi: "📥 Xử lý link mới", poster_day_folder: "Đẩy folder lên Poster", voice_pv: "Voice PerfectVoice",
   muse_clip: "B-roll AI (Muse)", voice_genmax: "Voice GenMax", poster_len_lich: "Lên lịch Poster", taovideo: "Dựng 2 mẻ video",
   poster_bo_loai: "Gỡ video bị Loại khỏi folder đăng",
+  hoc_hang_ngay: "Học mỗi ngày", quet_view_hang_ngay: "Quét view video của mình", // D15: runner tự tạo — KHÔNG có trong LOAI_VIEC_SP
 };
 // Đợt mở của từng loại + tham số web phải chọn (uid lấy từ SP; du_an/me chọn từ /api/viec/du-an/<uid>).
 const LOAI_VIEC_SP = {

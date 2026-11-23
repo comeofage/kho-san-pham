@@ -651,3 +651,103 @@ Trạng thái: Đề xuất
   không phải vấn đề của API.
 - Không đổi D1, D3 (phần còn hiệu lực), D5, D6, D7, D9 (phần còn hiệu lực) — D14 chỉ thêm một cờ và hai act đi
   qua đúng cơ chế đã có, không mở đường chạy lại việc tốn tiền và không đổi cách ký/duyệt.
+
+## D15: Học tự động mỗi ngày bằng 2 việc runner tự hẹn giờ (`quet_view_hang_ngay` 09:00, `hoc_hang_ngay` 12:00); nguồn hiệu suất là view video của mình trong DB Poster V2; chỉ học đặc trưng caption + mẫu lỗi vận hành; bài học là khoá danh mục cố định, tự áp vào phiếu `phan_tich_uid`, hoàn tác/bật lại qua đường ký D7  (2026-11-22)
+Trạng thái: Đã chốt (2026-11-22, người dùng: 'Duyệt, giao code')
+(Lịch sử: Đề xuất, sửa theo phản biện A-HT1b ngày 2026-11-22; người dùng chốt Q-nguồn view, Q-học cái gì, Q1–Q6 rồi Q7, Q8 cùng ngày, xem dưới; chuyển "Đã chốt" ở phiếu A-HT1c. Phiếu HT-D1 ngày 2026-11-23 đồng bộ tài liệu với code và ghi các bổ sung kỹ thuật của trưởng phòng sau review R-CUOI, xem cuối mục Quyết định. Phiếu HT-D1b ngày 2026-11-23 sửa các câu chưa khớp code: biên snapshot 74 ngày, hai tập động từ `cap_menh_lenh`, điều kiện `vao_phieu`.)
+
+**Bối cảnh.**
+- Hợp đồng người dùng (phiếu A-HT1):
+  - một việc tự động mỗi ngày trong runner, học từ 3 nguồn (hiệu suất qua Breakout Radar, sửa tay của nhân viên, lỗi vận hành lặp);
+  - **tự** cập nhật gợi ý mặc định ("mẫu USP + công thức caption ưu tiên") cho lần phân tích sản phẩm mới, không duyệt từng lần;
+  - có cỡ mẫu tối thiểu, lịch sử, nút hoàn tác trên web, báo cáo hằng ngày;
+  - không thêm nguồn trả phí, không lộ dữ liệu nhạy cảm, không dựng hệ thống chạy ngầm riêng.
+- **Người dùng chốt ngày 2026-11-22:**
+  - **Q-nguồn view:** lên lịch tự quét view hằng ngày. Nới ràng buộc "không gọi thêm API TikTok" **riêng** cho lượt quét view video của chính mình (trước đây chạy tay bằng `C:\Users\Mi\view-poster\bao_cao_view.py`);
+  - **Q-học cái gì:** chỉ học đặc trưng caption (7 khoá); USP chỉ ở mức `cap_nhac_usp`; không sửa skill. Đây là **phần thu hẹp** của hợp đồng "mẫu USP + công thức caption ưu tiên", người dùng đã đồng ý;
+  - **Q1:** bỏ nguồn sửa tay đợt này;
+  - **Q5:** giữ ngưỡng 20 SP / 70% / 15% / 3 ngày (câu trả lời lúc đó; ngưỡng cùng chiều sau đó đổi bởi Q7);
+  - **Q2, Q3, Q4, Q6:** theo khuyến nghị (a): view video của mình thay Radar, chỉ học theo view, chấp nhận lần phân tích chạy tay không nhận gợi ý, khối trong Hôm nay + trang `#/hoc`;
+  - **Q7** (mở lại vì con số 5,8% lúc chốt Q5 sai, đúng là 9–12% mỗi khoá mỗi ngày): "Nâng lên 80% (Recommended)" → `nhat_quan_toi_thieu_pt` 70 → **80** (≥ 16/20 cùng chiều; ngẫu nhiên hai phía khoảng 1,2%);
+  - **Q8:** "Cho trong 7 ngày (Recommended)" → bài học do người Hoàn tác được Bật lại trong 7 ngày sau khi hoàn tác, cùng đường ký D7, chỉ chủ kho, bỏ lệnh cấm 30 ngày của dòng đó; quá 7 ngày thì không;
+  - **Duyệt thiết kế:** "Duyệt, giao code".
+- **Trưởng phòng quyết** cùng ngày: (i) bài học tự tắt hoặc hết hạn có nút "Bật lại", đi đường ký D7, chỉ chủ kho, vẫn tôn trọng hạn dùng và ngưỡng giữ; (ii) người dùng chủ động chạy lại `phan_tich_uid` cho UID cũ thì vẫn nhận gợi ý.
+- Đo trên dữ liệu thật ngày 2026-11-22 (`docs/hoc-tu-dong.md` §2, Phụ lục A):
+  - Radar không nối được về UID kho (0/26.850 alert);
+  - `video_view_snapshots` của Poster có 1.528 video từ 19/11, do `ghi_view_poster.py` ghi. Script này **chép số cũ** cho video không được quét lại (video 7–14 ngày tuổi: 50–100% dòng giống hôm trước); `queue` có 50 `video_id` lặp; view trung vị theo tài khoản chênh tới 13 lần;
+  - chuỗi quét (`tiktok_scan.py` → yt-dlp `--impersonate chrome`) **không đăng nhập, không cookie, không Chrome**; 4 kênh quét dưới 2 phút. Nhưng chuỗi này thoát mã 0 khi kênh lỗi, vẫn ghi DB khi kênh lỗi, không có giới hạn giờ, và gọi Apify tốn phí chỉ cần một dòng cấu hình (token có sẵn trên máy);
+  - runner không có cơ chế hẹn giờ; Task Scheduler đã có pipeline Radar 08:00 (`CapNhatTuanTikTokDaily`, mutex `Global\QuetKenhAntiPipeline`);
+  - nguồn "sửa tay" không tồn tại; 76% lần phân tích đi qua runner.
+- Rủi ro riêng: chữ không tin cậy (caption, tiêu đề TikTok, tên kênh, log) chảy vào phiên `claude -p` có Bash; tự áp dụng không duyệt; lệnh ghi từ web; test chạm DB thật.
+
+**Quyết định.**
+- **Hẹn giờ trong runner, không Task Scheduler:** `BoChay(hen_gio=...)` kiểm trong vòng làn `nhe` có sẵn, tạo việc `quet_view_hang_ngay` từ 09:00 và `hoc_hang_ngay` từ 12:00 giờ VN, mỗi loại 1 việc/ngày, khoá = ngày. Hẹn giờ **chỉ bật khi thư mục runner là `E:\kho-runner`** (test với thư mục tạm không bao giờ tạo việc hẹn giờ). Cả hai việc chỉ runner tự tạo; `api._tao_viec` từ chối khi web tạo mới. Riêng `quet_view_hang_ngay` cho phép chủ kho Chạy lại lượt **của hôm nay**.
+- **Việc quét view `quet_view_hang_ngay`** (làn `nhe`, miễn phí, không Claude): một bước `python -m runner.quet_view` bọc chuỗi quét sẵn có, **không sửa** script ngoài:
+  - từ chối nếu `channels.json` có `source` khác `yt-dlp` hoặc có `maxItems` (chặn Apify), hoặc file cấu hình yt-dlp có cookie;
+  - mỗi kênh có giới hạn giờ, giết cả cây khi quá giờ; kênh chỉ tính là ổn khi có dấu hiệu quét thật (dòng "✓", `raw` mới ghi, `fetched_at`, `last_seen`);
+  - **tất cả kênh ổn mới chạy `ghi_view_poster.py`**; `bao_cao_view.py` chỉ chạy với `--khong-quet --khong-ghi` để giữ báo cáo md;
+  - ghi trạng thái trước khi gọi mạng; tối đa 3 lần/ngày; đã quét ổn thì không quét lại;
+  - hoãn khi pipeline Radar giữ mutex hoặc đang có lần chạy tay;
+  - stdout của việc chỉ có 1 dòng JSON mã + số.
+- **Việc học `hoc_hang_ngay`** (làn `nhe`, không mạng): `python -m runner.hoc_tu_dong`, chờ việc quét cùng ngày đóng (tới 18:00).
+- **Nguồn:**
+  - hiệu suất = view video của mình, đọc `mode=ro` từ `v2_data.db`, **chỉ dùng lần đo thật** (bỏ bản chép), view chuẩn ở tuổi [3, 7] ngày, video ≥ 7 ngày tuổi, đăng trong 60 ngày;
+  - nối theo cặp (video_id, product_id); caption chuẩn hoá (NFC, bỏ số thứ tự, bỏ hashtag) rồi chỉ dùng caption khớp `captions.txt` của chính UID;
+  - vận hành = `runner.db` `mode=ro`, chuỗi cố định do runner sinh;
+  - sửa tay: bỏ đợt này (Q1), báo "chưa có nguồn sửa tay".
+- **Phương pháp:** chỉ 7 khoá đặc trưng caption + 5 khoá vận hành, danh mục cố định trong code. So trong nhóm (UID, tài khoản), đếm theo **caption khác nhau**, trung vị log, gộp về UID; `nhat_quan` = % UID cùng chiều.
+- **Lưu trữ:** SQLite riêng `E:\kho-runner\hoc.db`; `KhoHoc` theo mô hình luồng của `KhoViec`; nâng schema chỉ ở `mo()` sau mutex. Chế độ `--chi-doc` mở `mode=ro`, không gọi `mo()`, không ghi gì.
+- **Luật tự áp dụng (caption):** bật khi ≥ 20 SP, ≥ 200 video, |lệch| ≥ 15%, **≥ 80% SP cùng chiều** (Q7), đạt **3 ngày lịch liên tiếp có dữ liệu mới**; giữ khi ≥ 60%; hạn 14 ngày gia hạn khi còn giữ.
+- **Luật vận hành:** bật khi ≥ 3 lần và ≥ 20% trong 14 ngày, 3 ngày liên tiếp; hạn **cố định 28 ngày**, không tự tắt vì hết bằng chứng (cắt vòng phản hồi nhắc → lỗi giảm → tắt).
+- **Chung:** ≤ 1 lần tự bật/ngày, ≤ 5 bài hiệu lực; tự dừng **theo từng nguồn** (nguồn view chưa có số mới hôm nay, lượt quét thiếu, nối lệch); ngày tự dừng không tính vào chuỗi. **Hết hạn xét cả lúc đọc**: bài quá `het_han_luc` không vào phiếu dù bộ học lỗi nhiều ngày. Hoàn tác cấm học lại cùng khoá + hướng 30 ngày; cấm tính từ dòng đang ở `hoan_tac`, nên dòng được chủ kho Bật lại (Q8) thì hết gây cấm.
+- **Trần trong `HAN_MUC_TRAN`** (`cau_hinh.json` chỉ hạ): `hoc_bat_ngay` 1 (0 = **cầu dao**: tắt tự bật **và tắt hẳn gợi ý vào phiếu**, kể cả bài đang hiệu lực; vẫn đo, vẫn báo cáo, không Bật lại được), `hoc_hieu_luc_toi_da` 5 (0 = không bài nào vào phiếu), `quet_view_ngay` 3 (0 = tắt lịch quét). Runner đọc `cau_hinh.json` **một lần lúc khởi động**: sửa xong phải khởi động lại runner; file hỏng thì quay về trần code (cầu dao và lịch quét bật lại), là giới hạn đã biết của luật hạn mức chung.
+- **Đưa vào phiên phân tích:** khối ≤ 6 dòng trong `them` của phiếu `phan_tich_uid`, ghép từ mẫu câu cố định + số nguyên đã kiểm. Không sửa `SKILL.md`. Bộ học không tự đụng SP cũ; phân tích do người chủ động chạy lại thì vẫn nhận gợi ý. Ghi vết `ap_dung` bọc lỗi, không làm hỏng phân tích.
+- **API:** runner `GET /hoc/bao-cao`, `GET /hoc/bai-hoc`, `POST /hoc/bai-hoc/<ma>/hoan-tac`, `POST /hoc/bai-hoc/<ma>/bat-lai`. Qua video_server `RE_R` và Worker `/api/hoc/*` (chủ kho, Origin bắt buộc, Worker tự dựng `{boi}`, **ký Ed25519 D7**). `ma` sai dạng = 404 ở cả 3 chặng. Bật lại chỉ cho (a) bài đã từng hiệu lực rồi tự tắt/hết hạn, hoặc (b) bài do người hoàn tác khi hôm nay (giờ VN) ≤ ngày hoàn tác + 7 (Q8; ngày thứ 8 trở đi → 409 câu cố định); và phải còn chỗ, không có dòng mở cùng khoá, tự áp dụng đang bật. Bài hoàn tác lúc đang/đã từng hiệu lực trở về `hieu_luc` với hạn mới; bài hoàn tác lúc còn ứng viên trở về `ung_vien`, không đi tắt qua luật 3 ngày.
+- **Web:** khối "📈 Học hôm nay" (cảnh báo đỏ khi nguồn view cũ > 1 ngày, vàng khi quét hôm nay lỗi) + trang `#/hoc`; nhãn 2 loại việc mới trong `web/loi.js`, `web/viec.js`. Không thêm menu.
+- Thiết kế chi tiết, phiếu HT-B1…HT-T1 (gồm HT-A3 cho lượt quét), hành động cần duyệt: `docs/hoc-tu-dong.md`.
+- Không thay quyết định nào. Mở rộng nguyên tắc D3: phiếu chỉ nhận thêm chữ từ danh mục cố định.
+- **Bổ sung kỹ thuật sau review R-CUOI** (trưởng phòng quyết, 2026-11-23; không đổi quyết định nào của người dùng; chi tiết `docs/hoc-tu-dong.md` Phụ lục C):
+  - Khoá vận hành `ap_phieu=False` (`voice_pv_ma_2`, `douyin_qua_gio`, `taovideo_tu_thoat`) **không bao giờ tạo dòng `bai_hoc`**; chỉ đo và hiện trong `canh_bao_van_hanh`. Không tính vào lượt tự bật/ngày hay trần 5 bài hiệu lực.
+  - Báo cáo `/hoc/bao-cao` thêm `"han_muc": {"bat_ngay", "hieu_luc_toi_da"}` (hạn mức hiệu lực runner đang giữ); mỗi bài `hieu_luc` có `"vao_phieu": bool`, true chỉ khi bài thuộc đúng danh sách phiếu sẽ nhận **và** còn ghép được câu gợi ý (`hoc_danh_muc.ghep_goi_y` không `None`; cùng điều kiện chọn bài với `goi_y_hieu_luc`, bổ sung phiếu HT-D1b). Web hiện "Gợi ý học đang TẮT" khi `bat_ngay = 0` và không ghi "Đang dùng" cho bài `vao_phieu = false` (`hoc.js?v=3`).
+  - Mẫu câu gợi ý caption: không còn quota cứng "ít nhất N" (dạng "nếu sản phẩm có … thì ưu tiên khoảng N/100"); `cap_co_so` thêm "không mở đầu dòng bằng con số"; `cap_nhac_usp` lồng cụm USP vào câu, không lặp nguyên vế (tránh va `tools/kho.py` `kiem_captions`). `cap_menh_lenh` có hai tập động từ (bổ sung phiếu HT-D1b): tập **ĐO** `hoc_danh_muc.DONG_TU_MENH_LENH` (`mua, đừng, thử, xem, săm, chốt, lưu, tậu`) giữ nguyên để số đo cũ so được với số mới, đặc trưng dùng regex `lưu(?! ý)`; tập **GỢI Ý** `hoc_danh_muc.DONG_TU_GOI_Y_MENH_LENH` chỉ `thử, xem, lưu` (bỏ nhóm hối thúc mua và "đừng"), mẫu chiều tăng thêm "không dùng 'ngay', 'kẻo hết', 'đừng bỏ lỡ'". Đánh đổi đã chấp nhận: lift đo trên cả nhóm động từ (gồm động từ mua) nhưng chỉ khuyên tập con; lift mất thì bài tự tắt theo ngưỡng giữ.
+  - `hoc_tu_dong` lọc `video_view_snapshots` theo `collected_at` ngay trong SQL, biên `[ngay − SNAP_LUI_NGAY, ngay]`, `SNAP_LUI_NGAY` = 74 = 60 (cửa sổ đăng) + 7 (tuổi đo tối đa) + 7 (cửa sổ trung vị `poster_thieu`); bảng `queue` chỉ đọc dòng có `video_id` còn snapshot trong biên (truy vấn con `IN (SELECT … collected_at …)`). Biên rỗng thì chạy thêm `SELECT MAX(collected_at)` để vẫn báo `ngay_moi_nhat`/`so_ngay_cu`. SQLite vẫn SCAN toàn bảng (không index `collected_at`; DB Poster mở chỉ đọc nên không tạo index), chỉ dòng trong biên lên Python: P3 chấp nhận. Đọc `runner.db` theo khoảng ngày trong SQL, trần 200.000 dòng, chạm trần thì bỏ phần cũ nhất và báo `bi_cat`.
+  - video_server không nới `R_QUERY_KHOA` chung; mỗi tuyến `/r/hoc/*` có method + khoá query riêng (`R_HOC`, `R_HOC_GHI`).
+
+**Phương án đã loại.**
+- Dùng Breakout Radar làm nguồn hiệu suất: không nối được alert về sản phẩm của kho (đo 0/26.850). Học từ đó là học hiệu suất video của người khác.
+- Dùng `post_metrics_snapshots` của Poster: chụp ngay lúc đăng, view = 0 ở 4.158/4.608 video.
+- Cho Claude đọc dữ liệu rồi viết "bài học" bằng chữ tự do vào phiếu sau: đường prompt injection từ caption hoặc tiêu đề tới agent có Bash; tốn tiền mỗi ngày; không kiểm được ngưỡng.
+- Lưu bài học trong repo (`data/_hoc/…`) và hoàn tác bằng Worker commit GitHub: lệnh ghi không qua runner/D7; thêm commit mỗi ngày và xung đột với `kho.py` pull/autostash; runner phải tin dữ liệu repo mà mọi phiên web có quyền ghi.
+- Thêm bảng vào `runner.db`: buộc nâng schema `runner.db`, trong khi bản cài đang ở 3 và D14 (schema 4) còn Đề xuất; lỗi bộ học có thể đụng hàng đợi việc.
+- Cron Worker hoặc **Task Scheduler** riêng để kích bộ học hay lượt quét: trái ràng buộc "không dựng hệ thống chạy ngầm riêng"; chạy ngoài mutex runner nên không xếp hàng được với việc khác của làn `nhe`, không có đối soát khởi động lại D6, không hiện trên trang Việc. Runner đã có vòng làn chạy liên tục nên không cần.
+- **Lên lịch thẳng `bao_cao_view.py`** (Task Scheduler hoặc bước script runner): kênh lỗi vẫn ghi số cũ với ngày hôm nay, không giới hạn giờ, Apify tốn phí bật được bằng một dòng `channels.json`. Không an toàn khi không người canh.
+- **Sửa `tiktok_scan.py` / `ghi_view_poster.py`** để thêm các kiểm: mã ngoài repo, thuộc skill và thư mục cá nhân của người dùng, ngoài phạm vi; bọc bên ngoài đủ chặn mà không đụng chúng.
+- Dùng mọi snapshot (kể cả bản chép) với view gần tuổi 7 trong [3, 21] (bản đầu của D15): lẫn số cũ mang ngày mới, đo sai tuổi.
+- Ghi bài học từ một lần chạy `--chi-doc` (bản đầu): làm việc thật cùng ngày ra `da_hoc` và mất ngày học.
+- Sửa `SKILL.md` của `phantichcanhquay` để đọc gợi ý: phải sửa skill và mở đường "file trên đĩa → agent" (Q4 đã chốt không làm).
+- Học "mẫu USP" ở mức sản phẩm: chỉ 30 SP đủ dữ liệu, lẫn khác biệt ngành hàng; người dùng đã chốt chỉ học caption.
+- Luật "giữ theo bằng chứng" cho bài học vận hành: tạo vòng bật/tắt vì nhắc có tác dụng thì lỗi giảm.
+- Ngưỡng nhỏ hơn (12 SP, 65%, 2 ngày): xác suất ngẫu nhiên vượt điều kiện cùng chiều hai phía khoảng 39% (≥ 8/12) so với 11,5% (≥ 14/20).
+- Giữ cùng chiều 70% như lúc chốt Q5 (Q7 a): khoảng 9–12% mỗi khoá mỗi đợt dữ liệu đạt nhầm, 3 ngày liên tiếp gần như không giảm; người dùng chọn nâng 80%.
+- Giữ 70% nhưng đòi khẳng định lại trên dữ liệu không chồng (Q7 c): phức tạp hơn, chậm thêm 1–2 tuần.
+- Không cho Bật lại bài đã hoàn tác (Q8 a): bấm nhầm Hoàn tác phải chờ 30 ngày cấm; người dùng chọn cho bật lại trong 7 ngày.
+- Cho khoá vận hành "chỉ báo cáo" thành bài học như khoá khác (bản code đầu, R-CUOI P1-1): bài không bao giờ vào phiếu nhưng chiếm lượt tự bật và chỗ trong trần 5 bài, chặn bài thật.
+- `hoc_bat_ngay = 0` chỉ tắt tự bật, bài đang hiệu lực vẫn vào phiếu (bản tài liệu đầu): không có cách tắt nhanh mọi gợi ý khi nghi học sai; chọn cầu dao tắt hẳn.
+- Mẫu gợi ý dạng quota cứng "viết ít nhất N caption …" (bản đầu): ép agent bịa số khi sản phẩm không có, và lặp nguyên vế va luật `kiem_captions` của `kho.py`.
+- Nới `R_QUERY_KHOA` chung thêm `ngay` (bản tài liệu đầu): khoá mới đi qua mọi tuyến `/r/*`; khoá riêng từng tuyến hẹp hơn (D2).
+- Đọc lại `cau_hinh.json` mỗi lần dùng thay vì lúc khởi động: phải đổi luật hạn mức chung của mọi loại việc, ngoài phạm vi D15; giữ luật chung, ghi rõ phải khởi động lại.
+
+**Hệ quả.**
+- Lượt quét gọi trang công khai TikTok mỗi ngày một lần (4 kênh, không đăng nhập), ghi `v2_data.db` và thư mục `C:\Users\Mi\view-poster` như lần chạy tay. Bộ học không gọi mạng, không tốn tiền, không Claude.
+- Một kênh lỗi kéo dài làm cả 4 kênh mất số hằng ngày cho tới khi người sửa (đổi lại: không bao giờ ghi số chép). Web báo đỏ khi nguồn view cũ > 1 ngày.
+- Chạy mã ngoài repo (`tiktok_scan.py`, script `view-poster`) ngoài kiểm soát D8, như tiền lệ `radar_ban_tin`. Đổi định dạng output thì lượt quét báo lỗi (an toàn), không ghi sai.
+- Luật lấy số chặt làm dữ liệu dùng được hôm nay chỉ còn 247 video / 47 SP. Bài học caption đầu tiên khó có trước **giữa tháng 12/2026**, có thể không có nếu hiệu ứng không đều (độ cùng chiều hiện 50–67%).
+- **Xác suất học nhầm** với ngưỡng 80% (Q7): cận trên nhị thức hai phía khoảng 1,2% mỗi khoá đủ cỡ mẫu mỗi đợt dữ liệu (khoảng 3,6% khi 3 khoá cùng đủ cỡ mẫu); chưa mô phỏng hoán vị lại ở 80%. 3 ngày liên tiếp gần như không giảm thêm, vì dữ liệu các ngày chồng nhau > 90%. (Ở ngưỡng 70% cũ là 9–12%; con số 5,8% của bản đầu là một phía, sai.) Đổi lại bài học caption tới chậm hơn hoặc không tới. Lưới an toàn: gợi ý mềm, hạn dùng, ngưỡng giữ, Hoàn tác, Bật lại trong 7 ngày nếu bấm nhầm.
+- Bật lại sau hoàn tác (Q8) thêm 1 câu 409 cố định (tổng 5), trường `bat_lai_den` trong `BaiHocRa`, hằng `bat_lai_sau_hoan_tac_ngay = 7`; chữ ký `KhoHoc.bat_lai` không đổi.
+- Khoảng 24% lần phân tích chạy tay ngoài runner không nhận gợi ý (Q4).
+- Agent cùng user Mi có thể sửa `hoc.db` (như rủi ro D7): chỉ bật/tắt được câu soát sẵn. `hoc.db*` và `quet_view/**` thêm vào phần cấm của thư mục runner.
+- Thêm 4 module runner, 1 module Worker, 1 file web, 7 file test; móc vào 10 file cũ. Cần: tắt lịch quét tạm thời, cài runner, chạy thử lượt quét 1 lần, chạy thử bộ học `--chi-doc`, bật lịch, khởi động lại video_server, deploy Worker. Mọi bước đều cần duyệt.
+- **Cài D15 kéo theo D14 ở cả 3 tầng** (runner schema 3 → 4 + act mới, video_server, Worker/web). Lần deploy Worker cuối ghi nhận là trước D14. D14 phải được duyệt trước.
+- Mỗi lần đổi mẫu câu, ngưỡng hay giờ hẹn là đổi code, review và cài lại (D8).
+- Tắt/bật cầu dao gợi ý hoặc lịch quét bằng `cau_hinh.json` chỉ có tác dụng sau khi khởi động lại runner; khởi động lại sau 09:00 với lịch quét đang bật thì việc quét của hôm nay được tạo ngay. `cau_hinh.json` hỏng thì runner dùng trần code (cầu dao và lịch quét bật lại) kèm cảnh báo `/suc-khoe`; người tắt phải kiểm cảnh báo này.
+- Còn 10 việc P3 treo (báo cáo/log kém chính xác, không làm sai bài học vào phiếu): `docs/hoc-tu-dong.md` §12a.

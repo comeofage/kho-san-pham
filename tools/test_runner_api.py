@@ -2363,3 +2363,385 @@ def test_nhan_tin_viec_loi_hoac_cho_duyet_chi_luu_cho_lan_chay_tiep(may5, dong):
     assert len(may5.kho.tra_loi_cua(id_)) == 2 and may5.kho.lay(id_)["trang_thai"] == "cho_duyet"
     may5.kho.chuyen(id_, ["cho_duyet"], "huy", "nhan")
     assert may5.goi("POST", f"/viec/{id_}/nhan-tin", body) == (409, {"loi": api.LOI_PHIEN_DA_DONG})
+
+
+# ====================== D15: học tự động (docs/hoc-tu-dong.md §3.3, §3.4a, §3.8, §8.3 HT-B3) ======================
+
+from runner import hoc_danh_muc as hdm
+from runner import quet_view
+from runner.kho_hoc import KhoHoc, KhongCoBaiHoc, SaiTrangThaiHoc
+from runner.kieu import ThamSoLoi
+
+MA_BH = "bh20261117abcd"
+LOI_CHUA_BAT = {"loi": "Học tự động chưa bật"}          # web so khớp NGUYÊN VĂN câu này
+
+
+class KhoHocGia:
+    """Giả KhoHoc: ghi lại tham số THẬT runner truyền (hạn mức hiệu lực), chữ ký keyword-only y như kho thật."""
+
+    def __init__(self):
+        self.goi: list[tuple] = []
+        self.loi: dict[str, BaseException] = {}
+        self.so_dong = 0
+
+    def _ghi(self, ten, *a):
+        self.goi.append((ten, *a))
+        if ten in self.loi:
+            raise self.loi[ten]
+
+    def bao_cao(self, ngay, *, bat_ngay, hieu_luc_toi_da):
+        self._ghi("bao_cao", ngay, bat_ngay, hieu_luc_toi_da)
+        return {"ngay": ngay or "2026-11-17", "lan": {"trang_thai": "xong"}, "ghi": "BIMAT-123"}
+
+    def ds_bai_hoc(self, gioi_han=50, *, bat_ngay, hieu_luc_toi_da):
+        self._ghi("ds_bai_hoc", gioi_han, bat_ngay, hieu_luc_toi_da)
+        return [{"ma": MA_BH, "trang_thai": "hieu_luc"}]
+
+    def hoan_tac(self, ma, boi, *, bat_ngay, hieu_luc_toi_da):
+        self._ghi("hoan_tac", ma, boi, bat_ngay, hieu_luc_toi_da)
+        return {"ma": ma, "trang_thai": "hoan_tac", "tat_boi": boi}
+
+    def bat_lai(self, ma, boi, bat_ngay, hieu_luc_toi_da):
+        self._ghi("bat_lai", ma, boi, bat_ngay, hieu_luc_toi_da)
+        return {"ma": ma, "trang_thai": "hieu_luc"}
+
+    def su_kien(self, ma):                                  # quyết định 6: KHÔNG được đưa ra API
+        raise AssertionError("API không được gọi KhoHoc.su_kien")
+
+    def dong(self):
+        self.so_dong += 1
+
+
+@pytest.fixture
+def khg():
+    return KhoHocGia()
+
+
+@pytest.fixture
+def mayh(tmp_path, mt, dong, khg):
+    m = May(tmp_path, mt, dong, kho_hoc=khg)
+    yield m
+    m.dong_lai()
+
+
+@pytest.fixture
+def khong_ban(monkeypatch):
+    """_dk_quet_view gọi quet_view.dang_ban — test không dò mutex/tiến trình thật của máy."""
+    monkeypatch.setattr(quet_view, "dang_ban", lambda *a, **k: None)
+
+
+def _hoc_post(m, ma=MA_BH, act="hoan-tac", body=None, **kw):
+    return m.goi("POST", f"/hoc/bai-hoc/{ma}/{act}", {"boi": "nhan"} if body is None else body, **kw)
+
+
+# ----- 4 route, hạn mức hiệu lực thật -----
+
+def test_hoc_bao_cao_truyen_han_muc_hieu_luc(mayh, khg):
+    s, d = mayh.goi("GET", "/hoc/bao-cao")
+    assert s == 200 and d["ngay"] == "2026-11-17"
+    s, d = mayh.goi("GET", "/hoc/bao-cao?ngay=2026-11-16")
+    assert s == 200 and d["ngay"] == "2026-11-16"
+    assert khg.goi == [("bao_cao", None, 1, 5), ("bao_cao", "2026-11-16", 1, 5)]
+
+
+@pytest.mark.parametrize("hm_ha,ky_vong", [
+    ({"hoc_bat_ngay": 0, "hoc_hieu_luc_toi_da": 2}, (0, 2)),
+    ({"hoc_bat_ngay": 0, "hoc_hieu_luc_toi_da": 0}, (0, 0)),
+    ({"hoc_bat_ngay": 9, "hoc_hieu_luc_toi_da": 99}, (1, 5)),     # dict bị nới vẫn kẹp về trần code
+])
+def test_hoc_ca_4_route_dung_han_muc_hieu_luc(tmp_path, mt, dong, khg, hm_ha, ky_vong):
+    m = May(tmp_path, mt, dong, hm={**HAN_MUC_TRAN, **hm_ha}, kho_hoc=khg)
+    try:
+        assert m.goi("GET", "/hoc/bao-cao")[0] == 200
+        assert m.goi("GET", "/hoc/bai-hoc")[0] == 200
+        assert _hoc_post(m, act="hoan-tac")[0] == 200
+        assert _hoc_post(m, act="bat-lai")[0] == 200
+    finally:
+        m.dong_lai()
+    assert [g[-2:] for g in khg.goi] == [ky_vong] * 4
+    assert [g[0] for g in khg.goi] == ["bao_cao", "ds_bai_hoc", "hoan_tac", "bat_lai"]
+
+
+def test_hoc_han_muc_doc_moi_lan_goi(mayh, khg):
+    """hm có thể được cập nhật tại chỗ (đọc lại cau_hinh) — handler không chụp giá trị lúc tạo."""
+    mayh.hm["hoc_bat_ngay"] = 0
+    assert mayh.goi("GET", "/hoc/bai-hoc")[0] == 200
+    assert khg.goi[-1] == ("ds_bai_hoc", 50, 0, 5)
+
+
+@pytest.mark.parametrize("q", ["ngay=2026/11/16", "ngay=", "ngay=2026-11-16x", "ngay=%EF%BC%92026-11-16",
+                               "ngay=2026-11-16%0A", "ngay=26-11-16"])
+def test_hoc_bao_cao_ngay_sai_400(mayh, khg, q):
+    s, d = mayh.goi("GET", f"/hoc/bao-cao?{q}")
+    assert s == 400 and "loi" in d and khg.goi == []
+
+
+def test_hoc_bao_cao_chua_co_lan_hoc_404_cau_co_dinh(mayh, khg):
+    khg.loi["bao_cao"] = KhongCoBaiHoc(hdm.TEN_LY_DO["chua_co_lan_hoc"])
+    assert mayh.goi("GET", "/hoc/bao-cao") == (404, {"loi": hdm.TEN_LY_DO["chua_co_lan_hoc"]})
+    assert hdm.TEN_LY_DO["chua_co_lan_hoc"] == "chưa có lần học nào"
+
+
+def test_hoc_bai_hoc_gioi_han(mayh, khg):
+    s, d = mayh.goi("GET", "/hoc/bai-hoc")
+    assert s == 200 and d == {"bai_hoc": [{"ma": MA_BH, "trang_thai": "hieu_luc"}]}
+    assert mayh.goi("GET", "/hoc/bai-hoc?gioi_han=1")[0] == 200
+    assert mayh.goi("GET", "/hoc/bai-hoc?gioi_han=200")[0] == 200
+    assert [g[1] for g in khg.goi] == [50, 1, 200]
+    for sai in ("0", "201", "-1", "abc", "", "1.5", "%EF%BC%95", "5%0A"):          # "５" toàn khổ, "5\n"
+        assert mayh.goi("GET", f"/hoc/bai-hoc?gioi_han={sai}")[0] == 400, sai
+    assert len(khg.goi) == 3
+
+
+@pytest.mark.parametrize("act,ham", [("hoan-tac", "hoan_tac"), ("bat-lai", "bat_lai")])
+def test_hoc_post_200_va_boi_tu_body_da_ky(mayh, khg, act, ham):
+    s, d = _hoc_post(mayh, act=act, body={"boi": "comeofage"})
+    assert s == 200 and d["bai_hoc"]["ma"] == MA_BH
+    assert khg.goi == [(ham, MA_BH, "comeofage", 1, 5)]
+
+
+@pytest.mark.parametrize("act", ["hoan-tac", "bat-lai"])
+def test_hoc_post_bat_buoc_chu_ky(mayh, khg, act):
+    assert _hoc_post(mayh, act=act, ky=False)[0] == 401
+    assert _hoc_post(mayh, act=act, khoa_ky=Ed25519PrivateKey.generate())[0] == 401
+    assert _hoc_post(mayh, act=act, khoa=False)[0] == 401
+    n = secrets.token_hex(16)
+    assert _hoc_post(mayh, act=act, nonce=n)[0] == 200
+    assert _hoc_post(mayh, act=act, nonce=n)[0] == 401                     # nonce lặp
+    # chữ ký cho mã khác không dùng được cho mã này
+    body = json.dumps({"boi": "nhan"}).encode()
+    ngay, n2 = int(time.time() * 1000), secrets.token_hex(16)
+    ky = _b64url(mayh.khoa_ky.sign(chu_ky.chuoi_ky_request("POST", f"/hoc/bai-hoc/bh20261117zzzz/{act}", ngay, n2,
+                                                           body)))
+    s, _ = mayh.goi("POST", f"/hoc/bai-hoc/{MA_BH}/{act}", raw=body, ky=False,
+                    headers={"x-ky-ngay": str(ngay), "x-ky-nonce": n2, "x-ky": ky})
+    assert s == 401
+    assert len(khg.goi) == 1
+
+
+@pytest.mark.parametrize("act", ["hoan-tac", "bat-lai"])
+def test_hoc_post_boi_sai_400(mayh, khg, act):
+    for body in ({}, {"boi": ""}, {"boi": "a b"}, {"boi": 5}, {"boi": "x" * 65}):
+        assert _hoc_post(mayh, act=act, body=body)[0] == 400, body
+    assert khg.goi == []
+
+
+@pytest.mark.parametrize("act,ham", [("hoan-tac", "hoan_tac"), ("bat-lai", "bat_lai")])
+def test_hoc_post_404_khong_co_bai_hoc(mayh, khg, act, ham):
+    khg.loi[ham] = KhongCoBaiHoc()
+    assert _hoc_post(mayh, act=act) == (404, {"loi": hdm.TEN_LY_DO["khong_co_bai_hoc"]})
+    assert hdm.TEN_LY_DO["khong_co_bai_hoc"] == "không có bài học"
+
+
+def test_hoc_hoan_tac_409_cau_co_dinh(mayh, khg):
+    khg.loi["hoan_tac"] = SaiTrangThaiHoc(hdm.TEN_LY_DO["khong_con_hieu_luc"], "khong_con_hieu_luc")
+    assert _hoc_post(mayh) == (409, {"loi": "bài học không còn hiệu lực"})
+
+
+@pytest.mark.parametrize("ma", ["khong_the_bat_lai", "qua_han_bat_lai", "trung_dong_mo", "du_hieu_luc",
+                                "tat_tu_ap_dung"])
+def test_hoc_bat_lai_409_5_cau_co_dinh(mayh, khg, ma):
+    cau = hdm.TEN_LY_DO[ma].format(so=5)
+    khg.loi["bat_lai"] = SaiTrangThaiHoc(cau, ma)
+    assert _hoc_post(mayh, act="bat-lai") == (409, {"loi": cau})
+
+
+@pytest.mark.parametrize("duong", [
+    "/hoc/bai-hoc/BH20261117abcd/hoan-tac", "/hoc/bai-hoc/bh2026111abcd/hoan-tac",
+    "/hoc/bai-hoc/bh20261117abcde/hoan-tac", "/hoc/bai-hoc/bh20261117ABCD/bat-lai",
+    "/hoc/bai-hoc/bh20261117abcd%0A/hoan-tac", "/hoc/bai-hoc/../x", "/hoc/bai-hoc/bh20261117abcd/xoa",
+    "/hoc/bai-hoc/bh20261117abcd/su-kien", "/hoc/bai-hoc/bh20261117abcd", "/hoc/bai-hoc/bh20261117abcd/hoan-tac/",
+    "/hoc/xoa", "/hoc/bao-cao", "/hoc/bai-hoc", "/hoc/bai-hoc/bh20261117-abc/hoan-tac",
+])
+def test_hoc_post_ma_sai_dang_hoac_route_la_404(mayh, khg, duong):
+    assert mayh.goi("POST", duong, {"boi": "nhan"})[0] == 404 and khg.goi == []
+
+
+@pytest.mark.parametrize("duong", [f"/hoc/bai-hoc/{MA_BH}/hoan-tac", f"/hoc/bai-hoc/{MA_BH}/bat-lai",
+                                   f"/hoc/bai-hoc/{MA_BH}", f"/hoc/bai-hoc/{MA_BH}/su-kien", "/hoc/bao-cao/x",
+                                   "/hoc", "/hoc/"])
+def test_hoc_get_route_la_404(mayh, khg, duong):
+    assert mayh.goi("GET", duong)[0] == 404 and khg.goi == []
+
+
+def test_hoc_sai_phuong_thuc_405_va_khoa_runner(mayh, khg):
+    c = http.client.HTTPConnection("127.0.0.1", mayh.cong, timeout=10)
+    try:
+        c.request("PUT", "/hoc/bao-cao", headers={"x-runner-key": mayh.khoa_runner})
+        assert c.getresponse().status == 405
+    finally:
+        c.close()
+    assert mayh.goi("GET", "/hoc/bao-cao", khoa=False)[0] == 401
+    assert mayh.goi("GET", "/hoc/bai-hoc", khoa="sai")[0] == 401
+    assert khg.goi == []
+
+
+# ----- 503 khi runner không có kho học -----
+
+def test_hoc_503_khi_khong_co_kho_hoc(may):
+    """kho_hoc=None (mở hoc.db lỗi) → mọi route /hoc/* 503 với thân ĐÚNG NGUYÊN VĂN; chữ ký POST vẫn kiểm trước."""
+    assert may.goi("GET", "/hoc/bao-cao") == (503, LOI_CHUA_BAT)
+    assert may.goi("GET", "/hoc/bao-cao?ngay=2026-11-17") == (503, LOI_CHUA_BAT)
+    assert may.goi("GET", "/hoc/bai-hoc") == (503, LOI_CHUA_BAT)
+    assert _hoc_post(may, act="hoan-tac") == (503, LOI_CHUA_BAT)
+    assert _hoc_post(may, act="bat-lai") == (503, LOI_CHUA_BAT)
+    assert _hoc_post(may, ky=False)[0] == 401
+    assert may.goi("GET", "/hoc/bao-cao", khoa=False)[0] == 401
+    assert _hoc_post(may, ma="BH1")[0] == 404                               # ma sai dạng vẫn 404 (P3-7)
+    assert may.goi("GET", "/suc-khoe")[0] == 200                           # phần còn lại của runner vẫn chạy
+
+
+# ----- an toàn phản hồi -----
+
+def test_hoc_qua_che_va_dong_ket_noi(tmp_path, mt, dong, khg):
+    m = May(tmp_path, mt, dong, kho_hoc=khg, che=lambda s: s.replace("BIMAT-123", "***"))
+    try:
+        s, d = m.goi("GET", "/hoc/bao-cao")
+        assert s == 200 and d["ghi"] == "***"
+        assert _hoc_post(m)[0] == 200
+    finally:
+        m.dong_lai()
+    assert khg.so_dong >= 2                                                 # đóng kết nối luồng HTTP sau mỗi request
+
+
+@pytest.mark.parametrize("loi", [RuntimeError("bất ngờ"), __import__("sqlite3").OperationalError("database is locked"),
+                                 ValueError("x")])
+def test_hoc_loi_bat_ngo_500_server_song(mayh, khg, loi):
+    khg.loi["bao_cao"] = loi
+    khg.loi["hoan_tac"] = loi
+    s, d = mayh.goi("GET", "/hoc/bao-cao")
+    assert s == 500 and "bất ngờ" not in d["loi"] and "locked" not in d["loi"]
+    assert _hoc_post(mayh)[0] == 500
+    assert mayh.goi("GET", "/hoc/bai-hoc")[0] == 200
+
+
+def test_hoc_tham_so_loi_tu_kho_400(mayh, khg):
+    khg.loi["bao_cao"] = ThamSoLoi("ngay không phải ngày có thật")
+    assert mayh.goi("GET", "/hoc/bao-cao?ngay=2026-02-30")[0] == 400
+
+
+# ----- KhoHoc THẬT (một bản module runner.kho_hoc, §3.10): ngoại lệ thật → đúng mã -----
+
+def _kho_hoc_that(tmp_path, dong) -> KhoHoc:
+    kh = KhoHoc(tmp_path / "hoc" / "hoc.db", dong)
+    kh.mo()
+    bc = json.dumps({"ngay": "2026-11-17", "so_uid": 21, "so_nhom": 30, "so_video": 300, "so_caption": 120,
+                     "lift_pt": 22, "nhat_quan_pt": 81, "so_cung_chieu": 17})
+    import sqlite3
+    with sqlite3.connect(tmp_path / "hoc" / "hoc.db") as c:
+        c.execute("INSERT INTO bai_hoc(ma, khoa, huong, nguon, trang_thai, ngay_dat_lien_tiep, ngay_dat_cuoi, "
+                  "bang_chung, tao_luc, bat_luc, het_han_luc) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+                  (MA_BH, "cap_co_so", "tang", "poster_view", "hieu_luc", 3, "2026-11-17", bc,
+                   "2026-11-17T09:00:00+07:00", "2026-11-17T09:00:00+07:00", "2026-12-01"))
+    c.close()
+    return kh
+
+
+def test_hoc_voi_kho_hoc_that(tmp_path, mt, dong):
+    kh = _kho_hoc_that(tmp_path, dong)
+    m = May(tmp_path, mt, dong, kho_hoc=kh)
+    m0 = May(tmp_path / "b", mt, dong, hm={**HAN_MUC_TRAN, "hoc_bat_ngay": 0}, kho_hoc=kh)
+    try:
+        assert m.goi("GET", "/hoc/bao-cao") == (404, {"loi": "chưa có lần học nào"})
+        s, d = m.goi("GET", "/hoc/bai-hoc")
+        assert s == 200 and [(b["ma"], b["trang_thai"], b["co_the_hoan_tac"]) for b in d["bai_hoc"]] == [
+            (MA_BH, "hieu_luc", True)]
+        assert _hoc_post(m, ma="bh20261117zzzz") == (404, {"loi": "không có bài học"})
+        s, d = _hoc_post(m)
+        assert s == 200 and d["bai_hoc"]["trang_thai"] == "hoan_tac" and d["bai_hoc"]["tat_boi"] == "nhan"
+        assert d["bai_hoc"]["co_the_bat_lai"] is True
+        assert _hoc_post(m) == (409, {"loi": "bài học không còn hiệu lực"})
+        # hạn mức hiệu lực thật tới kho: hoc_bat_ngay = 0 → bật lại bị chặn bằng câu cố định
+        s, d = m0.goi("GET", "/hoc/bai-hoc")
+        assert s == 200 and d["bai_hoc"][0]["co_the_bat_lai"] is False
+        assert _hoc_post(m0, act="bat-lai") == (409, {"loi": "đang tắt tự áp dụng (cau_hinh.json)"})
+        s, d = _hoc_post(m, act="bat-lai")
+        assert s == 200 and d["bai_hoc"]["trang_thai"] == "hieu_luc"
+        # có lần học → báo cáo 200; ngày không có thật → 400; không lộ đường dẫn
+        kh.bat_dau_lan("2026-11-17", "j20261117090000abcd")
+        kh.ket_thuc_lan("2026-11-17", "xong", "", {})
+        s, d = m.goi("GET", "/hoc/bao-cao")
+        assert s == 200 and d["ngay"] == "2026-11-17" and d["lan"]["trang_thai"] == "xong"
+        noi = json.dumps(d, ensure_ascii=False)
+        assert ":\\" not in noi and "/Users/" not in noi and "E:/" not in noi and str(tmp_path) not in noi
+        assert m.goi("GET", "/hoc/bao-cao?ngay=2026-11-17")[0] == 200
+        assert m.goi("GET", "/hoc/bao-cao?ngay=2026-02-30")[0] == 400
+    finally:
+        m.dong_lai()
+        m0.dong_lai()
+        kh.dong()
+
+
+# ----- chặn tạo / chạy lại loại chỉ-hệ-thống (quyết định 5; moi:an-viec-roi-chay-lai-an-tang-hinh) -----
+
+@pytest.mark.parametrize("loai", ["hoc_hang_ngay", "quet_view_hang_ngay"])
+def test_post_viec_loai_he_thong_400(may, khong_ban, loai):
+    for ts in ({"ngay": "2026-11-17"}, {"ngay": "2026-11-16"}, {}):
+        s, d = _tao(may, loai=loai, tham_so=ts)
+        assert s == 400 and d == {"loi": "loại này chỉ runner tự tạo"}, ts
+    assert may.kho.ds() == []
+
+
+def test_danh_muc_khong_liet_ke_loai_he_thong(may):
+    ma = {x["ma"] for x in may.goi("GET", "/danh-muc")[1]["loai"]}
+    assert not (ma & set(dm.LOAI_CHI_HE_THONG))
+
+
+def _viec_he_thong(may, loai, ngay, den="loi"):
+    v = may.kho.tao(loai, ngay, {"ngay": ngay}, "nhe", "cho", "he_thong")
+    if den == "loi":
+        _vao_loi(may, v["id"])
+    else:
+        may.kho.chuyen(v["id"], ["cho"], "huy", "nhan")
+    return v["id"]
+
+
+@pytest.mark.parametrize("den", ["loi", "huy"])
+def test_chay_lai_hoc_hang_ngay_400(may, khong_ban, den):
+    id_ = _viec_he_thong(may, "hoc_hang_ngay", "2026-11-17", den)
+    assert may.goi("GET", f"/viec/{id_}")[1]["viec"]["co_the_chay_lai"] is False
+    s, d = may.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert s == 400 and d == {"loi": "loại này chỉ runner tự tạo"}
+    assert [v["id"] for v in may.kho.ds()] == [id_]
+
+
+def test_chay_lai_quet_view_hom_nay_201(may, khong_ban):
+    id_ = _viec_he_thong(may, "quet_view_hang_ngay", "2026-11-17")
+    assert may.goi("GET", f"/viec/{id_}")[1]["viec"]["co_the_chay_lai"] is True
+    s, d = may.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert s == 201, d
+    v = d["viec"]
+    assert (v["loai"], v["khoa"], v["tham_so"], v["chay_lai_tu"], v["tao_boi"], v["trang_thai"]) == (
+        "quet_view_hang_ngay", "2026-11-17", {"ngay": "2026-11-17"}, id_, "nhan", "cho")
+
+
+def test_chay_lai_quet_view_hom_qua_400(may, khong_ban):
+    id_ = _viec_he_thong(may, "quet_view_hang_ngay", "2026-11-16")
+    assert may.goi("GET", f"/viec/{id_}")[1]["viec"]["co_the_chay_lai"] is False
+    s, d = may.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert s == 400 and "chỉ chạy lại lượt quét của hôm nay" in d["loi"]
+    assert len(may.kho.ds()) == 1
+
+
+def test_chay_lai_quet_view_vuot_quet_view_ngay_429(may, khong_ban):
+    for _ in range(2):
+        _viec_he_thong(may, "quet_view_hang_ngay", "2026-11-17", "huy")
+    id_ = _viec_he_thong(may, "quet_view_hang_ngay", "2026-11-17")           # việc thứ 3 hôm nay
+    s, d = may.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})
+    assert s == 429 and "quet_view" in d["loi"]
+    assert len(may.kho.ds()) == 3
+
+
+def test_chay_lai_quet_view_ha_ve_0_429(tmp_path, mt, dong, khong_ban):
+    m = May(tmp_path, mt, dong, hm={**HAN_MUC_TRAN, "quet_view_ngay": 0})
+    try:
+        id_ = _viec_he_thong(m, "quet_view_hang_ngay", "2026-11-17")
+        assert m.goi("POST", f"/viec/{id_}/chay-lai", {"boi": "nhan"})[0] == 429
+    finally:
+        m.dong_lai()
+
+
+def test_chay_tiep_loai_he_thong_409(may, khong_ban):
+    for loai in dm.LOAI_CHI_HE_THONG:
+        id_ = _viec_he_thong(may, loai, "2026-11-17")
+        assert may.goi("POST", f"/viec/{id_}/chay-tiep", {"boi": "nhan"})[0] == 409

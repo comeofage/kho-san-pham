@@ -44,6 +44,8 @@ test("mnMuc: đủ bảng §2.3 cho chủ kho và người thường", () => {
     ["#/duyet", "", ""], [`#/duyet/${UID}`, "", ""], [`#/sua/${UID}/0123456789abcdef`, "", ""],
     ["#/dang", "", ""], [`#/dang/${UID}`, "", ""],
     ["#/may-nha", "may-nha", ""], ["#/viec", "may-nha", ""], ["#/viec/j20261118100001abcd", "may-nha", ""], ["#/suc-khoe", "may-nha", ""],
+    // D15 Q6: #/hoc không có mục menu riêng — mở từ khối Học hôm nay nên tô mục Hôm nay; người thường không tô gì.
+    ["#/hoc", "hom-nay", ""], ["#/hocx", "", "kho"], ["#/hoc/x", "", "kho"],
     ["#/la", "", "kho"], ["#/khoxyz", "", "kho"], ["#/dangky", "", "kho"], ["#/viecx", "", "kho"], [`#/sua/${UID}`, "", "kho"],
   ];
   for (const [h, chu, thuong] of BANG) {
@@ -143,6 +145,7 @@ function dungKhung({ chu = true, list = [], apiGia, dg = false, dy = false, viTr
     api: apiGia || (async (p) => { goi.push("api:" + p); return { may_nha: true, apps: [] }; }),
     sucKhoeHtml: (d) => `<div class="sk-kq-gia">${d.may_nha ? "song" : "tat"}</div>`,
   };
+  ns.hcRender = async (p) => { goi.push(`hcRender:${p}`); };
   if (dg) Object.assign(ns, { dgRenderDs: async () => goi.push("dgRenderDs"), dgRender: async (id) => goi.push(`dgRender:${id}`), dgDung: () => goi.push("dgDung") });
   if (dy) Object.assign(ns, { dyRenderDs: async () => goi.push("dyRenderDs"), dyRender: async (id) => goi.push(`dyRender:${id}`), dyDung: () => goi.push("dyDung") });
   const ten = Object.keys(ns);
@@ -151,7 +154,17 @@ return { mnRoute, mnKiemSk, phien: () => phienCT, doiPhien: () => ++phienCT };`)
   return { K, goi, app, nut, dauKhung, chu };
 }
 
-const ROUTE_CHU = ["#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster"];
+const ROUTE_CHU = ["#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster", "#/hoc"];
+
+test("D15 mnRoute #/hoc: chủ kho → hcRender(phiên mới), trả true; thiếu hoc.js → câu 'đang cập nhật'; số mục menu không đổi (không thêm mục Học)", async () => {
+  const x = dungKhung();
+  assert.equal(await x.K.mnRoute("#/hoc", true), true);
+  assert.deepEqual(x.goi, ["hcRender:1"]);
+  assert.equal(x.K.phien(), 1);
+  assert.equal((F.mnNavHtml(true).match(/<a\b/g) || []).length, 5);
+  assert.ok(!/#\/hoc/.test(F.mnNavHtml(true)), "không có mục menu #/hoc");
+  assert.equal(F.mnMENU.length, 5);
+});
 
 test("mnRoute: người thường mở route chủ kho → CHI_CHU_HTML, trả true, không gọi API / không vẽ trang", async () => {
   for (const h of ROUTE_CHU) {
@@ -392,11 +405,11 @@ test("menu.css: chỉ áp cho chủ kho; cột trái ≥900px; thanh đáy 6 ô 
   assert.ok(!/overflow-x: (auto|scroll)/.test(boChuThich), "không cuộn ngang");
 });
 
-test("index.html: menu.css sau style.css, poster.css sau menu.css; script đúng thứ tự loi → homnay → viec → khung → poster → 9 pv-* → app → sua", () => {
+test("index.html: menu.css sau style.css, poster.css sau menu.css; script đúng thứ tự loi → homnay → hoc → viec → khung → poster → 9 pv-* → app → sua", () => {
   const css = [...HTML.matchAll(/<link rel="stylesheet" href="([^"?]+)/g)].map((m) => m[1]);
   assert.deepEqual(css, ["style.css", "menu.css", "poster.css"]);
   const js = [...HTML.matchAll(/<script src="([^"?]+)\?v=\d+" defer><\/script>/g)].map((m) => m[1]).filter((s) => !s.startsWith("vendor/"));
-  assert.deepEqual(js, ["loi.js", "homnay.js", "viec.js", "khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js",
+  assert.deepEqual(js, ["loi.js", "homnay.js", "hoc.js", "viec.js", "khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js",
     "pv-folders.js", "pv-calendar.js", "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js", "sua.js"]);
   assert.ok(!/app\.js\?v=20"|viec\.js\?v=9"/.test(HTML), "đã nâng ?v app.js, viec.js");
 });
@@ -415,7 +428,7 @@ const SCRIPTS = [...HTML.matchAll(/<script src="([^"?]+)(?:\?[^"]*)?"/g)].map((m
 const THIEU = SCRIPTS.filter((s) => !existsSync(duong(s)));
 const CO = SCRIPTS.filter((s) => existsSync(duong(s)));
 // Poster V2 (docs/poster-v2-tren-web.md §6.3): poster.js "pv" + 9 trang con; pv-*.js chưa có (lượt sau) thì phần của file đó skip.
-const TIEN_TO = { "khung.js": "mn", "poster.js": "pv",
+const TIEN_TO = { "khung.js": "mn", "poster.js": "pv", "hoc.js": "hc",
   "pv-dashboard.js": "pvdb", "pv-views.js": "pvvi", "pv-logs.js": "pvlo", "pv-settings.js": "pvse", "pv-accounts.js": "pvac",
   "pv-post.js": "pvpo", "pv-folders.js": "pvfo", "pv-calendar.js": "pvca", "pv-queue.js": "pvqu" };
 const tenDinh = (src) => [...src.matchAll(/^(?:async )?function\*? ?(\w+)|^(?:const|let|var|class) (\w+)/gm)].map((m) => m[1] || m[2]);
