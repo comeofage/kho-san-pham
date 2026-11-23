@@ -142,7 +142,7 @@ test("chữ kết quả Thêm vào Queue / Đăng ngay nguyên văn folders.py:1
 
 test("_FolderEditDialog: giá trị ban đầu + get_data y folders.py:57-223", () => {
   const m = T.pvfoMauSua(null, ACC);
-  assert.deepEqual(m, { name: "", source: "local", account_id: null, path: "", product_id: "", product_id_active: "", pid_tick: new Map(), pid_goc: new Set(), product_name: "", caption_pool: "",
+  assert.deepEqual(m, { name: "", source: "local", account_id: null, path: "", product_id: "", product_id_active: "", pid_tick: new Map(), pid_goc: new Set(), pid_dem: {}, product_name: "", caption_pool: "",
     videos_per_day: 1, post_times: '["08:00"]', campaign_hashtags: "", first_comment: "", visibility: "everyone", active: true });
   const s = T.pvfoMauSua(F(3, { source: "drive", account_id: 2, path: "E:\\v", product_id: "11,22", caption_pool: '["a","b"]',
     videos_per_day: 300, post_times: "", visibility: "private", active: 0, campaign_hashtags: null }), ACC);
@@ -171,6 +171,10 @@ test("tick từng Product ID: mặc định tick hết (folder cũ), theo produc
   m.product_id = "11\n11\n44";
   assert.equal(T.pvfoDuLieuSua(m).product_id, "11\n11\n44");
   assert.equal(T.pvfoDuLieuSua(m).product_id_active, "11\n44", "trùng ID chỉ tính 1; ID gõ thêm mặc định tick");
+  const dem = T.pvfoMauSua(F(3, { product_id: "11\n22", product_posted_counts: { 11: 5, 22: 0 } }), ACC);
+  const hd = T.pvfoHopSuaHtml(dem, ACC);
+  assert.ok(hd.includes("11 · đã đăng 5 video</label>") && hd.includes("22 · đã đăng 0 video</label>"), "số video đã đăng sau UID");
+  assert.ok(T.pvfoHopSuaHtml(T.pvfoMauSua(F(3, { product_id: "11" }), ACC), ACC).includes("> 11</label>"), "không có số thì không hiện");
   const huyHieu = (f) => T.pvfoTheHtml(T.pvfoTheMoi(F(5, f), 1));
   assert.ok(huyHieu({ product_id_count: 3, product_id_active_count: 1 }).includes("🏷️ 1/3 products"));
   assert.ok(huyHieu({ product_id_count: 3, product_id_active_count: 3 }).includes("🏷️ 3 products"));

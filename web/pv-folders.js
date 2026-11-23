@@ -164,6 +164,7 @@ function pvfoMauSua(folder, accounts) {
     product_id_active: String(f.product_id_active || "").replaceAll(",", "\n"),
     pid_tick: new Map(),
     pid_goc: new Set(pvfoDsPid(f.product_id)),
+    pid_dem: f.product_posted_counts && typeof f.product_posted_counts === "object" ? f.product_posted_counts : {},
     product_name: String(f.product_name || ""),
     caption_pool: pool,
     videos_per_day: pvfoKep(pvfoInt(f.videos_per_day, 1), 1, 100),
@@ -183,10 +184,15 @@ function pvfoPidTick(o, pid) {
   const dau = pvfoDsPid(o.product_id_active);
   return dau.length === 0 || !(o.pid_goc instanceof Set && o.pid_goc.has(pid)) || dau.includes(pid);
 }
+// "· đã đăng N video" sau UID (số video queue 'done' theo product_id, từ GET /folders/ → product_posted_counts); không có số thì để trống.
+function pvfoPidDem(o, pid) {
+  const n = o.pid_dem && Object.hasOwn(o.pid_dem, pid) ? Number(o.pid_dem[pid]) : NaN;
+  return Number.isFinite(n) ? ` · đã đăng ${n} video` : "";
+}
 function pvfoPidHtml(o) {
   const ds = pvfoDsPid(o.product_id);
   return `<p class="pv-nho">${esc("Tick ID muốn đăng (bỏ tick để tạm ngưng, không xoá):")}</p>`
-    + ds.map((pid) => `<label class="pvfo-hang"><input type="checkbox" class="pvfo-o-chon" data-pvfo-pid="${esc(pid)}"${pvfoPidTick(o, pid) ? " checked" : ""}> ${esc(pid)}</label>`).join("");
+    + ds.map((pid) => `<label class="pvfo-hang"><input type="checkbox" class="pvfo-o-chon" data-pvfo-pid="${esc(pid)}"${pvfoPidTick(o, pid) ? " checked" : ""}> ${esc(pid)}${pvfoPidDem(o, pid)}</label>`).join("");
 }
 // get_data (folders.py:206-223)
 function pvfoDuLieuSua(o) {
