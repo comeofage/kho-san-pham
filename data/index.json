@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-23T12:17:26+07:00",
+ "cap_nhat_luc": "2026-11-23T12:49:28+07:00",
  "san_pham": [
   {
    "id": "1738083993239520429",
@@ -711,16 +711,16 @@
    "gia": "189.000₫",
    "shop": "Nhà Của Mít",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-23T12:49:14+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -728,7 +728,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-17T08:38:11+07:00",
-   "cap_nhat_luc": "2026-11-21T11:11:12+07:00",
+   "cap_nhat_luc": "2026-11-23T12:49:14+07:00",
    "so_caption": 100,
    "co_file01": false,
    "rui_ro": null
