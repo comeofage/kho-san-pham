@@ -31,9 +31,19 @@
   "luc": "2026-11-23T12:49:14+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-24T18:26:07+07:00",
+  "poster": [
+   {
+    "folder": 375,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/tabesuper-1737445540009182330/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 375,
+  "duong_dan": "E:/oneshottramcanh/tabesuper-1737445540009182330/output_poster"
  },
- "cap_nhat_luc": "2026-11-24T16:24:48+07:00"
+ "cap_nhat_luc": "2026-11-24T18:26:07+07:00"
 }
