@@ -123,11 +123,11 @@ def test_schema_dung_dac_ta_khong_co_update_time_video(kho):
     assert "update_time" not in cot
     cot_uid = {r["name"] for r in _sql(kho, "PRAGMA table_info(chup_uid)")}
     assert cot_uid == {"uid", "ngay", "trang_thai", "ma_loi", "lay_luc", "echotik_cap_nhat", "ban_tong", "gia",
-                       "hoa_hong", "ton", "tong_creator", "so_trang", "tong_trang", "so_lan_thu"}
+                       "hoa_hong", "ton", "tong_creator", "so_trang", "tong_trang", "so_lan_thu", "them"}
     assert {r["name"] for r in _sql(kho, "PRAGMA table_info(lan_chay)")} == {
         "ngay", "che_do", "viec_id", "trang_thai", "ly_do", "bat_dau", "ket_thuc", "so_goi"}
-    assert _sql(kho, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "2"
-    assert kho_radar_uid.PHIEN_BAN_SCHEMA == "2"
+    assert _sql(kho, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "3"
+    assert kho_radar_uid.PHIEN_BAN_SCHEMA == "3"
     assert {r["name"] for r in _sql(kho, "PRAGMA table_info(san_pham)")} == {
         "uid", "ten", "shop", "cap_nhat_luc", "anh", "anh_luc"}
     assert _sql(kho, "PRAGMA journal_mode")[0][0] == "wal"
@@ -926,10 +926,12 @@ def test_mo_nang_v1_len_v2_giu_du_lieu_va_idempotent(tmp_path, dong):
     k.mo()
     cot = {r["name"] for r in _sql(k, "PRAGMA table_info(san_pham)")}
     assert {"anh", "anh_luc"} <= cot
-    assert _sql(k, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "2"
+    assert _sql(k, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "3"
     sau = _chup_db(duong)
-    for t in ("nhom", "lien_ket", "chup_uid", "chup_video"):
+    for t in ("nhom", "lien_ket", "chup_video"):
         assert sau[t] == truoc[t]
+    assert [tuple(r)[:-1] for r in sau["chup_uid"]] == [tuple(r) for r in truoc["chup_uid"]]     # cột `them` thêm cuối
+    assert all(r[-1] == "" for r in sau["chup_uid"])
     assert [tuple(r[:4]) for r in sau["san_pham"]] == [tuple(r[:4]) for r in truoc["san_pham"]]
     assert all(r["anh"] == "" and r["anh_luc"] == "" for r in _sql(k, "SELECT anh, anh_luc FROM san_pham"))
     k.mo()                                                                # lần 2: không ADD COLUMN lại
@@ -1104,3 +1106,74 @@ def test_uid_cua_nhom_co_anh(kho):
 def test_cau_loi_co_dinh_la_thuoc_tinh_loi(kho):
     assert KhongCoRadar().loi == "Không có UID này trong Radar"
     assert isinstance(KhongCoRadar(), LookupError) and isinstance(SaiTrangThaiRadar("x"), RuntimeError)
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Chỉ số xu hướng `them` (schema v3)
+# ---------------------------------------------------------------------------------------------------------------
+THEM_MAU = {"sale_30d_cnt": "2.86K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29, "video_30d_cnt": 49, "rating": 4.5}
+
+
+def test_ghi_chup_ok_luu_them_va_doc_them(kho):
+    assert kho.bat_dau_chup(uid(1), NGAY, f"{NGAY}T10:00:00+07:00")
+    kho.ghi_chup_ok(_snap(uid(1), them=THEM_MAU))
+    assert kho.doc_them(uid(1), NGAY) == {NGAY: THEM_MAU}
+    assert kho.doc_them(uid(1), "2026-12-02") == {}                       # từ ngày sau: không có
+    assert kho.doc_them("123", NGAY) == {}                                # UID sai dạng: rỗng, không ném
+
+
+def test_them_vang_thi_rong_va_khong_diem_0(kho):
+    _chup_ok(kho, uid(1), NGAY)
+    assert kho.doc_them(uid(1), NGAY) == {}
+
+
+@pytest.mark.parametrize("xau", [[1], {"a": [1]}, {"a": True}, {"a" * 33: 1}, {"": 1}, {"a": "x" * 33},
+                                 {f"k{i}": i for i in range(21)}])
+def test_them_sai_kieu_bi_tu_choi(kho, xau):
+    assert kho.bat_dau_chup(uid(1), NGAY, f"{NGAY}T10:00:00+07:00")
+    with pytest.raises(ThamSoLoi):
+        kho.ghi_chup_ok(_snap(uid(1), them=xau))
+
+
+def test_ghi_them_bo_sung_chi_khi_dang_rong(kho):
+    _chup_ok(kho, uid(1), NGAY)
+    assert kho.ghi_them(uid(1), NGAY, THEM_MAU) is True
+    assert kho.ghi_them(uid(1), NGAY, {"sale_30d_cnt": "9K"}) is False     # không ghi đè số đã có
+    assert kho.ghi_them(uid(1), NGAY, {}) is False
+    assert kho.doc_them(uid(1), NGAY) == {NGAY: THEM_MAU}
+    assert kho.ghi_them(uid(2), NGAY, THEM_MAU) is False                  # chưa có lần chụp ok
+
+
+def test_mo_nang_v2_len_v3_them_cot_giu_du_lieu(tmp_path, dong):
+    duong = tmp_path / "radar_uid.db"
+    k = KhoRadarUid(duong, dong)
+    k.mo()
+    _chup_ok(k, uid(1), NGAY)
+    k.dong()
+    c = sqlite3.connect(duong)                                           # lùi về hình dạng v2: bỏ cột them, meta = 2
+    c.execute("ALTER TABLE chup_uid DROP COLUMN them")
+    c.execute("UPDATE meta SET v='2' WHERE k='schema_ban'")
+    c.commit()
+    c.close()
+    k = KhoRadarUid(duong, dong)
+    k.mo()
+    k.mo()                                                               # idempotent
+    assert _sql(k, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "3"
+    assert [r["name"] for r in _sql(k, "PRAGMA table_info(chup_uid)")].count("them") == 1
+    assert _sql(k, "SELECT ban_tong, them FROM chup_uid")[0]["ban_tong"] == "10.17K"
+    k.dong()
+
+
+def test_chi_doc_tren_v2_doc_them_tra_rong(tmp_path, dong):
+    duong = tmp_path / "radar_uid.db"
+    k = KhoRadarUid(duong, dong)
+    k.mo()
+    _chup_ok(k, uid(1), NGAY)
+    k.dong()
+    c = sqlite3.connect(duong)
+    c.execute("ALTER TABLE chup_uid DROP COLUMN them")
+    c.commit()
+    c.close()
+    doc = KhoRadarUid(duong, dong, chi_doc=True)
+    assert doc.doc_them(uid(1), NGAY) == {}
+    doc.dong()

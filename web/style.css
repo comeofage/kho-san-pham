@@ -438,6 +438,12 @@ a.hn-sp-ten:hover { text-decoration-color: currentColor; }
 .rdu-chi-so { border-top: 1px dashed var(--line); padding-top: 4px; }
 .rdu-chi-so > summary { cursor: pointer; font-weight: 600; padding: 6px 0; }
 .rdu-chi-so[open] > summary { margin-bottom: 6px; }
+.rdu-thong-so { margin: 8px 0; display: grid; gap: 6px; }
+.rdu-xh { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 2px 8px; font-size: 13px; margin-top: 4px; text-align: right; }
+.rdu-xh-h { font-weight: 600; border-bottom: 1px solid var(--line); }
+.rdu-xh-n { text-align: left; }
+.rdu-tang { color: #0a7a3d; }
+.rdu-giam { color: #b42318; }
 .rdu-chi-so > .rdu-luoi { margin-top: 6px; }
 @media (max-width: 640px) {
   .rdu-luoi { grid-template-columns: 1fr 1fr; }

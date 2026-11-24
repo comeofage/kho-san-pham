@@ -196,6 +196,52 @@ function rduOGia(u) {
   const t = (s) => esc(rduChu(s, 40) || "—");
   return rduO("", "Giá / hoa hồng / tồn", `${t(u.gia)} · ${t(u.hoa_hong)} · tồn ${t(u.ton)}`);
 }
+// "so_snapshot 2/4" → "snapshot 2/4"… (chỉ đổi tên mã kỹ thuật sang chữ thường dân dụng, số giữ nguyên).
+function rduNoiThieu(s) {
+  return s.replace(/^so_snapshot /, "snapshot ").replace(/^phu_gio (\S+)\/(\S+)$/, "đã theo dõi $1/$2 giờ")
+    .replace(/^n_video /, "video ").replace(/^n_creator /, "creator ");
+}
+
+// ---- khối "Thông số" (luôn hiện) + bảng xu hướng theo ngày: số EchoTik đã lưu, thiếu thì "—", không điền 0 ----
+const rduThieu = (v) => (rduOk(v) ? rduSo(v) : "—");
+const rduDanDau = (n) => (n > 0 ? `+${rduSo(n)}` : rduSo(n));
+function rduThongSoHtml(u) {
+  const x = rduObj(u), c = rduObj(x.chi_so);
+  const ban = rduOk(x.ban_tong) ? rduSo(x.ban_tong) : "—";
+  const o = (nhan, gt, phu = "") => rduO("", nhan, esc(gt), esc(phu));
+  const gia = rduGiaChu(x.gia), goc = rduChu(c.gia_goc, 24);
+  const o30 = (nhan, a, b) => o(nhan, `${rduThieu(a)} / ${rduThieu(b)}`, "30 ngày / tổng");
+  const danhGia = rduOk(c.danh_gia) ? `${rduSo(c.danh_gia, 1)} ★${rduOk(c.luot_danh_gia) ? ` (${rduSo(c.luot_danh_gia)} đánh giá)` : ""}` : "—";
+  const cap = rduChu(x.echotik_cap_nhat, 24);
+  const o_ = [o("Đã bán (tổng)", ban),
+    o("Bán 30 ngày", rduThieu(c.ban_30d), rduChu(c.gmv_30d, 24) ? `doanh thu 30 ngày ${rduChu(c.gmv_30d, 24)}` : ""),
+    o30("Creator", c.creator_30d, c.creator_tong), o30("Video", c.video_30d, c.video_tong),
+    o("Đánh giá", danhGia), o("Hạng ngành hàng", rduOk(c.hang_nganh) ? `#${rduSo(c.hang_nganh)}` : "—"),
+    o("Giá bán / hoa hồng", `${gia || "—"} · ${rduChu(x.hoa_hong, 16) || "—"}`, goc ? `giá gốc ${goc}` : ""),
+    o("Tồn kho", rduChu(x.ton, 24) || "—")];
+  const chuaCo = rduCo(x, "chi_so") && x.chi_so === null
+    ? `<p class="small muted">Chưa có số 30 ngày/creator/video cho UID này: lượt chụp kế tiếp (10:00 hằng ngày) sẽ bổ sung.</p>` : "";
+  return `<div class="rdu-thong-so"><div class="rdu-luoi">${o_.join("")}</div>${chuaCo}`
+    + `<div class="small muted">${cap ? `EchoTik cập nhật số liệu lúc ${esc(cap)}. ` : ""}Số rút gọn (vd 10,5K) sai số vài chục đơn.</div></div>`;
+}
+function rduXuHuongHtml(u) {
+  const xh = rduMang(rduObj(u).xu_huong).map(rduObj).filter((r) => RDU_RE_NGAY.test(r.ngay));
+  if (!xh.length) return "";
+  const khoa = ["ban_tong", "ban_30d", "creator_30d", "video_30d"];
+  const o = (r, i, k) => {
+    const v = r[k];
+    if (!rduOk(v)) return "—";
+    const truoc = i > 0 ? xh[i - 1][k] : null;
+    const d = rduOk(truoc) && v !== truoc ? ` <span class="small ${v > truoc ? "rdu-tang" : "rdu-giam"}">${rduDanDau(v - truoc)}</span>` : "";
+    return `${esc(rduSo(v))}${d}`;
+  };
+  const ten = ["Ngày", "Đã bán", "Bán 30 ngày", "Creator 30 ngày", "Video 30 ngày"];
+  const dau = ten.map((t) => `<span class="rdu-xh-h">${esc(t)}</span>`).join("");
+  const hang = xh.map((r, i) => `<span class="rdu-xh-n">${esc(rduDm(r.ngay))}</span>${khoa.map((k) => `<span>${o(r, i, k)}</span>`).join("")}`).join("");
+  const them = xh.length < 3 ? `<p class="small muted">Mới có ${xh.length} ngày dữ liệu; cần vài ngày mới thấy xu hướng rõ (số màu là chênh so với ngày trước).</p>` : "";
+  return `<details class="rdu-gom" open><summary>Xu hướng theo ngày</summary><div class="rdu-xh">${dau}${hang}</div>${them}</details>`;
+}
+
 function rduOCo(u) {
   const chip = (ma, muc) => {
     const c = rduNhanCo(ma, muc);
@@ -203,7 +249,7 @@ function rduOCo(u) {
   };
   const chan = rduMang(u.co).filter((m) => typeof m === "string").map((m) => chip(m, "chan"));
   const bao = rduMang(u.co_canh_bao).filter((m) => typeof m === "string").map((m) => chip(m, "canh-bao"));
-  const thieu = rduMang(u.ly_do_thieu).filter((k) => typeof k === "string").slice(0, 4).map((k) => rduChu(k, 60)).filter(Boolean);
+  const thieu = rduMang(u.ly_do_thieu).filter((k) => typeof k === "string").slice(0, 4).map((k) => rduNoiThieu(rduChu(k, 60))).filter(Boolean);
   if (!chan.length && !bao.length && !thieu.length) return "";
   return `<div class="rdu-cos">${chan.join("")}${bao.join("")}${thieu.length ? `<span class="small muted">Thiếu: ${esc(thieu.join(", "))}</span>` : ""}</div>`;
 }
@@ -352,6 +398,7 @@ function rduHangHtml(u, goc) {
     + `<div class="small muted">${esc(vai + giong)}${chip}</div>`
     + `${rduLienKetHtml(uid)}</div></div>`
     + `${rduOCo(x)}`
+    + `${loai ? "" : rduThongSoHtml(x) + rduXuHuongHtml(x)}`
     + `<div class="row rdu-tay">${nuts.join("")}</div>${rduChiSoHtml(x)}${loai ? "" : rduPosterHtml(x, g)}</article>`;
 }
 
@@ -383,7 +430,7 @@ function rduChiTietHtml(nhom) {
     + `</div></div>`
     + (cauTt ? `<p class="small ${t.tt === "loi_tim" ? "hn-bao" : "muted"}">${esc(cauTt)}${t.lyDo ? `: ${esc(t.lyDo)}` : ""}</p>` : "")
     + `<div class="row rdu-nhom-nut">${rduNutNhomHtml(n, goc)}</div>`
-    + (rduCo(t.gocU, "uid") ? rduChiSoHtml(rduObj(t.gocU)) : "")
+    + (rduCo(t.gocU, "uid") ? rduThongSoHtml(rduObj(t.gocU)) + rduXuHuongHtml(rduObj(t.gocU)) + rduChiSoHtml(rduObj(t.gocU)) : "")
     + `</section>`
     + `<h3 class="hn-tieu-de rdu-muc">UID tương tự đang theo dõi (${soTuongTu})</h3>`
     + (soTuongTu ? "" : `<p class="small muted">Chưa có UID tương tự nào đang theo dõi.</p>`)

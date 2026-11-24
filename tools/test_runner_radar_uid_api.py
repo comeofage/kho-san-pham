@@ -130,7 +130,7 @@ UID_RA_THEO_7_1 = {
     "echotik_cap_nhat", "so_snapshot", "phu_gio", "co", "co_canh_bao", "ly_do_thieu", "duoi_do_phan_giai"}
 
 
-KHOA_UID_MOI_B11 = {"anh", "ban_tong"}                                  # RU-B11: shop/gia đã có sẵn trong UidRa
+KHOA_UID_MOI_B11 = {"anh", "ban_tong", "chi_so", "xu_huong"}            # RU-B11 (+ xu hướng): shop/gia đã có sẵn trong UidRa
 KHOA_NHOM_CU = {"goc", "ten", "trang_thai", "ly_do", "ten_ly_do", "tim_luc", "bat_dau_ngay", "ds"}
 KHOA_NHOM_MOI_B11 = {"anh", "shop", "gia", "n_tuong_tu", "n_ghim"}
 ANH_G = "https://cdn.echotik.live/img/goc.jpg"
@@ -899,3 +899,36 @@ def test_typeddict_snapshot_cua_kho_dung_duoc_trong_xep_hang(kr):
     snap = kr.doc_snapshots(G1, "2000-01-01")[0]
     assert set(snap) == set(rut.Snapshot.__annotations__)
     assert set(next(iter(snap["videos"].values()))) == set(rut.HangVideo.__annotations__)
+
+
+def _chup_them(kr, uid, ngay, them, ban_tong="10", n_video=10):
+    luc = f"{ngay}T10:00:00+07:00"
+    assert kr.bat_dau_chup(uid, ngay, luc)
+    kr.ghi_chup_ok({"uid": uid, "ngay": ngay, "lay_luc": luc, "echotik_cap_nhat": f"{ngay} 07:55", "ban_tong": ban_tong,
+                    "gia": "499.390₫", "hoa_hong": "10%", "ton": "562", "tong_creator": None, "so_trang": 1,
+                    "tong_trang": 1, "them": them,
+                    "videos": {v["video_id"]: v for v in (_video(i, 1000 + i * 100) for i in range(n_video))}})
+
+
+def test_bang_co_chi_so_va_xu_huong_theo_ngay(may, kr):
+    _them_nhom(kr, so_tt=1)
+    _chup_them(kr, G1, "2026-11-22", {"sale_30d_cnt": "2.80K", "ifl_30d_cnt": 10, "total_ifl_cnt": 27,
+                                       "video_30d_cnt": 45, "total_video_cnt": 100}, ban_tong="10.5K")
+    _chup_them(kr, G1, "2026-11-23", {"sale_30d_cnt": "2.86K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29,
+                                       "video_30d_cnt": 49, "total_video_cnt": 105, "gmv_30d_amt": "$15.21K",
+                                       "rating": 4.5, "review_count": 539, "hang_nganh": 258,
+                                       "original_price": "155.579₫"}, ban_tong="10.62K")
+    _chup(kr, uid_n(1), "2026-11-23", 1000)                           # UID chưa có `them`
+    s, d = may.goi("GET", "/radar/bang")
+    assert s == 200
+    ds = {u["uid"]: u for u in d["nhom"][0]["ds"]}
+    cs = ds[G1]["chi_so"]
+    assert cs == {"ngay": "2026-11-23", "ban_30d": 2860, "gmv": None, "gmv_30d": "$15.21K", "creator_tong": 29,
+                  "creator_30d": 12, "video_tong": 105, "video_30d": 49, "live_30d": None, "luot_danh_gia": 539,
+                  "hang_nganh": 258, "gia_goc": "155.579₫", "danh_gia": 4.5}
+    xh = ds[G1]["xu_huong"]
+    assert [r["ngay"] for r in xh] == ["2026-11-22", "2026-11-23"]
+    assert (xh[0]["ban_tong"], xh[0]["ban_30d"], xh[0]["creator_30d"]) == (10500, 2800, 10)
+    assert (xh[1]["ban_tong"], xh[1]["ban_30d"], xh[1]["video_30d"], xh[1]["creator_tong"]) == (10620, 2860, 49, 29)
+    assert ds[uid_n(1)]["chi_so"] is None                             # chưa có số thật: None, không 0
+    assert ds[uid_n(1)]["xu_huong"][0]["ban_30d"] is None and ds[uid_n(1)]["xu_huong"][0]["ban_tong"] == 10

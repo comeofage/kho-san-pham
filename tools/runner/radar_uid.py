@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import Any
 
 from . import radar_uid_tinh as tinh
-from .echotik import EchoTik, HetNganSach, LoiEchoTik, anh_bia, anh_ung_vien, chuan_ung_vien, chuan_video
+from .echotik import EchoTik, HetNganSach, LoiEchoTik, anh_bia, anh_ung_vien, chi_so_them, chuan_ung_vien, chuan_video
 from .kho_radar_uid import ChiDoc, KhoRadarUid, KhongCoRadar, SaiTrangThaiRadar
 from .kieu import MUI_GIO_VN, ThamSoLoi, gio_vn
 
@@ -238,7 +238,7 @@ def _chup_mot(lan: _Lan, uid: str) -> None:
         "uid": uid, "ngay": lan.ngay, "lay_luc": lan.luc(), "echotik_cap_nhat": _txt(e1.get("update_time")),
         "ban_tong": _txt(e1.get("sale_cnt")), "gia": _txt(e1.get("real_price")), "hoa_hong": _txt(e1.get("commission")),
         "ton": _txt(e1.get("total_stock_cnt")), "tong_creator": None, "so_trang": trang, "tong_trang": last,
-        "videos": videos})                                        # videos rỗng ⇒ kho tự ghi loi/khong_co_video
+        "them": chi_so_them(e1), "videos": videos})                                        # videos rỗng ⇒ kho tự ghi loi/khong_co_video
     lan.dang_do.discard(uid)
     if videos:
         lan.so_uid += 1

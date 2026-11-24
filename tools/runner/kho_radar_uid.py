@@ -11,6 +11,7 @@ Nguyên tắc (theo mẫu `kho_hoc.py`):
 """
 from __future__ import annotations
 
+import json
 import logging
 import re
 import sqlite3
@@ -26,7 +27,7 @@ from .kieu import ThamSoLoi, gio_vn
 
 log = logging.getLogger(__name__)
 
-PHIEN_BAN_SCHEMA = "2"
+PHIEN_BAN_SCHEMA = "3"
 GIU_CHUP_NGAY = 90                          # mo() dọn chup_video (và chup_uid tương ứng) cũ hơn chừng này
 GOC_TOI_DA = 2
 TUONG_TU_TOI_DA = 10                        # mỗi nhóm, gồm cả UID đang ghim
@@ -82,7 +83,8 @@ CREATE TABLE IF NOT EXISTS chup_uid (uid TEXT NOT NULL, ngay TEXT NOT NULL,
   lay_luc TEXT NOT NULL,
   echotik_cap_nhat TEXT,
   ban_tong TEXT, gia TEXT, hoa_hong TEXT, ton TEXT, tong_creator TEXT,
-  so_trang INTEGER NOT NULL DEFAULT 0, tong_trang INTEGER, so_lan_thu INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (uid, ngay));
+  so_trang INTEGER NOT NULL DEFAULT 0, tong_trang INTEGER, so_lan_thu INTEGER NOT NULL DEFAULT 0,
+  them TEXT NOT NULL DEFAULT '', PRIMARY KEY (uid, ngay));
 CREATE TABLE IF NOT EXISTS chup_video (uid TEXT NOT NULL, ngay TEXT NOT NULL, video_id TEXT NOT NULL, creator TEXT NOT NULL,
   follower TEXT, view TEXT NOT NULL, ban TEXT, dang_luc TEXT NOT NULL, is_promote INTEGER,
   PRIMARY KEY (uid, ngay, video_id), FOREIGN KEY (uid, ngay) REFERENCES chup_uid(uid, ngay));
@@ -219,6 +221,20 @@ def _so_nguyen_hoac_none(v: object, ten: str) -> int | None:
     return v
 
 
+def _chuan_them(v: object) -> str:
+    """`them` (chỉ số xu hướng của một snapshot) -> chuỗi JSON để lưu. None/{} -> ''. Sai kiểu -> ThamSoLoi."""
+    if v is None or v == {}:
+        return ""
+    if not isinstance(v, dict) or len(v) > 20:
+        raise ThamSoLoi("them phải là dict ≤ 20 khoá")
+    for k, x in v.items():
+        if not isinstance(k, str) or not k or len(k) > 32:
+            raise ThamSoLoi("khoá của them phải là chuỗi 1–32 ký tự")
+        if isinstance(x, bool) or not isinstance(x, (str, int, float)) or (isinstance(x, str) and len(x) > 32):
+            raise ThamSoLoi("giá trị của them phải là chuỗi ≤ 32 ký tự hoặc số")
+    return json.dumps(v, ensure_ascii=False, sort_keys=True)
+
+
 def _rollback_giu_loi_goc(c: sqlite3.Connection) -> None:
     """ROLLBACK sau một lỗi trong giao dịch; SQLite có thể đã tự rollback (BUSY/FULL/IOERR) → bỏ qua."""
     if not c.in_transaction:
@@ -326,12 +342,15 @@ class KhoRadarUid:
             r = g.execute("SELECT v FROM meta WHERE k='schema_ban'").fetchone()
             if r is None:
                 g.execute("INSERT INTO meta(k, v) VALUES('schema_ban', ?)", (PHIEN_BAN_SCHEMA,))
-            elif r[0] == "1":
-                # v1 -> v2 trong CÙNG giao dịch này (ALTER TABLE của SQLite có rollback): giữ nguyên dữ liệu.
+            elif r[0] in ("1", "2"):
+                # v1/v2 -> v3 trong CÙNG giao dịch này (ALTER TABLE của SQLite có rollback): giữ nguyên dữ liệu.
                 cot = {x[1] for x in g.execute("PRAGMA table_info(san_pham)")}
                 for ten_cot in ("anh", "anh_luc"):
                     if ten_cot not in cot:
                         g.execute(f"ALTER TABLE san_pham ADD COLUMN {ten_cot} TEXT NOT NULL DEFAULT ''")
+                cot_chup = {x[1] for x in g.execute("PRAGMA table_info(chup_uid)")}
+                if "them" not in cot_chup:
+                    g.execute("ALTER TABLE chup_uid ADD COLUMN them TEXT NOT NULL DEFAULT ''")
                 g.execute("UPDATE meta SET v=? WHERE k='schema_ban'", (PHIEN_BAN_SCHEMA,))
             elif r[0] != PHIEN_BAN_SCHEMA:
                 raise RuntimeError(f"radar_uid.db có schema {r[0]!r}, code cần {PHIEN_BAN_SCHEMA!r}: "
@@ -639,6 +658,7 @@ class KhoRadarUid:
         cot = [_chuoi_hoac_none(snap.get(k), k) for k in ("ban_tong", "gia", "hoa_hong", "ton", "tong_creator")]
         so_trang = _so_nguyen_hoac_none(snap.get("so_trang"), "so_trang") or 0
         tong_trang = _so_nguyen_hoac_none(snap.get("tong_trang"), "tong_trang")
+        them = _chuan_them(snap.get("them"))
         with self._gd() as c:
             r = c.execute("SELECT trang_thai FROM chup_uid WHERE uid=? AND ngay=?", (uid, ngay)).fetchone()
             if r is None or r["trang_thai"] != "dang_chup":
@@ -648,8 +668,8 @@ class KhoRadarUid:
                           (lay_luc, uid, ngay))
                 return
             c.execute("UPDATE chup_uid SET trang_thai='ok', ma_loi='', lay_luc=?, echotik_cap_nhat=?, ban_tong=?, gia=?, "
-                      "hoa_hong=?, ton=?, tong_creator=?, so_trang=?, tong_trang=? WHERE uid=? AND ngay=?",
-                      (lay_luc, cap_nhat, *cot, so_trang, tong_trang, uid, ngay))
+                      "hoa_hong=?, ton=?, tong_creator=?, so_trang=?, tong_trang=?, them=? WHERE uid=? AND ngay=?",
+                      (lay_luc, cap_nhat, *cot, so_trang, tong_trang, them, uid, ngay))
             c.execute("DELETE FROM chup_video WHERE uid=? AND ngay=?", (uid, ngay))
             for vid, hv in videos.items():
                 c.execute("INSERT INTO chup_video(uid, ngay, video_id, creator, follower, view, ban, dang_luc, is_promote) "
@@ -657,6 +677,38 @@ class KhoRadarUid:
                           (uid, ngay, vid, hv.get("creator"), _chuoi_hoac_none(hv.get("follower"), "follower"),
                            _chuoi_hoac_none(hv.get("view"), "view"), _chuoi_hoac_none(hv.get("ban"), "ban"),
                            hv.get("dang_luc"), _is_promote(hv.get("is_promote"))))
+
+    def ghi_them(self, uid: str, ngay: str, them: dict) -> bool:
+        """Bổ sung `them` cho lần chụp `ok` đã có (chỉ khi nó đang rỗng). True nếu đã ghi."""
+        self._kiem_ghi()
+        _kiem_uid(uid)
+        _kiem_ngay(ngay)
+        chuoi = _chuan_them(them)
+        if not chuoi:
+            return False
+        with self._gd() as c:
+            cur = c.execute("UPDATE chup_uid SET them=? WHERE uid=? AND ngay=? AND trang_thai='ok' AND them=''",
+                            (chuoi, uid, ngay))
+            return cur.rowcount > 0
+
+    def doc_them(self, uid: str, tu_ngay: str) -> dict[str, dict]:
+        """ngày -> chỉ số xu hướng (dict) của các lần chụp `ok` từ `tu_ngay`. DB cũ chưa có cột / ô rỗng ⇒ bỏ qua."""
+        _kiem_ngay(tu_ngay)
+        if not _la_uid(uid):
+            return {}
+        with self._doc() as c:
+            if c is None or not any(r[1] == "them" for r in c.execute("PRAGMA table_info(chup_uid)")):
+                return {}
+            ra: dict[str, dict] = {}
+            for ngay, chuoi in c.execute("SELECT ngay, them FROM chup_uid WHERE uid=? AND ngay >= ? AND trang_thai='ok' "
+                                         "ORDER BY ngay", (uid, tu_ngay)):
+                try:
+                    d = json.loads(chuoi) if chuoi else None
+                except ValueError:
+                    d = None
+                if isinstance(d, dict):
+                    ra[ngay] = d
+            return ra
 
     def ghi_chup_loi(self, uid: str, ngay: str, ma_loi: str) -> None:
         """Đánh dấu lần chụp đang `dang_chup` là `loi`. Không hạ cấp một lần `ok`."""

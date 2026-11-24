@@ -761,3 +761,16 @@ def test_chup_e1_la_giu_anh_cu(mt, capsys):
     ma, j, _ = chay_script(mt, capsys)
     assert ma == 0 and j["trang_thai"] == "xong"
     assert anh_kho(mt, uid(1))[uid(2)] == url_anh(uid(2), "CU")
+
+
+def test_nap_ghi_chi_so_them_tu_e1_khong_ton_them_get(mt, capsys):
+    cai_nap(mt)
+    goc = uid(1)
+    mt.kb.sp[goc].update({"sale_30d_cnt": "2.86K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29, "video_30d_cnt": 49,
+                          "labels": {"rating": 4.5}, "token": "khong-duoc-luu"})
+    ma, j, _ = chay_script(mt, capsys, "nap", "n1", goc=goc)
+    assert ma == 0 and j["so_goi"] == 13                                   # không thêm GET nào
+    k = KhoRadarUid(mt.db, mt.dong, chi_doc=True)
+    them = k.doc_them(goc, "2000-01-01")
+    assert list(them.values()) == [{"sale_30d_cnt": "2.86K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29,
+                                    "video_30d_cnt": 49, "rating": 4.5}]

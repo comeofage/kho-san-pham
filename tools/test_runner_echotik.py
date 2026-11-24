@@ -632,3 +632,16 @@ def test_anh_ung_vien_cover_url_va_khong_doi_khoa_ung_vien():
     assert set(chuan_ung_vien(raw)) == {"uid", "ten", "gia", "ban_7d"}      # UngVien (§7.2) KHÔNG đổi khoá
     for x in (None, [], {}, {"cover_url": None}, {"cover_url": ""}, {"cover_url": 5}, {"cover_url": [ANH]}):
         assert anh_ung_vien(x) == ""
+
+
+def test_chi_so_them_chi_lay_khoa_duyet_va_bo_khoa_thieu():
+    from runner.echotik import chi_so_them
+    e1 = {"sale_30d_cnt": "2.86K", "gmv_30d_amt": "$15.21K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29, "video_30d_cnt": 49,
+          "total_video_cnt": 105, "review_count": 539, "original_price": "155.579₫", "labels": {"rating": 4.5,
+          "total_category_sale_rank": 258}, "token": "bí-mật", "seller": {"x": 1}, "total_live_cnt": None,
+          "live_30d_cnt": True, "gmv_amt": "x" * 40}
+    r = chi_so_them(e1)
+    assert r == {"sale_30d_cnt": "2.86K", "gmv_30d_amt": "$15.21K", "ifl_30d_cnt": 12, "total_ifl_cnt": 29,
+                 "video_30d_cnt": 49, "total_video_cnt": 105, "review_count": 539, "original_price": "155.579₫",
+                 "rating": 4.5, "hang_nganh": 258}
+    assert chi_so_them({}) == {} and chi_so_them(None) == {} and chi_so_them({"labels": "x"}) == {}

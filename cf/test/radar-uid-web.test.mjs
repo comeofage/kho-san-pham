@@ -20,7 +20,7 @@ const khoi = (src, ten) => {
 };
 const F = new Function("esc", `"use strict";\n${khoi(RDU, "radar-uid-thuan")}
 return { rduLayUid, rduSo, rduSpark, rduNhanCo, rduHangHtml, rduTheChinhHtml, rduChiTietHtml, rduAnhHopLe, rduAnhHtml, rduBangHtml, rduPosterHtml, rduCauLoiTai, rduCauLoiGhi,
-  rduChoPhep, rduChoPhepNhom, RDU_NHAC };`)(esc);
+  rduChoPhep, rduChoPhepNhom, rduThongSoHtml, rduXuHuongHtml, RDU_NHAC };`)(esc);
 
 const GOC = "1737422436677814024"; // > 2^53: phải giữ nguyên là chuỗi
 const UID = "1729706628656957720";
@@ -160,7 +160,7 @@ test("rduHangHtml: tam=true / chưa đủ → số XÁM + câu 'chưa đủ bằ
   assert.match(h, /class="rdu-so-lon rdu-xam">12</);
   assert.match(h, /chưa đủ bằng chứng \(n=6, 2\/4 snapshot\)/);
   assert.match(h, /rdu-co rdu-co-chan/);
-  assert.match(h, /Thiếu: n_video 6\/8, so_snapshot 2\/4/);
+  assert.match(h, /Thiếu: video 6\/8, snapshot 2\/4/);
   assert.match(h, /Tăng tốc[\s\S]*?—[\s\S]*?chưa có kỳ trước/);
   assert.match(h, /rdu-xl-chua_du/);
   // chua_du nhưng API quên tam → vẫn xám (không đưa số tạm như số tin cậy)
@@ -422,7 +422,7 @@ test("rduChiTietHtml: thiếu ảnh/đã bán → placeholder / không dòng 'Đ
   const chinh = h.slice(0, h.indexOf('<details class="rdu-gom"'));
   assert.match(chinh, /CCC-chinh/);
   assert.ok(!/AAA-ha|BBB-loai/.test(chinh));
-  assert.ok(!/Đã bán/.test(h), "ban_tong thiếu → không in");
+  assert.ok(!/Đã bán \d/.test(h), "ban_tong thiếu → không in số (ô Thông số hiện \"—\")");
   assert.match(h, /rdu-anh-ph">chưa có ảnh</);
   const loai = h.match(/<article class="rdu-hang[^>]*rdu-loai[\s\S]*?<\/article>/)[0];
   assert.deepEqual([...loai.matchAll(/data-rdu-act="([\w-]+)"/g)].map((m) => m[1]), ["bo-loai"]);
@@ -991,8 +991,8 @@ test("radar-uid.js: không inline/on…=, không bảng/style cứng/độ rộn
   assert.ok(!/poster\/|pvApi|PATCH|\/api\/v2/.test(RDU.replace(/#\/poster\/folders/g, "").replace(/Poster V2/g, "")), "nút Poster không được ghi vào Poster V2");
 });
 
-test("index.html: radar-uid.js ngay SAU sua.js, ?v=4; ?v của style.css/khung.js/viec.js/loi.js đã nâng; không script inline", () => {
-  assert.match(HTML, /<script src="sua\.js\?v=\d+" defer><\/script>\s*<script src="radar-uid\.js\?v=4" defer><\/script>\s*<\/head>/);
+test("index.html: radar-uid.js ngay SAU sua.js, ?v=5; ?v của style.css/khung.js/viec.js/loi.js đã nâng; không script inline", () => {
+  assert.match(HTML, /<script src="sua\.js\?v=\d+" defer><\/script>\s*<script src="radar-uid\.js\?v=5" defer><\/script>\s*<\/head>/);
   const v = (f) => Number((HTML.match(new RegExp(`${f.replace(".", "\\.")}\\?v=(\\d+)`)) || [])[1]);
   assert.ok(v("style.css") >= 22, "style.css");
   assert.ok(v("khung.js") >= 7, "khung.js");
@@ -1028,4 +1028,44 @@ test("nhãn việc: viec.js TEN_LOAI_VIEC + loi.js LOI_LOAI_VIEC có radar_uid_h
   for (const l of ["radar_uid_hang_ngay", "radar_uid_nap"]) assert.ok(!Object.prototype.hasOwnProperty.call(N.LOAI_VIEC_SP, l), l);
   assert.equal(N.TEN_LOAI_VIEC.hoc_hang_ngay, "Học mỗi ngày");
   assert.equal(N.LOI_LOAI_VIEC.quet_view_hang_ngay, "Quét view video của mình");
+});
+
+
+// ---- Thông số + xu hướng theo ngày (số EchoTik đã lưu; thiếu = "—", không điền 0) ----
+const CHI_SO = { ngay: "2026-11-23", ban_30d: 2860, gmv: null, gmv_30d: "$15.21K", creator_tong: 29, creator_30d: 12,
+  video_tong: 105, video_30d: 49, live_30d: null, luot_danh_gia: 539, hang_nganh: 258, gia_goc: "155.579₫", danh_gia: 4.5 };
+
+test("rduThongSoHtml: đủ số thì hiện bán 30 ngày, creator, video, đánh giá, hạng, giá gốc; chưa có chi_so thì '—' + câu giải thích", () => {
+  const h = F.rduThongSoHtml(U({ ban_tong: 10620, gia: "80.901₫", hoa_hong: "7%", ton: "28.37K", echotik_cap_nhat: "2026-11-23 04:55", chi_so: CHI_SO }));
+  for (const t of [/Đã bán \(tổng\)[\s\S]*?10\.620/, /Bán 30 ngày[\s\S]*?2\.860/, /doanh thu 30 ngày \$15\.21K/, /12 \/ 29/, /49 \/ 105/,
+    /4,5 ★ \(539 đánh giá\)/, /#258/, /80\.901₫ · 7%/, /giá gốc 155\.579₫/, /tồn kho|Tồn kho[\s\S]*?28\.37K/i, /EchoTik cập nhật số liệu lúc 2026-11-23 04:55/]) assert.match(h, t);
+  const r = F.rduThongSoHtml(U({ ban_tong: null, chi_so: null }));
+  assert.match(r, /Bán 30 ngày[\s\S]*?—/);
+  assert.match(r, /lượt chụp kế tiếp/);
+  assert.ok(!/>0</.test(r), "không in 0 giả");
+  KHONG_LOT(F.rduThongSoHtml(U({ ten: BAN, shop: BAN, gia: BAN, hoa_hong: BAN, ton: BAN, echotik_cap_nhat: BAN, chi_so: { ...CHI_SO, gmv_30d: BAN, gia_goc: BAN } })), "thong-so");
+});
+
+test("rduXuHuongHtml: một hàng mỗi ngày, chênh so với ngày trước, không bảng; rỗng thì không vẽ; ngày sai bị bỏ", () => {
+  const xh = [{ ngay: "2026-11-22", ban_tong: 10500, ban_30d: 2800, creator_30d: 10, video_30d: null },
+    { ngay: "2026-11-23", ban_tong: 10620, ban_30d: 2860, creator_30d: 12, video_30d: 49 }, { ngay: "<b>x</b>", ban_tong: 1 }];
+  const h = F.rduXuHuongHtml(U({ xu_huong: xh }));
+  assert.match(h, /22\/11/); assert.match(h, /23\/11/);
+  assert.match(h, /10\.620 <span class="small rdu-tang">\+120<\/span>/);
+  assert.match(h, /12 <span class="small rdu-tang">\+2<\/span>/);
+  assert.match(h, /Mới có 2 ngày dữ liệu/);
+  assert.ok(!h.includes("<b>x"), "ngày sai bị bỏ");
+  assert.equal(F.rduXuHuongHtml(U({ xu_huong: [] })), "");
+  assert.equal(F.rduXuHuongHtml(U({})), "");
+  const giam = F.rduXuHuongHtml(U({ xu_huong: [{ ngay: "2026-11-22", ban_tong: 5 }, { ngay: "2026-11-23", ban_tong: 3 }] }));
+  assert.match(giam, /rdu-giam">-2</);
+});
+
+test("thẻ UID tương tự và khối UID chính đều có Thông số; UID loại thì không", () => {
+  const u = U({ uid: UID, chi_so: CHI_SO, ban_tong: 100, xu_huong: [{ ngay: "2026-11-23", ban_tong: 100 }] });
+  const h = F.rduHangHtml(u, GOC);
+  assert.match(h, /rdu-thong-so/); assert.match(h, /Xu hướng theo ngày/);
+  assert.ok(!/rdu-thong-so/.test(F.rduHangHtml({ ...u, trang_thai: "loai" }, GOC)));
+  const ct = F.rduChiTietHtml(CT({ ds: [U({ uid: GOC, vai: "goc", chi_so: CHI_SO, ban_tong: 9 }), u] }));
+  assert.equal((ct.match(/rdu-thong-so/g) || []).length, 2);
 });

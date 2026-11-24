@@ -230,6 +230,45 @@ def ban_tong_so(snaps: list) -> int | None:
     return so.gia_tri if so is not None else None
 
 
+def _so_them(them: dict, khoa: str) -> int | None:
+    so = rut.doc_so_rut_gon(them.get(khoa))
+    return so.gia_tri if so is not None else None
+
+
+def _chuoi_them(them: dict, khoa: str) -> str | None:
+    v = them.get(khoa)
+    return v if isinstance(v, str) and v.strip() else None
+
+
+def dung_chi_so_va_xu_huong(snaps: list, them_theo_ngay: dict) -> tuple[dict | None, list[dict]]:
+    """chi_so = các số xu hướng của snapshot mới nhất CÓ `them` (None nếu chưa snapshot nào có);
+    xu_huong = ≤ RADAR_CHUOI_TOI_DA ngày gần nhất, cũ → mới, mỗi ngày: ban_tong, ban_30d, creator_30d, creator_tong,
+    video_30d, video_tong (None nếu thiếu — không điền 0). Chỉ đọc số EchoTik đã lưu, không suy ra gì thêm."""
+    xh: list[dict] = []
+    for s in sorted(snaps, key=lambda s: (s["ngay"], s["lay_luc"]))[-RADAR_CHUOI_TOI_DA:]:
+        t = them_theo_ngay.get(s["ngay"]) or {}
+        bt = rut.doc_so_rut_gon(s["ban_tong"])
+        xh.append({"ngay": s["ngay"], "ban_tong": bt.gia_tri if bt is not None else None,
+                   "ban_30d": _so_them(t, "sale_30d_cnt"), "creator_30d": _so_them(t, "ifl_30d_cnt"),
+                   "creator_tong": _so_them(t, "total_ifl_cnt"), "video_30d": _so_them(t, "video_30d_cnt"),
+                   "video_tong": _so_them(t, "total_video_cnt")})
+    ngay_co = [n for n in sorted(them_theo_ngay) if them_theo_ngay[n]]
+    if not ngay_co:
+        return None, xh
+    n = ngay_co[-1]
+    t = them_theo_ngay[n]
+    rt = t.get("rating")
+    chi_so = {
+        "ngay": n, "ban_30d": _so_them(t, "sale_30d_cnt"), "gmv": _chuoi_them(t, "gmv_amt"),
+        "gmv_30d": _chuoi_them(t, "gmv_30d_amt"), "creator_tong": _so_them(t, "total_ifl_cnt"),
+        "creator_30d": _so_them(t, "ifl_30d_cnt"), "video_tong": _so_them(t, "total_video_cnt"),
+        "video_30d": _so_them(t, "video_30d_cnt"), "live_30d": _so_them(t, "live_30d_cnt"),
+        "luot_danh_gia": _so_them(t, "review_count"), "hang_nganh": _so_them(t, "hang_nganh"),
+        "gia_goc": _chuoi_them(t, "original_price"),
+        "danh_gia": float(rt) if isinstance(rt, (int, float)) and not isinstance(rt, bool) else None}
+    return chi_so, xh
+
+
 def _them_nhom_radar(n: dict, ds: list[dict]) -> dict:
     """Khoá thêm RU-B11 của một nhóm: anh/shop từ kho; gia = giá snapshot mới nhất của UID gốc (đã có trong `ds`)."""
     goc = next((u for u in ds if u["uid"] == n["goc"]), None)
@@ -1274,6 +1313,7 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             u = dung_uid_ra(lk, snaps, bay, bat_dau_ngay)
             u["anh"] = anh_hop_le(lk.get("anh"))
             u["ban_tong"] = ban_tong_so(snaps)
+            u["chi_so"], u["xu_huong"] = dung_chi_so_va_xu_huong(snaps, k.doc_them(lk["uid"], tu_ngay))
             ra.append(u)
         return sap_xep_uid_ra(ra)
 

@@ -782,3 +782,11 @@ s = goi("/api/v1/data/products?" + urllib.parse.urlencode({"page": 1, "per_page"
 print("   E4 so phan tu:", len(s.get("data") or []), "| khoa:", sorted(((s.get("data") or [{}])[0]).keys())[:40], "| meta:", json.dumps(s.get("meta"))[:200])
 PY
 ```
+
+## Bổ sung 2026-11-24: Thông số xu hướng từ E1 (schema v3)
+
+- **Vì sao:** thẻ UID chỉ có view/video, thiếu các số như app TikTok ("Xu hướng sản phẩm"). E1 (`chi_tiet`, đã gọi sẵn) trả thêm `sale_30d_cnt`, `gmv_30d_amt`, `gmv_amt`, `ifl_30d_cnt`/`total_ifl_cnt` (creator), `video_30d_cnt`/`total_video_cnt`, `live_30d_cnt`, `review_count`, `labels.rating`, `labels.total_category_sale_rank`, `original_price`. **Không tốn thêm GET.** CTR, đơn/ngày và số người thêm giỏ của TikTok KHÔNG có ở EchoTik.
+- **Lưu:** `chup_uid.them` (TEXT JSON, mặc định `''`). `echotik.chi_so_them(e1)` chỉ nhặt đúng danh sách khoá trên, chuỗi/số ≤ 32 ký tự, thiếu thì bỏ khoá (không điền 0). `ghi_chup_ok` nhận `snap["them"]` (`_chuan_them` kiểm kiểu, ≤ 20 khoá). `ghi_them(uid, ngay, them)` bổ sung cho lần chụp `ok` đang rỗng (không ghi đè). `doc_them(uid, tu_ngay)` → `{ngay: dict}`; DB chưa có cột thì trả `{}`.
+- **Schema v3:** `PHIEN_BAN_SCHEMA = "3"`; `mo()` nâng v1 và v2 → v3 trong một giao dịch (ADD COLUMN `anh`, `anh_luc`, `them` nếu thiếu). Schema khác 1/2/3 vẫn bị từ chối. Bản code cũ KHÔNG mở được DB v3 (phải khôi phục từ bản sao lưu).
+- **API:** `/radar/bang` mỗi UID thêm `chi_so` (số của lần chụp mới nhất có `them`, hoặc `null`) và `xu_huong` (≤ 14 ngày: `ban_tong`, `ban_30d`, `creator_30d`, `creator_tong`, `video_30d`, `video_tong`). Không thêm vào `/radar/uid/<uid>`.
+- **Web:** `rduThongSoHtml` (ô luôn hiện) + `rduXuHuongHtml` (lưới, không bảng, chênh so với ngày trước) trên thẻ UID tương tự và khối UID chính. Số rút gọn kiểu `10.55K` sai số vài chục đơn; EchoTik cập nhật số liệu chậm 1–3 ngày nên "đơn/ngày" chỉ là xấp xỉ.

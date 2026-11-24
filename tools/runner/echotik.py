@@ -331,6 +331,33 @@ def anh_bia(e1: dict) -> str:
     return v if isinstance(v, str) and v.strip() else ""
 
 
+_KHOA_THEM = ("sale_30d_cnt", "gmv_amt", "gmv_30d_amt", "total_ifl_cnt", "ifl_30d_cnt", "total_video_cnt",
+              "video_30d_cnt", "total_live_cnt", "live_30d_cnt", "review_count", "original_price")
+
+
+def chi_so_them(e1: dict) -> dict:
+    """E1 -> các chỉ số xu hướng đã đo từ chính E1 (không tốn thêm GET): chỉ khoá trong danh sách, giá trị chuỗi/số
+    (≤ 32 ký tự), thiếu thì bỏ khoá (không điền 0). `rating` và `hang_nganh` lấy từ `labels`."""
+    if not isinstance(e1, dict):
+        return {}
+    ra: dict = {}
+
+    def nhan(k: str, v: object) -> None:
+        if isinstance(v, bool) or not isinstance(v, (str, int, float)):
+            return
+        if isinstance(v, str) and (not v.strip() or len(v) > 32):
+            return
+        ra[k] = v
+
+    for k in _KHOA_THEM:
+        nhan(k, e1.get(k))
+    lb = e1.get("labels")
+    if isinstance(lb, dict):
+        nhan("rating", lb.get("rating"))
+        nhan("hang_nganh", lb.get("total_category_sale_rank"))
+    return ra
+
+
 def anh_ung_vien(raw: dict) -> str:
     """Một phần tử E4 -> `cover_url` (chuỗi không rỗng) hoặc "". Hàm riêng, KHÔNG đổi `UngVien`/`chuan_ung_vien`
     (khoá TypedDict §7.2 được test so khớp giữa 3 module); script tự giữ map uid -> ảnh. KHÔNG kiểm host."""
