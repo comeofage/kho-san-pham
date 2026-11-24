@@ -30,11 +30,21 @@
   "luc": "2026-11-18T18:27:59+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-11-24T16:10:46+07:00",
+  "poster": [
+   {
+    "folder": 373,
+    "so_video": 21,
+    "duong_dan": "E:/oneshottramcanh/butchico-1733830967505093930/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 373,
+  "duong_dan": "E:/oneshottramcanh/butchico-1733830967505093930/output_poster"
  },
- "cap_nhat_luc": "2026-11-18T18:27:59+07:00",
+ "cap_nhat_luc": "2026-11-24T16:10:46+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "✅",
