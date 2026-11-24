@@ -48,6 +48,8 @@ test("mnMuc: đủ bảng §2.3 cho chủ kho và người thường", () => {
     ["#/hoc", "hom-nay", ""], ["#/hocx", "", "kho"], ["#/hoc/x", "", "kho"],
     // D16: Radar UID (#/theo-doi) là mục menu thứ 6, chỉ chủ kho; người thường không tô gì.
     ["#/theo-doi", "theo-doi", ""], ["#/theo-doix", "", "kho"], ["#/theo-doi/x", "", "kho"],
+    // RU-W6: trang chi tiết một UID chính (#/theo-doi/<19 số>) vẫn tô mục Radar UID; id sai dạng → hash lạ
+    [`#/theo-doi/${UID}`, "theo-doi", ""], ["#/theo-doi/123", "", "kho"], [`#/theo-doi/${UID}9`, "", "kho"], [`#/theo-doi/${UID}/x`, "", "kho"], ["#/theo-doi/", "", "kho"],
     ["#/la", "", "kho"], ["#/khoxyz", "", "kho"], ["#/dangky", "", "kho"], ["#/viecx", "", "kho"], [`#/sua/${UID}`, "", "kho"],
   ];
   for (const [h, chu, thuong] of BANG) {
@@ -151,14 +153,14 @@ function dungKhung({ chu = true, list = [], apiGia, dg = false, dy = false, rdu 
   ns.hcRender = async (p) => { goi.push(`hcRender:${p}`); };
   if (dg) Object.assign(ns, { dgRenderDs: async () => goi.push("dgRenderDs"), dgRender: async (id) => goi.push(`dgRender:${id}`), dgDung: () => goi.push("dgDung") });
   if (dy) Object.assign(ns, { dyRenderDs: async () => goi.push("dyRenderDs"), dyRender: async (id) => goi.push(`dyRender:${id}`), dyDung: () => goi.push("dyDung") });
-  if (rdu) Object.assign(ns, { rduRender: async (p) => goi.push(`rduRender:${p}`), rduDung: () => goi.push("rduDung") });
+  if (rdu) Object.assign(ns, { rduRender: async (p, id) => goi.push(`rduRender:${p}${id ? `:${id}` : ""}`), rduDung: () => goi.push("rduDung") });
   const ten = Object.keys(ns);
   const K = new Function(...ten, `"use strict";\nlet phienCT = 0;\n${SRC_QUAY}\n${KHUNG}
 return { mnRoute, mnKiemSk, phien: () => phienCT, doiPhien: () => ++phienCT };`)(...ten.map((k) => ns[k]));
   return { K, goi, app, nut, dauKhung, chu };
 }
 
-const ROUTE_CHU = ["#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster", "#/hoc", "#/theo-doi"];
+const ROUTE_CHU = [`#/theo-doi/${UID}`, "#/can-quay", "#/duyet", `#/duyet/${UID}`, "#/dang", `#/dang/${UID}`, "#/may-nha", "#/viec", "#/suc-khoe", "#/poster", "#/hoc", "#/theo-doi"];
 
 test("D15 mnRoute #/hoc: chủ kho → hcRender(phiên mới), trả true; thiếu hoc.js → câu 'đang cập nhật'; số mục menu không đổi (không thêm mục Học)", async () => {
   const x = dungKhung();
@@ -187,6 +189,29 @@ test("D16 mnRoute #/theo-doi: chủ kho → rduDung rồi rduRender(phiên mới
   assert.match(x.app.innerHTML, /Trang đang được cập nhật/);
   assert.equal(F.mnNavHtml(false), `<a href="#/kho" data-nav="kho">Sản phẩm</a>`, "người thường vẫn đúng 1 mục, không thấy Radar UID");
   assert.ok(!/theo-doi|Radar/.test(F.mnNavHtml(false)));
+});
+
+test("RU-W6 mnPhanTichHash: #/theo-doi ⇒ id ''; #/theo-doi/<19 số> ⇒ id là chuỗi 19 số; id sai dạng/dư đoạn ⇒ không khớp", () => {
+  assert.deepEqual(F.mnPhanTichHash("#/theo-doi"), { trang: "theo-doi", id: "" });
+  assert.deepEqual(F.mnPhanTichHash(`#/theo-doi/${UID}`), { trang: "theo-doi", id: UID });
+  assert.equal(typeof F.mnPhanTichHash(`#/theo-doi/${UID}`).id, "string");
+  for (const h of ["#/theo-doi/", "#/theo-doi/xyz", "#/theo-doi/123", `#/theo-doi/${UID}0`, `#/theo-doi/${UID}/`, `#/theo-doi/${UID}/x`, `#/theo-doi/${UID}?a=1`, `#/theo-doi/ ${UID}`, `#/theo-doi/${BAN}`]) {
+    assert.deepEqual(F.mnPhanTichHash(h), { trang: "", id: "" }, h);
+  }
+});
+
+test("RU-W6 mnRoute #/theo-doi/<19 số>: chủ kho → rduDung, rduRender(phiên mới, id); người thường → CHI_CHU_HTML; hash lạ → false, không gọi rduRender", async () => {
+  let x = dungKhung({ rdu: true });
+  assert.equal(await x.K.mnRoute(`#/theo-doi/${UID}`, true), true);
+  assert.deepEqual(x.goi, ["rduDung", `rduRender:1:${UID}`]);
+  x = dungKhung({ chu: false, rdu: true });
+  assert.equal(await x.K.mnRoute(`#/theo-doi/${UID}`, false), true);
+  assert.equal(x.app.innerHTML, CHI_CHU_HTML);
+  assert.deepEqual(x.goi, ["rduDung"]);
+  x = dungKhung({ rdu: true });
+  assert.equal(await x.K.mnRoute("#/theo-doi/xyz", true), false);
+  assert.deepEqual(x.goi, ["rduDung"]);
+  assert.match(KHUNG, /rduRender\(phien, id\)/);
 });
 
 test("mnRoute: người thường mở route chủ kho → CHI_CHU_HTML, trả true, không gọi API / không vẽ trang", async () => {

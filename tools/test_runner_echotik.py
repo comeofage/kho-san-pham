@@ -18,7 +18,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from runner import echotik  # noqa: E402
 from runner.echotik import (  # noqa: E402
-    EchoTik, HetNganSach, LoiEchoTik, chuan_meta, chuan_ung_vien, chuan_video,
+    EchoTik, HetNganSach, LoiEchoTik, anh_bia, anh_ung_vien, chuan_meta, chuan_ung_vien, chuan_video,
 )
 
 TOKEN_GIA = "TOKEN_GIA_zq81xk-secret"
@@ -606,3 +606,29 @@ def test_chuan_ung_vien_id_phai_19_so_chuoi():
     assert chuan_ung_vien({"product_id": UID}) is None
     assert chuan_ung_vien({"product_id": UID, "product_name": ""}) is None
     assert chuan_ung_vien(None) is None
+
+
+# ------------------------------------------------------------------ ảnh bìa (RU-A5)
+ANH = "https://cdn.echotik.live/abc/def/product-cover/138/1729420930611055346_0.webp"
+
+
+def test_anh_bia_lay_images_0():
+    assert anh_bia({"images": [ANH, "https://cdn.echotik.live/x"]}) == ANH
+
+
+@pytest.mark.parametrize("e1", [None, [], "x", {}, {"images": None}, {"images": []}, {"images": "u"}, {"images": {"0": ANH}},
+                                {"images": [None, ANH]}, {"images": [""]}, {"images": ["  "]}, {"images": [5]}])
+def test_anh_bia_du_lieu_la_thi_rong(e1):
+    assert anh_bia(e1) == ""
+
+
+def test_anh_bia_khong_kiem_host():
+    assert anh_bia({"images": ["http://evil.example/a.png"]}) == "http://evil.example/a.png"
+
+
+def test_anh_ung_vien_cover_url_va_khong_doi_khoa_ung_vien():
+    raw = {**E4_OK["data"][0], "cover_url": ANH}
+    assert anh_ung_vien(raw) == ANH
+    assert set(chuan_ung_vien(raw)) == {"uid", "ten", "gia", "ban_7d"}      # UngVien (§7.2) KHÔNG đổi khoá
+    for x in (None, [], {}, {"cover_url": None}, {"cover_url": ""}, {"cover_url": 5}, {"cover_url": [ANH]}):
+        assert anh_ung_vien(x) == ""

@@ -773,13 +773,13 @@ test("mnRoute: pvDung ở đầu MỌI lần route; chủ #/poster[/x] → pvRen
 });
 
 // ---------- index.html (§6.2) + poster.css ----------
-test("index.html: poster.css sau menu.css; poster.js + 9 pv-*.js giữa khung.js và app.js đúng thứ tự §6.2; khung.js?v=6 (2026-11-19 gỡ dang.js, duyet.js; D16 thêm Radar UID)", () => {
+test("index.html: poster.css sau menu.css; poster.js + 9 pv-*.js giữa khung.js và app.js đúng thứ tự §6.2; khung.js?v=7 (2026-11-19 gỡ dang.js, duyet.js; D16 thêm Radar UID)", () => {
   assert.match(HTML, /<link rel="stylesheet" href="menu\.css\?v=1">\s*<link rel="stylesheet" href="poster\.css\?v=2">/);
   const js = [...HTML.matchAll(/<script src="([^"?]+)\?v=\d+" defer><\/script>/g)].map((m) => m[1]).filter((s) => !s.startsWith("vendor/"));
   const i = js.indexOf("khung.js");
   assert.deepEqual(js.slice(i, i + 12), ["khung.js", "poster.js", "pv-dashboard.js", "pv-accounts.js", "pv-folders.js", "pv-calendar.js",
     "pv-views.js", "pv-queue.js", "pv-post.js", "pv-logs.js", "pv-settings.js", "app.js"]);
-  assert.match(HTML, /khung\.js\?v=6"/); // D16: khung.js thêm mục Radar UID → ?v 5 → 6
+  assert.match(HTML, /khung\.js\?v=7"/); // RU-W6: khung.js nhận #/theo-doi/<id> → ?v 6 → 7 (D16: 5 → 6)
   assert.match(HTML, /poster\.js\?v=2" defer/, "2026-11-19 nút Bật Poster V2: nâng ?v");
   for (const f of ["pv-dashboard.js", "pv-settings.js"]) assert.match(HTML, new RegExp(`${f.replace(".", "\\.")}\\?v=1" defer`));
 });

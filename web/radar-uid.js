@@ -1,4 +1,6 @@
 // Radar UID (D16, docs/radar-uid.md §8–§10): tab "📡 Radar UID" (#/theo-doi, mục menu thứ 6, CHỈ chủ kho).
+// RU-W6: trang chính chỉ liệt kê UID CHÍNH (thẻ có ảnh, bấm vào #/theo-doi/<goc>); UID tương tự + chỉ số nằm ở trang chi tiết (chỉ số trong <details>).
+// Ảnh: chỉ <img> khi URL thuộc cdn.echotik.live (CSP img-src đúng host này); thiếu/hết hạn → ô xám, không báo lỗi.
 // Chủ nhập 1 UID gốc → máy nhà tìm ≤ 10 SP "tương tự", chụp snapshot mỗi ngày; bảng xếp hạng UID "đang có đà".
 // Script thường, chung phạm vi toàn cục với app.js: mọi tên cấp đỉnh bắt đầu bằng "rdu"/"RDU_" (P2-7, test cf/test/menu-web.test.mjs).
 // Dùng của app.js lúc chạy: $, esc, api, toast, copy, phienCT. Được gọi từ khung.js (rduRender, rduDung) qua typeof.
@@ -13,6 +15,7 @@
 const RDU_RE_UID = /^\d{19}$/;
 const RDU_RE_LINK = /\/(?:product|pdp)\/(?:[^/?#\s]+\/)?(\d{19})(?!\d)/;
 const RDU_RE_NGAY = /^(\d{4})-(\d{2})-(\d{2})$/;
+const RDU_RE_ANH = /^https:\/\/cdn\.echotik\.live\/[A-Za-z0-9._\/-]{1,300}$/; // đúng 1 host (khớp CSP img-src trong web/_headers)
 const RDU_RE_LOI_CAU_HINH = /^(Chưa cấu hình bộ chạy việc|Khoá ký bộ chạy việc không hợp lệ \(KY_RIENG\))$/;
 const RDU_KY_DIEU_KHIEN = /[\u0000-\u001f\u007f]/g;
 const RDU_SNAPSHOT_CAN = 4; // SNAPSHOT_TOI_THIEU (§5.4): chỉ để hiện "k/4 snapshot"
@@ -30,6 +33,8 @@ const RDU_CAU_CHUA_DA = "Chưa đủ bằng chứng / chưa có đà";
 const RDU_XEP = { dang_co_da: "Đáng thử (tín hiệu)", chua_co_da: "Chưa có đà", chua_du: "Chưa đủ bằng chứng", chan: "Bị chặn" };
 const RDU_VAI = { goc: "UID gốc", tuong_tu: "Tương tự", them_tay: "Thêm tay" };
 const RDU_TT_NHOM = { cho_tim: "Đang chờ máy nhà…", dang_tim: "Đang tìm sản phẩm tương tự…", da_tim: "", loi_tim: "Tìm sản phẩm tương tự bị lỗi", ngung: "Đã ngừng theo dõi (giữ dữ liệu)" };
+// Huy hiệu nhóm trên thẻ UID chính: [lớp CSS, chữ].
+const RDU_TT_HUY_HIEU = { cho_tim: ["tim", "Đang tìm"], dang_tim: ["tim", "Đang tìm"], da_tim: ["xong", "Đã tìm"], loi_tim: ["loi", "Lỗi tìm"], ngung: ["ngung", "Ngừng"] };
 const RDU_TT_LAN = { xong: "đã xong", tu_dung: "tạm dừng", loi: "bị lỗi", dang_chay: "đang chạy", chua_chay: "chưa chạy" };
 const RDU_CAU_TOKEN = {
   thieu: "Chưa có token EchoTik: đăng nhập EchoTik trên Chrome để tạo lại file token.",
@@ -150,7 +155,7 @@ function rduOTrungVi(u) {
   if (rduOk(u.trung_vi)) {
     const phu = [];
     if (u.tam === true || u.xep_loai === "chua_du") phu.push(`chưa đủ bằng chứng (n=${rduSo(u.n_video)}, ${rduSo(u.so_snapshot)}/${RDU_SNAPSHOT_CAN} snapshot)`);
-    else if (u.xep_loai === "chan") phu.push("bị chặn: xem cờ bên dưới");
+    else if (u.xep_loai === "chan") phu.push("bị chặn: xem cờ trên thẻ");
     if (rduOk(u.trung_vi_truoc)) phu.push(`kỳ trước ${rduSo(u.trung_vi_truoc)}`);
     return rduO("rdu-o-chinh", "Trung vị Δview/video/24h", `<span class="rdu-so-lon${xam ? " rdu-xam" : ""}">${esc(rduSo(u.trung_vi))}</span>`, esc(phu.join(" · ")));
   }
@@ -219,7 +224,104 @@ function rduPosterHtml(u, goc) {
     + `<div class="row">${nut("chep", "Sao chép UID")}${nut("mo-folders", "Mở Poster V2 › Folders")}</div></div>`;
 }
 
-// 1 UID (UidRa §7.1) → 1 hàng thẻ lưới (không bảng: 375px không cuộn ngang). goc: id nhóm chứa hàng này.
+// ---- ảnh (RU-W6 D): chỉ <img> khi URL đúng host CDN EchoTik (CSP img-src chỉ mở đúng host này); còn lại ô xám ----
+const rduAnhHopLe = (u) => typeof u === "string" && RDU_RE_ANH.test(u);
+// kich: "nho" (~96px, mặc định) | "lon". Ảnh lỗi tải (URL EchoTik sống ~24 giờ) → rduAnhLoi (phần DOM) thay bằng RDU_ANH_HET.
+function rduAnhHtml(url, kich) {
+  const cl = kich === "lon" ? "lon" : "nho";
+  const trong = rduAnhHopLe(url)
+    ? `<img src="${esc(url)}" loading="lazy" referrerpolicy="no-referrer" alt="">`
+    : `<span class="rdu-anh-ph">chưa có ảnh</span>`;
+  return `<span class="rdu-anh rdu-anh-${cl}">${trong}</span>`;
+}
+// Giá từ API: chuỗi đã định dạng ("499.390₫") hoặc số; thiếu → "" (không vẽ dòng, không điền 0).
+function rduGiaChu(g) {
+  if (typeof g === "string") return rduChu(g, 40);
+  return rduOk(g) ? `${rduSo(g)}₫` : "";
+}
+// 2 liên kết ngoài; uid chỉ vào URL sau khi khớp ^\d{19}$.
+function rduLienKetHtml(uid) {
+  const u = rduId(uid);
+  if (!u) return "";
+  const a = (href, nhan) => `<a class="rdu-lk" href="${href}" target="_blank" rel="noopener noreferrer">${nhan}</a>`;
+  return `<span class="rdu-lks">${a(`https://shop.tiktok.com/view/product/${u}?region=VN`, "Mở TikTok")}${a(`https://echotik.live/products/${u}`, "Mở EchoTik")}</span>`;
+}
+function rduSaoChepHtml(uid, goc) {
+  const u = rduId(uid), g = rduId(goc);
+  if (!u || !g) return "";
+  return `<button type="button" class="btn ghost sm rdu-chep" data-rdu-act="sao-chep-uid" data-rdu-uid="${u}" data-rdu-goc="${g}" aria-label="Sao chép UID">Sao chép</button>`;
+}
+function rduHuyHieuHtml(tt) {
+  const h = rduCo(RDU_TT_HUY_HIEU, tt) ? RDU_TT_HUY_HIEU[tt] : ["khac", "Không rõ"];
+  return `<span class="rdu-tt rdu-tt-${h[0]}">${esc(h[1])}</span>`;
+}
+
+// Gom thông tin hiển thị của một nhóm (UID chính); thiếu ảnh/tên/shop/giá của nhóm → lấy từ dòng UID gốc trong ds. goc sai → null.
+function rduThongTinNhom(nhom) {
+  const n = rduObj(nhom);
+  const goc = rduId(n.goc);
+  if (!goc) return null;
+  const ds = rduMang(n.ds).filter((u) => u && typeof u === "object");
+  const gocU = ds.find((u) => u.vai === "goc" || u.uid === goc) || {};
+  const tt = rduCo(RDU_TT_NHOM, n.trang_thai) ? n.trang_thai : "";
+  const tuongTu = ds.filter((u) => u.vai !== "goc" && u.uid !== goc);
+  return {
+    n, goc, ds, tt, tuongTu,
+    anh: rduAnhHopLe(n.anh) ? n.anh : (rduAnhHopLe(gocU.anh) ? gocU.anh : ""),
+    ten: rduChu(n.ten, 160) || rduChu(gocU.ten, 160),
+    shop: rduChu(n.shop, 80) || rduChu(gocU.shop, 80),
+    gia: rduGiaChu(n.gia) || rduGiaChu(gocU.gia),
+    dem: rduOk(n.n_tuong_tu) ? n.n_tuong_tu : tuongTu.filter((u) => u.trang_thai !== "loai").length,
+    lyDo: n.trang_thai === "loi_tim" ? rduChu(n.ten_ly_do, 200) || rduChu(n.ly_do, 80) : "",
+    gocU,
+  };
+}
+// Nút của nhóm (Tìm lại / Ngừng / Theo dõi lại): nằm NGOÀI thẻ liên kết.
+function rduNutNhomHtml(n, goc) {
+  const nut = (act, nhan) => `<button type="button" class="btn ghost sm" data-rdu-act="${act}" data-rdu-goc="${goc}">${esc(nhan)}</button>`;
+  const nuts = [];
+  if (rduChoPhepNhom(n, "tim-lai")) nuts.push(nut("tim-lai", "Tìm lại"));
+  if (rduChoPhepNhom(n, "ngung")) nuts.push(nut("ngung", "Ngừng theo dõi"));
+  if (rduChoPhepNhom(n, "theo-lai")) nuts.push(nut("theo-lai", "Theo dõi lại"));
+  return nuts.join("");
+}
+
+// Trang chính: THẺ một UID chính (chỉ nhóm, không liệt kê UID tương tự). Thẻ = <article> chứa <a href="#/theo-doi/<goc>"> + hàng nút bên ngoài <a>.
+function rduTheChinhHtml(nhom) {
+  const t = rduThongTinNhom(nhom);
+  if (!t) return "";
+  const batDau = rduDm(t.n.bat_dau_ngay);
+  const ghim = rduOk(t.n.n_ghim) && t.n.n_ghim > 0 ? ` · ${rduSo(t.n.n_ghim)} đã ghim` : "";
+  return `<article class="rdu-the" data-rdu-goc="${t.goc}">`
+    + `<a class="rdu-the-lk" href="#/theo-doi/${t.goc}">${rduAnhHtml(t.anh, "nho")}<div class="rdu-thong-tin">`
+    + `<div class="rdu-the-ten">${esc(t.ten || "(chưa có tên)")}</div>`
+    + (t.shop ? `<div class="small muted">Shop: ${esc(t.shop)}</div>` : "")
+    + (t.gia ? `<div class="small rdu-gia">${esc(t.gia)}</div>` : "")
+    + `<div>${rduHuyHieuHtml(t.n.trang_thai)}${t.lyDo ? ` <span class="small rdu-vang">${esc(t.lyDo)}</span>` : ""}</div>`
+    + `<div class="small">${esc(`${rduSo(t.dem)} UID tương tự đang theo dõi${ghim}`)}</div>`
+    + (batDau ? `<div class="small muted">Bắt đầu theo dõi ${esc(batDau)}</div>` : "")
+    + `</div></a><div class="row rdu-the-nut">${rduNutNhomHtml(t.n, t.goc)}</div></article>`;
+}
+
+// Khung "Chỉ số" thu gọn (<details>): xếp loại + mọi ô số liệu + dòng dữ liệu. Cờ chặn/cảnh báo KHÔNG nằm trong đây.
+function rduChiSoHtml(x) {
+  const xep = rduCo(RDU_XEP, x.xep_loai) ? x.xep_loai : "khac";
+  const dl = rduGio(x.du_lieu_luc);
+  const cuoi = `dữ liệu lúc ${dl || "—"} · phủ ${rduSo(x.phu_gio)} giờ · ${rduSo(x.so_snapshot)} snapshot`;
+  return `<details class="rdu-chi-so"><summary>Chỉ số</summary>`
+    + `<div><span class="rdu-xl rdu-xl-${xep}">${esc(rduNhan(RDU_XEP, x.xep_loai, "Chưa phân loại"))}</span></div>`
+    + `<div class="rdu-luoi">${rduOTrungVi(x)}`
+    + rduO("", "Xu hướng", `<span class="rdu-spark">${esc(rduSpark(x.spark))}</span>`, "7 kỳ gần nhất, cũ → mới")
+    + `${rduOTangToc(x)}${rduOViewNho(x)}${rduOSong(x)}${rduODoi(x)}${rduOMoi(x)}`
+    + rduO("", "Δ bán/ngày", esc(rduSo(x.d_ban_ngay, 1)))
+    + rduO("", "Creator mới/ngày", esc(rduSo(x.creator_moi_ngay, 1)))
+    + `${rduOGia(x)}`
+    + rduO("", "is_promote", esc(`is_promote ${rduSo(x.promote_x)}/${rduSo(x.promote_y)} (chưa rõ nghĩa)`))
+    + `</div><div class="small muted rdu-cuoi">${esc(cuoi)}</div></details>`;
+}
+
+// 1 UID tương tự (UidRa §7.1) → thẻ ngang: ảnh, tên, shop, giá, đã bán, UID + sao chép, liên kết, nhãn ghim/loại, cờ, nút; chỉ số trong <details>.
+// goc: id nhóm chứa hàng này.
 function rduHangHtml(u, goc) {
   const x = rduObj(u);
   const uid = rduId(x.uid);
@@ -230,7 +332,7 @@ function rduHangHtml(u, goc) {
   const loai = x.trang_thai === "loai";
   const vai = rduNhan(RDU_VAI, x.vai, "UID");
   const giong = x.vai === "tuong_tu" && rduOk(x.do_giong) ? ` · tên giống ${rduSo(Math.round(x.do_giong * 100))}%` : "";
-  const ghim = x.trang_thai === "ghim" ? " · 📌 đã ghim" : loai ? " · đã loại" : "";
+  const chip = x.trang_thai === "ghim" ? ` <span class="rdu-chip rdu-chip-ghim">📌 ghim</span>` : loai ? ` <span class="rdu-chip rdu-chip-loai">loại</span>` : "";
   const nut = (act, nhan, cls = "ghost") => `<button type="button" class="btn ${cls} sm" data-rdu-act="${act}" data-rdu-uid="${uid}"${gAttr}>${esc(nhan)}</button>`;
   const nuts = [];
   if (g && rduChoPhep(x, "ghim")) nuts.push(nut("ghim", "Ghim"));
@@ -238,54 +340,57 @@ function rduHangHtml(u, goc) {
   if (g && rduChoPhep(x, "loai")) nuts.push(nut("loai", "Loại"));
   if (g && rduChoPhep(x, "bo-loai")) nuts.push(nut("bo-loai", "Bỏ loại"));
   if (!loai) nuts.unshift(nut("poster", "📮 Poster"));
-  const dl = rduGio(x.du_lieu_luc);
-  const cuoi = `dữ liệu lúc ${dl || "—"} · phủ ${rduSo(x.phu_gio)} giờ · ${rduSo(x.so_snapshot)} snapshot`;
+  const gia = rduGiaChu(x.gia);
+  const ban = rduOk(x.ban_tong) ? `Đã bán ${rduSo(x.ban_tong)}` : "";
+  const dong = [gia, ban].filter(Boolean).join(" · ");
   return `<article class="rdu-hang rdu-${xep}${loai ? " rdu-loai" : ""}" data-rdu-uid="${uid}"${gAttr}>`
-    + `<div class="rdu-dau"><div class="rdu-ten"><div><span class="rdu-uid">${uid}</span> <span class="small muted">${esc(vai + giong + ghim)}</span></div>`
+    + `<div class="rdu-the-ngang">${rduAnhHtml(x.anh, "nho")}<div class="rdu-thong-tin">`
     + `<div class="rdu-sp">${esc(rduChu(x.ten, 160) || "(chưa có tên)")}</div>`
-    + `<div class="small muted">Shop: ${esc(rduChu(x.shop, 80) || "—")}</div></div>`
-    + `<span class="rdu-xl rdu-xl-${xep}">${esc(rduNhan(RDU_XEP, x.xep_loai, "Chưa phân loại"))}</span></div>`
-    + `<div class="rdu-luoi">${rduOTrungVi(x)}`
-    + rduO("", "Xu hướng", `<span class="rdu-spark">${esc(rduSpark(x.spark))}</span>`, "7 kỳ gần nhất, cũ → mới")
-    + `${rduOTangToc(x)}${rduOViewNho(x)}${rduOSong(x)}${rduODoi(x)}${rduOMoi(x)}`
-    + rduO("", "Δ bán/ngày", esc(rduSo(x.d_ban_ngay, 1)))
-    + rduO("", "Creator mới/ngày", esc(rduSo(x.creator_moi_ngay, 1)))
-    + `${rduOGia(x)}`
-    + rduO("", "is_promote", esc(`is_promote ${rduSo(x.promote_x)}/${rduSo(x.promote_y)} (chưa rõ nghĩa)`))
-    + `</div><div class="small muted rdu-cuoi">${esc(cuoi)}</div>${rduOCo(x)}`
-    + `<div class="row rdu-tay">${nuts.join("")}</div>${loai ? "" : rduPosterHtml(x, g)}</article>`;
+    + `<div class="small muted">Shop: ${esc(rduChu(x.shop, 80) || "—")}</div>`
+    + (dong ? `<div class="small rdu-gia">${esc(dong)}</div>` : "")
+    + `<div class="rdu-uid-dong"><span class="rdu-uid">${uid}</span>${loai ? "" : rduSaoChepHtml(uid, g)}</div>`
+    + `<div class="small muted">${esc(vai + giong)}${chip}</div>`
+    + `${rduLienKetHtml(uid)}</div></div>`
+    + `${rduOCo(x)}`
+    + `<div class="row rdu-tay">${nuts.join("")}</div>${rduChiSoHtml(x)}${loai ? "" : rduPosterHtml(x, g)}</article>`;
 }
 
-// 1 nhóm (UID gốc + tương tự) → khối. API đã sắp §5.4; "Ít dữ liệu" (uu_tien=ha) và "Đã loại" thu gọn.
-function rduNhomHtml(nhom) {
-  const n = rduObj(nhom);
-  const goc = rduId(n.goc);
-  if (!goc) return "";
-  const tt = rduCo(RDU_TT_NHOM, n.trang_thai) ? n.trang_thai : "";
-  const ds = rduMang(n.ds).filter((u) => u && typeof u === "object");
-  const loai = ds.filter((u) => u.trang_thai === "loai");
-  const ha = ds.filter((u) => u.trang_thai !== "loai" && u.uu_tien === "ha");
-  const chinh = ds.filter((u) => u.trang_thai !== "loai" && u.uu_tien !== "ha");
+// Trang chi tiết một UID chính: khối UID chính, rồi danh sách UID TƯƠNG TỰ (API đã sắp §5.4; "Ít dữ liệu" và "Đã loại" thu gọn).
+function rduChiTietHtml(nhom) {
+  const t = rduThongTinNhom(nhom);
+  if (!t) return "";
+  const { n, goc } = t;
+  const loai = t.tuongTu.filter((u) => u.trang_thai === "loai");
+  const ha = t.tuongTu.filter((u) => u.trang_thai !== "loai" && u.uu_tien === "ha");
+  const chinh = t.tuongTu.filter((u) => u.trang_thai !== "loai" && u.uu_tien !== "ha");
   const hang = (a) => a.map((u) => rduHangHtml(u, goc)).join("");
-  const nut = (act, nhan) => `<button type="button" class="btn ghost sm" data-rdu-act="${act}" data-rdu-goc="${goc}">${esc(nhan)}</button>`;
-  const nuts = [];
-  if (rduChoPhepNhom(n, "tim-lai")) nuts.push(nut("tim-lai", "Tìm lại"));
-  if (rduChoPhepNhom(n, "ngung")) nuts.push(nut("ngung", "Ngừng theo dõi"));
-  if (rduChoPhepNhom(n, "theo-lai")) nuts.push(nut("theo-lai", "Theo dõi lại"));
-  const cauTt = tt ? RDU_TT_NHOM[tt] : "Trạng thái nhóm không rõ";
-  const lyDo = tt === "loi_tim" ? rduChu(n.ten_ly_do, 200) || rduChu(n.ly_do, 80) : "";
+  const cauTt = t.tt ? RDU_TT_NHOM[t.tt] : "Trạng thái nhóm không rõ";
+  const batDau = rduDm(n.bat_dau_ngay);
   const them = rduChoPhepNhom(n, "them-tay")
     ? `<div class="rdu-them row"><input type="text" class="rdu-them-in" data-rdu-vao="them-tay" maxlength="300" placeholder="Thêm tay 1 UID tương tự (≤ 3)" aria-label="Thêm tay UID">`
       + `<button type="button" class="btn ghost sm" data-rdu-act="them-tay" data-rdu-goc="${goc}">Thêm tay</button></div>` : "";
-  return `<section class="rdu-nhom hn-khoi" data-rdu-goc="${goc}" data-rdu-tt="${esc(tt)}">`
-    + `<div class="row rdu-nhom-dau"><h2 class="hn-tieu-de">${esc(rduChu(n.ten, 120) || "(chưa có tên)")} <span class="small muted">gốc ${goc}</span></h2>`
-    + `<div class="row">${nuts.join("")}</div></div>`
-    + (cauTt ? `<p class="small ${tt === "loi_tim" ? "hn-bao" : "muted"}">${esc(cauTt)}${lyDo ? `: ${esc(lyDo)}` : ""}</p>` : "")
-    + (rduDm(n.bat_dau_ngay) ? `<p class="small muted">Bắt đầu theo dõi ${esc(rduDm(n.bat_dau_ngay))}</p>` : "")
-    + (hang(chinh) ? `<div class="rdu-ds">${hang(chinh)}</div>` : "")
+  const soTuongTu = chinh.length + ha.length;
+  return `<p><a class="rdu-quay" href="#/theo-doi">← Tất cả UID chính</a></p>`
+    + `<section class="rdu-nhom rdu-chinh hn-khoi" data-rdu-goc="${goc}" data-rdu-tt="${esc(t.tt)}">`
+    + `<div class="rdu-the-ngang">${rduAnhHtml(t.anh, "lon")}<div class="rdu-thong-tin">`
+    + `<h2 class="hn-tieu-de">${esc(t.ten || "(chưa có tên)")}</h2>`
+    + (t.shop ? `<div class="small muted">Shop: ${esc(t.shop)}</div>` : "")
+    + (t.gia ? `<div class="rdu-gia">${esc(t.gia)}</div>` : "")
+    + `<div>${rduHuyHieuHtml(n.trang_thai)}</div>`
+    + `<div class="rdu-uid-dong"><span class="rdu-uid">${goc}</span>${rduSaoChepHtml(goc, goc)}</div>`
+    + `${rduLienKetHtml(goc)}`
+    + (batDau ? `<div class="small muted">Bắt đầu theo dõi ${esc(batDau)}</div>` : "")
+    + `</div></div>`
+    + (cauTt ? `<p class="small ${t.tt === "loi_tim" ? "hn-bao" : "muted"}">${esc(cauTt)}${t.lyDo ? `: ${esc(t.lyDo)}` : ""}</p>` : "")
+    + `<div class="row rdu-nhom-nut">${rduNutNhomHtml(n, goc)}</div>`
+    + (rduCo(t.gocU, "uid") ? rduChiSoHtml(rduObj(t.gocU)) : "")
+    + `</section>`
+    + `<h3 class="hn-tieu-de rdu-muc">UID tương tự đang theo dõi (${soTuongTu})</h3>`
+    + (soTuongTu ? "" : `<p class="small muted">Chưa có UID tương tự nào đang theo dõi.</p>`)
+    + (chinh.length ? `<div class="rdu-ds">${hang(chinh)}</div>` : "")
     + (ha.length ? `<details class="rdu-gom"><summary>Ít dữ liệu (${ha.length})</summary><div class="rdu-ds">${hang(ha)}</div></details>` : "")
     + (loai.length ? `<details class="rdu-gom"><summary>Đã loại (${loai.length})</summary><div class="rdu-ds">${hang(loai)}</div></details>` : "")
-    + them + `</section>`;
+    + them;
 }
 
 // Câu lý do của lần chạy gần nhất (CHƯA esc): ưu tiên ten_ly_do của máy nhà, rồi bảng §6.3.
@@ -301,13 +406,16 @@ function rduCauLan(lan, hanMuc) {
   return rduNhan(RDU_CAU_LY_DO, l.ly_do, `Lần chạy gần nhất ${RDU_TT_LAN[l.trang_thai]}${rduChu(l.ly_do, 60) ? ` (${rduChu(l.ly_do, 60)})` : ""}.`);
 }
 
+const RDU_KHONG_CO_HTML = `<section class="hn-khoi rdu-rong"><h2 class="hn-tieu-de">Không có UID chính này.</h2>`
+  + `<p class="small">UID này không còn trong Radar hoặc chưa được nạp.</p><p><a class="rdu-quay" href="#/theo-doi">← Tất cả UID chính</a></p></section>`;
 const RDU_RONG_HTML = `<section class="hn-khoi rdu-rong"><h2 class="hn-tieu-de">Chưa theo dõi UID nào</h2>`
   + `<p class="small">Dán 1 UID gốc (19 chữ số, hoặc link TikTok Shop có /product/… hay /pdp/…) vào ô phía trên. Máy nhà tìm ≤ 10 sản phẩm tương tự theo tên + giá, `
   + `chụp số liệu EchoTik mỗi ngày (10:00), rồi xếp hạng UID đang có đà.</p>`
   + `<p class="small muted">Bảng xếp hạng đầu tiên có nghĩa từ lần chụp thứ 4 (khoảng ngày thứ 4). Trước đó số chỉ là tạm, hiện xám kèm "chưa đủ bằng chứng".</p></section>`;
 
-// Phần thân dưới ô nhập: banner token/lỗi, hạn mức, các nhóm (hoặc giới thiệu khi chưa có nhóm).
-function rduBangHtml(bang, nowMs) {
+// Phần thân dưới ô nhập: banner token/lỗi, hạn mức, rồi (id rỗng) danh sách THẺ UID chính / (id = 19 số) chi tiết một UID chính.
+// id có mà sai dạng hoặc không có trong dữ liệu → "Không có UID chính này."
+function rduBangHtml(bang, nowMs, id) {
   const b = rduObj(bang);
   const bao = (ma, cau) => `<p class="hn-bao" data-rdu-bao="${ma}">${esc(cau)}</p>`;
   const ra = [];
@@ -326,8 +434,14 @@ function rduBangHtml(bang, nowMs) {
   if (rduOk(hm.goc_toi_da)) thongTin.push(`tối đa ${rduSo(hm.goc_toi_da)} UID gốc`);
   if (RDU_TT_LAN[lan.trang_thai]) thongTin.push(`lần chụp gần nhất ${RDU_TT_LAN[lan.trang_thai]}${ngayLan ? ` (ngày ${ngayLan}${cu ? ", không phải hôm nay" : ""})` : ""}`);
   if (thongTin.length) ra.push(`<p class="small muted rdu-tin">${esc(thongTin.join(" · "))}</p>`);
-  const nhom = rduMang(b.nhom).map((n) => rduNhomHtml(n)).filter(Boolean);
-  ra.push(nhom.length ? nhom.join("") : RDU_RONG_HTML);
+  if (typeof id === "string" && id !== "") {
+    const idOk = rduId(id);
+    const n = idOk ? rduMang(b.nhom).find((x) => rduObj(x).goc === idOk) : null;
+    ra.push((n && rduChiTietHtml(n)) || RDU_KHONG_CO_HTML);
+    return ra.join("");
+  }
+  const the = rduMang(b.nhom).map((n) => rduTheChinhHtml(n)).filter(Boolean);
+  ra.push(the.length ? `<div class="rdu-the-ds">${the.join("")}</div>` : RDU_RONG_HTML);
   return ra.join("");
 }
 
@@ -371,6 +485,7 @@ let rduPhienTrang = -1; // phienCT của trang đang hiện (rduRender đặt)
 let rduBang = null; // bảng đang hiện — mọi nút kiểm lại trạng thái từ đây, không tin data-* của nút
 let rduHtmlCuoi = ""; // HTML đã vẽ: giống hệt thì không vẽ lại (giữ khung Poster / ô tick đang mở khi hỏi lại)
 let rduHen = 0;
+let rduIdTrang = ""; // id UID chính của trang chi tiết đang hiện ("" = trang danh sách)
 const rduDangGui = new Set(); // khoá hành động đang gửi (chống bấm đúp, kể cả sau khi vẽ lại)
 const rduChuaRo = new Set(); // khoá đã gửi mà chưa chắc kết quả (mạng/5xx) — giữ tới lần tải bảng thành công kế
 
@@ -392,22 +507,42 @@ function rduDung() {
   rduLuot++;
 }
 
-// Trang #/theo-doi (khung.js mnRoute gọi, đã kiểm chủ kho + đánh số phiên).
-async function rduRender(phien) {
+// Ảnh lỗi tải (URL EchoTik hết hạn ~24 giờ): thay <img> bằng ô "ảnh hết hạn". CSP cấm onerror inline; sự kiện error không nổi bọt
+// → nghe ở pha capture trên khung #rdu.
+const RDU_ANH_HET = `<span class="rdu-anh-ph">ảnh hết hạn</span>`;
+function rduAnhLoi(e) {
+  const t = e && e.target;
+  if (!t || t.tagName !== "IMG" || typeof t.closest !== "function") return;
+  const k = t.closest(".rdu-anh");
+  if (!k) return;
+  k.innerHTML = RDU_ANH_HET;
+  k.classList.add("rdu-anh-het");
+}
+
+// Trang #/theo-doi (id rỗng: danh sách UID chính) hoặc #/theo-doi/<19 số> (chi tiết) — khung.js mnRoute gọi, đã kiểm chủ kho + đánh số phiên.
+async function rduRender(phien, id) {
   rduDung();
+  rduIdTrang = rduId(id); // sai dạng → trang danh sách
   rduPhienTrang = phien; rduBang = null; rduHtmlCuoi = "";
   $("#app").innerHTML = `<div class="hn rdu" id="rdu">
       <div class="row hn-dau"><h1 class="hn-h1">📡 Radar UID</h1>
         <div class="row"><button type="button" class="btn ghost sm" id="rdu-chup-lai" data-rdu-act="chup-lai">Chụp lại hôm nay</button>
         <button type="button" class="btn ghost sm" id="rdu-tai-lai" data-rdu-act="tai-lai">↻ Tải lại</button></div></div>
       <p class="small muted rdu-nhac">${esc(RDU_NHAC)}</p>
-      <div class="rdu-them row"><input type="text" id="rdu-in" data-rdu-vao="goc" maxlength="300" autocomplete="off" placeholder="Dán UID gốc (19 chữ số) hoặc link sản phẩm TikTok Shop" aria-label="UID gốc">
-        <button type="button" class="btn" id="rdu-them" data-rdu-act="goc">Theo dõi</button></div>
+      ${rduIdTrang ? "" : `<div class="rdu-them row"><input type="text" id="rdu-in" data-rdu-vao="goc" maxlength="300" autocomplete="off" placeholder="Dán UID gốc (19 chữ số) hoặc link sản phẩm TikTok Shop" aria-label="UID gốc">
+        <button type="button" class="btn" id="rdu-them" data-rdu-act="goc">Theo dõi</button></div>`}
       <p class="small muted" id="rdu-msg" role="status"></p>
       <div id="rdu-nd"><p class="muted">Đang tải…</p></div>
     </div>`;
   const goc = $("#rdu");
-  goc.addEventListener("click", (e) => { const b = e.target && e.target.closest ? e.target.closest("[data-rdu-act]") : null; return b ? rduBam(b) : undefined; });
+  goc.addEventListener("click", (e) => {
+    const b = e.target && e.target.closest ? e.target.closest("[data-rdu-act]") : null;
+    if (!b) return undefined;
+    if (typeof e.preventDefault === "function") e.preventDefault(); // nút không kích hoạt điều hướng của thẻ / liên kết bao ngoài
+    if (typeof e.stopPropagation === "function") e.stopPropagation();
+    return rduBam(b);
+  });
+  goc.addEventListener("error", rduAnhLoi, true);
   goc.addEventListener("change", (e) => { const t = e.target && e.target.closest ? e.target.closest("[data-rdu-tick]") : null; if (t) rduDoiTick(t); });
   goc.addEventListener("keydown", (e) => { // Enter trong ô nhập = bấm nút cùng hàng
     if (e.key !== "Enter" || !e.target || !e.target.closest) return;
@@ -440,13 +575,13 @@ async function rduTai(phien, tuTay) {
     } else {
       rduChuaRo.clear(); // đã có trạng thái thật từ máy nhà
       rduBang = bang;
-      const html = rduBangHtml(bang, Date.now());
+      const html = rduBangHtml(bang, Date.now(), rduIdTrang);
       if (html !== rduHtmlCuoi) { nd.innerHTML = html; rduHtmlCuoi = html; }
       // nút ghi: khoá nếu đang gửi / chưa chắc kết quả, ngược lại mở
       document.querySelectorAll("#rdu [data-rdu-act]").forEach((n) => {
         if (RDU_ACT_GHI.has(n.dataset.rduAct)) { const k = rduKhoa(n.dataset); n.disabled = rduDangGui.has(k) || rduChuaRo.has(k); }
       });
-      hoiLai = bang.nhom.some((n) => n && (n.trang_thai === "cho_tim" || n.trang_thai === "dang_tim"));
+      hoiLai = bang.nhom.some((n) => n && (!rduIdTrang || n.goc === rduIdTrang) && (n.trang_thai === "cho_tim" || n.trang_thai === "dang_tim"));
     }
   }
   const n2 = $("#rdu-tai-lai");
@@ -517,6 +652,11 @@ async function rduBam(b) {
   }
   const goc = rduId(d.rduGoc), uid = rduId(d.rduUid);
   const loiCu = () => toast("Mục này vừa đổi trạng thái — bấm Tải lại để xem.");
+  if (act === "sao-chep-uid") { // chép UID của thẻ (không cần tick: chỉ chép, không đụng Poster); id phải có trong dữ liệu đang hiện
+    if (!goc || !uid || !rduTimNhom(goc) || (uid !== goc && !rduTimUid(goc, uid))) { loiCu(); return; }
+    await copy(uid, "Đã sao chép UID");
+    return;
+  }
   if (act === "poster" || act === "chep" || act === "mo-folders") {
     const u = goc && uid ? rduTimUid(goc, uid) : null;
     if (!u) { loiCu(); return; }

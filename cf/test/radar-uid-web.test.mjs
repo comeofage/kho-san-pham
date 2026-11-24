@@ -19,7 +19,7 @@ const khoi = (src, ten) => {
   return m[1];
 };
 const F = new Function("esc", `"use strict";\n${khoi(RDU, "radar-uid-thuan")}
-return { rduLayUid, rduSo, rduSpark, rduNhanCo, rduHangHtml, rduNhomHtml, rduBangHtml, rduPosterHtml, rduCauLoiTai, rduCauLoiGhi,
+return { rduLayUid, rduSo, rduSpark, rduNhanCo, rduHangHtml, rduTheChinhHtml, rduChiTietHtml, rduAnhHopLe, rduAnhHtml, rduBangHtml, rduPosterHtml, rduCauLoiTai, rduCauLoiGhi,
   rduChoPhep, rduChoPhepNhom, RDU_NHAC };`)(esc);
 
 const GOC = "1737422436677814024"; // > 2^53: phải giữ nguyên là chuỗi
@@ -210,14 +210,14 @@ test("rduHangHtml: NGHI_ADS chỉ hiện khi API trả về trong co_canh_bao; c
   assert.match(h, /rdu-co rdu-co-chan">Dữ liệu cũ/);
   assert.match(h, /rdu-co rdu-co-canh-bao">Nghi chạy ads/);
   assert.match(h, /rdu-co rdu-co-canh-bao">Chỉ lấy 50 video/);
-  assert.match(h, /bị chặn: xem cờ bên dưới/);
+  assert.match(h, /bị chặn: xem cờ trên thẻ/);
 });
 
 test("rduHangHtml: nút theo vai/trạng thái; UID gốc không có Ghim/Loại; loại chỉ có Bỏ loại; goc rác → không nút ghi", () => {
   const nut = (h) => [...h.matchAll(/data-rdu-act="([\w-]+)"/g)].map((m) => m[1]);
-  assert.deepEqual(nut(F.rduHangHtml(U({ uid: GOC, vai: "goc" }), GOC)), ["poster", "chep", "mo-folders"]);
-  assert.deepEqual(nut(F.rduHangHtml(U(), GOC)), ["poster", "ghim", "loai", "chep", "mo-folders"]);
-  assert.deepEqual(nut(F.rduHangHtml(U({ trang_thai: "ghim" }), GOC)), ["poster", "bo-ghim", "loai", "chep", "mo-folders"]);
+  assert.deepEqual(nut(F.rduHangHtml(U({ uid: GOC, vai: "goc" }), GOC)), ["sao-chep-uid", "poster", "chep", "mo-folders"]);
+  assert.deepEqual(nut(F.rduHangHtml(U(), GOC)), ["sao-chep-uid", "poster", "ghim", "loai", "chep", "mo-folders"]);
+  assert.deepEqual(nut(F.rduHangHtml(U({ trang_thai: "ghim" }), GOC)), ["sao-chep-uid", "poster", "bo-ghim", "loai", "chep", "mo-folders"]);
   const loai = F.rduHangHtml(U({ trang_thai: "loai" }), GOC);
   assert.deepEqual(nut(loai), ["bo-loai"]);
   assert.match(loai, /rdu-hang rdu-dang_co_da rdu-loai/);
@@ -267,46 +267,194 @@ test("rduPosterHtml: CHỈ Sao chép UID + Mở Folders; hướng dẫn; ô tick
   assert.equal(F.rduPosterHtml(U({ uid: BAN }), GOC), "");
 });
 
-// ---------- 4. nhóm ----------
-test("rduNhomHtml: cho_tim/dang_tim 'đang chờ/tìm…', loi_tim có lý do + Tìm lại + ô thêm tay, da_tim đủ nút, ngung chỉ Theo dõi lại", () => {
-  const nut = (h) => [...h.matchAll(/data-rdu-act="([\w-]+)" data-rdu-goc/g)].map((m) => m[1]);
-  let h = F.rduNhomHtml(NHOM({ trang_thai: "cho_tim", ds: [U({ uid: GOC, vai: "goc" })] }));
-  assert.match(h, /Đang chờ máy nhà…/);
-  assert.ok(!/Tìm lại|rdu-them-in/.test(h));
-  assert.deepEqual(nut(h), ["ngung"]);
-  assert.match(F.rduNhomHtml(NHOM({ trang_thai: "dang_tim", ds: [] })), /Đang tìm sản phẩm tương tự…/);
-  h = F.rduNhomHtml(NHOM({ trang_thai: "loi_tim", ly_do: "keyword_khong_loc", ten_ly_do: "EchoTik không lọc theo từ khoá nên không tìm được tương tự: thêm tay UID." }));
-  assert.match(h, /Tìm sản phẩm tương tự bị lỗi: EchoTik không lọc theo từ khoá/);
-  assert.match(h, /data-rdu-act="tim-lai"/);
-  assert.match(h, /class="rdu-them-in"/);
-  assert.match(h, /data-rdu-act="them-tay" data-rdu-goc="1737422436677814024"/);
-  h = F.rduNhomHtml(NHOM());
-  assert.deepEqual(nut(h).filter((a) => a !== "ghim" && a !== "loai" && a !== "bo-ghim" && a !== "bo-loai" && a !== "poster" && a !== "chep" && a !== "mo-folders"), ["tim-lai", "ngung", "them-tay"]);
-  assert.match(h, /gốc 1737422436677814024/);
-  assert.match(h, /Bắt đầu theo dõi 20\/11/);
-  h = F.rduNhomHtml(NHOM({ trang_thai: "ngung" }));
-  assert.match(h, /Đã ngừng theo dõi \(giữ dữ liệu\)/);
-  assert.match(h, /data-rdu-act="theo-lai"/);
-  assert.ok(!/data-rdu-act="tim-lai"|rdu-them-in/.test(h));
-  assert.match(F.rduNhomHtml(NHOM({ trang_thai: "la" })), /Trạng thái nhóm không rõ/);
-  assert.equal(F.rduNhomHtml(NHOM({ goc: BAN })), "");
-  assert.equal(F.rduNhomHtml(null), "");
+// ---------- 4. thẻ UID chính (trang chính) + chi tiết (RU-W6) ----------
+const ANH = "https://cdn.echotik.live/product/abc/img_1.jpg";
+const nutNhom = (h) => [...h.matchAll(/data-rdu-act="([\w-]+)" data-rdu-goc/g)].map((m) => m[1]);
+
+test("rduAnhHopLe: chỉ https://cdn.echotik.live/<≤300 ký tự an toàn>; host giả, http, query, ký tự lạ, rỗng/null → false", () => {
+  for (const u of [ANH, "https://cdn.echotik.live/a", "https://cdn.echotik.live/p/q-r_s.t/1.webp", `https://cdn.echotik.live/${"a".repeat(300)}`]) assert.equal(F.rduAnhHopLe(u), true, u);
+  for (const u of ["", null, undefined, 5, {}, [], "http://cdn.echotik.live/a", "https://cdn.echotik.live/", "https://cdn.echotik.live", "https://cdn.echotik.live.evil.com/a",
+    "https://cdn.echotik.live@evil.com/a", "https://evil.com/https://cdn.echotik.live/a", "https://echotik.live/a", "https://cdn.echotik.live/a?x=1", "https://cdn.echotik.live/a#x",
+    "https://cdn.echotik.live/a b", "https://cdn.echotik.live/a\n", "https://cdn.echotik.live/a\"onerror=1", `https://cdn.echotik.live/${"a".repeat(301)}`, ` ${ANH}`, "javascript:alert(1)", `https://cdn.echotik.live/${BAN}`]) {
+    assert.equal(F.rduAnhHopLe(u), false, String(u));
+  }
 });
 
-test("rduNhomHtml: 'Ít dữ liệu' (uu_tien=ha) và 'Đã loại' thu gọn bằng <details>; hàng chính không lẫn", () => {
-  const h = F.rduNhomHtml(NHOM({ ds: [U({ uid: GOC, vai: "goc" }), U({ uid: UID, uu_tien: "ha", ten: "AAA-ha" }), U({ uid: UID2, trang_thai: "loai", ten: "BBB-loai" }), U({ uid: UID3, ten: "CCC-chinh" })] }));
+test("rduAnhHtml: URL hợp lệ → <img loading=lazy referrerpolicy=no-referrer alt=''>; thiếu/sai → ô 'chưa có ảnh', KHÔNG <img", () => {
+  const h = F.rduAnhHtml(ANH, "nho");
+  assert.match(h, /^<span class="rdu-anh rdu-anh-nho"><img src="https:\/\/cdn\.echotik\.live\/product\/abc\/img_1\.jpg" loading="lazy" referrerpolicy="no-referrer" alt=""><\/span>$/);
+  assert.match(F.rduAnhHtml(ANH, "lon"), /rdu-anh-lon/);
+  assert.match(F.rduAnhHtml(ANH, "la"), /rdu-anh-nho/, "cỡ lạ → nhỏ");
+  for (const u of ["", null, undefined, 5, "http://cdn.echotik.live/a", BAN, "https://evil.com/a.jpg"]) {
+    const p = F.rduAnhHtml(u, "nho");
+    assert.match(p, /rdu-anh-ph">chưa có ảnh</, String(u));
+    assert.ok(!p.includes("<img"), String(u));
+  }
+});
+
+test("rduTheChinhHtml: thẻ <a href='#/theo-doi/<goc>'> có ảnh, tên, shop, giá, huy hiệu, 'N UID tương tự đang theo dõi', ngày bắt đầu; nút nhóm nằm NGOÀI thẻ liên kết", () => {
+  const h = F.rduTheChinhHtml(NHOM({ anh: ANH, shop: "Shop Gốc", gia: "199.000₫", n_tuong_tu: 7, n_ghim: 2 }));
+  assert.match(h, new RegExp(`<a class="rdu-the-lk" href="#/theo-doi/${GOC}">`));
+  assert.match(h, /<img src="https:\/\/cdn\.echotik\.live\/product\/abc\/img_1\.jpg" loading="lazy" referrerpolicy="no-referrer" alt="">/);
+  assert.match(h, /rdu-anh-nho/);
+  assert.match(h, /Máy xay thực phẩm/);
+  assert.match(h, /Shop Gốc/);
+  assert.match(h, /199\.000₫/);
+  assert.match(h, /Đã tìm/);
+  assert.match(h, /7 UID tương tự đang theo dõi/);
+  assert.match(h, /2 đã ghim/);
+  assert.match(h, /Bắt đầu theo dõi 20\/11/);
+  const lk = h.match(/<a class="rdu-the-lk"[\s\S]*?<\/a>/)[0];
+  assert.ok(!/<button|data-rdu-act/.test(lk), "không nút tương tác lồng trong <a>");
+  assert.deepEqual(nutNhom(h), ["tim-lai", "ngung"]);
+  assert.ok(!/data-rdu-act="(ghim|loai|poster|them-tay)"|rdu-them-in/.test(h), "thẻ chính không liệt kê UID tương tự / nút của UID");
+  assert.ok(!/class="rdu-hang/.test(h));
+  assert.match(h, new RegExp(`<article class="rdu-the[^"]*" data-rdu-goc="${GOC}"`));
+});
+
+test("rduTheChinhHtml: thiếu ảnh/shop/giá → ô 'chưa có ảnh', không in 0/giá giả; n_tuong_tu thiếu → đếm từ ds (bỏ gốc, bỏ UID loại)", () => {
+  const h = F.rduTheChinhHtml(NHOM({ ds: [U({ uid: GOC, vai: "goc", shop: "", gia: "" }), U({ uid: UID }), U({ uid: UID2 }), U({ uid: UID3, trang_thai: "loai" })] }));
+  assert.match(h, /rdu-anh-ph">chưa có ảnh</);
+  assert.ok(!h.includes("<img"));
+  assert.match(h, /2 UID tương tự đang theo dõi/);
+  assert.ok(!/₫|Shop:/.test(h), "không có giá/shop thì không vẽ dòng");
+  assert.match(F.rduTheChinhHtml(NHOM({ n_tuong_tu: 0 })), /0 UID tương tự đang theo dõi/);
+  assert.match(F.rduTheChinhHtml(NHOM({ n_tuong_tu: "5" })), /2 UID tương tự đang theo dõi/, "n_tuong_tu là chuỗi → không tin, đếm từ ds");
+  assert.match(F.rduTheChinhHtml(NHOM({ ds: [] })), /0 UID tương tự đang theo dõi/);
+  // ảnh/shop/giá rơi về dòng UID gốc trong ds khi nhóm chưa có
+  const g = F.rduTheChinhHtml(NHOM({ ds: [U({ uid: GOC, vai: "goc", anh: ANH, shop: "Shop Từ Ds", gia: "9.000₫" })] }));
+  assert.match(g, /<img /);
+  assert.match(g, /Shop Từ Ds/);
+  assert.match(g, /9\.000₫/);
+  assert.ok(!/đã ghim/.test(F.rduTheChinhHtml(NHOM())), "n_ghim thiếu → không in 0 ghim");
+});
+
+test("rduTheChinhHtml: huy hiệu theo trạng thái nhóm + nút nhóm đúng; loi_tim kèm ten_ly_do; ngung chỉ Theo dõi lại", () => {
+  const huyHieu = (h) => (h.match(/<span class="rdu-tt rdu-tt-(\w+)">([^<]*)<\/span>/) || []).slice(1, 3);
+  let h = F.rduTheChinhHtml(NHOM({ trang_thai: "cho_tim", ds: [U({ uid: GOC, vai: "goc" })] }));
+  assert.deepEqual(huyHieu(h), ["tim", "Đang tìm"]);
+  assert.deepEqual(nutNhom(h), ["ngung"]);
+  assert.deepEqual(huyHieu(F.rduTheChinhHtml(NHOM({ trang_thai: "dang_tim" }))), ["tim", "Đang tìm"]);
+  assert.deepEqual(huyHieu(F.rduTheChinhHtml(NHOM())), ["xong", "Đã tìm"]);
+  h = F.rduTheChinhHtml(NHOM({ trang_thai: "loi_tim", ly_do: "keyword_khong_loc", ten_ly_do: "EchoTik không lọc theo từ khoá nên không tìm được tương tự: thêm tay UID." }));
+  assert.deepEqual(huyHieu(h), ["loi", "Lỗi tìm"]);
+  assert.match(h, /EchoTik không lọc theo từ khoá/);
+  assert.deepEqual(nutNhom(h), ["tim-lai", "ngung"]);
+  h = F.rduTheChinhHtml(NHOM({ trang_thai: "ngung" }));
+  assert.deepEqual(huyHieu(h), ["ngung", "Ngừng"]);
+  assert.deepEqual(nutNhom(h), ["theo-lai"]);
+  assert.deepEqual(huyHieu(F.rduTheChinhHtml(NHOM({ trang_thai: "la" }))), ["khac", "Không rõ"]);
+});
+
+test("rduTheChinhHtml XSS: tên/shop/giá/ảnh/lý do chứa chuỗi độc → esc; goc sai regex → '' (không href); ảnh sai host → ô trống, không <img", () => {
+  const h = F.rduTheChinhHtml(NHOM({ ten: "<script>alert(1)</script>", shop: BAN, gia: BAN, anh: BAN, trang_thai: "loi_tim", ten_ly_do: BAN, ly_do: BAN, bat_dau_ngay: BAN, n_tuong_tu: BAN }));
+  assert.ok(!h.includes("<script"), "<script bị esc");
+  assert.match(h, /&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+  KHONG_LOT(h, "thẻ chính");
+  for (const goc of [BAN, "123", `${GOC}9`, null, undefined, 1737422436677814024, "../x"]) {
+    assert.equal(F.rduTheChinhHtml(NHOM({ goc })), "", String(goc));
+  }
+  assert.equal(F.rduTheChinhHtml(null), "");
+  assert.ok(!/href="#\/theo-doi\/[^"]*[^\d"][^"]*"/.test(h), "href chỉ chứa 19 số");
+});
+
+const CT = (x = {}) => NHOM({ anh: ANH, shop: "Shop Gốc", gia: "199.000₫", ...x });
+
+test("rduChiTietHtml: '← Tất cả UID chính', khối UID chính (ảnh lớn, tên, shop, giá, trạng thái, UID + sao chép, Mở TikTok/EchoTik rel noopener), rồi danh sách tương tự", () => {
+  const h = F.rduChiTietHtml(CT());
+  assert.match(h, /<a class="rdu-quay" href="#\/theo-doi">← Tất cả UID chính<\/a>/);
+  const chinh = h.slice(0, h.indexOf('<div class="rdu-ds">'));
+  assert.match(chinh, /rdu-anh-lon/);
+  assert.match(chinh, /<h2[^>]*>Máy xay thực phẩm/);
+  assert.match(chinh, /Shop Gốc/);
+  assert.match(chinh, /199\.000₫/);
+  assert.match(chinh, /Đã tìm/);
+  assert.match(chinh, new RegExp(`<span class="rdu-uid">${GOC}</span>`));
+  assert.match(chinh, new RegExp(`data-rdu-act="sao-chep-uid" data-rdu-uid="${GOC}" data-rdu-goc="${GOC}"`));
+  assert.match(chinh, new RegExp(`<a class="rdu-lk" href="https://shop\\.tiktok\\.com/view/product/${GOC}\\?region=VN" target="_blank" rel="noopener noreferrer">Mở TikTok</a>`));
+  assert.match(chinh, new RegExp(`<a class="rdu-lk" href="https://echotik\\.live/products/${GOC}" target="_blank" rel="noopener noreferrer">Mở EchoTik</a>`));
+  assert.match(chinh, /Bắt đầu theo dõi 20\/11/);
+  assert.deepEqual(nutNhom(chinh), ["tim-lai", "ngung"]);
+  assert.match(h, /UID tương tự đang theo dõi \(2\)/);
+  assert.equal((h.match(/<article class="rdu-hang/g) || []).length, 2, "UID gốc không lặp trong danh sách tương tự");
+  assert.ok(!new RegExp(`<article class="rdu-hang[^>]*data-rdu-uid="${GOC}"`).test(h));
+  assert.match(h, /class="rdu-them-in"/);
+  KHONG_LOT(h.replace(/<img [^>]*>/g, ""), "chi tiết");
+});
+
+test("rduChiTietHtml: thẻ tương tự có ảnh, tên, shop, giá, đã bán, UID + sao chép, 2 liên kết, nhãn ghim/loại, cờ, nút; chỉ số GOM trong 1 <details> 'Chỉ số'; thứ tự ds giữ nguyên", () => {
+  const h = F.rduChiTietHtml(CT({ ds: [U({ uid: GOC, vai: "goc" }), U({ uid: UID, ten: "AAA", anh: ANH, shop: "Shop X", gia: "99.000₫", ban_tong: 12345 }),
+    U({ uid: UID2, vai: "them_tay", trang_thai: "ghim", ten: "BBB" })] }));
+  const the = h.split('<article class="rdu-hang').slice(1);
+  assert.equal(the.length, 2);
+  assert.ok(the[0].includes("AAA") && the[1].includes("BBB"), "giữ thứ tự API");
+  const a = the[0];
+  assert.match(a, /<img src="https:\/\/cdn\.echotik\.live\//);
+  assert.match(a, /rdu-anh-nho/);
+  assert.match(a, /Shop X/);
+  assert.match(a, /99\.000₫/);
+  assert.match(a, /Đã bán 12\.345/);
+  assert.match(a, new RegExp(`data-rdu-act="sao-chep-uid" data-rdu-uid="${UID}" data-rdu-goc="${GOC}"`));
+  assert.match(a, new RegExp(`href="https://shop\\.tiktok\\.com/view/product/${UID}\\?region=VN" target="_blank" rel="noopener noreferrer">Mở TikTok`));
+  assert.match(a, new RegExp(`href="https://echotik\\.live/products/${UID}" target="_blank" rel="noopener noreferrer">Mở EchoTik`));
+  assert.match(a, /rdu-co rdu-co-canh-bao/, "cờ cảnh báo vẫn ngoài khung Chỉ số");
+  assert.match(a, /data-rdu-act="ghim"/);
+  assert.match(a, /data-rdu-act="loai"/);
+  assert.match(a, /data-rdu-act="poster"/);
+  assert.match(a, /data-rdu-tick/);
+  assert.match(the[1], /rdu-chip rdu-chip-ghim">📌 ghim</);
+  assert.match(the[1], /data-rdu-act="bo-ghim"/);
+  // 1 <details> "Chỉ số" mỗi thẻ; mọi ô chỉ số nằm trong đó
+  assert.equal((a.match(/<details class="rdu-chi-so"><summary>Chỉ số<\/summary>/g) || []).length, 1);
+  const trong = a.match(/<details class="rdu-chi-so">[\s\S]*?<\/details>/)[0];
+  const ngoai = a.replace(trong, "");
+  for (const re of [/Trung vị Δview\/video\/24h/, /Tăng tốc/, /View ở creator nhỏ/, /view đổi 10 video/, /is_promote 1\/39/, /4 snapshot/, /rdu-xl rdu-xl-dang_co_da/, /rdu-spark/]) {
+    assert.match(trong, re, String(re));
+    assert.ok(!re.test(ngoai), `${re} phải nằm trong Chỉ số`);
+  }
+  assert.ok(!/<details/.test(ngoai), "ngoài Chỉ số không có details khác");
+});
+
+test("rduChiTietHtml: thiếu ảnh/đã bán → placeholder / không dòng 'Đã bán'; UID loại và 'Ít dữ liệu' thu gọn; loại chỉ có Bỏ loại + nhãn 'loại'", () => {
+  const h = F.rduChiTietHtml(CT({ ds: [U({ uid: GOC, vai: "goc" }), U({ uid: UID, uu_tien: "ha", ten: "AAA-ha" }), U({ uid: UID2, trang_thai: "loai", ten: "BBB-loai" }), U({ uid: UID3, ten: "CCC-chinh" })] }));
   assert.match(h, /<details class="rdu-gom"><summary>Ít dữ liệu \(1\)<\/summary>[\s\S]*?AAA-ha[\s\S]*?<\/details>/);
   assert.match(h, /<details class="rdu-gom"><summary>Đã loại \(1\)<\/summary>[\s\S]*?BBB-loai[\s\S]*?<\/details>/);
-  const chinh = h.slice(0, h.indexOf("<details"));
+  const chinh = h.slice(0, h.indexOf('<details class="rdu-gom"'));
   assert.match(chinh, /CCC-chinh/);
   assert.ok(!/AAA-ha|BBB-loai/.test(chinh));
-  assert.ok(!/<details/.test(F.rduNhomHtml(NHOM())), "không có gì để gom thì không vẽ");
+  assert.ok(!/Đã bán/.test(h), "ban_tong thiếu → không in");
+  assert.match(h, /rdu-anh-ph">chưa có ảnh</);
+  const loai = h.match(/<article class="rdu-hang[^>]*rdu-loai[\s\S]*?<\/article>/)[0];
+  assert.deepEqual([...loai.matchAll(/data-rdu-act="([\w-]+)"/g)].map((m) => m[1]), ["bo-loai"]);
+  assert.match(loai, /rdu-chip rdu-chip-loai">loại</);
 });
 
-test("XSS nhóm: tên/lý do/trạng thái/ds rác → an toàn", () => {
-  const h = F.rduNhomHtml(NHOM({ ten: BAN, trang_thai: "loi_tim", ly_do: BAN, ten_ly_do: BAN, bat_dau_ngay: BAN, tim_luc: BAN, ds: [U({ uid: BAN, ten: BAN }), U({ ten: BAN, shop: BAN }), null, "x", 5] }));
-  KHONG_LOT(h, "nhóm");
-  KHONG_LOT(F.rduNhomHtml(NHOM({ trang_thai: BAN })), "trạng thái nhóm rác");
+test("rduChiTietHtml: nhóm chưa có UID tương tự → câu nêu trạng thái; loi_tim có lý do + ô thêm tay; ngung chỉ Theo dõi lại, không ô thêm tay", () => {
+  let h = F.rduChiTietHtml(CT({ trang_thai: "cho_tim", ds: [U({ uid: GOC, vai: "goc" })] }));
+  assert.match(h, /Đang chờ máy nhà…/);
+  assert.match(h, /Chưa có UID tương tự nào đang theo dõi/);
+  assert.ok(!/rdu-them-in/.test(h));
+  assert.match(F.rduChiTietHtml(CT({ trang_thai: "dang_tim", ds: [] })), /Đang tìm sản phẩm tương tự…/);
+  h = F.rduChiTietHtml(CT({ trang_thai: "loi_tim", ten_ly_do: "EchoTik không lọc theo từ khoá nên không tìm được tương tự: thêm tay UID." }));
+  assert.match(h, /Tìm sản phẩm tương tự bị lỗi: EchoTik không lọc theo từ khoá/);
+  assert.match(h, /data-rdu-act="them-tay" data-rdu-goc="1737422436677814024"/);
+  h = F.rduChiTietHtml(CT({ trang_thai: "ngung" }));
+  assert.match(h, /Đã ngừng theo dõi \(giữ dữ liệu\)/);
+  assert.deepEqual(nutNhom(h), ["theo-lai"]);
+  assert.ok(!/rdu-them-in/.test(h));
+  assert.equal(F.rduChiTietHtml(CT({ goc: BAN })), "");
+  assert.equal(F.rduChiTietHtml(null), "");
+});
+
+test("XSS chi tiết: tên/shop/giá/ảnh/ds rác → an toàn; uid sai regex không vào href", () => {
+  const h = F.rduChiTietHtml(CT({ ten: "<script>x</script>", shop: BAN, gia: BAN, anh: BAN, trang_thai: "loi_tim", ly_do: BAN, ten_ly_do: BAN, bat_dau_ngay: BAN,
+    ds: [U({ uid: BAN, ten: BAN, anh: BAN }), U({ ten: "<script>y</script>", shop: BAN, gia: BAN, ban_tong: BAN, anh: BAN }), null, "x", 5] }));
+  assert.ok(!h.includes("<script"));
+  assert.ok(!h.includes("<img"), "ảnh rác → không <img");
+  KHONG_LOT(h.replace(new RegExp(`<img [^>]*>`, "g"), ""), "chi tiết rác");
+  const lk = [...h.matchAll(/href="(https:\/\/[^"]+)"/g)].map((m) => m[1]);
+  for (const u of lk) assert.match(u, /^https:\/\/(shop\.tiktok\.com\/view\/product\/\d{19}\?region=VN|echotik\.live\/products\/\d{19})$/, u);
+  KHONG_LOT(F.rduChiTietHtml(NHOM({ trang_thai: BAN })), "trạng thái rác");
 });
 
 // ---------- 5. cả bảng ----------
@@ -319,6 +467,41 @@ test("rduBangHtml: rỗng → giới thiệu (không bảng trống); có thông
   assert.equal(F.RDU_NHAC, "Sản phẩm 'tương tự' chọn theo từ khoá tên + giá, chưa chứng minh trùng SKU. Bảng cho thấy tín hiệu, không phải kết luận TikTok đang đẩy.");
   for (const x of [null, undefined, "x", [], { nhom: "x", token: 5, lan: [], han_muc: "x" }]) assert.doesNotThrow(() => F.rduBangHtml(x, HOM_NAY));
   assert.match(F.rduBangHtml(null, HOM_NAY), /Chưa theo dõi UID nào/);
+});
+
+test("rduBangHtml (trang chính): chỉ liệt kê UID CHÍNH (mỗi nhóm một thẻ), KHÔNG liệt kê UID tương tự", () => {
+  const g2 = "1737422436677814025";
+  const h = F.rduBangHtml(BANG({ nhom: [NHOM(), NHOM({ goc: g2, ten: "Nồi chiên" })] }), HOM_NAY);
+  assert.equal((h.match(/<article class="rdu-the/g) || []).length, 2);
+  assert.ok(h.includes('href="#/theo-doi/' + GOC + '"'));
+  assert.ok(h.includes('href="#/theo-doi/' + g2 + '"'));
+  assert.ok(!/rdu-hang|data-rdu-uid=|data-rdu-act="(ghim|loai|poster)"/.test(h), "không UID tương tự trên trang chính");
+  assert.ok(!/rdu-quay|Tất cả UID chính/.test(h));
+});
+
+test("rduBangHtml(bang, now, id): chi tiết của đúng nhóm đó (banner vẫn ở trên); id không có trong dữ liệu → 'Không có UID chính này.' + liên kết quay lại; id sai dạng cũng vậy", () => {
+  const h = F.rduBangHtml(BANG({ token: { trang_thai: "thieu" } }), HOM_NAY, GOC);
+  assert.ok(h.indexOf('data-rdu-bao="token"') < h.indexOf("rdu-quay"), "banner token trước chi tiết");
+  assert.equal((h.match(/<article class="rdu-hang/g) || []).length, 2);
+  assert.ok(!/<article class="rdu-the/.test(h), "không thẻ danh sách");
+  for (const id of ["1737422436677814999", BAN, "abc"]) {
+    const k = F.rduBangHtml(BANG(), HOM_NAY, id);
+    assert.match(k, /Không có UID chính này\./, id);
+    assert.match(k, /<a class="rdu-quay" href="#\/theo-doi">← Tất cả UID chính<\/a>/, id);
+    assert.ok(!k.includes(BAN), id);
+  }
+  assert.match(F.rduBangHtml(BANG({ nhom: [] }), HOM_NAY, GOC), /Không có UID chính này\./);
+});
+
+test("CSP (_headers): img-src thêm đúng 1 host https://cdn.echotik.live; không 'https:' chung, không wildcard '*'", () => {
+  const H = doc("_headers");
+  const m = H.match(/img-src ([^;]*);/);
+  assert.ok(m, "thiếu img-src");
+  assert.deepEqual(m[1].trim().split(/\s+/), ["'self'", "data:", "blob:", "https://cdn.echotik.live"]);
+  assert.ok(!/img-src[^;]*(\*|\bhttps:(?!\/\/cdn\.echotik\.live)|\bhttp:)/.test(H), "img-src rộng");
+  assert.ok(!/\*/.test(H.replace(/\/\*|\*\//g, "")), "không wildcard trong CSP");
+  assert.match(H, /script-src 'self';/);
+  assert.match(H, /connect-src 'self';/);
 });
 
 test("rduBangHtml: banner token (§6.3), lần chạy tạm dừng/lỗi, hết ngân sách, cầu dao tắt; không lặp banner trùng", () => {
@@ -395,7 +578,7 @@ function dungRdu({ bang = BANG(), apiGia, confirmTra = true } = {}) {
   };
   const app = { get innerHTML() { return S.appHtml; }, set innerHTML(v) { S.appHtml = v; khung.nut = phanTichNut(v).map(gan); nd.nut = []; S.ndHtml = ""; } };
   const ndEl = { get innerHTML() { return S.ndHtml; }, set innerHTML(v) { S.ndHtml = v; S.gan++; nd.nut = phanTichNut(v).map(gan); } };
-  const goc = { nghe: {}, addEventListener(ev, f) { this.nghe[ev] = f; } };
+  const goc = { nghe: {}, cap: {}, addEventListener(ev, f, c) { this.nghe[ev] = f; this.cap[ev] = c; } };
   const co = (id) => S.appHtml.includes(`id="${id}"`);
   const $ = (s) => {
     if (s === "#app") return app;
@@ -424,7 +607,7 @@ function dungRdu({ bang = BANG(), apiGia, confirmTra = true } = {}) {
   const so = (p) => S.goi.filter((x) => x[0] === p).length;
   return { K, S, o, goc, nd, ndEl, khung, nutDe, bam, so, tatCa };
 }
-const batDau = async (x) => { const p = x.K.sang(); await x.K.rduRender(p); return p; };
+const batDau = async (x, id) => { const p = x.K.sang(); await x.K.rduRender(p, id); return p; };
 
 test("rduRender: khung (tiêu đề, Tải lại, ô nhập + Theo dõi, dòng nhắc cố định, trạng thái), GET bang 1 lần, vẽ nhóm; gắn click/change/keydown bằng addEventListener", async () => {
   const x = dungRdu();
@@ -437,7 +620,10 @@ test("rduRender: khung (tiêu đề, Tải lại, ô nhập + Theo dõi, dòng n
   assert.match(x.S.appHtml, /id="rdu-tai-lai"[^>]*>↻ Tải lại/);
   assert.match(x.S.appHtml, /Đang tải…/);
   assert.match(x.S.ndHtml, /Máy xay thực phẩm/);
-  assert.deepEqual(Object.keys(x.goc.nghe).sort(), ["change", "click", "keydown"]);
+  assert.deepEqual(Object.keys(x.goc.nghe).sort(), ["change", "click", "error", "keydown"]);
+  assert.equal(x.goc.cap.error, true, "sự kiện error của <img> không nổi bọt → phải nghe ở pha capture");
+  assert.ok(!/← Tất cả UID chính/.test(x.S.ndHtml), "trang chính không có nút quay lại");
+  assert.match(x.S.ndHtml, new RegExp(`href="#/theo-doi/${GOC}"`));
   assert.equal(x.nutDe("tai-lai").disabled, false, "mở lại nút Tải lại sau khi tải xong");
   KHONG_LOT(x.S.appHtml + x.S.ndHtml, "trang");
 });
@@ -615,7 +801,7 @@ test("Chụp lại hôm nay: hỏi xác nhận (huỷ → không gọi), đồng
 
 test("ghim/loại: POST đúng đường dẫn id 19 số (chuỗi) body {}; kiểm lại cờ từ dữ liệu đang hiện; id rác/giả mạo/UID gốc không gửi", async () => {
   const x = dungRdu();
-  await batDau(x);
+  await batDau(x, GOC);
   await x.bam(x.nutDe("ghim", UID, GOC));
   assert.deepEqual(x.S.goi.filter((g) => g[0].includes("/ghim")), [[`radar/goc/${GOC}/uid/${UID}/ghim`, {}]]);
   assert.ok(x.S.toast.some((t) => /Đã ghim/.test(t)));
@@ -635,7 +821,7 @@ test("ghim/loại: POST đúng đường dẫn id 19 số (chuỗi) body {}; ki�
 
 test("nút nhóm + thêm tay: Tìm lại/Ngừng/Theo dõi lại đúng đường dẫn; nhóm đang tìm không Tìm lại; thêm tay sai dạng không gọi API, đúng → body {uid}", async () => {
   const x = dungRdu();
-  await batDau(x);
+  await batDau(x, GOC);
   await x.bam(x.nutDe("tim-lai", "", GOC));
   assert.ok(x.S.goi.some((g) => g[0] === `radar/goc/${GOC}/tim-lai` && JSON.stringify(g[1]) === "{}"));
   await x.bam(x.nutDe("ngung", "", GOC));
@@ -664,7 +850,7 @@ test("nút nhóm + thêm tay: Tìm lại/Ngừng/Theo dõi lại đúng đườn
 
 test("📮 Poster: mở/đóng khung; Sao chép / Mở Folders chỉ chạy khi đã tick (UID ≠ gốc); KHÔNG gọi API nào ngoài GET bang; id sao chép là chuỗi 19 số", async () => {
   const x = dungRdu();
-  await batDau(x);
+  await batDau(x, GOC);
   const p = x.o.panel;
   await x.bam(x.nutDe("poster", UID, GOC));
   assert.equal(p[UID].hidden, false, "mở khung");
@@ -692,15 +878,98 @@ test("📮 Poster: mở/đóng khung; Sao chép / Mở Folders chỉ chạy khi 
   assert.equal(typeof x.S.chep[0][0], "string");
   await x.bam(x.nutDe("mo-folders", UID, GOC));
   assert.equal(x.S.viTri.hash, "#/poster/folders");
-  // UID gốc: không cần tick
-  await x.bam(x.nutDe("chep", GOC, GOC));
-  assert.deepEqual(x.S.chep.at(-1), [GOC, "Đã sao chép UID"]);
+  // RU-W6: UID chính (gốc) không còn nằm trong danh sách tương tự → không có khung Poster riêng; sao chép dùng nút "Sao chép" ở khối UID chính
+  assert.equal(x.nutDe("chep", GOC, GOC), undefined);
   // không có gì ghi vào Poster / máy nhà
   assert.deepEqual([...new Set(x.S.goi.map((g) => g[0]))], ["radar/bang"]);
   // ô tick bỏ → hai nút khoá lại
   await x.goc.nghe.change({ target: { closest: (s) => (s === "[data-rdu-tick]" ? { checked: false, closest: (s2) => (s2 === "[data-rdu-poster]" ? { querySelectorAll: () => hai } : null) } : null) } });
   assert.deepEqual(hai.map((b) => b.disabled), [true, true]);
 });
+
+// ---------- 6b. trang chi tiết + ảnh lỗi + sao chép (RU-W6) ----------
+test("rduRender(phien, id): chi tiết → khung KHÔNG có ô nhập UID gốc, vẽ đúng nhóm + nút quay lại; id sai dạng → trang chính; chỉ 1 GET bang", async () => {
+  const x = dungRdu();
+  await batDau(x, GOC);
+  assert.deepEqual(x.S.goi, [["radar/bang", undefined]]);
+  assert.ok(!/id="rdu-in"|id="rdu-them"/.test(x.S.appHtml));
+  assert.match(x.S.appHtml, /id="rdu-nd"/);
+  assert.match(x.S.appHtml, /id="rdu-tai-lai"/);
+  assert.match(x.S.ndHtml, /← Tất cả UID chính/);
+  assert.match(x.S.ndHtml, /<article class="rdu-hang/);
+  assert.ok(!/<article class="rdu-the/.test(x.S.ndHtml));
+  const y = dungRdu();
+  await batDau(y, "xyz");
+  assert.match(y.S.appHtml, /id="rdu-in"/);
+  assert.match(y.S.ndHtml, /<article class="rdu-the/);
+  const z = dungRdu();
+  await batDau(z, "1737422436677814999");
+  assert.match(z.S.ndHtml, /Không có UID chính này\./);
+  const t = dungRdu({ bang: BANG({ nhom: [] }) });
+  await batDau(t);
+  assert.match(t.S.ndHtml, /Chưa theo dõi UID nào/);
+});
+
+test("hẹn giờ 10 s: trang chi tiết chỉ hỏi lại khi NHÓM ĐANG XEM còn đang tìm; trang chính khi có nhóm nào đang tìm; rduDung xoá hẹn", async () => {
+  const g2 = "1737422436677814025";
+  const bang = BANG({ nhom: [NHOM(), NHOM({ goc: g2, trang_thai: "dang_tim", ds: [U({ uid: g2, vai: "goc" })] })] });
+  const a = dungRdu({ bang });
+  await batDau(a, GOC);
+  assert.equal(a.S.timers.length, 0);
+  const b = dungRdu({ bang });
+  await batDau(b, g2);
+  assert.equal(b.S.timers.length, 1);
+  assert.equal(b.S.timers[0].ms, 10000);
+  b.K.rduDung();
+  assert.ok(b.S.daXoaTimer.length >= 1);
+  const c = dungRdu({ bang });
+  await batDau(c);
+  assert.equal(c.S.timers.length, 1);
+  assert.equal(c.S.timers[0].ms, 10000);
+});
+
+test("ảnh lỗi tải (CSP cấm onerror inline): listener 'error' capture trên khung thay <img> bằng ô 'ảnh hết hạn'; mục tiêu không phải <img> thì bỏ qua", async () => {
+  const x = dungRdu({ bang: BANG({ nhom: [NHOM({ anh: ANH })] }) });
+  await batDau(x);
+  assert.match(x.S.ndHtml, /<img src="https:\/\/cdn\.echotik\.live\//);
+  const khung = { innerHTML: "<img>", cls: [], classList: { add: (c) => khung.cls.push(c) } };
+  x.goc.nghe.error({ target: { tagName: "IMG", closest: (sel) => (sel === ".rdu-anh" ? khung : null) } });
+  assert.match(khung.innerHTML, /rdu-anh-ph">ảnh hết hạn</);
+  assert.ok(!khung.innerHTML.includes("<img"));
+  assert.deepEqual(khung.cls, ["rdu-anh-het"]);
+  const k2 = { innerHTML: "giữ", classList: { add() { throw new Error("không được đụng"); } } };
+  x.goc.nghe.error({ target: { tagName: "INPUT", closest: () => k2 } });
+  x.goc.nghe.error({ target: { tagName: "IMG", closest: () => null } });
+  x.goc.nghe.error({ target: null });
+  x.goc.nghe.error({});
+  assert.equal(k2.innerHTML, "giữ");
+  assert.ok(/ảnh hết hạn/.test(doc("radar-uid.js")));
+});
+
+test("bấm nút trong thẻ: chặn điều hướng + chặn lan truyền; nút Sao chép UID (không cần tick) chép chuỗi 19 số của UID đang hiện, không gọi API ghi", async () => {
+  const x = dungRdu();
+  await batDau(x, GOC);
+  let pd = 0, sp = 0;
+  const nut = x.nutDe("sao-chep-uid", UID, GOC);
+  assert.ok(nut, "có nút sao chép ở thẻ tương tự");
+  await x.goc.nghe.click({ target: { closest: (s) => (s === "[data-rdu-act]" ? nut : null) }, preventDefault: () => { pd++; }, stopPropagation: () => { sp++; } });
+  assert.deepEqual([pd, sp], [1, 1]);
+  assert.deepEqual(x.S.chep, [[UID, "Đã sao chép UID"]]);
+  assert.equal(typeof x.S.chep[0][0], "string");
+  await x.bam(x.nutDe("sao-chep-uid", GOC, GOC)); // khối UID chính
+  assert.deepEqual(x.S.chep.at(-1), [GOC, "Đã sao chép UID"]);
+  const gia = (uid, g) => ({ disabled: false, dataset: { rduAct: "sao-chep-uid", rduUid: uid, rduGoc: g }, closest: () => null });
+  const truoc = x.S.chep.length;
+  for (const b of [gia("abc", GOC), gia(UID, "../x"), gia("1".repeat(19), GOC), gia(UID, "1737422436677814999"), gia("", GOC)]) await x.bam(b);
+  assert.equal(x.S.chep.length, truoc, "id giả mạo / không có trong dữ liệu đang hiện → không chép");
+  assert.deepEqual([...new Set(x.S.goi.map((g) => g[0]))], ["radar/bang"]);
+  // thẻ UID chính ở trang chính: nút nhóm bấm được (không bị thẻ nuốt), Tìm lại gửi đúng đường dẫn
+  const y = dungRdu();
+  await batDau(y);
+  await y.bam(y.nutDe("tim-lai", "", GOC));
+  assert.ok(y.S.goi.some((g) => g[0] === `radar/goc/${GOC}/tim-lai`));
+});
+
 
 // ---------- 7. nguồn: CSP, tên, id, đường API, index.html, CSS, nhãn việc ----------
 test("radar-uid.js: không inline/on…=, không bảng/style cứng/độ rộng cứng, không fetch/URL máy nhà, không ép id sang số, mọi tên cấp đỉnh bắt đầu 'rdu'", () => {
@@ -713,7 +982,7 @@ test("radar-uid.js: không inline/on…=, không bảng/style cứng/độ rộn
   const ten = [...RDU.matchAll(/^(?:async )?function\*? ?(\w+)|^(?:const|let|var|class) (\w+)/gm)].map((m) => m[1] || m[2]);
   assert.ok(ten.length >= 40, `đọc được ${ten.length} tên`);
   for (const t of ten) assert.ok(t.toLowerCase().startsWith("rdu"), `radar-uid.js: "${t}" phải bắt đầu bằng rdu`);
-  for (const h of ["rduLayUid", "rduSo", "rduSpark", "rduNhanCo", "rduHangHtml", "rduNhomHtml", "rduBangHtml", "rduPosterHtml", "rduRender"]) assert.ok(ten.includes(h), h);
+  for (const h of ["rduLayUid", "rduSo", "rduSpark", "rduNhanCo", "rduHangHtml", "rduTheChinhHtml", "rduChiTietHtml", "rduAnhHopLe", "rduBangHtml", "rduPosterHtml", "rduRender"]) assert.ok(ten.includes(h), h);
   // chỉ gọi qua api() của app.js: mọi đường dẫn bắt đầu "radar/"
   const duong = [...RDU.matchAll(/api\(\s*[`"]([^`"$]*)/g), ...RDU.matchAll(/rduGui\([^,]+,\s*[`"]([^`"$]*)/g)].map((m) => m[1]);
   assert.ok(duong.length >= 6 && duong.every((d) => d.startsWith("radar/")), duong.join(","));
@@ -722,11 +991,11 @@ test("radar-uid.js: không inline/on…=, không bảng/style cứng/độ rộn
   assert.ok(!/poster\/|pvApi|PATCH|\/api\/v2/.test(RDU.replace(/#\/poster\/folders/g, "").replace(/Poster V2/g, "")), "nút Poster không được ghi vào Poster V2");
 });
 
-test("index.html: radar-uid.js ngay SAU sua.js, ?v=3; ?v của style.css/khung.js/viec.js/loi.js đã nâng; không script inline", () => {
-  assert.match(HTML, /<script src="sua\.js\?v=\d+" defer><\/script>\s*<script src="radar-uid\.js\?v=3" defer><\/script>\s*<\/head>/);
+test("index.html: radar-uid.js ngay SAU sua.js, ?v=4; ?v của style.css/khung.js/viec.js/loi.js đã nâng; không script inline", () => {
+  assert.match(HTML, /<script src="sua\.js\?v=\d+" defer><\/script>\s*<script src="radar-uid\.js\?v=4" defer><\/script>\s*<\/head>/);
   const v = (f) => Number((HTML.match(new RegExp(`${f.replace(".", "\\.")}\\?v=(\\d+)`)) || [])[1]);
-  assert.ok(v("style.css") >= 21, "style.css");
-  assert.ok(v("khung.js") >= 6, "khung.js");
+  assert.ok(v("style.css") >= 22, "style.css");
+  assert.ok(v("khung.js") >= 7, "khung.js");
   assert.ok(v("viec.js") >= 18, "viec.js");
   assert.ok(v("loi.js") >= 8, "loi.js");
   assert.ok(!/<script(?![^>]*\ssrc=)[^>]*>/i.test(HTML));

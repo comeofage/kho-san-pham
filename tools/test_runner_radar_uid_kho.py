@@ -126,7 +126,10 @@ def test_schema_dung_dac_ta_khong_co_update_time_video(kho):
                        "hoa_hong", "ton", "tong_creator", "so_trang", "tong_trang", "so_lan_thu"}
     assert {r["name"] for r in _sql(kho, "PRAGMA table_info(lan_chay)")} == {
         "ngay", "che_do", "viec_id", "trang_thai", "ly_do", "bat_dau", "ket_thuc", "so_goi"}
-    assert _sql(kho, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "1"
+    assert _sql(kho, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "2"
+    assert kho_radar_uid.PHIEN_BAN_SCHEMA == "2"
+    assert {r["name"] for r in _sql(kho, "PRAGMA table_info(san_pham)")} == {
+        "uid", "ten", "shop", "cap_nhat_luc", "anh", "anh_luc"}
     assert _sql(kho, "PRAGMA journal_mode")[0][0] == "wal"
 
 
@@ -843,6 +846,259 @@ def test_ds_nhom_va_uid_cua_nhom(kho, dong):
         kho.uid_cua_nhom(uid(9))
     with pytest.raises(KhongCoRadar):
         kho.uid_cua_nhom("12")
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# RU-B10: ảnh bìa + nâng schema v1 -> v2
+# ---------------------------------------------------------------------------------------------------------------
+ANH_OK = "https://cdn.echotik.live/abc123/0123456789abcdef/product-cover/1/1729706628656900001_0.webp"
+ANH_OK2 = "https://cdn.echotik.live/abc123/fedcba9876543210/product-cover/1/1729706628656900001_0.webp"
+
+V1_SCHEMA = """
+CREATE TABLE meta(k TEXT PRIMARY KEY, v TEXT);
+CREATE TABLE san_pham (uid TEXT PRIMARY KEY CHECK(length(uid)=19 AND uid NOT GLOB '*[^0-9]*'),
+  ten TEXT NOT NULL DEFAULT '', shop TEXT NOT NULL DEFAULT '', cap_nhat_luc TEXT);
+CREATE TABLE nhom (goc TEXT PRIMARY KEY REFERENCES san_pham(uid),
+  trang_thai TEXT NOT NULL CHECK(trang_thai IN ('cho_tim','dang_tim','da_tim','loi_tim','ngung')),
+  ly_do TEXT NOT NULL DEFAULT '', them_luc TEXT NOT NULL, them_boi TEXT NOT NULL, tim_luc TEXT, bat_dau_ngay TEXT NOT NULL);
+CREATE TABLE lien_ket (goc TEXT NOT NULL REFERENCES nhom(goc), uid TEXT NOT NULL REFERENCES san_pham(uid),
+  vai TEXT NOT NULL CHECK(vai IN ('goc','tuong_tu','them_tay')),
+  trang_thai TEXT NOT NULL CHECK(trang_thai IN ('dang_theo','ghim','loai')),
+  do_giong REAL, them_luc TEXT NOT NULL, them_boi TEXT NOT NULL, PRIMARY KEY (goc, uid));
+CREATE TABLE chup_uid (uid TEXT NOT NULL, ngay TEXT NOT NULL,
+  trang_thai TEXT NOT NULL CHECK(trang_thai IN ('dang_chup','ok','loi')), ma_loi TEXT NOT NULL DEFAULT '',
+  lay_luc TEXT NOT NULL, echotik_cap_nhat TEXT,
+  ban_tong TEXT, gia TEXT, hoa_hong TEXT, ton TEXT, tong_creator TEXT,
+  so_trang INTEGER NOT NULL DEFAULT 0, tong_trang INTEGER, so_lan_thu INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (uid, ngay));
+CREATE TABLE chup_video (uid TEXT NOT NULL, ngay TEXT NOT NULL, video_id TEXT NOT NULL, creator TEXT NOT NULL,
+  follower TEXT, view TEXT NOT NULL, ban TEXT, dang_luc TEXT NOT NULL, is_promote INTEGER,
+  PRIMARY KEY (uid, ngay, video_id), FOREIGN KEY (uid, ngay) REFERENCES chup_uid(uid, ngay));
+CREATE TABLE lan_chay (ngay TEXT NOT NULL, che_do TEXT NOT NULL, viec_id TEXT NOT NULL, trang_thai TEXT NOT NULL,
+  ly_do TEXT NOT NULL DEFAULT '', bat_dau TEXT NOT NULL, ket_thuc TEXT, so_goi INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (ngay, che_do, viec_id));
+CREATE TABLE goi_ngay (ngay TEXT PRIMARY KEY, so_goi INTEGER NOT NULL DEFAULT 0);
+CREATE TABLE token_tt (id INTEGER PRIMARY KEY CHECK(id=1), trang_thai TEXT NOT NULL,
+  ma TEXT NOT NULL DEFAULT '', luc TEXT NOT NULL);
+CREATE TABLE su_kien (id INTEGER PRIMARY KEY, luc TEXT NOT NULL, boi TEXT NOT NULL,
+  hanh_dong TEXT NOT NULL, goc TEXT, uid TEXT);
+CREATE INDEX lien_ket_uid ON lien_ket(uid);
+"""
+
+
+def _dung_db_v1(duong: Path) -> None:
+    """DB schema '1' dựng tay: 1 nhóm (gốc + 1 tương tự), có chụp."""
+    c = sqlite3.connect(duong)
+    c.executescript(V1_SCHEMA)
+    c.execute("INSERT INTO meta(k, v) VALUES('schema_ban', '1')")
+    c.execute("INSERT INTO san_pham VALUES(?, 'Kẹp gốc', 'Shop A', '2026-12-01T09:00:00+07:00')", (uid(1),))
+    c.execute("INSERT INTO san_pham VALUES(?, 'Kẹp tương tự', 'Shop B', '2026-12-01T09:00:00+07:00')", (uid(2),))
+    c.execute("INSERT INTO nhom VALUES(?, 'da_tim', '', '2026-12-01T09:00:00+07:00', 'chu', '2026-12-01T09:30:00+07:00', ?)",
+              (uid(1), NGAY))
+    c.execute("INSERT INTO lien_ket VALUES(?, ?, 'goc', 'dang_theo', NULL, '2026-12-01T09:00:00+07:00', 'chu')", (uid(1), uid(1)))
+    c.execute("INSERT INTO lien_ket VALUES(?, ?, 'tuong_tu', 'ghim', 0.7, '2026-12-01T09:30:00+07:00', 'he_thong')",
+              (uid(1), uid(2)))
+    c.execute("INSERT INTO chup_uid(uid, ngay, trang_thai, lay_luc, ban_tong) VALUES(?, ?, 'ok', '2026-12-01T10:00:00+07:00', '5K')",
+              (uid(1), NGAY))
+    c.execute("INSERT INTO chup_video VALUES(?, ?, '7300000000000000001', 'c1', NULL, '1K', NULL, '2026-07-18 10:00:00', 0)",
+              (uid(1), NGAY))
+    c.commit()
+    c.close()
+
+
+def _chup_db(duong: Path) -> dict:
+    c = sqlite3.connect(duong)
+    try:
+        return {t: c.execute(f"SELECT * FROM {t} ORDER BY 1, 2").fetchall()
+                for t in ("san_pham", "nhom", "lien_ket", "chup_uid", "chup_video", "meta")}
+    finally:
+        c.close()
+
+
+def test_re_anh_dung_chu_hop_dong():
+    assert kho_radar_uid.RE_ANH.pattern == r"^https://cdn\.echotik\.live/[A-Za-z0-9._/-]{1,300}$"
+
+
+def test_mo_nang_v1_len_v2_giu_du_lieu_va_idempotent(tmp_path, dong):
+    duong = tmp_path / "radar_uid.db"
+    _dung_db_v1(duong)
+    truoc = _chup_db(duong)
+    k = KhoRadarUid(duong, dong)
+    k.mo()
+    cot = {r["name"] for r in _sql(k, "PRAGMA table_info(san_pham)")}
+    assert {"anh", "anh_luc"} <= cot
+    assert _sql(k, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "2"
+    sau = _chup_db(duong)
+    for t in ("nhom", "lien_ket", "chup_uid", "chup_video"):
+        assert sau[t] == truoc[t]
+    assert [tuple(r[:4]) for r in sau["san_pham"]] == [tuple(r[:4]) for r in truoc["san_pham"]]
+    assert all(r["anh"] == "" and r["anh_luc"] == "" for r in _sql(k, "SELECT anh, anh_luc FROM san_pham"))
+    k.mo()                                                                # lần 2: không ADD COLUMN lại
+    k.mo()
+    assert len(_sql(k, "SELECT * FROM meta")) == 1
+    assert [r["name"] for r in _sql(k, "PRAGMA table_info(san_pham)")].count("anh") == 1
+    assert [n["goc"] for n in k.ds_nhom()] == [uid(1)]
+    k.ghi_san_pham(uid(1), "Kẹp gốc", "Shop A", ANH_OK)
+    assert k.ds_nhom()[0]["anh"] == ANH_OK
+    k.dong()
+
+
+def test_mo_nang_cap_hoan_tac_neu_loi_giua_chung(tmp_path, dong):
+    """Giao dịch: schema lạ thì không đụng gì (không thêm cột)."""
+    duong = tmp_path / "radar_uid.db"
+    _dung_db_v1(duong)
+    c = sqlite3.connect(duong)
+    c.execute("UPDATE meta SET v='9' WHERE k='schema_ban'")
+    c.commit()
+    c.close()
+    k = KhoRadarUid(duong, dong)
+    with pytest.raises(RuntimeError, match="schema"):
+        k.mo()
+    k.dong()
+    assert "anh" not in {r["name"] for r in _sql(k, "PRAGMA table_info(san_pham)")}
+    assert _sql(k, "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "9"
+
+
+def test_chi_doc_tren_v1_khong_ghi_gi_va_van_doc_duoc(tmp_path, dong):
+    duong = tmp_path / "radar_uid.db"
+    _dung_db_v1(duong)
+    truoc = _chup_db(duong)
+    cot_truoc = [tuple(r) for r in _sql(KhoRadarUid(duong, dong), "PRAGMA table_info(san_pham)")]
+    doc = KhoRadarUid(duong, dong, chi_doc=True)
+    ds = doc.ds_nhom()
+    assert [n["goc"] for n in ds] == [uid(1)]
+    assert ds[0]["anh"] == "" and ds[0]["shop"] == "Shop A" and ds[0]["n_tuong_tu"] == 1 and ds[0]["n_ghim"] == 1
+    lk = doc.uid_cua_nhom(uid(1))
+    assert [x["uid"] for x in lk] == [uid(1), uid(2)] and all(x["anh"] == "" for x in lk)
+    assert lk[1]["ten"] == "Kẹp tương tự" and lk[1]["shop"] == "Shop B"
+    with pytest.raises(ChiDoc):
+        doc.mo()
+    doc.dong()
+    assert _chup_db(duong) == truoc
+    assert [tuple(r) for r in _sql(KhoRadarUid(duong, dong), "PRAGMA table_info(san_pham)")] == cot_truoc
+    assert _sql(KhoRadarUid(duong, dong), "SELECT v FROM meta WHERE k='schema_ban'")[0]["v"] == "1"
+
+
+def test_ghi_san_pham_anh_hop_le_luu_kem_anh_luc(kho, dong):
+    kho.ghi_san_pham(uid(1), "a", "b", ANH_OK)
+    r = _sql(kho, "SELECT anh, anh_luc FROM san_pham WHERE uid=?", (uid(1),))[0]
+    assert r["anh"] == ANH_OK and r["anh_luc"] == "2026-12-01T12:00:00+07:00"
+    dong.luc = dong.luc + timedelta(hours=24)
+    kho.ghi_san_pham(uid(1), "a", "b", ANH_OK2)                           # ghi đè mỗi lần chụp (URL hết hạn)
+    r = _sql(kho, "SELECT anh, anh_luc FROM san_pham WHERE uid=?", (uid(1),))[0]
+    assert r["anh"] == ANH_OK2 and r["anh_luc"] == "2026-12-02T12:00:00+07:00"
+
+
+def test_ghi_san_pham_chu_ky_cu_van_goi_duoc(kho):
+    kho.ghi_san_pham(uid(1), "a", "b")
+    r = _sql(kho, "SELECT ten, shop, anh, anh_luc FROM san_pham")[0]
+    assert (r["ten"], r["shop"], r["anh"], r["anh_luc"]) == ("a", "b", "", "")
+
+
+@pytest.mark.parametrize("xau", [
+    "http://cdn.echotik.live/a/b.webp",                                    # không https
+    "https://evil.example.com/a/b.webp",                                   # host khác
+    "https://cdn.echotik.live.evil.com/a.webp",                            # host lách
+    "https://cdn.echotik.live@evil.com/a.webp",
+    "https://cdn.echotik.live/a b.webp",                                   # khoảng trắng
+    'https://cdn.echotik.live/a"onerror=x.webp',
+    "https://cdn.echotik.live/a<script>.webp",
+    "https://cdn.echotik.live/a>.webp",
+    "https://cdn.echotik.live/a.webp\n",                                   # xuống dòng cuối ($ lỏng)
+    "https://cdn.echotik.live/a?x=1.webp",
+    "https://cdn.echotik.live/",                                           # rỗng sau host
+    "https://cdn.echotik.live/" + "a" * 301,                               # quá dài
+    "javascript:alert(1)",
+    123,
+    None,
+])
+def test_ghi_san_pham_url_la_bi_bo_va_giu_anh_cu(kho, xau):
+    kho.ghi_san_pham(uid(1), "a", "b", ANH_OK)
+    luc_cu = _sql(kho, "SELECT anh_luc FROM san_pham")[0]["anh_luc"]
+    kho.ghi_san_pham(uid(1), "a2", "b2", xau)                              # không ném lỗi
+    r = _sql(kho, "SELECT ten, shop, anh, anh_luc FROM san_pham")[0]
+    assert (r["ten"], r["shop"]) == ("a2", "b2")                          # ten/shop vẫn cập nhật như cũ
+    assert r["anh"] == ANH_OK and r["anh_luc"] == luc_cu
+
+
+def test_ghi_san_pham_url_la_khi_chua_co_anh_van_rong(kho):
+    kho.ghi_san_pham(uid(1), "a", "b", "http://x/y")
+    r = _sql(kho, "SELECT anh, anh_luc FROM san_pham")[0]
+    assert (r["anh"], r["anh_luc"]) == ("", "")
+
+
+def test_ghi_san_pham_url_la_khong_vao_log(kho, caplog):
+    with caplog.at_level("DEBUG"):
+        kho.ghi_san_pham(uid(1), "a", "b", "https://evil.example.com/secret-path")
+    assert "evil.example.com" not in caplog.text
+
+
+def test_ghi_san_pham_anh_rong_khong_xoa_anh_cu(kho):
+    kho.ghi_san_pham(uid(1), "a", "b", ANH_OK)
+    kho.ghi_san_pham(uid(1), "a", "b", "")
+    kho.ghi_san_pham(uid(1), "a", "b")
+    r = _sql(kho, "SELECT anh, anh_luc FROM san_pham")[0]
+    assert r["anh"] == ANH_OK and r["anh_luc"] == "2026-12-01T12:00:00+07:00"
+
+
+def test_ds_nhom_co_anh_shop_n_tuong_tu_n_ghim(kho):
+    kho.them_goc(uid(1), "chu")
+    kho.ghi_san_pham(uid(1), "Gốc", "Shop A", ANH_OK)
+    kho.them_goc(uid(2), "chu")                                           # gốc chưa có ảnh/shop
+    kho.ghi_tuong_tu(uid(1), [{"uid": uid(i), "ten": f"t{i}", "gia": None, "ban_7d": None} for i in (3, 4, 5, 6)],
+                     "2026-12-01T10:00:00+07:00")
+    kho.dat_uid(uid(1), uid(3), "ghim", "chu")
+    kho.dat_uid(uid(1), uid(4), "ghim", "chu")
+    kho.dat_uid(uid(1), uid(5), "loai", "chu")                            # loại: không tính
+    kho.them_tay(uid(1), uid(7), "chu")                                   # RU-B12: thêm tay TÍNH vào n_tuong_tu
+    ds = {n["goc"]: n for n in kho.ds_nhom()}
+    assert ds[uid(1)]["anh"] == ANH_OK and ds[uid(1)]["shop"] == "Shop A" and ds[uid(1)]["ten"] == "Gốc"
+    assert ds[uid(1)]["n_tuong_tu"] == 4 and ds[uid(1)]["n_ghim"] == 2    # uid3, uid4 ghim; uid6 dang_theo; uid7 thêm tay
+    assert ds[uid(2)]["anh"] == "" and ds[uid(2)]["shop"] == "" and ds[uid(2)]["n_tuong_tu"] == 0 and ds[uid(2)]["n_ghim"] == 0
+    assert set(ds[uid(1)]) >= {"goc", "ten", "trang_thai", "ly_do", "them_luc", "them_boi", "tim_luc", "bat_dau_ngay"}
+
+
+def test_ds_nhom_n_tuong_tu_gom_them_tay_khong_gom_loai(kho):
+    kho.them_goc(uid(1), "chu")
+    kho.ghi_tuong_tu(uid(1), [{"uid": uid(i), "ten": f"t{i}", "gia": None, "ban_7d": None} for i in (2, 3, 4)],
+                     "2026-12-01T10:00:00+07:00")
+    kho.dat_uid(uid(1), uid(4), "loai", "chu")
+    kho.them_tay(uid(1), uid(5), "chu")
+    n = kho.ds_nhom()[0]
+    assert n["n_tuong_tu"] == 3 and n["n_ghim"] == 0                      # 2 tương tự + 1 thêm tay; loại không đếm
+    assert n["n_tuong_tu"] == len([x for x in kho.uid_cua_nhom(uid(1))
+                                   if x["vai"] != "goc" and x["trang_thai"] in ("dang_theo", "ghim")])
+
+
+def test_ds_nhom_n_ghim_gom_them_tay_va_khong_vuot_n_tuong_tu(kho):
+    kho.them_goc(uid(1), "chu")
+    kho.ghi_tuong_tu(uid(1), [{"uid": uid(i), "ten": f"t{i}", "gia": None, "ban_7d": None} for i in (2, 3)],
+                     "2026-12-01T10:00:00+07:00")
+    kho.dat_uid(uid(1), uid(2), "ghim", "chu")
+    kho.them_tay(uid(1), uid(5), "chu")
+    kho.dat_uid(uid(1), uid(5), "ghim", "chu")
+    n = kho.ds_nhom()[0]
+    assert n["n_ghim"] == 2 and n["n_tuong_tu"] == 3 and n["n_ghim"] <= n["n_tuong_tu"]
+
+
+def test_ds_nhom_chi_goc_thi_0_0(kho):
+    kho.them_goc(uid(1), "chu")
+    n = kho.ds_nhom()[0]
+    assert n["n_tuong_tu"] == 0 and n["n_ghim"] == 0
+
+
+def test_ds_nhom_goc_them_roi_them_tay_khop_chi_tiet(kho):
+    kho.them_goc(uid(1), "chu")
+    kho.them_tay(uid(1), uid(2), "chu")
+    assert kho.ds_nhom()[0]["n_tuong_tu"] == 1
+
+
+def test_uid_cua_nhom_co_anh(kho):
+    _nhom_da_tim(kho, uid(1), [uid(2), uid(3)])
+    kho.ghi_san_pham(uid(2), "tt", "Shop X", ANH_OK)
+    lk = {x["uid"]: x for x in kho.uid_cua_nhom(uid(1))}
+    assert lk[uid(2)]["anh"] == ANH_OK and lk[uid(2)]["shop"] == "Shop X" and lk[uid(2)]["ten"] == "tt"
+    assert lk[uid(1)]["anh"] == "" and lk[uid(3)]["anh"] == ""
+    assert set(lk[uid(2)]) >= {"uid", "vai", "trang_thai", "do_giong", "ten", "shop", "them_luc"}
 
 
 def test_cau_loi_co_dinh_la_thuoc_tinh_loi(kho):

@@ -73,7 +73,7 @@ from .danh_muc import (DANH_MUC, LOAI_CHI_HE_THONG, LOAI_KHONG_CHAY_LAI, LoaiVie
 from .du_an import ds_du_an
 from .han_muc import HAN_MUC_TRAN, LOAI_SUA_VIDEO, han_muc_hoc, han_muc_radar, kiem_han_muc
 from .kho_hoc import KhoHoc, KhongCoBaiHoc, SaiTrangThaiHoc
-from .kho_radar_uid import GOC_TOI_DA, LOI_DANG_TIM, KhongCoRadar, KhoRadarUid, SaiTrangThaiRadar
+from .kho_radar_uid import GOC_TOI_DA, LOI_DANG_TIM, RE_ANH, KhongCoRadar, KhoRadarUid, SaiTrangThaiRadar
 from .kho_viec import RE_BAN_SUA, KhoViec
 from .danh_muc import KHOA_ANH_CHUP_KHO, LOAI_PHIEN_SONG, anh_chup_kho_taovideo
 from .kieu import (DANG_MO, RE_MA_CAU_HOI, TRANG_THAI, CanNguoiDung, KhongCoPhien, MoiTruong, SaiTrangThai, ThamSoLoi,
@@ -214,6 +214,27 @@ def dung_uid_ra(lk: dict, snaps: list, hom_nay: datetime, bat_dau_ngay: str) -> 
           "do_giong": lk["do_giong"]}
     ra.update(rut.xep_hang_uid(snaps, hom_nay, bat_dau_ngay))
     return ra
+
+
+def anh_hop_le(anh: object) -> str:
+    """Chỉ trả ảnh khớp RE_ANH (phòng thủ DB cũ/sửa tay); mọi giá trị khác → ''."""
+    return anh if isinstance(anh, str) and RE_ANH.fullmatch(anh) is not None else ""
+
+
+def ban_tong_so(snaps: list) -> int | None:
+    """ban_tong của snapshot mới nhất → số nguyên; thiếu/không đọc được → None."""
+    if not snaps:
+        return None
+    moi = max(snaps, key=lambda s: (s["ngay"], s["lay_luc"]))
+    so = rut.doc_so_rut_gon(moi["ban_tong"])
+    return so.gia_tri if so is not None else None
+
+
+def _them_nhom_radar(n: dict, ds: list[dict]) -> dict:
+    """Khoá thêm RU-B11 của một nhóm: anh/shop từ kho; gia = giá snapshot mới nhất của UID gốc (đã có trong `ds`)."""
+    goc = next((u for u in ds if u["uid"] == n["goc"]), None)
+    return {"anh": anh_hop_le(n.get("anh")), "shop": n.get("shop") or "", "gia": goc["gia"] if goc else None,
+            "n_tuong_tu": int(n.get("n_tuong_tu") or 0), "n_ghim": int(n.get("n_ghim") or 0)}
 
 
 def dung_chuoi_va_video(snaps: list) -> tuple[list[dict], list[dict]]:
@@ -1245,9 +1266,16 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
         raise KhongCoRadar()
 
     def _ds_uid_ra(k: KhoRadarUid, goc: str, bat_dau_ngay: str, bay: datetime) -> list[dict]:
+        """ds của /radar/bang = UidRa (§7.1, không đổi) + khoá thêm RU-B11 `anh`, `ban_tong` (chỉ ở bảng, không ở chi tiết)."""
         tu_ngay = (bay.date() - timedelta(days=RADAR_NGAY_DOC)).isoformat()
-        return sap_xep_uid_ra([dung_uid_ra(lk, k.doc_snapshots(lk["uid"], tu_ngay), bay, bat_dau_ngay)
-                               for lk in k.uid_cua_nhom(goc)])
+        ra = []
+        for lk in k.uid_cua_nhom(goc):
+            snaps = k.doc_snapshots(lk["uid"], tu_ngay)
+            u = dung_uid_ra(lk, snaps, bay, bat_dau_ngay)
+            u["anh"] = anh_hop_le(lk.get("anh"))
+            u["ban_tong"] = ban_tong_so(snaps)
+            ra.append(u)
+        return sap_xep_uid_ra(ra)
 
     def g_radar_bang(_q: dict) -> tuple[int, dict]:
         _kho_radar_mo()
@@ -1261,8 +1289,9 @@ def tao_handler(kho: KhoViec, mt: MoiTruong, khoa: str, khoa_cong_khai, hm: dict
             lan = k.lan_gan_nhat()
             nhom = [{"goc": n["goc"], "ten": n["ten"], "trang_thai": n["trang_thai"], "ly_do": n["ly_do"],
                      "ten_ly_do": ten_ly_do_radar(n["ly_do"], goi, tran_goi), "tim_luc": n["tim_luc"],
-                     "bat_dau_ngay": n["bat_dau_ngay"], "ds": _ds_uid_ra(k, n["goc"], n["bat_dau_ngay"], bay)}
-                    for n in k.ds_nhom()]
+                     "bat_dau_ngay": n["bat_dau_ngay"], "ds": ds}
+                    | _them_nhom_radar(n, ds)
+                    for n in k.ds_nhom() for ds in [_ds_uid_ra(k, n["goc"], n["bat_dau_ngay"], bay)]]
             return {
                 "luc": bay.isoformat(timespec="seconds"), "ngay": ngay,
                 "token": {"trang_thai": tk["trang_thai"], "cau": CAU_TOKEN_RADAR.get(tk["trang_thai"], "")},

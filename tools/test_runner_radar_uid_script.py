@@ -68,6 +68,16 @@ def ung_vien_tho(u: str, ten: str = TEN_TT, gia: str = "$12.7", ban: str = "36")
     return {"product_id": u, "product_name": ten, "avg_price": gia, "total_sale_7d_cnt": ban}
 
 
+def url_anh(u: str, ban: str = "") -> str:
+    return f"https://cdn.echotik.live/md5{ban}/hex/product-cover/138/{u}_0.webp"
+
+
+def them_cover(mt, anh) -> None:
+    """Gắn cover_url (E4) cho mọi ứng viên đã cài: `anh` là hàm uid → URL."""
+    for kw in (KW4, KW3, KW2):
+        mt.kb.tim[(kw, 1)] = [{**x, "cover_url": anh(x["product_id"])} for x in mt.kb.tim[(kw, 1)]]
+
+
 class KichBan:
     """Dữ liệu + lỗi cài sẵn cho EchoTik giả; ghi lại mọi GET."""
 
@@ -676,3 +686,78 @@ def test_tham_so_sai_exit_1_van_in_mot_dong_json(tmp_path, capsys, monkeypatch, 
 def test_viec_id_sai_dang_exit_1(mt, capsys):
     ma, j, _ = chay_script(mt, capsys, viec_id="co khoang trang!")
     assert ma == 1 and j["ly_do"] == "tham_so_sai"
+
+
+# ---------------------------------------------------------------------------------------------------------------
+# Ảnh bìa (RU-A5 lượt 2)
+# ---------------------------------------------------------------------------------------------------------------
+def anh_kho(mt, goc: str) -> dict[str, str]:
+    k = KhoRadarUid(mt.db, mt.dong, chi_doc=True)
+    return {x["uid"]: x["anh"] for x in k.uid_cua_nhom(goc)}
+
+
+def test_nap_ghi_anh_e4_cho_tuong_tu_va_e1_cho_goc(mt, capsys):
+    c = cai_nap(mt)
+    goc = uid(1)
+    mt.kb.sp[goc]["images"] = [url_anh(goc, "G"), "https://cdn.echotik.live/khac"]
+    them_cover(mt, lambda u: url_anh(u, "E4"))
+    ma, j, out = chay_script(mt, capsys, "nap", "n1", goc=goc)
+    assert ma == 0 and j == {"trang_thai": "xong", "ly_do": "", "so_uid": 5, "so_goi": 13}      # số GET không đổi
+    assert len(mt.kb.goi) == 13
+    a = anh_kho(mt, goc)
+    assert a[goc] == url_anh(goc, "G")
+    for u in c.values():
+        assert a[u] == url_anh(u, "E4"), u                      # E1 giả của tương tự không có images ⇒ giữ ảnh E4
+    assert "cdn.echotik.live" not in out.out and "cdn.echotik.live" not in out.err
+    k = KhoRadarUid(mt.db, mt.dong, chi_doc=True)
+    assert next(n for n in k.ds_nhom() if n["goc"] == goc)["anh"] == url_anh(goc, "G")
+
+
+def test_nap_anh_e4_co_ngay_ca_khi_chua_chup_duoc_e2(mt, capsys):
+    """Ảnh E4 được ghi lúc ghi nhóm, không phụ thuộc bước chụp."""
+    c = cai_nap(mt)
+    goc = uid(1)
+    them_cover(mt, lambda u: url_anh(u, "E4"))
+    mt.kb.loi[("video", None)] = LoiEchoTik("khong_tim_thay", 404)
+    chay_script(mt, capsys, "nap", "n1", goc=goc)
+    a = anh_kho(mt, goc)
+    assert all(a[u] == url_anh(u, "E4") for u in c.values())
+
+
+def test_nap_url_la_thi_anh_rong_va_luot_van_xong(mt, capsys):
+    c = cai_nap(mt)
+    goc = uid(1)
+    mt.kb.sp[goc]["images"] = ["http://cdn.echotik.live/a.webp"]                   # http, không https
+    them_cover(mt, lambda u: "https://evil.example/a.webp")
+    for u in c.values():
+        mt.kb.sp[u]["images"] = [None]
+    ma, j, _ = chay_script(mt, capsys, "nap", "n1", goc=goc)
+    assert ma == 0 and j["trang_thai"] == "xong" and j["so_uid"] == 5
+    assert set(anh_kho(mt, goc).values()) == {""}
+
+
+def test_chup_hang_ngay_e1_ghi_de_anh_cu(mt, capsys):
+    seed_nhom(mt, uid(1), [uid(2)])
+    k = mo_kho(mt)
+    try:
+        k.ghi_san_pham(uid(2), TEN_TT, "Shop A", url_anh(uid(2), "CU"))
+    finally:
+        k.dong()
+    mt.kb.sp[uid(1)]["images"] = [url_anh(uid(1), "MOI")]
+    mt.kb.sp[uid(2)]["images"] = [url_anh(uid(2), "MOI")]
+    ma, j, _ = chay_script(mt, capsys)
+    assert ma == 0 and j["so_uid"] == 2 and j["so_goi"] == 4
+    assert anh_kho(mt, uid(1)) == {uid(1): url_anh(uid(1), "MOI"), uid(2): url_anh(uid(2), "MOI")}
+
+
+def test_chup_e1_la_giu_anh_cu(mt, capsys):
+    seed_nhom(mt, uid(1), [uid(2)])
+    k = mo_kho(mt)
+    try:
+        k.ghi_san_pham(uid(2), TEN_TT, "Shop A", url_anh(uid(2), "CU"))
+    finally:
+        k.dong()
+    mt.kb.sp[uid(2)]["images"] = ["http://x/y"]
+    ma, j, _ = chay_script(mt, capsys)
+    assert ma == 0 and j["trang_thai"] == "xong"
+    assert anh_kho(mt, uid(1))[uid(2)] == url_anh(uid(2), "CU")

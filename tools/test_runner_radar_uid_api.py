@@ -130,6 +130,13 @@ UID_RA_THEO_7_1 = {
     "echotik_cap_nhat", "so_snapshot", "phu_gio", "co", "co_canh_bao", "ly_do_thieu", "duoi_do_phan_giai"}
 
 
+KHOA_UID_MOI_B11 = {"anh", "ban_tong"}                                  # RU-B11: shop/gia đã có sẵn trong UidRa
+KHOA_NHOM_CU = {"goc", "ten", "trang_thai", "ly_do", "ten_ly_do", "tim_luc", "bat_dau_ngay", "ds"}
+KHOA_NHOM_MOI_B11 = {"anh", "shop", "gia", "n_tuong_tu", "n_ghim"}
+ANH_G = "https://cdn.echotik.live/img/goc.jpg"
+ANH_1 = "https://cdn.echotik.live/img/tt1.jpg"
+
+
 def _post(m, duong, body=None, **kw):
     return m.goi("POST", duong, {"boi": "nhan"} if body is None else body, **kw)
 
@@ -256,7 +263,8 @@ def test_bang_nhom_loi_tim_co_ten_ly_do(may, kr):
     n = may.goi("GET", "/radar/bang")[1]["nhom"][0]
     assert (n["goc"], n["trang_thai"], n["ly_do"]) == (G1, "loi_tim", "keyword_khong_loc")
     assert n["ten_ly_do"].startswith("EchoTik không lọc theo từ khoá")
-    assert set(n) == {"goc", "ten", "trang_thai", "ly_do", "ten_ly_do", "tim_luc", "bat_dau_ngay", "ds"}
+    assert set(n) == {"goc", "ten", "trang_thai", "ly_do", "ten_ly_do", "tim_luc", "bat_dau_ngay", "ds",
+                      "anh", "shop", "gia", "n_tuong_tu", "n_ghim"}      # RU-B11 chỉ thêm khoá
     assert n["bat_dau_ngay"] == NGAY and n["tim_luc"] is None
 
 
@@ -273,7 +281,8 @@ def test_bang_dung_xep_hang_uid_dung_7_1_id_la_chuoi(may, kr):
     assert set(ds) == {G1, uid_n(1), uid_n(2)} and all(isinstance(k, str) for k in ds)
     hom_nay = datetime(2026, 11, 23, 10, 12, 0)
     for uid, u in ds.items():
-        assert set(u) == UID_RA_THEO_7_1, set(u) ^ UID_RA_THEO_7_1
+        assert UID_RA_THEO_7_1 <= set(u), UID_RA_THEO_7_1 - set(u)      # khoá cũ còn nguyên (RU-B11 chỉ THÊM khoá)
+        assert set(u) - UID_RA_THEO_7_1 == KHOA_UID_MOI_B11
         snaps = kr.doc_snapshots(uid, "2000-01-01")
         mong = rut.xep_hang_uid(snaps, hom_nay, NGAY)                  # NGUỒN SỰ THẬT: đúng hàm đã duyệt
         for k, v in mong.items():
@@ -289,6 +298,52 @@ def test_bang_dung_xep_hang_uid_dung_7_1_id_la_chuoi(may, kr):
     tho = may.goi("GET", "/radar/bang")
     assert tho[0] == 200
     assert not re.search(r'"(goc|uid)":\s*\d', json.dumps(tho[1], ensure_ascii=False))
+
+
+def test_bang_them_anh_shop_gia_ban_tong_dem(may, kr):
+    _them_nhom(kr, so_tt=2)
+    kr.ghi_san_pham(G1, "Sản phẩm gốc", "Shop A", ANH_G)
+    kr.ghi_san_pham(uid_n(1), "Tương tự 0", "Shop B", ANH_1)               # uid_n(2): chưa có ảnh, chưa chụp
+    kr.dat_uid(G1, uid_n(1), "ghim", "nhan")
+    _nhieu_ngay(kr, G1)
+    _nhieu_ngay(kr, uid_n(1))
+    s, d = may.goi("GET", "/radar/bang")
+    assert s == 200
+    n = d["nhom"][0]
+    assert KHOA_NHOM_CU | KHOA_NHOM_MOI_B11 == set(n)
+    assert (n["anh"], n["shop"], n["gia"], n["n_tuong_tu"], n["n_ghim"]) == (ANH_G, "Shop A", "499.390₫", 2, 1)
+    ds = {u["uid"]: u for u in n["ds"]}
+    assert (ds[G1]["anh"], ds[G1]["shop"], ds[G1]["gia"], ds[G1]["ban_tong"]) == (ANH_G, "Shop A", "499.390₫", 10)
+    assert (ds[uid_n(1)]["anh"], ds[uid_n(1)]["shop"], ds[uid_n(1)]["ban_tong"]) == (ANH_1, "Shop B", 10)
+    chua = ds[uid_n(2)]                                                    # chưa ảnh / chưa chụp ⇒ '' và null, đủ khoá
+    assert chua["anh"] == "" and chua["gia"] is None and chua["ban_tong"] is None and isinstance(chua["shop"], str)
+    assert all(isinstance(u["uid"], str) for u in n["ds"]) and isinstance(n["goc"], str)
+    assert not re.search(r'"(goc|uid)":\s*\d', json.dumps(d, ensure_ascii=False))
+
+
+def test_bang_nhom_chua_chup_gia_null_anh_rong(may, kr):
+    _them_nhom(kr)
+    n = may.goi("GET", "/radar/bang")[1]["nhom"][0]
+    assert n["anh"] == "" and n["gia"] is None and n["n_tuong_tu"] == 0 and n["n_ghim"] == 0
+    assert n["ds"][0]["ban_tong"] is None
+
+
+def test_bang_anh_la_trong_db_tra_rong(may, kr):
+    _them_nhom(kr, so_tt=1)
+    with sqlite3.connect(kr.duong_dan.as_posix()) as c:                     # DB cũ/bị sửa tay: ghi thẳng giá trị lạ
+        c.execute("UPDATE san_pham SET anh=? WHERE uid=?", ("http://evil.example/x.jpg", G1))
+        c.execute("UPDATE san_pham SET anh=? WHERE uid=?", (r"C:\Users\Mi\x.jpg", uid_n(1)))
+    n = may.goi("GET", "/radar/bang")[1]["nhom"][0]
+    assert n["anh"] == "" and all(u["anh"] == "" for u in n["ds"])
+
+
+def test_bang_khong_ro_duong_dan_hay_token(may, kr):
+    _them_nhom(kr, so_tt=1)
+    kr.ghi_san_pham(G1, "Sản phẩm gốc", "Shop A", ANH_G)
+    _nhieu_ngay(kr, G1)
+    tho = json.dumps(may.goi("GET", "/radar/bang")[1], ensure_ascii=False)
+    for cam in ("radar_uid.db", str(kr.duong_dan.parent), "Users", "C:\\", "\\\\", "token_tt", "Bearer"):
+        assert cam not in tho, cam
 
 
 def _khoa_sap(u):

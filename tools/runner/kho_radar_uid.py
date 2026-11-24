@@ -26,7 +26,7 @@ from .kieu import ThamSoLoi, gio_vn
 
 log = logging.getLogger(__name__)
 
-PHIEN_BAN_SCHEMA = "1"
+PHIEN_BAN_SCHEMA = "2"
 GIU_CHUP_NGAY = 90                          # mo() dọn chup_video (và chup_uid tương ứng) cũ hơn chừng này
 GOC_TOI_DA = 2
 TUONG_TU_TOI_DA = 10                        # mỗi nhóm, gồm cả UID đang ghim
@@ -36,6 +36,8 @@ SO_LAN_THU_TOI_DA = 2                       # chup_uid.so_lan_thu tối đa mỗ
 TEN_TOI_DA = 200
 
 RE_UID = re.compile(r"^\d{19}\Z", re.ASCII)
+# Chỉ ảnh bìa CDN EchoTik mới được lưu (chống URL tuỳ ý/XSS). Dùng `fullmatch` để `$` không nhận xuống dòng cuối.
+RE_ANH = re.compile(r"^https://cdn\.echotik\.live/[A-Za-z0-9._/-]{1,300}$")
 _RE_NGAY = re.compile(r"^\d{4}-\d{2}-\d{2}\Z", re.ASCII)
 _RE_LUC = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:[+-]\d{2}:\d{2}|Z)?\Z", re.ASCII)
 _RE_BOI = re.compile(r"^[\w.@\-]{1,64}\Z")
@@ -66,7 +68,8 @@ LOI_LAN_KHONG_MO = "Lượt chạy không ở trạng thái đang chạy"
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta(k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS san_pham (uid TEXT PRIMARY KEY CHECK(length(uid)=19 AND uid NOT GLOB '*[^0-9]*'),
-  ten TEXT NOT NULL DEFAULT '', shop TEXT NOT NULL DEFAULT '', cap_nhat_luc TEXT);
+  ten TEXT NOT NULL DEFAULT '', shop TEXT NOT NULL DEFAULT '', cap_nhat_luc TEXT,
+  anh TEXT NOT NULL DEFAULT '', anh_luc TEXT NOT NULL DEFAULT '');
 CREATE TABLE IF NOT EXISTS nhom (goc TEXT PRIMARY KEY REFERENCES san_pham(uid),
   trang_thai TEXT NOT NULL CHECK(trang_thai IN ('cho_tim','dang_tim','da_tim','loi_tim','ngung')),
   ly_do TEXT NOT NULL DEFAULT '', them_luc TEXT NOT NULL, them_boi TEXT NOT NULL, tim_luc TEXT, bat_dau_ngay TEXT NOT NULL);
@@ -323,6 +326,13 @@ class KhoRadarUid:
             r = g.execute("SELECT v FROM meta WHERE k='schema_ban'").fetchone()
             if r is None:
                 g.execute("INSERT INTO meta(k, v) VALUES('schema_ban', ?)", (PHIEN_BAN_SCHEMA,))
+            elif r[0] == "1":
+                # v1 -> v2 trong CÙNG giao dịch này (ALTER TABLE của SQLite có rollback): giữ nguyên dữ liệu.
+                cot = {x[1] for x in g.execute("PRAGMA table_info(san_pham)")}
+                for ten_cot in ("anh", "anh_luc"):
+                    if ten_cot not in cot:
+                        g.execute(f"ALTER TABLE san_pham ADD COLUMN {ten_cot} TEXT NOT NULL DEFAULT ''")
+                g.execute("UPDATE meta SET v=? WHERE k='schema_ban'", (PHIEN_BAN_SCHEMA,))
             elif r[0] != PHIEN_BAN_SCHEMA:
                 raise RuntimeError(f"radar_uid.db có schema {r[0]!r}, code cần {PHIEN_BAN_SCHEMA!r}: "
                                    f"KHÔNG tự xoá/tạo lại; kiểm tay {self.duong_dan}")
@@ -506,15 +516,26 @@ class KhoRadarUid:
             c.execute("UPDATE nhom SET trang_thai=?, ly_do=? WHERE goc=?", (trang_thai, ly_do, goc))
 
     # ---------- sản phẩm ----------
-    def ghi_san_pham(self, uid: str, ten: str, shop: str) -> None:
-        """Ghi/đè tên + shop (bỏ ký tự điều khiển C0, cắt 200)."""
+    def ghi_san_pham(self, uid: str, ten: str, shop: str, anh: str = "") -> None:
+        """Ghi/đè tên + shop (bỏ ký tự điều khiển C0, cắt 200) và ảnh bìa.
+
+        `anh` chỉ được lưu khi khớp RE_ANH (kèm `anh_luc`); rỗng/không khớp ⇒ giữ nguyên ảnh cũ, không ném, không log URL.
+        """
         self._kiem_ghi()
         _kiem_uid(uid)
         ten_s, shop_s = _sach_ten(ten, "ten"), _sach_ten(shop, "shop")
+        luc = self._luc()
+        anh_ok = isinstance(anh, str) and RE_ANH.fullmatch(anh) is not None
         with self._gd() as c:
-            c.execute("INSERT INTO san_pham(uid, ten, shop, cap_nhat_luc) VALUES(?,?,?,?) "
-                      "ON CONFLICT(uid) DO UPDATE SET ten=excluded.ten, shop=excluded.shop, "
-                      "cap_nhat_luc=excluded.cap_nhat_luc", (uid, ten_s, shop_s, self._luc()))
+            if anh_ok:
+                c.execute("INSERT INTO san_pham(uid, ten, shop, cap_nhat_luc, anh, anh_luc) VALUES(?,?,?,?,?,?) "
+                          "ON CONFLICT(uid) DO UPDATE SET ten=excluded.ten, shop=excluded.shop, "
+                          "cap_nhat_luc=excluded.cap_nhat_luc, anh=excluded.anh, anh_luc=excluded.anh_luc",
+                          (uid, ten_s, shop_s, luc, anh, luc))
+            else:
+                c.execute("INSERT INTO san_pham(uid, ten, shop, cap_nhat_luc) VALUES(?,?,?,?) "
+                          "ON CONFLICT(uid) DO UPDATE SET ten=excluded.ten, shop=excluded.shop, "
+                          "cap_nhat_luc=excluded.cap_nhat_luc", (uid, ten_s, shop_s, luc))
 
     def ghi_tuong_tu(self, goc: str, ds: list[UngVien], tim_luc: str) -> int:
         """Thay các `tuong_tu` đang `dang_theo` bằng `ds` (giữ ghim, them_tay, loai, gốc). Trả số UID mới ghi.
@@ -698,13 +719,24 @@ class KhoRadarUid:
             return ra
 
     # ---------- đọc nhóm ----------
+    @staticmethod
+    def _cot_anh(c: sqlite3.Connection) -> str:
+        """Biểu thức cột ảnh. DB còn v1 (mở chỉ đọc, không nâng) thiếu cột `anh` ⇒ trả ''."""
+        co = any(r[1] == "anh" for r in c.execute("PRAGMA table_info(san_pham)"))
+        return "COALESCE(s.anh, '')" if co else "''"
+
     def ds_nhom(self) -> list[dict]:
         with self._doc() as c:
             if c is None:
                 return []
             return [dict(r) for r in c.execute(
                 "SELECT n.goc AS goc, COALESCE(s.ten, '') AS ten, n.trang_thai AS trang_thai, n.ly_do AS ly_do, "
-                "n.them_luc AS them_luc, n.them_boi AS them_boi, n.tim_luc AS tim_luc, n.bat_dau_ngay AS bat_dau_ngay "
+                "n.them_luc AS them_luc, n.them_boi AS them_boi, n.tim_luc AS tim_luc, n.bat_dau_ngay AS bat_dau_ngay, "
+                f"{self._cot_anh(c)} AS anh, COALESCE(s.shop, '') AS shop, "
+                "(SELECT COUNT(*) FROM lien_ket l WHERE l.goc = n.goc AND l.vai <> 'goc' "
+                "AND l.trang_thai IN ('dang_theo','ghim')) AS n_tuong_tu, "
+                "(SELECT COUNT(*) FROM lien_ket l WHERE l.goc = n.goc AND l.vai <> 'goc' "
+                "AND l.trang_thai = 'ghim') AS n_ghim "
                 "FROM nhom n LEFT JOIN san_pham s ON s.uid = n.goc ORDER BY n.them_luc, n.goc")]
 
     def uid_cua_nhom(self, goc: str) -> list[dict]:
@@ -717,7 +749,8 @@ class KhoRadarUid:
                 raise KhongCoRadar()
             return [dict(r) for r in c.execute(
                 "SELECT l.uid AS uid, l.vai AS vai, l.trang_thai AS trang_thai, l.do_giong AS do_giong, "
-                "COALESCE(s.ten, '') AS ten, COALESCE(s.shop, '') AS shop, l.them_luc AS them_luc "
+                "COALESCE(s.ten, '') AS ten, COALESCE(s.shop, '') AS shop, l.them_luc AS them_luc, "
+                f"{self._cot_anh(c)} AS anh "
                 "FROM lien_ket l LEFT JOIN san_pham s ON s.uid = l.uid WHERE l.goc = ? "
                 "ORDER BY (l.vai <> 'goc'), l.them_luc, l.uid", (goc,))]
 

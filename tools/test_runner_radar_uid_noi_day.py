@@ -62,6 +62,14 @@ def uid_tt(k: int) -> str:
 UID_TT = [uid_tt(k) for k in range(1, 11)]
 
 
+def anh_e4(pid: str) -> str:
+    return f"https://cdn.echotik.live/e4md5/hex/product-cover/138/{pid}_0.webp"
+
+
+def anh_e1(pid: str, vong: int) -> str:
+    return f"https://cdn.echotik.live/e1md5v{vong}/hex/product-cover/138/{pid}_0.webp"
+
+
 # ====================================================================================== máy chủ EchoTik giả
 class GiaEchoTik:
     """http.server giả: E1 /products/{pid}, E2 /products/{pid}/videos, E4 /products?keyword=... dạng §2.5."""
@@ -112,7 +120,8 @@ class GiaEchoTik:
     def _e1(self, pid: str) -> dict:
         return {"data": {"product_id": pid, "product_name": self._ten(pid), "price": "$19.37", "real_price": "499.390₫",
                          "sale_cnt": SALE_CNT[self.vong], "commission": "10%", "total_stock_cnt": 562,
-                         "update_time": f"2026-11-{20 + self.vong} 07:55", "seller": {"seller_name": "Shop Giả"}}}
+                         "update_time": f"2026-11-{20 + self.vong} 07:55", "seller": {"seller_name": "Shop Giả"},
+                         "images": [anh_e1(pid, self.vong), "https://cdn.echotik.live/phu/1.webp"]}}
 
     def _e2(self, pid: str) -> dict:
         hot = self._so_hot(pid)
@@ -141,7 +150,8 @@ class GiaEchoTik:
 
     def _e4(self) -> dict:                         # 10 phần tử, KHÔNG có meta (§2.5)
         return {"data": [{"product_id": uid_tt(k), "product_name": self._ten(uid_tt(k)), "avg_price": f"$12.{k}",
-                          "total_sale_7d_cnt": str(200 - k * 7)} for k in range(1, 11)]}
+                          "total_sale_7d_cnt": str(200 - k * 7),
+                          "cover_url": anh_e4(uid_tt(k))} for k in range(1, 11)]}
 
     # --- phục vụ
     def _tra(self, h: BaseHTTPRequestHandler, ma: int, noi: dict | None) -> None:
@@ -577,3 +587,20 @@ def test_cli_that_token_thieu_khong_cham_mang(tmp_path):
     k2 = KhoRadarUid(db, lambda: datetime(2026, 11, 21, 10, 0, 0), chi_doc=True)
     assert k2.doc_token()["trang_thai"] == "thieu"
     k2.dong()
+
+
+# ====================================================================================== ảnh bìa (RU-A5 lượt 2)
+def test_anh_bia_sau_nap_va_ghi_de_o_lan_chup_sau(sau_nap):
+    nd = sau_nap
+    assert sau_nap.kq_nap.get == Counter({"E1": 11, "E2": 11, "E4": 3})            # số GET không đổi
+    lk = {x["uid"]: x["anh"] for x in nd.kr.uid_cua_nhom(GOC)}
+    # sau nạp: E1 của lần chụp (vòng 0) ghi đè ảnh E4 cho cả gốc và tương tự
+    assert lk[GOC] == anh_e1(GOC, 0) and all(lk[u] == anh_e1(u, 0) for u in UID_TT)
+    assert nd.kr.ds_nhom()[0]["anh"] == anh_e1(GOC, 0)
+    assert "cdn.echotik.live" not in sau_nap.kq_nap.out and "cdn.echotik.live" not in sau_nap.kq_nap.err
+    assert not any("cdn.echotik.live" in d for d in sau_nap.kq_nap.logs)
+    kq = nd.hang_ngay(1)
+    assert kq.ma == 0 and kq.get == Counter({"E1": 11, "E2": 11})
+    lk = {x["uid"]: x["anh"] for x in nd.kr.uid_cua_nhom(GOC)}
+    assert lk[GOC] == anh_e1(GOC, 1) and all(lk[u] == anh_e1(u, 1) for u in UID_TT)   # ảnh mới ghi đè ảnh cũ
+    nd.tat_ca_file_khong_co_token()

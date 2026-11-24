@@ -17,7 +17,7 @@ const mnMENU = [
 
 // hash → {trang, id}. trang ∈ "goc" | "kho" | "can-quay" | "cu" | "may-nha" | "sua" | "viec-ct" | "poster" | "hoc" | "theo-doi" | "".
 // "hoc" (#/hoc, D15 Q6): trang Học tự động, KHÔNG có mục menu riêng — mở từ khối "📈 Học hôm nay", tô mục Hôm nay.
-// id: phần sau "/" của #/poster/<trang>, hoặc của link cũ #/duyet/<id>, #/dang/<id> (trang "cu": chuyển về #/sp/<id> hoặc #/poster)
+// id: "<19 số>" của #/theo-doi/<19 số> (đã kiểm regex), hoặc phần sau "/" của #/poster/<trang>, hoặc của link cũ #/duyet/<id>, #/dang/<id> (trang "cu": chuyển về #/sp/<id> hoặc #/poster)
 // (CHƯA giải mã; "" = trang danh sách). Khớp regex của route() trong app.js.
 function mnPhanTichHash(hash) {
   const h = typeof hash === "string" ? hash : "";
@@ -25,7 +25,9 @@ function mnPhanTichHash(hash) {
   if (h === "#/kho" || /^#\/sp\/.+$/.test(h)) return { trang: "kho", id: "" };
   if (h === "#/can-quay") return { trang: "can-quay", id: "" };
   if (h === "#/hoc") return { trang: "hoc", id: "" };
-  if (h === "#/theo-doi") return { trang: "theo-doi", id: "" }; // Radar UID (D16): mục menu thứ 6
+  if (h === "#/theo-doi") return { trang: "theo-doi", id: "" }; // Radar UID (D16): mục menu thứ 6, trang danh sách UID chính
+  const rd = h.match(/^#\/theo-doi\/(\d{19})$/); // RU-W6: chi tiết 1 UID chính; id luôn là CHUỖI 19 số (> 2^53), sai dạng → hash lạ
+  if (rd) return { trang: "theo-doi", id: rd[1] };
   if (h === "#/may-nha" || h === "#/viec" || h === "#/suc-khoe") return { trang: "may-nha", id: "" };
   if (/^#\/viec\/[^/]+$/.test(h)) return { trang: "viec-ct", id: "" };
   if (/^#\/sua\/\d{19}\/[0-9a-f]{16}$/.test(h)) return { trang: "sua", id: "" };
@@ -92,7 +94,7 @@ async function mnRoute(hash, chu) {
   else if (trang === "may-nha") await mnRenderMayNha(phien);
   else if (trang === "poster") { if (typeof pvRender === "function") await pvRender(id); else $("#app").innerHTML = mnCHUA_CO; }
   else if (trang === "hoc") { if (typeof hcRender === "function") await hcRender(phien); else $("#app").innerHTML = mnCHUA_CO; } // hoc.js (D15)
-  else if (trang === "theo-doi") { if (typeof rduRender === "function") await rduRender(phien); else $("#app").innerHTML = mnCHUA_CO; } // radar-uid.js (D16)
+  else if (trang === "theo-doi") { if (typeof rduRender === "function") await rduRender(phien, id); else $("#app").innerHTML = mnCHUA_CO; } // radar-uid.js (D16)
   return true;
 }
 

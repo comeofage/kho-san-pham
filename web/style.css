@@ -407,7 +407,40 @@ a.hn-sp-ten:hover { text-decoration-color: currentColor; }
 .rdu-tick { display: flex; gap: 8px; align-items: flex-start; margin: 0; }
 .rdu-tick input { width: auto; margin-top: 3px; }
 .rdu-vang { color: #9a6700; font-weight: 600; }
+/* RU-W6: trang chính = thẻ UID chính; chi tiết = khối UID chính + thẻ ngang UID tương tự (ảnh 96px) */
+.rdu-the-ds { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 10px; }
+.rdu-the { display: grid; gap: 6px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; background: var(--bg); min-width: 0; }
+.rdu-the:hover { border-color: var(--text); }
+.rdu-the-lk { display: flex; gap: 10px; align-items: flex-start; color: inherit; text-decoration: none; min-width: 0; }
+.rdu-the-nut { gap: 6px; }
+.rdu-the-ngang { display: flex; gap: 10px; align-items: flex-start; min-width: 0; }
+.rdu-thong-tin { display: grid; gap: 3px; flex: 1; min-width: 0; align-content: start; }
+.rdu-the-ten { font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rdu-gia { font-weight: 700; }
+.rdu-anh { flex: none; display: block; overflow: hidden; border-radius: 8px; border: 1px solid var(--line); background: var(--card); }
+.rdu-anh-nho { width: 96px; height: 96px; }
+.rdu-anh-lon { width: 160px; height: 160px; }
+.rdu-anh img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.rdu-anh-ph { display: flex; width: 100%; height: 100%; align-items: center; justify-content: center; text-align: center; padding: 4px; font-size: 12px; color: var(--muted); background: #e5e7eb; }
+.rdu-tt { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 1px 8px; color: #fff; background: var(--s-cho); }
+.rdu-tt-tim { background: var(--s-pt); }
+.rdu-tt-xong { background: var(--ok); }
+.rdu-tt-loi { background: #d92d20; }
+.rdu-tt-ngung { background: var(--muted); }
+.rdu-chip { display: inline-block; font-size: 12px; font-weight: 700; border-radius: 6px; padding: 0 6px; border: 1px solid currentColor; }
+.rdu-chip-ghim { color: var(--ok); }
+.rdu-chip-loai { color: var(--muted); }
+.rdu-uid-dong { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.rdu-lks { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; }
+.rdu-lk, .rdu-quay { color: inherit; text-decoration: underline; }
+.rdu-muc { margin: 14px 0 6px; }
+.rdu-nhom-nut { gap: 6px; margin-top: 6px; }
+.rdu-chi-so { border-top: 1px dashed var(--line); padding-top: 4px; }
+.rdu-chi-so > summary { cursor: pointer; font-weight: 600; padding: 6px 0; }
+.rdu-chi-so[open] > summary { margin-bottom: 6px; }
+.rdu-chi-so > .rdu-luoi { margin-top: 6px; }
 @media (max-width: 640px) {
   .rdu-luoi { grid-template-columns: 1fr 1fr; }
+  .rdu-anh-lon { width: 120px; height: 120px; }
   .rdu-tay > .btn { flex: 1; }
 }

@@ -32,7 +32,7 @@ from pathlib import Path
 from typing import Any
 
 from . import radar_uid_tinh as tinh
-from .echotik import EchoTik, HetNganSach, LoiEchoTik, chuan_ung_vien, chuan_video
+from .echotik import EchoTik, HetNganSach, LoiEchoTik, anh_bia, anh_ung_vien, chuan_ung_vien, chuan_video
 from .kho_radar_uid import ChiDoc, KhoRadarUid, KhongCoRadar, SaiTrangThaiRadar
 from .kieu import MUI_GIO_VN, ThamSoLoi, gio_vn
 
@@ -104,6 +104,7 @@ class _Lan:
     da_bat_dau: set[str] = field(default_factory=set)       # UID đã `bat_dau_chup` trong lượt này
     dang_do: set[str] = field(default_factory=set)          # UID đang `dang_chup`, chưa chốt ok/loi
     e1_nho: dict[str, dict] = field(default_factory=dict)   # E1 đã lấy (dùng lại cho E2 của UID gốc trong nap)
+    anh_e4: dict[str, str] = field(default_factory=dict)    # uid → cover_url của E4 (chỉ khi không rỗng)
     mang_lt: int = 0
     dinh_dang_lt: int = 0
     token_ok_da_ghi: bool = False
@@ -200,7 +201,7 @@ def _ghi_san_pham_tu_e1(lan: _Lan, uid: str, e1: dict) -> str:
     sel = e1.get("seller")
     shop = (_txt(sel.get("seller_name")) or "") if isinstance(sel, dict) else ""
     if ten.strip():
-        lan.kho.ghi_san_pham(uid, ten, shop)
+        lan.kho.ghi_san_pham(uid, ten, shop, anh_bia(e1))        # URL lạ/rỗng: kho bỏ im lặng, giữ ảnh cũ
     return ten
 
 
@@ -280,8 +281,17 @@ def _chuyen_nhom(lan: _Lan, goc: str, tu: tuple[str, ...], den: str, ly_do: str 
     return True
 
 
-def _chuan_ds_e4(ds: list[dict]) -> list[dict]:
-    return [uv for uv in (chuan_ung_vien(x) for x in ds) if uv is not None]
+def _chuan_ds_e4(lan: _Lan, ds: list[dict]) -> list[dict]:
+    ra = []
+    for x in ds:
+        uv = chuan_ung_vien(x)
+        if uv is None:
+            continue
+        anh = anh_ung_vien(x)
+        if anh:
+            lan.anh_e4.setdefault(uv["uid"], anh)
+        ra.append(uv)
+    return ra
 
 
 def _tim_tuong_tu(lan: _Lan, goc: str, ten: str, gia_goc: str | None) -> list[dict] | None:
@@ -290,10 +300,10 @@ def _tim_tuong_tu(lan: _Lan, goc: str, ten: str, gia_goc: str | None) -> list[di
     co_tu_khoa_loc_duoc = False
     for kw in tinh.tu_khoa_tim(ten):
         ung, meta = lan.et.tim(kw, 1, MOI_TRANG)
-        ds = _chuan_ds_e4(ung)
+        ds = _chuan_ds_e4(lan, ung)
         if (meta.get("last_page") or 0) > 1:
             ung2, _ = lan.et.tim(kw, 2, MOI_TRANG)
-            ds += _chuan_ds_e4(ung2)
+            ds += _chuan_ds_e4(lan, ung2)
         if not tinh.keyword_co_loc(kw, [u["ten"] for u in ds]):
             continue                                              # EchoTik bỏ qua `keyword`: bỏ cả từ khoá này
         co_tu_khoa_loc_duoc = True
@@ -307,6 +317,17 @@ def _tim_tuong_tu(lan: _Lan, goc: str, ten: str, gia_goc: str | None) -> list[di
                        if not (x["vai"] == "tuong_tu" and x["trang_thai"] == "dang_theo")}
     chon = tinh.chon_tuong_tu(ten, gia_goc, list(hop.values()), frozenset(da_loai), tinh.SO_TUONG_TU_TOI_DA)
     return [{**u, "do_giong": round(tinh.do_giong(ten, u["ten"]), 4)} for u in chon]
+
+
+def _ghi_anh_tuong_tu(lan: _Lan, goc: str, ds: list[dict]) -> None:
+    """Ảnh E4 cho các tương tự VỪA được ghi (không GET thêm). Giữ nguyên ten/shop kho đang có; ảnh E1 ghi đè sau."""
+    if not lan.anh_e4:
+        return
+    chon = {u["uid"] for u in ds}
+    for x in lan.kho.uid_cua_nhom(goc):
+        anh = lan.anh_e4.get(x["uid"])
+        if anh and x["uid"] in chon and x["vai"] == "tuong_tu" and x["ten"].strip():
+            lan.kho.ghi_san_pham(x["uid"], x["ten"], x["shop"], anh)
 
 
 def _tim_va_ghi(lan: _Lan, goc: str, ten: str, gia_goc: str | None) -> str:
@@ -326,6 +347,7 @@ def _tim_va_ghi(lan: _Lan, goc: str, ten: str, gia_goc: str | None) -> str:
     if nh is None or nh["trang_thai"] != "dang_tim":
         return "nhom_ngung"                                       # chủ ngừng nhóm giữa chừng: không ghi gì thêm
     lan.kho.ghi_tuong_tu(goc, ds, lan.luc())
+    _ghi_anh_tuong_tu(lan, goc, ds)
     if not _chuyen_nhom(lan, goc, ("dang_tim",), "da_tim"):
         return "nhom_ngung"
     return ""

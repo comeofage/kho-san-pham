@@ -318,3 +318,23 @@ def chuan_ung_vien(raw: dict) -> UngVien | None:
     if uid is None or ten is None or not RE_UID.match(uid):
         return None
     return {"uid": uid, "ten": ten, "gia": _chuoi(raw.get("avg_price")), "ban_7d": _chuoi(raw.get("total_sale_7d_cnt"))}
+
+
+def anh_bia(e1: dict) -> str:
+    """E1 -> URL ảnh bìa = `images[0]` nếu là chuỗi không rỗng, ngược lại "". KHÔNG kiểm host (kho kiểm RE_ANH)."""
+    if not isinstance(e1, dict):
+        return ""
+    ds = e1.get("images")
+    if not isinstance(ds, list) or not ds:
+        return ""
+    v = ds[0]
+    return v if isinstance(v, str) and v.strip() else ""
+
+
+def anh_ung_vien(raw: dict) -> str:
+    """Một phần tử E4 -> `cover_url` (chuỗi không rỗng) hoặc "". Hàm riêng, KHÔNG đổi `UngVien`/`chuan_ung_vien`
+    (khoá TypedDict §7.2 được test so khớp giữa 3 module); script tự giữ map uid -> ảnh. KHÔNG kiểm host."""
+    if not isinstance(raw, dict):
+        return ""
+    v = raw.get("cover_url")
+    return v if isinstance(v, str) and v.strip() else ""
