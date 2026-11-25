@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-25T10:48:24+07:00",
+ "cap_nhat_luc": "2026-11-25T10:54:53+07:00",
  "san_pham": [
   {
    "id": "1738421330610063009",
@@ -35,11 +35,11 @@
    "id": "1738276033316357793",
    "uid": "1738276033316357793",
    "link": "https://www.tiktok.com/view/product/1738276033316357793",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[DEAL 9K] Bút chì màu iSelect - Hộp 6/12/18/24 màu chì học sinh - Màu sắc tươi sáng không dễ gãy",
+   "gia": "11.789₫",
+   "shop": "Văn Phòng Phẩm iSelect",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-25T10:36:22+07:00",
-   "cap_nhat_luc": "2026-11-25T10:36:22+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-25T10:54:40+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
