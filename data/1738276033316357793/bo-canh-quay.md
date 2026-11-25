@@ -288,7 +288,7 @@ Test, đăng, theo dõi
 
 - **Tổng thời gian làm 5 video:** ~3 giờ (quay ~65 phút + sắp xếp ~10 phút + dựng ~70 phút + hậu kỳ chữ/voice ~35 phút).
 - **Thời gian mỗi video mới sau khi có template:** ~10–12 phút.
-- **Nhịp đăng:** 5 video test trong 3–5 ngày → video nào giữ người xem tốt thì nhân bản thêm 5–10 biến thể (đổi hook, đổi cỡ hộp được nhắc, đổi thứ tự shot).
+- **Nhịp đăng:** 5 video test trong 3–5 ngày → video nào giữ người xem tốt thì nhân bản thêm 5–10 biến thể (đổi hook, đổi cỡ hộp làm nhân vật chính, đổi thứ tự shot).
 
 ---
 
