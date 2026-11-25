@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-25T17:48:13+07:00",
+ "cap_nhat_luc": "2026-11-25T17:53:44+07:00",
  "san_pham": [
   {
-   "id": "tam-20261125155042702",
-   "uid": null,
+   "id": "1736448578863400786",
+   "uid": "1736448578863400786",
    "link": "https://vt.tiktok.com/ZS9PxQDH9f84w-92Syt/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Son Bóng Môi Cho Bé Hegerbaby BerryBlush 10ml – Màu Dâu Tây & Đào Tự Nhiên, Tạo Sắc Môi Tươi Tắn, Dưỡng Ẩm, Không Dính, Dễ Lau Sạch",
+   "gia": "70.441₫",
+   "shop": "hegerbaby online",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-25T15:50:42+07:00",
-   "cap_nhat_luc": "2026-11-25T15:50:42+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-25T17:53:27+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
