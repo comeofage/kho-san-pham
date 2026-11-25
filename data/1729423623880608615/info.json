@@ -31,9 +31,19 @@
   "luc": "2026-11-25T16:22:29+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 12,
+  "luc": "2026-11-25T22:29:03+07:00",
+  "poster": [
+   {
+    "folder": 383,
+    "so_video": 12,
+    "duong_dan": "E:/oneshottramcanh/khautrangkinh-1729423623880608615/output",
+    "nhan": "nha.cua.mit"
+   }
+  ],
+  "poster_folder": 383,
+  "duong_dan": "E:/oneshottramcanh/khautrangkinh-1729423623880608615/output"
  },
- "cap_nhat_luc": "2026-11-25T21:03:19+07:00"
+ "cap_nhat_luc": "2026-11-25T22:29:03+07:00"
 }
