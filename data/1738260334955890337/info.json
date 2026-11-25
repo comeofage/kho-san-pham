@@ -36,5 +36,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-25T10:40:15+07:00"
+ "cap_nhat_luc": "2026-11-25T10:40:37+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Văn phòng phẩm thông dụng, rủi ro thấp; chỉ cần tránh câu so sánh chê bút khác và câu tuyệt đối về mực chưa tự kiểm chứng.",
+   "khuyen_nghi": "Quay thật các phép thử (viết liền, chấm ngòi, quẹt tay) và chỉ nói điều thấy được; che logo bút dùng so sánh."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Shop dùng câu 'không chảy mực', 'không đứt nét', 'mực đậm hơn bút thường' chưa có kiểm chứng độc lập; chỉ dùng khi tự thử đạt."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu iSelect, tổ chức chịu trách nhiệm là Công ty TNHH Phát triển Deli Việt Nam; cần che logo hãng khác khi quay bút so sánh."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Ảnh và thiết kế do shop cung cấp, sản phẩm không mang nhân vật hay bản quyền bên thứ ba."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút viết thông thường, không thuộc nhóm hàng hạn chế hay cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ dùng học tập cho học sinh nhưng không phải đồ chơi hay sản phẩm riêng cho trẻ nhỏ; chỉ quay bàn tay người lớn, không quay trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chê hoặc nói bút thường viết dở, kém rõ nét, lem nhoè",
+    "goi_y": "Để nét chữ tự so sánh trên màn hình, dùng chữ trung tính 'bút thường' và 'bút iSelect'."
+   },
+   {
+    "khong_nen": "Khẳng định tuyệt đối không bao giờ đứt nét, không bao giờ chảy mực",
+    "goi_y": "Nói theo điều quay thấy: 'viết liền một dòng mực ra đều', 'chấm ngòi 3 giây không loang' nếu thử đạt."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có đánh giá nào để đối chiếu chất lượng mực (chỉ 2 đánh giá, đã bán 66); chưa xác minh giấy tờ công bố chất lượng của hộp bút.",
+  "danh_gia_luc": "2026-11-25T10:40:37+07:00"
+ }
 }
