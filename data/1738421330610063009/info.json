@@ -36,5 +36,62 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-25T11:00:35+07:00"
+ "cap_nhat_luc": "2026-11-25T11:00:59+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "✅",
+   "muc_do": "🟡",
+   "nguy_co": "Văn phòng phẩm thường, ít rủi ro chính sách; chỉ cần tránh nói quá lời 'chống nước' và 'chống tĩnh điện' khi chưa quay thử đúng kết quả.",
+   "khuyen_nghi": "Làm Affiliate bình thường, giữ lời mô tả sát trang (nhựa PP, 10 lá, trong suốt, 4 màu). Chỉ nói 'chống nước' nếu demo C6 cho kết quả đúng, còn không thì nói 'nước lăn đi, lau là sạch'."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Trang ghi 'chống nước', 'chống tĩnh điện', 'đựng tối đa 10 tờ A4/lá' nhưng không có số đo hay kết quả thử; nói tuyệt đối dễ thành claim sai."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu iSelect, đơn vị chịu trách nhiệm là Công ty TNHH Phát triển Thương mại Điện tử Deli Việt Nam; chưa xác minh quan hệ giữa iSelect và Deli, không dùng từ 'chính hãng'."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Ảnh dựng của shop, không có nhân vật bản quyền; video dùng footage tự quay, không lấy lại ảnh shop."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "File nhựa đựng tài liệu A4, không thuộc nhóm hạn chế hay cần giấy phép."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟢",
+    "nhan_xet": "Dùng cho học tập/văn phòng nhưng không phải đồ trẻ em; không quay trẻ em, chỉ quay bàn tay và giấy mẫu."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Chống nước tuyệt đối, giấy không bao giờ bị ướt",
+    "goi_y": "Bìa nhựa PP, nước lăn đi, lau là sạch (chỉ nói sau khi quay C6 cho kết quả đúng)."
+   },
+   {
+    "khong_nen": "Chống tĩnh điện, giấy trượt vào không kẹt",
+    "goi_y": "Luồn tờ A4 vào lá khá êm tay (chỉ nói khi C2 quay thấy đúng)."
+   },
+   {
+    "khong_nen": "Đựng tối đa 10 tờ A4/lá, bền, cứng chắc như cam kết",
+    "goi_y": "Nói theo số tờ đã nhét được thật ở C4, không dùng từ 'cam kết', 'bền vĩnh viễn'."
+   },
+   {
+    "khong_nen": "Hàng chính hãng, bảo hành",
+    "goi_y": "Bỏ hẳn; chỉ nói thương hiệu iSelect như trên trang."
+   }
+  ],
+  "ket_luan_cuoi": "✅ Có thể làm Affiliate.",
+  "thieu_thong_tin": "Chưa có đánh giá người mua (đã bán 17, 0 đánh giá), chưa xác minh quan hệ thương hiệu iSelect với Deli Việt Nam, chưa có độ dày bìa và lá (mm).",
+  "danh_gia_luc": "2026-11-25T11:00:59+07:00"
+ }
 }
