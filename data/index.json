@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-25T08:48:07+07:00",
+ "cap_nhat_luc": "2026-11-25T09:16:11+07:00",
  "san_pham": [
   {
    "id": "1735549089874019878",
@@ -555,16 +555,16 @@
    "gia": "89.945₫",
    "shop": "UNICARE By GG",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Thu",
+    "luc": "2026-11-25T08:48:04+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -572,7 +572,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-18T09:28:24+07:00",
-   "cap_nhat_luc": "2026-11-18T12:17:07+07:00",
+   "cap_nhat_luc": "2026-11-25T08:48:04+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
@@ -2402,7 +2402,7 @@
    ],
    "them_boi": "Nhân",
    "them_luc": "2026-10-31T17:37:00+07:00",
-   "cap_nhat_luc": "2026-11-23T11:55:31+07:00",
+   "cap_nhat_luc": "2026-11-25T09:15:58+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
