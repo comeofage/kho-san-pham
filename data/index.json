@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-25T12:12:26+07:00",
+ "cap_nhat_luc": "2026-11-25T13:50:34+07:00",
  "san_pham": [
   {
    "id": "1738421330610063009",
@@ -1356,7 +1356,7 @@
    "gia": "102.313₫",
    "shop": "Chăm sóc đồ gỗ Mộc An",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1373,7 +1373,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-10T13:56:36+07:00",
-   "cap_nhat_luc": "2026-11-25T10:45:44+07:00",
+   "cap_nhat_luc": "2026-11-25T13:50:14+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
