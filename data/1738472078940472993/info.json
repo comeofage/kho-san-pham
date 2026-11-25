@@ -35,5 +35,58 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-25T10:47:44+07:00"
+ "cap_nhat_luc": "2026-11-25T10:48:12+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Văn phòng phẩm thông thường, rủi ro thấp; chỉ cần tránh claim tuyệt đối về độ bền ngòi, nét tẩy và lưu ý hình ảnh trẻ em khi hướng tới học sinh.",
+   "khuyen_nghi": "Làm được, chỉ nói những gì thấy trong video demo (nét 2B/HB, gọt, tẩy) và không đưa giá/khuyến mãi vào caption. Xác nhận thêm quan hệ giữa thương hiệu iSELECT và Deli Việt Nam nếu muốn nhắc tên thương hiệu."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Mô tả shop có 'hạn chế gãy ruột', 'viết mượt', 'tẩy sạch, không lem' là claim hiệu năng chưa có bằng chứng, chỉ nói khi video demo thể hiện đúng."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu iSELECT in trên hộp/thân bút, nhưng tổ chức chịu trách nhiệm hàng hóa là Công ty TNHH Phát triển Deli Việt Nam; trang chưa nêu rõ quan hệ ủy quyền."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút màu trơn, không có nhân vật hoạt hình hay hình ảnh bản quyền trên hộp và thân bút."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút chì gỗ, gọt và tẩy là văn phòng phẩm thông thường, không thuộc nhóm hàng hạn chế/cấm."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Đối tượng chính là học sinh nên tránh quay trẻ em, không quảng cáo như đồ dùng riêng cho trẻ nhỏ; ảnh shop chỉ có bàn tay."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Cam kết ruột chì không bao giờ gãy / bút không gãy ngòi",
+    "goi_y": "Chỉ quay thử rơi rồi gọt (C9) và nói đúng kết quả thấy trong video, hoặc chỉ nhắc 'ruột chì liên kết chắc chắn' theo mô tả shop."
+   },
+   {
+    "khong_nen": "Nói 'tẩy sạch hoàn toàn / không để lại vệt' khi chưa kiểm",
+    "goi_y": "Quay C7 thật rồi mô tả theo hình, ví dụ 'tẩy nét chì trên giấy'."
+   },
+   {
+    "khong_nen": "Đưa giá, giảm giá, 'rẻ nhất' vào caption",
+    "goi_y": "Chỉ nói giá trong lời/chữ dựng ở video; caption mô tả công dụng và loại 2B/HB."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có đánh giá người mua (đã bán 1, 0 đánh giá), chưa có số đo bút, chưa rõ quan hệ ủy quyền thương hiệu iSELECT với Deli Việt Nam, màu thân bút thực tế khác ảnh hay không (mô tả ghi 'Xanh', ảnh bìa nhiều màu).",
+  "danh_gia_luc": "2026-11-25T10:48:12+07:00"
+ }
 }
