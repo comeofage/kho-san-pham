@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-25T10:55:19+07:00",
+ "cap_nhat_luc": "2026-11-25T11:00:56+07:00",
  "san_pham": [
   {
    "id": "1738421330610063009",
    "uid": "1738421330610063009",
    "link": "https://www.tiktok.com/view/product/1738421330610063009",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "File lá iSelect A4 nhiều ngăn, File đựng giấy tờ, Tệp đựng tài liệu 10 lá chất liệu PP cao cấp",
+   "gia": "22.844₫",
+   "shop": "Văn Phòng Phẩm iSelect",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-25T10:36:32+07:00",
-   "cap_nhat_luc": "2026-11-25T10:36:32+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-25T11:00:35+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
@@ -56,7 +56,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-25T10:36:22+07:00",
-   "cap_nhat_luc": "2026-11-25T10:55:02+07:00",
+   "cap_nhat_luc": "2026-11-25T10:55:06+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
