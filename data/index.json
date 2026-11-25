@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-25T21:03:29+07:00",
+ "cap_nhat_luc": "2026-11-25T22:05:56+07:00",
  "san_pham": [
   {
    "id": "1736448578863400786",
@@ -1290,16 +1290,16 @@
    "gia": "160.178₫",
    "shop": "Jiusuiban Kids",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-25T22:05:44+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -1307,7 +1307,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:18:28+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:10+07:00",
+   "cap_nhat_luc": "2026-11-25T22:05:44+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
