@@ -36,5 +36,83 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-25T17:53:27+07:00"
+ "cap_nhat_luc": "2026-11-25T17:53:57+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Mỹ phẩm môi dành cho trẻ em, trang bán dùng nhiều lời khẳng định an toàn và ảnh trẻ em, dễ bị gỡ video hoặc vi phạm chính sách nếu nói quá hoặc quay trẻ em.",
+   "khuyen_nghi": "Chỉ làm khi xác minh được phiếu công bố mỹ phẩm và giấy tờ nhập khẩu của shop; video chỉ quay sản phẩm trên mu tay, không trẻ em, không dùng lời an toàn/dưỡng/cam kết."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Trang ghi 'dưỡng ẩm', 'an toàn cho trẻ từ 3 tuổi', 'không chứa hormone/kim loại nặng/huỳnh quang', 'cam kết 100% nguyên liệu an toàn' — các lời khẳng định này chưa có chứng nhận trong ảnh."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Hegerbaby, thuộc shop hegerbaby online; chưa thấy giấy ủy quyền nhưng shop là chủ thương hiệu theo tên."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Nhân vật hoạt hình dâu tây/đào và ảnh trẻ em trong ảnh shop có thể thuộc bản quyền shop; ảnh bìa 2 có logo Shopee và ảnh trước/sau nhìn như đã chỉnh sửa, không nên dùng lại."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟠",
+    "nhan_xet": "Mỹ phẩm bôi môi xuất xứ Trung Quốc cần phiếu công bố sản phẩm mỹ phẩm và giấy tờ nhập khẩu; trang không đưa số công bố."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🔴",
+    "nhan_xet": "Sản phẩm trang điểm môi cho trẻ em, ảnh shop có trẻ em thoa son; nội dung quảng bá cho trẻ nhỏ và có trẻ em xuất hiện dễ bị hạn chế hoặc gỡ."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Thông tin tuổi mâu thuẫn: ảnh ghi '0+', mô tả ghi 'từ 3 tuổi trở lên'.",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nói độ tuổi trong video và caption; nếu cần chỉ hiện nguyên văn mô tả của shop."
+   },
+   {
+    "van_de": "Chưa có phiếu công bố mỹ phẩm hoặc chứng nhận kiểm nghiệm cho các lời 'không hormone, không kim loại nặng, không huỳnh quang'.",
+    "rui_ro": "🟠",
+    "xu_ly": "Kiểm tra giấy tờ trong trang shop trước khi đăng; không nói các lời này bằng giọng khẳng định."
+   },
+   {
+    "van_de": "Quay trẻ em hoặc môi người dùng thử có thể vi phạm quy định về nội dung liên quan trẻ em.",
+    "rui_ro": "🔴",
+    "xu_ly": "Chỉ quay mu bàn tay, khăn giấy và ống son; không quay bé, không quay môi, mặt."
+   },
+   {
+    "van_de": "Ảnh bìa 2 có giá, quà tặng và logo Shopee.",
+    "rui_ro": "🟠",
+    "xu_ly": "Không quay lại, không dùng làm thumbnail; không nhắc giá/quà trong caption."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "An toàn cho bé, lành tính, không hormone, không kim loại nặng",
+    "goi_y": "Chỉ dùng chữ dựng 'Shop ghi: …' kèm hình mô tả hoặc bỏ hẳn; nói về màu, độ bóng và cách lau."
+   },
+   {
+    "khong_nen": "Dưỡng ẩm, nuôi dưỡng môi, môi khỏe mạnh",
+    "goi_y": "Nói 'bóng nhẹ', 'màu dâu/đào', 'lau sạch bằng khăn giấy' theo cảnh đã quay thật."
+   },
+   {
+    "khong_nen": "Cam kết 100% an toàn, chính hãng, đẹp suốt cả ngày",
+    "goi_y": "Bỏ các câu này; chỉ mô tả điều nhìn thấy trong video."
+   },
+   {
+    "khong_nen": "Nêu tuổi dùng (0+, từ 3 tuổi)",
+    "goi_y": "Không nêu độ tuổi; để khách đọc mô tả shop."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa thấy phiếu công bố mỹ phẩm, số công bố, giấy nhập khẩu, thành phần đầy đủ (INCI) trên trang. Chính sách hiện hành của TikTok Shop VN không đọc được bằng fetch (cần JS), đánh giá dựa trên hiểu biết sẵn có.",
+  "danh_gia_luc": "2026-11-25T17:53:57+07:00"
+ }
 }
