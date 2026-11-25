@@ -35,5 +35,54 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-25T10:54:40+07:00"
+ "cap_nhat_luc": "2026-11-25T10:55:02+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Đồ dùng học sinh có các claim 'không dễ gãy', 'thân thiện môi trường' cần bằng chứng, và bìa ảnh shop có ảnh so sánh dựng tự mâu thuẫn.",
+   "khuyen_nghi": "Có thể làm; chỉ nói điều thấy được trong cảnh thử thật (tô mượt, chuốt sẵn, thân không gỗ, 4 cỡ hộp), không quay trẻ em, không nói 'DEAL 9K' vì giá trang thấp nhất là 11.789₫."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟡",
+    "nhan_xet": "Tên 'không dễ gãy' và icon 'Không gỗ — Thân thiện môi trường' là claim cần bằng chứng, chỉ nên nói điều quay thử thấy được."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Thương hiệu iSelect, tổ chức chịu trách nhiệm là Công ty TNHH Phát triển Deli Việt Nam, không thấy dấu hiệu nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟢",
+    "nhan_xet": "Hình trên hộp là tranh minh hoạ chim ưng, ảnh shop không in nhân vật hoạt hình có bản quyền."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Bút chì màu văn phòng phẩm, không thuộc nhóm cấm hoặc hạn chế."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm hướng tới học sinh nên không quay trẻ em, không nói tăng trí thông minh hay phát triển tư duy ngoài mô tả."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Bút không bao giờ gãy / cứng hơn bút thường gấp nhiều lần / 9K",
+    "goi_y": "Chỉ nói 'chuốt sẵn, thân không gỗ, tô mượt' và đúng kết quả thử thực tế; giá nói theo phân loại 11.789₫ đến 41.558₫."
+   },
+   {
+    "khong_nen": "Thân thiện môi trường / giúp bé phát triển tư duy sáng tạo",
+    "goi_y": "Nói 'thân bút không gỗ' và 'dùng để tô màu, vẽ tranh' đúng theo mô tả shop."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa rõ chứng nhận an toàn cho đồ dùng học sinh, thành phần ruột chì, và độ tuổi khuyến nghị; trang chỉ có 5 đánh giá nên chưa có bằng chứng xã hội.",
+  "danh_gia_luc": "2026-11-25T10:55:02+07:00"
+ }
 }
