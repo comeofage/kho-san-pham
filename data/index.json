@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-25T10:45:54+07:00",
+ "cap_nhat_luc": "2026-11-25T10:47:57+07:00",
  "san_pham": [
   {
    "id": "1738421330610063009",
@@ -65,11 +65,11 @@
    "id": "1738472078940472993",
    "uid": "1738472078940472993",
    "link": "https://www.tiktok.com/view/product/1738472078940472993",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "[2k/c - HỘP 10 CÂY] Bút chì gỗ iSelect 2B HB ngòi chì đậm mượt thân gỗ tự nhiên dễ gọt tiện lợi cho học sinh sinh viên văn phòng",
+   "gia": "26.606₫",
+   "shop": "Văn Phòng Phẩm iSelect",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -86,9 +86,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-25T10:36:02+07:00",
-   "cap_nhat_luc": "2026-11-25T10:36:02+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-25T10:47:44+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
