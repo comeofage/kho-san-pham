@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-26T13:12:02+07:00",
+ "cap_nhat_luc": "2026-11-26T13:16:20+07:00",
  "san_pham": [
   {
    "id": "tam-20261126131137544",
@@ -35,11 +35,11 @@
    "id": "1730364207910258935",
    "uid": "1730364207910258935",
    "link": "https://vt.tiktok.com/ZS9P4HLJyChJD-SjLfL/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "【Giao hàng miễn phí】Penbose Tã Bỉm dán Quần 50 miếng Size S đến XXXL, hút ẩm nhanh dung tích hấp thụ cao, dày chỉ 2mm mỏng manh không chà da, thấm khí tốt dính sát da, giữ khô lâu không rò rỉ, dễ thay mặc, giá hợp lý hiệu quả tốt cho bé",
+   "gia": "105.789₫",
+   "shop": "penbose.vn",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -56,9 +56,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-26T13:11:15+07:00",
-   "cap_nhat_luc": "2026-11-26T13:11:19+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-26T13:16:04+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
