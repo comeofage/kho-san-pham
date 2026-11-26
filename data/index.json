@@ -1,15 +1,15 @@
 {
- "cap_nhat_luc": "2026-11-26T13:41:43+07:00",
+ "cap_nhat_luc": "2026-11-26T13:46:58+07:00",
  "san_pham": [
   {
    "id": "1738504040180188329",
    "uid": "1738504040180188329",
    "link": "https://vt.tiktok.com/ZS9P4H2dLfS3E-AhLft/",
-   "ten": "",
-   "gia": "",
-   "shop": "",
-   "anh_bia": "",
-   "trang_thai": "cho",
+   "ten": "Móc khoá hình khung giấy khen - In tên theo yêu cầu hài hước vui nhộn thiết kế độc đáo chi tiết sắc nét quà tặng ý nghĩa",
+   "gia": "30.446₫",
+   "shop": "CỬA HÀNG EM TOM",
+   "anh_bia": "bia.jpg",
+   "trang_thai": "da_phan_tich",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
@@ -26,9 +26,9 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-26T13:11:37+07:00",
-   "cap_nhat_luc": "2026-11-26T13:17:01+07:00",
-   "so_caption": 0,
-   "co_file01": false,
+   "cap_nhat_luc": "2026-11-26T13:46:45+07:00",
+   "so_caption": 100,
+   "co_file01": true,
    "rui_ro": null
   },
   {
