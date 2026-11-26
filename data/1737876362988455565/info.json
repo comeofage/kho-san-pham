@@ -34,18 +34,24 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 20,
-  "luc": "2026-11-26T20:19:55+07:00",
+  "so_video": 40,
+  "luc": "2026-11-26T20:38:05+07:00",
   "poster": [
    {
     "folder": 392,
     "so_video": 20,
     "duong_dan": "E:/oneshottramcanh/pinduphongveryking-1737876362988455565/output_poster",
     "nhan": "Adam"
+   },
+   {
+    "folder": 393,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/pinduphongveryking-1737876362988455565/output",
+    "nhan": "nha.cua.mit"
    }
   ],
-  "poster_folder": 392,
-  "duong_dan": "E:/oneshottramcanh/pinduphongveryking-1737876362988455565/output_poster"
+  "poster_folder": 393,
+  "duong_dan": "E:/oneshottramcanh/pinduphongveryking-1737876362988455565/output"
  },
- "cap_nhat_luc": "2026-11-26T20:19:55+07:00"
+ "cap_nhat_luc": "2026-11-26T20:38:05+07:00"
 }
