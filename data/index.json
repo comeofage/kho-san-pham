@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-26T10:17:14+07:00",
+ "cap_nhat_luc": "2026-11-26T11:11:07+07:00",
  "san_pham": [
   {
    "id": "1736448578863400786",
@@ -174,16 +174,16 @@
    "gia": "29.486₫",
    "shop": "TOY STORE 5.0",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
     "xong": false,
     "boi": "",
     "luc": ""
    },
    "da_quay_review": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-26T11:10:57+07:00"
    },
    "yeu_thich": false,
    "can_dang": false,
@@ -191,7 +191,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-23T14:11:40+07:00",
-   "cap_nhat_luc": "2026-11-24T21:07:05+07:00",
+   "cap_nhat_luc": "2026-11-26T11:10:57+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
