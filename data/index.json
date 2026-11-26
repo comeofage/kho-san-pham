@@ -1,9 +1,39 @@
 {
- "cap_nhat_luc": "2026-11-26T13:11:27+07:00",
+ "cap_nhat_luc": "2026-11-26T13:12:02+07:00",
  "san_pham": [
   {
-   "id": "tam-20261126131115193",
+   "id": "tam-20261126131137544",
    "uid": null,
+   "link": "https://vt.tiktok.com/ZS9P4H2dLfS3E-AhLft/",
+   "ten": "",
+   "gia": "",
+   "shop": "",
+   "anh_bia": "",
+   "trang_thai": "cho",
+   "da_quay_oneshot": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "da_quay_review": {
+    "xong": false,
+    "boi": "",
+    "luc": ""
+   },
+   "yeu_thich": false,
+   "can_dang": false,
+   "ngung_dang": false,
+   "the": [],
+   "them_boi": "Nhân",
+   "them_luc": "2026-11-26T13:11:37+07:00",
+   "cap_nhat_luc": "2026-11-26T13:11:37+07:00",
+   "so_caption": 0,
+   "co_file01": false,
+   "rui_ro": null
+  },
+  {
+   "id": "1730364207910258935",
+   "uid": "1730364207910258935",
    "link": "https://vt.tiktok.com/ZS9P4HLJyChJD-SjLfL/",
    "ten": "",
    "gia": "",
@@ -26,7 +56,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-26T13:11:15+07:00",
-   "cap_nhat_luc": "2026-11-26T13:11:15+07:00",
+   "cap_nhat_luc": "2026-11-26T13:11:19+07:00",
    "so_caption": 0,
    "co_file01": false,
    "rui_ro": null
