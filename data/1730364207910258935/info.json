@@ -36,5 +36,69 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-26T13:16:04+07:00"
+ "cap_nhat_luc": "2026-11-26T13:16:45+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🔴",
+   "nguy_co": "Tã bỉm trẻ em: trang shop có claim y tế (ngừa hăm, mẩn đỏ), xuất xứ mâu thuẫn (Hàn Quốc vs Trung Quốc), và hàng liên quan trẻ em nên không được dùng hình em bé.",
+   "khuyen_nghi": "Làm được nếu chỉ demo vật lý (đổ nước, độ mỏng, size), dùng búp bê thay em bé, không lặp lại claim ngừa hăm/an toàn/nhập khẩu Hàn Quốc của shop."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟠",
+    "nhan_xet": "Mô tả shop có \"ngừa hăm & mẩn đỏ\", \"an toàn trên toàn thế giới\", \"giữ khô lâu không rò rỉ\" — claim y tế/tuyệt đối, chỉ được nói điều quay thấy được (thấm nước, mỏng, mềm, size)."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟡",
+    "nhan_xet": "Thương hiệu Penbose do shop penbose.vn bán; trang không đưa số đăng ký nhãn hiệu, không có dấu hiệu nhái thương hiệu lớn."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Bao bì có hình hươu cao cổ hoạt hình và chữ Hàn, nhà cung cấp là Công ty TNHH Thương mại Dewei; không rõ quyền sử dụng hình mascot."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟢",
+    "nhan_xet": "Tã bỉm không thuộc nhóm cấm; trang có giấy công bố hợp quy số DV151610506/03 của VNTEST cấp 20/03/2026."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Sản phẩm dành cho trẻ 0–3 tuổi; ảnh shop có em bé và mẹ nhưng nội dung mình làm chỉ dùng búp bê, không quay trẻ em."
+   }
+  ],
+  "luu_y": [
+   {
+    "van_de": "Claim y tế và an toàn tuyệt đối trên trang shop: \"ngừa hăm & mẩn đỏ\", \"an toàn trên toàn thế giới\", \"không gây kích ứng da\".",
+    "rui_ro": "🟠",
+    "xu_ly": "Không đọc, không dựng chữ các câu này; chỉ tả mềm, mỏng, thấm nước thấy được trong video; không quay giấy chứng nhận."
+   },
+   {
+    "van_de": "Xuất xứ mâu thuẫn: mô tả \"Nhập khẩu Hàn Quốc\" nhưng thông số ghi Quốc gia xuất xứ: Trung Quốc.",
+    "rui_ro": "🟠",
+    "xu_ly": "Không nhắc \"nhập khẩu Hàn Quốc\" trong lời và chữ dựng; không quay cận chữ Hàn trên gói."
+   }
+  ],
+  "claim_cam": [
+   {
+    "khong_nen": "\"Ngừa hăm\", \"hết mẩn đỏ\", \"không kích ứng da\", \"an toàn tuyệt đối\", \"giữ khô cả đêm 12h\"",
+    "goi_y": "Nói điều quay thấy được: \"mặt tã mềm\", \"nước thấm nhanh\", \"viền hai bên cao\"."
+   },
+   {
+    "khong_nen": "\"Nhập khẩu Hàn Quốc\", \"hàng chính hãng\", \"giảm 50%\" hoặc nêu giá gốc 212.973₫",
+    "goi_y": "Chỉ nói thương hiệu Penbose và giá hiện tại đang hiển thị trên trang khi cần; giá chỉ được xuất hiện ở lời/chữ video, không đưa vào caption."
+   },
+   {
+    "khong_nen": "Quay hoặc dùng ảnh em bé thật, mặt trẻ em",
+    "goi_y": "Dùng búp bê hoặc gấu bông mặc tã, chỉ quay tay và sản phẩm."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có số đăng ký nhãn hiệu Penbose, chưa xác minh được giấy công bố hợp quy trên cổng tra cứu; chưa kiểm được review thật về hăm/kích ứng.",
+  "danh_gia_luc": "2026-11-26T13:16:45+07:00"
+ }
 }
