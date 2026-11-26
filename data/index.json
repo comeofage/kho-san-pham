@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-26T00:38:54+07:00",
+ "cap_nhat_luc": "2026-11-26T08:09:34+07:00",
  "san_pham": [
   {
    "id": "1736448578863400786",
@@ -1851,11 +1851,11 @@
    "gia": "29.544₫",
    "shop": "Bán chơi chơi hihi",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_phan_tich",
+   "trang_thai": "da_quay",
    "da_quay_oneshot": {
-    "xong": false,
-    "boi": "",
-    "luc": ""
+    "xong": true,
+    "boi": "Nhân",
+    "luc": "2026-11-26T08:09:20+07:00"
    },
    "da_quay_review": {
     "xong": false,
@@ -1868,7 +1868,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-05T11:36:40+07:00",
-   "cap_nhat_luc": "2026-11-16T08:46:11+07:00",
+   "cap_nhat_luc": "2026-11-26T08:09:20+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
