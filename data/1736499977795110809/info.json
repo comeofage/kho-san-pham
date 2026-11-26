@@ -31,11 +31,21 @@
   "luc": "2026-11-26T08:09:22+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 20,
+  "luc": "2026-11-26T09:43:12+07:00",
+  "poster": [
+   {
+    "folder": 388,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/stickerhai-1736499977795110809/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 388,
+  "duong_dan": "E:/oneshottramcanh/stickerhai-1736499977795110809/output_poster"
  },
- "cap_nhat_luc": "2026-11-26T08:09:22+07:00",
+ "cap_nhat_luc": "2026-11-26T09:43:12+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
