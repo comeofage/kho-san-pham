@@ -32,11 +32,21 @@
   "luc": "2026-11-26T11:10:57+07:00"
  },
  "da_lam_video": {
-  "xong": false,
-  "so_video": 0,
-  "luc": ""
+  "xong": true,
+  "so_video": 21,
+  "luc": "2026-11-26T12:14:27+07:00",
+  "poster": [
+   {
+    "folder": 390,
+    "so_video": 21,
+    "duong_dan": "E:/oneshottramcanh/rubikhinh-1735549089874019878/output_poster",
+    "nhan": "Adam"
+   }
+  ],
+  "poster_folder": 390,
+  "duong_dan": "E:/oneshottramcanh/rubikhinh-1735549089874019878/output_poster"
  },
- "cap_nhat_luc": "2026-11-26T11:11:02+07:00",
+ "cap_nhat_luc": "2026-11-26T12:14:27+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
