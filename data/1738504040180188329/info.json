@@ -35,5 +35,58 @@
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-26T13:46:45+07:00"
+ "cap_nhat_luc": "2026-11-26T13:47:16+07:00",
+ "rui_ro": {
+  "ket_luan": {
+   "nen_lam": "⚠️",
+   "muc_do": "🟡",
+   "nguy_co": "Giấy khen mô phỏng tờ giấy khen thật có in quốc hiệu và quốc huy; dễ bị soi nếu video/caption làm nó giống giấy tờ nhà nước thật hoặc giễu cợt biểu tượng quốc gia.",
+   "khuyen_nghi": "Làm được như đồ lưu niệm hài hước: chỉ nói là móc khoá quà tặng, không hứa 'in tên theo yêu cầu' khi chưa xác nhận với shop, không cận/zoom chữ dựng lên quốc hiệu-quốc huy."
+  },
+  "tong_hop": [
+   {
+    "hang_muc": "Công dụng (Claim)",
+    "muc_do": "🟢",
+    "nhan_xet": "Đồ lưu niệm/quà tặng, không có claim y tế hay hiệu quả; chỉ cần tránh hứa độ bền chưa tự thử."
+   },
+   {
+    "hang_muc": "Nhãn hiệu (Trademark)",
+    "muc_do": "🟢",
+    "nhan_xet": "Ảnh bìa không có logo hay thương hiệu bên thứ ba; shop không ghi thương hiệu."
+   },
+   {
+    "hang_muc": "IPR",
+    "muc_do": "🟡",
+    "nhan_xet": "Mẫu giấy khen, hoạ tiết viền đỏ-vàng là hình thức chung; chưa rõ nguồn thiết kế của shop nên cần xem lại nếu bị báo cáo."
+   },
+   {
+    "hang_muc": "Sản phẩm hạn chế",
+    "muc_do": "🟡",
+    "nhan_xet": "Giấy khen in quốc hiệu 'Cộng hoà xã hội chủ nghĩa Việt Nam – Độc lập – Tự do – Hạnh phúc' và quốc huy; là đồ chơi chữ nhưng có thể bị coi là mô phỏng giấy tờ/biểu tượng nhà nước nếu trình bày sai."
+   },
+   {
+    "hang_muc": "Liên quan trẻ em",
+    "muc_do": "🟡",
+    "nhan_xet": "Nội dung 'học sinh' nên khách có thể là học sinh; vòng khoá kim loại nhỏ, trang không ghi độ tuổi — không nhắm đối tượng trẻ nhỏ và không quay trẻ em."
+   }
+  ],
+  "luu_y": [],
+  "claim_cam": [
+   {
+    "khong_nen": "Nói 'in tên theo yêu cầu', 'tặng kèm in tên' hay hứa thời gian in khi chưa xác nhận với shop (trang chỉ có 1 phân loại, không ô nhập tên).",
+    "goi_y": "Nói 'ô Khen ngợi em để trống, tự điền' chỉ khi đã thử viết được; hoặc chỉ gọi là móc khoá giấy khen mini."
+   },
+   {
+    "khong_nen": "Nói 'giấy khen thật', 'có giá trị pháp lý', 'giấy khen của trường/nhà nước'.",
+    "goi_y": "Gọi là móc khoá lưu niệm hài hước, quà tặng vui."
+   },
+   {
+    "khong_nen": "Hứa độ bền ('không gãy', 'đeo bao lâu cũng không hỏng') và số đo/trọng lượng khi chưa tự đo.",
+    "goi_y": "Chỉ nói điều quay được: đã kéo/lắc thử, và ghi số cm/gram đo thật."
+   }
+  ],
+  "ket_luan_cuoi": "⚠️ Có thể làm nhưng cần chỉnh sửa nội dung.",
+  "thieu_thong_tin": "Chưa có chất liệu khung/giấy, kích thước, trọng lượng, độ tuổi khuyến nghị; chưa rõ cách in tên theo yêu cầu; chưa kiểm tra giấy tờ nguồn gốc/thiết kế của shop; chính sách TikTok Shop VN hiện hành không đọc được bằng fetch (trang cần JS) nên đánh giá dựa trên hiểu biết sẵn có.",
+  "danh_gia_luc": "2026-11-26T13:47:16+07:00"
+ }
 }
