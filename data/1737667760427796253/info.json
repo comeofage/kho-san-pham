@@ -30,8 +30,8 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 58,
-  "luc": "2026-11-24T10:21:00+07:00",
+  "so_video": 78,
+  "luc": "2026-11-27T09:57:26+07:00",
   "poster": [
    {
     "folder": 296,
@@ -49,12 +49,18 @@
     "so_video": 19,
     "duong_dan": "E:/oneshottramcanh/banphim - Copy 1737667760427796253/output_poster",
     "nhan": "Adam"
+   },
+   {
+    "folder": 395,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/banphim 1737749463769581535/output_poster",
+    "nhan": "Adam"
    }
   ],
-  "poster_folder": 346,
-  "duong_dan": "E:/oneshottramcanh/banphim - Copy 1737667760427796253/output_poster"
+  "poster_folder": 395,
+  "duong_dan": "E:/oneshottramcanh/banphim 1737749463769581535/output_poster"
  },
- "cap_nhat_luc": "2026-11-24T10:21:00+07:00",
+ "cap_nhat_luc": "2026-11-27T09:57:26+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "⚠️",
