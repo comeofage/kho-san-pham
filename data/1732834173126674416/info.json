@@ -32,12 +32,12 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 15,
-  "luc": "2026-11-21T23:14:52+07:00",
+  "so_video": 12,
+  "luc": "2026-11-27T10:08:01+07:00",
   "poster": [
    {
     "folder": 302,
-    "so_video": 15,
+    "so_video": 12,
     "duong_dan": "E:/oneshottramcanh/kara 1410-1732834173126674416/output",
     "nhan": "nha.cua.mit"
    }
@@ -45,7 +45,7 @@
   "poster_folder": 302,
   "duong_dan": "E:/oneshottramcanh/kara 1410-1732834173126674416/output"
  },
- "cap_nhat_luc": "2026-11-21T23:14:52+07:00",
+ "cap_nhat_luc": "2026-11-27T10:08:01+07:00",
  "can_dang": true,
  "rui_ro": {
   "ket_luan": {
