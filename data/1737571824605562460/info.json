@@ -27,16 +27,16 @@
   "luc": "2026-11-19T10:10:33+07:00"
  },
  "da_quay_review": {
-  "xong": true,
+  "xong": false,
   "boi": "Nhân",
-  "luc": "2026-11-19T10:10:38+07:00"
+  "luc": "2026-11-28T11:26:47+07:00"
  },
  "da_lam_video": {
   "xong": false,
   "so_video": 0,
   "luc": ""
  },
- "cap_nhat_luc": "2026-11-19T10:10:38+07:00",
+ "cap_nhat_luc": "2026-11-28T11:26:47+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "✅",
