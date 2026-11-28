@@ -31,20 +31,26 @@
  },
  "da_lam_video": {
   "xong": true,
-  "so_video": 20,
-  "luc": "2026-11-28T13:22:37+07:00",
+  "so_video": 40,
+  "luc": "2026-11-28T13:37:51+07:00",
   "poster": [
    {
     "folder": 399,
     "so_video": 20,
     "duong_dan": "E:/oneshottramcanh/ukulele-1736085773757154442/output_poster",
     "nhan": "Adam"
+   },
+   {
+    "folder": 400,
+    "so_video": 20,
+    "duong_dan": "E:/oneshottramcanh/ukulele-1736085773757154442/output",
+    "nhan": "nha.cua.mit"
    }
   ],
-  "poster_folder": 399,
-  "duong_dan": "E:/oneshottramcanh/ukulele-1736085773757154442/output_poster"
+  "poster_folder": 400,
+  "duong_dan": "E:/oneshottramcanh/ukulele-1736085773757154442/output"
  },
- "cap_nhat_luc": "2026-11-28T13:22:41+07:00",
+ "cap_nhat_luc": "2026-11-28T13:37:51+07:00",
  "rui_ro": {
   "ket_luan": {
    "nen_lam": "✅",
