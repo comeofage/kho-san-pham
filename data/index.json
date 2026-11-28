@@ -1,5 +1,5 @@
 {
- "cap_nhat_luc": "2026-11-28T12:10:03+07:00",
+ "cap_nhat_luc": "2026-11-28T13:22:50+07:00",
  "san_pham": [
   {
    "id": "1738504040180188329",
@@ -1224,7 +1224,7 @@
    "gia": "53.557₫",
    "shop": "Treehouse 09",
    "anh_bia": "bia.jpg",
-   "trang_thai": "da_quay",
+   "trang_thai": "da_lam_video",
    "da_quay_oneshot": {
     "xong": true,
     "boi": "Nhân",
@@ -1241,7 +1241,7 @@
    "the": [],
    "them_boi": "Nhân",
    "them_luc": "2026-11-13T11:20:48+07:00",
-   "cap_nhat_luc": "2026-11-28T11:31:06+07:00",
+   "cap_nhat_luc": "2026-11-28T13:22:37+07:00",
    "so_caption": 100,
    "co_file01": true,
    "rui_ro": {
